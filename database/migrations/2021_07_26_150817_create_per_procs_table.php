@@ -15,6 +15,18 @@ class CreatePerProcsTable extends Migration
     {
         Schema::create('per_procs', function (Blueprint $table) {
             $table->id();
+            $table->enum('estatus',[1,2,3])->default(1);
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('proceso_id');
+
+            $table->foreign('user_id')->references("id")->on("users")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+            $table->foreign('proceso_id')->references("id")->on("procesos")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
+            $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });
     }

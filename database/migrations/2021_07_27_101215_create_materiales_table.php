@@ -4,9 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-use function PHPUnit\Framework\once;
-
-class CreateProcesosTable extends Migration
+class CreateMaterialesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,12 +13,12 @@ class CreateProcesosTable extends Migration
      */
     public function up()
     {
-        Schema::create('procesos', function (Blueprint $table) {
+        Schema::create('materiales', function (Blueprint $table) {
             $table->id();
 
-            $table->string('nompro');
-            $table->string('tipo');
-            $table->string('descripcion')->nullable();
+            $table->string('idmat')->unique();
+            $table->string('nommat');
+            $table->string('descrip');
             $table->enum('estatus',[1,2,3])->default(1);
 
             $table->unsignedBigInteger('area_id');
@@ -28,8 +26,8 @@ class CreateProcesosTable extends Migration
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
-            $table->timestamps();
             $table->softDeletes(); //Columna para soft delete
+            $table->timestamps();
         });
     }
 
@@ -40,6 +38,6 @@ class CreateProcesosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('procesos');
+        Schema::dropIfExists('materiales');
     }
 }
