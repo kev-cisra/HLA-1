@@ -15,10 +15,10 @@ class CreateJefesAreasTable extends Migration
     {
         Schema::create('jefes_areas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('IdUser'); //Numero persona que realiza el registro
+            $table->unsignedBigInteger('IdUser'); //Id de Sessión
             $table->unsignedBigInteger('IdEmp'); //Numero control empleado
-            $table->string('Nombre',45);
-            $table->string('Area',45);
+            $table->string('Nombre',35);
+            $table->string('Area',30);
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });
