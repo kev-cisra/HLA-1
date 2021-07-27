@@ -21424,14 +21424,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     align: {
-      "default": 'right'
+      "default": 'tw-right'
     },
     width: {
       "default": '48'
     },
     contentClasses: {
       "default": function _default() {
-        return ['py-1', 'bg-white'];
+        return ['tw-py-1', 'tw-bg-white'];
       }
     }
   },
@@ -21457,16 +21457,16 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     widthClass: function widthClass() {
       return {
-        '48': 'w-48'
+        '48': 'tw-w-48'
       }[this.width.toString()];
     },
     alignmentClasses: function alignmentClasses() {
-      if (this.align === 'left') {
-        return 'origin-top-left left-0';
-      } else if (this.align === 'right') {
-        return 'origin-top-right right-0';
+      if (this.align === 'tw-left') {
+        return 'tw-origin-top-left tw-left-0';
+      } else if (this.align === 'tw-right') {
+        return 'tw-origin-top-right tw-right-0';
       } else {
-        return 'origin-top';
+        return 'tw-origin-top';
       }
     }
   }
@@ -21642,11 +21642,11 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     maxWidthClass: function maxWidthClass() {
       return {
-        'sm': 'sm:max-w-sm',
-        'md': 'sm:max-w-md',
-        'lg': 'sm:max-w-lg',
-        'xl': 'sm:max-w-xl',
-        '2xl': 'sm:max-w-2xl'
+        'sm': 'sm:tw-max-w-sm',
+        'md': 'sm:tw-max-w-md',
+        'lg': 'sm:tw-max-w-lg',
+        'xl': 'sm:tw-max-w-xl',
+        '2xl': 'sm:tw-max-w-2xl'
       }[this.maxWidth];
     }
   }
@@ -21669,7 +21669,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['href', 'active'],
   computed: {
     classes: function classes() {
-      return this.active ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition' : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition';
+      return this.active ? 'tw-inline-flex tw-items-center tw-px-1 tw-pt-1 tw-border-b-2 tw-border-indigo-400 tw-text-sm tw-font-medium tw-leading-5 tw-text-gray-900 focus:tw-outline-none focus:tw-border-indigo-700 tw-transition' : 'tw-inline-flex tw-items-center tw-px-1 tw-pt-1 tw-border-b-2 tw-border-transparent tw-text-sm tw-font-medium tw-leading-5 tw-text-gray-500 hover:tw-text-gray-700 hover:tw-border-gray-300 focus:tw-outline-none focus:tw-text-gray-700 focus:tw-border-gray-300 tw-transition';
     }
   }
 });
@@ -21691,7 +21691,7 @@ __webpack_require__.r(__webpack_exports__);
   props: ['active', 'href', 'as'],
   computed: {
     classes: function classes() {
-      return this.active ? 'block pl-3 pr-4 py-2 border-l-4 border-indigo-400 text-base font-medium text-indigo-700 bg-indigo-50 focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition' : 'block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition';
+      return this.active ? 'tw-block tw-pl-3 tw-pr-4 tw-py-2 tw-border-l-4 tw-border-indigo-400 tw-text-base tw-font-medium tw-text-indigo-700 tw-bg-indigo-50 focus:tw-outline-none focus:tw-text-indigo-800 focus:tw-bg-indigo-100 focus:tw-border-indigo-700 tw-transition' : 'tw-block tw-pl-3 tw-pr-4 tw-py-2 tw-border-l-4 tw-border-transparent tw-text-base tw-font-medium tw-text-gray-600 hover:tw-text-gray-800 hover:tw-bg-gray-50 hover:tw-border-gray-300 focus:tw-outline-none focus:tw-text-gray-800 focus:tw-bg-gray-50 focus:tw-border-gray-300 tw-transition';
     }
   }
 });
@@ -23273,11 +23273,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "text-sm text-gray-600"
+  "class": "tw-text-sm tw-text-gray-600"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
-    "leave-active-class": "transition ease-in duration-1000",
+    "leave-active-class": "tw-transition tw-ease-in tw-duration-1000",
     "leave-from-class": "opacity-100",
     "leave-to-class": "opacity-0"
   }, {
@@ -23308,13 +23308,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "md:grid md:grid-cols-3 md:gap-6"
+  "class": "md:tw-grid md:tw-grid-cols-3 md:tw-gap-6"
 };
 var _hoisted_2 = {
-  "class": "mt-5 md:mt-0 md:col-span-2"
+  "class": "tw-mt-5 md:tw-mt-0 md:tw-col-span-2"
 };
 var _hoisted_3 = {
-  "class": "px-4 py-5 sm:p-6 bg-white shadow sm:rounded-lg"
+  "class": "tw-px-4 tw-py-5 sm:tw-p-6 tw-bg-white tw-shadow sm:tw-rounded-lg"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_jet_section_title = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-section-title");
@@ -23504,17 +23504,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "max-w-screen-xl mx-auto py-2 px-3 sm:px-6 lg:px-8"
+  "class": "tw-max-w-screen-xl tw-mx-auto tw-py-2 tw-px-3 sm:tw-px-6 lg:tw-px-8"
 };
 var _hoisted_2 = {
-  "class": "flex items-center justify-between flex-wrap"
+  "class": "tw-flex tw-items-center tw-justify-between tw-flex-wrap"
 };
 var _hoisted_3 = {
-  "class": "w-0 flex-1 flex items-center min-w-0"
+  "class": "tw-w-0 tw-flex-1 tw-flex tw-items-center tw-min-w-0"
 };
 var _hoisted_4 = {
   key: 0,
-  "class": "h-5 w-5 text-white",
+  "class": "tw-h-5 tw-w-5 tw-text-white",
   xmlns: "http://www.w3.org/2000/svg",
   fill: "none",
   viewBox: "0 0 24 24",
@@ -23532,7 +23532,7 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 
 var _hoisted_6 = {
   key: 1,
-  "class": "h-5 w-5 text-white",
+  "class": "tw-h-5 tw-w-5 tw-text-white",
   xmlns: "http://www.w3.org/2000/svg",
   fill: "none",
   viewBox: "0 0 24 24",
@@ -23549,14 +23549,14 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 );
 
 var _hoisted_8 = {
-  "class": "ml-3 font-medium text-sm text-white truncate"
+  "class": "tw-ml-3 tw-font-medium tw-text-sm tw-text-white tw-truncate"
 };
 var _hoisted_9 = {
-  "class": "flex-shrink-0 sm:ml-3"
+  "class": "tw-flex-shrink-0 sm:tw-ml-3"
 };
 
 var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
-  "class": "h-5 w-5 text-white",
+  "class": "tw-h-5 tw-w-5 tw-text-white",
   xmlns: "http://www.w3.org/2000/svg",
   fill: "none",
   viewBox: "0 0 24 24",
@@ -23578,9 +23578,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       'bg-red-700': $options.style == 'danger'
     }
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-    "class": ["flex p-2 rounded-lg", {
-      'bg-indigo-600': $options.style == 'success',
-      'bg-red-600': $options.style == 'danger'
+    "class": ["tw-flex tw-p-2 tw-rounded-lg", {
+      'tw-bg-indigo-600': $options.style == 'success',
+      'tw-bg-red-600': $options.style == 'danger'
     }]
   }, [$options.style == 'success' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_4, [_hoisted_5])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.style == 'danger' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_6, [_hoisted_7])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
   /* CLASS */
@@ -23588,9 +23588,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     type: "button",
-    "class": ["-mr-1 flex p-2 rounded-md focus:outline-none sm:-mr-2 transition", {
-      'hover:bg-indigo-600 focus:bg-indigo-600': $options.style == 'success',
-      'hover:bg-red-600 focus:bg-red-600': $options.style == 'danger'
+    "class": ["tw--mr-1 tw-flex tw-p-2 tw-rounded-md focus:tw-outline-none sm:tw--mr-2 tw-transition", {
+      'hover:tw-bg-indigo-600 focus:tw-bg-indigo-600': $options.style == 'success',
+      'hover:tw-bg-red-600 focus:tw-bg-red-600': $options.style == 'danger'
     }],
     "aria-label": "Dismiss",
     onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
@@ -23671,16 +23671,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4"
+  "class": "tw-bg-white tw-px-4 tw-pt-5 tw-pb-4 sm:tw-p-6 sm:tw-pb-4"
 };
 var _hoisted_2 = {
-  "class": "sm:flex sm:items-start"
+  "class": "sm:tw-flex sm:tw-items-start"
 };
 
 var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
+  "class": "tw-mx-auto tw-flex-shrink-0 tw-flex tw-items-center tw-justify-center tw-h-12 tw-w-12 tw-rounded-full tw-bg-red-100 sm:tw-mx-0 sm:tw-h-10 sm:tw-w-10"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
-  "class": "h-6 w-6 text-red-600",
+  "class": "tw-h-6 tw-w-6 tw-text-red-600",
   stroke: "currentColor",
   fill: "none",
   viewBox: "0 0 24 24"
@@ -23694,16 +23694,16 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 );
 
 var _hoisted_4 = {
-  "class": "mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left"
+  "class": "tw-mt-3 tw-text-center sm:tw-mt-0 sm:tw-ml-4 sm:tw-text-left"
 };
 var _hoisted_5 = {
-  "class": "text-lg"
+  "class": "tw-text-lg"
 };
 var _hoisted_6 = {
-  "class": "mt-2"
+  "class": "tw-mt-2"
 };
 var _hoisted_7 = {
-  "class": "px-6 py-4 bg-gray-100 text-right"
+  "class": "tw-px-6 tw-py-4 tw-bg-gray-100 tw-text-right"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("modal");
@@ -23775,7 +23775,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         type: "password",
-        "class": "mt-1 block w-3/4",
+        "class": "tw-mt-1 block w-3/4",
         placeholder: "Password",
         ref: "password",
         modelValue: $data.form.password,
@@ -23787,7 +23787,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["modelValue", "onKeyup"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input_error, {
         message: $data.form.error,
-        "class": "mt-2"
+        "class": "tw-mt-2"
       }, null, 8
       /* PROPS */
       , ["message"])])];
@@ -23805,8 +23805,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, 8
       /* PROPS */
       , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
-        "class": ["ml-2", {
-          'opacity-25': $data.form.processing
+        "class": ["tw-ml-2", {
+          'tw-opacity-25': $data.form.processing
         }],
         onClick: $options.confirmPassword,
         disabled: $data.form.processing
@@ -23849,7 +23849,7 @@ __webpack_require__.r(__webpack_exports__);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("button", {
     type: $props.type,
-    "class": "inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition"
+    "class": "tw-inline-flex tw-items-center tw-justify-center tw-px-4 tw-py-2 tw-bg-red-600 tw-border tw-border-transparent tw-rounded-md tw-font-semibold tw-text-xs tw-text-white tw-uppercase tw-tracking-widest hover:tw-bg-red-500 focus:tw-outline-none focus:tw-border-red-700 focus:tw-ring focus:tw-ring-red-200 active:tw-bg-red-600 disabled:tw-opacity-25 tw-transition"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")], 8
   /* PROPS */
   , ["type"]);
@@ -23871,16 +23871,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "px-6 py-4"
+  "class": "tw-px-6 tw-py-4"
 };
 var _hoisted_2 = {
-  "class": "text-lg"
+  "class": "tw-text-lg"
 };
 var _hoisted_3 = {
-  "class": "mt-4"
+  "class": "tw-mt-4"
 };
 var _hoisted_4 = {
-  "class": "px-6 py-4 bg-gray-100 text-right"
+  "class": "tw-px-6 tw-py-4 tw-bg-gray-100 tw-text-right"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("modal");
@@ -23918,7 +23918,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "relative"
+  "class": "tw-relative"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
@@ -23926,23 +23926,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $setup.open = !$setup.open;
     })
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "trigger")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Full Screen Dropdown Overlay "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-    "class": "fixed inset-0 z-40",
+    "class": "tw-fixed tw-inset-0 tw-z-40",
     onClick: _cache[2] || (_cache[2] = function ($event) {
       return $setup.open = false;
     })
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.open]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
-    "enter-active-class": "transition ease-out duration-200",
-    "enter-from-class": "transform opacity-0 scale-95",
-    "enter-to-class": "transform opacity-100 scale-100",
-    "leave-active-class": "transition ease-in duration-75",
-    "leave-from-class": "transform opacity-100 scale-100",
-    "leave-to-class": "transform opacity-0 scale-95"
+    "enter-active-class": "tw-transition tw-ease-out tw-duration-200",
+    "enter-from-class": "tw-transform tw-opacity-0 tw-scale-95",
+    "enter-to-class": "tw-transform tw-opacity-100 tw-scale-100",
+    "leave-active-class": "tw-transition tw-ease-in tw-duration-75",
+    "leave-from-class": "tw-transform tw-opacity-100 tw-scale-100",
+    "leave-to-class": "tw-transform tw-opacity-0 tw-scale-95"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-        "class": ["absolute z-50 mt-2 rounded-md shadow-lg", [$options.widthClass, $options.alignmentClasses]],
+        "class": ["tw-absolute tw-z-50 tw-mt-2 tw-rounded-md tw-shadow-lg", [$options.widthClass, $options.alignmentClasses]],
         style: {
           "display": "none"
         },
@@ -23950,7 +23950,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return $setup.open = false;
         })
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-        "class": ["rounded-md ring-1 ring-black ring-opacity-5", $props.contentClasses]
+        "class": ["tw-rounded-md tw-ring-1 tw-ring-black tw-ring-opacity-5", $props.contentClasses]
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "content")], 2
       /* CLASS */
       )], 2
@@ -23981,7 +23981,7 @@ __webpack_require__.r(__webpack_exports__);
 var _hoisted_1 = {
   key: 0,
   type: "submit",
-  "class": "block w-full px-4 py-2 text-sm leading-5 text-gray-700 text-left hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition"
+  "class": "tw-block tw-w-full tw-px-4 tw-py-2 tw-text-sm tw-leading-5 tw-text-gray-700 tw-text-left hover:tw-bg-gray-100 focus:tw-outline-none focus:tw-bg-gray-100 tw-transition"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_inertia_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("inertia-link");
@@ -23989,13 +23989,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", null, [$props.as == 'button' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("button", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")])) : $props.as == 'a' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("a", {
     key: 1,
     href: $props.href,
-    "class": "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition"
+    "class": "tw-block tw-px-4 tw-py-2 tw-text-sm tw-leading-5 tw-text-gray-700 hover:tw-bg-gray-100 focus:tw-outline-none focus:tw-bg-gray-100 tw-transition"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")], 8
   /* PROPS */
   , ["href"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_inertia_link, {
     key: 2,
     href: $props.href,
-    "class": "block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition"
+    "class": "tw-block tw-px-4 tw-py-2 tw-text-sm tw-leading-5 tw-text-gray-700 hover:tw-bg-gray-100 focus:tw-outline-none focus:tw-bg-gray-100 tw-transition"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")];
@@ -24024,17 +24024,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "md:grid md:grid-cols-3 md:gap-6"
+  "class": "md:tw-grid md:tw-grid-cols-3 md:tw-gap-6"
 };
 var _hoisted_2 = {
-  "class": "mt-5 md:mt-0 md:col-span-2"
+  "class": "tw-mt-5 md:tw-mt-0 md:tw-col-span-2"
 };
 var _hoisted_3 = {
-  "class": "grid grid-cols-6 gap-6"
+  "class": "tw-grid tw-grid-cols-6 tw-gap-6"
 };
 var _hoisted_4 = {
   key: 0,
-  "class": "flex items-center justify-end px-4 py-3 bg-gray-50 text-right sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md"
+  "class": "tw-flex tw-items-center tw-justify-end tw-px-4 tw-py-3 tw-bg-gray-50 tw-text-right sm:tw-px-6 tw-shadow sm:tw-rounded-bl-md sm:tw-rounded-br-md"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_jet_section_title = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-section-title");
@@ -24054,7 +24054,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return _ctx.$emit('submitted');
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-    "class": ["px-4 py-5 bg-white sm:p-6 shadow", $options.hasActions ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-md']
+    "class": ["tw-px-4 tw-py-5 tw-bg-white sm:tw-p-6 tw-shadow", $options.hasActions ? 'sm:tw-rounded-tl-md sm:tw-rounded-tr-md' : 'sm:tw-rounded-md']
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "form")])], 2
   /* CLASS */
   ), $options.hasActions ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "actions")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 32
@@ -24106,7 +24106,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "text-sm text-red-600"
+  "class": "tw-text-sm tw-text-red-600"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.message), 1
@@ -24162,12 +24162,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50",
+  "class": "tw-fixed tw-inset-0 tw-overflow-y-auto tw-px-4 tw-py-6 tw-sm:px-0 tw-z-50",
   "scroll-region": ""
 };
 
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "absolute inset-0 bg-gray-500 opacity-75"
+  "class": "tw-absolute tw-inset-0 tw-bg-gray-500 tw-opacity-75"
 }, null, -1
 /* HOISTED */
 );
@@ -24176,20 +24176,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Teleport, {
     to: "body"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
-    "leave-active-class": "duration-200"
+    "leave-active-class": "tw-duration-200"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
-        "enter-active-class": "ease-out duration-300",
-        "enter-from-class": "opacity-0",
-        "enter-to-class": "opacity-100",
-        "leave-active-class": "ease-in duration-200",
-        "leave-from-class": "opacity-100",
-        "leave-to-class": "opacity-0"
+        "enter-active-class": "tw-ease-out tw-duration-300",
+        "enter-from-class": "tw-opacity-0",
+        "enter-to-class": "tw-opacity-100",
+        "leave-active-class": "tw-ease-in tw-duration-200",
+        "leave-from-class": "tw-opacity-100",
+        "leave-to-class": "tw-opacity-0"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-            "class": "fixed inset-0 transform transition-all",
+            "class": "tw-fixed tw-inset-0 tw-transform tw-transition-all",
             onClick: _cache[1] || (_cache[1] = function () {
               return $setup.close && $setup.close.apply($setup, arguments);
             })
@@ -24201,16 +24201,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* STABLE */
 
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
-        "enter-active-class": "ease-out duration-300",
-        "enter-from-class": "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
-        "enter-to-class": "opacity-100 translate-y-0 sm:scale-100",
-        "leave-active-class": "ease-in duration-200",
-        "leave-from-class": "opacity-100 translate-y-0 sm:scale-100",
-        "leave-to-class": "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+        "enter-active-class": "tw-ease-out tw-duration-300",
+        "enter-from-class": "tw-opacity-0 tw-translate-y-4 sm:tw-translate-y-0 sm:tw-scale-95",
+        "enter-to-class": "tw-opacity-100 tw-translate-y-0 sm:tw-scale-100",
+        "leave-active-class": "tw-ease-in tw-duration-200",
+        "leave-from-class": "tw-opacity-100 tw-translate-y-0 sm:tw-scale-100",
+        "leave-to-class": "tw-opacity-0 tw-translate-y-4 sm:tw-translate-y-0 sm:tw-scale-95"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-            "class": ["mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto", $options.maxWidthClass]
+            "class": ["tw-mb-6 tw-bg-white tw-rounded-lg tw-overflow-hidden tw-shadow-xl tw-transform tw-transition-all sm:tw-w-full sm:tw-mx-auto", $options.maxWidthClass]
           }, [$props.show ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default", {
             key: 0
           }) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
@@ -24320,7 +24320,7 @@ __webpack_require__.r(__webpack_exports__);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("button", {
     type: $props.type,
-    "class": "inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:text-gray-800 active:bg-gray-50 disabled:opacity-25 transition"
+    "class": "tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-bg-white tw-border tw-border-gray-300 tw-rounded-md tw-font-semibold tw-text-xs tw-text-gray-700 tw-uppercase tw-tracking-widest tw-shadow-sm hover:tw-text-gray-500 focus:tw-outline-none focus:tw-border-blue-300 focus:tw-ring focus:tw-ring-blue-200 active:tw-text-gray-800 active:tw-bg-gray-50 disabled:tw-opacity-25 tw-transition"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")], 8
   /* PROPS */
   , ["type"]);
@@ -24342,13 +24342,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "hidden sm:block"
+  "class": "tw-hidden sm:tw-block"
 };
 
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "py-8"
+  "class": "tw-py-8"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "border-t border-gray-200"
+  "class": "tw-border-t tw-border-gray-200"
 })], -1
 /* HOISTED */
 );
@@ -24373,19 +24373,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "md:col-span-1 flex justify-between"
+  "class": "md:tw-col-span-1 tw-flex tw-justify-between"
 };
 var _hoisted_2 = {
-  "class": "px-4 sm:px-0"
+  "class": "tw-px-4 sm:tw-px-0"
 };
 var _hoisted_3 = {
-  "class": "text-lg font-medium text-gray-900"
+  "class": "tw-text-lg tw-font-medium tw-text-gray-900"
 };
 var _hoisted_4 = {
-  "class": "mt-1 text-sm text-gray-600"
+  "class": "tw-mt-1 tw-text-sm tw-text-gray-600"
 };
 var _hoisted_5 = {
-  "class": "px-4 sm:px-0"
+  "class": "tw-px-4 sm:tw-px-0"
 };
 function render(_ctx, _cache) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h3", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "title")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "description")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "aside")])]);
@@ -24411,7 +24411,7 @@ var _hoisted_1 = {
 };
 
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "font-medium text-red-600"
+  "class": "tw-font-medium tw-text-red-600"
 }, "Whoops! Something went wrong.", -1
 /* HOISTED */
 );
@@ -24447,27 +24447,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "p-6 sm:px-20 bg-white border-b border-gray-200"
+  "class": "tw-p-6 sm:tw-px-20 tw-bg-white tw-border-b tw-border-gray-200"
 };
 
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mt-8 text-2xl"
+  "class": "tw-mt-8 tw-text-2xl"
 }, " Welcome to your Jetstream application! ", -1
 /* HOISTED */
 );
 
 var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mt-6 text-gray-500"
+  "class": "tw-mt-6 tw-text-gray-500"
 }, " Laravel Jetstream provides a beautiful, robust starting point for your next Laravel application. Laravel is designed to help you build your application using a development environment that is simple, powerful, and enjoyable. We believe you should love expressing your creativity through programming, so we have spent time carefully crafting the Laravel ecosystem to be a breath of fresh air. We hope you love it. ", -1
 /* HOISTED */
 );
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-2"
+  "class": "tw-bg-gray-200 tw-bg-opacity-25 tw-grid tw-grid-cols-1 md:tw-grid-cols-2"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "p-6"
+  "class": "tw-p-6"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "flex items-center"
+  "class": "tw-flex tw-items-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
   fill: "none",
   stroke: "currentColor",
@@ -24475,35 +24475,35 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
   "stroke-linejoin": "round",
   "stroke-width": "2",
   viewBox: "0 0 24 24",
-  "class": "w-8 h-8 text-gray-400"
+  "class": "tw-w-8 tw-h-8 tw-text-gray-400"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
   d: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
 })]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "ml-4 text-lg text-gray-600 leading-7 font-semibold"
+  "class": "tw-ml-4 tw-text-lg tw-text-gray-600 tw-leading-7 tw-font-semibold"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
   href: "https://laravel.com/docs"
 }, "Documentation")])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "ml-12"
+  "class": "tw-ml-12"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mt-2 text-sm text-gray-500"
+  "class": "tw-mt-2 tw-text-sm tw-text-gray-500"
 }, " Laravel has wonderful documentation covering every aspect of the framework. Whether you're new to the framework or have previous experience, we recommend reading all of the documentation from beginning to end. "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
   href: "https://laravel.com/docs"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mt-3 flex items-center text-sm font-semibold text-indigo-700"
+  "class": "tw-mt-3 tw-flex tw-items-center tw-text-sm tw-font-semibold tw-text-indigo-700"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, "Explore the documentation"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "ml-1 text-indigo-500"
+  "class": "tw-ml-1 tw-text-indigo-500"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
   viewBox: "0 0 20 20",
   fill: "currentColor",
-  "class": "w-4 h-4"
+  "class": "tw-w-4 tw-h-4"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
   "fill-rule": "evenodd",
   d: "M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z",
   "clip-rule": "evenodd"
 })])])])])])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "p-6 border-t border-gray-200 md:border-t-0 md:border-l"
+  "class": "tw-p-6 tw-border-t tw-border-gray-200 md:tw-border-t-0 md:tw-border-l"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "flex items-center"
+  "class": "tw-flex tw-items-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
   fill: "none",
   stroke: "currentColor",
@@ -24511,37 +24511,37 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
   "stroke-linejoin": "round",
   "stroke-width": "2",
   viewBox: "0 0 24 24",
-  "class": "w-8 h-8 text-gray-400"
+  "class": "tw-w-8 tw-h-8 tw-text-gray-400"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
   d: "M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
 }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
   d: "M15 13a3 3 0 11-6 0 3 3 0 016 0z"
 })]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "ml-4 text-lg text-gray-600 leading-7 font-semibold"
+  "class": "tw-ml-4 tw-text-lg tw-text-gray-600 tw-leading-7 tw-font-semibold"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
   href: "https://laracasts.com"
 }, "Laracasts")])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "ml-12"
+  "class": "tw-ml-12"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mt-2 text-sm text-gray-500"
+  "class": "tw-mt-2 tw-text-sm tw-text-gray-500"
 }, " Laracasts offers thousands of video tutorials on Laravel, PHP, and JavaScript development. Check them out, see for yourself, and massively level up your development skills in the process. "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
   href: "https://laracasts.com"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mt-3 flex items-center text-sm font-semibold text-indigo-700"
+  "class": "tw-mt-3 tw-flex tw-items-center tw-text-sm tw-font-semibold tw-text-indigo-700"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, "Start watching Laracasts"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "ml-1 text-indigo-500"
+  "class": "tw-ml-1 tw-text-indigo-500"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
   viewBox: "0 0 20 20",
   fill: "currentColor",
-  "class": "w-4 h-4"
+  "class": "tw-w-4 tw-h-4"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
   "fill-rule": "evenodd",
   d: "M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z",
   "clip-rule": "evenodd"
 })])])])])])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "p-6 border-t border-gray-200"
+  "class": "tw-p-6 tw-border-t tw-border-gray-200"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "flex items-center"
+  "class": "tw-flex tw-items-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
   fill: "none",
   stroke: "currentColor",
@@ -24553,17 +24553,17 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
   d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
 })]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "ml-4 text-lg text-gray-600 leading-7 font-semibold"
+  "class": "tw-ml-4 tw-text-lg tw-text-gray-600 tw-leading-7 tw-font-semibold"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
   href: "https://tailwindcss.com/"
 }, "Tailwind")])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "ml-12"
+  "class": "tw-ml-12"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mt-2 text-sm text-gray-500"
+  "class": "tw-mt-2 tw-text-sm tw-text-gray-500"
 }, " Laravel Jetstream is built with Tailwind, an amazing utility first CSS framework that doesn't get in your way. You'll be amazed how easily you can build and maintain fresh, modern designs with this wonderful framework at your fingertips. ")])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "p-6 border-t border-gray-200 md:border-l"
+  "class": "tw-p-6 tw-border-t tw-border-gray-200 md:tw-border-l"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "flex items-center"
+  "class": "tw-flex tw-items-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
   fill: "none",
   stroke: "currentColor",
@@ -24571,15 +24571,15 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
   "stroke-linejoin": "round",
   "stroke-width": "2",
   viewBox: "0 0 24 24",
-  "class": "w-8 h-8 text-gray-400"
+  "class": "tw-w-8 tw-h-8 tw-text-gray-400"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
   d: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
 })]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "ml-4 text-lg text-gray-600 leading-7 font-semibold"
+  "class": "tw-ml-4 tw-text-lg tw-text-gray-600 tw-leading-7 tw-font-semibold"
 }, "Authentication")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "ml-12"
+  "class": "tw-ml-12"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mt-2 text-sm text-gray-500"
+  "class": "tw-mt-2 tw-text-sm tw-text-gray-500"
 }, " Authentication and registration views are included with Laravel Jetstream, as well as support for user email verification and resetting forgotten passwords. So, you're free to get started what matters most: building your application. ")])])], -1
 /* HOISTED */
 );
@@ -24588,7 +24588,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_jet_application_logo = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-application-logo");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_application_logo, {
-    "class": "block h-12 w-auto"
+    "class": "tw-block tw-h-12 tw-w-auto"
   })]), _hoisted_2, _hoisted_3]), _hoisted_4]);
 }
 
@@ -25187,20 +25187,20 @@ var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNod
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" API tokens allow third-party services to authenticate with our application on your behalf. ");
 
 var _hoisted_3 = {
-  "class": "col-span-6 sm:col-span-4"
+  "class": "tw-col-span-6 sm:tw-col-span-4"
 };
 var _hoisted_4 = {
   key: 0,
-  "class": "col-span-6"
+  "class": "tw-col-span-6"
 };
 var _hoisted_5 = {
-  "class": "mt-2 grid grid-cols-1 md:grid-cols-2 gap-4"
+  "class": "tw-mt-2 tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4"
 };
 var _hoisted_6 = {
-  "class": "flex items-center"
+  "class": "tw-flex tw-items-center"
 };
 var _hoisted_7 = {
-  "class": "ml-2 text-sm text-gray-600"
+  "class": "tw-ml-2 tw-text-sm tw-text-gray-600"
 };
 
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Created. ");
@@ -25211,7 +25211,7 @@ var _hoisted_10 = {
   key: 0
 };
 var _hoisted_11 = {
-  "class": "mt-10 sm:mt-0"
+  "class": "tw-mt-10 sm:tw-mt-0"
 };
 
 var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Manage API Tokens ");
@@ -25219,14 +25219,14 @@ var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNo
 var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" You may delete any of your existing tokens if they are no longer needed. ");
 
 var _hoisted_14 = {
-  "class": "space-y-6"
+  "class": "tw-space-y-6"
 };
 var _hoisted_15 = {
-  "class": "flex items-center"
+  "class": "tw-flex tw-items-center"
 };
 var _hoisted_16 = {
   key: 0,
-  "class": "text-sm text-gray-400"
+  "class": "tw-text-sm tw-text-gray-400"
 };
 
 var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" API Token ");
@@ -25237,7 +25237,7 @@ var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 
 var _hoisted_19 = {
   key: 0,
-  "class": "mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500"
+  "class": "tw-mt-4 tw-bg-gray-100 tw-px-4 tw-py-2 tw-rounded tw-font-mono tw-text-sm tw-text-gray-500"
 };
 
 var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Close ");
@@ -25245,13 +25245,13 @@ var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNo
 var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" API Token Permissions ");
 
 var _hoisted_22 = {
-  "class": "grid grid-cols-1 md:grid-cols-2 gap-4"
+  "class": "tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4"
 };
 var _hoisted_23 = {
-  "class": "flex items-center"
+  "class": "tw-flex tw-items-center"
 };
 var _hoisted_24 = {
-  "class": "ml-2 text-sm text-gray-600"
+  "class": "tw-ml-2 tw-text-sm tw-text-gray-600"
 };
 
 var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel ");
@@ -25309,7 +25309,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "name",
         type: "text",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block tw-w-full",
         modelValue: $data.createApiTokenForm.name,
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $data.createApiTokenForm.name = $event;
@@ -25319,7 +25319,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input_error, {
         message: $data.createApiTokenForm.errors.name,
-        "class": "mt-2"
+        "class": "tw-mt-2"
       }, null, 8
       /* PROPS */
       , ["message"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Token Permissions "), $props.availablePermissions.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
@@ -25346,7 +25346,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     actions: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_action_message, {
         on: $data.createApiTokenForm.recentlySuccessful,
-        "class": "mr-3"
+        "class": "tw-mr-3"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_8];
@@ -25358,7 +25358,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["on"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
         "class": {
-          'opacity-25': $data.createApiTokenForm.processing
+          'tw-opacity-25': $data.createApiTokenForm.processing
         },
         disabled: $data.createApiTokenForm.processing
       }, {
@@ -25387,7 +25387,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.tokens, function (token) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
-          "class": "flex items-center justify-between",
+          "class": "tw-flex tw-items-center tw-justify-between",
           key: token.id
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(token.name), 1
         /* TEXT */
@@ -25395,14 +25395,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* TEXT */
         )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.availablePermissions.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("button", {
           key: 1,
-          "class": "cursor-pointer ml-6 text-sm text-gray-400 underline",
+          "class": "tw-cursor-pointer tw-ml-6 text-sm tw-text-gray-400 tw-underline",
           onClick: function onClick($event) {
             return $options.manageApiTokenPermissions(token);
           }
         }, " Permissions ", 8
         /* PROPS */
         , ["onClick"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-          "class": "cursor-pointer ml-6 text-sm text-red-500",
+          "class": "tw-cursor-pointer tw-ml-6 tw-text-sm tw-text-red-500",
           onClick: function onClick($event) {
             return $options.confirmApiTokenDeletion(token);
           }
@@ -25490,8 +25490,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* STABLE */
 
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
-        "class": ["ml-2", {
-          'opacity-25': $data.updateApiTokenForm.processing
+        "class": ["tw-ml-2", {
+          'tw-opacity-25': $data.updateApiTokenForm.processing
         }],
         onClick: $options.updateApiToken,
         disabled: $data.updateApiTokenForm.processing
@@ -25536,8 +25536,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         /* STABLE */
 
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_danger_button, {
-        "class": ["ml-2", {
-          'opacity-25': $data.deleteApiTokenForm.processing
+        "class": ["tw-ml-2", {
+          'tw-opacity-25': $data.deleteApiTokenForm.processing
         }],
         onClick: $options.deleteApiToken,
         disabled: $data.deleteApiTokenForm.processing
@@ -25577,13 +25577,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", {
-  "class": "font-semibold text-xl text-gray-800 leading-tight"
+  "class": "tw-font-semibold tw-text-xl tw-text-gray-800 tw-leading-tight"
 }, " API Tokens ", -1
 /* HOISTED */
 );
 
 var _hoisted_2 = {
-  "class": "max-w-7xl mx-auto py-10 sm:px-6 lg:px-8"
+  "class": "tw-max-w-7xl tw-mx-auto tw-py-10 sm:tw-px-6 lg:tw-px-8"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_api_token_manager = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("api-token-manager");
@@ -25626,13 +25626,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mb-4 text-sm text-gray-600"
+  "class": "tw-mb-4 tw-text-sm tw-text-gray-600"
 }, " This is a secure area of the application. Please confirm your password before continuing. ", -1
 /* HOISTED */
 );
 
 var _hoisted_2 = {
-  "class": "flex justify-end mt-4"
+  "class": "tw-flex tw-justify-end tw-mt-4"
 };
 
 var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Confirm ");
@@ -25656,7 +25656,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_validation_errors, {
-        "class": "mb-4"
+        "class": "tw-mb-4"
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
         onSubmit: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return $options.submit && $options.submit.apply($options, arguments);
@@ -25667,7 +25667,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "password",
         type: "password",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block tw-w-full",
         modelValue: $data.form.password,
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $data.form.password = $event;
@@ -25678,7 +25678,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 8
       /* PROPS */
       , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
-        "class": ["ml-4", {
+        "class": ["tw-ml-4", {
           'opacity-25': $data.form.processing
         }],
         disabled: $data.form.processing
@@ -25718,17 +25718,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mb-4 text-sm text-gray-600"
+  "class": "tw-mb-4 tw-text-sm tw-text-gray-600"
 }, " Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one. ", -1
 /* HOISTED */
 );
 
 var _hoisted_2 = {
   key: 0,
-  "class": "mb-4 font-medium text-sm text-green-600"
+  "class": "tw-mb-4 tw-font-medium tw-text-sm tw-text-green-600"
 };
 var _hoisted_3 = {
-  "class": "flex items-center justify-end mt-4"
+  "class": "tw-flex tw-items-center tw-justify-end tw-mt-4"
 };
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Email Password Reset Link ");
@@ -25754,7 +25754,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [_hoisted_1, $props.status ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.status), 1
       /* TEXT */
       )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_validation_errors, {
-        "class": "mb-4"
+        "class": "tw-mb-4"
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
         onSubmit: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return $options.submit && $options.submit.apply($options, arguments);
@@ -25765,7 +25765,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "email",
         type: "email",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block tw-w-full",
         modelValue: $data.form.email,
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $data.form.email = $event;
@@ -25776,7 +25776,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
         "class": {
-          'opacity-25': $data.form.processing
+          'tw-opacity-25': $data.form.processing
         },
         disabled: $data.form.processing
       }, {
@@ -25923,8 +25923,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, 8
       /* PROPS */
       , ["href"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
-        "class": ["tw-tw-ml-4", {
-          'opacity-25': $data.form.processing
+        "class": ["tw-ml-4", {
+          'tw-opacity-25': $data.form.processing
         }],
         disabled: $data.form.processing
       }, {
@@ -25962,23 +25962,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "mt-4"
+  "class": "tw-mt-4"
 };
 var _hoisted_2 = {
-  "class": "mt-4"
+  "class": "tw-mt-4"
 };
 var _hoisted_3 = {
-  "class": "mt-4"
+  "class": "tw-mt-4"
 };
 var _hoisted_4 = {
   key: 0,
-  "class": "mt-4"
+  "class": "tw-mt-4"
 };
 var _hoisted_5 = {
-  "class": "flex items-center"
+  "class": "tw-flex tw-items-center"
 };
 var _hoisted_6 = {
-  "class": "ml-2"
+  "class": "tw-ml-2"
 };
 
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" I agree to the ");
@@ -25986,7 +25986,7 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNod
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" and ");
 
 var _hoisted_9 = {
-  "class": "flex items-center justify-end mt-4"
+  "class": "tw-flex tw-items-center tw-justify-end mt-4"
 };
 
 var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Already registered? ");
@@ -26016,7 +26016,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_validation_errors, {
-        "class": "mb-4"
+        "class": "tw-mb-4"
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
         onSubmit: _cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return $options.submit && $options.submit.apply($options, arguments);
@@ -26027,7 +26027,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "IdEmp",
         type: "text",
-        "class": "block w-full mt-1",
+        "class": "tw-block tw-w-full tw-mt-1",
         modelValue: $data.form.IdEmp,
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $data.form.IdEmp = $event;
@@ -26043,7 +26043,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "name",
         type: "text",
-        "class": "block w-full mt-1",
+        "class": "tw-block tw-w-full tw-mt-1",
         modelValue: $data.form.name,
         "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
           return $data.form.name = $event;
@@ -26059,7 +26059,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "Area",
         type: "text",
-        "class": "block w-full mt-1",
+        "class": "tw-block tw-w-full tw-mt-1",
         modelValue: $data.form.Area,
         "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
           return $data.form.Area = $event;
@@ -26075,7 +26075,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "email",
         type: "email",
-        "class": "block w-full mt-1",
+        "class": "tw-block tw-w-full tw-mt-1",
         modelValue: $data.form.email,
         "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
           return $data.form.email = $event;
@@ -26089,7 +26089,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "password",
         type: "password",
-        "class": "block w-full mt-1",
+        "class": "tw-block tw-w-full tw-mt-1",
         modelValue: $data.form.password,
         "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
           return $data.form.password = $event;
@@ -26104,7 +26104,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "password_confirmation",
         type: "password",
-        "class": "block w-full mt-1",
+        "class": "tw-block tw-w-full tw-mt-1",
         modelValue: $data.form.password_confirmation,
         "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
           return $data.form.password_confirmation = $event;
@@ -26129,7 +26129,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           , ["checked"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
             target: "_blank",
             href: _ctx.route('terms.show'),
-            "class": "text-sm text-gray-600 underline hover:text-gray-900"
+            "class": "tw-text-sm tw-text-gray-600 tw-underline hover:tw-text-gray-900"
           }, "Terms of Service", 8
           /* PROPS */
           , ["href"]), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
@@ -26145,7 +26145,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
       })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_inertia_link, {
         href: _ctx.route('login'),
-        "class": "text-sm text-gray-600 underline hover:text-gray-900"
+        "class": "tw-text-sm tw-text-gray-600 tw-underline hover:tw-text-gray-900"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_10];
@@ -26156,8 +26156,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, 8
       /* PROPS */
       , ["href"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
-        "class": ["ml-4", {
-          'opacity-25': $data.form.processing
+        "class": ["tw-ml-4", {
+          'tw-opacity-25': $data.form.processing
         }],
         disabled: $data.form.processing
       }, {
@@ -26195,13 +26195,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "mt-4"
+  "class": "tw-mt-4"
 };
 var _hoisted_2 = {
-  "class": "mt-4"
+  "class": "tw-mt-4"
 };
 var _hoisted_3 = {
-  "class": "flex items-center justify-end mt-4"
+  "class": "tw-flex tw-items-center tw-justify-end mt-4"
 };
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Reset Password ");
@@ -26225,7 +26225,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_validation_errors, {
-        "class": "mb-4"
+        "class": "tw-mb-4"
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
         onSubmit: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return $options.submit && $options.submit.apply($options, arguments);
@@ -26236,7 +26236,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "email",
         type: "email",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block tw-w-full",
         modelValue: $data.form.email,
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $data.form.email = $event;
@@ -26251,7 +26251,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "password",
         type: "password",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block tw-w-full",
         modelValue: $data.form.password,
         "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
           return $data.form.password = $event;
@@ -26266,7 +26266,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "password_confirmation",
         type: "password",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block tw-w-full",
         modelValue: $data.form.password_confirmation,
         "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
           return $data.form.password_confirmation = $event;
@@ -26277,7 +26277,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
         "class": {
-          'opacity-25': $data.form.processing
+          'tw-opacity-25': $data.form.processing
         },
         disabled: $data.form.processing
       }, {
@@ -26315,7 +26315,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "mb-4 text-sm text-gray-600"
+  "class": "tw-mb-4 tw-text-sm tw-text-gray-600"
 };
 
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Please confirm access to your account by entering the authentication code provided by your authenticator application. ");
@@ -26329,7 +26329,7 @@ var _hoisted_5 = {
   key: 1
 };
 var _hoisted_6 = {
-  "class": "flex items-center justify-end mt-4"
+  "class": "tw-flex tw-items-center tw-justify-end mt-4"
 };
 
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Use a recovery code ");
@@ -26365,7 +26365,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, [_hoisted_3], 2112
       /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
       ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_validation_errors, {
-        "class": "mb-4"
+        "class": "tw-mb-4"
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
         onSubmit: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return $options.submit && $options.submit.apply($options, arguments);
@@ -26378,7 +26378,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         id: "code",
         type: "text",
         inputmode: "numeric",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block tw-w-full",
         modelValue: $data.form.code,
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $data.form.code = $event;
@@ -26394,7 +26394,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         ref: "recovery_code",
         id: "recovery_code",
         type: "text",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block tw-w-full",
         modelValue: $data.form.recovery_code,
         "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
           return $data.form.recovery_code = $event;
@@ -26404,7 +26404,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["modelValue"])])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
         type: "button",
-        "class": "text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer",
+        "class": "tw-text-sm tw-text-gray-600 hover:tw-text-gray-900 tw-underline tw-cursor-pointer",
         onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return $options.toggleRecovery && $options.toggleRecovery.apply($options, arguments);
         }, ["prevent"]))
@@ -26417,8 +26417,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, [_hoisted_8], 2112
       /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
       ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
-        "class": ["ml-4", {
-          'opacity-25': $data.form.processing
+        "class": ["tw-ml-4", {
+          'tw-opacity-25': $data.form.processing
         }],
         disabled: $data.form.processing
       }, {
@@ -26457,17 +26457,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mb-4 text-sm text-gray-600"
+  "class": "tw-mb-4 tw-text-sm tw-text-gray-600"
 }, " Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another. ", -1
 /* HOISTED */
 );
 
 var _hoisted_2 = {
   key: 0,
-  "class": "mb-4 font-medium text-sm text-green-600"
+  "class": "tw-mb-4 tw-font-medium tw-text-sm tw-text-green-600"
 };
 var _hoisted_3 = {
-  "class": "mt-4 flex items-center justify-between"
+  "class": "tw-mt-4 tw-flex tw-items-center tw-justify-between"
 };
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Resend Verification Email ");
@@ -26510,7 +26510,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         href: _ctx.route('logout'),
         method: "post",
         as: "button",
-        "class": "underline text-sm text-gray-600 hover:text-gray-900"
+        "class": "tw-underline tw-text-sm tw-text-gray-600 hover:tw-text-gray-900"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_5];
@@ -26547,19 +26547,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", {
-  "class": "text-xl font-semibold leading-tight text-gray-800"
+  "class": "tw-text-xl tw-font-semibold tw-leading-tight tw-text-gray-800"
 }, " Dashboard ", -1
 /* HOISTED */
 );
 
 var _hoisted_2 = {
-  "class": "py-12"
+  "class": "tw-py-12"
 };
 var _hoisted_3 = {
-  "class": "mx-auto max-w-7xl sm:px-6 lg:px-8"
+  "class": "tw-mx-auto tw-max-w-7xl sm:tw-px-6 lg:tw-px-8"
 };
 var _hoisted_4 = {
-  "class": "overflow-hidden bg-white shadow-xl sm:rounded-lg"
+  "class": "tw-overflow-hidden tw-bg-white tw-shadow-xl sm:tw-rounded-lg"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_welcome = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("welcome");
@@ -26595,20 +26595,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "font-sans text-gray-900 antialiased"
+  "class": "tw-font-sans tw-text-gray-900 tw-antialiased"
 };
 var _hoisted_2 = {
-  "class": "pt-4 bg-gray-100"
+  "class": "tw-pt-4 tw-bg-gray-100"
 };
 var _hoisted_3 = {
-  "class": "min-h-screen flex flex-col items-center pt-6 sm:pt-0"
+  "class": "tw-min-h-screen tw-flex tw-flex-col tw-items-center tw-pt-6 sm:tw-pt-0"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_jet_authentication_card_logo = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-authentication-card-logo");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_authentication_card_logo)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     innerHTML: $props.policy,
-    "class": "w-full sm:max-w-2xl mt-6 p-6 bg-white shadow-md overflow-hidden sm:rounded-lg prose"
+    "class": "tw-w-full sm:tw-max-w-2xl tw-mt-6 tw-p-6 tw-bg-white tw-shadow-md tw-overflow-hidden sm:tw-rounded-lg tw-prose"
   }, null, 8
   /* PROPS */
   , ["innerHTML"])])])]);
@@ -26635,13 +26635,13 @@ var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNod
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Permanently delete your account. ");
 
 var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "max-w-xl text-sm text-gray-600"
+  "class": "tw-max-w-xl tw-text-sm tw-text-gray-600"
 }, " Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain. ", -1
 /* HOISTED */
 );
 
 var _hoisted_4 = {
-  "class": "mt-5"
+  "class": "tw-mt-5"
 };
 
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Delete Account ");
@@ -26651,7 +26651,7 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNod
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account. ");
 
 var _hoisted_8 = {
-  "class": "mt-4"
+  "class": "tw-mt-4"
 };
 
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel ");
@@ -26700,7 +26700,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
             type: "password",
-            "class": "mt-1 block w-3/4",
+            "class": "tw-mt-1 tw-block tw-w-3/4",
             placeholder: "Password",
             ref: "password",
             modelValue: $data.form.password,
@@ -26712,7 +26712,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           /* PROPS */
           , ["modelValue", "onKeyup"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input_error, {
             message: $data.form.errors.password,
-            "class": "mt-2"
+            "class": "tw-mt-2"
           }, null, 8
           /* PROPS */
           , ["message"])])];
@@ -26730,8 +26730,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }, 8
           /* PROPS */
           , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_danger_button, {
-            "class": ["ml-2", {
-              'opacity-25': $data.form.processing
+            "class": ["tw-ml-2", {
+              'tw-opacity-25': $data.form.processing
             }],
             onClick: $options.deleteUser,
             disabled: $data.form.processing
@@ -26780,14 +26780,14 @@ var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNod
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Manage and log out your active sessions on other browsers and devices. ");
 
 var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "max-w-xl text-sm text-gray-600"
+  "class": "tw-max-w-xl tw-text-sm tw-text-gray-600"
 }, " If necessary, you may log out of all of your other browser sessions across all of your devices. Some of your recent sessions are listed below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password. ", -1
 /* HOISTED */
 );
 
 var _hoisted_4 = {
   key: 0,
-  "class": "mt-5 space-y-6"
+  "class": "tw-mt-5 tw-space-y-6"
 };
 var _hoisted_5 = {
   key: 0,
@@ -26797,7 +26797,7 @@ var _hoisted_5 = {
   "stroke-width": "2",
   viewBox: "0 0 24 24",
   stroke: "currentColor",
-  "class": "w-8 h-8 text-gray-500"
+  "class": "tw-w-8 tw-h-8 tw-text-gray-500"
 };
 
 var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
@@ -26815,7 +26815,7 @@ var _hoisted_7 = {
   fill: "none",
   "stroke-linecap": "round",
   "stroke-linejoin": "round",
-  "class": "w-8 h-8 text-gray-500"
+  "class": "tw-w-8 tw-h-8 tw-text-gray-500"
 };
 
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
@@ -26842,23 +26842,23 @@ var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_11 = {
-  "class": "ml-3"
+  "class": "tw-ml-3"
 };
 var _hoisted_12 = {
-  "class": "text-sm text-gray-600"
+  "class": "tw-text-sm tw-text-gray-600"
 };
 var _hoisted_13 = {
-  "class": "text-xs text-gray-500"
+  "class": "tw-text-xs tw-text-gray-500"
 };
 var _hoisted_14 = {
   key: 0,
-  "class": "text-green-500 font-semibold"
+  "class": "tw-text-green-500 tw-font-semibold"
 };
 var _hoisted_15 = {
   key: 1
 };
 var _hoisted_16 = {
-  "class": "flex items-center mt-5"
+  "class": "tw-flex tw-items-center tw-mt-5"
 };
 
 var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Log Out Other Browser Sessions ");
@@ -26870,7 +26870,7 @@ var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNo
 var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices. ");
 
 var _hoisted_21 = {
-  "class": "mt-4"
+  "class": "tw-mt-4"
 };
 
 var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancel ");
@@ -26902,7 +26902,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Other Browser Sessions "), $props.sessions.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_4, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.sessions, function (session, i) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
-          "class": "flex items-center",
+          "class": "tw-flex tw-items-center",
           key: i
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [session.agent.is_desktop ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_5, [_hoisted_6])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_7, [_hoisted_8, _hoisted_9, _hoisted_10]))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(session.agent.platform) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(session.agent.browser), 1
         /* TEXT */
@@ -26926,7 +26926,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_action_message, {
         on: $data.form.recentlySuccessful,
-        "class": "ml-3"
+        "class": "tw-ml-3"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_18];
@@ -26946,7 +26946,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
             type: "password",
-            "class": "mt-1 block w-3/4",
+            "class": "tw-mt-1 tw-block w-3/4",
             placeholder: "Password",
             ref: "password",
             modelValue: $data.form.password,
@@ -26958,7 +26958,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           /* PROPS */
           , ["modelValue", "onKeyup"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input_error, {
             message: $data.form.errors.password,
-            "class": "mt-2"
+            "class": "tw-mt-2"
           }, null, 8
           /* PROPS */
           , ["message"])])];
@@ -26976,8 +26976,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }, 8
           /* PROPS */
           , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
-            "class": ["ml-2", {
-              'opacity-25': $data.form.processing
+            "class": ["tw-ml-2", {
+              'tw-opacity-25': $data.form.processing
             }],
             onClick: $options.logoutOtherBrowserSessions,
             disabled: $data.form.processing
@@ -27022,13 +27022,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h2", {
-  "class": "font-semibold text-xl text-gray-800 leading-tight"
+  "class": "tw-font-semibold tw-text-xl tw-text-gray-800 tw-leading-tight"
 }, " Profile ", -1
 /* HOISTED */
 );
 
 var _hoisted_2 = {
-  "class": "max-w-7xl mx-auto py-10 sm:px-6 lg:px-8"
+  "class": "tw-max-w-7xl tw-mx-auto tw-py-10 sm:tw-px-6 lg:tw-px-8"
 };
 var _hoisted_3 = {
   key: 0
@@ -27064,18 +27064,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 8
       /* PROPS */
       , ["user"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_section_border)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$page.props.jetstream.canUpdatePassword ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_update_password_form, {
-        "class": "mt-10 sm:mt-0"
+        "class": "tw-mt-10 sm:tw-mt-0"
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_section_border)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$page.props.jetstream.canManageTwoFactorAuthentication ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_two_factor_authentication_form, {
-        "class": "mt-10 sm:mt-0"
+        "class": "tw-mt-10 sm:tw-mt-0"
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_section_border)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_logout_other_browser_sessions_form, {
         sessions: $props.sessions,
-        "class": "mt-10 sm:mt-0"
+        "class": "tw-mt-10 sm:tw-mt-0"
       }, null, 8
       /* PROPS */
       , ["sessions"]), _ctx.$page.props.jetstream.hasAccountDeletionFeatures ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
         key: 3
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_section_border), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_delete_user_form, {
-        "class": "mt-10 sm:mt-0"
+        "class": "tw-mt-10 sm:tw-mt-0"
       })], 64
       /* STABLE_FRAGMENT */
       )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])];
@@ -27108,15 +27108,15 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNod
 
 var _hoisted_3 = {
   key: 0,
-  "class": "text-lg font-medium text-gray-900"
+  "class": "tw-text-lg tw-font-medium tw-text-gray-900"
 };
 var _hoisted_4 = {
   key: 1,
-  "class": "text-lg font-medium text-gray-900"
+  "class": "tw-text-lg tw-font-medium tw-text-gray-900"
 };
 
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mt-3 max-w-xl text-sm text-gray-600"
+  "class": "tw-mt-3 tw-max-w-xl tw-text-sm tw-text-gray-600"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, " When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone's Google Authenticator application. ")], -1
 /* HOISTED */
 );
@@ -27129,9 +27129,9 @@ var _hoisted_7 = {
 };
 
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mt-4 max-w-xl text-sm text-gray-600"
+  "class": "tw-mt-4 tw-max-w-xl tw-text-sm tw-text-gray-600"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
-  "class": "font-semibold"
+  "class": "tw-font-semibold"
 }, " Two factor authentication is now enabled. Scan the following QR code using your phone's authenticator application. ")], -1
 /* HOISTED */
 );
@@ -27141,18 +27141,18 @@ var _hoisted_9 = {
 };
 
 var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "mt-4 max-w-xl text-sm text-gray-600"
+  "class": "tw-mt-4 tw-max-w-xl tw-text-sm tw-text-gray-600"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
-  "class": "font-semibold"
+  "class": "tw-font-semibold"
 }, " Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost. ")], -1
 /* HOISTED */
 );
 
 var _hoisted_11 = {
-  "class": "grid gap-1 max-w-xl mt-4 px-4 py-4 font-mono text-sm bg-gray-100 rounded-lg"
+  "class": "tw-grid tw-gap-1 tw-max-w-xl tw-mt-4 tw-px-4 tw-py-4 tw-font-mono tw-text-sm tw-bg-gray-100 tw-rounded-lg"
 };
 var _hoisted_12 = {
-  "class": "mt-5"
+  "class": "tw-mt-5"
 };
 var _hoisted_13 = {
   key: 0
@@ -27190,7 +27190,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     content: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [$options.twoFactorEnabled ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("h3", _hoisted_3, " You have enabled two factor authentication. ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("h3", _hoisted_4, " You have not enabled two factor authentication. ")), _hoisted_5, $options.twoFactorEnabled ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_6, [$data.qrCode ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-        "class": "mt-4",
+        "class": "tw-mt-4",
         innerHTML: $data.qrCode
       }, null, 8
       /* PROPS */
@@ -27209,7 +27209,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
             type: "button",
             "class": {
-              'opacity-25': $data.enabling
+              'tw-opacity-25': $data.enabling
             },
             disabled: $data.enabling
           }, {
@@ -27234,7 +27234,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [$data.recoveryCodes.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_secondary_button, {
             key: 0,
-            "class": "mr-3"
+            "class": "tw-mr-3"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
               return [_hoisted_16];
@@ -27255,7 +27255,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [$data.recoveryCodes.length === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_secondary_button, {
             key: 0,
-            "class": "mr-3"
+            "class": "tw-mr-3"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
               return [_hoisted_17];
@@ -27276,7 +27276,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_danger_button, {
             "class": {
-              'opacity-25': $data.disabling
+              'tw-opacity-25': $data.disabling
             },
             disabled: $data.disabling
           }, {
@@ -27324,13 +27324,13 @@ var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNod
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Ensure your account is using a long, random password to stay secure. ");
 
 var _hoisted_3 = {
-  "class": "col-span-6 sm:col-span-4"
+  "class": "tw-col-span-6 sm:tw-col-span-4"
 };
 var _hoisted_4 = {
-  "class": "col-span-6 sm:col-span-4"
+  "class": "tw-col-span-6 sm:tw-col-span-4"
 };
 var _hoisted_5 = {
-  "class": "col-span-6 sm:col-span-4"
+  "class": "tw-col-span-6 sm:tw-col-span-4"
 };
 
 var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Saved. ");
@@ -27366,7 +27366,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "current_password",
         type: "password",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block w-full",
         modelValue: $data.form.current_password,
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $data.form.current_password = $event;
@@ -27386,7 +27386,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "password",
         type: "password",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block tw-w-full",
         modelValue: $data.form.password,
         "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
           return $data.form.password = $event;
@@ -27406,7 +27406,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "password_confirmation",
         type: "password",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block tw-w-full",
         modelValue: $data.form.password_confirmation,
         "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
           return $data.form.password_confirmation = $event;
@@ -27416,7 +27416,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input_error, {
         message: $data.form.errors.password_confirmation,
-        "class": "mt-2"
+        "class": "tw-mt-2"
       }, null, 8
       /* PROPS */
       , ["message"])])];
@@ -27424,7 +27424,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     actions: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_action_message, {
         on: $data.form.recentlySuccessful,
-        "class": "mr-3"
+        "class": "tw-mr-3"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_6];
@@ -27436,7 +27436,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["on"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
         "class": {
-          'opacity-25': $data.form.processing
+          'tw-opacity-25': $data.form.processing
         },
         disabled: $data.form.processing
       }, {
@@ -27480,13 +27480,13 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNod
 
 var _hoisted_3 = {
   key: 0,
-  "class": "col-span-6 sm:col-span-4"
+  "class": "tw-col-span-6 sm:tw-col-span-4"
 };
 var _hoisted_4 = {
-  "class": "mt-2"
+  "class": "tw-mt-2"
 };
 var _hoisted_5 = {
-  "class": "mt-2"
+  "class": "tw-mt-2"
 };
 
 var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Select A New Photo ");
@@ -27494,10 +27494,10 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNod
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Remove Photo ");
 
 var _hoisted_8 = {
-  "class": "col-span-6 sm:col-span-4"
+  "class": "tw-col-span-6 sm:tw-col-span-4"
 };
 var _hoisted_9 = {
-  "class": "col-span-6 sm:col-span-4"
+  "class": "tw-col-span-6 sm:tw-col-span-4"
 };
 
 var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Saved. ");
@@ -27544,20 +27544,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Current Profile Photo "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
         src: $props.user.profile_photo_url,
         alt: $props.user.name,
-        "class": "rounded-full h-20 w-20 object-cover"
+        "class": "tw-rounded-full tw-h-20 tw-w-20 tw-object-cover"
       }, null, 8
       /* PROPS */
       , ["src", "alt"])], 512
       /* NEED_PATCH */
       ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, !$data.photoPreview]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" New Profile Photo Preview "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-        "class": "block rounded-full w-20 h-20",
+        "class": "tw-block tw-rounded-full tw-w-20 tw-h-20",
         style: 'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + $data.photoPreview + '\');'
       }, null, 4
       /* STYLE */
       )], 512
       /* NEED_PATCH */
       ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.photoPreview]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_secondary_button, {
-        "class": "mt-2 mr-2",
+        "class": "tw-mt-2 tw-mr-2",
         type: "button",
         onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($options.selectNewPhoto, ["prevent"])
       }, {
@@ -27572,7 +27572,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["onClick"]), $props.user.profile_photo_path ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_jet_secondary_button, {
         key: 0,
         type: "button",
-        "class": "mt-2",
+        "class": "tw-mt-2",
         onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($options.deletePhoto, ["prevent"])
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -27585,7 +27585,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["onClick"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input_error, {
         message: $data.form.errors.photo,
-        "class": "mt-2"
+        "class": "tw-mt-2"
       }, null, 8
       /* PROPS */
       , ["message"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Name "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
@@ -27594,7 +27594,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "name",
         type: "text",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block tw-w-full",
         modelValue: $data.form.name,
         "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
           return $data.form.name = $event;
@@ -27604,7 +27604,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input_error, {
         message: $data.form.errors.name,
-        "class": "mt-2"
+        "class": "tw-mt-2"
       }, null, 8
       /* PROPS */
       , ["message"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Email "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_label, {
@@ -27613,7 +27613,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input, {
         id: "email",
         type: "email",
-        "class": "mt-1 block w-full",
+        "class": "tw-mt-1 tw-block tw-w-full",
         modelValue: $data.form.email,
         "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
           return $data.form.email = $event;
@@ -27622,7 +27622,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_input_error, {
         message: $data.form.errors.email,
-        "class": "mt-2"
+        "class": "tw-mt-2"
       }, null, 8
       /* PROPS */
       , ["message"])])];
@@ -27630,7 +27630,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     actions: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_action_message, {
         on: $data.form.recentlySuccessful,
-        "class": "mr-3"
+        "class": "tw-mr-3"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [_hoisted_10];
@@ -27642,7 +27642,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["on"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
         "class": {
-          'opacity-25': $data.form.processing
+          'tw-opacity-25': $data.form.processing
         },
         disabled: $data.form.processing
       }, {
@@ -28714,20 +28714,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "font-sans text-gray-900 antialiased"
+  "class": "tw-font-sans tw-text-gray-900 tw-antialiased"
 };
 var _hoisted_2 = {
-  "class": "pt-4 bg-gray-100"
+  "class": "tw-pt-4 tw-bg-gray-100"
 };
 var _hoisted_3 = {
-  "class": "min-h-screen flex flex-col items-center pt-6 sm:pt-0"
+  "class": "tw-min-h-screen tw-flex tw-flex-col tw-items-center tw-pt-6 sm:tw-pt-0"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_jet_authentication_card_logo = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-authentication-card-logo");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_authentication_card_logo)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     innerHTML: $props.terms,
-    "class": "w-full sm:max-w-2xl mt-6 p-6 bg-white shadow-md overflow-hidden sm:rounded-lg prose"
+    "class": "tw-w-full sm:tw-max-w-2xl tw-mt-6 tw-p-6 tw-bg-white tw-shadow-md tw-overflow-hidden sm:tw-rounded-lg tw-prose"
   }, null, 8
   /* PROPS */
   , ["innerHTML"])])])]);

@@ -10,7 +10,7 @@
 
         <template #form>
             <!-- Profile Photo -->
-            <div class="col-span-6 sm:col-span-4" v-if="$page.props.jetstream.managesProfilePhotos">
+            <div class="tw-col-span-6 sm:tw-col-span-4" v-if="$page.props.jetstream.managesProfilePhotos">
                 <!-- Profile Photo File Input -->
                 <input type="file" class="hidden"
                             ref="photo"
@@ -19,49 +19,49 @@
                 <jet-label for="photo" value="Photo" />
 
                 <!-- Current Profile Photo -->
-                <div class="mt-2" v-show="! photoPreview">
-                    <img :src="user.profile_photo_url" :alt="user.name" class="rounded-full h-20 w-20 object-cover">
+                <div class="tw-mt-2" v-show="! photoPreview">
+                    <img :src="user.profile_photo_url" :alt="user.name" class="tw-rounded-full tw-h-20 tw-w-20 tw-object-cover">
                 </div>
 
                 <!-- New Profile Photo Preview -->
-                <div class="mt-2" v-show="photoPreview">
-                    <span class="block rounded-full w-20 h-20"
+                <div class="tw-mt-2" v-show="photoPreview">
+                    <span class="tw-block tw-rounded-full tw-w-20 tw-h-20"
                           :style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
                     </span>
                 </div>
 
-                <jet-secondary-button class="mt-2 mr-2" type="button" @click.prevent="selectNewPhoto">
+                <jet-secondary-button class="tw-mt-2 tw-mr-2" type="button" @click.prevent="selectNewPhoto">
                     Select A New Photo
                 </jet-secondary-button>
 
-                <jet-secondary-button type="button" class="mt-2" @click.prevent="deletePhoto" v-if="user.profile_photo_path">
+                <jet-secondary-button type="button" class="tw-mt-2" @click.prevent="deletePhoto" v-if="user.profile_photo_path">
                     Remove Photo
                 </jet-secondary-button>
 
-                <jet-input-error :message="form.errors.photo" class="mt-2" />
+                <jet-input-error :message="form.errors.photo" class="tw-mt-2" />
             </div>
 
             <!-- Name -->
-            <div class="col-span-6 sm:col-span-4">
+            <div class="tw-col-span-6 sm:tw-col-span-4">
                 <jet-label for="name" value="Name" />
-                <jet-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" autocomplete="name" />
-                <jet-input-error :message="form.errors.name" class="mt-2" />
+                <jet-input id="name" type="text" class="tw-mt-1 tw-block tw-w-full" v-model="form.name" autocomplete="name" />
+                <jet-input-error :message="form.errors.name" class="tw-mt-2" />
             </div>
 
             <!-- Email -->
-            <div class="col-span-6 sm:col-span-4">
+            <div class="tw-col-span-6 sm:tw-col-span-4">
                 <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" />
-                <jet-input-error :message="form.errors.email" class="mt-2" />
+                <jet-input id="email" type="email" class="tw-mt-1 tw-block tw-w-full" v-model="form.email" />
+                <jet-input-error :message="form.errors.email" class="tw-mt-2" />
             </div>
         </template>
 
         <template #actions>
-            <jet-action-message :on="form.recentlySuccessful" class="mr-3">
+            <jet-action-message :on="form.recentlySuccessful" class="tw-mr-3">
                 Saved.
             </jet-action-message>
 
-            <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <jet-button :class="{ 'tw-opacity-25': form.processing }" :disabled="form.processing">
                 Save
             </jet-button>
         </template>

@@ -33,7 +33,7 @@
                     Forgot your password?
                 </inertia-link>
 
-                <jet-button class="tw-tw-ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <jet-button class="tw-ml-4" :class="{ 'tw-opacity-25': form.processing }" :disabled="form.processing">
                     Log in
                 </jet-button>
             </div>

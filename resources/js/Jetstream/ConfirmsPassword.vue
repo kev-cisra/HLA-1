@@ -13,12 +13,12 @@
                 {{ content }}
 
                 <div class="mt-4">
-                    <jet-input type="password" class="mt-1 block w-3/4" placeholder="Password"
+                    <jet-input type="password" class="tw-mt-1 block w-3/4" placeholder="Password"
                                 ref="password"
                                 v-model="form.password"
                                 @keyup.enter="confirmPassword" />
 
-                    <jet-input-error :message="form.error" class="mt-2" />
+                    <jet-input-error :message="form.error" class="tw-mt-2" />
                 </div>
             </template>
 
@@ -27,7 +27,7 @@
                     Cancel
                 </jet-secondary-button>
 
-                <jet-button class="ml-2" @click="confirmPassword" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <jet-button class="tw-ml-2" @click="confirmPassword" :class="{ 'tw-opacity-25': form.processing }" :disabled="form.processing">
                     {{ button }}
                 </jet-button>
             </template>
