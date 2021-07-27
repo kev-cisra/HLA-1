@@ -4,36 +4,36 @@
             <jet-authentication-card-logo />
         </template>
 
-        <jet-validation-errors class="mb-4" />
+        <jet-validation-errors class="tw-mb-4" />
 
-        <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
+        <div v-if="status" class="tw-mb-4 tw-text-sm tw-font-medium tw-text-green-600">
             {{ status }}
         </div>
 
         <form @submit.prevent="submit">
             <div>
                 <jet-label for="IdEmp" value="Num. Control" />
-                <jet-input id="IdEmp" type="text" class="block w-full mt-1" v-model="form.IdEmp" required autofocus />
+                <jet-input id="IdEmp" type="text" class="tw-block tw-w-full tw-mt-1" v-model="form.IdEmp" required autofocus />
             </div>
 
-            <div class="mt-4">
+            <div class="tw-mt-4">
                 <jet-label for="password" value="Password" />
-                <jet-input id="password" type="password" class="block w-full mt-1" v-model="form.password" required autocomplete="current-password" />
+                <jet-input id="password" type="password" class="tw-block tw-w-full tw-mt-1" v-model="form.password" required autocomplete="current-password" />
             </div>
 
-            <div class="block mt-4">
-                <label class="flex items-center">
+            <div class="tw-block tw-mt-4">
+                <label class="tw-flex tw-items-center">
                     <jet-checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    <span class="tw-ml-2 tw-text-sm tw-text-gray-600">Remember me</span>
                 </label>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <inertia-link v-if="canResetPassword" :href="route('password.request')" class="text-sm text-gray-600 underline hover:text-gray-900">
+            <div class="tw-flex tw-items-center tw-justify-end mt-4">
+                <inertia-link v-if="canResetPassword" :href="route('password.request')" class="tw-text-sm tw-text-gray-600 tw-underline hover:tw-text-gray-900">
                     Forgot your password?
                 </inertia-link>
 
-                <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <jet-button class="tw-tw-ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Log in
                 </jet-button>
             </div>
