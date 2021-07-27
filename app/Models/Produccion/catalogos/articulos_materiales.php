@@ -11,4 +11,17 @@ class articulos_materiales extends Model
     use HasFactory;
     use SoftDeletes; //Implementamos
     protected $dates = ['deleted_at']; //Registramos la nueva columna
+    protected $guarded = ['id','created_at','updated_at'];
+
+    //relacion uno a muchos
+    public function carga_produccions(){
+        return $this->hasMany('App\Models\Produccion\carga_produccion');
+    }
+
+    //relacion uno a muchos inversa
+    public function materiales(){
+        return $this->belongsTo('App\Models\Produccion\catalogos\materiales');
+    }
+
+
 }

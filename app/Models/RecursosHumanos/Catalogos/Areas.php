@@ -12,4 +12,13 @@ class Areas extends Model
     use SoftDeletes; //Implementamos
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id', 'created_at','updated_at'];
+
+    //relacion uno a muchos
+    public function area_procesos(){
+        return $this->hasMany('App\Models\Produccion\procesos');
+    }
+
+    public function area_turnos(){
+        return $this->hasMany('App\Models\Produccion\tuenos');
+    }
 }
