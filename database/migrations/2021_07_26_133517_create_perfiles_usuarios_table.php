@@ -17,10 +17,10 @@ class CreatePerfilesUsuariosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('IdUser'); //Id de Session
             $table->unsignedBigInteger('IdEmp'); //Numero control empleado
-            $table->string('Empresa',65);
-            $table->string('Nombre',65);
-            $table->string('ApPat',65);
-            $table->string('ApMat',65);
+            $table->string('Empresa',15);
+            $table->string('Nombre',35);
+            $table->string('ApPat',35);
+            $table->string('ApMat',35);
             $table->string('Curp',20)->unique();
             $table->string('Rfc',20)->unique();
             $table->string('Nss',20)->unique();
@@ -30,10 +30,21 @@ class CreatePerfilesUsuariosTable extends Migration
             $table->date('FecIng');
             $table->integer('Antiguedad');
             $table->integer('DiasVac');
-            $table->string('Area')->nullable();
-            $table->string('Departamento');
-            $table->string('Puesto');
-            $table->unsignedBigInteger('jefes_areas_id'); //Numero control empleado
+
+            $table->unsignedBigInteger('Puesto_id');
+
+            $table->foreign("Puesto_id")->references("id")->on("puestos")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
+            $table->unsignedBigInteger('Departamento_id');
+
+            $table->foreign("Departamento_id")->references("id")->on("departamentos")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
+
+            $table->unsignedBigInteger('jefes_areas_id');
 
             $table->foreign("jefes_areas_id")->references("id")->on("jefes_areas")
             ->onDelete("cascade")

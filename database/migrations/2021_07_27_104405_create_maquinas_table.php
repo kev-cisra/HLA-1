@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAreasTable extends Migration
+class CreateMaquinasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateAreasTable extends Migration
      */
     public function up()
     {
-        Schema::create('areas', function (Blueprint $table) {
+        Schema::create('maquinas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('IdUser'); //Id de Sessión
-            $table->string('Nombre',35);
+            $table->unsignedBigInteger('IdUser'); //Numero control empleado
+            $table->string('Nombre',45);
+            $table->string('Area',35);
+            $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class CreateAreasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('areas');
+        Schema::dropIfExists('maquinas');
     }
 }

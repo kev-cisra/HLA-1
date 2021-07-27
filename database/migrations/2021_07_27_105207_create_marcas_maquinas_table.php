@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDepartamentosTable extends Migration
+class CreateMarcasMaquinasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,16 @@ class CreateDepartamentosTable extends Migration
      */
     public function up()
     {
-        Schema::create('departamentos', function (Blueprint $table) {
+        Schema::create('marcas_maquinas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('IdUser'); //Id de Sessión
+            $table->unsignedBigInteger('IdUser'); //Numero control empleado
             $table->string('Nombre',45);
+            $table->unsignedBigInteger('maquinas_id');
+
+            $table->foreign("maquinas_id")->references("id")->on("maquinas")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });
@@ -29,6 +35,6 @@ class CreateDepartamentosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('departamentos');
+        Schema::dropIfExists('marcas_maquinas');
     }
 }
