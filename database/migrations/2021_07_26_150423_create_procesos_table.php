@@ -27,7 +27,6 @@ class CreateProcesosTable extends Migration
             $table->foreign('area_id')->references("id")->on("areas")
             ->onDelete("cascade")
             ->onUpdate("cascade");
-///asdasd
         });
     }
 
