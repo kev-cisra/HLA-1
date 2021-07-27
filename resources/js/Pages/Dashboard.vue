@@ -1,9 +1,9 @@
 <template>
     <app-layout>
         <template #header>
-            <h2 class="tw-text-xl tw-font-semibold tw-leading-tight tw-text-gray-800">
-                Dashboard
-            </h2>
+            <div class="tw-mt-2 tw-text-center tw-text-white tw-bg-green-600 tw-shadow-xl tw-rounded-2xl">
+                <h3 class="tw-p-2"><i class="fas fa-house-user tw-ml-3 tw-mr-3"></i>Hola</h3>
+            </div>
         </template>
 
         <div class="tw-py-12">

@@ -46,6 +46,51 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
+
+            // Route::middleware('web','auth')
+            //     ->prefix('Admin')
+            //     ->namespace($this->namespace)
+            //     ->group(base_path('routes/Admin.php'));
+
+            // Route::middleware('web','auth')
+            //     ->prefix('RecursosHumanos')
+            //     ->namespace($this->namespace)
+            //     ->group(base_path('routes/RecursosHumanos.php'));
+
+            // Route::middleware('web','auth')
+            //     ->prefix('Compras')
+            //     ->namespace($this->namespace)
+            //     ->group(base_path('routes/Compras.php'));
+
+            // Route::middleware('web','auth')
+            //     ->prefix('Supply')
+            //     ->namespace($this->namespace)
+            //     ->group(base_path('routes/Supply.php'));
+
+            // Route::middleware('web','auth')
+            //     ->prefix('Contabilidad')
+            //     ->namespace($this->namespace)
+            //     ->group(base_path('routes/Contabilidad.php'));
+
+            // Route::middleware('web','auth')
+            //     ->prefix('Produccion')
+            //     ->namespace($this->namespace)
+            //     ->group(base_path('routes/Produccion.php'));
+
+            // Route::middleware('web','auth')
+            //     ->prefix('Almacen')
+            //     ->namespace($this->namespace)
+            //     ->group(base_path('routes/Almacen.php'));
+
+            // Route::middleware('web','auth')
+            //     ->prefix('Sistemas')
+            //     ->namespace($this->namespace)
+            //     ->group(base_path('routes/Sistemas.php'));
+
+            // Route::middleware('web','auth')
+            //     ->prefix('Direccion')
+            //     ->namespace($this->namespace)
+            //     ->group(base_path('routes/Direccion.php'));
         });
     }
 

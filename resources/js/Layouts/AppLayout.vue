@@ -3,22 +3,22 @@
         <jet-banner />
 
         <div class="tw-min-h-screen tw-bg-gray-100">
-            <nav class="tw-bg-white tw-border-b tw-border-gray-100">
+            <nav class="tw-sticky tw-top-0 tw-z-50 tw-bg-white tw-shadow tw-text-gray-400">
                 <!-- Primary Navigation Menu -->
-                <div class="tw-max-w-7xl tw-mx-auto tw-px-4 sm:tw-px-6 lg:tw-px-8">
+                <div class="tw-w-full twpx-4 sm:tw-px-4 md:tw-px-2 lg:tw-px-8">
                     <div class="tw-flex tw-justify-between tw-h-16">
-                        <div class="tw-flex">
+                        <div class="tw-flex tw-text-gray-600">
                             <!-- Logo -->
-                            <div class="tw-flex-shrink-0 tw-flex tw-items-center">
-                                <inertia-link :href="route('dashboard')">
-                                    <jet-application-mark class="tw-block tw-h-9 tw-w-auto" />
-                                </inertia-link>
+                            <div class="tw-flex tw-items-center tw-flex-shrink-0">
+                                <a :href="route('dashboard')" >
+                                    <img src="img/logo.png" class="tw-mt-2"/>
+                                </a>
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Inicio
                                 </jet-nav-link>
                             </div>
                         </div>
@@ -215,10 +215,8 @@
             </nav>
 
             <!-- Page Heading -->
-            <header class="tw-bg-white tw-shadow" v-if="$slots.header">
-                <div class="tw-max-w-7xl tw-mx-auto tw-py-6 tw-px-4 sm:tw-px-6 lg:tw-px-8">
+            <header v-if="$slots.header">
                     <slot name="header"></slot>
-                </div>
             </header>
 
             <!-- Page Content -->

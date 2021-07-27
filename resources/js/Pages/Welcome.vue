@@ -29,46 +29,42 @@
             </div>
         </div>
         <div class="flex-item-right fullHeight">
-    <jet-authentication-card>
-        <template #logo>
-            <jet-authentication-card-logo />
-        </template>
+            <jet-authentication-card>
+                <template #logo>
+                    <img class="p-2" src="img/logo.png" alt="Workflow">
+                </template>
 
-        <jet-validation-errors class="tw-mb-4" />
+                <jet-validation-errors class="tw-mb-4" />
 
-        <div v-if="status" class="tw-mb-4 tw-text-sm tw-font-medium tw-text-green-600">
-            {{ status }}
-        </div>
+                <div v-if="status" class="tw-mb-4 tw-text-sm tw-font-medium tw-text-green-600">
+                    {{ status }}
+                </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <jet-label for="IdEmp" value="Num. Control" />
-                <jet-input id="IdEmp" type="text" class="tw-block tw-w-full tw-mt-1" v-model="form.IdEmp" required autofocus />
-            </div>
+                <form @submit.prevent="submit">
+                    <div>
+                        <jet-label for="IdEmp" value="Num. Control" />
+                        <jet-input id="IdEmp" type="text" class="tw-block tw-w-full tw-mt-1" v-model="form.IdEmp" required autofocus />
+                    </div>
 
-            <div class="tw-mt-4">
-                <jet-label for="password" value="Password" />
-                <jet-input id="password" type="password" class="tw-block tw-w-full tw-mt-1" v-model="form.password" required autocomplete="current-password" />
-            </div>
+                    <div class="tw-mt-4">
+                        <jet-label for="password" value="Password" />
+                        <jet-input id="password" type="password" class="tw-block tw-w-full tw-mt-1" v-model="form.password" required autocomplete="current-password" />
+                    </div>
 
-            <div class="tw-block tw-mt-4">
-                <label class="tw-flex tw-items-center">
-                    <jet-checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="tw-ml-2 tw-text-sm tw-text-gray-600">Remember me</span>
-                </label>
-            </div>
-
-            <div class="mt-4 tw-flex tw-items-center tw-justify-end">
-                <inertia-link v-if="canResetPassword" :href="route('password.request')" class="tw-text-sm tw-text-gray-600 tw-underline hover:tw-text-gray-900">
-                    Forgot your password?
-                </inertia-link>
-
-                <jet-button class="tw-ml-4" :class="{ 'tw-opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </jet-button>
-            </div>
-        </form>
-    </jet-authentication-card>
+                    <div class="mt-4 tw-flex tw-items-center tw-justify-end">
+                        <button type="submit"
+                        class="tw-relative tw-flex tw-justify-center tw-w-full tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-text-white tw-bg-indigo-600 tw-border tw-border-transparent tw-rounded-md tw-group hover:tw-bg-indigo-700 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2 focus:tw-ring-indigo-500"
+                        :disabled="form.processing">
+                            <span class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-3">
+                                <svg class="tw-h-5 tw-text-indigo-500 tw-w-5 group-hover:tw-text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            Inicia Sesión
+                        </button>
+                    </div>
+                </form>
+            </jet-authentication-card>
         </div>
     </div>
 </template>
