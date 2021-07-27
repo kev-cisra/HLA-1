@@ -1,0 +1,58 @@
+* {
+    box-sizing: border-box;
+    }
+
+    .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 100vh;
+    }
+
+    .flex-item-left {
+    flex: 85%;
+    }
+
+    .flex-item-right {
+    flex: 15%;
+    }
+
+    .fullHeight {
+        height: 100vh;
+    }
+
+    /* Responsive layout - makes a one column-layout instead of a two-column layout */
+    @media (max-width: 1300px) {
+    .flex-item-right{
+        flex: 20%;
+    }
+
+    .flex-item-left {
+        flex: 80%;
+    }
+    }
+
+    @media (max-width: 1000px) {
+    .flex-item-right{
+        flex: 25%;
+    }
+
+    .flex-item-left {
+        flex: 75%;
+    }
+    }
+
+    @media (max-width: 750px) {
+    .flex-item-right{
+        flex: 30%;
+    }
+
+    .flex-item-left {
+        flex: 70%;
+    }
+    }
+
+    @media (max-width: 600px) {
+    .flex-item-right, .flex-item-left {
+        flex: 100%;
+    }
+    }
