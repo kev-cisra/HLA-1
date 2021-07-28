@@ -21424,7 +21424,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     align: {
-      "default": 'tw-right'
+      "default": 'tw-left'
     },
     width: {
       "default": '48'
@@ -21463,8 +21463,8 @@ __webpack_require__.r(__webpack_exports__);
     alignmentClasses: function alignmentClasses() {
       if (this.align === 'tw-left') {
         return 'tw-origin-top-left tw-left-0';
-      } else if (this.align === 'tw-right') {
-        return 'tw-origin-top-right tw-right-0';
+      } else if (this.align === 'tw-left') {
+        return 'tw-origin-top-left tw-left-0';
       } else {
         return 'tw-origin-top';
       }
@@ -28519,7 +28519,8 @@ var _hoisted_1 = {
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"flex-item-left fullHeight\"><div id=\"carouselExampleDark\" class=\"carousel carousel-dark slide carousel-fade fullHeight\" data-bs-ride=\"carousel\"><div class=\"carousel-indicators\"><button type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide-to=\"0\" class=\"active\" aria-current=\"true\" aria-label=\"Slide 1\"></button><button type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide-to=\"1\" aria-label=\"Slide 2\"></button><button type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide-to=\"2\" aria-label=\"Slide 3\"></button></div><div class=\"carousel-inner fullHeight\"><div class=\"h-full carousel-item active\" data-bs-interval=\"3500\"><img src=\"img/anuncios/Plantilla3.png\" class=\"d-block w-100 fullHeight\" alt=\"...\"></div><div class=\"carousel-item fullHeight\" data-bs-interval=\"3500\"><img src=\"img/anuncios/Plantilla2.png\" class=\"d-block w-100 fullHeight\" alt=\"...\"></div><div class=\"carousel-item fullHeight\" data-bs-interval=\"3500\"><img src=\"img/anuncios/Plantilla1.png\" class=\"d-block w-100 fullHeight\" alt=\"...\"></div></div><button class=\"carousel-control-prev\" type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide=\"prev\"><span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"></span><span class=\"visually-hidden\">Previous</span></button><button class=\"carousel-control-next\" type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide=\"next\"><span class=\"carousel-control-next-icon\" aria-hidden=\"true\"></span><span class=\"visually-hidden\">Next</span></button></div></div>", 1);
 
 var _hoisted_3 = {
-  "class": "flex-item-right fullHeight"
+  "class": "flex-item-right fullHeight",
+  name: "loginXXX"
 };
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
@@ -28558,6 +28559,13 @@ var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 );
 
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Inicia Sesión ");
+
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
+  href: "#loginXXX",
+  "class": "btn-flotante"
+}, "+", -1
+/* HOISTED */
+);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_jet_validation_errors = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-validation-errors");
@@ -28619,7 +28627,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , ["disabled"])])], 32
       /* HYDRATE_EVENTS */
-      )];
+      ), _hoisted_10];
     }),
     _: 1
     /* STABLE */

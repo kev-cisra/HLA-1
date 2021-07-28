@@ -28,7 +28,7 @@
                 </button>
             </div>
         </div>
-        <div class="flex-item-right fullHeight">
+        <div class="flex-item-right fullHeight" name="loginXXX">
             <jet-authentication-card>
                 <template #logo>
                     <img class="p-2" src="img/logo.png" alt="Workflow">
@@ -64,6 +64,8 @@
                         </button>
                     </div>
                 </form>
+
+                <a href="#loginXXX" class="btn-flotante">+</a>
             </jet-authentication-card>
         </div>
     </div>
