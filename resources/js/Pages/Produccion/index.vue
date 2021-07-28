@@ -1,6 +1,11 @@
 <template>
     <app-layout>
         {{ usuario.Area }}
+        @can ('Produccion')
+            <div>
+                hola
+            </div>
+        @endcan
     </app-layout>
 
 </template>
