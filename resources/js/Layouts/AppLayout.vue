@@ -21,6 +21,11 @@
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Inicio
                                 </jet-nav-link>
                             </div>
+                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
+                                <jet-nav-link :href="route('Produccion')" :active="route().current('Produccion')">
+                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Produccion
+                                </jet-nav-link>
+                            </div>
                         </div>
 
                         <div class="tw-hidden sm:tw-flex sm:tw-items-center sm:tw-ml-6">
