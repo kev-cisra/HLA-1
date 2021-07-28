@@ -18218,11 +18218,11 @@ select {
 .tw-h-10 {
 	height: 2.5rem;
 }
-.tw-h-1\/6 {
-	height: 16.666667%;
-}
 .tw-h-20 {
 	height: 5rem;
+}
+.tw-h-1\/6 {
+	height: 16.666667%;
 }
 .tw-min-h-screen {
 	min-height: 100vh;
@@ -18257,14 +18257,14 @@ select {
 .tw-w-10 {
 	width: 2.5rem;
 }
-.tw-w-1\/6 {
-	width: 16.666667%;
-}
 .tw-w-3\/4 {
 	width: 75%;
 }
 .tw-w-20 {
 	width: 5rem;
+}
+.tw-w-1\/6 {
+	width: 16.666667%;
 }
 .tw-min-w-0 {
 	min-width: 0px;
