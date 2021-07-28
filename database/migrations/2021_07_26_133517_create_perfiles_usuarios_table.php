@@ -31,6 +31,12 @@ class CreatePerfilesUsuariosTable extends Migration
             $table->integer('Antiguedad');
             $table->integer('DiasVac');
 
+            $table->unsignedBigInteger('Areas_id');
+
+            $table->foreign("Areas_id")->references("id")->on("areas")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
             $table->unsignedBigInteger('Puesto_id');
 
             $table->foreign("Puesto_id")->references("id")->on("puestos")
