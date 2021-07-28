@@ -18,9 +18,10 @@ class CreateCargaProduccionsTable extends Migration
 
             $table->date('fecha');
             $table->string('semana');
-            $table->double('valor');
-            $table->enum('notaPen', [1,2])->default(1);
-            $table->string('nota');
+            $table->double('valor')->nullable();
+            $table->enum('notaPen', [1,2])->default(1)->nullable();
+            $table->string('nota')->nullable();
+            $table->unsignedBigInteger('cargado')->nullable();
             $table->tinyInteger('equipo');
 
             $table->unsignedBigInteger('per_proc_id');

@@ -18,7 +18,7 @@ class CreateMaterialesTable extends Migration
 
             $table->string('idmat')->unique();
             $table->string('nommat');
-            $table->string('descrip');
+            $table->string('descrip')->nullable();
             $table->enum('estatus',[1,2,3])->default(1);
 
             $table->unsignedBigInteger('area_id');

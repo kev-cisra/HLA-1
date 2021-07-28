@@ -17,8 +17,8 @@ class CreateArticulosMaterialesTable extends Migration
             $table->id();
 
             $table->string('clv_art');
-            $table->string('descri');
-            $table->string('uni_mi');
+            $table->string('descri')->nullable();
+            $table->string('uni_mi')->nullable();
             $table->enum('estatus',[1,2,3])->default(1);
 
             $table->unsignedBigInteger('material_id');

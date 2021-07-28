@@ -14,7 +14,7 @@ class materiales extends Model
     protected $guarded = ['id','created_at','updated_at'];
 
     //relacion uno a muchos
-    public function articulo_materiales(){
+    public function material_artmats(){
         return $this->hasMany('App\Models\Produccion\catalogos\articulos_materiales');
     }
 }

@@ -13,6 +13,15 @@ class procesos extends Model
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
 
+    //relacion uno a muchos
+    public function proceso_perprocs() {
+        return $this->hasMany('App\Models\Produccion\per_procs');
+    }
+
+    public function proceso_formulas() {
+        return $this->hasMany('App\Models\Produccion\formulas');
+    }
+
     //relacion uno a muchos inversa
     public function procesos_area() {
         return $this->belongsTo('App\Models\RecursosHumanos\Catalogos\Areas', 'area_id');
