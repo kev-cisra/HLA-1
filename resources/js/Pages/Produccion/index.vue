@@ -1,6 +1,6 @@
 <template>
     <app-layout>
-        <div>ya esta</div>
+        {{ usuario.Area }}
     </app-layout>
 
 </template>
@@ -10,6 +10,9 @@
     import AppLayout from '../../Layouts/AppLayout.vue'
 
     export default {
+        props: [
+            'usuario',
+        ],
         components: {
             AppLayout,
         },
