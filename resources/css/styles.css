@@ -1,0 +1,50 @@
+.btn {
+    @apply tw-px-4 tw-py-2 tw-rounded;
+}
+
+.btn-blue {
+    @apply tw-text-white tw-bg-blue-500;
+}
+
+.btn-blue:hover {
+    @apply tw-bg-blue-700;
+}
+
+.columna{
+    @apply tw-p-2 tw-cursor-pointer hover:tw-text-gray-300;
+}
+
+.fila{
+    @apply tw-font-semibold tw-text-gray-500 hover:tw-bg-gray-200 hover:tw-text-black;
+}
+
+.btn-row{
+    @apply tw-block tw-w-full tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none;
+}
+
+.btn-filter{
+    @apply tw-block tw-w-full tw-p-2 tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none;
+}
+
+.btn-form{
+    @apply tw-inline-flex tw-items-center tw-justify-center tw-px-4 tw-py-2 tw-text-xs tw-font-semibold tw-tracking-widest tw-text-white tw-uppercase tw-bg-blue-600 tw-border tw-border-transparent tw-rounded-md hover:tw-bg-blue-500;
+}
+
+.input-search{
+    @apply tw-block tw-w-11/12 tw-py-2 tw-pl-8 tw-pr-6 tw-text-sm tw-font-semibold tw-text-gray-700 tw-placeholder-gray-400 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none;
+}
+
+.tw-select{
+    @apply tw-block tw-w-full tw-px-4 tw-py-2 tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-lg tw-appearance-none;
+}
+
+.validation-alert{
+    @apply tw-text-xs tw-font-bold tw-text-red-700;
+}
+
+.textarea{
+    @apply tw-block tw-w-full tw-px-4 tw-py-2 tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-lg tw-appearance-none;
+}
+
+
+

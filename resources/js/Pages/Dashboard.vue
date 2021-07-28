@@ -6,24 +6,39 @@
             </div>
         </template>
 
-        <div class="tw-py-12">
-            <div class="tw-mx-auto tw-max-w-7xl sm:tw-px-6 lg:tw-px-8">
-                <div class="tw-overflow-hidden tw-bg-white tw-shadow-xl sm:tw-rounded-lg">
-                    <welcome />
-                </div>
-            </div>
-        </div>
+        <com-DangerButton>Boton</com-DangerButton>
+
+        <section>
+
+            <Header></Header>
+
+            <Accions></Accions>
+
+            <Table>
+                <slot name="thead"></slot>
+                <slot name="tbody"></slot>
+            </Table>
+
+        </section>
     </app-layout>
 </template>
 
 <script>
     import AppLayout from '@/Layouts/AppLayout'
     import Welcome from '@/Jetstream/Welcome'
+    import comDangerButton from '@/Components/DangerButton'
+    import Header from '@/Components/Header'
+    import Accions from '@/Components/Accions'
+    import Table from '@/Components/Table'
 
     export default {
         components: {
             AppLayout,
             Welcome,
+            comDangerButton,
+            Header,
+            Accions,
+            Table
         },
     }
 </script>
