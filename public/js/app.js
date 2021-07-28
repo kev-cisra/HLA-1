@@ -24780,7 +24780,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "tw-inline-flex tw-items-center tw-justify-center tw-p-2 tw-rounded-md tw-text-gray-400 hover:tw-text-gray-500 hover:tw-bg-gray-100 focus:tw-outline-none focus:tw-bg-gray-100 focus:tw-text-gray-500 tw-transition"
   }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
     "class": {
-      'hidden': $data.showingNavigationDropdown,
+      'tw-hidden': $data.showingNavigationDropdown,
       'tw-inline-flex': !$data.showingNavigationDropdown
     },
     "stroke-linecap": "round",
@@ -24791,7 +24791,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* CLASS */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
     "class": {
-      'hidden': !$data.showingNavigationDropdown,
+      'tw-hidden': !$data.showingNavigationDropdown,
       'tw-inline-flex': $data.showingNavigationDropdown
     },
     "stroke-linecap": "round",
@@ -24802,8 +24802,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* CLASS */
   )]))])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Responsive Navigation Menu "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": [{
-      'block': $data.showingNavigationDropdown,
-      'hidden': !$data.showingNavigationDropdown
+      'tw-block': $data.showingNavigationDropdown,
+      'tw-hidden': !$data.showingNavigationDropdown
     }, "sm:tw-hidden"]
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_responsive_nav_link, {
     href: _ctx.route('dashboard'),
@@ -28516,7 +28516,7 @@ var _hoisted_1 = {
   "class": "flex-container"
 };
 
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"flex-item-left fullHeight\"><div id=\"carouselExampleDark\" class=\"carousel carousel-dark slide carousel-fade fullHeight\" data-bs-ride=\"carousel\"><div class=\"carousel-indicators\"><button type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide-to=\"0\" class=\"active\" aria-current=\"true\" aria-label=\"Slide 1\"></button><button type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide-to=\"1\" aria-label=\"Slide 2\"></button><button type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide-to=\"2\" aria-label=\"Slide 3\"></button></div><div class=\"carousel-inner fullHeight\"><div class=\"h-full carousel-item active\" data-bs-interval=\"3500\"><img src=\"img/anuncios/Plantilla3.png\" class=\"d-block w-100 fullHeight\" alt=\"...\"></div><div class=\"carousel-item fullHeight\" data-bs-interval=\"3500\"><img src=\"asset(&#39;img/anuncios/Plantilla2.png\" class=\"d-block w-100 fullHeight\" alt=\"...\"></div><div class=\"carousel-item fullHeight\" data-bs-interval=\"3500\"><img src=\"img/anuncios/Plantilla1.png\" class=\"d-block w-100 fullHeight\" alt=\"...\"></div></div><button class=\"carousel-control-prev\" type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide=\"prev\"><span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"></span><span class=\"visually-hidden\">Previous</span></button><button class=\"carousel-control-next\" type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide=\"next\"><span class=\"carousel-control-next-icon\" aria-hidden=\"true\"></span><span class=\"visually-hidden\">Next</span></button></div></div>", 1);
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"flex-item-left fullHeight\"><div id=\"carouselExampleDark\" class=\"carousel carousel-dark slide carousel-fade fullHeight\" data-bs-ride=\"carousel\"><div class=\"carousel-indicators\"><button type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide-to=\"0\" class=\"active\" aria-current=\"true\" aria-label=\"Slide 1\"></button><button type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide-to=\"1\" aria-label=\"Slide 2\"></button><button type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide-to=\"2\" aria-label=\"Slide 3\"></button></div><div class=\"carousel-inner fullHeight\"><div class=\"h-full carousel-item active\" data-bs-interval=\"3500\"><img src=\"img/anuncios/Plantilla3.png\" class=\"d-block w-100 fullHeight\" alt=\"...\"></div><div class=\"carousel-item fullHeight\" data-bs-interval=\"3500\"><img src=\"img/anuncios/Plantilla2.png\" class=\"d-block w-100 fullHeight\" alt=\"...\"></div><div class=\"carousel-item fullHeight\" data-bs-interval=\"3500\"><img src=\"img/anuncios/Plantilla1.png\" class=\"d-block w-100 fullHeight\" alt=\"...\"></div></div><button class=\"carousel-control-prev\" type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide=\"prev\"><span class=\"carousel-control-prev-icon\" aria-hidden=\"true\"></span><span class=\"visually-hidden\">Previous</span></button><button class=\"carousel-control-next\" type=\"button\" data-bs-target=\"#carouselExampleDark\" data-bs-slide=\"next\"><span class=\"carousel-control-next-icon\" aria-hidden=\"true\"></span><span class=\"visually-hidden\">Next</span></button></div></div>", 1);
 
 var _hoisted_3 = {
   "class": "flex-item-right fullHeight"

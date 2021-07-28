@@ -12,7 +12,7 @@
                     <img src="img/anuncios/Plantilla3.png" class="d-block w-100 fullHeight" alt="...">
                     </div>
                     <div class="carousel-item fullHeight" data-bs-interval="3500">
-                    <img src="asset('img/anuncios/Plantilla2.png" class="d-block w-100 fullHeight" alt="...">
+                    <img src="img/anuncios/Plantilla2.png" class="d-block w-100 fullHeight" alt="...">
                     </div>
                     <div class="carousel-item fullHeight" data-bs-interval="3500">
                     <img src="img/anuncios/Plantilla1.png" class="d-block w-100 fullHeight" alt="...">
