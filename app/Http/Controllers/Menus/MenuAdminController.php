@@ -9,6 +9,6 @@ use Inertia\Inertia;
 class MenuAdminController extends Controller
 {
     public function index(){
-        return Inertia::render('dashboard');
+        return Inertia::render('Menus/Admin');
     }
 }

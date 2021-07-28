@@ -23,7 +23,7 @@
                             </div>
                             <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
                                 <jet-nav-link :href="route('Admin')" :active="route().current('Admin')">
-                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Admin
+                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Administrador
                                 </jet-nav-link>
                             </div>
                             <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
