@@ -20,6 +20,10 @@
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Inicio
                                 </jet-nav-link>
+
+                                <jet-nav-link :href="route('Administrador')" :active="route().current('Administrador')">
+                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>MenuAdmin
+                                </jet-nav-link>
                             </div>
                         </div>
 

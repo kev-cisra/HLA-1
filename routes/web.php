@@ -28,4 +28,5 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::resource('posts', PostController::class);
+
+Route::resource('Administrador', MenuAdminController::class)->middleware(['auth:sanctum', 'verified']);
