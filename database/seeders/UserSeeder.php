@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'name' => 'DEVELOPER',
             'Area' => 'ADMINISTRADOR',
             'email' => 'desarrollador@intranethlangeles.com',
-            'password' => bcrypt('12345678')
+            'password' => bcrypt('1234')
         ])->assignRole('ONEPIECE');
 
         User::create([
