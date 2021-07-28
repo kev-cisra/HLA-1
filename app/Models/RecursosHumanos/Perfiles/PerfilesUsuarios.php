@@ -13,4 +13,9 @@ class PerfilesUsuarios extends Model
     use SoftDeletes; //Implementamos
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id', 'created_at','updated_at'];
+
+    //relacion uno a muchos
+    public function perfil_perprocs() {
+        return $this->hasMany('App\Models\Produccion\per_procs');
+    }
 }

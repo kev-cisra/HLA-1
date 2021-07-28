@@ -16,10 +16,10 @@ class CreatePerProcsTable extends Migration
         Schema::create('per_procs', function (Blueprint $table) {
             $table->id();
             $table->enum('estatus',[1,2,3])->default(1);
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('perfil_id');
             $table->unsignedBigInteger('proceso_id');
 
-            $table->foreign('user_id')->references("id")->on("users")
+            $table->foreign('perfil_id')->references("id")->on("perfiles_usuarios")
             ->onDelete("cascade")
             ->onUpdate("cascade");
             $table->foreign('proceso_id')->references("id")->on("procesos")

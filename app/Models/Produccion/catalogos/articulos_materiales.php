@@ -14,13 +14,13 @@ class articulos_materiales extends Model
     protected $guarded = ['id','created_at','updated_at'];
 
     //relacion uno a muchos
-    public function carga_produccions(){
+    public function artmat_cargas(){
         return $this->hasMany('App\Models\Produccion\carga_produccion');
     }
 
     //relacion uno a muchos inversa
-    public function materiales(){
-        return $this->belongsTo('App\Models\Produccion\catalogos\materiales');
+    public function artmats_material(){
+        return $this->belongsTo('App\Models\Produccion\catalogos\materiales', 'material_id');
     }
 
 

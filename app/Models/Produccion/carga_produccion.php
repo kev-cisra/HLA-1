@@ -13,8 +13,16 @@ class carga_produccion extends Model
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
 
-    //relacion uno a muchos inversa
-    public function articulo_materiales(){
-        return $this->belongsTo('App\Models\Produccion\catalogos\articulos_materiales');
+    //relaciones uno a muchos inversas
+    public function cargas_artmat(){
+        return $this->belongsTo('App\Models\Produccion\catalogos\articulos_materiales', 'articulo_id');
+    }
+
+    public function cargas_turno() {
+        return $this->belongsTo('App\Models\Produccion\turnos', 'turno_id');
+    }
+
+    public function cargas_perproc() {
+        return $this->belongsTo('App\Models\Produccion\per_procs', 'per_proc_id');
     }
 }
