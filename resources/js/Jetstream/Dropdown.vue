@@ -34,7 +34,7 @@ import { onMounted, onUnmounted, ref } from "vue";
 export default {
     props: {
         align: {
-            default: 'tw-right'
+            default: 'tw-left'
         },
         width: {
             default: '48'
@@ -71,8 +71,8 @@ export default {
         alignmentClasses() {
             if (this.align === 'tw-left') {
                 return 'tw-origin-top-left tw-left-0'
-            } else if (this.align === 'tw-right') {
-                return 'tw-origin-top-right tw-right-0'
+            } else if (this.align === 'tw-left') {
+                return 'tw-origin-top-left tw-left-0'
             } else {
                 return 'tw-origin-top'
             }
