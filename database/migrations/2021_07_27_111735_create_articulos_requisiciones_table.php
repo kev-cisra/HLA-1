@@ -21,6 +21,7 @@ class CreateArticulosRequisicionesTable extends Migration
             $table->string('ColorArt',15)->nullable();
             $table->string('EstatusArt',45)->nullable();
             $table->string('MotivoCancelacion')->nullable();
+            $table->integer('Resguardo')->default(1)->nullable();
 
             $table->unsignedBigInteger('requisiciones_id'); //Numero control empleado
 
