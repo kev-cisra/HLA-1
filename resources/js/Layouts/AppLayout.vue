@@ -36,8 +36,8 @@
                         <div class="tw-hidden sm:tw-flex sm:tw-items-center sm:tw-ml-6">
                             <!-- Settings Dropdown -->
                             <div class="tw-hidden sm:tw-flex sm:tw-items-center sm:tw-ml-6">
-                                <div class="tw-relative tw-ml-3">
-                                    <jet-dropdown align="right" width="48">
+                                <div class="tw-relative">
+                                    <jet-dropdown align="tw-right" width="48">
                                         <template #trigger>
                                             <button v-if="$page.props.jetstream.managesProfilePhotos" class="tw-flex tw-text-sm tw-border-2 tw-border-transparent tw-rounded-full focus:tw-outline-none focus:tw-border-gray-300 tw-transition">
                                                 <img class="tw-h-8 tw-w-8 tw-rounded-full tw-object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
@@ -61,7 +61,7 @@
                                             </div>
 
                                             <jet-dropdown-link :href="route('profile.show')">
-                                                Perfil
+                                                <i class="fas fa-user-circle"></i> Perfil
                                             </jet-dropdown-link>
 
                                             <div class="tw-border-t tw-border-gray-100"></div>
@@ -69,7 +69,7 @@
                                             <!-- Authentication -->
                                             <form @submit.prevent="logout">
                                                 <jet-dropdown-link as="button">
-                                                    Salir
+                                                    <i class="fas fa-sign-out-alt"></i> Salir
                                                 </jet-dropdown-link>
                                             </form>
                                         </template>
@@ -113,13 +113,13 @@
 
                         <div class="tw-mt-3 tw-space-y-1">
                             <jet-responsive-nav-link :href="route('profile.show')" :active="route().current('profile.show')">
-                                Perfil
+                               <i class="fas fa-user-circle"></i> Perfil
                             </jet-responsive-nav-link>
 
                             <!-- Authentication -->
                             <form method="POST" @submit.prevent="logout">
                                 <jet-responsive-nav-link as="button">
-                                    Salir
+                                    <i class="fas fa-sign-out-alt"></i> Salir
                                 </jet-responsive-nav-link>
                             </form>
 

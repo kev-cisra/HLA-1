@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(DepartamentosSeeder::class);
         $this->call(PuestosSeeder::class);
         $this->call(JefesAreaSeeder::class);
+        $this->call(AreasModulosSeeder::class);
     }
 }
