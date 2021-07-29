@@ -7,6 +7,6 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('', [MenuAdminController::class,'index'])->name('Admin');
-//Route::resource('Modulos', ModuloController::class);
+//Route::get('Modulos', [ModuloController::class,'consu'])->name('Modulos');
 Route::resource('Modulos', ModuloController::class)
     ->middleware(['auth:sanctum', 'verified']);

@@ -18,15 +18,6 @@
                         <span class="linea"></span>
                     </div>
                 </Link>
-                <!--<a href="" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i class="fab fa-laravel"></i>
-                    </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Modulos del Sistema</h4>
-                        <span class="linea"></span>
-                    </div>
-                </a>-->
             </div>
             <!-- Fin for -->
         </section>
@@ -35,7 +26,7 @@
 
 <script>
     import AppLayout from '@/Layouts/AppLayout'
-   import { Link } from '@inertiajs/inertia-vue3'
+    import { Link } from '@inertiajs/inertia-vue3'
     import Welcome from '@/Jetstream/Welcome'
 
     export default {

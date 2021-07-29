@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Menus;
 
 use App\Http\Controllers\Controller;
+use App\Models\Administrador\Modulos;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ class MenuProducccionController extends Controller
     //
     public function index() {
         $usuario = Auth::user();
-        return Inertia::render('Produccion/index', ['usuario' => $usuario]);
+        $modelos = Modulos::where("Area","=","7")->get();
+        return Inertia::render('Menus/Produccion', ['usuario' => $usuario,'modelos' => $modelos]);
     }
 }
