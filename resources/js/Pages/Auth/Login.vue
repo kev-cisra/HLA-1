@@ -1,7 +1,7 @@
 <template>
     <jet-authentication-card>
         <template #logo>
-            <jet-authentication-card-logo />
+            <img class="p-2" src="img/logo.png" alt="Workflow">
         </template>
 
         <jet-validation-errors class="tw-mb-4" />
@@ -12,29 +12,19 @@
 
         <form @submit.prevent="submit">
             <div>
-                <jet-label for="IdEmp" value="Num. Control" />
+                <jet-label for="IdEmp" value="Número de Control" />
                 <jet-input id="IdEmp" type="text" class="tw-block tw-w-full tw-mt-1" v-model="form.IdEmp" required autofocus />
             </div>
 
             <div class="tw-mt-4">
-                <jet-label for="password" value="Password" />
+                <jet-label for="password" value="Contraseña" />
                 <jet-input id="password" type="password" class="tw-block tw-w-full tw-mt-1" v-model="form.password" required autocomplete="current-password" />
             </div>
 
-            <div class="tw-block tw-mt-4">
-                <label class="tw-flex tw-items-center">
-                    <jet-checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="tw-ml-2 tw-text-sm tw-text-gray-600">Remember me</span>
-                </label>
-            </div>
-
-            <div class="tw-flex tw-items-center tw-justify-end mt-4">
-                <inertia-link v-if="canResetPassword" :href="route('password.request')" class="tw-text-sm tw-text-gray-600 tw-underline hover:tw-text-gray-900">
-                    Forgot your password?
-                </inertia-link>
+            <div class="mt-4 tw-flex tw-items-center tw-justify-end">
 
                 <jet-button class="tw-ml-4" :class="{ 'tw-opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
+                    Salir
                 </jet-button>
             </div>
         </form>
