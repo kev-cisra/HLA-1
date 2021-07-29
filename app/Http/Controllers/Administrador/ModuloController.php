@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
+use App\Models\Administrador\Catalogos\AreasModulos;
 use App\Models\Administrador\Modulos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Validator;
 
 class ModuloController extends Controller
 {
@@ -20,17 +22,8 @@ class ModuloController extends Controller
         //
         $usuario = Auth::user();
         $modulos = Modulos::all();
-        return Inertia::render('Administrador/modulos', ['usuario' => $usuario, 'modulos' => $modulos]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $areaModulos = AreasModulos::all();
+        return Inertia::render('Administrador/modulos', ['usuario' => $usuario, 'modulos' => $modulos, 'areaM' => $areaModulos]);
     }
 
     /**
@@ -42,28 +35,16 @@ class ModuloController extends Controller
     public function store(Request $request)
     {
         //
-    }
+        Validator::make($request->all(), [
+            'NombreModulo' => ['required'],
+            'Icono' => ['required'],
+            'Ruta' => ['required'],
+            'Area' => ['required'],
+        ])->validate();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Administrador\Modulos  $modulos
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Modulos $modulos)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Administrador\Modulos  $modulos
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Modulos $modulos)
-    {
-        //
+        Modulos::create($request->all());
+        return redirect()->back()
+                 ->with('message', 'Post Created Successfully.');
     }
 
     /**
@@ -76,6 +57,18 @@ class ModuloController extends Controller
     public function update(Request $request, Modulos $modulos)
     {
         //
+        Validator::make($request->all(), [
+            'NombreModulo' => ['required'],
+            'Icono' => ['required'],
+            'Ruta' => ['required'],
+            'Area' => ['required'],
+        ])->validate();
+
+        if ($request->has('id')) {
+            Modulos::find($request->input('id'))->update($request->all());
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 
     /**
@@ -84,8 +77,13 @@ class ModuloController extends Controller
      * @param  \App\Models\Administrador\Modulos  $modulos
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Modulos $modulos)
+    public function destroy(Request $request)
     {
         //
+        if ($request->has('id')) {
+            Modulos::find($request->input('id'))->delete();
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 }
