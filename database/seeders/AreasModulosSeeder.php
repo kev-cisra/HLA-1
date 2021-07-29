@@ -15,39 +15,48 @@ class AreasModulosSeeder extends Seeder
     public function run()
     {
         AreasModulos::create([
-            'Area' => 'Administrador',
+            'IdUser' => '1',
+            'NombreArea' => 'Administrador',
         ]);
 
         AreasModulos::create([
-            'Area' => 'RecursosHumanos',
+            'IdUser' => '1',
+            'NombreArea' => 'RecursosHumanos',
         ]);
 
         AreasModulos::create([
-            'Area' => 'Almacen',
+            'IdUser' => '1',
+            'NombreArea' => 'Almacen',
         ]);
 
         AreasModulos::create([
-            'Area' => 'Compras',
+            'IdUser' => '1',
+            'NombreArea' => 'Compras',
         ]);
 
         AreasModulos::create([
-            'Area' => 'Contabilidad',
+            'IdUser' => '1',
+            'NombreArea' => 'Contabilidad',
         ]);
 
         AreasModulos::create([
-            'Area' => 'Direccion',
+            'IdUser' => '1',
+            'NombreArea' => 'Direccion',
         ]);
 
         AreasModulos::create([
-            'Area' => 'Produccion',
+            'IdUser' => '1',
+            'NombreArea' => 'Produccion',
         ]);
 
         AreasModulos::create([
-            'Area' => 'Supply',
+            'IdUser' => '1',
+            'NombreArea' => 'Supply',
         ]);
 
         AreasModulos::create([
-            'Area' => 'Sistemas',
+            'IdUser' => '1',
+            'NombreArea' => 'Sistemas',
         ]);
     }
 }
