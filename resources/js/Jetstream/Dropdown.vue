@@ -69,10 +69,10 @@ export default {
         },
 
         alignmentClasses() {
-            if (this.align === 'tw-left') {
-                return 'tw-origin-top-left tw-left-0'
-            } else if (this.align === 'tw-left') {
-                return 'tw-origin-top-left tw-left-0'
+            if (this.align === 'tw-right') {
+                return 'tw-origin-top-right tw-right-0'
+            } else if (this.align === 'tw-right') {
+                return 'tw-origin-top-right tw-right-0'
             } else {
                 return 'tw-origin-top'
             }
