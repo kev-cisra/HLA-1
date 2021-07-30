@@ -15,6 +15,6 @@ class formulas extends Model
 
     //relacion uno a muchos inversa
     public function formulas_proceso() {
-        return $this->belongsTo('App\Models\Produccion\procesos', 'proceso_id');
+        return $this->belongsTo(procesos::class, 'proceso_id');
     }
 }

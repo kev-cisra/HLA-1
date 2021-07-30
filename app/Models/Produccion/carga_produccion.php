@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion;
 
+use App\Models\Produccion\catalogos\articulos_materiales;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
@@ -15,14 +16,14 @@ class carga_produccion extends Model
 
     //relaciones uno a muchos inversas
     public function cargas_artmat(){
-        return $this->belongsTo('App\Models\Produccion\catalogos\articulos_materiales', 'articulo_id');
+        return $this->belongsTo(articulos_materiales::class, 'articulo_id');
     }
 
     public function cargas_turno() {
-        return $this->belongsTo('App\Models\Produccion\turnos', 'turno_id');
+        return $this->belongsTo(turnos::class, 'turno_id');
     }
 
     public function cargas_perproc() {
-        return $this->belongsTo('App\Models\Produccion\per_procs', 'per_proc_id');
+        return $this->belongsTo(per_procs::class, 'per_proc_id');
     }
 }

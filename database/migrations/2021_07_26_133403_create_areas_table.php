@@ -17,6 +17,11 @@ class CreateAreasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('IdUser'); //Id de Sessión
             $table->string('Nombre',35);
+
+            $table->unsignedBigInteger('areas_id')->nullable();
+            $table->foreign('areas_id')->references("id")->on("areas");
+
+            $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });
     }

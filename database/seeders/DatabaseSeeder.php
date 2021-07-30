@@ -20,5 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PuestosSeeder::class);
         $this->call(JefesAreaSeeder::class);
         $this->call(AreasModulosSeeder::class);
+        $this->call(PerfilesUsuariosSeeder::class);
+        $this->call(ModulosSeeder::class);
     }
 }

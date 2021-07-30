@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Administrador\Modulos;
 use Illuminate\Database\Seeder;
 
 class ModulosSeeder extends Seeder
@@ -14,5 +15,12 @@ class ModulosSeeder extends Seeder
     public function run()
     {
         //
+        Modulos::create([
+            'Iduser' => '16',
+            'NombreModulo' => 'Procesos',
+            'Icono' => 'fas fa-cogs',
+            'Ruta' => 'Produccion/Procesos',
+            'Area' => '7',
+        ]);
     }
 }

@@ -15,6 +15,6 @@ class materiales extends Model
 
     //relacion uno a muchos
     public function material_artmats(){
-        return $this->hasMany('App\Models\Produccion\catalogos\articulos_materiales');
+        return $this->hasMany(materiales::class);
     }
 }

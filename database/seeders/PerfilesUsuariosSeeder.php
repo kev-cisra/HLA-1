@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Database\Seeder;
 
 class PerfilesUsuariosSeeder extends Seeder
@@ -14,5 +15,25 @@ class PerfilesUsuariosSeeder extends Seeder
     public function run()
     {
         //
+        PerfilesUsuarios::create([
+            'IdUser' => '16',
+            'IdEmp' => '78',
+            'Empresa' => '',
+            'Nombre' => 'Kevin',
+            'ApPat' => 'Cisneros',
+            'ApMat' => 'Ramirez',
+            'Curp' => 'asdasdas',
+            'Rfc' => 'asdasdas',
+            'Nss' => '3215564',
+            'Direccion' => 'asdasdasd',
+            'Telefono' => '21231561',
+            'Cumpleaños' => '2010-07-09',
+            'FecIng' => '2010-07-09',
+            'Antiguedad' => '25',
+            'DiasVac' => '12',
+            'Areas_id' => '1',
+            'Puesto_id' => '13',
+            'Departamento_id' => '1',
+        ]);
     }
 }
