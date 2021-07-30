@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion;
 
+use App\Models\RecursosHumanos\Catalogos\Areas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
@@ -15,15 +16,15 @@ class procesos extends Model
 
     //relacion uno a muchos
     public function proceso_perprocs() {
-        return $this->hasMany('App\Models\Produccion\per_procs');
+        return $this->hasMany(per_procs::class);
     }
 
     public function proceso_formulas() {
-        return $this->hasMany('App\Models\Produccion\formulas');
+        return $this->hasMany(formulas::class);
     }
 
     //relacion uno a muchos inversa
     public function procesos_area() {
-        return $this->belongsTo('App\Models\RecursosHumanos\Catalogos\Areas', 'area_id');
+        return $this->belongsTo(Areas::class, 'area_id');
     }
 }

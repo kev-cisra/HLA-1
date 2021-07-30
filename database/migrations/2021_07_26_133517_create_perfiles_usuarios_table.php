@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use phpDocumentor\Reflection\Types\Nullable;
 
 class CreatePerfilesUsuariosTable extends Migration
 {
@@ -15,9 +16,9 @@ class CreatePerfilesUsuariosTable extends Migration
     {
         Schema::create('perfiles_usuarios', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('IdUser'); //Id de Session
+            $table->unsignedBigInteger('IdUser')->nullable(); //Id de Session
             $table->unsignedBigInteger('IdEmp'); //Numero control empleado
-            $table->string('Empresa',15);
+            $table->string('Empresa',15)->Nullable;
             $table->string('Nombre',35);
             $table->string('ApPat',35);
             $table->string('ApMat',35);
@@ -31,26 +32,33 @@ class CreatePerfilesUsuariosTable extends Migration
             $table->integer('Antiguedad');
             $table->integer('DiasVac');
 
-            $table->unsignedBigInteger('Areas_id');
+            $table->unsignedBigInteger('perfiles_usuarios_id')->nullable();
+            $table->foreign("perfiles_usuarios_id")->references("id")->on("perfiles_usuarios");
+
+            $table->foreign("IdUser")->references("id")->on("users")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
+            $table->unsignedBigInteger('Areas_id')->Nullable();
 
             $table->foreign("Areas_id")->references("id")->on("areas")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
-            $table->unsignedBigInteger('Puesto_id');
+            $table->unsignedBigInteger('Puesto_id')->Nullable();
 
             $table->foreign("Puesto_id")->references("id")->on("puestos")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
-            $table->unsignedBigInteger('Departamento_id');
+            $table->unsignedBigInteger('Departamento_id')->Nullable();
 
             $table->foreign("Departamento_id")->references("id")->on("departamentos")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
 
-            $table->unsignedBigInteger('jefes_areas_id');
+            $table->unsignedBigInteger('jefes_areas_id')->nullable();
 
             $table->foreign("jefes_areas_id")->references("id")->on("jefes_areas")
             ->onDelete("cascade")

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Menus\MenuProducccionController;
+use App\Http\Controllers\Produccion\ProcesosController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -10,4 +11,6 @@ use Inertia\Inertia;
 })->name('Produccion');
 */
 Route::get('', [MenuProducccionController::class,'index'])->name('Produccion');
-
+//Redireccion y accion de procesos
+Route::resource('Procesos', ProcesosController::class)
+    ->middleware(['auth:sanctum', 'verified']);

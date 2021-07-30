@@ -2,6 +2,8 @@
 
 namespace App\Models\RecursosHumanos\Catalogos;
 
+use App\Models\Produccion\procesos;
+use App\Models\Produccion\turnos;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
@@ -15,10 +17,19 @@ class Areas extends Model
 
     //relacion uno a muchos
     public function area_procesos(){
-        return $this->hasMany('App\Models\Produccion\procesos');
+        return $this->hasMany(procesos::class);
     }
 
     public function area_turnos(){
-        return $this->hasMany('App\Models\Produccion\tuenos');
+        return $this->hasMany(turnos::class);
+    }
+
+    //relaciones recursiva
+    public function areas_sub() {
+        return $this->hasMany(Areas::class);
+    }
+
+    public function sub_areas() {
+        return $this->hasMany(Areas::class, 'areas_id')->with('areas_sub');
     }
 }

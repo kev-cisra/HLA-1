@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion;
 
+use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
@@ -15,15 +16,15 @@ class per_procs extends Model
 
     //relacion uno a muchos
     public function perproc_cargas() {
-        return $this->hasMany('App\Models\Produccion\carga_produccion');
+        return $this->hasMany(carga_produccion::class);
     }
 
     //relacion uno a muchos inversa
     public function perprocs_proceso() {
-        return $this->belongsTo('App\Models\Produccion\procesos', 'proceso_id');
+        return $this->belongsTo(procesos::class, 'proceso_id');
     }
 
     public function perprocs_perfil() {
-        return $this->belongsTo('App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios', 'perfil_id');
+        return $this->belongsTo(PerfilesUsuarios::class, 'perfil_id');
     }
 }
