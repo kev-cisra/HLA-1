@@ -1,6 +1,5 @@
 <template>
     <app-layout>
-        {{ usuario }}
         <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
 
             <!-- For -->
