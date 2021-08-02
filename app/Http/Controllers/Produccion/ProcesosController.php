@@ -72,7 +72,12 @@ class ProcesosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        //echo $request['form'];
+
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
+        //procesos::create($request['form']->all());
     }
 
     /**

@@ -1,5 +1,10 @@
 <template>
     <app-layout>
+        <template #header>
+            <div class="tw-mt-2 tw-text-center tw-text-white tw-bg-green-600 tw-shadow-2xl tw-rounded-2xl tw-mr-16 tw-ml-16">
+                <h3 class="tw-p-2"><i class="fas fa-house-user tw-ml-3 tw-mr-3"></i>Menu Produccion</h3>
+            </div>
+        </template>
         <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
 
             <!-- For -->

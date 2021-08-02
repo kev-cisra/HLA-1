@@ -11,6 +11,9 @@ class procesos extends Model
 {
     use HasFactory;
     use SoftDeletes; //Implementamos
+    const Encargado = 1;
+    const Coordinador = 2;
+    const Formulas = 3;
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
 

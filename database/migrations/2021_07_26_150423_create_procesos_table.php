@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Produccion\procesos;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +20,7 @@ class CreateProcesosTable extends Migration
             $table->id();
 
             $table->string('nompro');
-            $table->string('tipo');
+            $table->enum('tipo',[procesos::Encargado, procesos::Coordinador, procesos::Formulas]);
             $table->string('descripcion')->nullable();
             $table->enum('estatus',[1,2,3])->default(1);
 
