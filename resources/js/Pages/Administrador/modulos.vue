@@ -6,21 +6,28 @@
             </Header>
 
             <Accions>
+                <template v-slot:SelectB>
+                    <select class="InputSelectFilter" v-model="Filter">
+                        <option value="id" selected>Id</option>
+                        <option value="Nombre">Nombre</option>
+                        <option value="Area">Area</option>
+                    </select>
+                </template>
                 <template v-slot:InputBusqueda>
-                    <input type="text" placeholder="Busqueda por Id" class="InputSearch" v-model="search">
+                    <input type="text" :placeholder="'Filtro por '+Filter" class="InputSearch" v-model="search">
                 </template>
                 <template v-slot:BtnNuevo>
                     <jet-button @click="openModal" class="BtnNuevo">Nuevo Módulo </jet-button>
                 </template>
             </Accions>
-        {{search}}
+
             <Table>
                 <template v-slot:TableHeader>
                     <th class="columna">Nombre</th>
                     <th class="columna">Area</th>
                     <th class="columna">Icono</th>
                     <th class="columna">Ruta</th>
-                    <th class="columna">Acciones</th>
+                    <th class="columna tw-text-center">Acciones</th>
                 </template>
 
                 <template v-slot:TableFooter>
@@ -135,10 +142,10 @@
             'areaM',
             'errors'
         ],
+
         components: {
             AppLayout,
             Header,
-
             Accions,
             Table,
             JetButton,
@@ -151,6 +158,7 @@
             return {
                 showModal: false,
                 editMode: false,
+                Filter: 'Id',
                 search: null,
                 form: {
                     IdUser: this.usuario.id,

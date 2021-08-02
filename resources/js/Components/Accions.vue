@@ -10,8 +10,13 @@
                     <option>50</option>
                 </select>
             </div>
+                <div class="tw-block tw-relative tw-w-1/6">
+                    <slot name="SelectB">
+
+                    </slot>
+                </div>
             <div class="tw-flex-grow">
-                <div class="block tw-relative">
+                <div class="tw-block tw-relative">
                     <span class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-h-full tw-pl-4">
                         <svg viewBox="0 0 24 24" class="tw-w-4 tw-h-4 tw-text-gray-500 tw-fill-current">
                             <path
@@ -20,11 +25,6 @@
                         </svg>
                     </span>
                     <slot name="InputBusqueda">
-
-                    </slot>
-                </div>
-                <div class="block tw-relative">
-                    <slot name="SelectB">
 
                     </slot>
                 </div>
