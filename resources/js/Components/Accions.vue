@@ -23,10 +23,15 @@
 
                     </slot>
                 </div>
+                <div class="block tw-relative">
+                    <slot name="SelectB">
+
+                    </slot>
+                </div>
             </div>
-            <div class="">                               
+            <div class="">
                 <slot name="BtnNuevo">
-                    
+
                 </slot>
             </div>
         </div>

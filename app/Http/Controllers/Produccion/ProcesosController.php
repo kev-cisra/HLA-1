@@ -18,40 +18,39 @@ class ProcesosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        //echo $request->busca;
         $usuario = Auth::id();
-        //$procesos = procesos::all();
-
-        /*$categories = PerfilesUsuarios::with('jefe_perfiles')
-        ->where('IdUser','=',$usuario)
-        ->get();
-        */
 
         $perf = PerfilesUsuarios::where('IdUser','=',$usuario)
-        ->get();
-        $areaid = $perf->Areas_id;
+        ->with(['perfiles_area'=>function($query) {
+                $query->select('id','Nombre', 'idArea');
+            }
+        ])
+        ->first(['id', 'IdEmp', 'Empresa', 'Nombre', 'ApPat', 'ApMat', 'perfiles_usuarios_id', 'Areas_id']);
 
-        /*$subare = Areas::with('sub_areas')
-        ->where('sub_areas','=',$perf->Areas_id)
-        ->get();
+        $area = NULL;
+        $proce = NULL;
 
-        $idemp = $usuario -> IdEmp;
-        $usua = PerfilesUsuarios::where('ID', '=', 1);
-
-        foreach ($usua as  $value) {
-            $idusuario = $value->id;
+        if($perf->perfiles_area->idArea == "PRO"){
+            $area = Areas::with('sub_areas')
+            ->get(['id', 'IdUser', 'idArea', 'Nombre', 'areas_id']);
+            if(!empty($request->busca)){
+                $proce = procesos::where('areas_id','=',$request->busca)
+                ->with('procesos_area')
+                ->get();
+            }
+        }else{
+            $proce = procesos::where('areas_id','=',$perf->Areas_id)
+            ->with('procesos_area')
+            ->get();
         }
 
-        $usu = User::find(1);
-
-        $idusuario = $usu->id;
-        $nombre = $usu->Nombre;*/
 
 
-
-        return Inertia::render('Produccion/Procesos', ['usuario' => $usuario,'procesos' => $areaid]);
+        return Inertia::render('Produccion/Procesos', ['usuario' => $perf,'procesos' => $proce,'areas' => $area]);
 
     }
 

@@ -4,6 +4,7 @@ namespace App\Models\RecursosHumanos\Catalogos;
 
 use App\Models\Produccion\procesos;
 use App\Models\Produccion\turnos;
+use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
@@ -22,6 +23,10 @@ class Areas extends Model
 
     public function area_turnos(){
         return $this->hasMany(turnos::class);
+    }
+
+    public function area_perfiles() {
+        return $this->hasMany(PerfilesUsuarios::class);
     }
 
     //relaciones recursiva

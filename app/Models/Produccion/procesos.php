@@ -25,6 +25,6 @@ class procesos extends Model
 
     //relacion uno a muchos inversa
     public function procesos_area() {
-        return $this->belongsTo(Areas::class, 'area_id');
+        return $this->belongsTo(Areas::class, 'areas_id');
     }
 }

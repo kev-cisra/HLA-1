@@ -16,6 +16,7 @@ class CreateAreasTable extends Migration
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('IdUser'); //Id de Sessión
+            $table->string('idArea')->unique();
             $table->string('Nombre',35);
 
             $table->unsignedBigInteger('areas_id')->nullable();

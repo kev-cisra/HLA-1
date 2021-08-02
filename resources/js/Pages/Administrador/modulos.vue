@@ -9,7 +9,7 @@
                 <template v-slot:InputBusqueda>
                     <input type="text" placeholder="Busqueda por Id" class="InputSearch" v-model="search">
                 </template>
-                <template v-slot:BtnNuevo>                    
+                <template v-slot:BtnNuevo>
                     <jet-button @click="openModal" class="BtnNuevo">Nuevo Módulo </jet-button>
                 </template>
             </Accions>
@@ -61,7 +61,7 @@
 
             <!-- <pagination class="mt-10" :links="modulos.links"/> -->
         </div>
-        
+
 
         <modal :show="showModal" @close="chageClose">
             <form>
@@ -206,7 +206,7 @@
                 this.chageClose();
                 this.reset();
                 this.editMode = false;
-                
+
             },
             chageClose(){
                 this.showModal = !this.showModal
@@ -223,7 +223,7 @@
             save(data) {
                 this.$inertia.post('/Admin/Modulos', data, {
                     onSuccess: () => {
-                        this.reset(), 
+                        this.reset(),
                         this.chageClose(),
                         this.alertSucces()
                         },
