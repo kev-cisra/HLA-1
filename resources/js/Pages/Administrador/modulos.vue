@@ -1,84 +1,114 @@
 <template>
     <app-layout>
-        <div class="tw-px-2 tw-py-4 tw-text-xs">
-            <div class='tw-w-full tw-overflow-x-auto'>
-                <jet-button @click="openModal" class="tw-bg-green-500 tw-m-5 tw-rounded focus:tw-outline-none hover:tw-bg-green-300">Agregar</jet-button>
-                <!----------------- Tabla de muestra ---------->
-                <table class='tw-w-full tw-overflow-hidden tw-uppercase tw-bg-white tw-divide-y tw-divide-gray-300 tw-rounded'>
-                    <thead class="tw-bg-gray-600">
-                        <tr class="tw-font-semibold tw-text-left tw-text-white">
-                            <th class="tw-px-4 tw-py-2">Nombre</th>
-                            <th class="tw-px-4 tw-py-2">Ruta</th>
-                            <th class="tw-px-4 tw-py-2">Área</th>
-                            <th class="tw-px-4 tw-py-2"></th>
-                        </tr>
+        <div>
+            <Header>
+                <slot>Módulos del Sistema</slot>
+            </Header>
 
-                    </thead>
-                    <tbody class="tw-divide-y tw-divide-gray-200">
-                        <tr v-for="modulo in modulos" :key="modulo.id">
-                            <td class="tw-border tw-px-4 tw-py-2">{{ modulo.NombreModulo }}</td>
-                            <td class="tw-border tw-px-4 tw-py-2">{{ modulo.Ruta }}</td>
-                            <td class="tw-border tw-px-4 tw-py-2"> {{ modulo.Area }} </td>
-                            <td class="tw-border tw-px-4 tw-py-2">
-                                <div class="tw-flex tw-justify-center tw-item-center">
-                                    <div class="tw-w-4 tw-mr-2 tw-transform hover:tw-text-blue-500 hover:tw-scale-110" @click="edit(modulo)">
+            <Accions>
+                <template v-slot:InputBusqueda>
+                    <input type="text" placeholder="Busqueda por Id" class="InputSearch" v-model="search">
+                </template>
+                <template v-slot:BtnNuevo>                    
+                    <jet-button @click="openModal" class="BtnNuevo">Nuevo Módulo </jet-button>
+                </template>
+            </Accions>
+        {{search}}
+            <Table>
+                <template v-slot:TableHeader>
+                    <th class="columna">Nombre</th>
+                    <th class="columna">Area</th>
+                    <th class="columna">Icono</th>
+                    <th class="columna">Ruta</th>
+                    <th class="columna">Acciones</th>
+                </template>
+
+                <template v-slot:TableFooter>
+                    <tr v-for="modulo in modulos" :key="modulo.id">
+                        <td class="fila">{{ modulo.NombreModulo }}</td>
+                        <td class="fila">{{ modulo.Area }}</td>
+                        <td class="fila">{{ modulo.Ruta }}</td>
+                        <td class="fila">{{ modulo.Ruta }}</td>
+                        <td class="fila">
+                            <div class="columnaIconos">
+                                <div class="iconoDetails">
+                                    <span tooltip="Detalles" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoEdit" @click="edit(modulo)">
+                                    <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                         </svg>
-                                    </div>
-                                    <div class="tw-w-4 tw-mr-2 tw-transform hover:tw-text-red-500 hover:tw-scale-110" @click="deleteRow(modulo)">
+                                    </span>
+                                </div>
+                                <div class="iconoDelete" @click="deleteRow(modulo)">
+                                    <span tooltip="Eliminar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
-                                    </div>
+                                    </span>
                                 </div>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+            </Table>
 
-
-                                <!--<jet-button @click="edit(modulo)" class="tw-bg-blue-500 hover:tw-bg-blue-700 tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded">
-                                    Editar
-                                </jet-button>
-                                <jet-button @click="deleteRow(modulo)" class="tw-bg-red-500 hover:tw-bg-red-700 tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded">
-                                    Borrar
-                                </jet-button>-->
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
+            <!-- <pagination class="mt-10" :links="modulos.links"/> -->
         </div>
-        
         
 
         <modal :show="showModal" @close="chageClose">
             <form>
-                <div class="tw-bg-white tw-px-4 tw-pt-5 tw-pb-4 sm:tw-p-6 sm:tw-pb-4">
-                    <div class="tw-mb-4">
-                        <label for="NombreModulo" class="tw-block tw-text-gray-700 tw-text-sm tw-font-bold tw-mb-2">Nombre:</label>
-                        <jet-input id="NombreModulo" class="tw-shadow tw-appearance-none tw-border tw-rounded tw-w-full tw-py-2 tw-px-3 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="form.NombreModulo" />
-                        <div v-if="errors.NombreModulo">{{errors.NombreModulo}}</div>
+                <div class="tw-px-4 tw-py-4">
+                    <div class="tw-text-lg">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Modulo</h3>
+                        </div>
                     </div>
-                    <div class="tw-mb-4">
-                        <label for="Icono" class="tw-block tw-text-gray-700 tw-text-sm tw-font-bold tw-mb-2">Icono:</label>
-                        <jet-input id="Icono" class="tw-shadow tw-appearance-none tw-border tw-rounded tw-w-full tw-py-2 tw-px-3 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="form.Icono" />
-                        <div v-if="errors.Icono">{{errors.Icono}}</div>
+
+                    <div class="tw-mt-4">
+                        <div class="ModalForm">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Nombre Modulo</jet-label>
+                                    <jet-input type="text" v-model="form.NombreModulo"></jet-input>
+                                    <small v-if="errors.NombreModulo" class="validation-alert">{{errors.NombreModulo}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Icono</jet-label>
+                                    <jet-input type="text" v-model="form.Icono"></jet-input>
+                                    <small v-if="errors.Icono" class="validation-alert">{{errors.Icono}}</small>
+                                </div>
+                            </div>
+
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Ruta</jet-label>
+                                    <jet-input type="text" v-model="form.Ruta"></jet-input>
+                                    <small v-if="errors.Ruta" class="validation-alert">{{errors.Ruta}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Area</jet-label>
+                                    <select id="Area" v-model="form.Area" class="InputSelect">
+                                        <option v-for="areaMo in areaM" :key="areaMo.id" :value="areaMo.id">{{ areaMo.NombreArea }}</option>
+                                    </select>
+                                    <small v-if="errors.Area" class="validation-alert">{{errors.Area}}</small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tw-mb-4">
-                        <label for="Ruta" class="tw-block tw-text-gray-700 tw-text-sm tw-font-bold tw-mb-2">Ruta:</label>
-                        <jet-input id="Ruta" class="tw-shadow tw-appearance-none tw-border tw-rounded tw-w-full tw-py-2 tw-px-3 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="form.Ruta" />
-                        <div v-if="errors.Ruta">{{errors.Ruta}}</div>
-                    </div>
-                    <div class="tw-mb-4">
-                        <label for="Area" class="tw-block tw-text-gray-700 tw-text-sm tw-font-bold tw-mb-2">Área:</label>
-                        <!--<jet-input id="Area" class="tw-shadow tw-appearance-none tw-border tw-rounded tw-w-full tw-py-2 tw-px-3 tw-text-gray-700 tw-leading-tight focus:tw-outline-none focus:tw-shadow-outline" v-model="form.Area" />-->
-                        <select id="Area" v-model="form.Area" placeholder="klasdjlij">
-                            <option v-for="areaMo in areaM" :key="areaMo.id" :value="areaMo.id">{{ areaMo.NombreArea }}</option>
-                        </select>
-                        <div v-if="errors.Area">{{errors.Area}}</div>
-                    </div>
-                    <jet-button type="button" @click="save(form)" v-show="!editMode" class="tw-inline-flex tw-justify-center tw-w-full tw-rounded-md tw-border tw-border-transparent tw-px-4 py-2 tw-bg-green-600 tw-text-base tw-leading-6 tw-font-medium tw-text-white tw-shadow-sm hover:tw-bg-green-500 focus:tw-outline-none focus:tw-border-green-700 focus:tw-shadow-outline-green tw-transition tw-ease-in-out tw-duration-150 sm:tw-text-sm sm:tw-leading-5">Guardar</jet-button>
-                    <jet-button type="button" @click="update(form)" v-show="editMode" class="tw-inline-flex tw-justify-center tw-w-full tw-rounded-md tw-border tw-border-transparent tw-px-4 py-2 tw-bg-green-600 tw-text-base tw-leading-6 tw-font-medium tw-text-white tw-shadow-sm hover:tw-bg-green-500 focus:tw-outline-none focus:tw-border-green-700 focus:tw-shadow-outline-green tw-transition tw-ease-in-out tw-duration-150 sm:tw-text-sm sm:tw-leading-5">Actualizar</jet-button>
-                    <jet-button @click="chageClose">Cerrar</jet-button>
+                </div>
+
+                <div class="ModalFooter">
+                    <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
+                    <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
+                    <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
                 </div>
             </form>
         </modal>
@@ -88,8 +118,14 @@
 
 <script>
     import AppLayout from '@/Layouts/AppLayout.vue';
-    import JetButton from '@/Jetstream/Button';
-    import JetInput from '@/Jetstream/Input';
+    // import Pagination from '@/Components/Pagination'
+    import Header from '@/Components/Header'
+    import Accions from '@/Components/Accions'
+    import Table from '@/Components/Table'
+    import JetButton from '@/Components/Button';
+    import JetCancelButton from '@/Components/CancelButton';
+    import JetInput from '@/Components/Input';
+    import JetSelect from '@/Components/Select';
     import Modal from '@/Jetstream/Modal';
 
     export default {
@@ -101,15 +137,21 @@
         ],
         components: {
             AppLayout,
+            Header,
+
+            Accions,
+            Table,
             JetButton,
+            JetCancelButton,
             JetInput,
+            JetSelect,
             Modal,
-                Modal,
         },
         data() {
             return {
                 showModal: false,
                 editMode: false,
+                search: null,
                 form: {
                     IdUser: this.usuario.id,
                     NombreModulo: null,
@@ -120,10 +162,51 @@
             }
         },
         methods: {
+            alertSucces(){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Registro Insertado',
+                    // background: '#99F6E4',
+                })
+            },
+
+            alertDelete(){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Registro Eliminado Correctamente',
+                    // background: '#99F6E4',
+                })
+            },
+
             openModal() {
                 this.chageClose();
                 this.reset();
                 this.editMode = false;
+                
             },
             chageClose(){
                 this.showModal = !this.showModal
@@ -139,7 +222,11 @@
             },
             save(data) {
                 this.$inertia.post('/Admin/Modulos', data, {
-                    onSuccess: () => {this.reset(), this.chageClose()},
+                    onSuccess: () => {
+                        this.reset(), 
+                        this.chageClose(),
+                        this.alertSucces()
+                        },
                 });
             },
             edit: function (data) {
@@ -157,9 +244,12 @@
             deleteRow: function (data) {
                 if (!confirm('¿Estas seguro de querer eliminar este Modulo?')) return;
                 data._method = 'DELETE';
-                this.$inertia.post('/Admin/Modulos/' + data.id, data);
+                this.$inertia.post('/Admin/Modulos/' + data.id, data, {
+                    onSuccess: () => {
+                        this.alertDelete()
+                        },
+                });
             }
-
         }
     }
 </script>

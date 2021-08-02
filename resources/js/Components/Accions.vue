@@ -24,10 +24,10 @@
                     </slot>
                 </div>
             </div>
-            <div class="">
-                <button type="button" class="btn-form focus:tw-shadow-outline focus:tw-placeholder-gray-600 focus:tw-text-gray-700 focus:tw-outline-none">
-                    <slot name="NombreBoton"></slot>
-                </button>
+            <div class="">                               
+                <slot name="BtnNuevo">
+                    
+                </slot>
             </div>
         </div>
     </div>

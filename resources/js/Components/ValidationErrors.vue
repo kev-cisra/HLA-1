@@ -1,0 +1,23 @@
+<template>
+    <div v-if="hasErrors">
+        <div class="tw-font-medium tw-text-red-600">Ocurrio un error</div>
+
+        <ul class="tw-mt-3 tw-list-disc tw-list-inside tw-text-sm tw-text-red-600">
+            <li v-for="(error, key) in errors" :key="key">{{ error }}</li>
+        </ul>
+    </div>
+</template>
+
+<script>
+    export default {
+        computed: {
+            errors() {
+                return this.$page.props.errors
+            },
+
+            hasErrors() {
+                return Object.keys(this.errors).length > 0;
+            },
+        }
+    }
+</script>

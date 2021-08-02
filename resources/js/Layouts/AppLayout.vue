@@ -5,13 +5,13 @@
         <div class="tw-min-h-screen tw-bg-gray-100">
             <nav class="tw-sticky tw-top-0 tw-z-50 tw-bg-white tw-shadow tw-text-gray-400">
                 <!-- Primary Navigation Menu -->
-                <div class="tw-w-full twpx-4 sm:tw-px-4 md:tw-px-2 lg:tw-px-8">
+                <div class="tw-w-full">
                     <div class="tw-flex tw-justify-between tw-h-16">
                         <div class="tw-flex tw-text-gray-600">
                             <!-- Logo -->
                             <div class="tw-flex tw-items-center tw-flex-shrink-0">
                                 <a :href="route('dashboard')" >
-                                    <img src="img/logo.png" class="tw-mt-2"/>
+                                    <jet-application-mark> </jet-application-mark>                                                                   
                                 </a>
                             </div>
 
@@ -113,7 +113,7 @@
 
                         <div class="tw-mt-3 tw-space-y-1">
                             <jet-responsive-nav-link :href="route('profile.show')" :active="route().current('profile.show')">
-                               <i class="fas fa-user-circle"></i> Perfil
+                                <i class="fas fa-user-circle"></i> Perfil
                             </jet-responsive-nav-link>
 
                             <!-- Authentication -->

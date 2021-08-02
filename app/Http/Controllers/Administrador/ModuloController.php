@@ -12,16 +12,12 @@ use Illuminate\Support\Facades\Validator;
 
 class ModuloController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         //
         $usuario = Auth::user();
-        $modulos = Modulos::all();
+        $modulos = Modulos::get();
         $areaModulos = AreasModulos::all();
         return Inertia::render('Administrador/modulos', ['usuario' => $usuario, 'modulos' => $modulos, 'areaM' => $areaModulos]);
     }
@@ -44,7 +40,7 @@ class ModuloController extends Controller
 
         Modulos::create($request->all());
         return redirect()->back()
-                 ->with('message', 'Post Created Successfully.');
+            ->with('message', 'Post Created Successfully.');
     }
 
     /**

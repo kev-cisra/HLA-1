@@ -24,7 +24,7 @@
             <div class="mt-4 tw-flex tw-items-center tw-justify-end">
 
                 <jet-button class="tw-ml-4" :class="{ 'tw-opacity-25': form.processing }" :disabled="form.processing">
-                    Salir
+                    Entrar
                 </jet-button>
             </div>
         </form>

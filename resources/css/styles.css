@@ -15,7 +15,23 @@
 }
 
 .fila{
-    @apply tw-font-semibold tw-text-gray-500 hover:tw-bg-gray-200 hover:tw-text-black;
+    @apply tw-font-semibold tw-text-gray-500 tw-py-2 hover:tw-bg-gray-200 hover:tw-text-black;
+}
+
+.columnaIconos{
+    @apply tw-flex tw-justify-center tw-items-center;
+}
+
+.iconoDetails{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-blue-500 hover:tw-scale-110;
+}
+
+.iconoDelete{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-red-500 hover:tw-scale-110;
+}
+
+.iconoEdit{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-green-500 hover:tw-scale-110;
 }
 
 .btn-row{
@@ -30,12 +46,20 @@
     @apply tw-inline-flex tw-items-center tw-justify-center tw-px-4 tw-py-2 tw-text-xs tw-font-semibold tw-tracking-widest tw-text-white tw-uppercase tw-bg-blue-600 tw-border tw-border-transparent tw-rounded-md hover:tw-bg-blue-500;
 }
 
+.BtnNuevo{
+    @apply tw-bg-blue-500 tw-m-5 tw-rounded focus:tw-outline-none hover:tw-bg-blue-300;
+}
+
 .input-search{
     @apply tw-block tw-w-11/12 tw-py-2 tw-pl-8 tw-pr-6 tw-text-sm tw-font-semibold tw-text-gray-700 tw-placeholder-gray-400 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none;
 }
 
-.tw-select{
+.InputSelect{
     @apply tw-block tw-w-full tw-px-4 tw-py-2 tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-lg tw-appearance-none;
+}
+
+.required{
+    @apply tw-text-pink-600;
 }
 
 .validation-alert{
@@ -48,6 +72,22 @@
 
 .InputSearch{
     @apply tw-block tw-w-full tw-py-2 tw-pl-10 tw-pr-10 tw-text-sm tw-font-semibold tw-text-gray-700 tw-placeholder-gray-400 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none;
+    focus:tw-outline-none;
+    focus:tw-shadow-outline;
+    focus:tw-placeholder-gray-600;
+    focus:tw-text-gray-700;
+}
+
+.ModalHeader{
+    @apply tw-text-lg tw-m-3 tw-text-center tw-text-white tw-bg-gray-600 tw-rounded;
+}
+
+.ModalForm{
+    @apply tw-flex tw-flex-col tw-uppercase tw-rounded;
+}
+
+.ModalFooter{
+    @apply tw-space-x-4 tw-px-6 tw-py-4 tw-bg-gray-100 tw-text-right;
 }
 
 
