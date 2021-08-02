@@ -25,8 +25,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Plantilla');
+    return Inertia::render('Dashboard');
 })->name('dashboard');
-
 
 Route::resource('Administrador', MenuAdminController::class)->middleware(['auth:sanctum', 'verified']);
