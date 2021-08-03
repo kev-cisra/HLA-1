@@ -10,6 +10,12 @@
     @apply tw-bg-blue-700;
 }
 
+.paginate{
+    @apply tw-block tw-w-full tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none;
+    focus:tw-outline-none;
+    focus:tw-shadow-outline;
+}
+
 .columna{
     @apply tw-p-2 tw-cursor-pointer hover:tw-text-gray-300;
 }
