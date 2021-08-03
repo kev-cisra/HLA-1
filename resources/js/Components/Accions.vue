@@ -2,13 +2,9 @@
     <div class="tw-w-full tw-mx-auto tw-my-8 sm:tw-px-6 lg:tw-px-8">
         <div class="tw-flex tw-items-center tw-gap-4">
             <div class="tw-flex-none">
-                <select class="tw-block tw-w-full tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none focus:tw-outline-none focus:tw-shadow-outline">
-                    <option>5</option>
-                    <option>10</option>
-                    <option>25</option>
-                    <option>35</option>
-                    <option>50</option>
-                </select>
+                <slot name="paginate">
+
+                </slot>
             </div>
                 <div class="tw-block tw-relative tw-w-1/6">
                     <slot name="SelectB">

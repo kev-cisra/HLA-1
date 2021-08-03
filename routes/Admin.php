@@ -13,4 +13,4 @@ Route::resource('Modulos', ModuloController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('Usuarios', UsersController::class)
-    ->middleware(['auth:sanctum', 'verified']);
+    ->middleware(['auth:sanctum', 'verified'])->names('Usuarios');
