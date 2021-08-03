@@ -94,34 +94,6 @@ class ProcesosController extends Controller
         //procesos::create($request['form']->all());
     }
 
-    public function carform(Request $request){
-        return 'si';
-        /*return redirect()->back()
-            ->with('message', 'Post Created Successfully.');*/
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Produccion\procesos  $procesos
-     * @return \Illuminate\Http\Response
-     */
-    public function show(procesos $procesos)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Produccion\procesos  $procesos
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(procesos $procesos)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -131,7 +103,19 @@ class ProcesosController extends Controller
      */
     public function update(Request $request, procesos $procesos)
     {
-        //
+
+        Validator::make($request->all(), [
+            'nompro' => ['required'],
+            'areas_id' => ['required'],
+            'tipo' => ['required'],
+            'descripcion' => ['required'],
+        ])->validate();
+
+        if ($request->has('id')) {
+            procesos::find($request->input('id'))->update($request->all());
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 
     /**
@@ -140,8 +124,12 @@ class ProcesosController extends Controller
      * @param  \App\Models\Produccion\procesos  $procesos
      * @return \Illuminate\Http\Response
      */
-    public function destroy(procesos $procesos)
+    public function destroy(Request $request)
     {
-        //
+        if ($request->has('id')) {
+            procesos::find($request->input('id'))->delete();
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 }
