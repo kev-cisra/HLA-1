@@ -1,9 +1,9 @@
 <template>
   <div v-if="links.length > 3">
-    <div class="flex flex-wrap -mb-1">
+    <div class="tw-flex tw-flex-wrap tw--mb-1">
       <template v-for="(link, k) in links" :key="k">
-        <div v-if="link.url === null"  class="px-4 py-3 mb-1 mr-1 text-sm leading-4 text-gray-400 border rounded" v-html="link.label" />
-        <inertia-link v-else class="px-4 py-3 mb-1 mr-1 text-sm leading-4 border rounded hover:bg-white focus:border-indigo-500 focus:text-indigo-500" :class="{ 'bg-blue-700 text-white': link.active }" :href="link.url" v-html="link.label" />
+        <div v-if="link.url === null"  class="tw-px-4 tw-py-3 tw-mb-1 tw-mr-1 tw-text-sm tw-leading-4 tw-text-gray-400 tw-border tw-rounded" v-html="link.label" />
+        <inertia-link v-else class="tw-px-4 tw-py-3 tw-mb-1 tw-mr-1 tw-text-sm tw-leading-4 tw-border tw-rounded-lg hover:tw-bg-white focus:tw-border-indigo-500 focus:tw-text-indigo-500" :class="{ 'tw-bg-gray-200 tw-text-white': link.active }" :href="link.url" v-html="link.label" />
       </template>
     </div>
   </div>
