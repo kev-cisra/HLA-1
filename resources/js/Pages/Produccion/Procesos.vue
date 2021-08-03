@@ -66,16 +66,18 @@
                 <div class="tw-px-4 tw-py-4">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
-                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Modulo</h3>
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Procesos</h3>
                         </div>
                     </div>
 
                     <div class="tw-mt-4">
                         <div class="ModalForm">
                             <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <div v-show="!SM" class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Área</jet-label>
-                                    <jet-input type="text" v-model="form.areas_id"></jet-input>
+                                    <select  class="InputSelect" v-model="form.areas_id">
+                                        <option v-for="area in areas" :key="area" :value="area.id">{{ area.Nombre }}</option>
+                                    </select>
                                     <small v-if="errors.areas_id" class="validation-alert">{{errors.areas_id}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
@@ -88,8 +90,8 @@
                                     <select v-model="form.tipo" class="InputSelect">
                                         <option value="">Seleccione</option>
                                         <option value="1">Encargado</option>
-                                        <option value="2">Coordinador</option>
-                                        <option value="3">Formulas</option>
+                                        <option v-show="!SM" value="2">Coordinador</option>
+                                        <option v-show="!SM" value="3">Formulas</option>
                                     </select>
                                     <small v-if="errors.tipo" class="validation-alert">{{errors.tipo}}</small>
                                 </div>
@@ -97,25 +99,72 @@
 
                             <div class="tw-mb-6 md:tw-flex">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Ruta</jet-label>
-                                    <jet-input type="text" v-model="form.Ruta"></jet-input>
-                                    <small v-if="errors.Ruta" class="validation-alert">{{errors.Ruta}}</small>
-                                </div>
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Area</jet-label>
-                                    <select id="Area" v-model="form.Area" class="InputSelect">
-                                        <option v-for="areaMo in areaM" :key="areaMo.id" :value="areaMo.id">{{ areaMo.NombreArea }}</option>
-                                    </select>
-                                    <small v-if="errors.Area" class="validation-alert">{{errors.Area}}</small>
+                                    <jet-label><span class="required">*</span>Descripción</jet-label>
+                                    <textarea v-model="form.descripcion" class="InputSelect"></textarea>
+                                    <small v-if="errors.descripcion" class="validation-alert">{{errors.descripcion}}</small>
                                 </div>
                             </div>
-                            <jet-input v-model="formF.pru"></jet-input>
                         </div>
                     </div>
                 </div>
 
+                <!-------------------- Inicio form 2 ---------------------------------
+                <div>
+                    <div class="tw-px-4 tw-py-4">
+                        <div class="tw-text-lg">
+                            <div class="ModalHeader">
+                                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Procesos</h3>
+                            </div>
+                        </div>
+
+                        <div class="tw-mt-4">
+                            <div class="ModalForm">
+                                <div class="tw-mb-6 md:tw-flex">
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Área</jet-label>
+                                        <select  v-show="!SM" class="InputSelect" v-model="form.areas_id">
+                                            <option v-for="area in areas" :key="area" :value="area.id">{{ area.Nombre }}</option>
+                                        </select>
+                                        <small v-if="errors.areas_id" class="validation-alert">{{errors.areas_id}}</small>
+                                    </div>
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Nombre del proceso</jet-label>
+                                        <jet-input type="text" v-model="form.nompro"></jet-input>
+                                        <small v-if="errors.nompro" class="validation-alert">{{errors.nompro}}</small>
+                                    </div>
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Tipo de proceso</jet-label>
+                                        <select v-model="form.tipo" class="InputSelect">
+                                            <option value="">Seleccione</option>
+                                            <option value="1">Encargado</option>
+                                            <option value="2">Coordinador</option>
+                                            <option value="3">Formulas</option>
+                                        </select>
+                                        <small v-if="errors.tipo" class="validation-alert">{{errors.tipo}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="tw-mb-6 md:tw-flex">
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Descripción</jet-label>
+                                        <textarea v-model="form.descripcion" class="InputSelect"></textarea>
+                                        <small v-if="errors.Ruta" class="validation-alert">{{errors.descripcion}}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ModalFooter">
+                        <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
+                        <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
+                        <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                    </div>
+                </div>
+                ------------------------- Fin form 2 ----------------------------------->
+
                 <div class="ModalFooter">
-                    <jet-button type="button" @click="save(form,formF)" v-show="!editMode">Guardar</jet-button>
+                    <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
                     <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
                     <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
                 </div>
@@ -135,7 +184,7 @@
     import JetSelect from '@/Components/Select';
     import Modal from '@/Jetstream/Modal';
     import JetLabel from '@/Jetstream/Label';
-import Select from '../../Components/Select.vue';
+    import Select from '../../Components/Select.vue';
 
     export default {
         props: [
@@ -163,22 +212,39 @@ import Select from '../../Components/Select.vue';
                 SM: false,
                 showModal: false,
                 editMode: false,
+                search: null,
                 form: {
-                    IdUser: this.usuario.id,
-                    NombreModulo: null,
-                    Icono: null,
-                    Ruta: null,
-                    Area: null,
-                },
-                formF: {
-                    pru: null
-                },
+                    nompro: null,
+                    areas_id: this.usuario.Areas_id,
+                    tipo: '',
+                    descripcion: null
+                }
+
             }
         },
         mounted() {
             this.mostSelect();
         },
         methods: {
+            alertArea(){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Se tiene que cambiar el valor de la área',
+                    // background: '#99F6E4',
+                })
+            },
             mostSelect() {
                 this.$nextTick(() => {
                     if(this.usuario.perfiles_area.idArea !== "PRO"){
@@ -200,23 +266,25 @@ import Select from '../../Components/Select.vue';
             },
             reset(){
                 this.form = {
-                    IdUser: this.usuario.id,
-                    NombreModulo: null,
-                    Icono: null,
-                    Ruta: null,
-                    Area: null,
+                    nompro: null,
+                    areas_id: this.usuario.Areas_id,
+                    tipo: '',
+                    descripcion: null
                 }
             },
-            save(form, formF) {
-                var icono = this.form.Icono
-                var pru = this.formF.pru
-                const datos = {icono, pru}
-                console.log(datos)
-                this.$inertia.post('/Produccion/Procesos', form, {
-                    onSuccess: () => {if (this.form.Icono) {
-                        this.$inertia.post('', formF)
-                    } this.reset(), this.chageClose()},
-                });
+            save(form) {
+                if(form.areas_id == this.usuario.perfiles_area.id & this.usuario.perfiles_area.idArea == 'PRO'){
+                    this.alertArea();
+                }else{
+                    console.log(form)
+                    this.$inertia.post('/Produccion/Procesos', form, {
+                        onSuccess: () => { /*if (form.tipo == 3) {
+                            console.log(proceso_id);
+                            //this.$inertia.post('/Produccion/Procesos/carform', form)
+                        }*/ this.reset(), this.chageClose()},
+                    });
+                }
+
             },
             /*edit: function (data) {
                 this.form = Object.assign({}, data);

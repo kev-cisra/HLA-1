@@ -12,7 +12,8 @@ use Inertia\Inertia;
 */
 Route::get('', [MenuProducccionController::class,'index'])->name('Produccion');
 //Redireccion y accion de procesos
-//Route::get('Procesos/Busca', [ProcesosController::class,'busca']);
+
+Route::post('Procesos/carform', [ProcesosController::class,'carform']);
 
 Route::resource('Procesos', ProcesosController::class)
     ->middleware(['auth:sanctum', 'verified']);

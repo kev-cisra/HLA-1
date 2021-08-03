@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
+use App\Models\Produccion\formulas;
 use App\Models\Produccion\procesos;
 use App\Models\RecursosHumanos\Catalogos\Areas;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
@@ -10,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Validator;
 
 class ProcesosController extends Controller
 {
@@ -74,10 +76,28 @@ class ProcesosController extends Controller
     {
 
         //echo $request['form'];
+        Validator::make($request->all(), [
+            'nompro' => ['required'],
+            'areas_id' => ['required'],
+            'tipo' => ['required'],
+            'descripcion' => ['required'],
+        ])->validate();
+
+        procesos::create($request->all());
+
+        /*return response()->json(['proceso_id' => $ins->id])
+            ->setCallback();*/
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
+
         //procesos::create($request['form']->all());
+    }
+
+    public function carform(Request $request){
+        return 'si';
+        /*return redirect()->back()
+            ->with('message', 'Post Created Successfully.');*/
     }
 
     /**
