@@ -89,6 +89,8 @@
     import Table from '@/Components/Table'
     import JetButton from '@/Jetstream/Button'
     import Pagination from '@/Components/pagination'
+    import pickBy from 'lodash/pickBy'
+    import throttle from 'lodash/throttle'
 
     export default {
         components: {
@@ -122,24 +124,16 @@
                 this.params.direction = this.params.direction === 'asc' ? 'desc' : 'asc';
             }
         },
-        watch:{
-            params:{
-                handler(){
-
-                    let params = this.params;
-
-                    Object.keys(params).forEach(key => {
-                        if(params[key] == ''){
-                            delete params[key];
-                        }
-                    });
-
+          watch: {
+            params: {
+            deep: true,
+                handler: throttle(function() {
                     this.$inertia.get('/Admin/Usuarios', this.params , { replace: true, preserveState: true })
-                    // this.$inertia.get(this.route('/Admin/Usuarios'), this.params, {replace: true, preserveState: true});
-                },
-                deep: true,
-            }
+                    // this.$inertia.get(this.route('/Admin/Usuarios'), pickBy(this.params), { preserveState: true })
+                }, 150),
+            },
         },
+
     };
 </script>
 
