@@ -2,7 +2,7 @@
 <template>
     <app-layout>
         <Header>
-            Área: {{usuario.perfiles_area.Nombre}}
+            Area: {{usuario.perfiles_area.Nombre}}
         </Header>
         <!-------------- Tabla --------------->
         <Accions>
@@ -19,11 +19,14 @@
             </template>
         </Accions>
         <Table id="t_pro">
+            <template v-slot:TableEncabezado>
+                <th colspan="5"><h3 class="tw-text-sm">Area</h3></th>
+            </template>
             <template v-slot:TableHeader>
                 <th class="columna">Nombre</th>
                 <th class="columna">Tipo</th>
                 <th class="columna">Descripción</th>
-                <th class="columna">Área</th>
+                <th class="columna">Area</th>
                 <th></th>
             </template>
             <template v-slot:TableFooter>
@@ -75,7 +78,7 @@
                         <div class="ModalForm">
                             <div class="tw-mb-6 md:tw-flex">
                                 <div v-show="!SM" class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Área</jet-label>
+                                    <jet-label><span class="required">*</span>Area</jet-label>
                                     <select  class="InputSelect" v-model="form.areas_id">
                                         <option v-for="area in areas" :key="area" :value="area.id">{{ area.Nombre }}</option>
                                     </select>
@@ -228,7 +231,7 @@
         },
         mounted() {
             this.mostSelect();
-            $('#t_pro').DataTable().destroy();
+            //$('#t_pro').DataTable().destroy();
             this.tabla();
         },
         methods: {
@@ -248,13 +251,16 @@
 
                 Toast.fire({
                     icon: 'warning',
-                    title: 'Se tiene que cambiar el valor de la área',
+                    title: 'Se tiene que cambiar el valor de la area',
                     // background: '#99F6E4',
                 })
             },
             //datatable
             tabla() {
-                $('#t_pro').DataTable();
+                this.$nextTick(() => {
+                    $('#t_pro').DataTable();
+                })
+
             },
             //información del select area
             mostSelect() {
@@ -267,8 +273,7 @@
             //consulta para generar datos de la tabla
             verTabla(event){
                 $('#t_pro').DataTable().destroy();
-                this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value }, { preserveState: true} )
-                this.tabla()
+                this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value }, {onSuccess: () => { this.tabla() }} )
             },
             //abrir y reset del modal procesos
             openModal() {
@@ -294,10 +299,12 @@
                 if(form.areas_id == this.usuario.perfiles_area.id & this.usuario.perfiles_area.idArea == 'PRO'){
                     this.alertArea();
                 }else{
-                    console.log(form)
+                    //console.log(form)
+                    $('#t_pro').DataTable().destroy();
                     this.$inertia.post('/Produccion/Procesos', form, {
-                        onSuccess: () => { this.reset(), this.chageClose()},
+                        onSuccess: () => { this.tabla(), this.reset(), this.chageClose()},
                     });
+                    //$('#t_pro').DataTable();
                 }
 
             },
@@ -317,9 +324,9 @@
             },
             deleteRow: function (data) {
                 if (!confirm('¿Estas seguro de querer eliminar este Modulo?')) return;
-                $('#t_pro').DataTable().destroy();
+                $('#t_pro').DataTable().destroy()
                 data._method = 'DELETE';
-                this.$inertia.post('/Produccion/Procesos/' + data.id, data);
+                this.$inertia.post('/Produccion/Procesos/' + data.id, data, {onSuccess: () => { this.tabla() }});
             }
 
         }
