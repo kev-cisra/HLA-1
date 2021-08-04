@@ -22,5 +22,12 @@ class ModulosSeeder extends Seeder
             'Ruta' => 'Produccion/Procesos',
             'Area' => '7',
         ]);
+        Modulos::create([
+            'Iduser' => '16',
+            'NombreModulo' => 'Materiales',
+            'Icono' => 'fas fa-boxes',
+            'Ruta' => 'Produccion/Materiales',
+            'Area' => '7',
+        ]);
     }
 }

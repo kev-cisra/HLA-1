@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
-use App\Models\Produccion\formulas;
+use App\Models\Produccion\catalogos\materiales;
 use App\Models\Produccion\procesos;
 use App\Models\RecursosHumanos\Catalogos\Areas;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
 
-class ProcesosController extends Controller
+class MaterialesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,38 +21,38 @@ class ProcesosController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        //echo $request->busca;
+        //id de la persona que inicio sesion
         $usuario = Auth::id();
-
+        //se busca toda la informacion de la persona logeada
         $perf = PerfilesUsuarios::where('IdUser','=',$usuario)
         ->with(['perfiles_area'=>function($query) {
                 $query->select('id','Nombre', 'idArea');
             }
         ])
         ->first(['id', 'IdEmp', 'Empresa', 'Nombre', 'ApPat', 'ApMat', 'perfiles_usuarios_id', 'Areas_id']);
-
+        //se generan variables nulas para pasar los datos
         $area = NULL;
-        $proce = NULL;
+        $mate = NULL;
 
         if($perf->perfiles_area->idArea == "PRO" || $perf->perfiles_area->idArea == "OPE"){
             $area = Areas::with('sub_areas')
             ->get(['id', 'IdUser', 'idArea', 'Nombre', 'areas_id']);
             if(!empty($request->busca)){
-                $proce = procesos::where('areas_id','=',$request->busca)
-                ->with('procesos_area')
+                $mate = materiales::where('area_id','=',$request->busca)
+                ->with('materiales_area')
                 ->get();
+                /*procesos::where('areas_id','=',$request->busca)
+                ->with('procesos_area')
+                ->get();*/
             }
         }else{
-            $proce = procesos::where('areas_id','=',$perf->Areas_id)
-            ->with('procesos_area')
+            $mate = materiales::where('areas_id','=',$perf->Areas_id)
+            ->with('materiales_area')
             ->get();
         }
 
 
-
-        return Inertia::render('Produccion/Procesos', ['usuario' => $perf,'procesos' => $proce,'areas' => $area]);
-
+        return Inertia::render('Produccion/Materiales', ['usuario' => $perf,'materiales' => $mate,'areas' => $area]);
     }
 
     /**
@@ -74,45 +73,61 @@ class ProcesosController extends Controller
      */
     public function store(Request $request)
     {
-
-        //echo $request['form'];
+        //
         Validator::make($request->all(), [
-            'nompro' => ['required'],
-            'areas_id' => ['required'],
-            'tipo' => ['required'],
-            'descripcion' => ['required'],
+            'idmat' => ['required'],
+            'area_id' => ['required'],
+            'nommat' => ['required'],
+            'descrip' => ['required'],
         ])->validate();
 
-        procesos::create($request->all());
-
-        /*return response()->json(['proceso_id' => $ins->id])
-            ->setCallback();*/
+        materiales::create($request->all());
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
+    }
 
-        //procesos::create($request['form']->all());
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Produccion\catalogos\materiales  $materiales
+     * @return \Illuminate\Http\Response
+     */
+    public function show(materiales $materiales)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Produccion\catalogos\materiales  $materiales
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(materiales $materiales)
+    {
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Produccion\procesos  $procesos
+     * @param  \App\Models\Produccion\catalogos\materiales  $materiales
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, procesos $procesos)
+    public function update(Request $request, materiales $materiales)
     {
-
+        //
         Validator::make($request->all(), [
-            'nompro' => ['required'],
-            'areas_id' => ['required'],
-            'tipo' => ['required'],
-            'descripcion' => ['required'],
+            'idmat' => ['required'],
+            'area_id' => ['required'],
+            'nommat' => ['required'],
+            'descrip' => ['required'],
         ])->validate();
 
         if ($request->has('id')) {
-            procesos::find($request->input('id'))->update($request->all());
+            materiales::find($request->input('id'))->update($request->all());
             return redirect()->back()
                     ->with('message', 'Post Updated Successfully.');
         }
@@ -121,13 +136,14 @@ class ProcesosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Produccion\procesos  $procesos
+     * @param  \App\Models\Produccion\catalogos\materiales  $materiales
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
     {
+        //
         if ($request->has('id')) {
-            procesos::find($request->input('id'))->delete();
+            materiales::find($request->input('id'))->delete();
             return redirect()->back()
                     ->with('message', 'Post Updated Successfully.');
         }

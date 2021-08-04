@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\RecursosHumanos\Catalogos\Areas;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +19,7 @@ class CreateAreasTable extends Migration
             $table->unsignedBigInteger('IdUser'); //Id de Sessión
             $table->string('idArea')->unique();
             $table->string('Nombre',35);
+            $table->enum('tipo',[Areas::P,Areas::PH,Areas::H]);
 
             $table->unsignedBigInteger('areas_id')->nullable();
             $table->foreign('areas_id')->references("id")->on("areas");

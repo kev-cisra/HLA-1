@@ -2,6 +2,7 @@
 
 namespace App\Models\RecursosHumanos\Catalogos;
 
+use App\Models\Produccion\catalogos\materiales;
 use App\Models\Produccion\procesos;
 use App\Models\Produccion\turnos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
@@ -13,6 +14,9 @@ class Areas extends Model
 {
     use HasFactory;
     use SoftDeletes; //Implementamos
+    const P = 1;
+    const PH = 2;
+    const H = 3;
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id', 'created_at','updated_at'];
 
@@ -27,6 +31,10 @@ class Areas extends Model
 
     public function area_perfiles() {
         return $this->hasMany(PerfilesUsuarios::class);
+    }
+
+    public function area_materiales() {
+        return $this->hasMany(materiales::class);
     }
 
     //relaciones recursiva
