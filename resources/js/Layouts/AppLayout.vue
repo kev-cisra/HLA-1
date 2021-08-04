@@ -11,11 +11,16 @@
                             <!-- Logo -->
                             <div class="tw-flex tw-items-center tw-flex-shrink-0">
                                 <a :href="route('dashboard')" >
-                                    <jet-application-mark> </jet-application-mark>                                                                   
+                                    <jet-application-mark> </jet-application-mark>
                                 </a>
                             </div>
 
                             <!-- Navigation Links -->
+                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
+                                <jet-nav-link :href="route('RecursosHumanos')" :active="route().current('RecursosHumanos')">
+                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Recursos Humanos
+                                </jet-nav-link>
+                            </div>
                             <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Inicio
