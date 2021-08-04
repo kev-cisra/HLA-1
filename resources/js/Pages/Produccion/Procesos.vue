@@ -1,3 +1,4 @@
+
 <template>
     <app-layout>
         <Header>
@@ -17,7 +18,7 @@
                 <jet-button @click="openModal" class="BtnNuevo">Nuevo Módulo </jet-button>
             </template>
         </Accions>
-        <Table>
+        <Table id="t_pro">
             <template v-slot:TableHeader>
                 <th class="columna">Nombre</th>
                 <th class="columna">Tipo</th>
@@ -41,14 +42,14 @@
                                     </svg>
                                 </span>
                             </div>
-                            <div class="iconoEdit" @click="edit(modulo)">
+                            <div class="iconoEdit" @click="edit(proceso)">
                                 <span tooltip="Editar" flow="left">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                     </svg>
                                 </span>
                             </div>
-                            <div class="iconoDelete" @click="deleteRow(modulo)">
+                            <div class="iconoDelete" @click="deleteRow(proceso)">
                                 <span tooltip="Eliminar" flow="left">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -66,16 +67,18 @@
                 <div class="tw-px-4 tw-py-4">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
-                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Modulo</h3>
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Procesos</h3>
                         </div>
                     </div>
 
                     <div class="tw-mt-4">
                         <div class="ModalForm">
                             <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <div v-show="!SM" class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Área</jet-label>
-                                    <jet-input type="text" v-model="form.areas_id"></jet-input>
+                                    <select  class="InputSelect" v-model="form.areas_id">
+                                        <option v-for="area in areas" :key="area" :value="area.id">{{ area.Nombre }}</option>
+                                    </select>
                                     <small v-if="errors.areas_id" class="validation-alert">{{errors.areas_id}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
@@ -88,8 +91,8 @@
                                     <select v-model="form.tipo" class="InputSelect">
                                         <option value="">Seleccione</option>
                                         <option value="1">Encargado</option>
-                                        <option value="2">Coordinador</option>
-                                        <option value="3">Formulas</option>
+                                        <option v-show="!SM" value="2">Coordinador</option>
+                                        <option v-show="!SM" value="3">Formulas</option>
                                     </select>
                                     <small v-if="errors.tipo" class="validation-alert">{{errors.tipo}}</small>
                                 </div>
@@ -97,25 +100,72 @@
 
                             <div class="tw-mb-6 md:tw-flex">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Ruta</jet-label>
-                                    <jet-input type="text" v-model="form.Ruta"></jet-input>
-                                    <small v-if="errors.Ruta" class="validation-alert">{{errors.Ruta}}</small>
-                                </div>
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Area</jet-label>
-                                    <select id="Area" v-model="form.Area" class="InputSelect">
-                                        <option v-for="areaMo in areaM" :key="areaMo.id" :value="areaMo.id">{{ areaMo.NombreArea }}</option>
-                                    </select>
-                                    <small v-if="errors.Area" class="validation-alert">{{errors.Area}}</small>
+                                    <jet-label><span class="required">*</span>Descripción</jet-label>
+                                    <textarea v-model="form.descripcion" class="InputSelect"></textarea>
+                                    <small v-if="errors.descripcion" class="validation-alert">{{errors.descripcion}}</small>
                                 </div>
                             </div>
-                            <jet-input v-model="formF.pru"></jet-input>
                         </div>
                     </div>
                 </div>
 
+                <!-------------------- Inicio form 2 ---------------------------------
+                <div>
+                    <div class="tw-px-4 tw-py-4">
+                        <div class="tw-text-lg">
+                            <div class="ModalHeader">
+                                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Procesos</h3>
+                            </div>
+                        </div>
+
+                        <div class="tw-mt-4">
+                            <div class="ModalForm">
+                                <div class="tw-mb-6 md:tw-flex">
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Área</jet-label>
+                                        <select  v-show="!SM" class="InputSelect" v-model="form.areas_id">
+                                            <option v-for="area in areas" :key="area" :value="area.id">{{ area.Nombre }}</option>
+                                        </select>
+                                        <small v-if="errors.areas_id" class="validation-alert">{{errors.areas_id}}</small>
+                                    </div>
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Nombre del proceso</jet-label>
+                                        <jet-input type="text" v-model="form.nompro"></jet-input>
+                                        <small v-if="errors.nompro" class="validation-alert">{{errors.nompro}}</small>
+                                    </div>
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Tipo de proceso</jet-label>
+                                        <select v-model="form.tipo" class="InputSelect">
+                                            <option value="">Seleccione</option>
+                                            <option value="1">Encargado</option>
+                                            <option value="2">Coordinador</option>
+                                            <option value="3">Formulas</option>
+                                        </select>
+                                        <small v-if="errors.tipo" class="validation-alert">{{errors.tipo}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="tw-mb-6 md:tw-flex">
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Descripción</jet-label>
+                                        <textarea v-model="form.descripcion" class="InputSelect"></textarea>
+                                        <small v-if="errors.Ruta" class="validation-alert">{{errors.descripcion}}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ModalFooter">
+                        <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
+                        <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
+                        <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                    </div>
+                </div>
+                ------------------------- Fin form 2 ----------------------------------->
+
                 <div class="ModalFooter">
-                    <jet-button type="button" @click="save(form,formF)" v-show="!editMode">Guardar</jet-button>
+                    <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
                     <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
                     <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
                 </div>
@@ -135,7 +185,10 @@
     import JetSelect from '@/Components/Select';
     import Modal from '@/Jetstream/Modal';
     import JetLabel from '@/Jetstream/Label';
-import Select from '../../Components/Select.vue';
+    import Select from '../../Components/Select.vue';
+
+    import datatable from 'datatables.net-bs5';
+    import $ from 'jquery';
 
     export default {
         props: [
@@ -163,78 +216,111 @@ import Select from '../../Components/Select.vue';
                 SM: false,
                 showModal: false,
                 editMode: false,
+                search: null,
                 form: {
-                    IdUser: this.usuario.id,
-                    NombreModulo: null,
-                    Icono: null,
-                    Ruta: null,
-                    Area: null,
-                },
-                formF: {
-                    pru: null
-                },
+                    nompro: null,
+                    areas_id: this.usuario.Areas_id,
+                    tipo: '',
+                    descripcion: null
+                }
+
             }
         },
         mounted() {
             this.mostSelect();
+            $('#t_pro').DataTable().destroy();
+            this.tabla();
         },
         methods: {
+            //alerta
+            alertArea(){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Se tiene que cambiar el valor de la área',
+                    // background: '#99F6E4',
+                })
+            },
+            //datatable
+            tabla() {
+                $('#t_pro').DataTable();
+            },
+            //información del select area
             mostSelect() {
                 this.$nextTick(() => {
                     if(this.usuario.perfiles_area.idArea !== "PRO"){
                         this.SM = true;
                     }
-                    //console.log(this.usuario.Areas_id);
                 });
             },
+            //consulta para generar datos de la tabla
             verTabla(event){
-                this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value }, { preserveState: true })
+                $('#t_pro').DataTable().destroy();
+                this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value }, { preserveState: true} )
+                this.tabla()
             },
+            //abrir y reset del modal procesos
             openModal() {
                 this.chageClose();
                 this.reset();
                 this.editMode = false;
             },
+            //abrir o cerrar modal procesos
             chageClose(){
                 this.showModal = !this.showModal
             },
+            //reset de modal procesos
             reset(){
                 this.form = {
-                    IdUser: this.usuario.id,
-                    NombreModulo: null,
-                    Icono: null,
-                    Ruta: null,
-                    Area: null,
+                    nompro: null,
+                    areas_id: this.usuario.Areas_id,
+                    tipo: '',
+                    descripcion: null
                 }
             },
-            save(form, formF) {
-                var icono = this.form.Icono
-                var pru = this.formF.pru
-                const datos = {icono, pru}
-                console.log(datos)
-                this.$inertia.post('/Produccion/Procesos', form, {
-                    onSuccess: () => {if (this.form.Icono) {
-                        this.$inertia.post('', formF)
-                    } this.reset(), this.chageClose()},
-                });
+            //guardar información de procesos
+            save(form) {
+                if(form.areas_id == this.usuario.perfiles_area.id & this.usuario.perfiles_area.idArea == 'PRO'){
+                    this.alertArea();
+                }else{
+                    console.log(form)
+                    this.$inertia.post('/Produccion/Procesos', form, {
+                        onSuccess: () => { this.reset(), this.chageClose()},
+                    });
+                }
+
             },
-            /*edit: function (data) {
+            //manda datos de la tabla al modal
+            edit: function (data) {
                 this.form = Object.assign({}, data);
                 //this.vari = data.id;
                 this.editMode = true;
                 this.chageClose();
             },
+            //actualiza información de los procesos
             update(data) {
                 data._method = 'PUT';
-                this.$inertia.post('/Admin/Modulos/' + data.id, data, {
+                this.$inertia.post('/Produccion/Procesos/' + data.id, data, {
                     onSuccess: () => {this.reset(), this.chageClose()},
                 });
             },
             deleteRow: function (data) {
                 if (!confirm('¿Estas seguro de querer eliminar este Modulo?')) return;
+                $('#t_pro').DataTable().destroy();
                 data._method = 'DELETE';
-                this.$inertia.post('/Admin/Modulos/' + data.id, data);
-            }*/
+                this.$inertia.post('/Produccion/Procesos/' + data.id, data);
+            }
 
         }
     }
