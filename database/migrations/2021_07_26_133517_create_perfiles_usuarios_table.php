@@ -39,12 +39,6 @@ class CreatePerfilesUsuariosTable extends Migration
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
-            $table->unsignedBigInteger('Areas_id')->Nullable();
-
-            $table->foreign("Areas_id")->references("id")->on("areas")
-            ->onDelete("cascade")
-            ->onUpdate("cascade");
-
             $table->unsignedBigInteger('Puesto_id')->Nullable();
 
             $table->foreign("Puesto_id")->references("id")->on("puestos")

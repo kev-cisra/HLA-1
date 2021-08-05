@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateArticulosMaterialesTable extends Migration
+class CreateAreMatsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateArticulosMaterialesTable extends Migration
      */
     public function up()
     {
-        Schema::create('articulos_materiales', function (Blueprint $table) {
+        Schema::create('are_mats', function (Blueprint $table) {
             $table->id();
 
-            $table->string('clv_art');
-            $table->string('descri')->nullable();
-            $table->string('uni_mi')->nullable();
-            $table->enum('estatus',[1,2,3])->default(1);
+            $table->unsignedBigInteger('area_id');
+            $table->foreign('area_id')->references("id")->on("areas")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
 
             $table->unsignedBigInteger('material_id');
             $table->foreign('material_id')->references("id")->on("materiales")
@@ -38,6 +38,6 @@ class CreateArticulosMaterialesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('articulos_materiales');
+        Schema::dropIfExists('are_mats');
     }
 }

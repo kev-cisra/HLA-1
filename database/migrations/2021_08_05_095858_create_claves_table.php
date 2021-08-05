@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMaterialesTable extends Migration
+class CreateClavesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,17 @@ class CreateMaterialesTable extends Migration
      */
     public function up()
     {
-        Schema::create('materiales', function (Blueprint $table) {
+        Schema::create('claves', function (Blueprint $table) {
             $table->id();
 
-            $table->string('idmat')->unique();
-            $table->string('nommat');
-            $table->string('descrip')->nullable();
-            $table->enum('estatus',[1,2,3])->default(1);
+            $table->string('CVE_ART')->unique();
+            $table->string('DESCR');
+            $table->string('UNI_MED');
+
+            $table->unsignedBigInteger('are_mat_id');
+            $table->foreign('are_mat_id')->references("id")->on("are_mats")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
 
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
@@ -33,6 +37,6 @@ class CreateMaterialesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('materiales');
+        Schema::dropIfExists('claves');
     }
 }

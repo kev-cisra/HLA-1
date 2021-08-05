@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePerProcsTable extends Migration
+class CreateMaqProsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreatePerProcsTable extends Migration
      */
     public function up()
     {
-        Schema::create('per_procs', function (Blueprint $table) {
+        Schema::create('maq_pros', function (Blueprint $table) {
             $table->id();
-            $table->enum('estatus',[1,2,3])->default(1);
-            $table->unsignedBigInteger('perfil_id');
-            $table->unsignedBigInteger('proceso_id');
 
-            $table->foreign('perfil_id')->references("id")->on("perfiles_usuarios")
+            $table->unsignedBigInteger('proceso_id');
+            $table->foreign('proceso_id')->references("id")->on("procesos")
             ->onDelete("cascade")
             ->onUpdate("cascade");
-            $table->foreign('proceso_id')->references("id")->on("procesos")
+
+            $table->unsignedBigInteger('maquina_id');
+            $table->foreign('maquina_id')->references("id")->on("maquinas")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
@@ -38,6 +38,6 @@ class CreatePerProcsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('per_procs');
+        Schema::dropIfExists('maq_pros');
     }
 }

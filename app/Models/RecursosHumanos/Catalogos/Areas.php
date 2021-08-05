@@ -2,10 +2,10 @@
 
 namespace App\Models\RecursosHumanos\Catalogos;
 
-use App\Models\Produccion\catalogos\materiales;
+use App\Models\Catalogos\Maquinas;
+use App\Models\Produccion\are_prof;
 use App\Models\Produccion\procesos;
 use App\Models\Produccion\turnos;
-use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
@@ -29,12 +29,12 @@ class Areas extends Model
         return $this->hasMany(turnos::class);
     }
 
-    public function area_perfiles() {
-        return $this->hasMany(PerfilesUsuarios::class);
+    public function area_areperfs() {
+        return $this->hasMany(are_prof::class);
     }
 
-    public function area_materiales() {
-        return $this->hasMany(materiales::class);
+    public function area_maquinas() {
+        return $this->hasMany(Maquinas::class);
     }
 
     //relaciones recursiva

@@ -20,11 +20,6 @@ class CreateFormulasTable extends Migration
             $table->string('variable');
             $table->string('proceso');
 
-            $table->unsignedBigInteger('proceso_id');
-            $table->foreign('proceso_id')->references("id")->on("procesos")
-            ->onDelete("cascade")
-            ->onUpdate("cascade");
-
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });

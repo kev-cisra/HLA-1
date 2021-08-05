@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMaquinasTable extends Migration
+class CreateAreProfsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,19 @@ class CreateMaquinasTable extends Migration
      */
     public function up()
     {
-        Schema::create('maquinas', function (Blueprint $table) {
+        Schema::create('are_profs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('IdUser'); //Numero control empleado
-            $table->string('Nombre',45);
-            $table->string('Area',35);
 
-            $table->unsignedBigInteger('area_id')->nullable();
-            $table->foreign('area_id')->references("id")->on("areas")
+            $table->unsignedBigInteger('perfiles_usuarios_id');
+            $table->foreign("perfiles_usuarios_id")->references("id")->on("perfiles_usuarios")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
-            $table->softDeletes(); //Columna para soft delete
+            $table->unsignedBigInteger('area_id');
+            $table->foreign("area_id")->references("id")->on("areas")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
             $table->timestamps();
         });
     }
@@ -36,6 +37,6 @@ class CreateMaquinasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('maquinas');
+        Schema::dropIfExists('are_profs');
     }
 }

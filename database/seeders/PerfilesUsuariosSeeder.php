@@ -31,7 +31,6 @@ class PerfilesUsuariosSeeder extends Seeder
             'FecIng' => '2010-07-09',
             'Antiguedad' => '25',
             'DiasVac' => '12',
-            'Areas_id' => '1',
             'Puesto_id' => '13',
             'Departamento_id' => '1',
         ]);

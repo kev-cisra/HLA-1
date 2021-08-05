@@ -1,11 +1,9 @@
 <?php
 
-use App\Models\Produccion\procesos;
+use App\Models\Produccion\catalogos\procesos;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-use function PHPUnit\Framework\once;
 
 class CreateProcesosTable extends Migration
 {
@@ -24,8 +22,13 @@ class CreateProcesosTable extends Migration
             $table->string('descripcion')->nullable();
             $table->enum('estatus',[1,2,3])->default(1);
 
-            $table->unsignedBigInteger('areas_id');
-            $table->foreign('areas_id')->references("id")->on("areas")
+            $table->unsignedBigInteger('proceso_id')->nullable();
+            $table->foreign('proceso_id')->references("id")->on("areas")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
+            $table->unsignedBigInteger('area_id');
+            $table->foreign('area_id')->references("id")->on("areas")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 

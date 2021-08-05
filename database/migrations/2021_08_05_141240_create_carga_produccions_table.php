@@ -24,14 +24,18 @@ class CreateCargaProduccionsTable extends Migration
             $table->unsignedBigInteger('cargado')->nullable();
             $table->tinyInteger('equipo');
 
-            $table->unsignedBigInteger('per_proc_id');
-            $table->unsignedBigInteger('articulo_id');
+            $table->unsignedBigInteger('are_perf_id');
+            $table->unsignedBigInteger('maq_pro_id');
+            $table->unsignedBigInteger('clave_id');
             $table->unsignedBigInteger('turno_id');
 
-            $table->foreign('per_proc_id')->references("id")->on("per_procs")
+            $table->foreign('maq_pro_id')->references("id")->on("maq_pros")
             ->onDelete("cascade")
             ->onUpdate("cascade");
-            $table->foreign('articulo_id')->references("id")->on("articulos_materiales")
+            $table->foreign('are_perf_id')->references("id")->on("are_profs")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+            $table->foreign('clave_id')->references("id")->on("claves")
             ->onDelete("cascade")
             ->onUpdate("cascade");
             $table->foreign('turno_id')->references("id")->on("turnos")
@@ -40,6 +44,7 @@ class CreateCargaProduccionsTable extends Migration
 
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
+
         });
     }
 

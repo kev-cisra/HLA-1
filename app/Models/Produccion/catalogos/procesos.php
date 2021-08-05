@@ -6,15 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
 
-class materiales extends Model
+class procesos extends Model
 {
     use HasFactory;
     use SoftDeletes; //Implementamos
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
 
-    //relacion uno a muchos
-    public function material_artmats(){
-        return $this->hasMany(materiales::class);
-    }
+    const Encargado = 1;
+    const Coordinador = 2;
+    const Formulas = 3;
 }
