@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produccion\catalogos\materiales;
-use App\Models\Produccion\procesos;
+use App\Models\Produccion\catalogos\procesos;
 use App\Models\RecursosHumanos\Catalogos\Areas;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
@@ -19,8 +19,8 @@ class MaterialesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
+
         //id de la persona que inicio sesion
         $usuario = Auth::id();
         //se busca toda la informacion de la persona logeada

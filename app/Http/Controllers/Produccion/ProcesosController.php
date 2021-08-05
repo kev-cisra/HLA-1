@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
+use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\formulas;
-use App\Models\Produccion\procesos;
 use App\Models\RecursosHumanos\Catalogos\Areas;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\User;
@@ -22,7 +22,6 @@ class ProcesosController extends Controller
      */
     public function index(Request $request)
     {
-        //
         //echo $request->busca;
         $usuario = Auth::id();
 

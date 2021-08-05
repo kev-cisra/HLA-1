@@ -3,6 +3,9 @@
 namespace App\Models\RecursosHumanos\Perfiles;
 
 use App\Models\Produccion\are_prof;
+use App\Models\RecursosHumanos\Catalogos\Departamentos;
+use App\Models\RecursosHumanos\Catalogos\JefesArea;
+use App\Models\RecursosHumanos\Catalogos\Puestos;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -34,6 +37,21 @@ class PerfilesUsuarios extends Model
 
     public function jefe_perfiles() {
         return $this->hasMany(PerfilesUsuarios::class)->with('perfiles_jefe');
+    }
+
+    // Relacion 1 a 1 con Puestos
+    public function PerfilPuesto() {
+        return $this->hasOne(Puestos::class, 'id', 'Puesto_id');
+    }
+
+    // Relacion 1 a 1 con Departamento
+    public function PerfilDepartamento() {
+        return $this->hasOne(Departamentos::class, 'id', 'Departamento_id');
+    }
+
+    // Relacion 1 a 1 con Departamento
+    public function PerfilJefe() {
+        return $this->hasOne(JefesArea::class, 'id', 'jefes_areas_id');
     }
 
 }

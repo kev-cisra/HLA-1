@@ -23822,6 +23822,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     Perfiles: Object,
+    PerfilesPuesto: Object,
     filters: Object
   },
   data: function data() {
@@ -31275,7 +31276,7 @@ var _hoisted_18 = {
   "class": "float-right fas fa-sort-alpha-down-alt"
 };
 
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Nombre ");
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Paterno ");
 
 var _hoisted_20 = {
   key: 0,
@@ -31286,23 +31287,219 @@ var _hoisted_21 = {
   "class": "float-right fas fa-sort-alpha-down-alt"
 };
 
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Paterno ");
+
+var _hoisted_23 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_24 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Materno ");
+
+var _hoisted_26 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_27 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Curp ");
+
+var _hoisted_29 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_30 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("RFC ");
+
+var _hoisted_32 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_33 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("NSS ");
+
+var _hoisted_35 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_36 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Direccion ");
+
+var _hoisted_38 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_39 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Telefono ");
+
+var _hoisted_41 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_42 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_43 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Cumpleaños ");
+
+var _hoisted_44 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_45 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_46 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Fecha Ingreso ");
+
+var _hoisted_47 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_48 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Antiguedad ");
+
+var _hoisted_50 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_51 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Dias Vac. ");
+
+var _hoisted_53 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_54 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Puesto ");
+
+var _hoisted_56 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_57 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_58 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Departamento ");
+
+var _hoisted_59 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_60 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Jefe ");
+
+var _hoisted_62 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_63 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_64 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
   "class": "columna tw-text-center"
 }, "Acciones", -1
 /* HOISTED */
 );
 
-var _hoisted_23 = {
+var _hoisted_65 = {
   "class": "tw-p-2"
 };
-var _hoisted_24 = {
+var _hoisted_66 = {
   "class": "tw-p-2"
 };
-var _hoisted_25 = {
+var _hoisted_67 = {
+  "class": "tw-p-2"
+};
+var _hoisted_68 = {
+  "class": "tw-p-2"
+};
+var _hoisted_69 = {
+  "class": "tw-p-2"
+};
+var _hoisted_70 = {
+  "class": "tw-p-2"
+};
+var _hoisted_71 = {
+  "class": "tw-p-2"
+};
+var _hoisted_72 = {
+  "class": "tw-p-2"
+};
+var _hoisted_73 = {
+  "class": "tw-p-2"
+};
+var _hoisted_74 = {
+  "class": "tw-p-2"
+};
+var _hoisted_75 = {
+  "class": "tw-p-2"
+};
+var _hoisted_76 = {
+  "class": "tw-p-2"
+};
+var _hoisted_77 = {
+  "class": "tw-p-2"
+};
+var _hoisted_78 = {
+  "class": "tw-p-2"
+};
+var _hoisted_79 = {
+  "class": "tw-p-2"
+};
+var _hoisted_80 = {
+  "class": "tw-p-2"
+};
+var _hoisted_81 = {
   "class": "tw-p-2"
 };
 
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", {
+var _hoisted_82 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", {
   "class": "tw-p-2"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "columnaIconos"
@@ -31340,6 +31537,234 @@ var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
+var _hoisted_83 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Núm. Empleado ");
+
+var _hoisted_84 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_85 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_86 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Empresa ");
+
+var _hoisted_87 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_88 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_89 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Nombre ");
+
+var _hoisted_90 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_91 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_92 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Paterno ");
+
+var _hoisted_93 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_94 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_95 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Materno ");
+
+var _hoisted_96 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_97 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_98 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Curp ");
+
+var _hoisted_99 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_100 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_101 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("RFC ");
+
+var _hoisted_102 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_103 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_104 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("NSS ");
+
+var _hoisted_105 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_106 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_107 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Direccion ");
+
+var _hoisted_108 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_109 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_110 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Telefono ");
+
+var _hoisted_111 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_112 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_113 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Cumpleaños ");
+
+var _hoisted_114 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_115 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_116 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Fecha Ingreso ");
+
+var _hoisted_117 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_118 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_119 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Antiguedad ");
+
+var _hoisted_120 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_121 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_122 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Dias Vac. ");
+
+var _hoisted_123 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_124 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_125 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Puesto ");
+
+var _hoisted_126 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_127 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_128 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Departamento ");
+
+var _hoisted_129 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_130 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+
+var _hoisted_131 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Jefe ");
+
+var _hoisted_132 = {
+  key: 0,
+  "class": "float-right fas fa-sort-alpha-up-alt"
+};
+var _hoisted_133 = {
+  key: 1,
+  "class": "float-right fas fa-sort-alpha-down-alt"
+};
+var _hoisted_134 = {
+  "class": "tw-p-2"
+};
+var _hoisted_135 = {
+  "class": "tw-p-2"
+};
+var _hoisted_136 = {
+  "class": "tw-p-2"
+};
+var _hoisted_137 = {
+  "class": "tw-p-2"
+};
+var _hoisted_138 = {
+  "class": "tw-p-2"
+};
+var _hoisted_139 = {
+  "class": "tw-p-2"
+};
+var _hoisted_140 = {
+  "class": "tw-p-2"
+};
+var _hoisted_141 = {
+  "class": "tw-p-2"
+};
+var _hoisted_142 = {
+  "class": "tw-p-2"
+};
+var _hoisted_143 = {
+  "class": "tw-p-2"
+};
+var _hoisted_144 = {
+  "class": "tw-p-2"
+};
+var _hoisted_145 = {
+  "class": "tw-p-2"
+};
+var _hoisted_146 = {
+  "class": "tw-p-2"
+};
+var _hoisted_147 = {
+  "class": "tw-p-2"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Header = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Header");
 
@@ -31419,22 +31844,120 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }, [_hoisted_16, $data.params.field === 'Nombre' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_17)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Nombre' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_18)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
             "class": "columna",
             onClick: _cache[7] || (_cache[7] = function ($event) {
-              return _ctx.sort('Nombre');
+              return _ctx.sort('ApPat');
             })
-          }, [_hoisted_19, $data.params.field === 'Nombre' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_20)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Nombre' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_21)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_22];
+          }, [_hoisted_19, $data.params.field === 'ApPat' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_20)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'ApPat' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_21)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[8] || (_cache[8] = function ($event) {
+              return _ctx.sort('ApPat');
+            })
+          }, [_hoisted_22, $data.params.field === 'ApPat' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_23)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'ApPat' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_24)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[9] || (_cache[9] = function ($event) {
+              return _ctx.sort('ApMat');
+            })
+          }, [_hoisted_25, $data.params.field === 'ApMat' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_26)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'ApMat' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_27)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[10] || (_cache[10] = function ($event) {
+              return _ctx.sort('Curp');
+            })
+          }, [_hoisted_28, $data.params.field === 'Curp ' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_29)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Curp ' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_30)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[11] || (_cache[11] = function ($event) {
+              return _ctx.sort('Rfc');
+            })
+          }, [_hoisted_31, $data.params.field === 'Rfc ' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_32)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Rfc ' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_33)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[12] || (_cache[12] = function ($event) {
+              return _ctx.sort('Nss');
+            })
+          }, [_hoisted_34, $data.params.field === 'Nss ' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_35)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Nss ' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_36)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[13] || (_cache[13] = function ($event) {
+              return _ctx.sort('Direccion');
+            })
+          }, [_hoisted_37, $data.params.field === 'Direccion' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_38)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Direccion' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_39)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[14] || (_cache[14] = function ($event) {
+              return _ctx.sort('Telefono');
+            })
+          }, [_hoisted_40, $data.params.field === 'Telefono' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_41)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Telefono' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_42)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[15] || (_cache[15] = function ($event) {
+              return _ctx.sort('Cumpleaños');
+            })
+          }, [_hoisted_43, $data.params.field === 'Cumpleaños' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_44)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Cumpleaños' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_45)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[16] || (_cache[16] = function ($event) {
+              return _ctx.sort('FecIng');
+            })
+          }, [_hoisted_46, $data.params.field === 'FecIng' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_47)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'FecIng' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_48)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[17] || (_cache[17] = function ($event) {
+              return _ctx.sort('Antiguedad');
+            })
+          }, [_hoisted_49, $data.params.field === 'Antiguedad' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_50)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Antiguedad' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_51)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[18] || (_cache[18] = function ($event) {
+              return _ctx.sort('DiasVac');
+            })
+          }, [_hoisted_52, $data.params.field === 'DiasVac' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_53)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'DiasVac' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_54)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[19] || (_cache[19] = function ($event) {
+              return _ctx.sort('Puesto_id ');
+            })
+          }, [_hoisted_55, $data.params.field === 'Puesto_id ' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_56)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Puesto_id ' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_57)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[20] || (_cache[20] = function ($event) {
+              return _ctx.sort('Departamento_id ');
+            })
+          }, [_hoisted_58, $data.params.field === 'Departamento_id ' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_59)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Departamento_id ' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_60)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[21] || (_cache[21] = function ($event) {
+              return _ctx.sort('jefes_areas_id ');
+            })
+          }, [_hoisted_61, $data.params.field === 'jefes_areas_id ' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_62)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'jefes_areas_id ' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_63)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_64];
         }),
         TableFooter: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.Perfiles.data, function (perfil) {
             return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("tr", {
               "class": "fila",
               key: perfil.id
-            }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.IdEmp), 1
+            }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_65, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.IdEmp), 1
             /* TEXT */
-            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Empresa), 1
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_66, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Empresa), 1
             /* TEXT */
-            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Nombre), 1
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_67, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Nombre), 1
             /* TEXT */
-            ), _hoisted_26]);
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_68, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.ApPat), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_69, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.ApMat), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_70, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Curp), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Rfc), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_72, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Nss), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_73, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Direccion), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_74, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Telefono), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_75, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Cumpleaños), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_76, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.FecIng), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_77, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Antiguedad), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_78, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.DiasVac), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_79, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Puesto_id), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_80, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.Departamento_id), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_81, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(perfil.jefes_areas_id), 1
+            /* TEXT */
+            ), _hoisted_82]);
           }), 128
           /* KEYED_FRAGMENT */
           ))];
@@ -31442,7 +31965,139 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         _: 1
         /* STABLE */
 
-      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <pagination class=\"tw-mt-6 tw-ml-4\" :links=\"users.links\" /> ")])];
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TableGreen, null, {
+        TableHeader: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[22] || (_cache[22] = function ($event) {
+              return _ctx.sort('IdEmp');
+            })
+          }, [_hoisted_83, $data.params.field === 'IdEmp' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_84)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'IdEmp' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_85)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[23] || (_cache[23] = function ($event) {
+              return _ctx.sort('Empresa');
+            })
+          }, [_hoisted_86, $data.params.field === 'Empresa' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_87)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Empresa' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_88)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[24] || (_cache[24] = function ($event) {
+              return _ctx.sort('Nombre');
+            })
+          }, [_hoisted_89, $data.params.field === 'Nombre' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_90)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Nombre' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_91)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[25] || (_cache[25] = function ($event) {
+              return _ctx.sort('ApPat');
+            })
+          }, [_hoisted_92, $data.params.field === 'ApPat' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_93)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'ApPat' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_94)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[26] || (_cache[26] = function ($event) {
+              return _ctx.sort('ApMat');
+            })
+          }, [_hoisted_95, $data.params.field === 'ApMat' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_96)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'ApMat' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_97)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[27] || (_cache[27] = function ($event) {
+              return _ctx.sort('Curp');
+            })
+          }, [_hoisted_98, $data.params.field === 'Curp ' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_99)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Curp ' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_100)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[28] || (_cache[28] = function ($event) {
+              return _ctx.sort('Rfc');
+            })
+          }, [_hoisted_101, $data.params.field === 'Rfc ' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_102)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Rfc ' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_103)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[29] || (_cache[29] = function ($event) {
+              return _ctx.sort('Nss');
+            })
+          }, [_hoisted_104, $data.params.field === 'Nss ' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_105)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Nss ' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_106)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[30] || (_cache[30] = function ($event) {
+              return _ctx.sort('Direccion');
+            })
+          }, [_hoisted_107, $data.params.field === 'Direccion' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_108)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Direccion' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_109)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[31] || (_cache[31] = function ($event) {
+              return _ctx.sort('Telefono');
+            })
+          }, [_hoisted_110, $data.params.field === 'Telefono' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_111)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Telefono' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_112)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[32] || (_cache[32] = function ($event) {
+              return _ctx.sort('Cumpleaños');
+            })
+          }, [_hoisted_113, $data.params.field === 'Cumpleaños' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_114)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Cumpleaños' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_115)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[33] || (_cache[33] = function ($event) {
+              return _ctx.sort('FecIng');
+            })
+          }, [_hoisted_116, $data.params.field === 'FecIng' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_117)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'FecIng' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_118)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[34] || (_cache[34] = function ($event) {
+              return _ctx.sort('Antiguedad');
+            })
+          }, [_hoisted_119, $data.params.field === 'Antiguedad' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_120)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Antiguedad' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_121)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[35] || (_cache[35] = function ($event) {
+              return _ctx.sort('DiasVac');
+            })
+          }, [_hoisted_122, $data.params.field === 'DiasVac' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_123)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'DiasVac' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_124)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[36] || (_cache[36] = function ($event) {
+              return _ctx.sort('Puesto_id ');
+            })
+          }, [_hoisted_125, $data.params.field === 'Puesto_id ' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_126)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Puesto_id ' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_127)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[37] || (_cache[37] = function ($event) {
+              return _ctx.sort('Departamento_id ');
+            })
+          }, [_hoisted_128, $data.params.field === 'Departamento_id ' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_129)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'Departamento_id ' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_130)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+            "class": "columna",
+            onClick: _cache[38] || (_cache[38] = function ($event) {
+              return _ctx.sort('jefes_areas_id ');
+            })
+          }, [_hoisted_131, $data.params.field === 'jefes_areas_id ' && $data.params.direction === 'asc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_132)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.params.field === 'jefes_areas_id ' && $data.params.direction === 'desc' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("i", _hoisted_133)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])];
+        }),
+        TableFooter: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.PerfilesPuesto, function (datos) {
+            return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("tr", {
+              "class": "fila",
+              key: datos.id
+            }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_134, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.IdEmp), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_135, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.Empresa), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_136, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.Nombre), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_137, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.ApPat), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_138, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.ApMat), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_139, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.Curp), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_140, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.Rfc), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_141, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.Nss), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_142, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.Direccion), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_143, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.Telefono), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_144, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.Cumpleaños), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_145, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.FecIng), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_146, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.Antiguedad), 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_147, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(datos.DiasVac), 1
+            /* TEXT */
+            )]);
+          }), 128
+          /* KEYED_FRAGMENT */
+          ))];
+        }),
+        _: 1
+        /* STABLE */
+
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("pre", null, "                " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.PerfilesPuesto) + "\n            ", 1
+      /* TEXT */
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <pagination class=\"tw-mt-6 tw-ml-4\" :links=\"users.links\" /> ")])];
     }),
     _: 1
     /* STABLE */

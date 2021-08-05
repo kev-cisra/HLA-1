@@ -47,9 +47,65 @@
                         <i v-if="params.field === 'Nombre' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
                         <i v-if="params.field === 'Nombre' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
                     </th>
-                    <th class="columna" @click="sort('Nombre')">Nombre
-                        <i v-if="params.field === 'Nombre' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Nombre' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    <th class="columna" @click="sort('ApPat')">Paterno
+                        <i v-if="params.field === 'ApPat' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'ApPat' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('ApPat')">Paterno
+                        <i v-if="params.field === 'ApPat' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'ApPat' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('ApMat')">Materno
+                        <i v-if="params.field === 'ApMat' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'ApMat' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Curp')">Curp
+                        <i v-if="params.field === 'Curp ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Curp ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Rfc')">RFC
+                        <i v-if="params.field === 'Rfc ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Rfc ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Nss')">NSS
+                        <i v-if="params.field === 'Nss ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Nss ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Direccion')">Direccion
+                        <i v-if="params.field === 'Direccion' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Direccion' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Telefono')">Telefono
+                        <i v-if="params.field === 'Telefono' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Telefono' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Cumpleaños')">Cumpleaños
+                        <i v-if="params.field === 'Cumpleaños' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Cumpleaños' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('FecIng')">Fecha Ingreso
+                        <i v-if="params.field === 'FecIng' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'FecIng' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Antiguedad')">Antiguedad
+                        <i v-if="params.field === 'Antiguedad' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Antiguedad' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('DiasVac')">Dias Vac.
+                        <i v-if="params.field === 'DiasVac' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'DiasVac' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Puesto_id ')">Puesto
+                        <i v-if="params.field === 'Puesto_id ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Puesto_id ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Departamento_id ')">Departamento
+                        <i v-if="params.field === 'Departamento_id ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Departamento_id ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('jefes_areas_id ')">Jefe
+                        <i v-if="params.field === 'jefes_areas_id ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'jefes_areas_id ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
                     </th>
                     <th class="columna tw-text-center">Acciones</th>
                 </template>
@@ -59,6 +115,20 @@
                         <td class="tw-p-2">{{ perfil.IdEmp }}</td>
                         <td class="tw-p-2">{{ perfil.Empresa }}</td>
                         <td class="tw-p-2">{{ perfil.Nombre }}</td>
+                        <td class="tw-p-2">{{ perfil.ApPat }}</td>
+                        <td class="tw-p-2">{{ perfil.ApMat }}</td>
+                        <td class="tw-p-2">{{ perfil.Curp  }}</td>
+                        <td class="tw-p-2">{{ perfil.Rfc  }}</td>
+                        <td class="tw-p-2">{{ perfil.Nss  }}</td>
+                        <td class="tw-p-2">{{ perfil.Direccion }}</td>
+                        <td class="tw-p-2">{{ perfil.Telefono }}</td>
+                        <td class="tw-p-2">{{ perfil.Cumpleaños }}</td>
+                        <td class="tw-p-2">{{ perfil.FecIng }}</td>
+                        <td class="tw-p-2">{{ perfil.Antiguedad }}</td>
+                        <td class="tw-p-2">{{ perfil.DiasVac }}</td>
+                        <td class="tw-p-2">{{ perfil.Puesto_id  }}</td>
+                        <td class="tw-p-2">{{ perfil.Departamento_id  }}</td>
+                        <td class="tw-p-2">{{ perfil.jefes_areas_id  }}</td>
                         <td class="tw-p-2">
                             <div class="columnaIconos">
                                 <div class="iconoEdit">
@@ -80,6 +150,103 @@
                     </tr>
                 </template>
             </TableGreen>
+
+            <TableGreen>
+                <template v-slot:TableHeader>
+                    <th class="columna" @click="sort('IdEmp')">Núm. Empleado
+                        <i v-if="params.field === 'IdEmp' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'IdEmp' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Empresa')">Empresa
+                        <i v-if="params.field === 'Empresa' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Empresa' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Nombre')">Nombre
+                        <i v-if="params.field === 'Nombre' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Nombre' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('ApPat')">Paterno
+                        <i v-if="params.field === 'ApPat' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'ApPat' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('ApMat')">Materno
+                        <i v-if="params.field === 'ApMat' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'ApMat' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Curp')">Curp
+                        <i v-if="params.field === 'Curp ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Curp ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Rfc')">RFC
+                        <i v-if="params.field === 'Rfc ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Rfc ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Nss')">NSS
+                        <i v-if="params.field === 'Nss ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Nss ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Direccion')">Direccion
+                        <i v-if="params.field === 'Direccion' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Direccion' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Telefono')">Telefono
+                        <i v-if="params.field === 'Telefono' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Telefono' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Cumpleaños')">Cumpleaños
+                        <i v-if="params.field === 'Cumpleaños' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Cumpleaños' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('FecIng')">Fecha Ingreso
+                        <i v-if="params.field === 'FecIng' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'FecIng' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Antiguedad')">Antiguedad
+                        <i v-if="params.field === 'Antiguedad' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Antiguedad' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('DiasVac')">Dias Vac.
+                        <i v-if="params.field === 'DiasVac' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'DiasVac' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Puesto_id ')">Puesto
+                        <i v-if="params.field === 'Puesto_id ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Puesto_id ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Departamento_id ')">Departamento
+                        <i v-if="params.field === 'Departamento_id ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Departamento_id ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('jefes_areas_id ')">Jefe
+                        <i v-if="params.field === 'jefes_areas_id ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'jefes_areas_id ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                </template>
+
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="datos in PerfilesPuesto" :key="datos.id">
+                        <td class="tw-p-2">{{ datos.IdEmp }}</td>
+                        <td class="tw-p-2">{{ datos.Empresa }}</td>
+                        <td class="tw-p-2">{{ datos.Nombre }}</td>
+                        <td class="tw-p-2">{{ datos.ApPat }}</td>
+                        <td class="tw-p-2">{{ datos.ApMat }}</td>
+                        <td class="tw-p-2">{{ datos.Curp  }}</td>
+                        <td class="tw-p-2">{{ datos.Rfc}}</td>
+                        <td class="tw-p-2">{{ datos.Nss  }}</td>
+                        <td class="tw-p-2">{{ datos.Direccion }}</td>
+                        <td class="tw-p-2">{{ datos.Telefono }}</td>
+                        <td class="tw-p-2">{{ datos.Cumpleaños }}</td>
+                        <td class="tw-p-2">{{ datos.FecIng }}</td>
+                        <td class="tw-p-2">{{ datos.Antiguedad }}</td>
+                        <td class="tw-p-2">{{ datos.DiasVac }}</td>
+
+                    </tr>
+                </template>
+            </TableGreen>
+
+            <pre>
+                {{ PerfilesPuesto }}
+            </pre>
             <!-- <pagination class="tw-mt-6 tw-ml-4" :links="users.links" /> -->
         </div>
     </app-layout>
@@ -108,6 +275,7 @@
         },
         props: {
             Perfiles: Object,
+            PerfilesPuesto: Object,
             filters: Object,
         },
         data(){
