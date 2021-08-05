@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Menus\MenuProducccionController;
 use App\Http\Controllers\Produccion\MaterialesController;
+use App\Http\Controllers\Produccion\PersonalController;
 use App\Http\Controllers\Produccion\ProcesosController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,9 @@ Route::get('', [MenuProducccionController::class,'index'])->name('Produccion');
 //Redireccion y accion de procesos
 
 //Route::post('Procesos/carform', [ProcesosController::class,'carform']);
+
+Route::resource('Personal', PersonalController::class)
+    ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('Procesos', ProcesosController::class)
     ->middleware(['auth:sanctum', 'verified']);

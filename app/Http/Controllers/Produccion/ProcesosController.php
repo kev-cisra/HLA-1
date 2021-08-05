@@ -26,11 +26,7 @@ class ProcesosController extends Controller
         $usuario = Auth::id();
 
         $perf = PerfilesUsuarios::where('IdUser','=',$usuario)
-        ->with(['perfiles_area'=>function($query) {
-                $query->select('id','Nombre', 'idArea');
-            }
-        ])
-        ->first(['id', 'IdEmp', 'Empresa', 'Nombre', 'ApPat', 'ApMat', 'perfiles_usuarios_id', 'Areas_id']);
+        ->first(['id', 'IdEmp', 'Empresa', 'Nombre', 'ApPat', 'ApMat', 'perfiles_usuarios_id']);
 
         $area = NULL;
         $proce = NULL;
@@ -40,12 +36,10 @@ class ProcesosController extends Controller
             ->get(['id', 'IdUser', 'idArea', 'Nombre', 'areas_id']);
             if(!empty($request->busca)){
                 $proce = procesos::where('areas_id','=',$request->busca)
-                ->with('procesos_area')
                 ->get();
             }
         }else{
             $proce = procesos::where('areas_id','=',$perf->Areas_id)
-            ->with('procesos_area')
             ->get();
         }
 
