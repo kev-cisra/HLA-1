@@ -29,11 +29,11 @@
                 </template>
 
                 <template v-slot:BtnNuevo>
-                    <jet-button @click="openModal" class="BtnNuevo">Nuevo Módulo </jet-button>
                 </template>
 
             </Accions>
-            <Table>
+
+            <TableGreen>
                 <template v-slot:TableHeader>
                     <th class="columna" @click="sort('id')">Id
                         <i v-if="params.field === 'id' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
@@ -75,8 +75,8 @@
                         </td>
                     </tr>
                 </template>
-            </Table>
-            <pagination class="mt-6" :links="users.links" />
+            </TableGreen>
+            <pagination class="tw-mt-6 tw-ml-4" :links="users.links" />
         </div>
     </app-layout>
 </template>
@@ -86,7 +86,7 @@
     import Welcome from '@/Jetstream/Welcome'
     import Header from '@/Components/Header'
     import Accions from '@/Components/Accions'
-    import Table from '@/Components/Table'
+    import TableGreen from '@/Components/TableGreen'
     import JetButton from '@/Jetstream/Button'
     import Pagination from '@/Components/pagination'
     import pickBy from 'lodash/pickBy'
@@ -98,7 +98,7 @@
             Welcome,
             Header,
             Accions,
-            Table,
+            TableGreen,
             JetButton,
             Pagination,
         },

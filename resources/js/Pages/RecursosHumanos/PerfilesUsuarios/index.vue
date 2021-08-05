@@ -1,8 +1,8 @@
 <template>
     <app-layout>
-       <div>
+        <div>
             <Header>
-                <slot>Usuarios del Sistema</slot>
+                <slot>Perfiles de Usuarios</slot>
             </Header>
 
             <Accions>
@@ -18,9 +18,9 @@
 
                 <template v-slot:SelectB>
                     <select class="InputSelectFilter" v-model="params.column">
-                        <option value="id" selected>Id</option>
-                        <option value="name">Nombre</option>
-                        <option value="email">Correo</option>
+                        <option value="IdEmp" selected>Núm Empleado</option>
+                        <option value="Empresa">Empresa</option>
+                        <option value="Nombre">Nombre</option>
                     </select>
                 </template>
 
@@ -32,28 +32,33 @@
                 </template>
 
             </Accions>
+
             <TableGreen>
                 <template v-slot:TableHeader>
-                    <th class="columna" @click="sort('id')">Id
-                        <i v-if="params.field === 'id' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'id' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    <th class="columna" @click="sort('IdEmp')">Núm. Empleado
+                        <i v-if="params.field === 'IdEmp' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'IdEmp' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
                     </th>
-                    <th class="columna" @click="sort('name')">Nombre
-                        <i v-if="params.field === 'name' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'name' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    <th class="columna" @click="sort('Empresa')">Empresa
+                        <i v-if="params.field === 'Empresa' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Empresa' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
                     </th>
-                    <th class="columna" @click="sort('email')">Email
-                        <i v-if="params.field === 'email' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'email' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    <th class="columna" @click="sort('Nombre')">Nombre
+                        <i v-if="params.field === 'Nombre' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Nombre' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
+                    </th>
+                    <th class="columna" @click="sort('Nombre')">Nombre
+                        <i v-if="params.field === 'Nombre' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
+                        <i v-if="params.field === 'Nombre' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
                     </th>
                     <th class="columna tw-text-center">Acciones</th>
                 </template>
 
                 <template v-slot:TableFooter>
-                    <tr class="fila" >
-                        <td class="tw-p-2"></td>
-                        <td class="tw-p-2"></td>
-                        <td class="tw-p-2"></td>
+                    <tr class="fila" v-for="perfil in Perfiles.data" :key="perfil.id">
+                        <td class="tw-p-2">{{ perfil.IdEmp }}</td>
+                        <td class="tw-p-2">{{ perfil.Empresa }}</td>
+                        <td class="tw-p-2">{{ perfil.Nombre }}</td>
                         <td class="tw-p-2">
                             <div class="columnaIconos">
                                 <div class="iconoEdit">
@@ -75,46 +80,8 @@
                     </tr>
                 </template>
             </TableGreen>
-            <!-- <pagination class="tw-mt-6 tw-ml-4" :links="object.links" /> -->
+            <!-- <pagination class="tw-mt-6 tw-ml-4" :links="users.links" /> -->
         </div>
-        <modal :show="showModal" @close="chageClose">
-            <form>
-                <div class="tw-px-4 tw-py-4">
-                    <div class="tw-text-lg">
-                        <div class="ModalHeader">
-                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Modulo</h3>
-                        </div>
-                    </div>
-
-                    <div class="tw-mt-4">
-                        <div class="ModalForm">
-                            <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>XXX</jet-label>
-                                    <jet-input type="text"></jet-input>
-                                    <small  class="validation-alert">XXX</small>
-                                </div>
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>XXX</jet-label>
-                                    <jet-input type="text"></jet-input>
-                                    <small  class="validation-alert">XXX</small>
-                                </div>
-                            </div>
-
-                            <div class="tw-mb-6 md:tw-flex">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ModalFooter">
-                    <jet-button type="button">Guardar</jet-button>
-                    <jet-button type="button">Actualizar</jet-button>
-                    <jet-CancelButton>Cerrar</jet-CancelButton>
-                </div>
-            </form>
-        </modal>
     </app-layout>
 </template>
 
@@ -147,7 +114,7 @@
             return{
                 params:{
                     search: this.filters.search,
-                    column: 'id',
+                    column: 'IdEmp',
                     paginate: 5,
                     field: 'id',
                     direction: 'desc'
@@ -156,4 +123,3 @@
         },
     };
 </script>
-

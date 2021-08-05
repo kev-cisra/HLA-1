@@ -29,5 +29,13 @@ class ModulosSeeder extends Seeder
             'Ruta' => 'Produccion/Materiales',
             'Area' => '7',
         ]);
+
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'Perfiles Usuarios',
+            'Icono' => 'fas fa-users',
+            'Ruta' => 'RecursosHumanos/PerfilesUsuarios',
+            'Area' => '2',
+        ]);
     }
 }
