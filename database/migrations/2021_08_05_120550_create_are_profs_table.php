@@ -26,6 +26,7 @@ class CreateAreProfsTable extends Migration
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
+            $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });
     }

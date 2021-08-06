@@ -8,6 +8,8 @@ import 'bootstrap';
 
 const el = document.getElementById('app');
 
+
+
 createApp({
     render: () =>
         h(InertiaApp, {

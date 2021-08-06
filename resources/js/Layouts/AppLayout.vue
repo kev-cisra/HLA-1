@@ -167,9 +167,9 @@
         data() {
             return {
                 showingNavigationDropdown: false,
+
             }
         },
-
         methods: {
             switchToTeam(team) {
                 this.$inertia.put(route('current-team.update'), {

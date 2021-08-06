@@ -214,7 +214,7 @@ export default {
         },
         //guardar información de procesos
         save(form) {
-            console.log(form)
+            //console.log(form)
             $('#t_mat').DataTable().destroy();
             this.$inertia.post('/Produccion/Materiales', form, {
                 onSuccess: () => { this.tabla(), this.reset(), this.chageClose()},

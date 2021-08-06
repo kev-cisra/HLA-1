@@ -18,7 +18,7 @@ class PersonalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         $usuario = Auth::id();
@@ -33,9 +33,20 @@ class PersonalController extends Controller
             ->with('sub_areas')
             ->get(['id', 'IdUser', 'idArea', 'Nombre', 'areas_id']);
 
+        $personal = PerfilesUsuarios::get();
+        $areper = empty($request->busca) ? NULL : are_prof::where('area_id', '=', $request->busca)
+        ->with([
+            'areperf_area' => function($area){
+                $area->select('id', 'idArea', 'Nombre', 'tipo', 'areas_id');
+            },
+            'areperf_perfil' => function($perfi){
+                $perfi->select('id', 'IdEmp','Empresa', 'Nombre', 'ApPat', 'ApMat');
+            }])
+        ->get();
 
 
-        return Inertia::render('Produccion/Personal', ['usuario' => $perf, 'areas' => $areas]);
+
+        return Inertia::render('Produccion/Personal', ['usuario' => $perf, 'areas' => $areas, 'personal' => $personal, 'areper' => $areper]);
     }
 
     /**
@@ -57,6 +68,26 @@ class PersonalController extends Controller
     public function store(Request $request)
     {
         //
+        Validator::make($request->all(), [
+                'area_id' => 'required',
+                'perfiles_usuarios_id' => ['required','numeric'],
+        ])->validate();
+
+        $cuenta = are_prof::where('perfiles_usuarios_id', '=', $request->perfiles_usuarios_id)
+        ->where('area_id', '=', $request->area_id)
+        ->count();
+
+        if($cuenta == 1) {
+
+            Validator::make($request->all(), [
+                'perfiles_usuarios_id' => 'unique:are_profs'
+            ])->validate();
+        }
+
+        are_prof::create($request->all());
+
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
     }
 
     /**
@@ -99,8 +130,13 @@ class PersonalController extends Controller
      * @param  \App\Models\Produccion\are_prof  $are_prof
      * @return \Illuminate\Http\Response
      */
-    public function destroy(are_prof $are_prof)
+    public function destroy(Request $request)
     {
         //
+        if ($request->has('id')) {
+            are_prof::find($request->input('id'))->delete();
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 }

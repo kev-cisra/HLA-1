@@ -9,16 +9,40 @@
             </template>
             <template  v-slot:SelectB>
                 <select @change="verTabla" class="InputSelect" v-model="S_Area" v-html="opc">
-
-                    <!--<option v-for="area in areas" :key="area" :value="area.id">{{ area.Nombre }}</option>-->
                 </select>
             </template>
             <template v-slot:BtnNuevo>
-                <jet-button @click="openModal" class="BtnNuevo">Asignar area a personal </jet-button>
+                <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer">Asignar area a personal </jet-button>
             </template>
         </Accions>
+        <!------------------------------------ carga de datos de personal y areas ------------------------------------>
+        <div class="collapse" id="agPer">
+            <form >
+                <div class="tw-mb-6 md:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>ÁREA </jet-label>
+                        <select class="InputSelect" v-model="form.area_id" v-html="opc"></select>
+                        <small v-if="errors.area_id" class="validation-alert">{{errors.area_id}}</small>
+                    </div>
+
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>Personal </jet-label>
+                        <jet-input type="text" list="per" v-model="form.perfiles_usuarios_id"></jet-input>
+                        <small v-if="errors.perfiles_usuarios_id" class="validation-alert">{{errors.perfiles_usuarios_id}}</small>
+                        <datalist id="per">
+                            <option v-for="persona in personal" :key="persona" :value="persona.id">{{ persona.IdEmp }} {{ persona.Nombre }} {{ persona.ApPat }} {{ persona.ApMat }}</option>
+                        </datalist>
+                    </div>
+
+                    <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
+
+                </div>
+            </form>
+        </div>
+
+
         <div class="table-responsive">
-            <Table id="t-per">
+            <Table id="t_per">
                 <template v-slot:TableHeader>
                     <th class="columna">Número de empleado</th>
                     <th class="columna">Nombre</th>
@@ -26,14 +50,13 @@
                     <th></th>
                 </template>
                 <template v-slot:TableFooter>
-                    <tr v-for="are_perf in are_perfs" :key="are_perf.id">
-                        <td class="fila">{{  }}</td>
-                        <td class="fila">{{  }}</td>
-                        <td class="fila">{{  }}</td>
-                        <td class="fila">{{  }}</td>
+                    <tr v-for="ap in areper" :key="ap.id">
+                        <td class="fila">{{ ap.areperf_perfil.IdEmp }}</td>
+                        <td class="fila">{{ ap.areperf_perfil.Nombre }} {{ ap.areperf_perfil.ApPat }} {{ ap.areperf_perfil.ApMat }}</td>
+                        <td class="fila">{{ ap.areperf_area.Nombre }}</td>
                         <td class="fila">
                             <div class="columnaIconos">
-                                <div class="iconoDetails">
+                                <!--<div class="iconoDetails">
                                     <span tooltip="Detalles" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -47,8 +70,8 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                         </svg>
                                     </span>
-                                </div>
-                                <div class="iconoDelete" @click="deleteRow(material)">
+                                </div>-->
+                                <div class="iconoDelete" @click="deleteRow(ap)">
                                     <span tooltip="Eliminar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -61,7 +84,7 @@
                 </template>
             </Table>
         </div>
-        <!---------- Modal de acciones ------------->
+        <!---------- Modal de acciones -----------
         <modal :show="showModal" @close="chageClose">
             <form>
                 <div class="tw-px-4 tw-py-4">
@@ -84,13 +107,6 @@
                                     <jet-input type="text" v-model="form.nommat"></jet-input>
                                     <small v-if="errors.nommat" class="validation-alert">{{errors.nommat}}</small>
                                 </div>
-                                <div v-show="!SM" class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>ÁREA </jet-label>
-                                    <select  class="InputSelect" v-model="form.area_id">
-                                        <option v-for="area in areas" :key="area" :value="area.id">{{ area.Nombre }}</option>
-                                    </select>
-                                    <small v-if="errors.area_id" class="validation-alert">{{errors.area_id}}</small>
-                                </div>
                             </div>
 
                             <div class="tw-mb-6 md:tw-flex">
@@ -111,7 +127,7 @@
                     <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
                 </div>
             </form>
-        </modal>
+        </modal>-->
     </app-layout>
 </template>
 
@@ -131,12 +147,14 @@
     import $ from 'jquery';
 
     export default {
-        props: [
-            'usuario',
-            'areas',
-            'are_perfs',
-            'errors'
-        ],
+        props: {
+            usuario: Object,
+            areas: Object,
+            personal: Object,
+            areper: Object,
+            are_perfs: Object,
+            errors: Object
+        },
         components: {
             AppLayout,
             Header,
@@ -152,14 +170,150 @@
             return {
                 S_Area: '',
                 opc: '<option value="">Selecciona una área </option>',
+                español: {
+                    "processing": "Procesando...",
+                    "lengthMenu": "Mostrar _MENU_ registros",
+                    "zeroRecords": "No se encontraron resultados",
+                    "emptyTable": "Ningún dato disponible en esta tabla",
+                    "info": "Registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "search": "Buscar:",
+                    "infoThousands": ",",
+                    "loadingRecords": "Cargando...",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "aria": {
+                        "sortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad",
+                        "collection": "Colección",
+                        "colvisRestore": "Restaurar visibilidad",
+                        "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+                        "copySuccess": {
+                            "1": "Copiada 1 fila al portapapeles",
+                            "_": "Copiadas %d fila al portapapeles"
+                        },
+                        "copyTitle": "Copiar al portapapeles",
+                        "csv": "CSV",
+                        "excel": "Excel",
+                        "pageLength": {
+                            "-1": "Mostrar todas las filas",
+                            "1": "Mostrar 1 fila",
+                            "_": "Mostrar %d filas"
+                        },
+                        "pdf": "PDF",
+                        "print": "Imprimir"
+                    },
+                    "autoFill": {
+                        "cancel": "Cancelar",
+                        "fill": "Rellene todas las celdas con <i>%d<\/i>",
+                        "fillHorizontal": "Rellenar celdas horizontalmente",
+                        "fillVertical": "Rellenar celdas verticalmentemente"
+                    },
+                    "decimal": ",",
+                    "searchBuilder": {
+                        "add": "Añadir condición",
+                        "button": {
+                            "0": "Constructor de búsqueda",
+                            "_": "Constructor de búsqueda (%d)"
+                        },
+                        "clearAll": "Borrar todo",
+                        "condition": "Condición",
+                        "conditions": {
+                            "date": {
+                                "after": "Despues",
+                                "before": "Antes",
+                                "between": "Entre",
+                                "empty": "Vacío",
+                                "equals": "Igual a",
+                                "not": "No",
+                                "notBetween": "No entre",
+                                "notEmpty": "No Vacio"
+                            },
+                            "moment": {
+                                "after": "Despues",
+                                "before": "Antes",
+                                "between": "Entre",
+                                "empty": "Vacío",
+                                "equals": "Igual a",
+                                "not": "No",
+                                "notBetween": "No entre",
+                                "notEmpty": "No vacio"
+                            },
+                            "number": {
+                                "between": "Entre",
+                                "empty": "Vacio",
+                                "equals": "Igual a",
+                                "gt": "Mayor a",
+                                "gte": "Mayor o igual a",
+                                "lt": "Menor que",
+                                "lte": "Menor o igual que",
+                                "not": "No",
+                                "notBetween": "No entre",
+                                "notEmpty": "No vacío"
+                            },
+                            "string": {
+                                "contains": "Contiene",
+                                "empty": "Vacío",
+                                "endsWith": "Termina en",
+                                "equals": "Igual a",
+                                "not": "No",
+                                "notEmpty": "No Vacio",
+                                "startsWith": "Empieza con"
+                            }
+                        },
+                        "data": "Data",
+                        "deleteTitle": "Eliminar regla de filtrado",
+                        "leftTitle": "Criterios anulados",
+                        "logicAnd": "Y",
+                        "logicOr": "O",
+                        "rightTitle": "Criterios de sangría",
+                        "title": {
+                            "0": "Constructor de búsqueda",
+                            "_": "Constructor de búsqueda (%d)"
+                        },
+                        "value": "Valor"
+                    },
+                    "searchPanes": {
+                        "clearMessage": "Borrar todo",
+                        "collapse": {
+                            "0": "Paneles de búsqueda",
+                            "_": "Paneles de búsqueda (%d)"
+                        },
+                        "count": "{total}",
+                        "countFiltered": "{shown} ({total})",
+                        "emptyPanes": "Sin paneles de búsqueda",
+                        "loadMessage": "Cargando paneles de búsqueda",
+                        "title": "Filtros Activos - %d"
+                    },
+                    "select": {
+                        "1": "%d fila seleccionada",
+                        "_": "%d filas seleccionadas",
+                        "cells": {
+                            "1": "1 celda seleccionada",
+                            "_": "$d celdas seleccionadas"
+                        },
+                        "columns": {
+                            "1": "1 columna seleccionada",
+                            "_": "%d columnas seleccionadas"
+                        }
+                    },
+                    "thousands": "."
+                },
                 showModal: false,
                 editMode: false,
                 search: null,
                 form: {
-                    idmat: '',
-                    area_id: this.usuario.Areas_id,
-                    nommat: '',
-                    descrip: null
+                    perfiles_usuarios_id: '',
+                    area_id: '',
                 }
             }
         },
@@ -172,14 +326,23 @@
             //datatable
             tabla() {
                 this.$nextTick(() => {
-                    $('#t_per').DataTable();
+                    $('#t_per').DataTable({
+                        "language": this.español
+                    });
                 })
+            },
+            tablaReload() {
+                $('#t_per').DataTable().clear();
+                $('#t_per').DataTable().destroy();
+                this.tabla();
             },
             //información del select area
             mostSelect() {
                 this.$nextTick(() => {
+
                     this.areas.forEach(r => {
-                        //console.log(r.sub_areas !== '' ? 'disabled' : '');
+                        //var condi = r.sub_areas.id == '' ? 'disabled' : '';
+                        //console.log(r.sub_areas);
                         this.opc += `<option value="${r.id}"> ${r.Nombre} </option>`;
                         r.sub_areas.forEach(rr => {
                             this.opc += `<option value="${rr.id}"> ${rr.Nombre} </option>`;
@@ -191,28 +354,44 @@
             },
             //consulta para generar datos de la tabla
             verTabla(event){
-                $('#t_mat').DataTable().destroy();
-                this.$inertia.get('/Produccion/Personal',{ busca: event.target.value }, {onSuccess: () => { this.tabla() }} )
+                this.$inertia.get('/Produccion/Personal',{ busca: event.target.value }, {
+                    onSuccess: () => { this.tablaReload() }, preserveState: true
+                });
             },
-            //abrir y reset del modal procesos
+            //abrir y reset del modal
             openModal() {
                 this.chageClose();
                 this.reset();
                 this.editMode = false;
             },
-            //abrir o cerrar modal procesos
+            //abrir o cerrar modal
             chageClose(){
                 this.showModal = !this.showModal
             },
-            //reset de modal procesos
-            reset(){
+            //reset de modal
+            reset(val){
                 this.form = {
-                    idmat: null,
-                    nommat: null,
-                    descrip: null,
-                    area_id: this.usuario.Areas_id,
+                    perfiles_usuarios_id: '',
+                    area_id: val,
                 }
             },
+            //guardar información de
+            save(form) {
+                //console.log(form)
+                $('#t_per').DataTable().destroy();
+                this.$inertia.post('/Produccion/Personal', form, {
+                    onSuccess: () => { this.tabla(), this.reset(form.area_id)}, preserveState: true
+                });
+                //$('#t_mat').DataTable();
+            },
+            deleteRow: function (data) {
+                if (!confirm('¿Estás  seguro de querer eliminar este Material?')) return;
+                $('#t_per').DataTable().destroy()
+                data._method = 'DELETE';
+                this.$inertia.post('/Produccion/Personal/' + data.id, data, {
+                    onSuccess: () => { this.tablaReload() }, preserveState: true
+                });
+            }
         }
     }
 </script>
