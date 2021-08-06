@@ -1,254 +1,102 @@
 <template>
     <app-layout>
-        <div>
+        <div class="uppercase tw-mx-4">
             <Header>
                 <slot>Perfiles de Usuarios</slot>
             </Header>
 
-            <Accions>
-                <template v-slot:paginate>
-                    <select v-model="params.paginate" class="paginate">
-                        <option>5</option>
-                        <option>10</option>
-                        <option>25</option>
-                        <option>35</option>
-                        <option>50</option>
-                    </select>
-                </template>
+            <div class="tw-mt-8">
+                <div class="tw-flex tw-justify-end">
+                    <div><jet-button @click="openModal" class="BtnNuevo">Nueva Información </jet-button></div>
+                </div>
+                <div class="w-full overflow-x-auto">
+                <Table id="perfiles">
+                    <template v-slot:TableHeader>
+                        <th class="columna">Núm. Empleado</th>
+                        <th class="columna">Empresa</th>
+                        <th class="columna">Nombre</th>
+                        <th class="columna">Paterno</th>
+                        <th class="columna">Materno</th>
+                        <th class="columna">Curp</th>
+                        <th class="columna">RFC</th>
+                        <th class="columna">NSS</th>
+                        <th class="columna">Direccion</th>
+                        <th class="columna">Telefono</th>
+                        <th class="columna">Cumpleaños</th>
+                        <th class="columna">Fecha Ingreso</th>
+                        <th class="columna">Antiguedad </th>
+                        <th class="columna">Dias Vac.</th>
+                        <th class="columna">Puesto</th>
+                        <th class="columna">Departamento</th>
+                        <th class="columna">Jefe</th>
+                    </template>
 
-                <template v-slot:SelectB>
-                    <select class="InputSelectFilter" v-model="params.column">
-                        <option value="IdEmp" selected>Núm Empleado</option>
-                        <option value="Empresa">Empresa</option>
-                        <option value="Nombre">Nombre</option>
-                    </select>
-                </template>
+                    <template v-slot:TableFooter>
+                        <tr class="fila" v-for="datos in PerfilesUsuarios" :key="datos.id">
+                            <td class="tw-p-2">{{ datos.IdEmp }}</td>
+                            <td class="tw-p-2">{{ datos.Empresa }}</td>
+                            <td class="tw-p-2">{{ datos.Nombre }}</td>
+                            <td class="tw-p-2">{{ datos.ApPat }}</td>
+                            <td class="tw-p-2">{{ datos.ApMat }}</td>
+                            <td class="tw-p-2">{{ datos.Curp  }}</td>
+                            <td class="tw-p-2">{{ datos.Rfc}}</td>
+                            <td class="tw-p-2">{{ datos.Nss  }}</td>
+                            <td class="tw-p-2">{{ datos.Direccion }}</td>
+                            <td class="tw-p-2">{{ datos.Telefono }}</td>
+                            <td class="tw-p-2">{{ datos.Cumpleaños }}</td>
+                            <td class="tw-p-2">{{ datos.FecIng }}</td>
+                            <td class="tw-p-2">{{ datos.Antiguedad }}</td>
+                            <td class="tw-p-2">{{ datos.DiasVac }}</td>
+                            <td class="tw-p-2">{{ datos.perfil_puesto.Nombre}}</td>
+                            <td class="tw-p-2">{{ datos.perfil_departamento.Nombre}}</td>
+                            <td class="tw-p-2">{{ datos.perfil_jefe.Nombre}}</td>
+                        </tr>
+                    </template>
+                </Table>
+                </div>
 
-                <template v-slot:InputBusqueda>
-                    <input type="text" :placeholder="'Filtro por '+params.column" class="InputSearch" v-model="params.search">
-                </template>
+            </div>
+        </div>
 
-                <template v-slot:BtnNuevo>
-                </template>
+        <modal :show="showModal" @close="chageClose">
+            <form>
+                <div class="tw-px-4 tw-py-4">
+                    <div class="tw-text-lg">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Modulo</h3>
+                        </div>
+                    </div>
 
-            </Accions>
+                    <div class="tw-mt-4">
+                        <div class="ModalForm">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
 
-            <TableGreen>
-                <template v-slot:TableHeader>
-                    <th class="columna" @click="sort('IdEmp')">Núm. Empleado
-                        <i v-if="params.field === 'IdEmp' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'IdEmp' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Empresa')">Empresa
-                        <i v-if="params.field === 'Empresa' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Empresa' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Nombre')">Nombre
-                        <i v-if="params.field === 'Nombre' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Nombre' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('ApPat')">Paterno
-                        <i v-if="params.field === 'ApPat' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'ApPat' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('ApPat')">Paterno
-                        <i v-if="params.field === 'ApPat' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'ApPat' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('ApMat')">Materno
-                        <i v-if="params.field === 'ApMat' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'ApMat' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Curp')">Curp
-                        <i v-if="params.field === 'Curp ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Curp ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Rfc')">RFC
-                        <i v-if="params.field === 'Rfc ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Rfc ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Nss')">NSS
-                        <i v-if="params.field === 'Nss ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Nss ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Direccion')">Direccion
-                        <i v-if="params.field === 'Direccion' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Direccion' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Telefono')">Telefono
-                        <i v-if="params.field === 'Telefono' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Telefono' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Cumpleaños')">Cumpleaños
-                        <i v-if="params.field === 'Cumpleaños' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Cumpleaños' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('FecIng')">Fecha Ingreso
-                        <i v-if="params.field === 'FecIng' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'FecIng' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Antiguedad')">Antiguedad
-                        <i v-if="params.field === 'Antiguedad' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Antiguedad' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('DiasVac')">Dias Vac.
-                        <i v-if="params.field === 'DiasVac' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'DiasVac' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Puesto_id ')">Puesto
-                        <i v-if="params.field === 'Puesto_id ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Puesto_id ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Departamento_id ')">Departamento
-                        <i v-if="params.field === 'Departamento_id ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Departamento_id ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('jefes_areas_id ')">Jefe
-                        <i v-if="params.field === 'jefes_areas_id ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'jefes_areas_id ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna tw-text-center">Acciones</th>
-                </template>
-
-                <template v-slot:TableFooter>
-                    <tr class="fila" v-for="perfil in Perfiles.data" :key="perfil.id">
-                        <td class="tw-p-2">{{ perfil.IdEmp }}</td>
-                        <td class="tw-p-2">{{ perfil.Empresa }}</td>
-                        <td class="tw-p-2">{{ perfil.Nombre }}</td>
-                        <td class="tw-p-2">{{ perfil.ApPat }}</td>
-                        <td class="tw-p-2">{{ perfil.ApMat }}</td>
-                        <td class="tw-p-2">{{ perfil.Curp  }}</td>
-                        <td class="tw-p-2">{{ perfil.Rfc  }}</td>
-                        <td class="tw-p-2">{{ perfil.Nss  }}</td>
-                        <td class="tw-p-2">{{ perfil.Direccion }}</td>
-                        <td class="tw-p-2">{{ perfil.Telefono }}</td>
-                        <td class="tw-p-2">{{ perfil.Cumpleaños }}</td>
-                        <td class="tw-p-2">{{ perfil.FecIng }}</td>
-                        <td class="tw-p-2">{{ perfil.Antiguedad }}</td>
-                        <td class="tw-p-2">{{ perfil.DiasVac }}</td>
-                        <td class="tw-p-2">{{ perfil.Puesto_id  }}</td>
-                        <td class="tw-p-2">{{ perfil.Departamento_id  }}</td>
-                        <td class="tw-p-2">{{ perfil.jefes_areas_id  }}</td>
-                        <td class="tw-p-2">
-                            <div class="columnaIconos">
-                                <div class="iconoEdit">
-                                    <span tooltip="Editar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                        </svg>
-                                    </span>
                                 </div>
-                                <div class="iconoDelete">
-                                    <span tooltip="Eliminar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                    </span>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                </template>
-            </TableGreen>
 
-            <TableGreen>
-                <template v-slot:TableHeader>
-                    <th class="columna" @click="sort('IdEmp')">Núm. Empleado
-                        <i v-if="params.field === 'IdEmp' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'IdEmp' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Empresa')">Empresa
-                        <i v-if="params.field === 'Empresa' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Empresa' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Nombre')">Nombre
-                        <i v-if="params.field === 'Nombre' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Nombre' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('ApPat')">Paterno
-                        <i v-if="params.field === 'ApPat' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'ApPat' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('ApMat')">Materno
-                        <i v-if="params.field === 'ApMat' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'ApMat' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Curp')">Curp
-                        <i v-if="params.field === 'Curp ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Curp ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Rfc')">RFC
-                        <i v-if="params.field === 'Rfc ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Rfc ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Nss')">NSS
-                        <i v-if="params.field === 'Nss ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Nss ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Direccion')">Direccion
-                        <i v-if="params.field === 'Direccion' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Direccion' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Telefono')">Telefono
-                        <i v-if="params.field === 'Telefono' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Telefono' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Cumpleaños')">Cumpleaños
-                        <i v-if="params.field === 'Cumpleaños' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Cumpleaños' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('FecIng')">Fecha Ingreso
-                        <i v-if="params.field === 'FecIng' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'FecIng' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Antiguedad')">Antiguedad
-                        <i v-if="params.field === 'Antiguedad' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Antiguedad' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('DiasVac')">Dias Vac.
-                        <i v-if="params.field === 'DiasVac' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'DiasVac' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Puesto_id ')">Puesto
-                        <i v-if="params.field === 'Puesto_id ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Puesto_id ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Departamento_id ')">Departamento
-                        <i v-if="params.field === 'Departamento_id ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Departamento_id ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('jefes_areas_id ')">Jefe
-                        <i v-if="params.field === 'jefes_areas_id ' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'jefes_areas_id ' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                </template>
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
 
-                <template v-slot:TableFooter>
-                    <tr class="fila" v-for="datos in PerfilesPuesto" :key="datos.id">
-                        <td class="tw-p-2">{{ datos.IdEmp }}</td>
-                        <td class="tw-p-2">{{ datos.Empresa }}</td>
-                        <td class="tw-p-2">{{ datos.Nombre }}</td>
-                        <td class="tw-p-2">{{ datos.ApPat }}</td>
-                        <td class="tw-p-2">{{ datos.ApMat }}</td>
-                        <td class="tw-p-2">{{ datos.Curp  }}</td>
-                        <td class="tw-p-2">{{ datos.Rfc}}</td>
-                        <td class="tw-p-2">{{ datos.Nss  }}</td>
-                        <td class="tw-p-2">{{ datos.Direccion }}</td>
-                        <td class="tw-p-2">{{ datos.Telefono }}</td>
-                        <td class="tw-p-2">{{ datos.Cumpleaños }}</td>
-                        <td class="tw-p-2">{{ datos.FecIng }}</td>
-                        <td class="tw-p-2">{{ datos.Antiguedad }}</td>
-                        <td class="tw-p-2">{{ datos.DiasVac }}</td>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
 
-                    </tr>
-                </template>
-            </TableGreen>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <pre>
-                {{ PerfilesPuesto }}
-            </pre>
-            <!-- <pagination class="tw-mt-6 tw-ml-4" :links="users.links" /> -->
-        </div>
+                <div class="ModalFooter">
+                    <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
+                    <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
+                    <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                </div>
+            </form>
+        </modal>
     </app-layout>
 </template>
 
@@ -258,10 +106,16 @@
     import Header from '@/Components/Header'
     import Accions from '@/Components/Accions'
     import TableGreen from '@/Components/TableGreen'
-    import JetButton from '@/Jetstream/Button'
+    import Table from '@/Components/Table'
+    import JetButton from '@/Components/Button'
+    import JetCancelButton from '@/Components/CancelButton'
+    import Modal from '@/Jetstream/Modal';
     import Pagination from '@/Components/pagination'
     import pickBy from 'lodash/pickBy'
     import throttle from 'lodash/throttle'
+    //imports de datatables
+    import datatable from 'datatables.net-bs5';
+    import $ from 'jquery';
 
     export default {
         components: {
@@ -270,24 +124,44 @@
             Header,
             Accions,
             TableGreen,
+            Table,
             JetButton,
+            JetCancelButton,
+            Modal,
             Pagination,
         },
         props: {
-            Perfiles: Object,
-            PerfilesPuesto: Object,
-            filters: Object,
+            PerfilesUsuarios: Object,
         },
         data(){
             return{
-                params:{
-                    search: this.filters.search,
-                    column: 'IdEmp',
-                    paginate: 5,
-                    field: 'id',
-                    direction: 'desc'
-                },
+                showModal: false,
             };
+        },
+        mounted() {
+            this.tabla();
+        },
+        methods:{
+            //datatable
+            tabla() {
+                this.$nextTick(() => {
+                    $('#perfiles').DataTable();
+                })
+            },
+            //consulta para generar datos de la tabla
+            verTabla(event){
+                $('#perfiles').DataTable().destroy();
+                this.$inertia.get('/RecursosHumanos/PerfilesUsuarios',{ busca: event.target.value }, {onSuccess: () => { this.tabla() }} )
+            },
+            openModal() {
+                this.chageClose();
+                this.reset();
+                this.editMode = false;
+
+            },
+            chageClose(){
+                this.showModal = !this.showModal
+            },
         },
     };
 </script>

@@ -51,7 +51,6 @@ class MaterialesController extends Controller
             ->get();
         }
 
-
         return Inertia::render('Produccion/Materiales', ['usuario' => $perf,'materiales' => $mate,'areas' => $area]);
     }
 
