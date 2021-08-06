@@ -19,6 +19,7 @@
         "@vue/compiler-sfc": "^3.0.5",
         "axios": "^0.21",
         "bootstrap": "^5.0.0-beta3",
+        "browser-sync-webpack-plugin": "^2.3.0",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
@@ -32,6 +33,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.3",
+        "browser-sync": "^2.27.5",
         "chart.js": "^3.4.1",
         "datatables.net-bs5": "^1.10.25",
         "datatables.net-buttons-bs5": "^1.7.1",

@@ -14,34 +14,14 @@ class PerfilesUsuariosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //Validacion de datos por URl (evitar ataques OWASP)
-        request()->validate([
-            'direction' => ['in:asc,desc'],
-            'field' => ['in:id,name,email']
-        ]);
+    public function index(){
 
-        //constructor de consultas
-        $query = PerfilesUsuarios::query();
 
-        //si detecta un valor en request->search realiza la consulta
-        if(request('search')){
-            $query->where(request('column'), 'LIKE', '%'.request('search'). '%');
-        }
-
-        //si detecta un valor en request->field realiza la consulta
-        if(request()->has(['field', 'direction'])){
-            $query->orderBy(request('field'), request('direction'));
-        }
-
-        $PerfilesPuesto = PerfilesUsuarios::with('PerfilPuesto','PerfilDepartamento', 'PerfilJefe')->get();
+        $PerfilesUsuarios = PerfilesUsuarios::with('PerfilPuesto','PerfilDepartamento', 'PerfilJefe')->get();
 
         //retorno de la vista retorno de la consulta de perfiles y sus filtros
         return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', [
-            'PerfilesPuesto' => $PerfilesPuesto,
-            'Perfiles' => $query->paginate(request('paginate')),
-            'filters' => request()->all(['search','field', 'direction'])
+            'PerfilesUsuarios' => $PerfilesUsuarios,
         ]);
     }
 
