@@ -18195,9 +18195,6 @@ select {
 .tw-mt-8 {
 	margin-top: 2rem;
 }
-.tw-mb-0 {
-	margin-bottom: 0px;
-}
 .tw-block {
 	display: block;
 }
@@ -18367,9 +18364,6 @@ select {
 }
 .tw-items-center {
 	align-items: center;
-}
-.tw-justify-start {
-	justify-content: flex-start;
 }
 .tw-justify-end {
 	justify-content: flex-end;
@@ -18555,9 +18549,6 @@ select {
 .tw-p-0 {
 	padding: 0px;
 }
-.tw-p-4 {
-	padding: 1rem;
-}
 .tw-py-2 {
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
@@ -18632,9 +18623,6 @@ select {
 .tw-pb-1 {
 	padding-bottom: 0.25rem;
 }
-.tw-pb-0 {
-	padding-bottom: 0px;
-}
 .tw-text-left {
 	text-align: left;
 }
@@ -18676,11 +18664,11 @@ select {
 .tw-font-medium {
 	font-weight: 500;
 }
-.tw-font-black {
-	font-weight: 900;
-}
 .tw-font-bold {
 	font-weight: 700;
+}
+.tw-font-black {
+	font-weight: 900;
 }
 .tw-uppercase {
 	text-transform: uppercase;
