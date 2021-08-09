@@ -19528,6 +19528,22 @@ select {
 		max-width: 42rem;
 	}
 
+	.sm\:tw-max-w-3xl {
+		max-width: 48rem;
+	}
+
+	.sm\:tw-max-w-4xl {
+		max-width: 56rem;
+	}
+
+	.sm\:tw-max-w-5xl {
+		max-width: 64rem;
+	}
+
+	.sm\:tw-max-w-7xl {
+		max-width: 80rem;
+	}
+
 	.sm\:tw-translate-y-0 {
 		--tw-translate-y: 0px;
 		transform: var(--tw-transform);
@@ -19635,6 +19651,10 @@ select {
 
 	.md\:tw-w-1\/2 {
 		width: 50%;
+	}
+
+	.md\:tw-w-full {
+		width: 100%;
 	}
 
 	.md\:tw-grid-cols-3 {

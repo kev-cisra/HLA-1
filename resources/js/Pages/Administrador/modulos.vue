@@ -216,9 +216,11 @@
                 this.editMode = false;
 
             },
+
             chageClose(){
                 this.showModal = !this.showModal
             },
+
             reset(){
                 this.form = {
                     IdUser: this.usuario.id,
@@ -228,6 +230,7 @@
                     Area: null,
                 }
             },
+
             save(data) {
                 this.$inertia.post('/Admin/Modulos', data, {
                     onSuccess: () => {
