@@ -18414,6 +18414,9 @@ select {
 .tw-overflow-hidden {
 	overflow: hidden;
 }
+.tw-overflow-x-auto {
+	overflow-x: auto;
+}
 .tw-overflow-y-auto {
 	overflow-y: auto;
 }

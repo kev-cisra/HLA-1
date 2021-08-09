@@ -50,7 +50,7 @@
                 </template>
 
                 <template v-slot:TableFooter>
-                    <tr class="fila" >
+                    <tr class="fila">
                         <td class="tw-p-2"></td>
                         <td class="tw-p-2"></td>
                         <td class="tw-p-2"></td>
