@@ -105,7 +105,6 @@
     import JetLabel from '@/Jetstream/Label';
     //datatable
     import datatable from 'datatables.net-bs5';
-    require 
     import jszip from 'jszip/dist/jszip';
     import pdfMake from 'pdfmake/build/pdfmake';
     import pdfFonts from 'pdfmake/build/vfs_fonts';
