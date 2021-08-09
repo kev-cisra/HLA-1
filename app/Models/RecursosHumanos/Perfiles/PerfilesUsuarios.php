@@ -21,7 +21,7 @@ class PerfilesUsuarios extends Model
 
     //relacion uno a uno inversa
     public function perfil_user() {
-        return $this->belongsTo(User::class, 'IdUser');
+        return $this->belongsTo(User::class, 'user_id');
     }
     //relacion uno a muchos
     public function perfil_areperfs() {

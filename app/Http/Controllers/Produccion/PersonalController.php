@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Produccion\are_prof;
 use App\Models\RecursosHumanos\Catalogos\Areas;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -20,27 +21,29 @@ class PersonalController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        //Muestra el id de la persona que inicio sesion
         $usuario = Auth::id();
-
-        $perf = PerfilesUsuarios::where('IdUser','=',$usuario)
+        //muestra la información del usuario que inicio sesion
+        $perf = PerfilesUsuarios::where('user_id','=',$usuario)
         ->get();
-
+        //consulta el id de la area produccion
         $idarepro = Areas::where('idArea', '=', 'PRO')
             ->first();
-
+        //muestra las areas y sub areas de produccion
         $areas = Areas::where('areas_id', '=', $idarepro->id)
             ->with('sub_areas')
             ->get(['id', 'IdUser', 'idArea', 'Nombre', 'areas_id']);
-
-        $personal = PerfilesUsuarios::get();
+        //consulta a todos los usuarios qu pertenecen a operaciones
+        $personal = PerfilesUsuarios::where('Departamento_id', '=', 2)
+            ->get();
+        //consulta a la relacion de areas y usuarios
         $areper = empty($request->busca) ? NULL : are_prof::where('area_id', '=', $request->busca)
         ->with([
             'areperf_area' => function($area){
                 $area->select('id', 'idArea', 'Nombre', 'tipo', 'areas_id');
             },
             'areperf_perfil' => function($perfi){
-                $perfi->select('id', 'IdEmp','Empresa', 'Nombre', 'ApPat', 'ApMat');
+                $perfi->select('id', 'IdEmp','Empresa', 'Nombre', 'ApPat', 'ApMat', 'user_id');
             }])
         ->get();
 
@@ -130,7 +133,18 @@ class PersonalController extends Controller
      */
     public function update(Request $request, are_prof $are_prof)
     {
-        //
+        // crea un nuevo usuario para que ocupe la aplicación
+        $n_user = User::create([
+            'IdEmp' => $request->IdEmp,
+            'name' => $request->Nombre.' '.$request->ApPat.' '.$request->ApMat,
+            'Area' => '',
+            'email' => '',
+            'password' => bcrypt($request->IdEmp)
+        ]);
+        //actualiza la informacion de perfiles para relacionar con el nuevo usuario
+        PerfilesUsuarios::find($request->id)->update(['user_id' => $n_user->id]);
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
     }
 
     /**

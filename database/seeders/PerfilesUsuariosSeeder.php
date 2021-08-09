@@ -32,6 +32,7 @@ class PerfilesUsuariosSeeder extends Seeder
             'Antiguedad' => '25',
             'DiasVac' => '12',
             'Puesto_id' => '13',
+            'user_id' => '16',
             'Departamento_id' => '1',
         ]);
     }

@@ -37,5 +37,19 @@ class ModulosSeeder extends Seeder
             'Ruta' => 'RecursosHumanos/PerfilesUsuarios',
             'Area' => '2',
         ]);
+        Modulos::create([
+            'Iduser' => '16',
+            'NombreModulo' => 'Personal',
+            'Icono' => 'fas fa-users',
+            'Ruta' => 'Produccion/Personal',
+            'Area' => '7',
+        ]);
+        Modulos::create([
+            'Iduser' => '16',
+            'NombreModulo' => 'Maquinas',
+            'Icono' => 'fas fa-digital-tachograph',
+            'Ruta' => 'Produccion/Maquinas',
+            'Area' => '7',
+        ]);
     }
 }

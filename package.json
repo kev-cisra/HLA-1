@@ -38,7 +38,8 @@
         "datatables.net-bs5": "^1.10.25",
         "datatables.net-buttons-bs5": "^1.7.1",
         "jquery": "^3.6.0",
-        "jszip": "^3.7.0",
+        "jszip": "^3.7.1",
+        "pdfmake": "^0.2.2",
         "vue-chartjs": "^3.5.1"
     }
 }
