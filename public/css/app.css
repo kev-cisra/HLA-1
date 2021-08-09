@@ -18414,6 +18414,9 @@ select {
 .tw-overflow-hidden {
 	overflow: hidden;
 }
+.tw-overflow-x-auto {
+	overflow-x: auto;
+}
 .tw-overflow-y-auto {
 	overflow-y: auto;
 }
@@ -18664,11 +18667,11 @@ select {
 .tw-font-medium {
 	font-weight: 500;
 }
-.tw-font-bold {
-	font-weight: 700;
-}
 .tw-font-black {
 	font-weight: 900;
+}
+.tw-font-bold {
+	font-weight: 700;
 }
 .tw-uppercase {
 	text-transform: uppercase;

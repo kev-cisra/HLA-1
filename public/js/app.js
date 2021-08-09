@@ -24148,6 +24148,144 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      español: {
+        "processing": "Procesando...",
+        "lengthMenu": "Mostrar _MENU_ registros",
+        "zeroRecords": "No se encontraron resultados",
+        "emptyTable": "Ningún dato disponible en esta tabla",
+        "info": "Registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "search": "Buscar:",
+        "infoThousands": ",",
+        "loadingRecords": "Cargando...",
+        "paginate": {
+          "first": "Primero",
+          "last": "Último",
+          "next": "Siguiente",
+          "previous": "Anterior"
+        },
+        "aria": {
+          "sortAscending": ": Activar para ordenar la columna de manera ascendente",
+          "sortDescending": ": Activar para ordenar la columna de manera descendente"
+        },
+        "buttons": {
+          "copy": "Copiar",
+          "colvis": "Visibilidad",
+          "collection": "Colección",
+          "colvisRestore": "Restaurar visibilidad",
+          "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+          "copySuccess": {
+            "1": "Copiada 1 fila al portapapeles",
+            "_": "Copiadas %d fila al portapapeles"
+          },
+          "copyTitle": "Copiar al portapapeles",
+          "csv": "CSV",
+          "excel": "Excel",
+          "pageLength": {
+            "-1": "Mostrar todas las filas",
+            "1": "Mostrar 1 fila",
+            "_": "Mostrar %d filas"
+          },
+          "pdf": "PDF",
+          "print": "Imprimir"
+        },
+        "autoFill": {
+          "cancel": "Cancelar",
+          "fill": "Rellene todas las celdas con <i>%d<\/i>",
+          "fillHorizontal": "Rellenar celdas horizontalmente",
+          "fillVertical": "Rellenar celdas verticalmentemente"
+        },
+        "decimal": ",",
+        "searchBuilder": {
+          "add": "Añadir condición",
+          "button": {
+            "0": "Constructor de búsqueda",
+            "_": "Constructor de búsqueda (%d)"
+          },
+          "clearAll": "Borrar todo",
+          "condition": "Condición",
+          "conditions": {
+            "date": {
+              "after": "Despues",
+              "before": "Antes",
+              "between": "Entre",
+              "empty": "Vacío",
+              "equals": "Igual a",
+              "not": "No",
+              "notBetween": "No entre",
+              "notEmpty": "No Vacio"
+            },
+            "moment": {
+              "after": "Despues",
+              "before": "Antes",
+              "between": "Entre",
+              "empty": "Vacío",
+              "equals": "Igual a",
+              "not": "No",
+              "notBetween": "No entre",
+              "notEmpty": "No vacio"
+            },
+            "number": {
+              "between": "Entre",
+              "empty": "Vacio",
+              "equals": "Igual a",
+              "gt": "Mayor a",
+              "gte": "Mayor o igual a",
+              "lt": "Menor que",
+              "lte": "Menor o igual que",
+              "not": "No",
+              "notBetween": "No entre",
+              "notEmpty": "No vacío"
+            },
+            "string": {
+              "contains": "Contiene",
+              "empty": "Vacío",
+              "endsWith": "Termina en",
+              "equals": "Igual a",
+              "not": "No",
+              "notEmpty": "No Vacio",
+              "startsWith": "Empieza con"
+            }
+          },
+          "data": "Data",
+          "deleteTitle": "Eliminar regla de filtrado",
+          "leftTitle": "Criterios anulados",
+          "logicAnd": "Y",
+          "logicOr": "O",
+          "rightTitle": "Criterios de sangría",
+          "title": {
+            "0": "Constructor de búsqueda",
+            "_": "Constructor de búsqueda (%d)"
+          },
+          "value": "Valor"
+        },
+        "searchPanes": {
+          "clearMessage": "Borrar todo",
+          "collapse": {
+            "0": "Paneles de búsqueda",
+            "_": "Paneles de búsqueda (%d)"
+          },
+          "count": "{total}",
+          "countFiltered": "{shown} ({total})",
+          "emptyPanes": "Sin paneles de búsqueda",
+          "loadMessage": "Cargando paneles de búsqueda",
+          "title": "Filtros Activos - %d"
+        },
+        "select": {
+          "1": "%d fila seleccionada",
+          "_": "%d filas seleccionadas",
+          "cells": {
+            "1": "1 celda seleccionada",
+            "_": "$d celdas seleccionadas"
+          },
+          "columns": {
+            "1": "1 columna seleccionada",
+            "_": "%d columnas seleccionadas"
+          }
+        },
+        "thousands": "."
+      },
       showModal: false
     };
   },
@@ -24157,20 +24295,24 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     //datatable
     tabla: function tabla() {
+      var _this = this;
+
       this.$nextTick(function () {
-        jquery__WEBPACK_IMPORTED_MODULE_13___default()('#perfiles').DataTable();
+        jquery__WEBPACK_IMPORTED_MODULE_13___default()('#perfiles').DataTable({
+          "language": _this.español
+        });
       });
     },
     //consulta para generar datos de la tabla
     verTabla: function verTabla(event) {
-      var _this = this;
+      var _this2 = this;
 
       jquery__WEBPACK_IMPORTED_MODULE_13___default()('#perfiles').DataTable().destroy();
       this.$inertia.get('/RecursosHumanos/PerfilesUsuarios', {
         busca: event.target.value
       }, {
         onSuccess: function onSuccess() {
-          _this.tabla();
+          _this2.tabla();
         }
       });
     },
@@ -30228,7 +30370,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             /* TEXT */
             ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ap.areperf_area.Nombre), 1
             /* TEXT */
-            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<div class=\"iconoDetails\">\n                                    <span tooltip=\"Detalles\" flow=\"left\">\n                                        <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n                                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\" />\n                                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\" />\n                                        </svg>\n                                    </span>\n                                </div>\n                                <div class=\"iconoEdit\" @click=\"edit(material)\">\n                                    <span tooltip=\"Editar\" flow=\"left\">\n                                        <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n                                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z\" />\n                                        </svg>\n                                    </span>\n                                </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<div class=\"iconoDetails\">\r\n                                    <span tooltip=\"Detalles\" flow=\"left\">\r\n                                        <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\" />\r\n                                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\" />\r\n                                        </svg>\r\n                                    </span>\r\n                                </div>\r\n                                <div class=\"iconoEdit\" @click=\"edit(material)\">\r\n                                    <span tooltip=\"Editar\" flow=\"left\">\r\n                                        <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z\" />\r\n                                        </svg>\r\n                                    </span>\r\n                                </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
               "class": "iconoDelete",
               onClick: function onClick($event) {
                 return $options.deleteRow(ap);
@@ -30243,7 +30385,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         _: 1
         /* STABLE */
 
-      })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("-------- Modal de acciones -----------\n        <modal :show=\"showModal\" @close=\"chageClose\">\n            <form>\n                <div class=\"tw-px-4 tw-py-4\">\n                    <div class=\"tw-text-lg\">\n                        <div class=\"ModalHeader\">\n                            <h3 class=\"tw-p-2\"><i class=\"tw-ml-3 tw-mr-3 fas fa-scroll\"></i>Alta de Procesos</h3>\n                        </div>\n                    </div>\n\n                    <div class=\"tw-mt-4\">\n                        <div class=\"ModalForm\">\n                            <div class=\"tw-mb-6 md:tw-flex\">\n                                <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                    <jet-label><span class=\"required\">*</span>Clave del material</jet-label>\n                                    <jet-input type=\"text\" v-model=\"form.idmat\"></jet-input>\n                                    <small v-if=\"errors.idmat\" class=\"validation-alert\">{{errors.idmat}}</small>\n                                </div>\n                                <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                    <jet-label><span class=\"required\">*</span>Nombre del proceso</jet-label>\n                                    <jet-input type=\"text\" v-model=\"form.nommat\"></jet-input>\n                                    <small v-if=\"errors.nommat\" class=\"validation-alert\">{{errors.nommat}}</small>\n                                </div>\n                            </div>\n\n                            <div class=\"tw-mb-6 md:tw-flex\">\n                                <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                    <jet-label><span class=\"required\">*</span>Descripción</jet-label>\n                                    <textarea v-model=\"form.descrip\" class=\"InputSelect\"></textarea>\n                                    <small v-if=\"errors.descrip\" class=\"validation-alert\">{{errors.descrip}}</small>\n                                </div>\n\n                            </div>\n                        </div>\n                    </div>\n                </div>\n\n                <div class=\"ModalFooter\">\n                    <jet-button type=\"button\" @click=\"save(form)\" v-show=\"!editMode\">Guardar</jet-button>\n                    <jet-button type=\"button\" @click=\"update(form)\" v-show=\"editMode\">Actualizar</jet-button>\n                    <jet-CancelButton @click=\"chageClose\">Cerrar</jet-CancelButton>\n                </div>\n            </form>\n        </modal>")];
+      })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("-------- Modal de acciones -----------\r\n        <modal :show=\"showModal\" @close=\"chageClose\">\r\n            <form>\r\n                <div class=\"tw-px-4 tw-py-4\">\r\n                    <div class=\"tw-text-lg\">\r\n                        <div class=\"ModalHeader\">\r\n                            <h3 class=\"tw-p-2\"><i class=\"tw-ml-3 tw-mr-3 fas fa-scroll\"></i>Alta de Procesos</h3>\r\n                        </div>\r\n                    </div>\r\n\r\n                    <div class=\"tw-mt-4\">\r\n                        <div class=\"ModalForm\">\r\n                            <div class=\"tw-mb-6 md:tw-flex\">\r\n                                <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\r\n                                    <jet-label><span class=\"required\">*</span>Clave del material</jet-label>\r\n                                    <jet-input type=\"text\" v-model=\"form.idmat\"></jet-input>\r\n                                    <small v-if=\"errors.idmat\" class=\"validation-alert\">{{errors.idmat}}</small>\r\n                                </div>\r\n                                <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\r\n                                    <jet-label><span class=\"required\">*</span>Nombre del proceso</jet-label>\r\n                                    <jet-input type=\"text\" v-model=\"form.nommat\"></jet-input>\r\n                                    <small v-if=\"errors.nommat\" class=\"validation-alert\">{{errors.nommat}}</small>\r\n                                </div>\r\n                            </div>\r\n\r\n                            <div class=\"tw-mb-6 md:tw-flex\">\r\n                                <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\r\n                                    <jet-label><span class=\"required\">*</span>Descripción</jet-label>\r\n                                    <textarea v-model=\"form.descrip\" class=\"InputSelect\"></textarea>\r\n                                    <small v-if=\"errors.descrip\" class=\"validation-alert\">{{errors.descrip}}</small>\r\n                                </div>\r\n\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"ModalFooter\">\r\n                    <jet-button type=\"button\" @click=\"save(form)\" v-show=\"!editMode\">Guardar</jet-button>\r\n                    <jet-button type=\"button\" @click=\"update(form)\" v-show=\"editMode\">Actualizar</jet-button>\r\n                    <jet-CancelButton @click=\"chageClose\">Cerrar</jet-CancelButton>\r\n                </div>\r\n            </form>\r\n        </modal>")];
     }),
     _: 1
     /* STABLE */
@@ -30717,7 +30859,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           /* NEED_PATCH */
           ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.descripcion]]), $props.errors.descripcion ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("small", _hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.errors.descripcion), 1
           /* TEXT */
-          )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("------------------ Inicio form 2 ---------------------------------\n                <div>\n                    <div class=\"tw-px-4 tw-py-4\">\n                        <div class=\"tw-text-lg\">\n                            <div class=\"ModalHeader\">\n                                <h3 class=\"tw-p-2\"><i class=\"tw-ml-3 tw-mr-3 fas fa-scroll\"></i>Alta de Procesos</h3>\n                            </div>\n                        </div>\n\n                        <div class=\"tw-mt-4\">\n                            <div class=\"ModalForm\">\n                                <div class=\"tw-mb-6 md:tw-flex\">\n                                    <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                        <jet-label><span class=\"required\">*</span>Área</jet-label>\n                                        <select  v-show=\"!SM\" class=\"InputSelect\" v-model=\"form.areas_id\">\n                                            <option v-for=\"area in areas\" :key=\"area\" :value=\"area.id\">{{ area.Nombre }}</option>\n                                        </select>\n                                        <small v-if=\"errors.areas_id\" class=\"validation-alert\">{{errors.areas_id}}</small>\n                                    </div>\n                                    <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                        <jet-label><span class=\"required\">*</span>Nombre del proceso</jet-label>\n                                        <jet-input type=\"text\" v-model=\"form.nompro\"></jet-input>\n                                        <small v-if=\"errors.nompro\" class=\"validation-alert\">{{errors.nompro}}</small>\n                                    </div>\n                                    <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                        <jet-label><span class=\"required\">*</span>Tipo de proceso</jet-label>\n                                        <select v-model=\"form.tipo\" class=\"InputSelect\">\n                                            <option value=\"\">Seleccione</option>\n                                            <option value=\"1\">Encargado</option>\n                                            <option value=\"2\">Coordinador</option>\n                                            <option value=\"3\">Formulas</option>\n                                        </select>\n                                        <small v-if=\"errors.tipo\" class=\"validation-alert\">{{errors.tipo}}</small>\n                                    </div>\n                                </div>\n\n                                <div class=\"tw-mb-6 md:tw-flex\">\n                                    <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                        <jet-label><span class=\"required\">*</span>Descripción</jet-label>\n                                        <textarea v-model=\"form.descripcion\" class=\"InputSelect\"></textarea>\n                                        <small v-if=\"errors.Ruta\" class=\"validation-alert\">{{errors.descripcion}}</small>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n\n                    <div class=\"ModalFooter\">\n                        <jet-button type=\"button\" @click=\"save(form)\" v-show=\"!editMode\">Guardar</jet-button>\n                        <jet-button type=\"button\" @click=\"update(form)\" v-show=\"editMode\">Actualizar</jet-button>\n                        <jet-CancelButton @click=\"chageClose\">Cerrar</jet-CancelButton>\n                    </div>\n                </div>\n                ------------------------- Fin form 2 ---------------------------------"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
+          )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("------------------ Inicio form 2 ---------------------------------\r\n                <div>\r\n                    <div class=\"tw-px-4 tw-py-4\">\r\n                        <div class=\"tw-text-lg\">\r\n                            <div class=\"ModalHeader\">\r\n                                <h3 class=\"tw-p-2\"><i class=\"tw-ml-3 tw-mr-3 fas fa-scroll\"></i>Alta de Procesos</h3>\r\n                            </div>\r\n                        </div>\r\n\r\n                        <div class=\"tw-mt-4\">\r\n                            <div class=\"ModalForm\">\r\n                                <div class=\"tw-mb-6 md:tw-flex\">\r\n                                    <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\r\n                                        <jet-label><span class=\"required\">*</span>Área</jet-label>\r\n                                        <select  v-show=\"!SM\" class=\"InputSelect\" v-model=\"form.areas_id\">\r\n                                            <option v-for=\"area in areas\" :key=\"area\" :value=\"area.id\">{{ area.Nombre }}</option>\r\n                                        </select>\r\n                                        <small v-if=\"errors.areas_id\" class=\"validation-alert\">{{errors.areas_id}}</small>\r\n                                    </div>\r\n                                    <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\r\n                                        <jet-label><span class=\"required\">*</span>Nombre del proceso</jet-label>\r\n                                        <jet-input type=\"text\" v-model=\"form.nompro\"></jet-input>\r\n                                        <small v-if=\"errors.nompro\" class=\"validation-alert\">{{errors.nompro}}</small>\r\n                                    </div>\r\n                                    <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\r\n                                        <jet-label><span class=\"required\">*</span>Tipo de proceso</jet-label>\r\n                                        <select v-model=\"form.tipo\" class=\"InputSelect\">\r\n                                            <option value=\"\">Seleccione</option>\r\n                                            <option value=\"1\">Encargado</option>\r\n                                            <option value=\"2\">Coordinador</option>\r\n                                            <option value=\"3\">Formulas</option>\r\n                                        </select>\r\n                                        <small v-if=\"errors.tipo\" class=\"validation-alert\">{{errors.tipo}}</small>\r\n                                    </div>\r\n                                </div>\r\n\r\n                                <div class=\"tw-mb-6 md:tw-flex\">\r\n                                    <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\r\n                                        <jet-label><span class=\"required\">*</span>Descripción</jet-label>\r\n                                        <textarea v-model=\"form.descripcion\" class=\"InputSelect\"></textarea>\r\n                                        <small v-if=\"errors.Ruta\" class=\"validation-alert\">{{errors.descripcion}}</small>\r\n                                    </div>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n\r\n                    <div class=\"ModalFooter\">\r\n                        <jet-button type=\"button\" @click=\"save(form)\" v-show=\"!editMode\">Guardar</jet-button>\r\n                        <jet-button type=\"button\" @click=\"update(form)\" v-show=\"editMode\">Actualizar</jet-button>\r\n                        <jet-CancelButton @click=\"chageClose\">Cerrar</jet-CancelButton>\r\n                    </div>\r\n                </div>\r\n                ------------------------- Fin form 2 ---------------------------------"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_jet_button, {
             type: "button",
             onClick: _cache[8] || (_cache[8] = function ($event) {
               return $options.save($data.form);
@@ -31852,7 +31994,7 @@ var _hoisted_4 = {
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Nueva Información ");
 
 var _hoisted_6 = {
-  "class": "w-full overflow-x-auto"
+  "class": "tw-overflow-x-auto"
 };
 
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
@@ -32054,7 +32196,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_jet_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-button");
 
-  var _component_Table = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Table");
+  var _component_TableGreen = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TableGreen");
 
   var _component_jet_CancelButton = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("jet-CancelButton");
 
@@ -32085,7 +32227,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
       }, 8
       /* PROPS */
-      , ["onClick"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Table, {
+      , ["onClick"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TableGreen, {
+        "class": "tw-overflow-hidden tw-uppercase tw-bg-white tw-divide-y tw-divide-gray-300 tw-rounded",
         id: "perfiles"
       }, {
         TableHeader: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
