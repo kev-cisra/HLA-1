@@ -15,7 +15,14 @@
                 <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer">Asignar area a personal </jet-button>
             </template>
         </Accions>
-        <!------------------------------------ carga de datos de personal y areas ------------------------------------>
+        <!-------0.
+        0.
+        0
+        .
+
+
+
+        3123164879----------------------------- carga de datos de personal y areas ------------------------------------>
         <div class="collapse" id="agPer">
             <form >
                 <div class="tw-mb-6 md:tw-flex">
@@ -62,14 +69,14 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoAcept" v-show="ap.id == 1">
+                                <div class="iconoAcept" v-if="ap.areperf_perfil.user_id">
                                     <span tooltip="Usuario activo" flow="left">
                                         <svg class="tw-h-5 tw-w-5"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11l2 2l4 -4" />
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoDetails" v-show="ap.id == 2">
+                                <div class="iconoDetails" @click="updateUser(ap.areperf_perfil)" v-else-if="!ap.areperf_perfil.user_id">
                                     <span tooltip="Cargar nuevo usuario" flow="left">
                                         <svg class="tw-h-5 tw-w-5" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11h6m-3 -3v6" />
@@ -81,54 +88,7 @@
                     </tr>
                 </template>
             </Table>
-            <pre>
-                {{areper}}
-            </pre>
         </div>
-        <!---------- Modal de acciones -----------
-        <modal :show="showModal" @close="chageClose">
-            <form>
-                <div class="tw-px-4 tw-py-4">
-                    <div class="tw-text-lg">
-                        <div class="ModalHeader">
-                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Procesos</h3>
-                        </div>
-                    </div>
-
-                    <div class="tw-mt-4">
-                        <div class="ModalForm">
-                            <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Clave del material</jet-label>
-                                    <jet-input type="text" v-model="form.idmat"></jet-input>
-                                    <small v-if="errors.idmat" class="validation-alert">{{errors.idmat}}</small>
-                                </div>
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Nombre del proceso</jet-label>
-                                    <jet-input type="text" v-model="form.nommat"></jet-input>
-                                    <small v-if="errors.nommat" class="validation-alert">{{errors.nommat}}</small>
-                                </div>
-                            </div>
-
-                            <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Descripción</jet-label>
-                                    <textarea v-model="form.descrip" class="InputSelect"></textarea>
-                                    <small v-if="errors.descrip" class="validation-alert">{{errors.descrip}}</small>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ModalFooter">
-                    <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
-                    <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
-                    <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
-                </div>
-            </form>
-        </modal>-->
     </app-layout>
 </template>
 
@@ -143,9 +103,18 @@
     import JetSelect from '@/Components/Select';
     import Modal from '@/Jetstream/Modal';
     import JetLabel from '@/Jetstream/Label';
-
+    //datatable
     import datatable from 'datatables.net-bs5';
+    require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
+    require( 'datatables.net-buttons/js/buttons.html5' );
+    import print from 'datatables.net-buttons/js/buttons.print';
+    import jszip from 'jszip/dist/jszip';
+    import pdfMake from 'pdfmake/build/pdfmake';
+    import pdfFonts from 'pdfmake/build/vfs_fonts';
     import $ from 'jquery';
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    window.JSZip = jszip
 
     export default {
         props: {
@@ -324,11 +293,57 @@
             this.tabla();
         },
         methods: {
+            alertSucces(){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Registro Insertado',
+                    // background: '#99F6E4',
+                })
+            },
+            alertDelete(){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Registro Eliminado Correctamente',
+                    // background: '#99F6E4',
+                })
+            },
             //datatable
             tabla() {
                 this.$nextTick(() => {
                     $('#t_per').DataTable({
-                        "language": this.español
+                        "language": this.español,
+                        "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                                "<'row'<'col-sm-12'tr>>" +
+                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        buttons: [
+                            'copyHtml5',
+                            'excelHtml5',
+                            'pdfHtml5'
+                        ]
                     });
                 })
             },
@@ -378,7 +393,7 @@
                 //console.log(form)
                 $('#t_per').DataTable().destroy();
                 this.$inertia.post('/Produccion/Personal', form, {
-                    onSuccess: () => { this.tabla(), this.reset(form.area_id)}, preserveState: true
+                    onSuccess: () => { this.tabla(), this.reset(form.area_id),this.alertSucces()}, preserveState: true
                 });
                 //$('#t_mat').DataTable();
             },
@@ -390,7 +405,14 @@
                     $('#t_per').DataTable().destroy()
                     data._method = 'DELETE';
                     this.$inertia.post('/Produccion/Personal/' + data.id, data, {
-                        onSuccess: () => { this.tabla() }, preserveState: true
+                        onSuccess: () => { this.tabla(), this.alertDelete() }, preserveState: true
+                });
+            },
+            updateUser(data) {
+                //console.log(data)
+                data._method = 'PUT';
+                this.$inertia.post('/Produccion/Personal/' + data.id, data, {
+                    onSuccess: () => {this.reset(), this.chageClose(),this.alertSucces()},
                 });
             }
 
