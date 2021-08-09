@@ -23353,11 +23353,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     },
-    tablaReload: function tablaReload() {
-      jquery__WEBPACK_IMPORTED_MODULE_11___default()('#t_per').DataTable().clear();
-      jquery__WEBPACK_IMPORTED_MODULE_11___default()('#t_per').DataTable().destroy();
-      this.tabla();
-    },
     //información del select area
     mostSelect: function mostSelect() {
       var _this2 = this;
@@ -23377,11 +23372,13 @@ __webpack_require__.r(__webpack_exports__);
     verTabla: function verTabla(event) {
       var _this3 = this;
 
+      jquery__WEBPACK_IMPORTED_MODULE_11___default()('#t_per').DataTable().clear();
+      jquery__WEBPACK_IMPORTED_MODULE_11___default()('#t_per').DataTable().destroy();
       this.$inertia.get('/Produccion/Personal', {
         busca: event.target.value
       }, {
         onSuccess: function onSuccess() {
-          _this3.tablaReload();
+          _this3.tabla();
         },
         preserveState: true
       });
@@ -23420,11 +23417,16 @@ __webpack_require__.r(__webpack_exports__);
       var _this5 = this;
 
       if (!confirm('¿Estás  seguro de querer eliminar este Material?')) return;
+
+      if (this.areper.length == 1) {
+        jquery__WEBPACK_IMPORTED_MODULE_11___default()('#t_per').DataTable().clear();
+      }
+
       jquery__WEBPACK_IMPORTED_MODULE_11___default()('#t_per').DataTable().destroy();
       data._method = 'DELETE';
       this.$inertia.post('/Produccion/Personal/' + data.id, data, {
         onSuccess: function onSuccess() {
-          _this5.tablaReload();
+          _this5.tabla();
         },
         preserveState: true
       });
@@ -30084,6 +30086,66 @@ var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 /* HOISTED */
 );
 
+var _hoisted_26 = {
+  "class": "iconoAcept"
+};
+
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+  tooltip: "Usuario activo",
+  flow: "left"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
+  "class": "tw-h-5 tw-w-5",
+  viewBox: "0 0 24 24",
+  "stroke-width": "2",
+  stroke: "currentColor",
+  fill: "none",
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+  stroke: "none",
+  d: "M0 0h24v24H0z"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("circle", {
+  cx: "9",
+  cy: "7",
+  r: "4"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+  d: "M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+  d: "M16 11l2 2l4 -4"
+})])], -1
+/* HOISTED */
+);
+
+var _hoisted_28 = {
+  "class": "iconoDetails"
+};
+
+var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+  tooltip: "Cargar nuevo usuario",
+  flow: "left"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
+  "class": "tw-h-5 tw-w-5",
+  viewBox: "0 0 24 24",
+  "stroke-width": "2",
+  stroke: "currentColor",
+  fill: "none",
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+  stroke: "none",
+  d: "M0 0h24v24H0z"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("circle", {
+  cx: "9",
+  cy: "7",
+  r: "4"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+  d: "M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("path", {
+  d: "M16 11h6m-3 -3v6"
+})])], -1
+/* HOISTED */
+);
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Header = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Header");
 
@@ -30228,14 +30290,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             /* TEXT */
             ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ap.areperf_area.Nombre), 1
             /* TEXT */
-            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("<div class=\"iconoDetails\">\n                                    <span tooltip=\"Detalles\" flow=\"left\">\n                                        <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n                                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\" />\n                                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\" />\n                                        </svg>\n                                    </span>\n                                </div>\n                                <div class=\"iconoEdit\" @click=\"edit(material)\">\n                                    <span tooltip=\"Editar\" flow=\"left\">\n                                        <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n                                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z\" />\n                                        </svg>\n                                    </span>\n                                </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
               "class": "iconoDelete",
               onClick: function onClick($event) {
                 return $options.deleteRow(ap);
               }
             }, [_hoisted_25], 8
             /* PROPS */
-            , ["onClick"])])])]);
+            , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_26, [_hoisted_27], 512
+            /* NEED_PATCH */
+            ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, ap.id == 1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_28, [_hoisted_29], 512
+            /* NEED_PATCH */
+            ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, ap.id == 2]])])])]);
           }), 128
           /* KEYED_FRAGMENT */
           ))];
@@ -30243,7 +30309,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         _: 1
         /* STABLE */
 
-      })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("-------- Modal de acciones -----------\n        <modal :show=\"showModal\" @close=\"chageClose\">\n            <form>\n                <div class=\"tw-px-4 tw-py-4\">\n                    <div class=\"tw-text-lg\">\n                        <div class=\"ModalHeader\">\n                            <h3 class=\"tw-p-2\"><i class=\"tw-ml-3 tw-mr-3 fas fa-scroll\"></i>Alta de Procesos</h3>\n                        </div>\n                    </div>\n\n                    <div class=\"tw-mt-4\">\n                        <div class=\"ModalForm\">\n                            <div class=\"tw-mb-6 md:tw-flex\">\n                                <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                    <jet-label><span class=\"required\">*</span>Clave del material</jet-label>\n                                    <jet-input type=\"text\" v-model=\"form.idmat\"></jet-input>\n                                    <small v-if=\"errors.idmat\" class=\"validation-alert\">{{errors.idmat}}</small>\n                                </div>\n                                <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                    <jet-label><span class=\"required\">*</span>Nombre del proceso</jet-label>\n                                    <jet-input type=\"text\" v-model=\"form.nommat\"></jet-input>\n                                    <small v-if=\"errors.nommat\" class=\"validation-alert\">{{errors.nommat}}</small>\n                                </div>\n                            </div>\n\n                            <div class=\"tw-mb-6 md:tw-flex\">\n                                <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                    <jet-label><span class=\"required\">*</span>Descripción</jet-label>\n                                    <textarea v-model=\"form.descrip\" class=\"InputSelect\"></textarea>\n                                    <small v-if=\"errors.descrip\" class=\"validation-alert\">{{errors.descrip}}</small>\n                                </div>\n\n                            </div>\n                        </div>\n                    </div>\n                </div>\n\n                <div class=\"ModalFooter\">\n                    <jet-button type=\"button\" @click=\"save(form)\" v-show=\"!editMode\">Guardar</jet-button>\n                    <jet-button type=\"button\" @click=\"update(form)\" v-show=\"editMode\">Actualizar</jet-button>\n                    <jet-CancelButton @click=\"chageClose\">Cerrar</jet-CancelButton>\n                </div>\n            </form>\n        </modal>")];
+      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("pre", null, "                " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.areper) + "\n            ", 1
+      /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("-------- Modal de acciones -----------\n        <modal :show=\"showModal\" @close=\"chageClose\">\n            <form>\n                <div class=\"tw-px-4 tw-py-4\">\n                    <div class=\"tw-text-lg\">\n                        <div class=\"ModalHeader\">\n                            <h3 class=\"tw-p-2\"><i class=\"tw-ml-3 tw-mr-3 fas fa-scroll\"></i>Alta de Procesos</h3>\n                        </div>\n                    </div>\n\n                    <div class=\"tw-mt-4\">\n                        <div class=\"ModalForm\">\n                            <div class=\"tw-mb-6 md:tw-flex\">\n                                <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                    <jet-label><span class=\"required\">*</span>Clave del material</jet-label>\n                                    <jet-input type=\"text\" v-model=\"form.idmat\"></jet-input>\n                                    <small v-if=\"errors.idmat\" class=\"validation-alert\">{{errors.idmat}}</small>\n                                </div>\n                                <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                    <jet-label><span class=\"required\">*</span>Nombre del proceso</jet-label>\n                                    <jet-input type=\"text\" v-model=\"form.nommat\"></jet-input>\n                                    <small v-if=\"errors.nommat\" class=\"validation-alert\">{{errors.nommat}}</small>\n                                </div>\n                            </div>\n\n                            <div class=\"tw-mb-6 md:tw-flex\">\n                                <div class=\"tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0\">\n                                    <jet-label><span class=\"required\">*</span>Descripción</jet-label>\n                                    <textarea v-model=\"form.descrip\" class=\"InputSelect\"></textarea>\n                                    <small v-if=\"errors.descrip\" class=\"validation-alert\">{{errors.descrip}}</small>\n                                </div>\n\n                            </div>\n                        </div>\n                    </div>\n                </div>\n\n                <div class=\"ModalFooter\">\n                    <jet-button type=\"button\" @click=\"save(form)\" v-show=\"!editMode\">Guardar</jet-button>\n                    <jet-button type=\"button\" @click=\"update(form)\" v-show=\"editMode\">Actualizar</jet-button>\n                    <jet-CancelButton @click=\"chageClose\">Cerrar</jet-CancelButton>\n                </div>\n            </form>\n        </modal>")];
     }),
     _: 1
     /* STABLE */

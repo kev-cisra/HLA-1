@@ -32,6 +32,10 @@
     @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-blue-500 hover:tw-scale-110;
 }
 
+.iconoAcept{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-green-600 hover:tw-scale-110;
+}
+
 .iconoDelete{
     @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-red-500 hover:tw-scale-110;
 }
