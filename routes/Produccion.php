@@ -23,6 +23,8 @@ Route::resource('Personal', PersonalController::class)
 Route::resource('Procesos', ProcesosController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
+Route::resource('Maquinas', Maquinas::class)
+    ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('Materiales', MaterialesController::class)
     ->middleware(['auth:sanctum', 'verified']);
