@@ -72,22 +72,31 @@ class PersonalController extends Controller
                 'area_id' => 'required',
                 'perfiles_usuarios_id' => ['required','numeric'],
         ])->validate();
-
+        //consulta si ya esta registrado ese usuario
         $cuenta = are_prof::where('perfiles_usuarios_id', '=', $request->perfiles_usuarios_id)
+        ->withTrashed ()
         ->where('area_id', '=', $request->area_id)
-        ->count();
-
-        if($cuenta == 1) {
-
-            Validator::make($request->all(), [
-                'perfiles_usuarios_id' => 'unique:are_profs'
-            ])->validate();
+        ->first();
+        //revisa si la consulta anterior no es vacias
+        if(!empty($cuenta)) {
+            //revisa si el soft delete exite para restaurarlo
+            if(!empty($cuenta->deleted_at))
+            {
+                $cuenta->restore();
+            }//revisa si ya existe el usuario y el delete es nulo para mandar un aviso
+            else{
+                Validator::make($request->all(), [
+                    'perfiles_usuarios_id' => 'unique:are_profs'
+                ])->validate();
+            }
+        }//si no existe ningun dato crea un nuevo registro
+        else {
+            are_prof::create($request->all());
         }
-
-        are_prof::create($request->all());
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
+
     }
 
     /**

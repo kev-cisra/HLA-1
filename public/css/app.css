@@ -17552,7 +17552,7 @@ video {
   display: none;
 }
 
-.tw-translate-y-4, .tw-translate-y-0, .tw-scale-95, .tw-scale-100, .tw-transform, .iconoDetails, .iconoDelete, .iconoEdit, .hover\:tw--translate-y-1, .hover\:tw-scale-110, .sm\:tw-translate-y-0, .sm\:tw-scale-95, .sm\:tw-scale-100 {
+.tw-translate-y-4, .tw-translate-y-0, .tw-scale-95, .tw-scale-100, .tw-transform, .iconoDetails, .iconoAcept, .iconoDelete, .iconoEdit, .hover\:tw--translate-y-1, .hover\:tw-scale-110, .sm\:tw-translate-y-0, .sm\:tw-scale-95, .sm\:tw-scale-100 {
 	--tw-translate-x: 0;
 	--tw-translate-y: 0;
 	--tw-rotate: 0;
@@ -18928,6 +18928,20 @@ select {
 	transform: var(--tw-transform);
 	--tw-text-opacity: 1;
 	color: rgba(59, 130, 246, var(--tw-text-opacity));
+}
+.iconoAcept {
+	margin-right: 0.5rem;
+	width: 1rem;
+	transform: var(--tw-transform);
+	--tw-text-opacity: 1;
+	color: rgba(107, 114, 128, var(--tw-text-opacity));
+}
+.iconoAcept:hover {
+	--tw-scale-x: 1.1;
+	--tw-scale-y: 1.1;
+	transform: var(--tw-transform);
+	--tw-text-opacity: 1;
+	color: rgba(22, 163, 74, var(--tw-text-opacity));
 }
 .iconoDelete {
 	margin-right: 0.5rem;

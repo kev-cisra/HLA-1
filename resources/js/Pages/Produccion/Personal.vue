@@ -40,7 +40,6 @@
             </form>
         </div>
 
-
         <div class="table-responsive">
             <Table id="t_per">
                 <template v-slot:TableHeader>
@@ -56,25 +55,24 @@
                         <td class="fila">{{ ap.areperf_area.Nombre }}</td>
                         <td class="fila">
                             <div class="columnaIconos">
-                                <!--<div class="iconoDetails">
-                                    <span tooltip="Detalles" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="iconoEdit" @click="edit(material)">
-                                    <span tooltip="Editar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                        </svg>
-                                    </span>
-                                </div>-->
                                 <div class="iconoDelete" @click="deleteRow(ap)">
                                     <span tooltip="Eliminar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoAcept" v-show="ap.id == 1">
+                                    <span tooltip="Usuario activo" flow="left">
+                                        <svg class="tw-h-5 tw-w-5"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11l2 2l4 -4" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoDetails" v-show="ap.id == 2">
+                                    <span tooltip="Cargar nuevo usuario" flow="left">
+                                        <svg class="tw-h-5 tw-w-5" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11h6m-3 -3v6" />
                                         </svg>
                                     </span>
                                 </div>
@@ -83,6 +81,9 @@
                     </tr>
                 </template>
             </Table>
+            <pre>
+                {{areper}}
+            </pre>
         </div>
         <!---------- Modal de acciones -----------
         <modal :show="showModal" @close="chageClose">
@@ -331,11 +332,6 @@
                     });
                 })
             },
-            tablaReload() {
-                $('#t_per').DataTable().clear();
-                $('#t_per').DataTable().destroy();
-                this.tabla();
-            },
             //información del select area
             mostSelect() {
                 this.$nextTick(() => {
@@ -354,8 +350,10 @@
             },
             //consulta para generar datos de la tabla
             verTabla(event){
+                $('#t_per').DataTable().clear();
+                $('#t_per').DataTable().destroy();
                 this.$inertia.get('/Produccion/Personal',{ busca: event.target.value }, {
-                    onSuccess: () => { this.tablaReload() }, preserveState: true
+                    onSuccess: () => { this.tabla(); }, preserveState: true
                 });
             },
             //abrir y reset del modal
@@ -386,12 +384,16 @@
             },
             deleteRow: function (data) {
                 if (!confirm('¿Estás  seguro de querer eliminar este Material?')) return;
-                $('#t_per').DataTable().destroy()
-                data._method = 'DELETE';
-                this.$inertia.post('/Produccion/Personal/' + data.id, data, {
-                    onSuccess: () => { this.tablaReload() }, preserveState: true
+                    if (this.areper.length == 1) {
+                        $('#t_per').DataTable().clear()
+                    }
+                    $('#t_per').DataTable().destroy()
+                    data._method = 'DELETE';
+                    this.$inertia.post('/Produccion/Personal/' + data.id, data, {
+                        onSuccess: () => { this.tabla() }, preserveState: true
                 });
             }
+
         }
     }
 </script>
