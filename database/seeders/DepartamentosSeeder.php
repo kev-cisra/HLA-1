@@ -26,27 +26,43 @@ class DepartamentosSeeder extends Seeder
 
         Departamentos::create([
             'IdUser' => '1',
+            'Nombre' => 'PRODUCCION',
+            'departamento_id' => '2'
+        ]);
+
+        Departamentos::create([
+            'IdUser' => '1',
             'Nombre' => 'ALMACEN MAT PRIMA',
         ]);
 
         Departamentos::create([
             'IdUser' => '1',
             'Nombre' => 'HILATURA 1',
+            'departamento_id' => '3'
         ]);
 
         Departamentos::create([
             'IdUser' => '1',
             'Nombre' => 'HILATURA 2',
+            'departamento_id' => '3'
         ]);
 
         Departamentos::create([
             'IdUser' => '1',
             'Nombre' => 'HILATURA 3',
+            'departamento_id' => '3'
+        ]);
+
+        Departamentos::create([
+            'IdUser' => '1',
+            'Nombre' => 'APERTURA',
+            'departamento_id' => '3'
         ]);
 
         Departamentos::create([
             'IdUser' => '1',
             'Nombre' => 'HILATURA DE ANILLOS',
+            'departamento_id' => '3'
         ]);
 
         Departamentos::create([
@@ -72,6 +88,7 @@ class DepartamentosSeeder extends Seeder
         Departamentos::create([
             'IdUser' => '1',
             'Nombre' => 'TEJIDO',
+            'departamento_id' => '3'
         ]);
     }
 }

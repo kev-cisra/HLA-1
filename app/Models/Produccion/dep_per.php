@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
 
-class dep_perf extends Model
+
+class dep_per extends Model
 {
     use HasFactory;
     use SoftDeletes; //Implementamos

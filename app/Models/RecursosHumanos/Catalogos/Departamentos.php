@@ -41,7 +41,7 @@ class Departamentos extends Model
 
     // Relaciones recursiva
     public function Departamentos_sub() {
-        return $this->hasMany(Departamentos::class);
+        return $this->hasMany(Departamentos::class, 'departamento_id');
     }
 
     public function sub_Departamentos() {

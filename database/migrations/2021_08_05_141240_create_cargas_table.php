@@ -32,7 +32,7 @@ class CreateCargasTable extends Migration
             $table->foreign('maq_pro_id')->references("id")->on("maq_pros")
             ->onDelete("cascade")
             ->onUpdate("cascade");
-            $table->foreign('dep_perf_id')->references("id")->on("dep_perfs")
+            $table->foreign('dep_perf_id')->references("id")->on("dep_pers")
             ->onDelete("cascade")
             ->onUpdate("cascade");
             $table->foreign('clave_id')->references("id")->on("claves")
