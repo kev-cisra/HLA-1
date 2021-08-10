@@ -53,5 +53,4 @@ class PerfilesUsuarios extends Model
     public function PerfilJefe() {
         return $this->hasOne(JefesArea::class, 'id', 'jefes_areas_id');
     }
-
 }

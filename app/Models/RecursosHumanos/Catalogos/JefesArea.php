@@ -15,7 +15,7 @@ class JefesArea extends Model
     protected $guarded = ['id', 'created_at','updated_at'];
 
     // Relacion inversa 1 a 1 con departamentos
-    public function Jefes_Perfil() {
+    public function JefesPerfil() {
         return $this->belongsTo(PerfilesUsuarios::class);
     }
 }

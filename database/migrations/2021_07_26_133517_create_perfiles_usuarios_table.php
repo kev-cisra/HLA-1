@@ -18,7 +18,7 @@ class CreatePerfilesUsuariosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('IdUser')->nullable(); //Id de Session
             $table->unsignedBigInteger('IdEmp'); //Numero control empleado
-            $table->string('Empresa',15)->Nullable;
+            $table->string('Empresa',15)->nullable();
             $table->string('Nombre',35);
             $table->string('ApPat',35);
             $table->string('ApMat',35);

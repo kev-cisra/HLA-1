@@ -18,13 +18,8 @@
             </div>
 
             <div>
-                <jet-label for="Area" value="Area" />
-                <jet-input id="Area" type="text" class="tw-block tw-w-full tw-mt-1" v-model="form.Area" required autofocus autocomplete="Area" />
-            </div>
-
-            <div class="tw-mt-4">
-                <jet-label for="email" value="Email" />
-                <jet-input id="email" type="email" class="tw-block tw-w-full tw-mt-1" v-model="form.email" required />
+                <jet-label for="Departamento" value="Departamento" />
+                <jet-input id="Departamento" type="text" class="tw-block tw-w-full tw-mt-1" v-model="form.Departamento" required autofocus autocomplete="Departamento" />
             </div>
 
             <div class="tw-mt-4">
@@ -49,7 +44,7 @@
                 </jet-label>
             </div>
 
-            <div class="tw-flex tw-items-center tw-justify-end mt-4">
+            <div class="mt-4 tw-flex tw-items-center tw-justify-end">
                 <inertia-link :href="route('login')" class="tw-text-sm tw-text-gray-600 tw-underline hover:tw-text-gray-900">
                     Already registered?
                 </inertia-link>

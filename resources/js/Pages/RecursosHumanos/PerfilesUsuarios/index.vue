@@ -9,6 +9,10 @@
                 <div class="tw-flex tw-justify-end">
                     <div><jet-button @click="openModal" class="BtnNuevo">Nueva Información </jet-button></div>
                 </div>
+
+                <pre>
+                    {{ PerfilesUsuarios }}
+                </pre>
                 <div class="tw-overflow-x-auto">
                 <TableGreen class="tw-overflow-hidden tw-uppercase tw-bg-white tw-divide-y tw-divide-gray-300 tw-rounded" id="perfiles">
                     <template v-slot:TableHeader>
@@ -257,8 +261,6 @@
     import Pagination from '@/Components/pagination'
     import JetInput from '@/Components/Input';
     import JetSelect from '@/Components/Select';
-    import pickBy from 'lodash/pickBy'
-    import throttle from 'lodash/throttle'
     //imports de datatables
     import datatable from 'datatables.net-bs5';
     import $ from 'jquery';
