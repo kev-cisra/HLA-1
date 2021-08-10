@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Menus\MenuProducccionController;
+use App\Http\Controllers\Produccion\MaquinasController;
 use App\Http\Controllers\Produccion\MaterialesController;
 use App\Http\Controllers\Produccion\PersonalController;
 use App\Http\Controllers\Produccion\ProcesosController;
@@ -23,7 +24,7 @@ Route::resource('Personal', PersonalController::class)
 Route::resource('Procesos', ProcesosController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
-Route::resource('Maquinas', Maquinas::class)
+Route::resource('Maquinas', MaquinasController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('Materiales', MaterialesController::class)

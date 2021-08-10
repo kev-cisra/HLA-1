@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
+use App\Models\Catalogos\Maquinas;
 use App\Models\Produccion\maq_pro;
+use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class MaquinasController extends Controller
 {
@@ -16,6 +20,12 @@ class MaquinasController extends Controller
     public function index()
     {
         //
+        //Muestra el id de la persona que inicio sesion
+        $usuario = Auth::id();
+        //muestra la información del usuario que inicio sesion
+        $perf = PerfilesUsuarios::where('user_id','=',$usuario)
+        ->get();
+        return Inertia::render('Produccion/Maquinas', ['usuario' => $perf]);
     }
 
     /**
