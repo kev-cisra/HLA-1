@@ -104,4 +104,12 @@
     @apply tw-space-x-4 tw-px-6 tw-py-4 tw-bg-gray-100 tw-text-right;
 }
 
+.info{
+    @apply tw-font-semibold tw-inline-block tw-align-middle tw-text-sm tw-text-gray-500;
+}
+
+.InfoData{
+    @apply tw-select-text tw-outline-none tw-font-bold tw-bg-blueGray-50 tw-relative tw-px-2 tw-py-1 tw-text-sm tw-border-none;
+}
+
 

@@ -10,80 +10,77 @@
                     <div><jet-button @click="openModal" class="BtnNuevo">Nueva Información </jet-button></div>
                 </div>
 
-                <pre>
-                    {{ PerfilesUsuarios }}
-                </pre>
                 <div class="tw-overflow-x-auto">
-                <TableGreen class="tw-overflow-hidden tw-uppercase tw-bg-white tw-divide-y tw-divide-gray-300 tw-rounded" id="perfiles">
-                    <template v-slot:TableHeader>
-                        <th class="columna">Núm. Empleado</th>
-                        <th class="columna">Empresa</th>
-                        <th class="columna">Nombre</th>
-                        <th class="columna">Paterno</th>
-                        <th class="columna">Materno</th>
-                        <th class="columna">Curp</th>
-                        <th class="columna">RFC</th>
-                        <th class="columna">NSS</th>
-                        <th class="columna">Direccion</th>
-                        <th class="columna">Telefono</th>
-                        <th class="columna">Cumpleaños</th>
-                        <th class="columna">Fecha Ingreso</th>
-                        <th class="columna">Antiguedad </th>
-                        <th class="columna">Dias Vac.</th>
-                        <th class="columna">Puesto</th>
-                        <th class="columna">Departamento</th>
-                        <th class="columna">Jefe</th>
-                        <th class="columna">Acciones</th>
-                    </template>
+                    <TableGreen id="perfiles">
+                        <template v-slot:TableHeader>
+                            <th class="columna">Núm. Empleado</th>
+                            <th class="columna">Empresa</th>
+                            <th class="columna">Nombre</th>
+                            <th class="columna">Paterno</th>
+                            <th class="columna">Materno</th>
+                            <th class="columna">Curp</th>
+                            <th class="columna">RFC</th>
+                            <th class="columna">NSS</th>
+                            <th class="columna">Direccion</th>
+                            <th class="columna">Telefono</th>
+                            <th class="columna">Cumpleaños</th>
+                            <th class="columna">Fecha Ingreso</th>
+                            <th class="columna">Antiguedad </th>
+                            <th class="columna">Dias Vac.</th>
+                            <th class="columna">Puesto</th>
+                            <th class="columna">Departamento</th>
+                            <th class="columna">Jefe</th>
+                            <th class="columna">Acciones</th>
+                        </template>
 
-                    <template v-slot:TableFooter>
-                        <tr class="fila" v-for="datos in PerfilesUsuarios" :key="datos.id">
-                            <td class="tw-p-2">{{ datos.IdEmp }}</td>
-                            <td class="tw-p-2">{{ datos.Empresa }}</td>
-                            <td class="tw-p-2">{{ datos.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.ApPat }}</td>
-                            <td class="tw-p-2">{{ datos.ApMat }}</td>
-                            <td class="tw-p-2">{{ datos.Curp  }}</td>
-                            <td class="tw-p-2">{{ datos.Rfc}}</td>
-                            <td class="tw-p-2">{{ datos.Nss  }}</td>
-                            <td class="tw-p-2">{{ datos.Direccion }}</td>
-                            <td class="tw-p-2">{{ datos.Telefono }}</td>
-                            <td class="tw-p-2">{{ datos.Cumpleaños }}</td>
-                            <td class="tw-p-2">{{ datos.FecIng }}</td>
-                            <td class="tw-p-2">{{ datos.Antiguedad }}</td>
-                            <td class="tw-p-2">{{ datos.DiasVac }}</td>
-                            <td class="tw-p-2">{{ datos.perfil_puesto.Nombre}}</td>
-                            <td class="tw-p-2">{{ datos.perfil_departamento.Nombre}}</td>
-                            <td class="tw-p-2">{{ datos.perfil_jefe.Nombre}}</td>
-                            <td class="fila">
-                            <div class="columnaIconos">
-                                <div class="iconoDetails" @click="show(datos)">
-                                    <span tooltip="Detalles" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                    </span>
+                        <template v-slot:TableFooter>
+                            <tr class="fila" v-for="datos in PerfilesUsuarios" :key="datos.id">
+                                <td class="tw-p-2">{{ datos.IdEmp }}</td>
+                                <td class="tw-p-2">{{ datos.Empresa }}</td>
+                                <td class="tw-p-2">{{ datos.Nombre }}</td>
+                                <td class="tw-p-2">{{ datos.ApPat }}</td>
+                                <td class="tw-p-2">{{ datos.ApMat }}</td>
+                                <td class="tw-p-2">{{ datos.Curp  }}</td>
+                                <td class="tw-p-2">{{ datos.Rfc}}</td>
+                                <td class="tw-p-2">{{ datos.Nss  }}</td>
+                                <td class="tw-p-2">{{ datos.Direccion }}</td>
+                                <td class="tw-p-2">{{ datos.Telefono }}</td>
+                                <td class="tw-p-2">{{ datos.Cumpleaños }}</td>
+                                <td class="tw-p-2">{{ datos.FecIng }}</td>
+                                <td class="tw-p-2">{{ datos.Antiguedad }}</td>
+                                <td class="tw-p-2">{{ datos.DiasVac }}</td>
+                                <td class="tw-p-2">{{ datos.perfil_puesto.Nombre}}</td>
+                                <td class="tw-p-2">{{ datos.perfil_departamento.Nombre}}</td>
+                                <td class="tw-p-2">{{ datos.perfil_jefe.Nombre}}</td>
+                                <td class="fila">
+                                <div class="columnaIconos">
+                                    <div class="iconoDetails" @click="show(datos)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <span tooltip="Detalles" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="iconoEdit" @click="edit(datos)">
+                                        <span tooltip="Editar" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="iconoDelete" @click="deleteRow(datos)">
+                                        <span tooltip="Eliminar" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="iconoEdit" @click="edit(datos)">
-                                    <span tooltip="Editar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="iconoDelete" @click="deleteRow(datos)">
-                                    <span tooltip="Eliminar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div>
-                        </td>
-                        </tr>
-                    </template>
-                </TableGreen>
+                            </td>
+                            </tr>
+                        </template>
+                    </TableGreen>
                 </div>
 
             </div>
@@ -223,24 +220,37 @@
             </form>
         </modal>
 
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Launch demo modal
-        </button>
-
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content tw-bg-blueGray-50">
+                    <form class="tw-w-full tw-p-4">
+                        <div class="divide-y tw-flex tw-flex-col ">
+                            <div class="tw-flex">
+                                <div class="tw-w-1/2">
+                                    <span class="info">Núm Empleado: </span>
+                                    <input type="text" v-model="form.IdEmp" class="InfoData" disabled/>
+                                </div>
+                                <div class="tw-w-1/2">
+                                    <span class="info">Empresa: </span>
+                                    <input type="text" v-model="form.Empresa" class="InfoData" disabled/>
+                                </div>
+                            </div>
+                            <div class="tw-flex tw-gap-2">
+                                <div class="tw-border tw-w-1/2">
+                                    <span class="info">Nombre: </span>
+                                    <input type="text" v-model="form.Nombre" class="InfoData" disabled/>
+                                </div>
+                                <div class=" tw-border tw-w-1/2">
+                                    <span class="info">Apellido Paterno: </span>
+                                    <input type="text" v-model="form.ApPat" class="InfoData" disabled/>
+                                </div>
+                                <div class="tw-border tw-w-1/2">
+                                    <span class="info">Apellido Materno: </span>
+                                    <input type="text" v-model="form.ApMat" class="InfoData" disabled/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -575,6 +585,11 @@
                         this.alertDelete()
                         },
                 });
+            },
+
+            show: function(data){
+                this.alertSucces();
+                this.form = Object.assign({}, data);
             }
         },
     };
