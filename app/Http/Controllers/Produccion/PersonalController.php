@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
-use App\Models\Produccion\are_prof;
+use App\Models\Produccion\dep_perf;
 use App\Models\RecursosHumanos\Catalogos\Areas;
+use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,20 +28,20 @@ class PersonalController extends Controller
         $perf = PerfilesUsuarios::where('user_id','=',$usuario)
         ->get();
         //consulta el id de la area produccion
-        $idarepro = Areas::where('idArea', '=', 'PRO')
+        $idarepro = Departamentos::where('Nombre', '=', 'OPERACIONES')
             ->first();
         //muestra las areas y sub areas de produccion
-        $areas = Areas::where('areas_id', '=', $idarepro->id)
-            ->with('sub_areas')
-            ->get(['id', 'IdUser', 'idArea', 'Nombre', 'areas_id']);
+        $areas = Departamentos::where('departamento_id', '=', $idarepro->id)
+            ->with('sub_Departamentos')
+            ->get(['id', 'IdUser', 'Nombre', 'departamento_id']);
         //consulta a todos los usuarios qu pertenecen a operaciones
         $personal = PerfilesUsuarios::where('Departamento_id', '=', 2)
             ->get();
         //consulta a la relacion de areas y usuarios
-        $areper = empty($request->busca) ? NULL : are_prof::where('area_id', '=', $request->busca)
+        $areper = empty($request->busca) ? NULL : dep_perf::where('departamento_id', '=', $request->busca)
         ->with([
             'areperf_area' => function($area){
-                $area->select('id', 'idArea', 'Nombre', 'tipo', 'areas_id');
+                $area->select('id', 'Nombre', 'tipo', 'departamento_id');
             },
             'areperf_perfil' => function($perfi){
                 $perfi->select('id', 'IdEmp','Empresa', 'Nombre', 'ApPat', 'ApMat', 'user_id');
@@ -72,13 +73,13 @@ class PersonalController extends Controller
     {
         //
         Validator::make($request->all(), [
-                'area_id' => 'required',
+                'departamento_id' => 'required',
                 'perfiles_usuarios_id' => ['required','numeric'],
         ])->validate();
         //consulta si ya esta registrado ese usuario
-        $cuenta = are_prof::where('perfiles_usuarios_id', '=', $request->perfiles_usuarios_id)
+        $cuenta = dep_perf::where('perfiles_usuarios_id', '=', $request->perfiles_usuarios_id)
         ->withTrashed ()
-        ->where('area_id', '=', $request->area_id)
+        ->where('departamento_id', '=', $request->area_id)
         ->first();
         //revisa si la consulta anterior no es vacias
         if(!empty($cuenta)) {
@@ -89,39 +90,17 @@ class PersonalController extends Controller
             }//revisa si ya existe el usuario y el delete es nulo para mandar un aviso
             else{
                 Validator::make($request->all(), [
-                    'perfiles_usuarios_id' => 'unique:are_profs'
+                    'perfiles_usuarios_id' => 'unique:dep_perfs'
                 ])->validate();
             }
         }//si no existe ningun dato crea un nuevo registro
         else {
-            are_prof::create($request->all());
+            dep_perf::create($request->all());
         }
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Produccion\are_prof  $are_prof
-     * @return \Illuminate\Http\Response
-     */
-    public function show(are_prof $are_prof)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Produccion\are_prof  $are_prof
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(are_prof $are_prof)
-    {
-        //
     }
 
     /**
@@ -131,7 +110,7 @@ class PersonalController extends Controller
      * @param  \App\Models\Produccion\are_prof  $are_prof
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, are_prof $are_prof)
+    public function update(Request $request)
     {
         // crea un nuevo usuario para que ocupe la aplicación
         $n_user = User::create([
@@ -157,7 +136,7 @@ class PersonalController extends Controller
     {
         //
         if ($request->has('id')) {
-            are_prof::find($request->input('id'))->delete();
+            dep_perf::find($request->input('id'))->delete();
             return redirect()->back()
                     ->with('message', 'Post Updated Successfully.');
         }

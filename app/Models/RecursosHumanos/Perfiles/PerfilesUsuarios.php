@@ -36,7 +36,7 @@ class PerfilesUsuarios extends Model
     }
 
     public function jefe_perfiles() {
-        return $this->hasMany(PerfilesUsuarios::class)->with('perfiles_jefe');
+        return $this->hasMany(PerfilesUsuarios::class, 'jefe_id')->with('perfiles_jefe');
     }
 
     // Relacion 1 a 1 con Puestos

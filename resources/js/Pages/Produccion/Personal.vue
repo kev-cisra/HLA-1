@@ -15,14 +15,7 @@
                 <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer">Asignar area a personal </jet-button>
             </template>
         </Accions>
-        <!-------0.
-        0.
-        0
-        .
-
-
-
-        3123164879----------------------------- carga de datos de personal y areas ------------------------------------>
+        <!------------------------------------ carga de datos de personal y areas ------------------------------------>
         <div class="collapse" id="agPer">
             <form >
                 <div class="tw-mb-6 md:tw-flex">
