@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Catalogos\Maquinas;
-use App\Models\Produccion\are_prof;
+use App\Models\Produccion\dep_per;
 use App\Models\Produccion\maq_pro;
 use App\Models\RecursosHumanos\Catalogos\Areas;
+use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,23 +33,33 @@ class MaquinasController extends Controller
         /*************** Información para mostrar áreas *************************/
         if($perf->Departamento_id == 2 && $perf->Puesto_id !== 16){
             //consulta las areas que le pertenecen al usuario
-            $areas = are_prof::where('perfiles_usuarios_id','=',$perf->id)
+            $depa = dep_per::where('perfiles_usuarios_id','=',$perf->id)
                 ->with([
-                'areperf_area' => function($area){
-                        $area->select('id', 'idArea', 'Nombre', 'tipo', 'areas_id');
+                'departamentos' => function($dep){
+                        $dep->select('id', 'Nombre', 'departamento_id');
                     }])
-                ->get(['id','perfiles_usuarios_id', 'area_id']);
+                ->get(['id','perfiles_usuarios_id', 'departamento_id']);
             /************************* Información de maquinas para coordinador, encargado y lider*************************/
-            $maquinas = Maquinas::where('p');
+            //se consulta el primer departamento que tiene la persona asignada
+            $prime = dep_per::where('perfiles_usuarios_id','=',$perf->id)
+                ->with([
+                'departamentos' => function($dep){
+                        $dep->select('id');
+                    }])
+                ->first(['id', 'departamento_id']);
+            //se consultan las maquinas que estan en ese departamento
+            $maquinas = Maquinas::where('departamento_id', '=', $prime->departamentos->id)
+            ->with('departamentos')
+            ->get();
 
         }else{
             //consulta el id de la area produccion
-            $idarepro = Areas::where('idArea', '=', 'PRO')
+            $iddeppro = Departamentos::where('Nombre', '=', 'PRODUCCION')
                 ->first();
             //muestra las areas y sub areas de produccion
-            $areas = Areas::where('areas_id', '=', $idarepro->id)
-                ->with('sub_areas')
-                ->get(['id', 'IdUser', 'idArea', 'Nombre', 'areas_id']);
+            $depa = Departamentos::where('departamento_id', '=', $iddeppro->id)
+                ->with('sub_Departamentos')
+                ->get(['id', 'IdUser', 'Nombre', 'departamento_id']);
         }
 
 
@@ -58,7 +69,7 @@ class MaquinasController extends Controller
             }
         }*/
 
-        return Inertia::render('Produccion/Maquinas', ['usuario' => $perf,'areas' => $areas, 'maquinas' => $maquinas]);
+        return Inertia::render('Produccion/Maquinas', ['usuario' => $perf,'depa' => $depa, 'maquinas' => $maquinas]);
     }
 
     /**

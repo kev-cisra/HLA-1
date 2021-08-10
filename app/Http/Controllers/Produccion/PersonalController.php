@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
-use App\Models\Produccion\dep_perf;
-use App\Models\RecursosHumanos\Catalogos\Areas;
+use App\Models\Produccion\dep_per;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\User;
@@ -28,7 +27,7 @@ class PersonalController extends Controller
         $perf = PerfilesUsuarios::where('user_id','=',$usuario)
         ->get();
         //consulta el id de la area produccion
-        $idarepro = Departamentos::where('Nombre', '=', 'OPERACIONES')
+        $idarepro = Departamentos::where('Nombre', '=', 'PRODUCCION')
             ->first();
         //muestra las areas y sub areas de produccion
         $areas = Departamentos::where('departamento_id', '=', $idarepro->id)
@@ -38,12 +37,12 @@ class PersonalController extends Controller
         $personal = PerfilesUsuarios::where('Departamento_id', '=', 2)
             ->get();
         //consulta a la relacion de areas y usuarios
-        $areper = empty($request->busca) ? NULL : dep_perf::where('departamento_id', '=', $request->busca)
+        $areper = empty($request->busca) ? NULL : dep_per::where('departamento_id', '=', $request->busca)
         ->with([
-            'areperf_area' => function($area){
-                $area->select('id', 'Nombre', 'tipo', 'departamento_id');
+            'departamentos' => function($area){
+                $area->select('id', 'Nombre', 'departamento_id');
             },
-            'areperf_perfil' => function($perfi){
+            'perfiles' => function($perfi){
                 $perfi->select('id', 'IdEmp','Empresa', 'Nombre', 'ApPat', 'ApMat', 'user_id');
             }])
         ->get();
@@ -51,16 +50,6 @@ class PersonalController extends Controller
 
 
         return Inertia::render('Produccion/Personal', ['usuario' => $perf, 'areas' => $areas, 'personal' => $personal, 'areper' => $areper]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -77,9 +66,9 @@ class PersonalController extends Controller
                 'perfiles_usuarios_id' => ['required','numeric'],
         ])->validate();
         //consulta si ya esta registrado ese usuario
-        $cuenta = dep_perf::where('perfiles_usuarios_id', '=', $request->perfiles_usuarios_id)
+        $cuenta = dep_per::where('perfiles_usuarios_id', '=', $request->perfiles_usuarios_id)
         ->withTrashed ()
-        ->where('departamento_id', '=', $request->area_id)
+        ->where('departamento_id', '=', $request->departamento_id)
         ->first();
         //revisa si la consulta anterior no es vacias
         if(!empty($cuenta)) {
@@ -90,12 +79,12 @@ class PersonalController extends Controller
             }//revisa si ya existe el usuario y el delete es nulo para mandar un aviso
             else{
                 Validator::make($request->all(), [
-                    'perfiles_usuarios_id' => 'unique:dep_perfs'
+                    'perfiles_usuarios_id' => 'unique:dep_pers'
                 ])->validate();
             }
         }//si no existe ningun dato crea un nuevo registro
         else {
-            dep_perf::create($request->all());
+            dep_per::create($request->all());
         }
 
         return redirect()->back()
@@ -113,15 +102,15 @@ class PersonalController extends Controller
     public function update(Request $request)
     {
         // crea un nuevo usuario para que ocupe la aplicación
+        //return $request->departamentos['Nombre'];
         $n_user = User::create([
-            'IdEmp' => $request->IdEmp,
-            'name' => $request->Nombre.' '.$request->ApPat.' '.$request->ApMat,
-            'Area' => '',
-            'email' => '',
-            'password' => bcrypt($request->IdEmp)
+            'IdEmp' => $request->perfiles['IdEmp'],
+            'name' => $request->perfiles['Nombre'].' '.$request->perfiles['ApPat'].' '.$request->perfiles['ApMat'],
+            'Departamento' => $request->departamentos['Nombre'],
+            'password' => bcrypt($request->perfiles['IdEmp'])
         ]);
         //actualiza la informacion de perfiles para relacionar con el nuevo usuario
-        PerfilesUsuarios::find($request->id)->update(['user_id' => $n_user->id]);
+        PerfilesUsuarios::find($request->perfiles['id'])->update(['user_id' => $n_user->id]);
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
     }
@@ -136,7 +125,7 @@ class PersonalController extends Controller
     {
         //
         if ($request->has('id')) {
-            dep_perf::find($request->input('id'))->delete();
+            dep_per::find($request->input('id'))->delete();
             return redirect()->back()
                     ->with('message', 'Post Updated Successfully.');
         }

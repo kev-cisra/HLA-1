@@ -12,7 +12,7 @@
                 </select>
             </template>
             <template v-slot:BtnNuevo>
-                <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer">Asignar area a personal </jet-button>
+                <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer">Asignar departamento a personal </jet-button>
             </template>
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ------------------------------------>
@@ -21,8 +21,8 @@
                 <div class="tw-mb-6 md:tw-flex">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>ÁREA </jet-label>
-                        <select class="InputSelect" v-model="form.area_id" v-html="opc"></select>
-                        <small v-if="errors.area_id" class="validation-alert">{{errors.area_id}}</small>
+                        <select class="InputSelect" v-model="form.departamento_id" v-html="opc"></select>
+                        <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
                     </div>
 
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
@@ -50,9 +50,9 @@
                 </template>
                 <template v-slot:TableFooter>
                     <tr v-for="ap in areper" :key="ap.id">
-                        <td class="fila">{{ ap.areperf_perfil.IdEmp }}</td>
-                        <td class="fila">{{ ap.areperf_perfil.Nombre }} {{ ap.areperf_perfil.ApPat }} {{ ap.areperf_perfil.ApMat }}</td>
-                        <td class="fila">{{ ap.areperf_area.Nombre }}</td>
+                        <td class="fila">{{ ap.perfiles.IdEmp }}</td>
+                        <td class="fila">{{ ap.perfiles.Nombre }} {{ ap.perfiles.ApPat }} {{ ap.perfiles.ApMat }}</td>
+                        <td class="fila">{{ ap.departamentos.Nombre }}</td>
                         <td class="fila">
                             <div class="columnaIconos">
                                 <div class="iconoDelete" @click="deleteRow(ap)">
@@ -62,14 +62,14 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoAcept" v-if="ap.areperf_perfil.user_id">
+                                <div class="iconoAcept" v-if="ap.perfiles.user_id">
                                     <span tooltip="Usuario activo" flow="left">
                                         <svg class="tw-h-5 tw-w-5"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11l2 2l4 -4" />
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoDetails" @click="updateUser(ap.areperf_perfil)" v-else-if="!ap.areperf_perfil.user_id">
+                                <div class="iconoDetails" @click="updateUser(ap)" v-else-if="!ap.perfiles.user_id">
                                     <span tooltip="Cargar nuevo usuario" flow="left">
                                         <svg class="tw-h-5 tw-w-5" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11h6m-3 -3v6" />
@@ -132,7 +132,7 @@
         },data() {
             return {
                 S_Area: '',
-                opc: '<option value="">Selecciona una área </option>',
+                opc: '<option value="">Selecciona un departamento </option>',
                 español: {
                     "processing": "Procesando...",
                     "lengthMenu": "Mostrar _MENU_ registros",
@@ -276,7 +276,7 @@
                 search: null,
                 form: {
                     perfiles_usuarios_id: '',
-                    area_id: '',
+                    departamento_id: '',
                 }
             }
         },
@@ -348,7 +348,7 @@
                         //var condi = r.sub_areas.id == '' ? 'disabled' : '';
                         //console.log(r.sub_areas);
                         this.opc += `<option value="${r.id}"> ${r.Nombre} </option>`;
-                        r.sub_areas.forEach(rr => {
+                        r.sub__departamentos.forEach(rr => {
                             this.opc += `<option value="${rr.id}"> ${rr.Nombre} </option>`;
                             //console.log(rr.Nombre);
                         })
@@ -378,7 +378,7 @@
             reset(val){
                 this.form = {
                     perfiles_usuarios_id: '',
-                    area_id: val,
+                    departamento_id: val,
                 }
             },
             //guardar información de
@@ -386,7 +386,7 @@
                 //console.log(form)
                 $('#t_per').DataTable().destroy();
                 this.$inertia.post('/Produccion/Personal', form, {
-                    onSuccess: () => { this.tabla(), this.reset(form.area_id),this.alertSucces()}, preserveState: true
+                    onSuccess: () => { this.tabla(), this.reset(form.departamento_id),this.alertSucces()}, preserveState: true
                 });
                 //$('#t_mat').DataTable();
             },

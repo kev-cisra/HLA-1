@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDepPerfsTable extends Migration
+class CreateDepPersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateDepPerfsTable extends Migration
      */
     public function up()
     {
-        Schema::create('dep_perfs', function (Blueprint $table) {
+        Schema::create('dep_pers', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('perfiles_usuarios_id');
@@ -38,6 +38,6 @@ class CreateDepPerfsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('are_profs');
+        Schema::dropIfExists('dep_pers');
     }
 }
