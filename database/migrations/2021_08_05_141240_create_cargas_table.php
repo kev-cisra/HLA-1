@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCargaProduccionsTable extends Migration
+class CreateCargasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCargaProduccionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('carga_produccions', function (Blueprint $table) {
+        Schema::create('cargas', function (Blueprint $table) {
             $table->id();
 
             $table->date('fecha');
@@ -24,7 +24,7 @@ class CreateCargaProduccionsTable extends Migration
             $table->unsignedBigInteger('cargado')->nullable();
             $table->tinyInteger('equipo');
 
-            $table->unsignedBigInteger('are_perf_id');
+            $table->unsignedBigInteger('dep_perf_id');
             $table->unsignedBigInteger('maq_pro_id');
             $table->unsignedBigInteger('clave_id');
             $table->unsignedBigInteger('turno_id');
@@ -32,7 +32,7 @@ class CreateCargaProduccionsTable extends Migration
             $table->foreign('maq_pro_id')->references("id")->on("maq_pros")
             ->onDelete("cascade")
             ->onUpdate("cascade");
-            $table->foreign('are_perf_id')->references("id")->on("are_profs")
+            $table->foreign('dep_perf_id')->references("id")->on("dep_perfs")
             ->onDelete("cascade")
             ->onUpdate("cascade");
             $table->foreign('clave_id')->references("id")->on("claves")

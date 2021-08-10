@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAreProfsTable extends Migration
+class CreateDepPerfsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateAreProfsTable extends Migration
      */
     public function up()
     {
-        Schema::create('are_profs', function (Blueprint $table) {
+        Schema::create('dep_perfs', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('perfiles_usuarios_id');
@@ -21,8 +21,8 @@ class CreateAreProfsTable extends Migration
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
-            $table->unsignedBigInteger('area_id');
-            $table->foreign("area_id")->references("id")->on("areas")
+            $table->unsignedBigInteger('departamento_id');
+            $table->foreign("departamento_id")->references("id")->on("departamentos")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 

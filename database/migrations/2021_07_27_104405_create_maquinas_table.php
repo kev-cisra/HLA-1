@@ -17,10 +17,10 @@ class CreateMaquinasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('IdUser'); //Numero control empleado
             $table->string('Nombre',45);
-            $table->string('Area',35);
+            $table->string('Departamento',35);
 
-            $table->unsignedBigInteger('area_id')->nullable();
-            $table->foreign('area_id')->references("id")->on("areas")
+            $table->unsignedBigInteger('departamento_id')->nullable();
+            $table->foreign('departamento_id')->references("id")->on("departamentos")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 

@@ -23,12 +23,12 @@ class CreateProcesosTable extends Migration
             $table->enum('estatus',[1,2,3])->default(1);
 
             $table->unsignedBigInteger('proceso_id')->nullable();
-            $table->foreign('proceso_id')->references("id")->on("areas")
+            $table->foreign('proceso_id')->references("id")->on("procesos")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
-            $table->unsignedBigInteger('area_id');
-            $table->foreign('area_id')->references("id")->on("areas")
+            $table->unsignedBigInteger('departamento_id');
+            $table->foreign('departamento_id')->references("id")->on("departamentos")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
