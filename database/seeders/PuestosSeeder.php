@@ -79,5 +79,25 @@ class PuestosSeeder extends Seeder
             'IdUser' => '1',
             'Nombre' => 'AYUDANTE MANTTO CIVIL',
         ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'GERENTE DE OPERACIONES',
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'COORDINADOR EN OPERACIONES',
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'ENCARGADO EN OPERACIONES',
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'LIDER EN OPERACIONES',
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'OPERADOR OPERACIONES',
+        ]);
     }
 }

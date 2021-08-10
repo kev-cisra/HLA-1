@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAreMatsTable extends Migration
+class CreateDepMatsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateAreMatsTable extends Migration
      */
     public function up()
     {
-        Schema::create('are_mats', function (Blueprint $table) {
+        Schema::create('dep_mats', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('area_id');
-            $table->foreign('area_id')->references("id")->on("areas")
+            $table->unsignedBigInteger('departamento_id');
+            $table->foreign('departamento_id')->references("id")->on("departamentos")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 

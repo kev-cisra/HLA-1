@@ -20,8 +20,8 @@ class CreateClavesTable extends Migration
             $table->string('DESCR');
             $table->string('UNI_MED');
 
-            $table->unsignedBigInteger('are_mat_id');
-            $table->foreign('are_mat_id')->references("id")->on("are_mats")
+            $table->unsignedBigInteger('dep_mat_id');
+            $table->foreign('dep_mat_id')->references("id")->on("dep_mats")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 

@@ -17,6 +17,12 @@ class CreatePuestosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('IdUser'); //Id de Sessión
             $table->string('Nombre',45);
+
+            $table->unsignedBigInteger('departamento_id')->nullable();
+            $table->foreign("departamento_id")->references("id")->on("departamentos")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });

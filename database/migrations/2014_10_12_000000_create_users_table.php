@@ -17,9 +17,9 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->integer('IdEmp')->unique();
             $table->string('name');
-            $table->string('Area',75)->nullable();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('Departamento',75)->nullable();
+            //$table->string('email')->unique();
+            //$table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();

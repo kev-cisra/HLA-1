@@ -1,6 +1,8 @@
 <template>
     <app-layout>
-
+        <pre>
+            {{areas}}
+        </pre>
     </app-layout>
 </template>
 
@@ -33,8 +35,6 @@
             usuario: Object,
             areas: Object,
             personal: Object,
-            areper: Object,
-            are_perfs: Object,
             errors: Object
         },
         components: {
