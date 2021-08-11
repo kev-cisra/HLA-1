@@ -4,9 +4,6 @@
             Personal
         </Header>
         <Accions>
-            <template v-slot:InputBusqueda>
-                <input type="text" placeholder="Busqueda por Id" class="InputSearch" v-model="search">
-            </template>
             <template  v-slot:SelectB>
                 <select @change="verTabla" class="InputSelect" v-model="S_Area" v-html="opc">
                 </select>
@@ -34,12 +31,12 @@
                         </datalist>
                     </div>
 
-                    <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
+                    <jet-button type="button" @click="save(form)" >Guardar</jet-button>
 
                 </div>
             </form>
         </div>
-
+        <!----------------------------------- tabla de datos -------------------------------------------------------->
         <div class="table-responsive">
             <Table id="t_per">
                 <template v-slot:TableHeader>
@@ -100,6 +97,7 @@
     import datatable from 'datatables.net-bs5';
     require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
     require( 'datatables.net-buttons/js/buttons.html5' );
+    require ( 'datatables.net-buttons/js/buttons.colVis' );
     import print from 'datatables.net-buttons/js/buttons.print';
     import jszip from 'jszip/dist/jszip';
     import pdfMake from 'pdfmake/build/pdfmake';
@@ -132,7 +130,7 @@
         },data() {
             return {
                 S_Area: '',
-                opc: '<option value="">Selecciona un departamento </option>',
+                opc: '<option value="" disabled>Selecciona un departamento </option>',
                 español: {
                     "processing": "Procesando...",
                     "lengthMenu": "Mostrar _MENU_ registros",
@@ -271,9 +269,6 @@
                     },
                     "thousands": "."
                 },
-                showModal: false,
-                editMode: false,
-                search: null,
                 form: {
                     perfiles_usuarios_id: '',
                     departamento_id: '',
@@ -333,9 +328,25 @@
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                         buttons: [
-                            'copyHtml5',
-                            'excelHtml5',
-                            'pdfHtml5'
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            'colvis'
                         ]
                     });
                 })
@@ -364,16 +375,6 @@
                     onSuccess: () => { this.tabla(); }, preserveState: true
                 });
             },
-            //abrir y reset del modal
-            openModal() {
-                this.chageClose();
-                this.reset();
-                this.editMode = false;
-            },
-            //abrir o cerrar modal
-            chageClose(){
-                this.showModal = !this.showModal
-            },
             //reset de modal
             reset(val){
                 this.form = {
@@ -391,10 +392,8 @@
                 //$('#t_mat').DataTable();
             },
             deleteRow: function (data) {
-                if (!confirm('¿Estás  seguro de querer eliminar este Material?')) return;
-                    if (this.areper.length == 1) {
-                        $('#t_per').DataTable().clear()
-                    }
+                if (!confirm('¿Estás  seguro de querer eliminar este Registro?')) return;
+                    this.areper.length == 1 ? $('#t_per').DataTable().clear() : '' ;
                     $('#t_per').DataTable().destroy()
                     data._method = 'DELETE';
                     this.$inertia.post('/Produccion/Personal/' + data.id, data, {

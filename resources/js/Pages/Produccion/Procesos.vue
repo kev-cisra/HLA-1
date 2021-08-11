@@ -2,17 +2,13 @@
 <template>
     <app-layout>
         <Header>
-            Area: {{usuario.perfiles_area.Nombre}}
+            Procesos
         </Header>
         <!-------------- Tabla --------------->
 
         <Accions>
-            <template v-slot:InputBusqueda>
-                <input type="text" placeholder="Busqueda por Id" class="InputSearch" v-model="search">
-            </template>
             <template  v-slot:SelectB>
-                <select  v-show="!SM" @change="verTabla" class="InputSelect" v-model="S_Area">
-                    <option v-for="area in areas" :key="area" :value="area.id">{{ area.Nombre }}</option>
+                <select @change="verTabla" class="InputSelect" v-model="S_Area" v-html="opc">
                 </select>
             </template>
             <template v-slot:BtnNuevo>
@@ -21,9 +17,6 @@
         </Accions>
         <div class="table-responsive">
             <Table id="t_pro">
-                <template v-slot:TableEncabezado>
-                    <th colspan="5"><h3 class="tw-text-sm">Area</h3></th>
-                </template>
                 <template v-slot:TableHeader>
                     <th class="columna">Nombre</th>
                     <th class="columna">Tipo</th>
@@ -67,10 +60,13 @@
                 </template>
             </Table>
         </div>
-
+        <pre>
+            {{ procesos }}
+        </pre>
         <!------------------ Modal ------------------------->
         <modal :show="showModal" @close="chageClose">
             <form>
+                <!--------------------------- PROCESOS ------------------------------------>
                 <div class="tw-px-4 tw-py-4">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
@@ -81,12 +77,11 @@
                     <div class="tw-mt-4">
                         <div class="ModalForm">
                             <div class="tw-mb-6 md:tw-flex">
-                                <div v-show="!SM" class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Area</jet-label>
-                                    <select  class="InputSelect" v-model="form.areas_id">
-                                        <option v-for="area in areas" :key="area" :value="area.id">{{ area.Nombre }}</option>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Departamento</jet-label>
+                                    <select class="InputSelect" v-model="form.departamento_id" v-html="opc">
                                     </select>
-                                    <small v-if="errors.areas_id" class="validation-alert">{{errors.areas_id}}</small>
+                                    <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Nombre del proceso</jet-label>
@@ -98,8 +93,8 @@
                                     <select v-model="form.tipo" class="InputSelect">
                                         <option value="">Seleccione</option>
                                         <option value="1">Encargado</option>
-                                        <option v-show="!SM" value="2">Coordinador</option>
-                                        <option v-show="!SM" value="3">Formulas</option>
+                                        <option value="2">Coordinador</option>
+                                        <option value="3">Formulas</option>
                                     </select>
                                     <small v-if="errors.tipo" class="validation-alert">{{errors.tipo}}</small>
                                 </div>
@@ -115,61 +110,21 @@
                         </div>
                     </div>
                 </div>
-
-                <!-------------------- Inicio form 2 ---------------------------------
-                <div>
-                    <div class="tw-px-4 tw-py-4">
-                        <div class="tw-text-lg">
-                            <div class="ModalHeader">
-                                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Procesos</h3>
-                            </div>
-                        </div>
-
-                        <div class="tw-mt-4">
-                            <div class="ModalForm">
-                                <div class="tw-mb-6 md:tw-flex">
-                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                        <jet-label><span class="required">*</span>Área</jet-label>
-                                        <select  v-show="!SM" class="InputSelect" v-model="form.areas_id">
-                                            <option v-for="area in areas" :key="area" :value="area.id">{{ area.Nombre }}</option>
-                                        </select>
-                                        <small v-if="errors.areas_id" class="validation-alert">{{errors.areas_id}}</small>
-                                    </div>
-                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                        <jet-label><span class="required">*</span>Nombre del proceso</jet-label>
-                                        <jet-input type="text" v-model="form.nompro"></jet-input>
-                                        <small v-if="errors.nompro" class="validation-alert">{{errors.nompro}}</small>
-                                    </div>
-                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                        <jet-label><span class="required">*</span>Tipo de proceso</jet-label>
-                                        <select v-model="form.tipo" class="InputSelect">
-                                            <option value="">Seleccione</option>
-                                            <option value="1">Encargado</option>
-                                            <option value="2">Coordinador</option>
-                                            <option value="3">Formulas</option>
-                                        </select>
-                                        <small v-if="errors.tipo" class="validation-alert">{{errors.tipo}}</small>
-                                    </div>
-                                </div>
-
-                                <div class="tw-mb-6 md:tw-flex">
-                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                        <jet-label><span class="required">*</span>Descripción</jet-label>
-                                        <textarea v-model="form.descripcion" class="InputSelect"></textarea>
-                                        <small v-if="errors.Ruta" class="validation-alert">{{errors.descripcion}}</small>
-                                    </div>
-                                </div>
-                            </div>
+                <!-------------------------------- FORMULAS --------------------------------------->
+                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 3">
+                    <div class="tw-text-lg">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Formulas</h3>
                         </div>
                     </div>
 
-                    <div class="ModalFooter">
-                        <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
-                        <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
-                        <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                    <div class="tw-mt-4">
+                        <div class="ModalForm">
+
+                        </div>
                     </div>
                 </div>
-                ------------------------- Fin form 2 ----------------------------------->
+
 
                 <div class="ModalFooter">
                     <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
@@ -193,16 +148,25 @@
     import Modal from '@/Jetstream/Modal';
     import JetLabel from '@/Jetstream/Label';
     import Select from '../../Components/Select.vue';
-
+    //datatable
     import datatable from 'datatables.net-bs5';
+    require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
+    require( 'datatables.net-buttons/js/buttons.html5' );
+    require ( 'datatables.net-buttons/js/buttons.colVis' );
+    import print from 'datatables.net-buttons/js/buttons.print';
+    import jszip from 'jszip/dist/jszip';
+    import pdfMake from 'pdfmake/build/pdfmake';
+    import pdfFonts from 'pdfmake/build/vfs_fonts';
     import $ from 'jquery';
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    window.JSZip = jszip;
 
     export default {
         props: [
             'usuario',
             'procesos',
-            'areas',
-            'areaM',
+            'depa',
             'errors'
         ],
         components: {
@@ -219,14 +183,151 @@
         },
         data() {
             return {
-                S_Area: this.usuario.Areas_id,
-                SM: false,
+                S_Area: '',
+                opc: '<option value="" disabled>Selecciona un departamento </option>',
+                español: {
+                    "processing": "Procesando...",
+                    "lengthMenu": "Mostrar _MENU_ registros",
+                    "zeroRecords": "No se encontraron resultados",
+                    "emptyTable": "Ningún dato disponible en esta tabla",
+                    "info": "Registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "search": "Buscar:",
+                    "infoThousands": ",",
+                    "loadingRecords": "Cargando...",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "aria": {
+                        "sortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad",
+                        "collection": "Colección",
+                        "colvisRestore": "Restaurar visibilidad",
+                        "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+                        "copySuccess": {
+                            "1": "Copiada 1 fila al portapapeles",
+                            "_": "Copiadas %d fila al portapapeles"
+                        },
+                        "copyTitle": "Copiar al portapapeles",
+                        "csv": "CSV",
+                        "excel": "Excel",
+                        "pageLength": {
+                            "-1": "Mostrar todas las filas",
+                            "1": "Mostrar 1 fila",
+                            "_": "Mostrar %d filas"
+                        },
+                        "pdf": "PDF",
+                        "print": "Imprimir"
+                    },
+                    "autoFill": {
+                        "cancel": "Cancelar",
+                        "fill": "Rellene todas las celdas con <i>%d<\/i>",
+                        "fillHorizontal": "Rellenar celdas horizontalmente",
+                        "fillVertical": "Rellenar celdas verticalmentemente"
+                    },
+                    "decimal": ",",
+                    "searchBuilder": {
+                        "add": "Añadir condición",
+                        "button": {
+                            "0": "Constructor de búsqueda",
+                            "_": "Constructor de búsqueda (%d)"
+                        },
+                        "clearAll": "Borrar todo",
+                        "condition": "Condición",
+                        "conditions": {
+                            "date": {
+                                "after": "Despues",
+                                "before": "Antes",
+                                "between": "Entre",
+                                "empty": "Vacío",
+                                "equals": "Igual a",
+                                "not": "No",
+                                "notBetween": "No entre",
+                                "notEmpty": "No Vacio"
+                            },
+                            "moment": {
+                                "after": "Despues",
+                                "before": "Antes",
+                                "between": "Entre",
+                                "empty": "Vacío",
+                                "equals": "Igual a",
+                                "not": "No",
+                                "notBetween": "No entre",
+                                "notEmpty": "No vacio"
+                            },
+                            "number": {
+                                "between": "Entre",
+                                "empty": "Vacio",
+                                "equals": "Igual a",
+                                "gt": "Mayor a",
+                                "gte": "Mayor o igual a",
+                                "lt": "Menor que",
+                                "lte": "Menor o igual que",
+                                "not": "No",
+                                "notBetween": "No entre",
+                                "notEmpty": "No vacío"
+                            },
+                            "string": {
+                                "contains": "Contiene",
+                                "empty": "Vacío",
+                                "endsWith": "Termina en",
+                                "equals": "Igual a",
+                                "not": "No",
+                                "notEmpty": "No Vacio",
+                                "startsWith": "Empieza con"
+                            }
+                        },
+                        "data": "Data",
+                        "deleteTitle": "Eliminar regla de filtrado",
+                        "leftTitle": "Criterios anulados",
+                        "logicAnd": "Y",
+                        "logicOr": "O",
+                        "rightTitle": "Criterios de sangría",
+                        "title": {
+                            "0": "Constructor de búsqueda",
+                            "_": "Constructor de búsqueda (%d)"
+                        },
+                        "value": "Valor"
+                    },
+                    "searchPanes": {
+                        "clearMessage": "Borrar todo",
+                        "collapse": {
+                            "0": "Paneles de búsqueda",
+                            "_": "Paneles de búsqueda (%d)"
+                        },
+                        "count": "{total}",
+                        "countFiltered": "{shown} ({total})",
+                        "emptyPanes": "Sin paneles de búsqueda",
+                        "loadMessage": "Cargando paneles de búsqueda",
+                        "title": "Filtros Activos - %d"
+                    },
+                    "select": {
+                        "1": "%d fila seleccionada",
+                        "_": "%d filas seleccionadas",
+                        "cells": {
+                            "1": "1 celda seleccionada",
+                            "_": "$d celdas seleccionadas"
+                        },
+                        "columns": {
+                            "1": "1 columna seleccionada",
+                            "_": "%d columnas seleccionadas"
+                        }
+                    },
+                    "thousands": "."
+                },
                 showModal: false,
                 editMode: false,
-                search: null,
                 form: {
                     nompro: null,
-                    areas_id: this.usuario.Areas_id,
+                    departamento_id: '',
                     tipo: '',
                     descripcion: null
                 }
@@ -239,6 +340,67 @@
             this.tabla();
         },
         methods: {
+            /****************************** opciones de selec del departamento *****************************/
+            //información del select area
+            mostSelect() {
+                this.$nextTick(() => {
+                    this.depa.forEach(r => {
+                        if (r.departamentos) {
+                            this.opc += `<option value="${r.departamentos.id}"> ${r.departamentos.Nombre} </option>`;
+                        }else{
+                            this.opc += `<option value="${r.id}"> ${r.Nombre} </option>`;
+                            r.sub__departamentos.forEach(rr => {
+                                this.opc += `<option value="${rr.id}"> ${rr.Nombre} </option>`;
+                                //console.log(rr.Nombre);
+                            })
+                        }
+
+                    })
+                });
+                //console.log(this.areas)
+            },
+            //consulta para generar datos de la tabla
+            verTabla(event){
+                $('#t_pro').DataTable().clear();
+                $('#t_pro').DataTable().destroy();
+                this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value }, {
+                    onSuccess: () => { this.tabla(); }, preserveState: true
+                });
+            },
+            /******************************* opciones de data table ****************************************/
+            //datatable
+            tabla() {
+                this.$nextTick(() => {
+                    $('#t_pro').DataTable({
+                        "language": this.español,
+                        "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                                "<'row'<'col-sm-12'tr>>" +
+                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            'colvis'
+                        ]
+                    });
+                })
+            },
+            /******************************* Alertas *******************************************************/
             //alerta
             alertArea(){
                 const Toast = Swal.mixin({
@@ -259,27 +421,7 @@
                     // background: '#99F6E4',
                 })
             },
-            //datatable
-            tabla() {
-                this.$nextTick(() => {
-                    $('#t_pro').DataTable();
-                })
-
-            },
-            //información del select area
-            mostSelect() {
-                this.$nextTick(() => {
-                    //console.log(this.usuario.perfiles_area.idArea !== "PRO" || this.usuario.perfiles_area.idArea !== "OPE")
-                    if(this.usuario.perfiles_area.idArea !== "PRO" && this.usuario.perfiles_area.idArea !== "OPE"){
-                        this.SM = true;
-                    }
-                });
-            },
-            //consulta para generar datos de la tabla
-            verTabla(event){
-                $('#t_pro').DataTable().destroy();
-                this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value }, {onSuccess: () => { this.tabla() }} )
-            },
+            /******************************* opciones de modal funciones basicas *******************************************/
             //abrir y reset del modal procesos
             openModal() {
                 this.chageClose();
@@ -294,11 +436,12 @@
             reset(){
                 this.form = {
                     nompro: null,
-                    areas_id: this.usuario.Areas_id,
+                    departamento_id: '',
                     tipo: '',
                     descripcion: null
                 }
             },
+            /******************************** Acciones insert update y delet *************************************/
             //guardar información de procesos
             save(form) {
                 if(form.areas_id == this.usuario.perfiles_area.id & this.usuario.perfiles_area.idArea == 'PRO'){

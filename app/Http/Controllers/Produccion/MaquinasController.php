@@ -11,6 +11,7 @@ use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class MaquinasController extends Controller
@@ -63,11 +64,11 @@ class MaquinasController extends Controller
         }
 
 
-        /*if(empty($request->busca)){
-            foreach ($areas as $value) {
-                return $value->areperf_area->id;
-            }
-        }*/
+        if(!empty($request->busca)){
+            $maquinas = Maquinas::where('departamento_id', '=', $request->busca)
+            ->with('departamentos')
+            ->get();
+        }
 
         return Inertia::render('Produccion/Maquinas', ['usuario' => $perf,'depa' => $depa, 'maquinas' => $maquinas]);
     }
@@ -91,6 +92,21 @@ class MaquinasController extends Controller
     public function store(Request $request)
     {
         //
+        Validator::make($request->all(), [
+            'departamento_id' => 'required',
+            'Nombre' => ['required'],
+            'Departamento' => 'required'
+        ])->validate();
+        //return $request;
+        Maquinas::create([
+            'IdUser' => $request->IdUser,
+            'departamento_id' => $request->departamento_id,
+            'Nombre' => strtoupper($request->Nombre),
+            'Departamento' => $request->Departamento
+        ]);
+
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');/**/
     }
 
     /**
@@ -125,6 +141,17 @@ class MaquinasController extends Controller
     public function update(Request $request, maq_pro $maq_pro)
     {
         //
+        Validator::make($request->all(), [
+            'departamento_id' => 'required',
+            'Nombre' => ['required'],
+            'Departamento' => 'required'
+        ])->validate();
+
+        if ($request->has('id')) {
+            Maquinas::find($request->input('id'))->update($request->all());
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 
     /**
@@ -133,8 +160,13 @@ class MaquinasController extends Controller
      * @param  \App\Models\Produccion\maq_pro  $maq_pro
      * @return \Illuminate\Http\Response
      */
-    public function destroy(maq_pro $maq_pro)
+    public function destroy(Request $request)
     {
         //
+        if ($request->has('id')) {
+            Maquinas::find($request->input('id'))->delete();
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 }

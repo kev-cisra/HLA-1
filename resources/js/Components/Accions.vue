@@ -13,13 +13,13 @@
                 </div>
             <div class="tw-flex-grow">
                 <div class="tw-block tw-relative">
-                    <span class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-h-full tw-pl-4">
+                    <!--<span class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-h-full tw-pl-4">
                         <svg viewBox="0 0 24 24" class="tw-w-4 tw-h-4 tw-text-gray-500 tw-fill-current">
                             <path
                                 d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z">
                             </path>
                         </svg>
-                    </span>
+                    </span>-->
                     <slot name="InputBusqueda">
 
                     </slot>

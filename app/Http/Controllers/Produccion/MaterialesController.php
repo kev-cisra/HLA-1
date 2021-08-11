@@ -21,37 +21,16 @@ class MaterialesController extends Controller
      */
     public function index(Request $request){
 
-        //id de la persona que inicio sesion
+        //Muestra el id de la persona que inicio sesion
         $usuario = Auth::id();
-        //se busca toda la informacion de la persona logeada
-        $perf = PerfilesUsuarios::where('IdUser','=',$usuario)
-        ->with(['perfiles_area'=>function($query) {
-                $query->select('id','Nombre', 'idArea');
-            }
-        ])
-        ->first(['id', 'IdEmp', 'Empresa', 'Nombre', 'ApPat', 'ApMat', 'perfiles_usuarios_id', 'Areas_id']);
-        //se generan variables nulas para pasar los datos
-        $area = NULL;
-        $mate = NULL;
+        //muestra la información del usuario que inicio sesion
+        $perf = PerfilesUsuarios::where('user_id','=',$usuario)
+            ->first();
 
-        if($perf->perfiles_area->idArea == "PRO" || $perf->perfiles_area->idArea == "OPE"){
-            $area = Areas::with('sub_areas')
-            ->get(['id', 'IdUser', 'idArea', 'Nombre', 'areas_id']);
-            if(!empty($request->busca)){
-                $mate = materiales::where('area_id','=',$request->busca)
-                ->with('materiales_area')
-                ->get();
-                /*procesos::where('areas_id','=',$request->busca)
-                ->with('procesos_area')
-                ->get();*/
-            }
-        }else{
-            $mate = materiales::where('areas_id','=',$perf->Areas_id)
-            ->with('materiales_area')
-            ->get();
-        }
+        $mate = materiales::get();
 
-        return Inertia::render('Produccion/Materiales', ['usuario' => $perf,'materiales' => $mate,'areas' => $area]);
+
+        return Inertia::render('Produccion/Materiales', ['usuario' => $perf,'materiales' => $mate]);
     }
 
     /**
@@ -74,8 +53,7 @@ class MaterialesController extends Controller
     {
         //
         Validator::make($request->all(), [
-            'idmat' => ['required'],
-            'area_id' => ['required'],
+            'idmat' => ['required','unique:materiales'],
             'nommat' => ['required'],
             'descrip' => ['required'],
         ])->validate();
@@ -120,7 +98,6 @@ class MaterialesController extends Controller
         //
         Validator::make($request->all(), [
             'idmat' => ['required'],
-            'area_id' => ['required'],
             'nommat' => ['required'],
             'descrip' => ['required'],
         ])->validate();

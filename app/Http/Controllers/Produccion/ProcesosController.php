@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produccion\catalogos\procesos;
+use App\Models\Produccion\dep_per;
 use App\Models\Produccion\formulas;
-use App\Models\RecursosHumanos\Catalogos\Areas;
+use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -22,30 +23,54 @@ class ProcesosController extends Controller
      */
     public function index(Request $request)
     {
-        //echo $request->busca;
+        //Muestra el id de la persona que inicio sesion
         $usuario = Auth::id();
+        //muestra la información del usuario que inicio sesion
+        $perf = PerfilesUsuarios::where('user_id','=',$usuario)
+            ->first();
 
-        $perf = PerfilesUsuarios::where('IdUser','=',$usuario)
-        ->first(['id', 'IdEmp', 'Empresa', 'Nombre', 'ApPat', 'ApMat', 'perfiles_usuarios_id']);
-
-        $area = NULL;
+        $depa = NULL;
         $proce = NULL;
 
-        if($perf->perfiles_area->idArea == "PRO" || $perf->perfiles_area->idArea == "OPE"){
-            $area = Areas::with('sub_areas')
-            ->get(['id', 'IdUser', 'idArea', 'Nombre', 'areas_id']);
-            if(!empty($request->busca)){
-                $proce = procesos::where('areas_id','=',$request->busca)
-                ->get();
-            }
-        }else{
-            $proce = procesos::where('areas_id','=',$perf->Areas_id)
+        /*************** Información para mostrar áreas *************************/
+        if($perf->Departamento_id == 2 && $perf->Puesto_id !== 16){
+            //consulta las areas que le pertenecen al usuario
+            $depa = dep_per::where('perfiles_usuarios_id','=',$perf->id)
+                ->with([
+                'departamentos' => function($dep){
+                        $dep->select('id', 'Nombre', 'departamento_id');
+                    }])
+                ->get(['id','perfiles_usuarios_id', 'departamento_id']);
+            /************************* Información de maquinas para coordinador, encargado y lider*************************/
+            //se consulta el primer departamento que tiene la persona asignada
+            $prime = dep_per::where('perfiles_usuarios_id','=',$perf->id)
+                ->with([
+                    'departamentos' => function($dep){
+                        $dep->select('id');
+                    }])
+                ->first(['id', 'departamento_id']);
+            //se consultan las maquinas que estan en ese departamento
+            $proce = procesos::where('departamento_id', '=', $prime->departamentos->id)
+            ->with('departamentos', 'maq_pros')
             ->get();
+
+        }else{
+            //consulta el id de la area produccion
+            $iddeppro = Departamentos::where('Nombre', '=', 'PRODUCCION')
+                ->first();
+            //muestra las areas y sub areas de produccion
+            $depa = Departamentos::where('departamento_id', '=', $iddeppro->id)
+                ->with('sub_Departamentos')
+                ->get(['id', 'IdUser', 'Nombre', 'departamento_id']);
         }
 
-
-
-        return Inertia::render('Produccion/Procesos', ['usuario' => $perf,'procesos' => $proce,'areas' => $area]);
+        /**************************** consulta si existe la busqueda  ****************************************************/
+        if(!empty($request->busca)){
+            $proce = procesos::where('departamento_id', '=', $request->busca)
+            ->with('departamentos', 'maq_pros')
+            ->get();
+        }
+        return Inertia::render('Produccion/Procesos', ['usuario' => $perf,'procesos' => $proce,'depa' => $depa]);
 
     }
 
