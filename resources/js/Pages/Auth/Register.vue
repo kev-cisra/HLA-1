@@ -8,12 +8,12 @@
 
         <form @submit.prevent="submit">
             <div>
-                <jet-label for="IdEmp" value="IdEmp" />
+                <jet-label for="IdEmp" value="Número Control" />
                 <jet-input id="IdEmp" type="text" class="tw-block tw-w-full tw-mt-1" v-model="form.IdEmp" required autofocus autocomplete="IdEmp" />
             </div>
 
             <div>
-                <jet-label for="name" value="Name" />
+                <jet-label for="name" value="Nombre" />
                 <jet-input id="name" type="text" class="tw-block tw-w-full tw-mt-1" v-model="form.name" required autofocus autocomplete="name" />
             </div>
 
@@ -23,12 +23,12 @@
             </div>
 
             <div class="tw-mt-4">
-                <jet-label for="password" value="Password" />
+                <jet-label for="password" value="Contraseña" />
                 <jet-input id="password" type="password" class="tw-block tw-w-full tw-mt-1" v-model="form.password" required autocomplete="new-password" />
             </div>
 
             <div class="tw-mt-4">
-                <jet-label for="password_confirmation" value="Confirm Password" />
+                <jet-label for="password_confirmation" value="Confirma la Contraseña" />
                 <jet-input id="password_confirmation" type="password" class="tw-block tw-w-full tw-mt-1" v-model="form.password_confirmation" required autocomplete="new-password" />
             </div>
 
@@ -45,12 +45,12 @@
             </div>
 
             <div class="mt-4 tw-flex tw-items-center tw-justify-end">
-                <inertia-link :href="route('login')" class="tw-text-sm tw-text-gray-600 tw-underline hover:tw-text-gray-900">
-                    Already registered?
-                </inertia-link>
+<!--                 <inertia-link :href="route('login')" class="tw-text-sm tw-text-gray-600 tw-underline hover:tw-text-gray-900">
+                    ¿Ya estas registrado?
+                </inertia-link> -->
 
                 <jet-button class="tw-ml-4" :class="{ 'tw-opacity-25': form.processing }" :disabled="form.processing">
-                    Register
+                    Registrar
                 </jet-button>
             </div>
         </form>
@@ -81,9 +81,9 @@
             return {
                 form: this.$inertia.form({
                     IdEmp: '',
-                    Area: '',
+                    Departamento: '',
                     name: '',
-                    email: '',
+                    // email: '',
                     password: '',
                     password_confirmation: '',
                     terms: false,
