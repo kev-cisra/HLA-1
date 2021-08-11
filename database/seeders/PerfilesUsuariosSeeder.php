@@ -18,7 +18,7 @@ class PerfilesUsuariosSeeder extends Seeder
         PerfilesUsuarios::create([
             'IdUser' => '16',
             'IdEmp' => '78',
-            'Empresa' => '',
+            'Empresa' => 'SERGES',
             'Nombre' => 'Kevin',
             'ApPat' => 'Cisneros',
             'ApMat' => 'Ramirez',
