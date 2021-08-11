@@ -85,6 +85,8 @@
         </div>
     </div>
 
+
+
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
         <form>
             <div class="tw-px-4 tw-py-4">
@@ -141,17 +143,17 @@
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>CURP</jet-label>
-                                <jet-input type="text" v-model="form.Curp" @input="(val) => (form.Curp = form.Curp.toUpperCase())"></jet-input>
+                                <jet-input type="text" v-model="form.Curp" @input="(val) => (form.Curp = form.Curp.toUpperCase())" @change="ValidaCurp($event)"></jet-input>
                                 <small v-if="errors.Curp" class="validation-alert">{{errors.Curp}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Número de Seguro Social</jet-label>
-                                <jet-input type="text" v-model="form.Nss" @input="(val) => (form.Nss = form.Nss.toUpperCase())"></jet-input>
+                                <jet-input type="text" v-model="form.Nss" @input="(val) => (form.Nss = form.Nss.toUpperCase())" @change="ValidaNss($event)"></jet-input>
                                 <small v-if="errors.Nss" class="validation-alert">{{errors.Nss}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>RFC</jet-label>
-                                <jet-input type="text" v-model="form.Rfc" @input="(val) => (form.Rfc = form.Rfc.toUpperCase())"></jet-input>
+                                <jet-input type="text" v-model="form.Rfc" @input="(val) => (form.Rfc = form.Rfc.toUpperCase())" @change="ValidaRfc($event)"></jet-input>
                                 <small v-if="errors.Rfc" class="validation-alert">{{errors.Rfc}}</small>
                             </div>
                         </div>
@@ -177,22 +179,16 @@
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Fecha Ingreso</jet-label>
-                                <jet-input type="date" v-model="form.FecIng"></jet-input>
+                                <jet-input type="date" v-model="form.FecIng" @change="FechaMayor($event)"></jet-input>
                                 <small v-if="errors.FecIng" class="validation-alert">{{errors.FecIng}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Antiguedad</jet-label>
-                                <jet-input type="number" v-model="form.Antiguedad"></jet-input>
-                                <small v-if="errors.Antiguedad" class="validation-alert">{{errors.Antiguedad}}</small>
+                                <jet-label>Dias Vacaciones</jet-label>
+                                <jet-input type="text" v-model="form.DiasVac"></jet-input>
                             </div>
                         </div>
 
                         <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Dias Vac</jet-label>
-                                <jet-input type="text" v-model="form.DiasVac"></jet-input>
-                                <small v-if="errors.DiasVac" class="validation-alert">{{errors.DiasVac}}</small>
-                            </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Puesto</jet-label>
                                 <select id="Jefe" v-model="form.Puesto_id" class="InputSelect">
@@ -307,8 +303,8 @@
                         </div>
                     </div>
                 </div>
-                    <div class="tw-bg-coolGray-100 tw-p-4 tw-border-b-4 tw-border-cyan-500">
-                    </div>
+                <div class="tw-bg-coolGray-100 tw-p-4 tw-border-b-4 tw-border-cyan-500">
+                </div>
             </div>
         </div>
     </div>
@@ -335,30 +331,9 @@ import moment from 'moment';
 import 'moment/locale/es';
 
 export default {
-  components: {
-    AppLayout,
-    Welcome,
-    Header,
-    Accions,
-    TableGreen,
-    Table,
-    JetButton,
-    JetCancelButton,
-    Modal,
-    Pagination,
-    JetInput,
-    JetSelect,
-  },
-  props: {
-    Session: Object,
-    PerfilesUsuarios: Object,
-    errors: Object,
-    Jefes: Object,
-    Puestos: Object,
-    Departamentos: Object,
-  },
     data() {
         return {
+            now: moment().format("YYYY-MM-DD"),
             tam: "4xl",
             español: {
             processing: "Procesando...",
@@ -516,7 +491,7 @@ export default {
                 Direccion: null,
                 Telefono: null,
                 Cumpleaños: null,
-                FecIng: '11-08-2000',
+                FecIng: null,
                 Antiguedad: null,
                 DiasVac: null,
                 Puesto_id: null,
@@ -524,158 +499,264 @@ export default {
             },
         };
     },
-    mounted() {
 
+    mounted() {
         this.tabla();
     },
+
+    components: {
+        AppLayout,
+        Welcome,
+        Header,
+        Accions,
+        TableGreen,
+        Table,
+        JetButton,
+        JetCancelButton,
+        Modal,
+        Pagination,
+        JetInput,
+        JetSelect,
+    },
+
+    props: {
+        Session: Object,
+        PerfilesUsuarios: Object,
+        errors: Object,
+        Jefes: Object,
+        Puestos: Object,
+        Departamentos: Object,
+    },
+
     methods: {
-    alertSucces() {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 1000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        FechaMayor(event){
+            var fecha1 = event.target.value;
+            var fecha2 = moment(); //fecha de hoy
+            var tiempo = fecha2.diff(fecha1, 'hours');
+            if(tiempo < 0){
+                Swal.fire(
+                'Fecha Incorrecta',
+                'Introduce una fecha igual o inferior al día actual',
+                'warning'
+                )
+                this.form = {
+                    FecIng: null,
+                }
+            }
         },
-      });
 
-      Toast.fire({
-        icon: "success",
-        title: "Registro Insertado",
-        // background: '#99F6E4',
-      });
-    },
-
-    alertDelete() {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 1000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        Renapo: function (curp) {
+            var regex = /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/;
+            return regex.test(curp);
         },
-      });
 
-      Toast.fire({
-        icon: "success",
-        title: "Registro Eliminado Correctamente",
-        // background: '#99F6E4',
-      });
-    },
+        SeguroSocial: function (rfc) {
+            var regex = /^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/;
+            return regex.test(rfc);
+        },
 
-    reset() {
-        this.form = {
-            IdUser: this.Session.id,
-            IdEmp: null,
-            jefes_areas_id: null,
-            Empresa: null,
-            Nombre: null,
-            ApPat: null,
-            ApMat: null,
-            Curp: null,
-            Rfc: null,
-            Nss: null,
-            Direccion: null,
-            Telefono: null,
-            Cumpleaños: null,
-            FecIng: null,
-            Antiguedad: null,
-            DiasVac: null,
-            Puesto_id: null,
-            Departamento_id: null,
-        };
-    },
+        Rfc: function (nss) {
+            var regex = /^(\d{2})(\d{2})(\d{2})\d{5}$/;
+            return regex.test(nss);
+        },
 
-    openModal() {
-      this.chageClose();
-      this.reset();
-      this.editMode = false;
-    },
+        ValidaCurp(event) {
+            if (!this.Renapo(event.target.value)){
+                console.log("CURP NO VALIDO")
+            }else{
+                console.log("CURP CORRECTO")
+            }
+        },
 
-    chageClose() {
-      this.showModal = !this.showModal;
-    },
-    //datatable
-    tabla() {
-      this.$nextTick(() => {
-        $("#perfiles").DataTable({
-          language: this.español,
+        ValidaNss(event){
+            if (!this.SeguroSocial(event.target.value)){
+                console.log("NSS NO VALIDO")
+            }else{
+                console.log("nss CORRECTO")
+            }
+        },
+
+        ValidaRfc(event){
+            if (!this.Rfc(event.target.value)){
+                console.log("rfc NO VALIDO")
+            }else{
+                console.log("rfc CORRECTO")
+            }
+        },
+
+        alertSucces() {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
         });
-      });
-    },
 
-    //consulta para generar datos de la tabla
-    verTabla(event) {
-      $("#perfiles").DataTable().destroy();
-      this.$inertia.get(
-        "/RecursosHumanos/PerfilesUsuarios",
-        { busca: event.target.value },
-        {
-          onSuccess: () => {
-            this.tabla();
-          },
-        }
-      );
-    },
-
-    save(data) {
-        var fecha1 = data.FecIng;
-        var fecha2 = moment();;
-
-        console.log(fecha2);
-        console.log(data.FecIng);
-        data.Antiguedad = fecha2.diff(fecha1, 'years')
-        console.log(data.Antiguedad);
-        console.log(data);
-
-        if(data.Antiguedad == 0){
-
-        }
-
-        console.log(ata.DiasVac);
-
-/*       this.$inertia.post("/RecursosHumanos/PerfilesUsuarios", data, {
-        onSuccess: () => {
-          this.reset(), this.chageClose(), this.alertSucces();
+        Toast.fire({
+            icon: "success",
+            title: "Registro Insertado",
+            // background: '#99F6E4',
+        });
         },
-      }); */
-    },
 
-    edit: function (data) {
-      this.form = Object.assign({}, data);
-      this.editMode = true;
-      this.chageClose();
-    },
+        alertDelete() {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+        });
 
-    update(data) {
-      data._method = "PUT";
-      this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
-        onSuccess: () => {
-          this.reset(), this.chageClose();
+        Toast.fire({
+            icon: "success",
+            title: "Registro Eliminado Correctamente",
+            // background: '#99F6E4',
+        });
         },
-      });
-    },
 
-    deleteRow: function (data) {
-      if (!confirm("¿Estas seguro de querer eliminar este Perfil?")) return;
-      data._method = "DELETE";
-      this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
-        onSuccess: () => {
-          this.alertDelete();
+        reset() {
+            this.form = {
+                IdUser: this.Session.id,
+                IdEmp: null,
+                jefes_areas_id: null,
+                Empresa: null,
+                Nombre: null,
+                ApPat: null,
+                ApMat: null,
+                Curp: null,
+                Rfc: null,
+                Nss: null,
+                Direccion: null,
+                Telefono: null,
+                Cumpleaños: null,
+                FecIng: null,
+                Antiguedad: null,
+                DiasVac: null,
+                Puesto_id: null,
+                Departamento_id: null,
+            };
         },
-      });
+
+        openModal() {
+        this.chageClose();
+        this.reset();
+        this.editMode = false;
+        },
+
+        chageClose() {
+        this.showModal = !this.showModal;
+        },
+        //datatable
+        tabla() {
+        this.$nextTick(() => {
+            $("#perfiles").DataTable({
+            language: this.español,
+            });
+        });
+        },
+
+        //consulta para generar datos de la tabla
+        verTabla(event) {
+        $("#perfiles").DataTable().destroy();
+        this.$inertia.get(
+            "/RecursosHumanos/PerfilesUsuarios",
+            { busca: event.target.value },
+            {
+            onSuccess: () => {
+                this.tabla();
+            },
+            }
+        );
+        },
+
+        save(data) {
+            //Obtengo la fecha ingresada
+            var fecha1 = data.FecIng;
+            var fecha2 = moment(); //fecha de hoy
+
+            //calculo de diferencia de años entre las 2 fechas
+            data.Antiguedad = fecha2.diff(fecha1, 'years')
+
+            if(data.Antiguedad > 0){ //si tiene años de antiguedad entra al proceso
+
+                if(data.Antiguedad <= 5){
+                    // menor a 5 años se agregan 2 dias por cada año cumplido
+                switch(data.Antiguedad){
+                    case 1: data.DiasVac = 6; break;
+                    case 2: data.DiasVac = 8; break;
+                    case 3: data.DiasVac = 10; break;
+                    case 4: data.DiasVac = 12; break;
+                    case 5: data.DiasVac = 14; break;
+                }
+                //proceso de agregar 2 dias por cada 5 años cumplidos de antiguedad
+                }else if(data.Antiguedad <= 9){
+                    data.DiasVac = 14;
+                }else if(data.Antiguedad >= 10 && data.Antiguedad <= 14){
+                    data.DiasVac = 16;
+                }else if(data.Antiguedad >= 15 && data.Antiguedad <= 19){
+                    data.DiasVac = 18;
+                }else if(data.Antiguedad >= 20 && data.Antiguedad <= 24){
+                    data.DiasVac = 20;
+                }else if(data.Antiguedad >= 25 && data.Antiguedad <= 29){
+                    data.DiasVac = 22;
+                }else if(data.Antiguedad >= 30 && data.Antiguedad <= 24){
+                    data.DiasVac = 24;
+                }
+            }else{
+                data.DiasVac = 0;
+            }
+
+            console.log(data);
+
+        this.$inertia.post("/RecursosHumanos/PerfilesUsuarios", data, {
+            onSuccess: () => {
+            this.reset(), this.chageClose(), this.alertSucces();
+            },
+        });
+        },
+
+        edit: function (data) {
+            this.form = Object.assign({}, data);
+            this.editMode = true;
+            this.chageClose();
+        },
+
+        update(data) {
+        data._method = "PUT";
+        this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
+            onSuccess: () => {
+            this.reset(), this.chageClose();
+            },
+        });
+        },
+
+        deleteRow: function (data) {
+        if (!confirm("¿Estas seguro de querer eliminar este Perfil?")) return;
+        data._method = "DELETE";
+        this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
+            onSuccess: () => {
+            this.alertDelete();
+            },
+        });
+        },
+
+        show: function (data) {
+        this.alertSucces();
+        this.form = Object.assign({}, data);
+        },
     },
 
-    show: function (data) {
-      this.alertSucces();
-      this.form = Object.assign({}, data);
-    },
-    },
+    watch: {
+    }
 };
 </script>

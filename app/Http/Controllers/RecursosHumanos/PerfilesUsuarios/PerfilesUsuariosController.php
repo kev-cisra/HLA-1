@@ -47,8 +47,6 @@ class PerfilesUsuariosController extends Controller{
             'Telefono' => ['required'],
             'Cumpleaños' => ['required'],
             'FecIng' => ['required'],
-            'Antiguedad' => ['required'],
-            'DiasVac' => ['required'],
             'Puesto_id' => ['required'],
             'Departamento_id' => ['required'],
         ])->validate();
@@ -83,8 +81,6 @@ class PerfilesUsuariosController extends Controller{
             'Telefono' => ['required'],
             'Cumpleaños' => ['required'],
             'FecIng' => ['required'],
-            'Antiguedad' => ['required'],
-            'DiasVac' => ['required'],
             'Puesto_id' => ['required'],
             'Departamento_id' => ['required'],
         ])->validate();
