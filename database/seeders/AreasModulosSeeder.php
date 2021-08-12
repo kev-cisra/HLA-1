@@ -58,5 +58,10 @@ class AreasModulosSeeder extends Seeder
             'IdUser' => '1',
             'NombreArea' => 'Sistemas',
         ]);
+
+        AreasModulos::create([
+            'IdUser' => '1',
+            'NombreArea' => 'Hilaturas',
+        ]);
     }
 }

@@ -101,5 +101,13 @@ class AreasSeeder extends Seeder
             'tipo' => '2',
             'areas_id' => '2',
         ]);
+
+        Areas::create([
+            'IdUser' => '1',
+            'idArea' => 'HLA',
+            'Nombre' => 'Hilaturas',
+            'tipo' => '2',
+            'areas_id' => '2',
+        ]);
     }
 }

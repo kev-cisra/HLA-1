@@ -18350,6 +18350,10 @@ select {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 }
+.tw-mx-2 {
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+}
 .tw-mt-5 {
 	margin-top: 1.25rem;
 }

@@ -5,36 +5,6 @@
             <slot>Perfiles de Usuarios</slot>
         </Header>
 
-
-<!--     <div class="tw-container tw-bg-gray-400">
-        <div class="tw-flex tw-p-2" v-for="row in rows" :key="row">
-            <div class="tw-w-1/2">
-                <input type="text" class="form-control" placeholder="Value" v-model="row.name" :key="row.id">
-            </div>
-
-            <div class="tw-w-1/2">
-                <button class="tw-bg-blue-600 tw-p-2 tw-rounded tw-shadow-2xl" @click="removeRow(row)">X</button>
-            </div>
-        </div>
-        <div class="tw-flex tw-flex-col">
-                <button type="submit" class="tw-bg-green-400" @click="addRow">+</button>
-        </div>
-    </div> -->
-
-    <table class="table">
-        <thead>
-        <button type="button" class="button btn-primary" @click="addRow()">Add</button>
-        </thead>
-        <tbody>
-            <tr v-for="(row, index) in rows" :key="row.id">
-                <td><input type="text" v-model="row.name" :name="'algo'+index"></td>
-                <td><button type="button" class="button btn-primary" @click="removeRow(index)">Remove</button></td>
-            </tr>
-        </tbody>
-    </table>
-
-
-
         <div class="tw-mt-8">
             <div class="tw-flex tw-justify-end">
                 <div>
@@ -42,7 +12,7 @@
                 </div>
             </div>
 
-            <div class="tw-overflow-x-auto">
+            <div class="tw-overflow-x-auto tw-mx-2">
                 <TableGreen id="perfiles">
                     <template v-slot:TableHeader>
                         <th class="columna">Núm. Empleado</th>
@@ -198,22 +168,18 @@
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Telefono</jet-label>
-                                <jet-input type="text" v-model="form.Telefono" @input="(val) => (form.Telefono = form.Telefono.toUpperCase())"></jet-input>
+                                <jet-input type="text" v-model="form.Telefono" @input="(val) => (form.Telefono = form.Telefono.toUpperCase())" @change="ValidaCel($event)"></jet-input>
                                 <small v-if="errors.Telefono" class="validation-alert">{{errors.Telefono}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Fecha Cumpleaños</jet-label>
-                                <jet-input type="date" v-model="form.Cumpleaños"></jet-input>
+                                <jet-input type="date" v-model="form.Cumpleaños" @change="FechaMayor($event)"></jet-input>
                                 <small v-if="errors.Cumpleaños" class="validation-alert">{{errors.Cumpleaños}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Fecha Ingreso</jet-label>
                                 <jet-input type="date" v-model="form.FecIng" @change="FechaMayor($event)"></jet-input>
                                 <small v-if="errors.FecIng" class="validation-alert">{{errors.FecIng}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label>Dias Vacaciones</jet-label>
-                                <jet-input type="text" v-model="form.DiasVac"></jet-input>
                             </div>
                         </div>
 
@@ -562,13 +528,6 @@ export default {
     },
 
     methods: {
-            addRow: function () {
-                this.rows.push({name: ""});
-            },
-            removeRow: function (row) {
-                console.log(row);
-                this.rows.splice(row,1);
-            },
         FechaMayor(event){
             var fecha1 = event.target.value;
             var fecha2 = moment(); //fecha de hoy
@@ -600,9 +559,15 @@ export default {
             return regex.test(nss);
         },
 
+        Celular(cel){
+           var regex = /^(\(\+?\d{2,3}\)[\*|\s|\-|\.]?(([\d][\*|\s|\-|\.]?){6})(([\d][\s|\-|\.]?){2})?|(\+?[\d][\s|\-|\.]?){8}(([\d][\s|\-|\.]?){2}(([\d][\s|\-|\.]?){2})?)?)$/;
+            return regex.test(cel);
+        },
+
         ValidaCurp(event) {
             if (!this.Renapo(event.target.value)){
                 console.log("CURP NO VALIDO")
+                this.alertWarning();
             }else{
                 console.log("CURP CORRECTO")
             }
@@ -611,6 +576,7 @@ export default {
         ValidaNss(event){
             if (!this.SeguroSocial(event.target.value)){
                 console.log("NSS NO VALIDO")
+                this.alertWarning();
             }else{
                 console.log("nss CORRECTO")
             }
@@ -619,8 +585,17 @@ export default {
         ValidaRfc(event){
             if (!this.Rfc(event.target.value)){
                 console.log("rfc NO VALIDO")
+                this.alertWarning();
             }else{
                 console.log("rfc CORRECTO")
+            }
+        },
+
+        ValidaCel(event){
+            if (!this.Celular(event.target.value)){
+                this.alertWarning();
+            }else{
+                console.log("Celular CORRECTO")
             }
         },
 
@@ -639,7 +614,7 @@ export default {
 
         Toast.fire({
             icon: "success",
-            title: "Registro Insertado",
+            title: "Operación Exitosa!",
             // background: '#99F6E4',
         });
         },
@@ -662,6 +637,26 @@ export default {
             title: "Registro Eliminado Correctamente",
             // background: '#99F6E4',
         });
+        },
+
+        alertWarning() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "center",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+            });
+
+            Toast.fire({
+                icon: "warning",
+                title: "Formato Incorrecto",
+                // background: '#FDBA74',
+            });
         },
 
         reset() {
@@ -696,6 +691,7 @@ export default {
         chageClose() {
         this.showModal = !this.showModal;
         },
+
         //datatable
         tabla() {
         this.$nextTick(() => {
@@ -756,8 +752,6 @@ export default {
                 data.DiasVac = 0;
             }
 
-            console.log(data);
-
         this.$inertia.post("/RecursosHumanos/PerfilesUsuarios", data, {
             onSuccess: () => {
             this.reset(), this.chageClose(), this.alertSucces();
@@ -775,23 +769,38 @@ export default {
         data._method = "PUT";
         this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
             onSuccess: () => {
-            this.reset(), this.chageClose();
+            this.reset(), this.chageClose(), this.alertSucces();
             },
         });
         },
 
         deleteRow: function (data) {
-        if (!confirm("¿Estas seguro de querer eliminar este Perfil?")) return;
-        data._method = "DELETE";
-        this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
-            onSuccess: () => {
-            this.alertDelete();
-            },
-        });
+            Swal.fire({
+                title: '¿Estas seguro de querer eliminar esta información',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '¡Sí, bórralo!',
+                cancelButtonText: 'No, Cancelar!',
+                }).then((result) => {
+                if (result.isConfirmed) {
+
+                    data._method = "DELETE";
+                    this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
+                        onSuccess: () => {
+                            Swal.fire(
+                                'Eliminado!',
+                                'El registro fue eliminado con éxito',
+                                'success'
+                            )
+                        },
+                    });
+                }
+                })
         },
 
         show: function (data) {
-        this.alertSucces();
         this.form = Object.assign({}, data);
         },
     },
