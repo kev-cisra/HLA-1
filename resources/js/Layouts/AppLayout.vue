@@ -17,11 +17,6 @@
 
                             <!-- Navigation Links -->
                             <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
-                                <jet-nav-link :href="route('RecursosHumanos')" :active="route().current('RecursosHumanos')">
-                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Recursos Humanos
-                                </jet-nav-link>
-                            </div>
-                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Inicio
                                 </jet-nav-link>
@@ -29,6 +24,11 @@
                             <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
                                 <jet-nav-link :href="route('Admin')" :active="route().current('Admin')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Administrador
+                                </jet-nav-link>
+                            </div>
+                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
+                                <jet-nav-link :href="route('RecursosHumanos')" :active="route().current('RecursosHumanos')">
+                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Recursos Humanos
                                 </jet-nav-link>
                             </div>
                             <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">

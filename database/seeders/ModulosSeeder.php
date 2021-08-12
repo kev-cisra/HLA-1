@@ -31,25 +31,35 @@ class ModulosSeeder extends Seeder
         ]);
 
         Modulos::create([
-            'Iduser' => '1',
-            'NombreModulo' => 'Perfiles Usuarios',
-            'Icono' => 'fas fa-users',
-            'Ruta' => 'RecursosHumanos/PerfilesUsuarios',
-            'Area' => '2',
-        ]);
-        Modulos::create([
             'Iduser' => '16',
             'NombreModulo' => 'Personal',
             'Icono' => 'fas fa-users',
             'Ruta' => 'Produccion/Personal',
             'Area' => '7',
         ]);
+
         Modulos::create([
             'Iduser' => '16',
             'NombreModulo' => 'Maquinas',
             'Icono' => 'fas fa-digital-tachograph',
             'Ruta' => 'Produccion/Maquinas',
             'Area' => '7',
+        ]);
+
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'PERFILES',
+            'Icono' => 'fas fa-users',
+            'Ruta' => 'RecursosHumanos/PerfilesUsuarios',
+            'Area' => '2',
+        ]);
+
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'VACACIONES',
+            'Icono' => 'fas fa-users',
+            'Ruta' => 'Hilaturas/Vacaciones',
+            'Area' => '10',
         ]);
     }
 }

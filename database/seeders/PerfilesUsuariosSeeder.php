@@ -34,6 +34,7 @@ class PerfilesUsuariosSeeder extends Seeder
             'Puesto_id' => '13',
             'user_id' => '16',
             'Departamento_id' => '1',
+            'jefes_areas_id' => '1',
         ]);
     }
 }

@@ -18331,9 +18331,6 @@ select {
 .tw-col-span-6 {
 	grid-column: span 6 / span 6;
 }
-.tw-m-5 {
-	margin: 1.25rem;
-}
 .tw-mx-auto {
 	margin-left: auto;
 	margin-right: auto;
@@ -18349,6 +18346,10 @@ select {
 .tw-my-4 {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
+}
+.tw-mx-2 {
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
 }
 .tw-mt-5 {
 	margin-top: 1.25rem;
@@ -18787,14 +18788,6 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(22, 163, 74, var(--tw-bg-opacity));
 }
-.tw-bg-blueGray-50 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(248, 250, 252, var(--tw-bg-opacity));
-}
-.tw-bg-coolGray-100 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
-}
 .tw-bg-gray-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(156, 163, 175, var(--tw-bg-opacity));
@@ -18802,6 +18795,14 @@ select {
 .tw-bg-green-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(74, 222, 128, var(--tw-bg-opacity));
+}
+.tw-bg-blueGray-50 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(248, 250, 252, var(--tw-bg-opacity));
+}
+.tw-bg-coolGray-100 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
 }
 .tw-fill-current {
 	fill: currentColor;
