@@ -22,6 +22,7 @@ class PuestosSeeder extends Seeder
         Puestos::create([
             'IdUser' => '1',
             'Nombre' => 'ANALISTA DE PROCESOS',
+            'departamento_id' => '2'
         ]);
 
         Puestos::create([
@@ -37,6 +38,7 @@ class PuestosSeeder extends Seeder
         Puestos::create([
             'IdUser' => '1',
             'Nombre' => 'ASESOR DE CALIDAD',
+            'departamento_id' => '2'
         ]);
 
         Puestos::create([
@@ -46,6 +48,7 @@ class PuestosSeeder extends Seeder
         Puestos::create([
             'IdUser' => '1',
             'Nombre' => 'ASESOR TECNICO',
+            'departamento_id' => '2'
         ]);
         Puestos::create([
             'IdUser' => '1',
@@ -58,10 +61,12 @@ class PuestosSeeder extends Seeder
         Puestos::create([
             'IdUser' => '1',
             'Nombre' => 'ASISTENTE DE OPERACIONES',
+            'departamento_id' => '2'
         ]);
         Puestos::create([
             'IdUser' => '1',
-            'Nombre' => 'ASISTENTE DE OPERACIONES',
+            'Nombre' => 'ASISTENTE DE PROCESOS',
+            'departamento_id' => '2'
         ]);
         Puestos::create([
             'IdUser' => '1',
@@ -78,26 +83,62 @@ class PuestosSeeder extends Seeder
         Puestos::create([
             'IdUser' => '1',
             'Nombre' => 'AYUDANTE MANTTO CIVIL',
+            'departamento_id' => '2'
         ]);
         Puestos::create([
             'IdUser' => '1',
-            'Nombre' => 'GERENTE DE OPERACIONES',
+            'Nombre' => 'JEFE DE OPERACION',
+            'departamento_id' => '2'
         ]);
         Puestos::create([
             'IdUser' => '1',
-            'Nombre' => 'COORDINADOR EN OPERACIONES',
+            'Nombre' => 'COORDINADOR AREA TECNICA',
+            'departamento_id' => '2'
         ]);
         Puestos::create([
             'IdUser' => '1',
-            'Nombre' => 'ENCARGADO EN OPERACIONES',
+            'Nombre' => 'OFICIAL EXPERTO H',
+            'departamento_id' => '2'
         ]);
         Puestos::create([
             'IdUser' => '1',
-            'Nombre' => 'LIDER EN OPERACIONES',
+            'Nombre' => 'ENCARGADO MATTO MECANICO A',
+            'departamento_id' => '2'
         ]);
         Puestos::create([
             'IdUser' => '1',
-            'Nombre' => 'OPERADOR OPERACIONES',
+            'Nombre' => 'ENCARGADO MATTO MECANICO B',
+            'departamento_id' => '2'
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'ENCARGADO MATTO MECANICO C',
+            'departamento_id' => '2'
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'ENCARGADO DE HILATURA DE ANILLO',
+            'departamento_id' => '2'
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'OFICIAL EN DESARROLLO H',
+            'departamento_id' => '2'
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'OFICIAL EN DESARROLLO',
+            'departamento_id' => '2'
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'OFICIAL EXPERTO H',
+            'departamento_id' => '2'
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'AYUDANTE DE MECANICO C',
+            'departamento_id' => '2'
         ]);
     }
 }

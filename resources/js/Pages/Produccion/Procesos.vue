@@ -4,7 +4,6 @@
         <Header>
             Procesos
         </Header>
-        <!-------------- Tabla --------------->
 
         <Accions>
             <template  v-slot:SelectB>
@@ -21,7 +20,8 @@
                     <th class="columna">Nombre</th>
                     <th class="columna">Tipo</th>
                     <th class="columna">Descripción</th>
-                    <th class="columna">Area</th>
+                    <th class="columna">Departamento</th>
+                    <th class="columna">Máquinas</th>
                     <th></th>
                 </template>
                 <template v-slot:TableFooter>
@@ -29,7 +29,13 @@
                         <td class="fila">{{ proceso.nompro }}</td>
                         <td class="fila">{{ proceso.tipo }}</td>
                         <td class="fila">{{ proceso.descripcion }}</td>
-                        <td class="fila">{{ proceso.procesos_area.Nombre }}</td>
+                        <td class="fila">{{ proceso.departamentos.Nombre }}</td>
+                        <td class="fila" >
+                            <tr v-for="mp in proceso.maq_pros" :key="mp.id">
+                                {{' - '+mp.maquinas.Nombre+' - '}}
+                            </tr>
+
+                        </td>
                         <td class="fila">
                             <div class="columnaIconos">
                                 <div class="iconoDetails">
@@ -60,9 +66,6 @@
                 </template>
             </Table>
         </div>
-        <pre>
-            {{ procesos }}
-        </pre>
         <!------------------ Modal ------------------------->
         <modal :show="showModal" @close="chageClose">
             <form>
@@ -79,7 +82,7 @@
                             <div class="tw-mb-6 md:tw-flex">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Departamento</jet-label>
-                                    <select class="InputSelect" v-model="form.departamento_id" v-html="opc">
+                                    <select class="InputSelect" @change="verMaqui" v-model="form.departamento_id" v-html="opc">
                                     </select>
                                     <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
                                 </div>
@@ -105,6 +108,27 @@
                                     <jet-label><span class="required">*</span>Descripción</jet-label>
                                     <textarea v-model="form.descripcion" class="InputSelect"></textarea>
                                     <small v-if="errors.descripcion" class="validation-alert">{{errors.descripcion}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-------------------------------- ENCARGADO --------------------------------------->
+                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 1">
+                    <div class="tw-text-lg">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Formulas</h3>
+                        </div>
+                    </div>
+
+                    <div class="tw-mt-4">
+                        <div class="ModalForm">
+                            <button type="button" class="button btn-primary" @click="addRow()">Add</button>
+                            <div class="tw-m-5" v-for="(row, index) in form.maquinas" :key="row.id">
+                                <div>
+                                    <select class="InputSelect" v-model="row.value" v-html="opcMaq">
+                                    </select>
+                                    <button type="button" class="button btn-primary" @click="removeRow(index)">Remove</button>
                                 </div>
                             </div>
                         </div>
@@ -167,6 +191,7 @@
             'usuario',
             'procesos',
             'depa',
+            'maquinas',
             'errors'
         ],
         components: {
@@ -185,6 +210,9 @@
             return {
                 S_Area: '',
                 opc: '<option value="" disabled>Selecciona un departamento </option>',
+                opcMaq: '<option value="" disabled>Selecciona una máquina</option>',
+                campo_max: 10,
+                x: 1,
                 español: {
                     "processing": "Procesando...",
                     "lengthMenu": "Mostrar _MENU_ registros",
@@ -323,13 +351,19 @@
                     },
                     "thousands": "."
                 },
+                rows: [
+                    {value: ""}
+                ],
                 showModal: false,
                 editMode: false,
                 form: {
                     nompro: null,
                     departamento_id: '',
                     tipo: '',
-                    descripcion: null
+                    descripcion: null,
+                    maquinas: [
+                        {value: ""}
+                    ]
                 }
 
             }
@@ -340,6 +374,36 @@
             this.tabla();
         },
         methods: {
+            addRow: function () {
+                this.form.maquinas.push({value: ""});
+            },
+            removeRow: function (row) {
+                console.log(row);
+                this.form.maquinas.splice(row,1);
+            },
+            limpiar(event){
+                var limp = '';
+                if (this.procesos) {
+                    this.procesos.forEach(v => {
+                        limp = v.departamentos.id;
+                    })
+                }
+                event.target.value == limp ? '' : $('#t_maq').DataTable().clear();
+            },
+            /****************************** opnciones de seect de maquinas ********************************/
+            verMaqui(event) {
+                this.opcMaq = '<option value="" disabled>Selecciona una máquina</option>';
+                this.limpiar(event);
+                $('#t_pro').DataTable().destroy();
+                this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value ,maq: event.target.value }, {
+                    onSuccess: () => { this.tabla(), this.mostMaqui() }, preserveState: true
+                });
+            },
+            mostMaqui() {
+                this.maquinas == null ? "" : this.maquinas.forEach(r => {
+                    this.opcMaq += `<option value="${r.id}"> ${r.Nombre} </option>`;
+                })
+            },
             /****************************** opciones de selec del departamento *****************************/
             //información del select area
             mostSelect() {
@@ -361,7 +425,7 @@
             },
             //consulta para generar datos de la tabla
             verTabla(event){
-                $('#t_pro').DataTable().clear();
+                this.limpiar(event);
                 $('#t_pro').DataTable().destroy();
                 this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value }, {
                     onSuccess: () => { this.tabla(); }, preserveState: true
@@ -438,26 +502,27 @@
                     nompro: null,
                     departamento_id: '',
                     tipo: '',
-                    descripcion: null
+                    descripcion: null,
+                    maquinas: [
+                        {value: ""}
+                    ]
                 }
             },
             /******************************** Acciones insert update y delet *************************************/
             //guardar información de procesos
             save(form) {
-                if(form.areas_id == this.usuario.perfiles_area.id & this.usuario.perfiles_area.idArea == 'PRO'){
-                    this.alertArea();
-                }else{
-                    //console.log(form)
-                    $('#t_pro').DataTable().destroy();
-                    this.$inertia.post('/Produccion/Procesos', form, {
-                        onSuccess: () => { this.tabla(), this.reset(), this.chageClose()},
-                    });
-                    //$('#t_pro').DataTable();
-                }
+
+                //console.log(form)
+                $('#t_pro').DataTable().destroy();
+                this.$inertia.post('/Produccion/Procesos', form, {
+                    onSuccess: () => { this.tabla(), this.reset(), this.chageClose()},
+                });
+                //$('#t_pro').DataTable();
 
             },
             //manda datos de la tabla al modal
             edit: function (data) {
+                console.log(data);
                 this.form = Object.assign({}, data);
                 //this.vari = data.id;
                 this.editMode = true;

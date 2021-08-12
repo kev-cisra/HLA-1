@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
+use App\Models\Catalogos\Maquinas;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_per;
 use App\Models\Produccion\formulas;
+use App\Models\Produccion\maq_pro;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\User;
@@ -51,7 +53,15 @@ class ProcesosController extends Controller
                 ->first(['id', 'departamento_id']);
             //se consultan las maquinas que estan en ese departamento
             $proce = procesos::where('departamento_id', '=', $prime->departamentos->id)
-            ->with('departamentos', 'maq_pros')
+            ->with([
+                'departamentos' => function($dep){
+                    $dep->select('id', 'Nombre', 'departamento_id');
+                },
+                'maq_pros' => function($mp){
+                    $mp->select('id', 'proceso_id', 'maquina_id')
+                    ->with('maquinas');
+                }
+                ])
             ->get();
 
         }else{
@@ -67,10 +77,23 @@ class ProcesosController extends Controller
         /**************************** consulta si existe la busqueda  ****************************************************/
         if(!empty($request->busca)){
             $proce = procesos::where('departamento_id', '=', $request->busca)
-            ->with('departamentos', 'maq_pros')
+            ->with([
+                'departamentos' => function($dep){
+                    $dep->select('id', 'Nombre', 'departamento_id');
+                },
+                'maq_pros' => function($mp){
+                    $mp->select('id', 'proceso_id', 'maquina_id')
+                    ->with('maquinas');
+                }
+                ])
             ->get();
         }
-        return Inertia::render('Produccion/Procesos', ['usuario' => $perf,'procesos' => $proce,'depa' => $depa]);
+
+        /**************************** Consulta si existe maquinas *****************************************************/
+        $maq = empty($request->maq) ? NULL : Maquinas::where('departamento_id', '=', $request->maq)->get();
+
+
+        return Inertia::render('Produccion/Procesos', ['usuario' => $perf,'procesos' => $proce,'depa' => $depa, 'maquinas' => $maq]);
 
     }
 
@@ -92,18 +115,31 @@ class ProcesosController extends Controller
      */
     public function store(Request $request)
     {
-
-        //echo $request['form'];
         Validator::make($request->all(), [
             'nompro' => ['required'],
-            'areas_id' => ['required'],
+            'departamento_id' => ['required'],
             'tipo' => ['required'],
             'descripcion' => ['required'],
         ])->validate();
 
-        procesos::create($request->all());
+        $proceso = procesos::create($request->all());
 
-        /*return response()->json(['proceso_id' => $ins->id])
+        if ($request->tipo == 1) {
+            foreach ($request->maquinas as $value) {
+                maq_pro::create([
+                    'proceso_id' => $proceso->id,
+                    'maquina_id' => $value['value'],
+                ]);
+            }
+        }
+        //return $request;
+
+        //echo $request['form'];
+
+/*
+
+
+        return response()->json(['proceso_id' => $ins->id])
             ->setCallback();*/
 
         return redirect()->back()

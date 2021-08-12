@@ -20,8 +20,8 @@ class procesos extends Model
     const Formulas = 3;
 
     //Relaciones 1 a muchos
-    public function map_pros(){
-        return $this->hasMany(maq_pro::class);
+    public function maq_pros(){
+        return $this->hasMany(maq_pro::class, 'proceso_id');
     }
 
 
