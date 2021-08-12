@@ -5,6 +5,36 @@
             <slot>Perfiles de Usuarios</slot>
         </Header>
 
+
+<!--     <div class="tw-container tw-bg-gray-400">
+        <div class="tw-flex tw-p-2" v-for="row in rows" :key="row">
+            <div class="tw-w-1/2">
+                <input type="text" class="form-control" placeholder="Value" v-model="row.name" :key="row.id">
+            </div>
+
+            <div class="tw-w-1/2">
+                <button class="tw-bg-blue-600 tw-p-2 tw-rounded tw-shadow-2xl" @click="removeRow(row)">X</button>
+            </div>
+        </div>
+        <div class="tw-flex tw-flex-col">
+                <button type="submit" class="tw-bg-green-400" @click="addRow">+</button>
+        </div>
+    </div> -->
+
+    <table class="table">
+        <thead>
+        <button type="button" class="button btn-primary" @click="addRow()">Add</button>
+        </thead>
+        <tbody>
+            <tr v-for="(row, index) in rows" :key="row.id">
+                <td><input type="text" v-model="row.name" :name="'algo'+index"></td>
+                <td><button type="button" class="button btn-primary" @click="removeRow(index)">Remove</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
         <div class="tw-mt-8">
             <div class="tw-flex tw-justify-end">
                 <div>
@@ -83,8 +113,8 @@
                 </TableGreen>
             </div>
         </div>
-    </div>
 
+    </div>
 
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
@@ -127,7 +157,6 @@
                                 <jet-input type="text" v-model="form.Nombre" @input="(val) => (form.Nombre = form.Nombre.toUpperCase())"></jet-input>
                                 <small v-if="errors.Nombre" class="validation-alert">{{errors.Nombre}}</small>
                             </div>
-                            {{ form.Nombre }}
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Apellido Paterno</jet-label>
                                 <jet-input type="text" v-model="form.ApPat" @input="(val) => (form.ApPat = form.ApPat.toUpperCase())"></jet-input>
@@ -333,6 +362,7 @@ import 'moment/locale/es';
 export default {
     data() {
         return {
+            index: 0,
             now: moment().format("YYYY-MM-DD"),
             tam: "4xl",
             español: {
@@ -497,6 +527,9 @@ export default {
                 Puesto_id: null,
                 Departamento_id: null,
             },
+            rows: [
+                {name: ""}
+            ]
         };
     },
 
@@ -529,6 +562,13 @@ export default {
     },
 
     methods: {
+            addRow: function () {
+                this.rows.push({name: ""});
+            },
+            removeRow: function (row) {
+                console.log(row);
+                this.rows.splice(row,1);
+            },
         FechaMayor(event){
             var fecha1 = event.target.value;
             var fecha2 = moment(); //fecha de hoy
