@@ -17973,6 +17973,39 @@ select {
 [type='file']:focus {
 	outline: 1px auto -webkit-focus-ring-color;
 }
+.tw-container {
+	width: 100%;
+}
+@media (min-width: 640px) {
+
+	.tw-container {
+		max-width: 640px;
+	}
+}
+@media (min-width: 768px) {
+
+	.tw-container {
+		max-width: 768px;
+	}
+}
+@media (min-width: 1024px) {
+
+	.tw-container {
+		max-width: 1024px;
+	}
+}
+@media (min-width: 1280px) {
+
+	.tw-container {
+		max-width: 1280px;
+	}
+}
+@media (min-width: 1536px) {
+
+	.tw-container {
+		max-width: 1536px;
+	}
+}
 .tw-prose {
 	color: #374151;
 	max-width: 65ch;
@@ -18482,6 +18515,9 @@ select {
 .tw-w-20 {
 	width: 5rem;
 }
+.tw-w-1\/2 {
+	width: 50%;
+}
 .tw-min-w-0 {
 	min-width: 0px;
 }
@@ -18747,6 +18783,14 @@ select {
 .tw-bg-green-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(22, 163, 74, var(--tw-bg-opacity));
+}
+.tw-bg-gray-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(156, 163, 175, var(--tw-bg-opacity));
+}
+.tw-bg-green-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(74, 222, 128, var(--tw-bg-opacity));
 }
 .tw-bg-blueGray-50 {
 	--tw-bg-opacity: 1;
