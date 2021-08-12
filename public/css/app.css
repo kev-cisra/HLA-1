@@ -18787,14 +18787,6 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(22, 163, 74, var(--tw-bg-opacity));
 }
-.tw-bg-gray-400 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(156, 163, 175, var(--tw-bg-opacity));
-}
-.tw-bg-green-400 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(74, 222, 128, var(--tw-bg-opacity));
-}
 .tw-bg-blueGray-50 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(248, 250, 252, var(--tw-bg-opacity));
@@ -18802,6 +18794,14 @@ select {
 .tw-bg-coolGray-100 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
+}
+.tw-bg-gray-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(156, 163, 175, var(--tw-bg-opacity));
+}
+.tw-bg-green-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(74, 222, 128, var(--tw-bg-opacity));
 }
 .tw-fill-current {
 	fill: currentColor;
