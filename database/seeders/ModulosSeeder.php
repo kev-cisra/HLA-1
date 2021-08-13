@@ -59,7 +59,7 @@ class ModulosSeeder extends Seeder
             'NombreModulo' => 'VACACIONES',
             'Icono' => 'fas fa-users',
             'Ruta' => 'Hilaturas/Vacaciones',
-            'Area' => '10',
+            'Area' => '2',
         ]);
     }
 }

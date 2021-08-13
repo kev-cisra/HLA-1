@@ -32,7 +32,7 @@ class PerfilesUsuarios extends Model
 
     //recursividad
     public function perfiles_jefe() {
-        return $this->hasMany(PerfilesUsuarios::class);
+        return $this->hasMany(PerfilesUsuarios::class, 'jefe_id');
     }
 
     public function jefe_perfiles() {

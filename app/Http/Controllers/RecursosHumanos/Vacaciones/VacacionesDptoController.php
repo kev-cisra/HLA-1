@@ -15,15 +15,39 @@ class VacacionesDptoController extends Controller
 {
 
     public function index(){
-        $PerfilesUsuarios = PerfilesUsuarios::with('PerfilPuesto','PerfilDepartamento', 'PerfilJefe')->get();
 
+        //Cosnulta para obtener el Numero de empleado de la session
         $Session = Auth::user();
+        $SessionIdEmp = $Session->IdEmp;
+
+        //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
+        $ObtenJefe = JefesArea::where('IdEmp', '=', $SessionIdEmp)->first('id','IdEmp');
+        $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
+
+        //Consulta para obtener los datos de los trabajadores pertenecientes al id de la session
+        $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', $IdJefe)
+        ->with([
+            'PerfilPuesto' => function($puesto) { //Relacion 1 a 1 De puestos
+                $puesto->select('id', 'Nombre');
+            },
+            'PerfilDepartamento' => function($departamento) { //Relacion 1 a 1 De Departamento
+                $departamento->select('id', 'Nombre');
+            },
+            'PerfilJefe' => function($jefe) { //Relacion 1 a 1 De Jefe
+                $jefe->select('id', 'IdEmp',  'Nombre');
+                // $jefe->where('IdEmp', '=', 5310);
+            }
+        ])
+        ->get(['IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id']); //datos de Perfiles
+
+
+        //Catalogos
         $Jefes = JefesArea::get(['id','Nombre']);
         $Puestos = Puestos::get(['id','Nombre']);
         $Departamentos = Departamentos::get(['id','Nombre']);
 
         //retorno de la vista retorno de la consulta de perfiles y sus filtros
-        return Inertia::render('Hilaturas/Vacaciones', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session'));
+        return Inertia::render('Hilaturas/Vacaciones', compact('PerfilesUsuarios', 'Session'));
     }
 
     public function create(){

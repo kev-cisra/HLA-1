@@ -1,8 +1,13 @@
 <template>
   <app-layout>
     <div class="uppercase tw-mx-4">
-        <Header>
-            <slot>Perfiles de Usuarios</slot>
+        <Header :class="[color, style]">
+            <slot>
+                <h3 class="tw-p-2">
+                    <i class="fas fa-user tw-ml-3 tw-mr-3"></i>
+                        Perfiles de Usuarios
+                </h3>
+            </slot>
         </Header>
 
         <div class="tw-mt-8">
@@ -84,6 +89,9 @@
             </div>
         </div>
 
+<pre>
+    {{ PerfilesUsuarios }}
+</pre>
     </div>
 
 
@@ -328,7 +336,8 @@ import 'moment/locale/es';
 export default {
     data() {
         return {
-            index: 0,
+            color: "tw-bg-green-600",
+            style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             now: moment().format("YYYY-MM-DD"),
             tam: "4xl",
             español: {

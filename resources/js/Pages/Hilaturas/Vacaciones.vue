@@ -1,17 +1,16 @@
 <template>
   <app-layout>
     <div class="uppercase tw-mx-4">
-        <Header>
-            <slot>Captura de Vacaciones</slot>
+        <Header :class="[color, style]">
+            <slot>
+                <h3 class="tw-p-2">
+                    <i class="fas fa-calendar-check tw-ml-3 tw-mr-3"></i>
+                    Captura de vacaciones
+                </h3>
+            </slot>
         </Header>
 
         <div class="tw-mt-8">
-            <div class="tw-flex tw-justify-end">
-                <div>
-                    <jet-button @click="openModal" class="BtnNuevo">Nueva Información</jet-button>
-                </div>
-            </div>
-
             <div class="tw-overflow-x-auto tw-mx-2">
                 <TableBlue id="perfiles">
                     <template v-slot:TableHeader>
@@ -31,9 +30,9 @@
                             <td class="tw-p-2">{{ dato.Nombre }}</td>
                             <td class="tw-p-2">{{ dato.ApPat }}</td>
                             <td class="tw-p-2">{{ dato.ApMat }}</td>
-                            <td class="tw-p-2">{{ dato.Departamento_id }}</td>
-                            <td class="tw-p-2">{{ dato.Puesto_id }}</td>
-                            <td class="tw-p-2">{{ dato.DiasVac }}</td>
+                            <td class="tw-p-2">{{ dato.perfil_puesto.Nombre }}</td>
+                            <td class="tw-p-2">{{ dato.perfil_departamento.Nombre }}</td>
+                            <td class="tw-p-2">{{ dato.DiasVac }} Dias</td>
                             <td class="fila">
                                 <div class="columnaIconos">
                                     <div class="iconoDetails" @click="show(dato)" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -51,28 +50,18 @@
                                             </svg>
                                         </span>
                                     </div>
-                                    <div class="iconoDelete" @click="deleteRow(dato)">
-                                        <span tooltip="Eliminar" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                            </svg>
-                                        </span>
-                                    </div>
                                 </div>
                             </td>
                         </tr>
                     </template>
                 </TableBlue>
-                <pre>
-                    {{ PerfilesUsuarios }}
-                </pre>
-
-                <pre>{{Session}}</pre>
             </div>
         </div>
-
     </div>
 
+    <pre>
+
+    </pre>
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
         <form>
@@ -230,6 +219,8 @@ export default {
 
     data() {
         return {
+            color: "tw-bg-blue-600",
+            style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             tam: "4xl",
             español: {
             processing: "Procesando...",
@@ -398,11 +389,25 @@ export default {
         PerfilesUsuarios: Object,
     },
 
-    mounted() {
-        this.tabla();
-    },
-
     methods: {
+    //datatable
+        tabla() {
+            this.$nextTick(() => {
+                $("#perfiles").DataTable({
+                language: this.español,
+                });
+            });
+        },
+
+        openModal() {
+            this.chageClose();
+            this.reset();
+            this.editMode = false;
+        },
+
+        chageClose() {
+            this.showModal = !this.showModal;
+        },
     },
 };
 </script>
