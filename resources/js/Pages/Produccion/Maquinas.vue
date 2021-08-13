@@ -297,6 +297,45 @@
             this.tabla();
         },
         methods: {
+            /****************************** Alertas *******************************************************/
+            alertSucces(){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Registro Insertado',
+                    // background: '#99F6E4',
+                })
+            },
+            alertDelete(){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Registro Eliminado Correctamente',
+                    // background: '#99F6E4',
+                })
+            },
             /****************************** opciones de selec del departamento *****************************/
             //información del select area
             mostSelect() {
@@ -427,7 +466,7 @@
                 //console.log(form)
                 $('#t_maq').DataTable().destroy();
                 this.$inertia.post('/Produccion/Maquinas', form, {
-                    onSuccess: () => { this.tabla(), this.reset(), this.chageClose()},
+                    onSuccess: () => { this.alertSucces(), this.tabla(), this.reset(), this.chageClose()},
                 });
                 //$('#t_pro').DataTable();
 
@@ -451,7 +490,7 @@
                 this.maquinas.length == 1 ? $('#t_maq').DataTable().clear() : '';
                 $('#t_maq').DataTable().destroy()
                 data._method = 'DELETE';
-                this.$inertia.post('/Produccion/Maquinas/' + data.id, data, {onSuccess: () => { this.tabla() }});
+                this.$inertia.post('/Produccion/Maquinas/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tabla() }});
             }
         }
     }

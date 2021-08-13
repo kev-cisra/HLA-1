@@ -118,29 +118,35 @@ class ProcesosController extends Controller
         Validator::make($request->all(), [
             'nompro' => ['required'],
             'departamento_id' => ['required'],
-            'tipo' => ['required'],
-            'descripcion' => ['required'],
+            'tipo' => ['required']
         ])->validate();
-
-        $proceso = procesos::create($request->all());
-
-        if ($request->tipo == 1) {
-            foreach ($request->maquinas as $value) {
-                maq_pro::create([
-                    'proceso_id' => $proceso->id,
-                    'maquina_id' => $value['value'],
-                ]);
-            }
+        if ($request->tipo == 3) {
+            Validator::make($request->all(), [
+                'operacion' => ['required']
+            ])->validate();
         }
         //return $request;
-
-        //echo $request['form'];
-
-/*
-
-
-        return response()->json(['proceso_id' => $ins->id])
-            ->setCallback();*/
+        foreach ($request->formulas as $for) {
+            //echo $for['val'];
+        }
+        foreach ($request->for_maq as $check) {
+            $ch = explode('/', $check);
+            echo $ch[0];
+        }
+        return $request;
+        //CARGA DE PROCESOS
+        /*$proceso = procesos::create($request->all());
+        //CARGA DEPENDIENDO DEL TURNO
+        if ($request->tipo == 1) {
+            foreach ($request->maquinas as $value) {
+                if ($value['value'] !== null) {
+                    maq_pro::create([
+                        'proceso_id' => $proceso->id,
+                        'maquina_id' => $value['value'],
+                    ]);
+                }
+            }
+        }*/
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
@@ -160,10 +166,11 @@ class ProcesosController extends Controller
 
         Validator::make($request->all(), [
             'nompro' => ['required'],
-            'areas_id' => ['required'],
+            'departamento_id' => ['required'],
             'tipo' => ['required'],
             'descripcion' => ['required'],
         ])->validate();
+
 
         if ($request->has('id')) {
             procesos::find($request->input('id'))->update($request->all());
