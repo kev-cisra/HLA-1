@@ -80,7 +80,7 @@
                     <div class="tw-mt-4">
                         <div class="ModalForm">
                             <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode">
                                     <jet-label><span class="required">*</span>Departamento</jet-label>
                                     <select class="InputSelect" @change="verMaqui" v-model="form.departamento_id" v-html="opc">
                                     </select>
@@ -88,10 +88,10 @@
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Nombre del proceso</jet-label>
-                                    <jet-input type="text" v-model="form.nompro"></jet-input>
+                                    <jet-input type="text" v-model="form.nompro" @input="(val) => (form.nompro = form.nompro.toUpperCase())"></jet-input>
                                     <small v-if="errors.nompro" class="validation-alert">{{errors.nompro}}</small>
                                 </div>
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode">
                                     <jet-label><span class="required">*</span>Tipo de proceso</jet-label>
                                     <select v-model="form.tipo" class="InputSelect">
                                         <option value="">Seleccione</option>
@@ -104,38 +104,41 @@
                             </div>
 
                             <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="form.tipo == 3">
+                                    <jet-label><span class="required">*</span>Tipo de formula</jet-label>
+                                    <jet-input type="text" v-model="form.operacion" @input="(val) => (form.operacion = form.operacion.toUpperCase())"></jet-input>
+                                    <small v-if="errors.operacion" class="validation-alert">{{errors.operacion}}</small>
+                                </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Descripción</jet-label>
-                                    <textarea v-model="form.descripcion" class="InputSelect"></textarea>
-                                    <small v-if="errors.descripcion" class="validation-alert">{{errors.descripcion}}</small>
+                                    <jet-label>Descripción</jet-label>
+                                    <textarea v-model="form.descripcion" class="InputSelect" @input="(val) => (form.descripcion = form.descripcion.toUpperCase())"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-------------------------------- ENCARGADO --------------------------------------->
-                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 1">
+                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 1 & !editMode">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
-                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Formulas</h3>
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de máquinas para el proceso</h3>
                         </div>
                     </div>
-
                     <div class="tw-mt-4">
                         <div class="ModalForm">
-                            <button type="button" class="button btn-primary" @click="addRow()">Add</button>
+                            <button type="button" class="btn btn-primary" @click="addRow()">Add</button>
                             <div class="tw-m-5" v-for="(row, index) in form.maquinas" :key="row.id">
                                 <div>
                                     <select class="InputSelect" v-model="row.value" v-html="opcMaq">
                                     </select>
-                                    <button type="button" class="button btn-primary" @click="removeRow(index)">Remove</button>
+                                    <button type="button" class="btn btn-primary" @click="removeRow(index)">Remove</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-------------------------------- FORMULAS --------------------------------------->
-                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 3">
+                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 3 & !editMode">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Formulas</h3>
@@ -144,6 +147,22 @@
 
                     <div class="tw-mt-4">
                         <div class="ModalForm">
+                            <button type="button" class="btn btn-primary" @click="addForRow()">Add</button>
+                            <div v-for="(f, index) in form.formulas" :key="f.id" class="m-3">
+                                <select class="InputSelect" v-model="f.val">
+                                    <option value="">Selecciona un proceso</option>
+                                    <option v-for="proceso in procesos" :key="proceso.id" :value="proceso.id">{{proceso.nompro}}</option>
+                                </select>
+                                <div v-for="proceso in procesos" :key="proceso.id">
+                                    <div v-if="proceso.id == f.val && proceso.tipo == 1" >
+                                        <label v-for="mp in proceso.maq_pros" :key="mp.id" class="m-3">
+                                            <input type="checkbox" :value="f.val+'-'+mp.id" v-model="form.for_maq" checked>
+                                            {{mp.maquinas.Nombre}}
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" @click="removeForRow(index)">Remove</button>
+                            </div>
 
                         </div>
                     </div>
@@ -351,19 +370,23 @@
                     },
                     "thousands": "."
                 },
-                rows: [
-                    {value: ""}
-                ],
                 showModal: false,
                 editMode: false,
+
+
                 form: {
                     nompro: null,
                     departamento_id: '',
                     tipo: '',
+                    operacion: '',
                     descripcion: null,
                     maquinas: [
                         {value: ""}
-                    ]
+                    ],
+                    formulas: [
+                        {val: ""}
+                    ],
+                    for_maq: [],
                 }
 
             }
@@ -374,6 +397,14 @@
             this.tabla();
         },
         methods: {
+            /************************** agrega inputs a formulas  ************************/
+            addForRow: function () {
+                this.form.formulas.push({val: ""});
+            },
+            removeForRow: function (row) {
+                this.form.formulas.splice(row,1);
+            },
+            /************************** agregar inputs a maquinas ************************/
             addRow: function () {
                 this.form.maquinas.push({value: ""});
             },
@@ -389,6 +420,45 @@
                     })
                 }
                 event.target.value == limp ? '' : $('#t_maq').DataTable().clear();
+            },
+            /****************************** Alertas *******************************************************/
+            alertSucces(){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Registro Insertado',
+                    // background: '#99F6E4',
+                })
+            },
+            alertDelete(){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Registro Eliminado Correctamente',
+                    // background: '#99F6E4',
+                })
             },
             /****************************** opnciones de seect de maquinas ********************************/
             verMaqui(event) {
@@ -502,22 +572,25 @@
                     nompro: null,
                     departamento_id: '',
                     tipo: '',
+                    operacion: '',
                     descripcion: null,
                     maquinas: [
                         {value: ""}
-                    ]
+                    ],
+                    formulas: [
+                        {val: ""}
+                    ],
+                    for_maq: [],
                 }
             },
             /******************************** Acciones insert update y delet *************************************/
             //guardar información de procesos
             save(form) {
-
-                //console.log(form)
+                console.log(form)
                 $('#t_pro').DataTable().destroy();
                 this.$inertia.post('/Produccion/Procesos', form, {
-                    onSuccess: () => { this.tabla(), this.reset(), this.chageClose()},
+                    onSuccess: () => { this.alertSucces(), this.tabla(), this.reset(), this.chageClose()},
                 });
-                //$('#t_pro').DataTable();
 
             },
             //manda datos de la tabla al modal
@@ -539,7 +612,7 @@
                 if (!confirm('¿Estás seguro de querer eliminar este Proceso?')) return;
                 $('#t_pro').DataTable().destroy()
                 data._method = 'DELETE';
-                this.$inertia.post('/Produccion/Procesos/' + data.id, data, {onSuccess: () => { this.tabla() }});
+                this.$inertia.post('/Produccion/Procesos/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tabla() }});
             }
 
         }
