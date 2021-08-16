@@ -17,6 +17,8 @@ class CreateDepPersTable extends Migration
             $table->id();
 
             $table->unsignedBigInteger('perfiles_usuarios_id');
+            $table->string("ope_puesto");
+
             $table->foreign("perfiles_usuarios_id")->references("id")->on("perfiles_usuarios")
             ->onDelete("cascade")
             ->onUpdate("cascade");

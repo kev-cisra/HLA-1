@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion\catalogos;
 
+use App\Models\Produccion\formulas;
 use App\Models\Produccion\maq_pro;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,6 +25,9 @@ class procesos extends Model
         return $this->hasMany(maq_pro::class, 'proceso_id');
     }
 
+    public function formulas(){
+        return $this->hasMany(formulas::class, 'proceso_id');
+    }
 
     //Relaciones 1 a muchos inversas
     public function departamentos() {

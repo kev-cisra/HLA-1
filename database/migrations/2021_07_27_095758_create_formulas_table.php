@@ -15,10 +15,17 @@ class CreateFormulasTable extends Migration
     {
         Schema::create('formulas', function (Blueprint $table) {
             $table->id();
-            $table->string('nomfor');
-            $table->enum('estatus',[1,2,3])->default(1);
-            $table->string('variable');
-            $table->string('proceso');
+            $table->string('proc_rela');
+
+            $table->unsignedBigInteger('maq_pros_id')->nullable();
+            $table->foreign('maq_pros_id')->references("id")->on("maq_pros")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
+            $table->unsignedBigInteger('proceso_id')->nullable();
+            $table->foreign('proceso_id')->references("id")->on("procesos")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
 
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();

@@ -13,13 +13,25 @@
             </template>
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ------------------------------------>
-        <div class="collapse" id="agPer">
+        <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl" id="agPer">
             <form >
                 <div class="tw-mb-6 md:tw-flex">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                        <jet-label><span class="required">*</span>ÁREA </jet-label>
-                        <select class="InputSelect" v-model="form.departamento_id" v-html="opc"></select>
+                        <jet-label><span class="required">*</span>Departamento </jet-label>
+                        <select class="InputSelect" @change="verTabla" v-model="form.departamento_id" v-html="opc"></select>
                         <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
+                    </div>
+
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>Puesto </jet-label>
+                        <select class="InputSelect" v-model="form.ope_puesto">
+                            <option value="" disabled>Selecciona un puesto</option>
+                            <option value="cor">Coordinador</option>
+                            <option value="enc">Encargado</option>
+                            <option value="lid">Lider</option>
+                            <option value="ope">Operador</option>
+                        </select>
+                        <small v-if="errors.ope_puesto" class="validation-alert">{{errors.ope_puesto}}</small>
                     </div>
 
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
@@ -31,8 +43,9 @@
                         </datalist>
                     </div>
 
-                    <jet-button type="button" @click="save(form)" >Guardar</jet-button>
-
+                </div>
+                <div class="w-100 tw-mx-auto" align="center">
+                    <jet-button type="button" class="tw-mx-auto" @click="save(form)" >Guardar</jet-button>
                 </div>
             </form>
         </div>
@@ -41,13 +54,15 @@
             <Table id="t_per">
                 <template v-slot:TableHeader>
                     <th class="columna">Número de empleado</th>
+                    <th class="columna">Puesto</th>
                     <th class="columna">Nombre</th>
-                    <th class="columna">Área</th>
+                    <th class="columna">Departamento</th>
                     <th></th>
                 </template>
                 <template v-slot:TableFooter>
                     <tr v-for="ap in areper" :key="ap.id">
                         <td class="fila">{{ ap.perfiles.IdEmp }}</td>
+                        <td class="fila">{{ puesto(ap.ope_puesto) }}</td>
                         <td class="fila">{{ ap.perfiles.Nombre }} {{ ap.perfiles.ApPat }} {{ ap.perfiles.ApMat }}</td>
                         <td class="fila">{{ ap.departamentos.Nombre }}</td>
                         <td class="fila">
@@ -79,6 +94,9 @@
                 </template>
             </Table>
         </div>
+        <pre>
+            {{ areas }}
+        </pre>
     </app-layout>
 </template>
 
@@ -271,6 +289,7 @@
                 },
                 form: {
                     perfiles_usuarios_id: '',
+                    ope_puesto: '',
                     departamento_id: '',
                 }
             }
@@ -318,6 +337,22 @@
                     title: 'Registro Eliminado Correctamente',
                     // background: '#99F6E4',
                 })
+            },
+            puesto(data){
+                switch (data) {
+                    case 'cor':
+                        return 'COORDINADOR';
+                        break;
+                    case 'enc':
+                        return 'ENCARGADO';
+                        break;
+                    case 'lid':
+                        return 'LIDER';
+                        break;
+                    case 'ope':
+                        return 'OPERADOR';
+                        break;
+                }
             },
             //datatable
             tabla() {
@@ -379,6 +414,7 @@
             reset(val){
                 this.form = {
                     perfiles_usuarios_id: '',
+                    ope_puesto: '',
                     departamento_id: val,
                 }
             },
