@@ -9,6 +9,7 @@
                 </h3>
             </slot>
         </Header>
+        {{ fecha }}
 
         <div class="tw-mt-8">
             <div class="tw-flex tw-justify-end">
@@ -530,6 +531,7 @@ export default {
         Jefes: Object,
         Puestos: Object,
         Departamentos: Object,
+        fecha: Object
     },
 
     methods: {
@@ -538,14 +540,8 @@ export default {
             var fecha2 = moment(); //fecha de hoy
             var tiempo = fecha2.diff(fecha1, 'hours');
             if(tiempo < 0){
-                Swal.fire(
-                'Fecha Incorrecta',
-                'Introduce una fecha igual o inferior al día actual',
-                'warning'
-                )
-                this.form = {
-                    FecIng: null,
-                }
+                console.log("fecha invalida");
+                event.target.value = '';
             }
         },
 

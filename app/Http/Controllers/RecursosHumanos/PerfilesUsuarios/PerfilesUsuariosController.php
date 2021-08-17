@@ -11,26 +11,39 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class PerfilesUsuariosController extends Controller{
 
-    public function index(){
+    public $hoy;
 
+    public function index(){
+        //Consulta de la información
         $PerfilesUsuarios = PerfilesUsuarios::with('PerfilPuesto','PerfilDepartamento', 'PerfilJefe')->get();
 
-/*         $PerfilesUsuarios = PerfilesUsuarios::with([
-            'PerfilPuesto' => function($puesto){
-                $puesto->select(['id','Nombre']);
-            },
-            'PerfilDepartamento' => function($departamento){
-            $departamento->select('Nombre');
-            },
-            'PerfilJefe' => function($jefe){
-                $jefe->select('Nombre');
-            },
-            ])->get(['id', 'IdUser', 'IdEmp', 'Empresa','Nombre','ApPat', 'ApMat', 'Curp', 'Rfc', 'Nss', 'Direccion',
-            'Telefono', 'Cumpleaños','FecIng', 'Antiguedad', 'DiasVac', 'jefe_id', 'user_id', 'Puesto_id', 'Departamento_id']); */
+        //Calculo de Antiguedad y dias de vacaciones Correspondientes
+        $DiasVac = 0;
 
+        $this->hoy = Carbon::now();
+        $this->hoy->format('Y-m-d');
+        $fecha = $this->hoy;
+
+        $vacaciones = PerfilesUsuarios::get(['IdEmp', 'FecIng', 'Antiguedad', 'DiasVac']);
+
+        foreach ($vacaciones as  $value) {
+            //Conversion de fecha de ingreso a formato de Carbon
+            $FechaIngreso = Carbon::parse($value->FecIng);
+            //Calculo de años de antiguedad
+            $Antiguedad = Carbon::now()->diffInYears($FechaIngreso);
+
+            // if($fecha == $value->FecIng){
+                PerfilesUsuarios::where('IdEmp', $value->IdEmp)->update(['Antiguedad' => $Antiguedad]);
+            // }
+
+            //Dia y mes de aniversario
+            // $Aniversario = $fecha->format('m-d');
+            // $Aniv = $FechaIngreso->format('m-d');
+        }
 
         $Session = Auth::user();
         $Jefes = JefesArea::get(['id','Nombre']);
@@ -38,7 +51,7 @@ class PerfilesUsuariosController extends Controller{
         $Departamentos = Departamentos::get(['id','Nombre']);
 
         //retorno de la vista retorno de la consulta de perfiles y sus filtros
-        return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session'));
+        return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session', 'fecha'));
     }
 
     public function create(){
