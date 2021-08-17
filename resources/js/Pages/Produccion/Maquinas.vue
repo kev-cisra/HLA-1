@@ -1,7 +1,12 @@
 <template>
     <app-layout>
-        <Header>
-            Máquinas
+        <Header :class="[color, style]">
+            <slot>
+                <h3 class="tw-p-2">
+                    <i class="fas fa-digital-tachograph"></i>
+                    Máquinas
+                </h3>
+            </slot>
         </Header>
         <Accions>
             <template  v-slot:SelectB>
@@ -140,6 +145,8 @@
         },
         data() {
             return {
+                color: "tw-bg-blue-600",
+                style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
                 opc: '<option value="" disabled>Selecciona un departamento </option>',
                 español: {

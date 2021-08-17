@@ -1,8 +1,13 @@
 
 <template>
     <app-layout>
-        <Header>
-            Procesos
+        <Header :class="[color, style]">
+            <slot>
+                <h3 class="tw-p-2">
+                    <i class="fas fa-cogs"></i>
+                        Procesos
+                </h3>
+            </slot>
         </Header>
 
         <Accions>
@@ -46,14 +51,14 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoEdit" @click="edit(proceso)">
+                                <div class="iconoEdit" @click="edit(proceso)" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoDelete" @click="deleteRow(proceso)">
+                                <div class="iconoDelete" @click="deleteRow(proceso)" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">
                                     <span tooltip="Eliminar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -96,8 +101,8 @@
                                     <select v-model="form.tipo" class="InputSelect">
                                         <option value="" disabled>Seleccione</option>
                                         <option value="1">Encargado</option>
-                                        <option value="2">Coordinador</option>
-                                        <option value="3">Formulas</option>
+                                        <option value="2" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">Coordinador</option>
+                                        <option value="3" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">Formulas</option>
                                     </select>
                                     <small v-if="errors.tipo" class="validation-alert">{{errors.tipo}}</small>
                                 </div>
@@ -122,7 +127,7 @@
                     </div>
                 </div>
                 <!-------------------------------- ENCARGADO --------------------------------------->
-                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 1 & !editMode">
+                <div class="tw-px-4 tw-py-4" v-show="(form.tipo == 1 | form.tipo == 2) & !editMode">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de máquinas para el proceso</h3>
@@ -241,6 +246,8 @@
         },
         data() {
             return {
+                color: "tw-bg-blue-600",
+                style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
                 opc: '<option value="" disabled>Selecciona un departamento </option>',
                 opcMaq: '<option value="" disabled>Selecciona una máquina</option>',
@@ -386,7 +393,7 @@
                 },
                 showModal: false,
                 editMode: false,
-
+                puesCor: '',
 
                 form: {
                     nompro: null,
@@ -407,6 +414,7 @@
         },
         mounted() {
             this.mostSelect();
+            this.mostTipo()
             //$('#t_pro').DataTable().destroy();
             this.tabla();
         },
@@ -493,12 +501,24 @@
                 this.limpiar(event);
                 $('#t_pro').DataTable().destroy();
                 this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value ,maq: event.target.value }, {
-                    onSuccess: () => { this.tabla(), this.mostMaqui() }, preserveState: true
+                    onSuccess: () => { this.tabla(), this.mostMaqui(), this.mostTipo() }, preserveState: true
                 });
             },
             mostMaqui() {
                 this.maquinas == null ? "" : this.maquinas.forEach(r => {
                     this.opcMaq += `<option value="${r.id}"> ${r.Nombre} </option>`;
+                })
+            },
+            mostTipo() {
+                const valores = window.location.search;
+                const urlParams = new URLSearchParams(valores);
+                var prod = urlParams.get('busca');
+                this.puesCor = prod == null ? 'cor' : '';
+                //console.log(this.puesCor)
+                this.usuario.dep_pers.forEach(r => {
+                    if (r.departamento_id == prod & r.ope_puesto == 'cor') {
+                        this.puesCor = r.ope_puesto;
+                    }
                 })
             },
             /****************************** opciones de selec del departamento *****************************/
@@ -515,7 +535,6 @@
                                 //console.log(rr.Nombre);
                             })
                         }
-
                     })
                 });
                 //console.log(this.areas)
@@ -525,7 +544,7 @@
                 this.limpiar(event);
                 $('#t_pro').DataTable().destroy();
                 this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value }, {
-                    onSuccess: () => { this.tabla(); }, preserveState: true
+                    onSuccess: () => { this.tabla(), this.mostTipo() }, preserveState: true
                 });
             },
             /******************************* opciones de data table ****************************************/
@@ -613,7 +632,7 @@
             /******************************** Acciones insert update y delet *************************************/
             //guardar información de procesos
             save(form) {
-                console.log(form)
+                //console.log(form)
                 $('#t_pro').DataTable().destroy();
                 this.$inertia.post('/Produccion/Procesos', form, {
                     onSuccess: () => { this.alertSucces(), this.tabla(), this.reset(), this.chageClose()},

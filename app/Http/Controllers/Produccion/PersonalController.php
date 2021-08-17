@@ -25,14 +25,29 @@ class PersonalController extends Controller
         $usuario = Auth::id();
         //muestra la información del usuario que inicio sesion
         $perf = PerfilesUsuarios::where('user_id','=',$usuario)
-        ->get();
-        //muestra las areas y sub areas de produccion
-        $areas = Departamentos::where('Nombre', '=', 'OPERACIONES')
-            ->with('sub_Departamentos')
-            ->get(['id', 'IdUser', 'Nombre', 'departamento_id']);
+                ->with('dep_pers')
+                ->first();
+
+        $depa = NULL;
+        if ($perf->Departamento_id == 2 && $perf->Puesto_id != 16) {
+            //consulta las areas que le pertenecen al usuario
+            $depa = dep_per::where('perfiles_usuarios_id','=',$perf->id)
+                ->with([
+                'departamentos' => function($dep){
+                        $dep->select('id', 'Nombre', 'departamento_id');
+                    }])
+                ->get(['id','perfiles_usuarios_id', 'departamento_id']);
+        }else{
+            //muestra las areas y sub areas de produccion
+            $depa = Departamentos::where('Nombre', '=', 'OPERACIONES')
+                ->with('sub_Departamentos')
+                ->get(['id', 'IdUser', 'Nombre', 'departamento_id']);
+        }
+
         //consulta a todos los usuarios qu pertenecen a operaciones
         $personal = PerfilesUsuarios::where('Departamento_id', '=', $request->busca)
             ->get();
+
         //consulta a la relacion de areas y usuarios
         $areper = empty($request->busca) ? NULL : dep_per::where('departamento_id', '=', $request->busca)
         ->with([
@@ -46,7 +61,7 @@ class PersonalController extends Controller
 
 
 
-        return Inertia::render('Produccion/Personal', ['usuario' => $perf, 'areas' => $areas, 'personal' => $personal, 'areper' => $areper]);
+        return Inertia::render('Produccion/Personal', ['usuario' => $perf, 'areas' => $depa, 'personal' => $personal, 'areper' => $areper]);
     }
 
     /**

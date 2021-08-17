@@ -1,7 +1,12 @@
 <template>
     <app-layout>
-        <Header>
-            Personal
+        <Header :class="[color, style]">
+            <slot>
+                <h3 class="tw-p-2">
+                    <i class="fas fa-users"></i>
+                    Personal
+                </h3>
+            </slot>
         </Header>
         <Accions>
             <template  v-slot:SelectB>
@@ -18,7 +23,7 @@
                 <div class="tw-mb-6 md:tw-flex">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>Departamento </jet-label>
-                        <select class="InputSelect" @change="verTabla" v-model="form.departamento_id" v-html="opc"></select>
+                        <select class="InputSelect" v-model="form.departamento_id" v-html="opc"></select>
                         <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
                     </div>
 
@@ -45,7 +50,7 @@
 
                 </div>
                 <div class="w-100 tw-mx-auto" align="center">
-                    <jet-button type="button" class="tw-mx-auto" @click="save(form)" >Guardar</jet-button>
+                    <jet-button type="button" class="tw-mx-auto" @click="save(form)" v-if="personal.length != 0">Guardar</jet-button>
                 </div>
             </form>
         </div>
@@ -94,9 +99,6 @@
                 </template>
             </Table>
         </div>
-        <pre>
-            {{ areas }}
-        </pre>
     </app-layout>
 </template>
 
@@ -147,6 +149,8 @@
             JetLabel
         },data() {
             return {
+                color: "tw-bg-blue-600",
+                style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
                 opc: '<option value="" disabled>Selecciona un departamento </option>',
                 español: {
@@ -389,15 +393,18 @@
             //información del select area
             mostSelect() {
                 this.$nextTick(() => {
-
                     this.areas.forEach(r => {
-                        //var condi = r.sub_areas.id == '' ? 'disabled' : '';
-                        //console.log(r.sub_areas);
-                        this.opc += `<option value="${r.id}"> ${r.Nombre} </option>`;
-                        r.sub__departamentos.forEach(rr => {
-                            this.opc += `<option value="${rr.id}"> ${rr.Nombre} </option>`;
-                            //console.log(rr.Nombre);
-                        })
+                        if (r.departamentos) {
+                            this.opc += `<option value="${r.departamentos.id}"> ${r.departamentos.Nombre} </option>`;
+                        }else{
+                            this.opc += `<option value="${r.id}"> ${r.Nombre} </option>`;
+                            r.sub__departamentos.forEach(rr => {
+                                this.opc += `<option value="${rr.id}"> ${rr.Nombre} </option>`;
+                                rr.departamentos_sub.forEach(rrr => {
+                                    this.opc += `<option value="${rrr.id}"> ${rrr.Nombre} </option>`;
+                                })
+                            })
+                        }
                     })
                 });
                 //console.log(this.areas)

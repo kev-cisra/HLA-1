@@ -29,6 +29,7 @@ class ProcesosController extends Controller
         $usuario = Auth::id();
         //muestra la información del usuario que inicio sesion
         $perf = PerfilesUsuarios::where('user_id','=',$usuario)
+            ->with('dep_pers')
             ->first();
 
         $depa = NULL;
@@ -43,7 +44,7 @@ class ProcesosController extends Controller
                         $dep->select('id', 'Nombre', 'departamento_id');
                     }])
                 ->get(['id','perfiles_usuarios_id', 'departamento_id']);
-            /************************* Información de maquinas para coordinador, encargado y lider*************************/
+            /************************* Información de maquinas para coordinador, encargado y lider *************************/
             //se consulta el primer departamento que tiene la persona asignada
             $prime = dep_per::where('perfiles_usuarios_id','=',$perf->id)
                 ->with([
@@ -66,7 +67,7 @@ class ProcesosController extends Controller
 
         }else{
             //consulta el id de la area produccion
-            $iddeppro = Departamentos::where('Nombre', '=', 'PRODUCCION')
+            $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')
                 ->first();
             //muestra las areas y sub areas de produccion
             $depa = Departamentos::where('departamento_id', '=', $iddeppro->id)

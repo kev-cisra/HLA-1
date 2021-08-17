@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion\catalogos;
 
+use App\Models\Produccion\carga;
 use App\Models\Produccion\formulas;
 use App\Models\Produccion\maq_pro;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
@@ -23,6 +24,10 @@ class procesos extends Model
     //Relaciones 1 a muchos
     public function maq_pros(){
         return $this->hasMany(maq_pro::class, 'proceso_id');
+    }
+
+    public function cargas(){
+        return $this->hasMany(carga::class);
     }
 
     public function formulas(){

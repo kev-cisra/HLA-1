@@ -55,7 +55,7 @@ class MaquinasController extends Controller
 
         }else{
             //consulta el id de la area produccion
-            $iddeppro = Departamentos::where('Nombre', '=', 'PRODUCCION')
+            $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')
                 ->first();
             //muestra las areas y sub areas de produccion
             $depa = Departamentos::where('departamento_id', '=', $iddeppro->id)

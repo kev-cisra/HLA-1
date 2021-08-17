@@ -3,6 +3,7 @@
 namespace App\Models\RecursosHumanos\Perfiles;
 
 use App\Models\Produccion\are_prof;
+use App\Models\Produccion\dep_per;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Catalogos\Puestos;
@@ -24,8 +25,8 @@ class PerfilesUsuarios extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
     //relacion uno a muchos
-    public function perfil_areperfs() {
-        return $this->hasMany(are_prof::class);
+    public function dep_pers() {
+        return $this->hasMany(dep_per::class);
     }
 
     //relaciones uno a muchos inversa
