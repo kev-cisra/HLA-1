@@ -35,18 +35,18 @@
                             <td class="tw-p-2">{{ dato.DiasVac }} Dias</td>
                             <td class="fila">
                                 <div class="columnaIconos">
-                                    <div class="iconoDetails" @click="show(dato)" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                        <span tooltip="Detalles" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    <div class="iconoEdit" @click="vacaciones(dato)">
+                                        <span tooltip="Captura de Vacaciones" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                                             </svg>
                                         </span>
                                     </div>
-                                    <div class="iconoEdit" @click="edit(dato)">
-                                        <span tooltip="Editar" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                    <div class="iconoDetails">
+                                        <span tooltip="Historico Vacaciones" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                             </svg>
                                         </span>
                                     </div>
@@ -59,16 +59,55 @@
         </div>
     </div>
 
-    <pre>
-
-    </pre>
-
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
         <form>
             <div class="tw-px-4 tw-py-4">
                 <div class="tw-text-lg">
                     <div class="ModalHeader">
-                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Registro de Información</h3>
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Registro de Vacaciones</h3>
+                    </div>
+                </div>
+
+                <div class="overflow-hidden tw-flex-column tw-bg-blueGray-50 tw-my-4 tw-border-indigo-300 tw-border-t-2 tw-border-b-2">
+                    <div class="tw-flex tw-p-2 tw-gap-2">
+                        <div class="tw-w-1/3 md:tw-w-1/3 lg:tw-w-1/3">
+                            <label class="info">Num Empleado</label>
+                            <div class="DataContainer">
+                                <input type="text" class="InfoData" v-model="form.IdEmp" disabled/>
+                            </div>
+                        </div>
+                        <div class="tw-w-1/3 md:tw-w-1/3 lg:tw-w-1/3">
+                            <label class="info">Empresa</label>
+                            <div class="DataContainer">
+                                <input type="text" class="InfoData" v-model="form.Empresa" disabled/>
+                            </div>
+                        </div>
+                        <div class="tw-w-1/3 lw-text-bold md:tw-w-1/3 lg:tw-w-1/3">
+                            <label class="info">Días Vacaciones Disponibles</label>
+                            <div class="DataContainer">
+                                <input type="text" class="InfoData" v-model="form.DiasVac" disabled/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tw-flex tw-p-2 tw-gap-2">
+                        <div class="tw-w-1/3 md:tw-w-1/3 lg:tw-w-1/3">
+                            <label class="info">Nombre</label>
+                            <div class="DataContainer">
+                                <input type="text" class="InfoData" v-model="form.Nombre" disabled/>
+                            </div>
+                        </div>
+                        <div class="tw-w-1/3 md:tw-w-1/3 lg:tw-w-1/3">
+                            <label class="info">Apellido Paterno</label>
+                            <div class="DataContainer">
+                                <input type="text" class="InfoData" v-model="form.ApPat" disabled/>
+                            </div>
+                        </div>
+                        <div class="tw-w-1/3 md:tw-w-1/3 lg:tw-w-1/3">
+                            <label class="info">Apellido Materno</label>
+                            <div class="DataContainer">
+                                <input type="text" class="InfoData" v-model="form.ApMat" disabled/>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -76,17 +115,24 @@
                     <div class="ModalForm">
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>variable</jet-label>
-                                <jet-input type="text" v-model="form.variable"></jet-input>
-                                <small v-if="errors.variable" class="validation-alert">{{errors.variable}}</small>
+                                <jet-label><span class="required">*</span>Fecha de Incio</jet-label>
+                                <jet-input type="date" v-model="form.FechaInicio"></jet-input>
+                                <small v-if="errors.FechaInicio" class="validation-alert">{{errors.FechaInicio}}</small>
                             </div>
+                            {{ form.FechaInicio }} {{ form.FechaFin }}
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>variable</jet-label>
-                                <select id="Jefe" v-model="form.variable"  class="InputSelect">
-                                    <option v-for="select in selects" :key="select.id" :value="select.id" >{{ select.variable2 }}</option>
-                                </select>
-                                <small v-if="errors.variable" class="validation-alert" >{{ errors.variable }}</small>
+                                <jet-label><span class="required">*</span>Fecha de Fin</jet-label>
+                                <jet-input type="date" v-model="form.FechaFin"></jet-input>
+                                <small v-if="errors.FechaFin" class="validation-alert">{{errors.FechaFin}}</small>
                             </div>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Comentarios</jet-label>
+                                <textarea name="" id="" cols="2" v-model="form.Comentarios" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                                <small v-if="errors.Comentarios" class="validation-alert">{{errors.Comentarios}}</small>
+                            </div>
+                            {{ form.Comentarios }}
                         </div>
                     </div>
                 </div>
@@ -201,6 +247,7 @@ import Accions from "@/Components/Accions";
 import TableBlue from "@/Components/TableBlue";
 import Table from "@/Components/Table";
 import JetButton from "@/Components/Button";
+import JetTextArea from "@/Components/Textarea";
 import JetCancelButton from "@/Components/CancelButton";
 import Modal from "@/Jetstream/Modal";
 import Pagination from "@/Components/pagination";
@@ -213,15 +260,12 @@ import moment from 'moment';
 import 'moment/locale/es';
 
 export default {
-    mounted() {
-        this.tabla();
-    },
-
     data() {
         return {
-            color: "tw-bg-blue-600",
+            color: "tw-bg-green-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
-            tam: "4xl",
+            now: moment().format("YYYY-MM-DD"),
+            tam: "2xl",
             español: {
             processing: "Procesando...",
             lengthMenu: "Mostrar _MENU_ registros",
@@ -365,8 +409,22 @@ export default {
             },
             showModal: false,
             form: {
+                IdUser: this.Session.id,
+                IdEmp: null,
+                Nombre: null,
+                FechaInicio: null,
+                FechaFin: null,
+                Comentarios: null,
+                Estatus: 'APROVADO',
+                Color: '#14B8A6',
+                DiasTomados: null,
+                DiasRestantes: null,
             },
         };
+    },
+
+    mounted() {
+        this.tabla();
     },
 
     components: {
@@ -382,31 +440,209 @@ export default {
         Pagination,
         JetInput,
         JetSelect,
+        JetTextArea,
     },
 
     props: {
         Session: Object,
         PerfilesUsuarios: Object,
+        errors: Object,
     },
 
     methods: {
-    //datatable
-        tabla() {
-            this.$nextTick(() => {
-                $("#perfiles").DataTable({
-                language: this.español,
-                });
+        alertSucces() {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+        });
+
+        Toast.fire({
+            icon: "success",
+            title: "Operación Exitosa!",
+            // background: '#99F6E4',
+        });
+        },
+
+        alertDelete() {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+        });
+
+        Toast.fire({
+            icon: "success",
+            title: "Registro Eliminado Correctamente",
+            // background: '#99F6E4',
+        });
+        },
+
+        alertWarning() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "center",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+            });
+
+            Toast.fire({
+                icon: "warning",
+                title: "Formato Incorrecto",
+                // background: '#FDBA74',
             });
         },
 
+        reset() {
+            this.form = {
+                IdUser: this.Session.id,
+                IdEmp: null,
+                jefes_areas_id: null,
+                Empresa: null,
+                Nombre: null,
+                ApPat: null,
+                ApMat: null,
+                Curp: null,
+                Rfc: null,
+                Nss: null,
+                Direccion: null,
+                Telefono: null,
+                Cumpleaños: null,
+                FecIng: null,
+                Antiguedad: null,
+                DiasVac: null,
+                Puesto_id: null,
+                Departamento_id: null,
+            };
+        },
+
         openModal() {
-            this.chageClose();
-            this.reset();
-            this.editMode = false;
+        this.chageClose();
+        this.reset();
+        this.editMode = false;
         },
 
         chageClose() {
             this.showModal = !this.showModal;
+        },
+
+        //datatable
+        tabla() {
+        this.$nextTick(() => {
+            $("#perfiles").DataTable({
+            language: this.español,
+            });
+        });
+        },
+
+        //consulta para generar datos de la tabla
+        verTabla(event) {
+        $("#perfiles").DataTable().destroy();
+        this.$inertia.get(
+            "/RecursosHumanos/PerfilesUsuarios",
+            { busca: event.target.value },
+            {
+            onSuccess: () => {
+                this.tabla();
+            },
+            }
+        );
+        },
+
+        save(data) {
+
+            var DiasRestantes = 0;
+            var fecha1 = moment(data.FechaInicio);
+            var fecha2 = moment(data.FechaFin);
+
+            if(data.Empresa == 'SERGES'){
+                var from = moment(fecha1, 'DD/MM/YYY'),
+                    to = moment(fecha2, 'DD/MM/YYY'),
+                    dias = 0;
+
+                while (!from.isAfter(to)) {
+                        // Si no es sabado ni domingo
+                        if (from.isoWeekday() !== 6 && from.isoWeekday() !== 7) {
+                        dias++;
+                        }
+                        from.add(1, 'days');
+                    }
+                data.DiasTomados = dias;
+                DiasRestantes = data.DiasRestantes - data.DiasTomados;
+                console.log(data.DiasTomados);
+            }else{
+                var dias = fecha2.diff(fecha1, 'days');
+                DiasRestantes = data.DiasTomados = dias+1;
+                console.log(data.DiasTomados);
+            }
+
+/*             this.$inertia.post("/RecursosHumanos/PerfilesUsuarios", data, {
+                onSuccess: () => {
+                this.reset(), this.chageClose(), this.alertSucces();
+                },
+            }); */
+        },
+
+        vacaciones: function (data) {
+            this.form = Object.assign({}, data);
+            this.editMode = false;
+            this.chageClose();
+        },
+
+        update(data) {
+        data._method = "PUT";
+        this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
+            onSuccess: () => {
+            this.reset(), this.chageClose(), this.alertSucces();
+            },
+        });
+        },
+
+        deleteRow: function (data) {
+            Swal.fire({
+                title: '¿Estas seguro de querer eliminar esta información',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '¡Sí, bórralo!',
+                cancelButtonText: 'No, Cancelar!',
+                }).then((result) => {
+                if (result.isConfirmed) {
+
+                    data._method = "DELETE";
+                    this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
+                        onSuccess: () => {
+                            Swal.fire(
+                                'Eliminado!',
+                                'El registro fue eliminado con éxito',
+                                'success'
+                            )
+                        },
+                    });
+                }
+                })
+        },
+
+        show: function (data) {
+        this.form = Object.assign({}, data);
         },
     },
 };

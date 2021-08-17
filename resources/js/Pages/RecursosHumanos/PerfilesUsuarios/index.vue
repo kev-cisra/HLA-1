@@ -88,10 +88,6 @@
                 </TableGreen>
             </div>
         </div>
-
-<pre>
-    {{ PerfilesUsuarios }}
-</pre>
     </div>
 
 

@@ -38,7 +38,7 @@ class VacacionesDptoController extends Controller
                 // $jefe->where('IdEmp', '=', 5310);
             }
         ])
-        ->get(['IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id']); //datos de Perfiles
+        ->get(['IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id', 'Empresa']); //datos de Perfiles
 
 
         //Catalogos

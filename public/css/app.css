@@ -17756,7 +17756,7 @@ video {
 	--tw-transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.tw-border, .tw-border-2, .tw-border-l, .tw-border-t, .tw-border-r, .tw-border-b-2, .tw-border-l-4, .tw-border-b-4, .paginate, .btn-row, .btn-filter, .btn-form, .input-search, .InputSelect, .InputSelectFilter, .textarea, .InputSearch, .DetailsHeader, .SectionInfo, .DataContainer {
+.tw-border, .tw-border-2, .tw-border-l, .tw-border-t, .tw-border-r, .tw-border-b-2, .tw-border-l-4, .tw-border-b-4, .tw-border-t-2, .paginate, .btn-row, .btn-filter, .btn-form, .input-search, .InputSelect, .InputSelectFilter, .textarea, .InputSearch, .DetailsHeader, .SectionInfo, .DataContainer {
 	--tw-border-opacity: 1;
 	border-color: rgba(229, 231, 235, var(--tw-border-opacity));
 }
@@ -18483,6 +18483,9 @@ select {
 .tw-w-10 {
 	width: 2.5rem;
 }
+.tw-w-1\/3 {
+	width: 33.333333%;
+}
 .tw-w-3\/4 {
 	width: 75%;
 }
@@ -18587,6 +18590,9 @@ select {
 .tw-gap-6 {
 	gap: 1.5rem;
 }
+.tw-gap-2 {
+	gap: 0.5rem;
+}
 .tw-gap-1 {
 	gap: 0.25rem;
 }
@@ -18683,6 +18689,9 @@ select {
 .tw-border-b-4 {
 	border-bottom-width: 4px;
 }
+.tw-border-t-2 {
+	border-top-width: 2px;
+}
 .tw-border-gray-300 {
 	--tw-border-opacity: 1;
 	border-color: rgba(209, 213, 219, var(--tw-border-opacity));
@@ -18705,6 +18714,10 @@ select {
 .tw-border-cyan-500 {
 	--tw-border-opacity: 1;
 	border-color: rgba(6, 182, 212, var(--tw-border-opacity));
+}
+.tw-border-indigo-300 {
+	--tw-border-opacity: 1;
+	border-color: rgba(165, 180, 252, var(--tw-border-opacity));
 }
 .tw-bg-gray-200 {
 	--tw-bg-opacity: 1;
@@ -19993,6 +20006,10 @@ select {
 		width: 75%;
 	}
 
+	.md\:tw-w-1\/3 {
+		width: 33.333333%;
+	}
+
 	.md\:tw-grid-cols-3 {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
@@ -20006,6 +20023,10 @@ select {
 	}
 }
 @media (min-width: 1024px) {
+
+	.lg\:tw-w-1\/3 {
+		width: 33.333333%;
+	}
 
 	.lg\:tw-px-8 {
 		padding-left: 2rem;
