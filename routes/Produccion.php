@@ -29,3 +29,5 @@ Route::resource('Maquinas', MaquinasController::class)
 
 Route::resource('Materiales', MaterialesController::class)
     ->middleware(['auth:sanctum', 'verified']);
+
+Route::resource('Clamat', UserController::class);

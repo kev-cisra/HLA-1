@@ -26,10 +26,14 @@ class CreateCargasTable extends Migration
 
             $table->unsignedBigInteger('dep_perf_id');
             $table->unsignedBigInteger('maq_pro_id');
+            $table->unsignedBigInteger('proceso_id');
             $table->unsignedBigInteger('clave_id');
             $table->unsignedBigInteger('turno_id');
 
             $table->foreign('maq_pro_id')->references("id")->on("maq_pros")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+            $table->foreign('proceso_id')->references("id")->on("procesos")
             ->onDelete("cascade")
             ->onUpdate("cascade");
             $table->foreign('dep_perf_id')->references("id")->on("dep_pers")

@@ -55,7 +55,7 @@ class DepartamentosSeeder extends Seeder
 
         Departamentos::create([
             'IdUser' => '1',
-            'Nombre' => 'HILATURA DE ANILLOS',
+            'Nombre' => 'HILATURA DE ANILLO',
             'departamento_id' => '2'
         ]);
 
