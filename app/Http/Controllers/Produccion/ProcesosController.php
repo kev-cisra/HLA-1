@@ -35,7 +35,7 @@ class ProcesosController extends Controller
         $proce = NULL;
 
         /*************** Información para mostrar áreas *************************/
-        if($perf->Departamento_id == 2 && $perf->Puesto_id !== 16){
+        if($perf->Departamento_id == 2 && $perf->Puesto_id != 16){
             //consulta las areas que le pertenecen al usuario
             $depa = dep_per::where('perfiles_usuarios_id','=',$perf->id)
                 ->with([
@@ -125,29 +125,54 @@ class ProcesosController extends Controller
                 'operacion' => ['required']
             ])->validate();
         }
-        //return $request;
-        foreach ($request->formulas as $for) {
-            //echo $for['val'];
-        }
-        foreach ($request->for_maq as $check) {
-            $ch = explode('/', $check);
-            echo $ch[0];
-        }
-        return $request;
+
         //CARGA DE PROCESOS
-        /*$proceso = procesos::create($request->all());
+        $proceso = procesos::create($request->all());
+
         //CARGA DEPENDIENDO DEL TURNO
         if ($request->tipo == 1) {
             foreach ($request->maquinas as $value) {
-                if ($value['value'] !== null) {
+                if ($value['value'] != null) {
                     maq_pro::create([
                         'proceso_id' => $proceso->id,
                         'maquina_id' => $value['value'],
                     ]);
                 }
             }
-        }*/
+        }elseif($request->tipo == 3){
+            foreach ($request->formulas as $for) {
+                //echo $for['val'];
+                foreach ($request->for_maq as $check) {
+                    $ch = explode('-', $check);
+                    if ($for['val'] == $ch[0]) {
+                        echo $for['val'].' '.$check.' '.'maquinas - ';
+                        formulas::create([
+                            'proc_rela' => $for['val'],
+                            'maq_pros_id' => $ch[1],
+                            'proceso_id' => $proceso->id
+                        ]);
+                    }else{
+                        $tipo = procesos::where('id', '=', $for['val'])
+                            ->first();
+                            //echo $tipo->id.' ';
+                        if ($tipo->tipo != 1) {
+                            $ver = formulas::where('proceso_id', '=', $proceso->id)
+                                ->where('proc_rela', '=', $for['val'])
+                                ->count();
+                            if ($ver == 0) {
+                                echo 'T'.$tipo->tipo.' '.$for['val'].' '.$check.' '.'procesos - ';
+                                formulas::create([
+                                    'proc_rela' => $for['val'],
+                                    'proceso_id' => $proceso->id
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
+        //return $request;
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
 

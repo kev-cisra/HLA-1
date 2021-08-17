@@ -13,8 +13,14 @@ class formulas extends Model
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
 
+    //relacion uno a muchos
+
     //relacion uno a muchos inversa
-    public function formulas_proceso() {
+    public function procesos() {
         return $this->belongsTo(procesos::class, 'proceso_id');
+    }
+
+    public function maq_pros() {
+        return $this->belongsTo(maq_pro::class, 'maq_pros_id');
     }
 }

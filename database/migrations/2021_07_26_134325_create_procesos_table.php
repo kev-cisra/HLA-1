@@ -33,8 +33,8 @@ class CreateProcesosTable extends Migration
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
-            $table->timestamps();
             $table->softDeletes(); //Columna para soft delete
+            $table->timestamps();
         });
     }
 

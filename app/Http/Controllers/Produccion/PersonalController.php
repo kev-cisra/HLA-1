@@ -26,15 +26,12 @@ class PersonalController extends Controller
         //muestra la información del usuario que inicio sesion
         $perf = PerfilesUsuarios::where('user_id','=',$usuario)
         ->get();
-        //consulta el id de la area produccion
-        $idarepro = Departamentos::where('Nombre', '=', 'PRODUCCION')
-            ->first();
         //muestra las areas y sub areas de produccion
-        $areas = Departamentos::where('departamento_id', '=', $idarepro->id)
+        $areas = Departamentos::where('Nombre', '=', 'OPERACIONES')
             ->with('sub_Departamentos')
             ->get(['id', 'IdUser', 'Nombre', 'departamento_id']);
         //consulta a todos los usuarios qu pertenecen a operaciones
-        $personal = PerfilesUsuarios::where('Departamento_id', '=', 2)
+        $personal = PerfilesUsuarios::where('Departamento_id', '=', $request->busca)
             ->get();
         //consulta a la relacion de areas y usuarios
         $areper = empty($request->busca) ? NULL : dep_per::where('departamento_id', '=', $request->busca)
@@ -63,6 +60,7 @@ class PersonalController extends Controller
         //
         Validator::make($request->all(), [
                 'departamento_id' => 'required',
+                'ope_puesto' => 'required',
                 'perfiles_usuarios_id' => ['required','numeric'],
         ])->validate();
         //consulta si ya esta registrado ese usuario
