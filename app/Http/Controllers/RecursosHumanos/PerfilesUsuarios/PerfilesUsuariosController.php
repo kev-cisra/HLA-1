@@ -56,7 +56,6 @@ class PerfilesUsuariosController extends Controller{
         PerfilesUsuarios::create($request->all());
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
-
     }
 
     public function show($id){

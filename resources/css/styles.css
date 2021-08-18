@@ -84,6 +84,10 @@
     @apply tw-block tw-w-full tw-px-4 tw-py-2 tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-lg tw-appearance-none;
 }
 
+/* .select{
+    @apply block w-full px-4 py-2 font-semibold text-gray-500 bg-gray-200 border border-gray-300 rounded-lg appearance-none;
+} */
+
 .InputSearch{
     @apply tw-block tw-w-full tw-py-2 tw-pl-10 tw-pr-10 tw-text-sm tw-font-semibold tw-text-gray-700 tw-placeholder-gray-400 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none;
     focus:tw-outline-none;

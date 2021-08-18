@@ -33,13 +33,11 @@
                             <td class="tw-p-2">{{ dato.perfil_puesto.Nombre }}</td>
                             <td class="tw-p-2">{{ dato.perfil_departamento.Nombre }}</td>
                             <td class="tw-p-2">{{ dato.DiasVac }} Dias</td>
-                            <td class="fila">
+                            <td class="fila tw-center">
                                 <div class="columnaIconos">
                                     <div class="iconoEdit" @click="vacaciones(dato)">
                                         <span tooltip="Captura de Vacaciones" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                            </svg>
+                                            <i class="fas fa-user-plus"></i>
                                         </span>
                                     </div>
                                     <div class="iconoDetails" @click="Historico(dato)" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -155,7 +153,7 @@
                 </div>
 
                 <div class="DetailsBody" v-if="Vacaciones.length > 0">
-                    <TableBlue>
+                    <TableBlue id="vacaciones">
                         <template v-slot:TableHeader>
                             <th class="columna">Num Control</th>
                             <th class="columna">Nombre Completo</th>
@@ -377,6 +375,7 @@ export default {
 
     mounted() {
         this.tabla();
+        this.tablaDetalles();
     },
 
     components: {
@@ -460,7 +459,27 @@ export default {
 
             Toast.fire({
                 icon: "warning",
-                title: "Formato Incorrecto",
+                title: "Ya no quedan dias de vacaciones disponibles",
+                // background: '#FDBA74',
+            });
+        },
+
+        alertWarningDias() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "center",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+            });
+
+            Toast.fire({
+                icon: "warning",
+                title: "Dias de Vacaciones disponibles Excedidos",
                 // background: '#FDBA74',
             });
         },
@@ -496,53 +515,89 @@ export default {
         });
         },
 
+        tablaDetalles(){
+            this.$nextTick(() => {
+                $("#vacaciones").DataTable({
+                language: this.español,
+                });
+            });
+        },
+
         //consulta para generar datos de la tabla
         verTabla(event) {
-        $('#perfiles').DataTable().clear();
-        $('#perfiles').DataTable().destroy();
-        this.$inertia.get(
-            "/RecursosHumanos/PerfilesUsuarios",
-            { busca: event.target.value },
-            {
-            onSuccess: () => {
-                this.tabla();
-            },
-            }
-        );
+            $('#perfiles').DataTable().clear();
+            $('#perfiles').DataTable().destroy();
+            this.$inertia.get(
+                "/RecursosHumanos/PerfilesUsuarios",
+                { busca: event.target.value },
+                {
+                onSuccess: () => {
+                    this.tabla();
+                },
+                }
+            );
+        },
+
+        verTablaDetalles(event) {
+            $('#vacaciones').DataTable().clear();
+            $('#vacaciones').DataTable().destroy();
+            this.$inertia.get(
+                "/RecursosHumanos/Vacaciones",
+                { busca: event.target.value },
+                {
+                onSuccess: () => {
+                    this.tabla();
+                },
+                }
+            );
         },
 
         save(data) {
-            data.IdUser = this.Session.id;
-            var DiasRestantes = 0;
-            var fecha1 = moment(data.FechaInicio);
-            var fecha2 = moment(data.FechaFin);
-
-            if(data.Empresa == 'SERGES'){
-                var from = moment(fecha1, 'DD/MM/YYY'),
-                    to = moment(fecha2, 'DD/MM/YYY'),
-                    dias = 0;
-
-                while (!from.isAfter(to)) {
-                        // Si no es sabado ni domingo
-                        if (from.isoWeekday() !== 6 && from.isoWeekday() !== 7) {
-                        dias++;
-                        }
-                        from.add(1, 'days');
-                    }
-
-                data.DiasTomados = dias;
-                data.DiasRestantes = data.DiasVac - data.DiasTomados;
+            if(data.DiasVac <= 0){
+                this.alertWarning();
             }else{
-                var dias = fecha2.diff(fecha1, 'days');
-                data.DiasTomados = data.DiasTomados = dias+1;
-                data.DiasRestantes = data.DiasVac - data.DiasTomados;
-            }
+                //assigno el Id se session
+                data.IdUser = this.Session.id;
+                var DiasRestantes = 0;
+                //Conversion de fechas a momment Js
+                var fecha1 = moment(data.FechaInicio);
+                var fecha2 = moment(data.FechaFin);
 
-            this.$inertia.post("/RecursosHumanos/Vacaciones", data, {
-                onSuccess: () => {
-                    this.reset(), this.chageClose(), this.alertSucces();
-                },
-            });
+                if(data.Empresa == 'SERGES'){ //En caso de ser serges no contar los fines de semana
+                    var from = moment(fecha1, 'DD/MM/YYY'),
+                        to = moment(fecha2, 'DD/MM/YYY'),
+                        dias = 0;
+
+                    while (!from.isAfter(to)) {
+                            // Si no es sabado ni domingo
+                            if (from.isoWeekday() !== 6 && from.isoWeekday() !== 7) {
+                            dias++;
+                            }
+                            from.add(1, 'days');
+                        }
+
+                    if(dias <= data.DiasVac){
+                        data.DiasTomados = dias;
+                        data.DiasRestantes = data.DiasVac - data.DiasTomados;
+                    }else{
+                        this.alertWarningDias();
+                    }
+                }else{
+                    if(dias <= data.DiasVac){
+                        var dias = fecha2.diff(fecha1, 'days');
+                        data.DiasTomados = data.DiasTomados = dias+1;
+                        data.DiasRestantes = data.DiasVac - data.DiasTomados;
+                    }else{
+                        this.alertWarningDias();
+                    }
+                }
+
+                this.$inertia.post("/RecursosHumanos/Vacaciones", data, {
+                    onSuccess: () => {
+                        this.reset(), this.chageClose(), this.alertSucces();
+                    },
+                });
+            }
         },
 
         vacaciones: function (data) {
@@ -552,7 +607,6 @@ export default {
         },
 
         Historico: function (data) {
-
             this.$inertia.get('/RecursosHumanos/Vacaciones',{ busca: data.IdEmp }, {
                 onSuccess: () => {
                 }, preserveState: true

@@ -7,6 +7,7 @@ use App\Models\Produccion\dep_per;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Catalogos\Puestos;
+use App\Models\RecursosHumanos\Incidencias\Incidencias;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,6 +28,11 @@ class PerfilesUsuarios extends Model
     //relacion uno a muchos
     public function dep_pers() {
         return $this->hasMany(dep_per::class);
+    }
+
+    //relacion uno a muchos con Incidencias
+    public function PerfilIncidencias() {
+        return $this->hasMany(Incidencias::class);
     }
 
     //relaciones uno a muchos inversa
