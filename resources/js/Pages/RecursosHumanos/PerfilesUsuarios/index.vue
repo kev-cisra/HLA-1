@@ -9,7 +9,6 @@
                 </h3>
             </slot>
         </Header>
-        {{ fecha }}
 
         <div class="tw-mt-8">
             <div class="tw-flex tw-justify-end">
@@ -531,7 +530,6 @@ export default {
         Jefes: Object,
         Puestos: Object,
         Departamentos: Object,
-        fecha: Object
     },
 
     methods: {

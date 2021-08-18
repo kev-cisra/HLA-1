@@ -15,35 +15,9 @@ use Carbon\Carbon;
 
 class PerfilesUsuariosController extends Controller{
 
-    public $hoy;
-
     public function index(){
         //Consulta de la información
         $PerfilesUsuarios = PerfilesUsuarios::with('PerfilPuesto','PerfilDepartamento', 'PerfilJefe')->get();
-
-        //Calculo de Antiguedad y dias de vacaciones Correspondientes
-        $DiasVac = 0;
-
-        $this->hoy = Carbon::now();
-        $this->hoy->format('Y-m-d');
-        $fecha = $this->hoy;
-
-        $vacaciones = PerfilesUsuarios::get(['IdEmp', 'FecIng', 'Antiguedad', 'DiasVac']);
-
-        foreach ($vacaciones as  $value) {
-            //Conversion de fecha de ingreso a formato de Carbon
-            $FechaIngreso = Carbon::parse($value->FecIng);
-            //Calculo de años de antiguedad
-            $Antiguedad = Carbon::now()->diffInYears($FechaIngreso);
-
-            // if($fecha == $value->FecIng){
-                PerfilesUsuarios::where('IdEmp', $value->IdEmp)->update(['Antiguedad' => $Antiguedad]);
-            // }
-
-            //Dia y mes de aniversario
-            // $Aniversario = $fecha->format('m-d');
-            // $Aniv = $FechaIngreso->format('m-d');
-        }
 
         $Session = Auth::user();
         $Jefes = JefesArea::get(['id','Nombre']);
@@ -51,7 +25,7 @@ class PerfilesUsuariosController extends Controller{
         $Departamentos = Departamentos::get(['id','Nombre']);
 
         //retorno de la vista retorno de la consulta de perfiles y sus filtros
-        return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session', 'fecha'));
+        return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session'));
     }
 
     public function create(){
