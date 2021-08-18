@@ -11,26 +11,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class PerfilesUsuariosController extends Controller{
 
     public function index(){
-
+        //Consulta de la información
         $PerfilesUsuarios = PerfilesUsuarios::with('PerfilPuesto','PerfilDepartamento', 'PerfilJefe')->get();
-
-/*         $PerfilesUsuarios = PerfilesUsuarios::with([
-            'PerfilPuesto' => function($puesto){
-                $puesto->select(['id','Nombre']);
-            },
-            'PerfilDepartamento' => function($departamento){
-            $departamento->select('Nombre');
-            },
-            'PerfilJefe' => function($jefe){
-                $jefe->select('Nombre');
-            },
-            ])->get(['id', 'IdUser', 'IdEmp', 'Empresa','Nombre','ApPat', 'ApMat', 'Curp', 'Rfc', 'Nss', 'Direccion',
-            'Telefono', 'Cumpleaños','FecIng', 'Antiguedad', 'DiasVac', 'jefe_id', 'user_id', 'Puesto_id', 'Departamento_id']); */
-
 
         $Session = Auth::user();
         $Jefes = JefesArea::get(['id','Nombre']);

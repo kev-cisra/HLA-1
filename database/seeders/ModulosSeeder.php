@@ -58,7 +58,7 @@ class ModulosSeeder extends Seeder
             'Iduser' => '1',
             'NombreModulo' => 'VACACIONES',
             'Icono' => 'fas fa-users',
-            'Ruta' => 'Hilaturas/Vacaciones',
+            'Ruta' => 'RecursosHumanos/Vacaciones',
             'Area' => '2',
         ]);
     }
