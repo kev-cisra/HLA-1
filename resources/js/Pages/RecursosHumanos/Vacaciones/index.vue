@@ -153,7 +153,7 @@
                 </div>
 
                 <div class="DetailsBody" v-if="Vacaciones.length > 0">
-                    <TableBlue id="vacaciones">
+                    <TableBlue>
                         <template v-slot:TableHeader>
                             <th class="columna">Num Control</th>
                             <th class="columna">Nombre Completo</th>
@@ -375,7 +375,6 @@ export default {
 
     mounted() {
         this.tabla();
-        this.tablaDetalles();
     },
 
     components: {
@@ -515,34 +514,12 @@ export default {
         });
         },
 
-        tablaDetalles(){
-            this.$nextTick(() => {
-                $("#vacaciones").DataTable({
-                language: this.español,
-                });
-            });
-        },
-
         //consulta para generar datos de la tabla
         verTabla(event) {
             $('#perfiles').DataTable().clear();
             $('#perfiles').DataTable().destroy();
             this.$inertia.get(
                 "/RecursosHumanos/PerfilesUsuarios",
-                { busca: event.target.value },
-                {
-                onSuccess: () => {
-                    this.tabla();
-                },
-                }
-            );
-        },
-
-        verTablaDetalles(event) {
-            $('#vacaciones').DataTable().clear();
-            $('#vacaciones').DataTable().destroy();
-            this.$inertia.get(
-                "/RecursosHumanos/Vacaciones",
                 { busca: event.target.value },
                 {
                 onSuccess: () => {

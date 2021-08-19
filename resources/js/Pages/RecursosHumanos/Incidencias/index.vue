@@ -142,7 +142,7 @@
                 </div>
 
                 <div class="DetailsBody" v-if="Incidencias.length > 0">
-                    <Table id="incidencias">
+                    <Table>
                         <template v-slot:TableHeader>
                             <th class="columna">Num Control</th>
                             <th class="columna">Motivo</th>
@@ -194,7 +194,6 @@ import 'moment/locale/es';
 export default {
     mounted() {
         this.tabla();
-        this.tablaDetalles();
     },
 
     components: {
@@ -470,35 +469,12 @@ export default {
         });
         },
 
-        tablaDetalles() {
-        this.$nextTick(() => {
-            $("#incidencias").DataTable({
-            language: this.español,
-            });
-        });
-        },
-
         //consulta para generar datos de la tabla
         verTabla(event) {
             $('#perfiles').DataTable().clear();
             $('#perfiles').DataTable().destroy();
             this.$inertia.get(
                 "/RecursosHumanos/PerfilesUsuarios",
-                { busca: event.target.value },
-                {
-                onSuccess: () => {
-                    this.tabla();
-                },
-                }
-        );
-        },
-
-        //consulta para generar datos de la tabla de historico
-        verTablaDetalles(event) {
-            $('#incidencias').DataTable().clear();
-            $('#incidencias').DataTable().destroy();
-            this.$inertia.get(
-                "/RecursosHumanos/Incidencias",
                 { busca: event.target.value },
                 {
                 onSuccess: () => {
