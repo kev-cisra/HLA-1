@@ -19417,6 +19417,9 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(107, 114, 128, var(--tw-text-opacity));
 }
+/* .select{
+    @apply block w-full px-4 py-2 font-semibold text-gray-500 bg-gray-200 border border-gray-300 rounded-lg appearance-none;
+} */
 .InputSearch {
 	display: block;
 	width: 100%;

@@ -153,5 +153,12 @@ class JefesAreaSeeder extends Seeder
             'Nombre' => 'FERNANDO MADRIGAL RANGEL',
             'Area' => 'ADMINISTRATIVO',
         ]);
+
+        JefesArea::create([
+            'IdUser' => '1',
+            'IdEmp' => '5310',
+            'Nombre' => 'ADMINISTRADOR',
+            'Area' => 'ADMINISTRATIVO',
+        ]);
     }
 }

@@ -12,11 +12,14 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
+use Carbon\Carbon;
 class VacacionesDptoController extends Controller
 {
-
     public function index(Request $request){
+
+        $hoy= Carbon::now();
+        $mes = $hoy->format('n');
+        $anio = $hoy->format('Y');
 
         //Cosnulta para obtener el Numero de empleado de la session
         $Session = Auth::user();
@@ -45,6 +48,7 @@ class VacacionesDptoController extends Controller
 
         if(!empty($request->busca)){
             $Vacaciones = Vacaciones::where('IdEmp', '=', $request->busca)
+            ->whereYear('FechaInicio', '=', $anio)
             ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'Color', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
         }else{
             $Vacaciones = Vacaciones::get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'Color', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
