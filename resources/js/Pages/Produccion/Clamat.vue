@@ -35,7 +35,6 @@
                             <option v-for="material in materiales" :key="material" :value="material.id">{{ material.idmat }} - {{ material.nommat }}</option>
                         </datalist>
                     </div>
-
                 </div>
                 <div class="w-100 tw-mx-auto" align="center">
                     <jet-button type="button" class="tw-mx-auto" @click="saveDM(form)">Guardar</jet-button>
@@ -68,7 +67,7 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoDelete" @click="deleteRow(cm)">
+                                <div class="iconoDelete" @click="destroyDM(cm)">
                                     <span tooltip="Eliminar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -81,39 +80,7 @@
                 </template>
             </Table>
         </div>
-        <!------------------------------------------------  modal para mostrar claves
-        <modal :show="showModal" @close="chageClose">
-            <div class="tw-px-4 tw-py-4">
-                <div class="tw-text-lg">
-                    <div class="ModalHeader">
-                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Claves de Material</h3>
-                    </div>
-                </div>
-                <div class="tw-mt-4">
-                    <div class="ModalForm">
-                        <div class="table-responsive">
-                            <Table id="t_clave">
-                                <template v-slot:TableHeader>
-                                    <th class="columna">Clave del material</th>
-                                    <th class="columna">Nombre</th>
-                                    <th class="columna">Unidad de medida</th>
-                                    <th></th>
-                                </template>
-                                <template v-slot:TableFooter v-html="tablaVi">
 
-                                </template>
-                            </Table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ModalFooter">
-                <jet-button type="button" data-bs-toggle="modal" data-bs-target="#tabla_clave">Agregar clave</jet-button>
-                <jet-button type="button" @click="update(form)">Actualizar</jet-button>
-                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
-            </div>
-        </modal>------------------------------------->
         <!------------------------------------------------ modal de carga de claves -->
         <div class="modal fade" id="tabla_clave" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
@@ -129,13 +96,25 @@
                                 <th class="columna">Clave del material</th>
                                 <th class="columna">Nombre</th>
                                 <th class="columna">Unidad de medida</th>
-                                <th></th>
+                                <th class="columna"></th>
                             </template>
                             <template v-slot:TableFooter >
-                                <div v-html="tablaVi">
-
-                                </div>
-
+                                <tr v-for="vi in ncla" :key="vi">
+                                    <td class="fila">{{vi.CVE_ART}}</td>
+                                    <td class="fila">{{vi.DESCR}}</td>
+                                    <td class="fila">{{vi.UNI_MED}}</td>
+                                    <td class="fila">
+                                        <div class="columnaIconos">
+                                            <div class="iconoEdit" @click="editCL(vi)" data-bs-target="#ag_clave" data-bs-toggle="modal" data-bs-dismiss="modal">
+                                                <span tooltip="Editar" flow="left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                             </template>
                         </Table>
                     </div>
@@ -168,14 +147,13 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" @click="saveCL(formCla)" data-bs-target="#tabla_clave" data-bs-toggle="modal" data-bs-dismiss="modal">Agregar</button>
+                    <button class="btn btn-secondary" @click="regre(formCla)" data-bs-target="#tabla_clave" data-bs-toggle="modal" data-bs-dismiss="modal">Regresar</button>
+                    <jet-button type="button" class="btn btn-primary" @click="updateCL(formCla)" v-show="editMode" data-bs-target="#tabla_clave" data-bs-toggle="modal" data-bs-dismiss="modal">Actualizar</jet-button>
+                    <button class="btn btn-primary" @click="saveCL(formCla)" v-show="!editMode" data-bs-target="#tabla_clave" data-bs-toggle="modal" data-bs-dismiss="modal">Agregar</button>
                 </div>
                 </div>
             </div>
         </div>
-        <pre>
-            {{ tablaVi }}
-        </pre>
     </app-layout>
 </template>
 
@@ -211,6 +189,7 @@
             'usuario',
             'depa',
             'clamat',
+            'ncla',
             'materiales',
             'errors'
         ],
@@ -369,7 +348,6 @@
                     "thousands": "."
                 },
                 S_Area: '',
-                tablaVi: [],
                 opc: '<option value="" disabled>Selecciona un departamento </option>',
                 showModal: false,
                 editMode: false,
@@ -389,7 +367,7 @@
             this.mostSelect();
             //$('#t_mat').DataTable().destroy();
             this.tabla();
-            this.tablaCL();
+            //this.tablaCL();
         },
         methods: {
             alertSucces(){
@@ -466,9 +444,11 @@
                 this.$nextTick(() => {
                     $('#t_clave').DataTable({
                         "language": this.español,
-                        "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
-                                "<'row'<'col-sm-12'tr>>" +
-                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        scrollY:        '30vh',
+                        scrollCollapse: true,
+                        paging:         false,
+                        "dom": '<"row"<"col-sm-12 mt-3 col-md-9"B><"col-sm-12 col-md-3"f>>'+
+                                "<'row'<'col-sm-12'tr>>",
                         buttons: [
                             {
                                 extend: 'copyHtml5',
@@ -528,10 +508,6 @@
                 }
             },
             /********************************** Acciones de modal que muestra informacion *****************/
-            //abrir o cerrar modal procesos
-            chageClose(){
-                this.showModal = !this.showModal
-            },
             //guardar información de
             saveDM(form) {
                 $('#t_clamat').DataTable().destroy();
@@ -539,20 +515,22 @@
                     onSuccess: () => { this.tabla(), this.reset() ,this.alertSucces()}, preserveState: true
                 });
             },
+            destroyDM(data){
+                console.log(data)
+                if (!confirm('¿Estás seguro de querer eliminar este registro?')) return;
+                $('#t_clamat').DataTable().destroy()
+                data._method = 'DELETE';
+                this.$inertia.post('/Produccion/Clamat/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tabla() }});
+            },
             show(data) {
-                //console.log(data.claves)
                 this.resetCL(data.id)
-                this.tablaVi = data.claves;
-                //console.log(this.formCla)
-                /*data.claves.forEach(v => {
-
-                    this.tablaVi += `<tr>
-                        <td>${v.CVE_ART}</td>
-                        <td>${v.DESCR}</td>
-                        <td>${v.UNI_MED}</td>
-                    </tr>`;
-                })*/
-                console.log(this.tablaVi)
+                //console.log(data.departamentos.id)
+                $('#t_clave').DataTable().clear();
+                $('#t_clave').DataTable().destroy();
+                this.$inertia.get('/Produccion/Clamat',{ busca: data.departamentos.id, cls: data.id }, {
+                    onSuccess: () => { this.tablaCL(); }, preserveState: true
+                });
+                //this.tablaVi = data.claves;
             },
             /********************************** Accion de modal para agregar claves **********************/
             resetCL(d) {
@@ -566,11 +544,34 @@
             //abrir y reset del modal procesos
             saveCL(form) {
                 //console.log(form)
-                this.$inertia.post('/Produccion/Clamat/claves', form);
+                $('#t_clave').DataTable().clear();
+                $('#t_clave').DataTable().destroy();
+                this.$inertia.post('/Produccion/Clamat/claves', form, {
+                    onSuccess: () => { this.tablaCL(), this.alertSucces() }, preserveState: true
+                });
                 this.resetCL(form.dep_mat_id)
-                //console.log(this.formCla)
-            }
+                console.log(form.dep_mat_id)
+            },
+            regre(data){
+                this.editMode = false;
+                this.resetCL(data.dep_mat_id)
+            },
+            editCL(data){
+                this.formCla = Object.assign({}, data);
+                this.editMode = true;
+            },
+            updateCL(data){
+                data._method = 'PUT';
+                this.$inertia.post('/Produccion/Clamat/' + data.id, data, {
+                    onSuccess: () => {this.reset()},
+                });
+                this.editMode = false;
+                this.resetCL(data.dep_mat_id)
+                //console.log(data.dep_mat_id)
+            },
+            destroyCL(data){
 
+            }
 
         }
     }

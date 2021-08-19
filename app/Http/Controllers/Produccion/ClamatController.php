@@ -92,15 +92,19 @@ class ClamatController extends Controller
                 ->get();
         }
 
+        /***************************** consulta de claves de procesos **************************************************/
+        $nclave = empty($request->cls) ? '' : claves::where('dep_mat_id', '=', $request->cls)
+            ->get();
+
         /***************************** Consulta de todos los materiales que se tiene **********************************/
         $mate = materiales::get();
 
-        return Inertia::render('Produccion/Clamat', ['usuario' => $perf, 'depa' => $depa, 'clamat' => $clamat, 'materiales' => $mate]);
+        return Inertia::render('Produccion/Clamat', ['usuario' => $perf, 'depa' => $depa, 'clamat' => $clamat, 'materiales' => $mate, 'ncla' => $nclave]);
     }
 
     public function claves(Request $request) {
         Validator::make($request->all(), [
-            'CVE_ART' => ['required'],
+            'CVE_ART' => ['required','unique:claves'],
             'DESCR' => ['required']
         ])->validate();
 
@@ -115,9 +119,14 @@ class ClamatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function destroyClaves(Request $request)
     {
         //
+        if ($request->has('id')) {
+            claves::find($request->input('id'))->delete();
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 
     /**
@@ -142,28 +151,6 @@ class ClamatController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -173,6 +160,16 @@ class ClamatController extends Controller
     public function update(Request $request, $id)
     {
         //
+        Validator::make($request->all(), [
+            'CVE_ART' => ['required'],
+            'DESCR' => ['required']
+        ])->validate();
+
+        if ($request->has('id')) {
+            claves::find($request->input('id'))->update($request->all());
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 
     /**
@@ -181,8 +178,13 @@ class ClamatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //
+        if ($request->has('id')) {
+            dep_mat::find($request->input('id'))->delete();
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 }

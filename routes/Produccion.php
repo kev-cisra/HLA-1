@@ -34,6 +34,8 @@ Route::resource('Materiales', MaterialesController::class)
 
 Route::post('Clamat/claves', [ClamatController::class,'claves']);
 
+Route::post('Clamat/destroyClaves', [ClamatController::class,'claves']);
+
 Route::resource('Clamat', ClamatController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
