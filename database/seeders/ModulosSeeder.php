@@ -17,14 +17,14 @@ class ModulosSeeder extends Seeder
         //
         Modulos::create([
             'Iduser' => '16',
-            'NombreModulo' => 'Procesos',
+            'NombreModulo' => 'PROCESOS',
             'Icono' => 'fas fa-cogs',
             'Ruta' => 'Produccion/Procesos',
             'Area' => '7',
         ]);
         Modulos::create([
             'Iduser' => '16',
-            'NombreModulo' => 'Materiales',
+            'NombreModulo' => 'MATERIALES',
             'Icono' => 'fas fa-boxes',
             'Ruta' => 'Produccion/Materiales',
             'Area' => '7',
@@ -32,7 +32,7 @@ class ModulosSeeder extends Seeder
 
         Modulos::create([
             'Iduser' => '16',
-            'NombreModulo' => 'Personal',
+            'NombreModulo' => 'PERSONAL',
             'Icono' => 'fas fa-users',
             'Ruta' => 'Produccion/Personal',
             'Area' => '7',
@@ -40,7 +40,7 @@ class ModulosSeeder extends Seeder
 
         Modulos::create([
             'Iduser' => '16',
-            'NombreModulo' => 'Maquinas',
+            'NombreModulo' => 'MAQUINAS',
             'Icono' => 'fas fa-digital-tachograph',
             'Ruta' => 'Produccion/Maquinas',
             'Area' => '7',
@@ -68,6 +68,22 @@ class ModulosSeeder extends Seeder
             'Icono' => 'fas fa-user-plus',
             'Ruta' => 'RecursosHumanos/Incidencias',
             'Area' => '2',
+        ]);
+
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'TURNOS',
+            'Icono' => 'fas fa-user-clock',
+            'Ruta' => 'Produccion/Turnos',
+            'Area' => '7',
+        ]);
+
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'EQUIPO',
+            'Icono' => 'fas fa-people-carry',
+            'Ruta' => 'Produccion/Equipo',
+            'Area' => '7',
         ]);
     }
 }

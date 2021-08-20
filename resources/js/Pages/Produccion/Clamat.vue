@@ -3,7 +3,7 @@
         <Header :class="[color, style]">
             <slot>
                 <h3 class="tw-p-2">
-                    <i class="fas fa-cogs"></i>
+                    <i class="fas fa-toolbox"></i>
                         Materiales y claves
                 </h3>
             </slot>
@@ -109,6 +109,13 @@
                                                 <span tooltip="Editar" flow="left">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="iconoDelete" @click="destroyCL(vi)">
+                                                <span tooltip="Eliminar" flow="left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                     </svg>
                                                 </span>
                                             </div>
@@ -516,7 +523,7 @@
                 });
             },
             destroyDM(data){
-                console.log(data)
+                //console.log(data)
                 if (!confirm('¿Estás seguro de querer eliminar este registro?')) return;
                 $('#t_clamat').DataTable().destroy()
                 data._method = 'DELETE';
@@ -546,11 +553,11 @@
                 //console.log(form)
                 $('#t_clave').DataTable().clear();
                 $('#t_clave').DataTable().destroy();
-                this.$inertia.post('/Produccion/Clamat/claves', form, {
+                this.$inertia.post('/Produccion/Claves', form, {
                     onSuccess: () => { this.tablaCL(), this.alertSucces() }, preserveState: true
                 });
                 this.resetCL(form.dep_mat_id)
-                console.log(form.dep_mat_id)
+                //console.log(form.dep_mat_id)
             },
             regre(data){
                 this.editMode = false;
@@ -562,7 +569,7 @@
             },
             updateCL(data){
                 data._method = 'PUT';
-                this.$inertia.post('/Produccion/Clamat/' + data.id, data, {
+                this.$inertia.post('/Produccion/Claves/' + data.id, data, {
                     onSuccess: () => {this.reset()},
                 });
                 this.editMode = false;
@@ -570,7 +577,12 @@
                 //console.log(data.dep_mat_id)
             },
             destroyCL(data){
-
+                //console.log(data)
+                if (!confirm('¿Estás seguro de querer eliminar este registro?')) return;
+                $('#t_clave').DataTable().clear()
+                $('#t_clave').DataTable().destroy()
+                data._method = 'DELETE';
+                this.$inertia.post('/Produccion/Claves/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tablaCL() }});
             }
 
         }

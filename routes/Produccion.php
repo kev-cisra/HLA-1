@@ -3,10 +3,12 @@
 use App\Http\Controllers\Menus\MenuAdminController;
 use App\Http\Controllers\Menus\MenuProducccionController;
 use App\Http\Controllers\Produccion\ClamatController;
+use App\Http\Controllers\Produccion\ClavesController;
 use App\Http\Controllers\Produccion\MaquinasController;
 use App\Http\Controllers\Produccion\MaterialesController;
 use App\Http\Controllers\Produccion\PersonalController;
 use App\Http\Controllers\Produccion\ProcesosController;
+use App\Http\Controllers\Produccion\TurnosController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,11 +34,13 @@ Route::resource('Maquinas', MaquinasController::class)
 Route::resource('Materiales', MaterialesController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
-Route::post('Clamat/claves', [ClamatController::class,'claves']);
-
-Route::post('Clamat/destroyClaves', [ClamatController::class,'claves']);
+Route::resource('Claves', ClavesController::class)
+    ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('Clamat', ClamatController::class)
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::resource('Turnos', TurnosController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 

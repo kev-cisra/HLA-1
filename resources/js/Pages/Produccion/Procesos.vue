@@ -415,7 +415,6 @@
         mounted() {
             this.mostSelect();
             this.mostTipo()
-            //$('#t_pro').DataTable().destroy();
             this.tabla();
         },
         methods: {

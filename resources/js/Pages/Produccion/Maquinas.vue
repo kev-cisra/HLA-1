@@ -300,7 +300,6 @@
         },
         mounted() {
             this.mostSelect();
-            //$('#t_mat').DataTable().destroy();
             this.tabla();
         },
         methods: {

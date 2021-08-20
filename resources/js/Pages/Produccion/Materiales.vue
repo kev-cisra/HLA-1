@@ -301,7 +301,6 @@ export default {
         }
     },
     mounted() {
-        //$('#t_mat').DataTable().destroy();
         this.tabla();
     },
     methods: {

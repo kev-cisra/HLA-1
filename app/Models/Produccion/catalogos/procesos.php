@@ -20,6 +20,7 @@ class procesos extends Model
     const Encargado = 1;
     const Coordinador = 2;
     const Formulas = 3;
+    const Paros = 4;
 
     //Relaciones 1 a muchos
     public function maq_pros(){

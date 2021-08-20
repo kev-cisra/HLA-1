@@ -102,33 +102,6 @@ class ClamatController extends Controller
         return Inertia::render('Produccion/Clamat', ['usuario' => $perf, 'depa' => $depa, 'clamat' => $clamat, 'materiales' => $mate, 'ncla' => $nclave]);
     }
 
-    public function claves(Request $request) {
-        Validator::make($request->all(), [
-            'CVE_ART' => ['required','unique:claves'],
-            'DESCR' => ['required']
-        ])->validate();
-
-        claves::create($request->all());
-
-        return redirect()->back()
-            ->with('message', 'Post Created Successfully.');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function destroyClaves(Request $request)
-    {
-        //
-        if ($request->has('id')) {
-            claves::find($request->input('id'))->delete();
-            return redirect()->back()
-                    ->with('message', 'Post Updated Successfully.');
-        }
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -143,7 +116,25 @@ class ClamatController extends Controller
             'material_id' => ['required']
         ])->validate();
 
-        dep_mat::create($request->all());
+        $cuenta = dep_mat::where('departamento_id', '=', $request->departamento_id)
+        ->where('material_id', '=', $request->material_id)
+        ->withTrashed()
+        ->first();
+        if (!empty($cuenta)) {
+            //revisa si el soft delete exite para restaurarlo
+            if(!empty($cuenta->deleted_at))
+            {
+                $cuenta->restore();
+            }//revisa si ya existe el usuario y el delete es nulo para mandar un aviso
+            else{
+                Validator::make($request->all(), [
+                    'perfiles_usuarios_id' => 'unique:dep_mats'
+                ])->validate();
+            }
+        }else{
+            dep_mat::create($request->all());
+        }
+
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
@@ -160,16 +151,7 @@ class ClamatController extends Controller
     public function update(Request $request, $id)
     {
         //
-        Validator::make($request->all(), [
-            'CVE_ART' => ['required'],
-            'DESCR' => ['required']
-        ])->validate();
 
-        if ($request->has('id')) {
-            claves::find($request->input('id'))->update($request->all());
-            return redirect()->back()
-                    ->with('message', 'Post Updated Successfully.');
-        }
     }
 
     /**

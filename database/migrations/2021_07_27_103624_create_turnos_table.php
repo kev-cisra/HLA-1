@@ -20,10 +20,9 @@ class CreateTurnosTable extends Migration
             $table->date('horaIni');
             $table->date('horaFin');
             $table->integer('cargaExt');
-            $table->enum('estatus',[1,2,3])->default(1);
 
-            $table->unsignedBigInteger('area_id');
-            $table->foreign('area_id')->references("id")->on("areas")
+            $table->unsignedBigInteger('departamento_id');
+            $table->foreign('departamento_id')->references("id")->on("departamento")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
