@@ -9,6 +9,7 @@ use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class TurnosController extends Controller
@@ -18,7 +19,7 @@ class TurnosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         /***************** Información de la persona  *****************************/
@@ -45,6 +46,8 @@ class TurnosController extends Controller
                         $dep->select('id');
                     }])
                 ->first(['id', 'departamento_id']);
+            $turnos = turnos::where('departamento_id', '=', $prime->departamentos->id)
+                ->get();
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')
@@ -55,7 +58,11 @@ class TurnosController extends Controller
                 ->get(['id', 'IdUser', 'Nombre', 'departamento_id']);
         }
 
-        return Inertia::render('Produccion/Turnos', ['usuario' => $perf,'depa' => $depa]);
+        /**************************** consulta si existe la busqueda  ****************************************************/
+        $turnos = empty($request->busca) ? null : turnos::where('departamento_id', '=', $request->busca)
+                    ->get();
+
+        return Inertia::render('Produccion/Turnos', ['usuario' => $perf,'depa' => $depa,'turno' => $turnos]);
 
     }
 
@@ -78,6 +85,15 @@ class TurnosController extends Controller
     public function store(Request $request)
     {
         //
+        Validator::make($request->all(), [
+            'nomtur' => ['required'],
+            'departamento_id' => ['required']
+        ])->validate();
+
+        turnos::create($request->all());
+
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
     }
 
     /**
