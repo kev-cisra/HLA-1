@@ -17,51 +17,105 @@
                 <jet-button @click="openModal" class="BtnNuevo">Nuevo Proceso </jet-button>
             </template>
         </Accions>
-        <!----------------------------------- tabla de datos -------------------------------------------------------->
-        <div class="table-responsive">
-            <Table id="t_tur">
-                <template v-slot:TableHeader>
-                    <th class="columna">Número de empleado</th>
-                    <th class="columna">Puesto</th>
-                    <th class="columna">Nombre</th>
-                    <th class="columna">Departamento</th>
-                    <th></th>
-                </template>
-                <template v-slot:TableFooter>
-                    <!--<tr v-for="ap in areper" :key="ap.id">
-                        <td class="fila">{{ ap.perfiles.IdEmp }}</td>
-                        <td class="fila">{{ puesto(ap.ope_puesto) }}</td>
-                        <td class="fila">{{ ap.perfiles.Nombre }} {{ ap.perfiles.ApPat }} {{ ap.perfiles.ApMat }}</td>
-                        <td class="fila">{{ ap.departamentos.Nombre }}</td>
-                        <td class="fila">
-                            <div class="columnaIconos">
-                                <div class="iconoDelete" @click="deleteRow(ap)">
-                                    <span tooltip="Eliminar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                    </span>
+
+        <div class="">
+            <jet-button v-for="bTur in turno" :key="bTur" class="BtnNuevo" data-bs-toggle="collapse" :data-bs-target="'#col'+bTur.id" aria-expanded="false" :aria-controls="'col'+bTur.id">{{bTur.nomtur}}</jet-button>
+        </div>
+        <div class="tw-flex tw-p-4 tw-gap-3">
+            <div v-for="cTur in turno" :key="cTur" :id="'col'+cTur.id" class="collapse multi-collapse tw-flex-1">
+                <div class="card card-body">
+                    <table class="table table-striped tw-table-fixed ">
+                        <tr class="tw-text-center tw-bg-teal-600">
+                            <th colspan="2">{{ cTur.nomtur }}</th>
+                        </tr>
+                        <tr >
+                            <th>Departamento</th>
+                            <td>{{cTur.horaIni}}</td>
+                        </tr>
+                        <tr >
+                            <th>Hora de Inició</th>
+                            <td>{{cTur.horaIni}}</td>
+                        </tr>
+                        <tr >
+                            <th>Hora Fin</th>
+                            <td>{{cTur.horaFin}}</td>
+                        </tr>
+                        <tr >
+                            <th>Hora de inició</th>
+                            <td>{{cTur.cargaExt}}</td>
+                        </tr>
+                        <tr class="tw-text-center">
+                            <jet-button type="button" class=" tw-bg-blue-600 hover:tw-bg-blue-700 ">Actualizar</jet-button>
+                            <jet-CancelButton type="button" class="">Eliminar</jet-CancelButton>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!------------------ Modal ------------------------->
+        <modal :show="showModal" @close="chageClose">
+            <form>
+                <!---------------------------  ------------------------------------>
+                <div class="tw-px-4 tw-py-4">
+                    <div class="tw-text-lg">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Procesos</h3>
+                        </div>
+                    </div>
+
+                    <div class="tw-mt-4">
+                        <div class="ModalForm">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode">
+                                    <jet-label><span class="required">*</span>Departamento</jet-label>
+                                    <select class="InputSelect" @change="verMaqui" v-model="form.departamento_id" v-html="opc">
+                                    </select>
+                                    <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
                                 </div>
-                                <div class="iconoAcept" v-if="ap.perfiles.user_id">
-                                    <span tooltip="Usuario activo" flow="left">
-                                        <svg class="tw-h-5 tw-w-5"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11l2 2l4 -4" />
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="iconoDetails" @click="updateUser(ap)" v-else-if="!ap.perfiles.user_id">
-                                    <span tooltip="Cargar nuevo usuario" flow="left">
-                                        <svg class="tw-h-5 tw-w-5" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11h6m-3 -3v6" />
-                                        </svg>
-                                    </span>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Turno</jet-label>
+                                    <select v-model="form.nomtur" class="InputSelect">
+                                        <option value="" disabled>Selecciona un turno</option>
+                                        <option value="Turno 1">Turno 1</option>
+                                        <option value="Turno 2">Turno 2</option>
+                                        <option value="Turno 3">Turno 3</option>
+                                    </select>
+                                    <small v-if="errors.nomtur" class="validation-alert">{{errors.nomtur}}</small>
                                 </div>
                             </div>
-                        </td>
-                    </tr>-->
-                </template>
-            </Table>
-        </div>
+
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label>Inicio del turno</jet-label>
+                                    <jet-input type="time" v-model="form.horaIni" class=""></jet-input>
+                                    <small v-if="errors.horaIni" class="validation-alert">{{errors.horaFin}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label>Fin del turno</jet-label>
+                                    <jet-input type="time" v-model="form.horaFin" class=""></jet-input>
+                                    <small v-if="errors.horaFin" class="validation-alert">{{errors.horaFin}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label>Tiempo para carga</jet-label>
+                                    <select v-model="form.cargaExt" class="InputSelect">
+                                        <option value="15">15 minutos</option>
+                                        <option value="30">30 minutos</option>
+                                        <option value="45">45 minutos</option>
+                                        <option value="60">60 minutos</option>
+                                    </select>
+                                    <small v-if="errors.cargaExt" class="validation-alert">{{errors.cargaExt}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ModalFooter">
+                    <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
+                    <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
+                    <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                </div>
+            </form>
+        </modal>
     </app-layout>
 </template>
 
@@ -94,6 +148,7 @@
         props: [
             'usuario',
             'depa',
+            'turno',
             'errors'
         ],
         components: {
@@ -257,18 +312,17 @@
                 showModal: false,
                 editMode: false,
                 form: {
-                    nompro: null,
+                    nomtur: '',
                     departamento_id: '',
-                    tipo: '',
-                    operacion: '',
-                    descripcion: null
+                    horaIni: '',
+                    horaFin: '',
+                    cargaExt: '15'
                 }
 
             }
         },
         mounted() {
             this.mostSelect();
-            this.tabla();
         },
         methods: {
             /****************************** Alertas *******************************************************/
@@ -330,48 +384,38 @@
             },
             //consulta para generar datos de la tabla
             verTabla(event){
-                this.limpiar(event);
-                $('#t_pro').DataTable().destroy();
                 this.$inertia.get('/Produccion/Turnos',{ busca: event.target.value }, {
-                    onSuccess: () => { this.tabla() }, preserveState: true
+                    onSuccess: () => {  }, preserveState: true
                 });
-            },
-            /******************************* opciones de data table ****************************************/
-            //datatable
-            tabla() {
-                this.$nextTick(() => {
-                    $('#t_tur').DataTable({
-                        "language": this.español,
-                        "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
-                                "<'row'<'col-sm-12'tr>>" +
-                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                        buttons: [
-                            {
-                                extend: 'copyHtml5',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'excelHtml5',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'pdfHtml5',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            'colvis'
-                        ]
-                    });
-                })
             },
             /******************************* opciones de modal funciones basicas *******************************************/
             //abrir y reset del modal procesos
             openModal() {
+                this.chageClose();
+                this.reset();
+                this.editMode = false;
+            },
+            //abrir o cerrar modal procesos
+            chageClose(){
+                this.showModal = !this.showModal
+            },
+            //reset de modal procesos
+            reset(){
+                this.form = {
+                    nomtur: '',
+                    departamento_id: '',
+                    horaIni: '',
+                    horaFin: '',
+                    cargaExt: '15'
+                }
+            },
+            /******************************** Acciones insert update y delet *************************************/
+            //guardar información de procesos
+            save(form) {
+                //console.log(form)
+                this.$inertia.post('/Produccion/Turnos', form, {
+                    onSuccess: () => { this.alertSucces(), this.reset(), this.chageClose()},
+                });
 
             },
 

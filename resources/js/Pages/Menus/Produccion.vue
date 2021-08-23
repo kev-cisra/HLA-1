@@ -7,19 +7,24 @@
         </template>
         <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
 
-            <!-- For -->
-            <div v-for="modulo in modelos" :key="modulo.id" class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110">
-                <Link :href="modulo.Ruta" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i :class="modulo.Icono"></i>
+            <div class="container">
+                <div class="row">
+                    <!-- For --><!---- clase tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110-->
+                    <div v-for="modulo in modelos" :key="modulo.id" class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 mb-3 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16">
+                        <Link :href="modulo.Ruta" class="tw-no-underline icono">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i :class="modulo.Icono"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">{{ modulo.NombreModulo }}</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">{{ modulo.NombreModulo }}</h4>
-                        <span class="linea"></span>
-                    </div>
-                </Link>
+                    <!-- Fin for -->
+                </div>
             </div>
-            <!-- Fin for -->
+
         </section>
     </app-layout>
 </template>

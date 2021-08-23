@@ -17,8 +17,8 @@ class CreateTurnosTable extends Migration
             $table->id();
 
             $table->string('nomtur');
-            $table->date('horaIni');
-            $table->date('horaFin');
+            $table->string('horaIni');
+            $table->string('horaFin');
             $table->integer('cargaExt');
 
             $table->unsignedBigInteger('departamento_id');
