@@ -12,7 +12,7 @@
 
         <div class="tw-mt-8">
             <div class="tw-overflow-x-auto tw-mx-2">
-                <Table id="vacaciones">
+                <Table id="incidencias">
                     <template v-slot:TableHeader>
                         <th class="columna">Núm. Empleado</th>
                         <th class="columna">Empresa</th>
@@ -384,7 +384,7 @@ export default {
         //datatable
         tabla() {
             this.$nextTick(() => {
-                $("#vacaciones").DataTable({
+                $("#incidencias").DataTable({
                 language: this.español,
                 "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                 "<'row'<'col-sm-12'tr>>" +
