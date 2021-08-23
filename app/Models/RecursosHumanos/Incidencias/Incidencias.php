@@ -16,6 +16,6 @@ class Incidencias extends Model
 
     // Relacion inversa N a 1 con perfiles
     public function IncidenciaPerfil() {
-        return $this->belongsTo(PerfilesUsuarios::class);
+        return $this->belongsTo(PerfilesUsuarios::class, 'perfiles_usuarios_id');
     }
 }

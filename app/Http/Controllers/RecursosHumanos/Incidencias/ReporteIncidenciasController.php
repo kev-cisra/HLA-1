@@ -3,19 +3,36 @@
 namespace App\Http\Controllers\RecursosHumanos\Incidencias;
 
 use App\Http\Controllers\Controller;
+use App\Models\RecursosHumanos\Catalogos\Departamentos;
+use App\Models\RecursosHumanos\Incidencias\Incidencias;
+use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use App\Models\User;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 
 class ReporteIncidenciasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+
+    public function index(){
+        $Session = Auth::user();
+        $Departamentos = Departamentos::get(['id','Nombre']);
+
+
+        $Incidencias = Incidencias::with('IncidenciaPerfil')->get();
+
+        //Consulta para obtener los datos de los trabajadores pertenecientes al id de la session
+        $PerfilesUsuarios = PerfilesUsuarios::with('PerfilIncidencias')->get(); //datos de Perfiles
+
+
+
+        return Inertia::render('RecursosHumanos/ReporteIncidencias/index', compact('Session', 'PerfilesUsuarios', 'Incidencias', 'Departamentos'));
     }
+
 
     /**
      * Show the form for creating a new resource.

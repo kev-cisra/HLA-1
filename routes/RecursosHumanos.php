@@ -3,6 +3,7 @@
 use App\Http\Controllers\Menus\MenuRecursosHumanosController;
 use App\Http\Controllers\RecursosHumanos\Incidencias\IncidenciasController;
 use App\Http\Controllers\RecursosHumanos\Incidencias\IncidenciasDptoController;
+use App\Http\Controllers\RecursosHumanos\Incidencias\ReporteIncidenciasController;
 use App\Http\Controllers\RecursosHumanos\PerfilesUsuarios\PerfilesUsuariosController;
 use App\Http\Controllers\RecursosHumanos\Vacaciones\ReporteVacacionesController;
 use App\Http\Controllers\RecursosHumanos\Vacaciones\VacacionesDptoController;
@@ -24,3 +25,6 @@ Route::resource('Incidencias', IncidenciasDptoController::class)
 
 Route::resource('ReporteVacaciones', ReporteVacacionesController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('ReporteVacaciones');
+
+Route::resource('ReporteIncidencias', ReporteIncidenciasController::class)
+    ->middleware(['auth:sanctum', 'verified'])->names('ReporteIncidencias');
