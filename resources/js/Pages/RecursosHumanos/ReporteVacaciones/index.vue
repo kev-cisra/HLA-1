@@ -13,6 +13,12 @@
         <div class="tw-mt-8">
             <div class="tw-flex tw-justify-end">
                 <div>
+                    <input type="date">
+                </div>
+                <div>
+                    <input type="date">
+                </div>
+                <div>
                     <jet-button @click="openModal" class="BtnNuevo">Obtener Reporte</jet-button>
                 </div>
             </div>
@@ -488,6 +494,11 @@ export default {
                     'colvis'
                 ]
                 });
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        //do stuff
+                    }
+                );
             });
         },
 

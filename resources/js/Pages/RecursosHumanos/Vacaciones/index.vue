@@ -130,6 +130,12 @@
                                 <small v-if="errors.Comentarios" class="validation-alert">{{errors.Comentarios}}</small>
                             </div>
                         </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Dias Solicitados</jet-label>
+                                <jet-input type="text" v-model="form.DiasTomados"></jet-input>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -530,6 +536,7 @@ export default {
         },
 
         save(data) {
+            //Verifico que los dias sean mayoes a 0
             if(data.DiasVac <= 0){
                 this.alertWarning();
             }else{
@@ -554,19 +561,16 @@ export default {
                         }
 
                     if(dias <= data.DiasVac){
+                        //Verifico los dias descontados no sean mayoes a los dias tomados
                         data.DiasTomados = dias;
                         data.DiasRestantes = data.DiasVac - data.DiasTomados;
                     }else{
                         this.alertWarningDias();
                     }
-                }else{
-                    if(dias <= data.DiasVac){
-                        var dias = fecha2.diff(fecha1, 'days');
-                        data.DiasTomados = data.DiasTomados = dias+1;
-                        data.DiasRestantes = data.DiasVac - data.DiasTomados;
-                    }else{
-                        this.alertWarningDias();
-                    }
+                }else{ //En caso de ser Hilaturas se cuentan los fines de semana
+                    var dias = fecha2.diff(fecha1, 'days');
+                    data.DiasTomados = data.DiasTomados = dias+1;
+                    data.DiasRestantes = data.DiasVac - data.DiasTomados;
                 }
 
                 this.$inertia.post("/RecursosHumanos/Vacaciones", data, {

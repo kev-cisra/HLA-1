@@ -7,6 +7,7 @@ use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Catalogos\Puestos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -54,8 +55,25 @@ class PerfilesUsuariosController extends Controller{
         ])->validate();
 
         PerfilesUsuarios::create($request->all());
-        return redirect()->back()
-            ->with('message', 'Post Created Successfully.');
+
+        $Departamento = Departamentos::where('id', '=', $request->Departamento_id)->first();
+
+        $Nick = User::create([
+            'IdEmp' => $request->IdEmp,
+            'name' => $request->Nombre.' '.$request->ApPat.' '.$request->ApMat,
+            'Departamento' => $Departamento->Nombre,
+            'password' => bcrypt($request->IdEmp)
+        ]);
+
+        $User = User::latest('id')->first();
+        $Perfil = PerfilesUsuarios::latest('id')->first();
+
+        if(!empty($User) || !empty($Perfil)){
+            PerfilesUsuarios::find($Perfil->id)->update(['user_id' => $User->id]);
+            return redirect()->back()->with('message', 'Perfil y Usuario Creados Correctamente');
+        }else{
+            return redirect()->back()->with('message', 'Error');
+        }
     }
 
     public function show($id){

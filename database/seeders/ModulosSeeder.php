@@ -64,6 +64,14 @@ class ModulosSeeder extends Seeder
 
         Modulos::create([
             'Iduser' => '1',
+            'NombreModulo' => 'REPORTE VACACIONES',
+            'Icono' => 'fas fa-file-contract',
+            'Ruta' => 'RecursosHumanos/ReporteVacaciones',
+            'Area' => '7',
+        ]);
+
+        Modulos::create([
+            'Iduser' => '1',
             'NombreModulo' => 'INCIDENCIAS',
             'Icono' => 'fas fa-user-plus',
             'Ruta' => 'RecursosHumanos/Incidencias',
