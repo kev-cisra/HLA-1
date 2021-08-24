@@ -9,21 +9,22 @@
             </slot>
         </Header>
         <Accions>
-            <template  v-slot:SelectB>
-                <select @change="verTabla" class="InputSelect" v-model="S_Area" v-html="opc">
+            <template  v-slot:SelectB class="sm:tw-w-full">
+                <select @change="verTabla" class="InputSelect sm:tw-w-full" v-model="S_Area" v-html="opc">
                 </select>
             </template>
             <template v-slot:BtnNuevo>
-                <jet-button @click="openModal" class="BtnNuevo">Nuevo Proceso </jet-button>
+                <jet-button @click="openModal" class="BtnNuevo">Nuevo Turno </jet-button>
+                <jet-button @click="openModal2" class="BtnNuevo">Agregar Equipo</jet-button>
             </template>
         </Accions>
-
         <div class="">
             <jet-button v-for="bTur in turno" :key="bTur" class="BtnNuevo" data-bs-toggle="collapse" :data-bs-target="'#col'+bTur.id" aria-expanded="false" :aria-controls="'col'+bTur.id">{{bTur.nomtur}}</jet-button>
         </div>
         <div class="tw-flex tw-p-4 tw-gap-3">
-            <div v-for="cTur in turno" :key="cTur" :id="'col'+cTur.id" class="collapse multi-collapse tw-flex-1">
+            <div v-for="cTur in turno" :key="cTur" :id="'col'+cTur.id" class="collapse multi-collapse tw-flex-auto">
                 <div class="card card-body">
+                    <!----------------- Tabla de turnos -------------->
                     <table class="table table-striped tw-table-fixed ">
                         <tr class="tw-text-center tw-bg-teal-600">
                             <th colspan="2">{{ cTur.nomtur }}</th>
@@ -44,14 +45,23 @@
                             <th>Hora de inició</th>
                             <td>{{cTur.cargaExt}}</td>
                         </tr>
-                        <tr class="tw-text-center">
-                            <jet-button type="button" class=" tw-bg-blue-600 hover:tw-bg-blue-700 ">Actualizar</jet-button>
-                            <jet-CancelButton type="button" class="">Eliminar</jet-CancelButton>
+                        <td colspan="2" class="tw-text-center ">
+                            <jet-button type="button" class="tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-center tw-w-full md:tw-w-2/6 lg:tw-w-3/12">Actualizar</jet-button>
+                            <jet-CancelButton type="button" class=" tw-text-center tw-w-full md:tw-w-2/6 lg:tw-w-3/12">Eliminar</jet-CancelButton>
+                        </td>
+                    </table>
+                    <!------------ tabla de turnos por equipo ------------>
+                    <table class="table table-striped tw-table-fixed ">
+                        <tr>
+                            <th colspan="2">Equipos asignados al {{ cTur.nomtur }}</th>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
+        <pre>
+            {{equipos}}
+        </pre>
         <!------------------ Modal ------------------------->
         <modal :show="showModal" @close="chageClose">
             <form>
@@ -59,7 +69,7 @@
                 <div class="tw-px-4 tw-py-4">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
-                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Procesos</h3>
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Turnos</h3>
                         </div>
                     </div>
 
@@ -116,6 +126,80 @@
                 </div>
             </form>
         </modal>
+        <!---------------------- Modal 2 --------------------------------->
+        <modal :show="showModal2" @close="chageClose2">
+            <!---------------------------  ------------------------------------>
+            <div class="tw-px-4 tw-py-4">
+                <div class="tw-text-lg">
+                    <div class="ModalHeader">
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Equipos</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="columna">Equipo</th>
+                                    <th class="columna">Turno asignado</th>
+                                    <th class="columna">Personal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fila">algo</td>
+                                    <td class="fila">algo</td>
+                                    <td class="fila">algo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tw-mt-4">
+                        <div class="ModalForm">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode2">
+                                    <jet-label><span class="required">*</span>Departamento</jet-label>
+                                    <select class="InputSelect" @change="verMaqui" v-model="form.departamento_id" v-html="opc">
+                                    </select>
+                                    <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Turno</jet-label>
+                                    <select v-model="form.nomtur" class="InputSelect">
+                                        <option value="" disabled>Selecciona un turno</option>
+                                        <option value="Turno 1">Turno 1</option>
+                                        <option value="Turno 2">Turno 2</option>
+                                        <option value="Turno 3">Turno 3</option>
+                                    </select>
+                                    <small v-if="errors.nomtur" class="validation-alert">{{errors.nomtur}}</small>
+                                </div>
+                            </div>
+
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label>Inicio del turno</jet-label>
+                                    <jet-input type="time" v-model="form.horaIni" class=""></jet-input>
+                                    <small v-if="errors.horaIni" class="validation-alert">{{errors.horaFin}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label>Fin del turno</jet-label>
+                                    <jet-input type="time" v-model="form.horaFin" class=""></jet-input>
+                                    <small v-if="errors.horaFin" class="validation-alert">{{errors.horaFin}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label>Tiempo para carga</jet-label>
+                                    <select v-model="form.cargaExt" class="InputSelect">
+                                        <option value="15">15 minutos</option>
+                                        <option value="30">30 minutos</option>
+                                        <option value="45">45 minutos</option>
+                                        <option value="60">60 minutos</option>
+                                    </select>
+                                    <small v-if="errors.cargaExt" class="validation-alert">{{errors.cargaExt}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </modal>
     </app-layout>
 </template>
 
@@ -149,6 +233,7 @@
             'usuario',
             'depa',
             'turno',
+            'equipos',
             'errors'
         ],
         components: {
@@ -310,7 +395,9 @@
                     "thousands": "."
                 },
                 showModal: false,
+                showModal2: false,
                 editMode: false,
+                editMode2: false,
                 form: {
                     nomtur: '',
                     departamento_id: '',
@@ -408,6 +495,21 @@
                     horaFin: '',
                     cargaExt: '15'
                 }
+            },
+            /******************************* opciones de modal2 funciones basicas *******************************************/
+            //abrir y reset del modal procesos
+            openModal2() {
+                this.chageClose2();
+                this.reset2();
+                this.editMode2 = false;
+            },
+            //abrir o cerrar modal procesos
+            chageClose2(){
+                this.showModal2 = !this.showModal2
+            },
+            //reset de modal procesos
+            reset2(){
+
             },
             /******************************** Acciones insert update y delet *************************************/
             //guardar información de procesos
