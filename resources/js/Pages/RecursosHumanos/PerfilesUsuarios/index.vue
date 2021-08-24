@@ -90,6 +90,10 @@
         </div>
     </div>
 
+<pre>
+    {{ users }}
+</pre>
+
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
         <form>
@@ -530,6 +534,7 @@ export default {
         Jefes: Object,
         Puestos: Object,
         Departamentos: Object,
+        users: Object
     },
 
     methods: {

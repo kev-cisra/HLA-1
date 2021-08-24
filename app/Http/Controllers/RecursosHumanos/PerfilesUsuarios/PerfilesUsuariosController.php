@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class PerfilesUsuariosController extends Controller{
 
@@ -20,13 +22,19 @@ class PerfilesUsuariosController extends Controller{
         //Consulta de la información
         $PerfilesUsuarios = PerfilesUsuarios::with('PerfilPuesto','PerfilDepartamento', 'PerfilJefe')->get();
 
-        $Session = Auth::user();
+        // $Session = Auth::user();
+
+        $Session = auth()->user();
+
+
         $Jefes = JefesArea::get(['id','Nombre']);
         $Puestos = Puestos::get(['id','Nombre']);
         $Departamentos = Departamentos::get(['id','Nombre']);
 
+        $users = User::with('roles')->where('id', '=', $Session->id)->first();
+
         //retorno de la vista retorno de la consulta de perfiles y sus filtros
-        return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session'));
+        return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session', 'users'));
     }
 
     public function create(){

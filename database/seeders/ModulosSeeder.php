@@ -67,7 +67,7 @@ class ModulosSeeder extends Seeder
             'NombreModulo' => 'REPORTE VACACIONES',
             'Icono' => 'fas fa-file-contract',
             'Ruta' => 'RecursosHumanos/ReporteVacaciones',
-            'Area' => '7',
+            'Area' => '2',
         ]);
 
         Modulos::create([
@@ -75,6 +75,14 @@ class ModulosSeeder extends Seeder
             'NombreModulo' => 'INCIDENCIAS',
             'Icono' => 'fas fa-user-plus',
             'Ruta' => 'RecursosHumanos/Incidencias',
+            'Area' => '2',
+        ]);
+
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'REPORTE INCIDENCIAS',
+            'Icono' => 'fas fa-file-invoice',
+            'Ruta' => 'RecursosHumanos/ReporteIncidencias',
             'Area' => '2',
         ]);
 
