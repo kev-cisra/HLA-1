@@ -18,6 +18,17 @@ class CreateEquiposTable extends Migration
 
             $table->string('nombre');
 
+            $table->unsignedBigInteger('turno_id') ->nullable();
+            $table->foreign("turno_id")->references("id")->on("turnos")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
+            $table->unsignedBigInteger('departamento_id');
+            $table->foreign("departamento_id")->references("id")->on("departamentos")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
+            $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produccion\dep_per;
+use App\Models\Produccion\equipos;
 use App\Models\Produccion\turnos;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
@@ -29,6 +30,9 @@ class TurnosController extends Controller
         $perf = PerfilesUsuarios::where('user_id','=',$usuario)
             ->first();
 
+        $turnos = null;
+        $equipos = null;
+
          /*************** Información para mostrar áreas *************************/
          if($perf->Departamento_id == 2 && $perf->Puesto_id !== 16){
             //consulta las areas que le pertenecen al usuario
@@ -47,7 +51,14 @@ class TurnosController extends Controller
                     }])
                 ->first(['id', 'departamento_id']);
             $turnos = turnos::where('departamento_id', '=', $prime->departamentos->id)
-                ->get();
+                    ->with([
+                        'equipos' => function($equ){
+                            $equ->select('id','nombre','turno_id');
+                        }
+                    ])
+                    ->get();
+            /*$equipos = equipos::where('departamento_id', '=', $prime->departamentos->id)
+                    ->get();*/
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')
@@ -58,11 +69,24 @@ class TurnosController extends Controller
                 ->get(['id', 'IdUser', 'Nombre', 'departamento_id']);
         }
 
-        /**************************** consulta si existe la busqueda  ****************************************************/
-        $turnos = empty($request->busca) ? null : turnos::where('departamento_id', '=', $request->busca)
-                    ->get();
 
-        return Inertia::render('Produccion/Turnos', ['usuario' => $perf,'depa' => $depa,'turno' => $turnos]);
+
+        /**************************** consulta si existe la busqueda  ****************************************************/
+        if (!empty($request->busca)) {
+            $turnos = turnos::where('departamento_id', '=', $request->busca)
+                ->with([
+                    'equipos' => function($equ){
+                        $equ->select('id','nombre','turno_id', 'departamento_id');
+                    }
+                ])
+                ->get();
+
+            $equipos = equipos::where('departamento_id', '=', $request->busca)
+                    ->get();
+        }
+
+
+        return Inertia::render('Produccion/Turnos', ['usuario' => $perf,'depa' => $depa,'turno' => $turnos,'equipos' => $equipos]);
 
     }
 

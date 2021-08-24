@@ -6,7 +6,7 @@
 
                 </slot>
             </div>
-                <div class="tw-block tw-relative tw-w-1/6">
+                <div class="tw-block tw-relative tw-w-full md:tw-w-2/6 lg:tw-w-1/6">
                     <slot name="SelectB">
 
                     </slot>

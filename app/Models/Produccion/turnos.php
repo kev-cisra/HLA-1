@@ -2,7 +2,7 @@
 
 namespace App\Models\Produccion;
 
-use App\Models\RecursosHumanos\Catalogos\Areas;
+use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
@@ -15,12 +15,12 @@ class turnos extends Model
     protected $guarded = ['id', 'created_at','updated_at'];
 
     //relacion uno a muchos
-    public function turno_cargas(){
-        return $this->hasMany(carga_produccion::class);
+    public function equipos() {
+        return $this->hasMany(equipos::class, 'turno_id');
     }
 
     //relacion uno a muchos inversa
-    public function turnos_area(){
-        return $this->belongsTo(Areas::class, 'area_id');
+    public function departamento(){
+        return $this->belongsTo(Departamentos::class, 'departamento_id');
     }
 }
