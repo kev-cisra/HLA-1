@@ -28,7 +28,7 @@ class CreateDepPersTable extends Migration
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
-            $table->unsignedBigInteger('equipo_id');
+            $table->unsignedBigInteger('equipo_id')->nullable();
             $table->foreign("equipo_id")->references("id")->on("equipos")
             ->onDelete("cascade")
             ->onUpdate("cascade");

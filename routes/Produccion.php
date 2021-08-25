@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Menus\MenuAdminController;
 use App\Http\Controllers\Menus\MenuProducccionController;
 use App\Http\Controllers\Produccion\ClamatController;
 use App\Http\Controllers\Produccion\ClavesController;
+use App\Http\Controllers\Produccion\EquiposController;
 use App\Http\Controllers\Produccion\MaquinasController;
 use App\Http\Controllers\Produccion\MaterialesController;
 use App\Http\Controllers\Produccion\PersonalController;
@@ -41,6 +41,9 @@ Route::resource('Clamat', ClamatController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('Turnos', TurnosController::class)
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::resource('Equipos', EquiposController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 

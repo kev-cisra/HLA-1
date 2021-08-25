@@ -15,8 +15,8 @@ class equipos extends Model
     protected $guarded = ['id', 'created_at','updated_at'];
 
     //relacion uno a muchos
-    public function turno() {
-        return $this->hasMany(turnos::class);
+    public function dep_pers(){
+        return $this->hasMany(dep_per::class, 'equipo_id');
     }
 
     public function departamento() {
@@ -24,7 +24,7 @@ class equipos extends Model
     }
 
     //relacion uno a muchos inversa
-    public function dep_pers(){
-        return $this->belongsTo(dep_per::class, 'equipo_id');
+    public function turnos() {
+        return $this->belongsTo(turnos::class, 'turno_id');
     }
 }
