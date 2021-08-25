@@ -18937,6 +18937,9 @@ select {
 .tw-pb-1 {
 	padding-bottom: 0.25rem;
 }
+.tw-pb-2 {
+	padding-bottom: 0.5rem;
+}
 .tw-text-left {
 	text-align: left;
 }

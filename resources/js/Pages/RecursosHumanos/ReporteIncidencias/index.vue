@@ -11,6 +11,20 @@
             </Header>
 
             <div class="tw-mt-8">
+                <div class="tw-flex tw-justify-center tw-gap-4 tw-border-b-2 tw-pb-2 tw-mb-2">
+                    <div>
+                        <jet-label>Fecha Inicio</jet-label>
+                        <jet-input type="date" v-model="params.ini"></jet-input>
+                    </div>
+                    <div>
+                        <jet-label>Fecha Fin</jet-label>
+                        <jet-input type="date" v-model="params.fin"></jet-input>
+                    </div>
+                    <div class="tw-mt-6">
+                        <jet-button type="button" @click="reset()">Limpiar Filtros</jet-button>
+                    </div>
+                </div>
+
                 <div class="tw-overflow-x-auto tw-mx-2">
                     <Table id="incidencias">
                         <template v-slot:TableHeader>
@@ -95,13 +109,13 @@ import Modal from "@/Jetstream/Modal";
 import Pagination from "@/Components/pagination";
 import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
+import throttle from 'lodash/throttle'
 //imports de datatables
 import datatable from 'datatables.net-bs5';
 import print from 'datatables.net-buttons/js/buttons.print';
 import jszip from 'jszip/dist/jszip';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import throttle from 'lodash/throttle';
 import $ from 'jquery';
 
 require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
@@ -299,7 +313,6 @@ export default {
 
     props: {
         Session: Object,
-        PerfilesUsuarios: Object,
         Incidencias: Object,
         Departamentos: Object,
     },
@@ -372,8 +385,14 @@ export default {
         reset() {
             this.form = {
                 IdUser: this.Session.id,
-                IdEmp: null,
             };
+            this.$inertia.get("/RecursosHumanos/ReporteIncidencias",{ onSuccess: () => {
+                this.params = {
+                    ini: null,
+                    fin: null,
+                },
+                this.tabla();
+                },});
         },
 
         openModal() {
@@ -424,7 +443,7 @@ export default {
                             // Set page margins [left,top,right,bottom] or [horizontal,vertical]
                             // or one number for equal spread
                             // It's important to create enough space at the top for a header !!!
-                            doc.pageMargins = [20,55,15,25];
+                            doc.pageMargins = [30,55,25,30];
                             // Set the font size fot the entire document
                             doc.defaultStyle.fontSize = 7;
                             // Set the fontsize for the table header
@@ -438,15 +457,15 @@ export default {
                                     columns: [
                                         {
                                             image: logo,
-                                            width: 60
+                                            width: 80
                                         },
                                         {
                                             alignment: 'right',
-                                            fontSize: 12,
+                                            fontSize: 14,
                                             text: 'Reporte de Vacaciones'
                                         }
                                     ],
-                                    margin: 20
+                                    margin: 25
                                 }
                             });
                             // Create a footer object with 2 columns
@@ -489,7 +508,7 @@ export default {
 
         //consulta para generar datos de la tabla
         verTabla(event) {
-        $("#vacaciones").DataTable().destroy();
+        $("#incidencias").DataTable().destroy();
             this.$inertia.get(
                 "/RecursosHumanos/ReporteVacaciones",
                 { busca: event.target.value },
@@ -502,18 +521,23 @@ export default {
         },
 
         save(data) {
-            this.$inertia.post("/RecursosHumanos/ReporteVacaciones", data, {
+            this.$inertia.post("/RecursosHumanos/ReporteIncidencias", data, {
                 onSuccess: () => {
                 this.reset(), this.chageClose(), this.alertSucces();
                 },
             });
         },
     },
-    watch: {
-        params: {
+    watch: { //Metodo escucha
+        params: {  //escucha de arreglo de parametros
         deep: true,
-            handler: throttle(function() {
-                this.$inertia.get('/RecursosHumanos/ReporteIncidencias', this.params , { replace: true, preserveState: true })
+            handler: throttle(function() { //trotle (tiempo en espera para ejecutarse)
+                $('#incidencias').DataTable().clear(); //limpio
+                $('#incidencias').DataTable().destroy(); //destruyo tabla
+                this.$inertia.get('/RecursosHumanos/ReporteIncidencias', this.params , { //envio de variables por url
+                    onSuccess: () => {
+                        this.tabla() //regeneracion de tabla
+                        }, preserveState: true})
             }, 150),
         },
     },

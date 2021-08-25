@@ -1,16 +1,16 @@
 <template>
     <jet-action-section>
         <template #title>
-            Delete Account
+            Borrar cuenta
         </template>
 
         <template #description>
-            Permanently delete your account.
+            Elimina tu cuenta de forma permanente.
         </template>
 
         <template #content>
             <div class="tw-max-w-xl tw-text-sm tw-text-gray-600">
-                Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.
+                Una vez que se elimine su cuenta, todos sus recursos y datos se eliminarán permanentemente. Antes de eliminar su cuenta, descargue cualquier dato o información que desee conservar.
             </div>
 
             <div class="tw-mt-5">

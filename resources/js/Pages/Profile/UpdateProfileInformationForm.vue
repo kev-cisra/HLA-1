@@ -1,11 +1,11 @@
 <template>
     <jet-form-section @submitted="updateProfileInformation">
         <template #title>
-            Profile Information
+           Información del perfil
         </template>
 
         <template #description>
-            Update your account's profile information and email address.
+            Actualice la información de perfil y la dirección de correo electrónico de su cuenta.
         </template>
 
         <template #form>
@@ -16,7 +16,7 @@
                             ref="photo"
                             @change="updatePhotoPreview">
 
-                <jet-label for="photo" value="Photo" />
+                <jet-label for="photo" value="Foto" />
 
                 <!-- Current Profile Photo -->
                 <div class="tw-mt-2" v-show="! photoPreview">
@@ -31,11 +31,11 @@
                 </div>
 
                 <jet-secondary-button class="tw-mt-2 tw-mr-2" type="button" @click.prevent="selectNewPhoto">
-                    Select A New Photo
+                    Seleccione una nueva foto
                 </jet-secondary-button>
 
                 <jet-secondary-button type="button" class="tw-mt-2" @click.prevent="deletePhoto" v-if="user.profile_photo_path">
-                    Remove Photo
+                    Quitar foto
                 </jet-secondary-button>
 
                 <jet-input-error :message="form.errors.photo" class="tw-mt-2" />
@@ -43,26 +43,26 @@
 
             <!-- Name -->
             <div class="tw-col-span-6 sm:tw-col-span-4">
-                <jet-label for="name" value="Name" />
+                <jet-label for="name" value="Nombre de Usuario" />
                 <jet-input id="name" type="text" class="tw-mt-1 tw-block tw-w-full" v-model="form.name" autocomplete="name" />
                 <jet-input-error :message="form.errors.name" class="tw-mt-2" />
             </div>
 
             <!-- Email -->
-            <div class="tw-col-span-6 sm:tw-col-span-4">
+<!--             <div class="tw-col-span-6 sm:tw-col-span-4">
                 <jet-label for="email" value="Email" />
                 <jet-input id="email" type="email" class="tw-mt-1 tw-block tw-w-full" v-model="form.email" />
                 <jet-input-error :message="form.errors.email" class="tw-mt-2" />
-            </div>
+            </div> -->
         </template>
 
         <template #actions>
             <jet-action-message :on="form.recentlySuccessful" class="tw-mr-3">
-                Saved.
+                Salvado.
             </jet-action-message>
 
             <jet-button :class="{ 'tw-opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                Guardar
             </jet-button>
         </template>
     </jet-form-section>
