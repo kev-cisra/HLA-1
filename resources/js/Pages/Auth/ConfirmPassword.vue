@@ -5,7 +5,7 @@
         </template>
 
         <div class="tw-mb-4 tw-text-sm tw-text-gray-600">
-            This is a secure area of the application. Please confirm your password before continuing.
+            Esta es un área segura de la aplicación. Confirme su contraseña antes de continuar.
         </div>
 
         <jet-validation-errors class="tw-mb-4" />

@@ -130,12 +130,6 @@
                                 <small v-if="errors.Comentarios" class="validation-alert">{{errors.Comentarios}}</small>
                             </div>
                         </div>
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Dias Solicitados</jet-label>
-                                <jet-input type="text" v-model="form.DiasTomados"></jet-input>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -536,7 +530,33 @@ export default {
         },
 
         save(data) {
-            //Verifico que los dias sean mayoes a 0
+            //assigno el Id se session
+            data.IdUser = this.Session.id;
+            var DiasRestantes = 0;
+            //Conversion de fechas a momment Js
+            var fecha1 = moment(data.FechaInicio);
+            var fecha2 = moment(data.FechaFin);
+
+            //calculo que existe al menos 1 dia solicitado de vacaciones
+            var dias = fecha2.diff(fecha1, 'days');
+            dias = data.DiasTomados = data.DiasTomados = dias+1;
+
+            if(dias > 0){
+                //calculo mes a partir de la fecha de incio de vacaciones
+                var mes  = fecha1.add(1,'M').format('DD/MM/YYYY');
+                console.log(fecha1);
+                console.log(mes);
+
+                var mas = moment(mes);
+                // var mas = mes.diff(fecha1, 'days');
+                console.log(mas);
+
+            }else{
+                //En caso contrario no se solicitaron dias de vacaciones
+                console.log('Verifica las fechas');
+            }
+
+  /*           //Verifico que los dias sean mayoes a 0
             if(data.DiasVac <= 0){
                 this.alertWarning();
             }else{
@@ -578,7 +598,7 @@ export default {
                         this.reset(), this.chageClose(), this.alertSucces();
                     },
                 });
-            }
+            } */
         },
 
         vacaciones: function (data) {

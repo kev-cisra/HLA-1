@@ -11,19 +11,21 @@
         </Header>
 
         <div class="tw-mt-8">
-            <div class="tw-flex tw-justify-end">
+            <div class="tw-flex tw-justify-center tw-gap-4 tw-border-b-2 tw-pb-2 tw-mb-2">
                 <div>
-                    <input id="min" type="date" v-model="params.ini">
+                    <jet-label>Fecha Inicio</jet-label>
+                    <jet-input type="date" v-model="params.ini"></jet-input>
                 </div>
                 <div>
-                    <input id="max" type="date" v-model="params.fin" @change="verTabla">
+                    <jet-label>Fecha Fin</jet-label>
+                    <jet-input type="date" v-model="params.fin"></jet-input>
                 </div>
-                <div>
-                    <jet-button @click="dibuja()" class="BtnNuevo">Obtener Reporte</jet-button>
+                <div class="tw-mt-6">
+                    <jet-button type="button" @click="reset()">Limpiar Filtros</jet-button>
                 </div>
             </div>
 
-            <div class="tw-overflow-x-auto tw-mx-2">
+            <div class="tw-overflow-x-auto tw-mx-4 tw-mt-4">
                 <Table id="vacaciones">
                     <template v-slot:TableHeader>
                         <th class="columna">Núm. Empleado</th>
@@ -388,8 +390,14 @@ export default {
         reset() {
             this.form = {
                 IdUser: this.Session.id,
-                IdEmp: null,
             };
+            this.$inertia.get("/RecursosHumanos/ReporteVacaciones",{ onSuccess: () => {
+                this.params = {
+                    ini: null,
+                    fin: null,
+                },
+                this.tabla();
+                },});
         },
 
         openModal() {
@@ -503,11 +511,8 @@ export default {
         },
         //consulta para generar datos de la tabla
         verTabla(event) {
-            $('#vacaciones').DataTable().clear();
-            $('#vacaciones').DataTable().destroy();
-            this.$inertia.get('/RecursosHumanos/ReporteVacaciones',{ busca: event.target.value }, {
-                onSuccess: () => { this.tabla(); }, preserveState: true
-            });
+            $("#vacaciones").DataTable().destroy();
+            this.$inertia.get("/RecursosHumanos/ReporteVacaciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
         },
 
         save(data) {
@@ -518,12 +523,16 @@ export default {
             });
         },
     },
-    watch: {
-        params: {
+    watch: { //Metodo escucha
+        params: {  //escucha de arreglo de parametros
         deep: true,
-            handler: throttle(function() {
-                $('#vacaciones').DataTable().clear();
-                this.$inertia.get('/RecursosHumanos/ReporteVacaciones', this.params , { replace: true, preserveState: true })
+            handler: throttle(function() { //trotle (tiempo en espera para ejecutarse)
+                $('#vacaciones').DataTable().clear(); //limpio
+                $('#vacaciones').DataTable().destroy(); //destruyo tabla
+                this.$inertia.get('/RecursosHumanos/ReporteVacaciones', this.params , { //envio de variables por url
+                    onSuccess: () => {
+                        this.tabla() //regeneracion de tabla
+                        }, preserveState: true})
             }, 150),
         },
     },

@@ -702,15 +702,7 @@ export default {
         //consulta para generar datos de la tabla
         verTabla(event) {
         $("#perfiles").DataTable().destroy();
-        this.$inertia.get(
-            "/RecursosHumanos/PerfilesUsuarios",
-            { busca: event.target.value },
-            {
-            onSuccess: () => {
-                this.tabla();
-            },
-            }
-        );
+            this.$inertia.get("/RecursosHumanos/PerfilesUsuarios", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
         },
 
         save(data) {

@@ -2,7 +2,7 @@
     <app-layout>
         <template #header>
             <h2 class="tw-font-semibold tw-text-xl tw-text-gray-800 tw-leading-tight">
-                Profile
+                Perfil
             </h2>
         </template>
 
@@ -20,19 +20,19 @@
                     <jet-section-border />
                 </div>
 
-                <div v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
+<!--                 <div v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
                     <two-factor-authentication-form class="tw-mt-10 sm:tw-mt-0" />
 
                     <jet-section-border />
-                </div>
+                </div> -->
 
-                <logout-other-browser-sessions-form :sessions="sessions" class="tw-mt-10 sm:tw-mt-0" />
+                <!-- <logout-other-browser-sessions-form :sessions="sessions" class="tw-mt-10 sm:tw-mt-0" /> -->
 
-                <template v-if="$page.props.jetstream.hasAccountDeletionFeatures">
+<!--                 <template v-if="$page.props.jetstream.hasAccountDeletionFeatures">
                     <jet-section-border />
 
                     <delete-user-form class="tw-mt-10 sm:tw-mt-0" />
-                </template>
+                </template> -->
             </div>
         </div>
     </app-layout>

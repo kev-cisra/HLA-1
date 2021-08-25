@@ -5,7 +5,7 @@
         </template>
 
         <div class="tw-mb-4 tw-text-sm tw-text-gray-600">
-            Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.
+            ¿Olvidaste tu contraseña? No hay problema. Simplemente díganos su dirección de correo electrónico y le enviaremos un enlace para restablecer la contraseña que le permitirá elegir una nueva.
         </div>
 
         <div v-if="status" class="tw-mb-4 tw-font-medium tw-text-sm tw-text-green-600">
@@ -22,7 +22,7 @@
 
             <div class="tw-flex tw-items-center tw-justify-end tw-mt-4">
                 <jet-button :class="{ 'tw-opacity-25': form.processing }" :disabled="form.processing">
-                    Email Password Reset Link
+                    Correo electrónico Enlace de restablecimiento de contraseña
                 </jet-button>
             </div>
         </form>
