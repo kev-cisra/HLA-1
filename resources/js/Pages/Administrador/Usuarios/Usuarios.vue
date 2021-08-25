@@ -124,7 +124,7 @@
                 this.params.direction = this.params.direction === 'asc' ? 'desc' : 'asc';
             }
         },
-          watch: {
+        watch: {
             params: {
             deep: true,
                 handler: throttle(function() {

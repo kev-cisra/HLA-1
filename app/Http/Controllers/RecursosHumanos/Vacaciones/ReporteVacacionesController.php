@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\App;
 
 class ReporteVacacionesController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $Session = Auth::user();
         $Departamentos = Departamentos::get(['id','Nombre']);
 
@@ -38,22 +38,43 @@ class ReporteVacacionesController extends Controller
         ->get(['IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id', 'Empresa']); //datos de Perfiles
 
 
-        $Vacaciones = PerfilesUsuarios::select(
-            'perfiles_usuarios.IdEmp AS IdEmp',
-            'perfiles_usuarios.Nombre AS Nombre',
-            'perfiles_usuarios.ApPat AS ApPat',
-            'perfiles_usuarios.ApMat AS ApMat',
-            'perfiles_usuarios.DiasVac AS DiasVac',
-            'puestos.Nombre AS Puesto',
-            'perfiles_usuarios.Empresa AS Empresa',
-            'vacaciones.FechaInicio AS FechaInicio',
-            'vacaciones.FechaFin AS FechaFin',
-            'vacaciones.Comentarios AS Comentarios',
-            'vacaciones.DiasTomados AS DiasTomados',
-            'vacaciones.DiasRestantes AS DiasRestantes')
-            ->join('puestos', 'perfiles_usuarios.Puesto_id', '=', 'puestos.id')
-            ->join('vacaciones', 'perfiles_usuarios.IdEmp', '=', 'vacaciones.IdEmp')
-            ->get();
+        if($request->ini == '' && $request->fin == ''){
+            $Vacaciones = PerfilesUsuarios::select(
+                'perfiles_usuarios.IdEmp AS IdEmp',
+                'perfiles_usuarios.Nombre AS Nombre',
+                'perfiles_usuarios.ApPat AS ApPat',
+                'perfiles_usuarios.ApMat AS ApMat',
+                'perfiles_usuarios.DiasVac AS DiasVac',
+                'puestos.Nombre AS Puesto',
+                'perfiles_usuarios.Empresa AS Empresa',
+                'vacaciones.FechaInicio AS FechaInicio',
+                'vacaciones.FechaFin AS FechaFin',
+                'vacaciones.Comentarios AS Comentarios',
+                'vacaciones.DiasTomados AS DiasTomados',
+                'vacaciones.DiasRestantes AS DiasRestantes')
+                ->join('puestos', 'perfiles_usuarios.Puesto_id', '=', 'puestos.id')
+                ->join('vacaciones', 'perfiles_usuarios.IdEmp', '=', 'vacaciones.IdEmp')
+                ->get();
+        }else{
+            $Vacaciones = PerfilesUsuarios::select(
+                'perfiles_usuarios.IdEmp AS IdEmp',
+                'perfiles_usuarios.Nombre AS Nombre',
+                'perfiles_usuarios.ApPat AS ApPat',
+                'perfiles_usuarios.ApMat AS ApMat',
+                'perfiles_usuarios.DiasVac AS DiasVac',
+                'puestos.Nombre AS Puesto',
+                'perfiles_usuarios.Empresa AS Empresa',
+                'vacaciones.FechaInicio AS FechaInicio',
+                'vacaciones.FechaFin AS FechaFin',
+                'vacaciones.Comentarios AS Comentarios',
+                'vacaciones.DiasTomados AS DiasTomados',
+                'vacaciones.DiasRestantes AS DiasRestantes')
+                ->join('puestos', 'perfiles_usuarios.Puesto_id', '=', 'puestos.id')
+                ->join('vacaciones', 'perfiles_usuarios.IdEmp', '=', 'vacaciones.IdEmp')
+                ->whereBetween('vacaciones.FechaInicio', [$request->ini, $request->fin])
+                ->get();
+        }
+
 
         return Inertia::render('RecursosHumanos/ReporteVacaciones/index', compact('Session', 'PerfilesUsuarios','Vacaciones', 'Departamentos'));
     }

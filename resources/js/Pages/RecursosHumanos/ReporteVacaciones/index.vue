@@ -13,10 +13,10 @@
         <div class="tw-mt-8">
             <div class="tw-flex tw-justify-end">
                 <div>
-                    <input id="min" type="date">
+                    <input id="min" type="date" v-model="params.ini">
                 </div>
                 <div>
-                    <input id="max" type="date">
+                    <input id="max" type="date" v-model="params.fin" @change="verTabla">
                 </div>
                 <div>
                     <jet-button @click="dibuja()" class="BtnNuevo">Obtener Reporte</jet-button>
@@ -111,6 +111,7 @@ import Modal from "@/Jetstream/Modal";
 import Pagination from "@/Components/pagination";
 import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
+import throttle from 'lodash/throttle'
 //imports de datatables
 import datatable from 'datatables.net-bs5';
 import print from 'datatables.net-buttons/js/buttons.print';
@@ -290,7 +291,11 @@ export default {
             },
             rows: [
                 {name: ""}
-            ]
+            ],
+            params:{
+                ini: null,
+                fin: null,
+            },
         };
     },
 
@@ -496,39 +501,13 @@ export default {
                 });
             });
         },
-
-        dibuja() {
-            /* Custom filtering function which will search data in column four between two values */
-            $.fn.dataTable.ext.search.push(
-                function( settings, data, dataIndex ) {
-                    var min = $('#min').val();
-                    var max = $('#max').val();
-                    var age = data[7] || 0; // use data for the age column
-
-                    if ( (min == "" || max == "") ||
-                        (moment(age).isSameOrAfter(min) && moment(age).isSameOrBefore(max))
-                        )
-                    {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-            $("#vacaciones").DataTable().draw();
-        },
-
         //consulta para generar datos de la tabla
         verTabla(event) {
-        $("#vacaciones").DataTable().destroy();
-            this.$inertia.get(
-                "/RecursosHumanos/ReporteVacaciones",
-                { busca: event.target.value },
-                {
-                onSuccess: () => {
-                    this.tabla();
-                },
-                }
-            );
+            $('#vacaciones').DataTable().clear();
+            $('#vacaciones').DataTable().destroy();
+            this.$inertia.get('/RecursosHumanos/ReporteVacaciones',{ busca: event.target.value }, {
+                onSuccess: () => { this.tabla(); }, preserveState: true
+            });
         },
 
         save(data) {
@@ -537,6 +516,15 @@ export default {
                 this.reset(), this.chageClose(), this.alertSucces();
                 },
             });
+        },
+    },
+    watch: {
+        params: {
+        deep: true,
+            handler: throttle(function() {
+                $('#vacaciones').DataTable().clear();
+                this.$inertia.get('/RecursosHumanos/ReporteVacaciones', this.params , { replace: true, preserveState: true })
+            }, 150),
         },
     },
 };
