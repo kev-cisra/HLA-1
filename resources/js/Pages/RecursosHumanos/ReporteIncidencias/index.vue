@@ -1,86 +1,86 @@
 <template>
-  <app-layout>
-    <div class="uppercase tw-mx-4">
-        <Header :class="[color, style]">
-            <slot>
-                <h3 class="tw-p-2">
-                    <i class="fas fa-user tw-ml-3 tw-mr-3"></i>
-                        Reporte Incidencias
-                </h3>
-            </slot>
-        </Header>
+    <app-layout>
+        <div class="uppercase tw-mx-4">
+            <Header :class="[color, style]">
+                <slot>
+                    <h3 class="tw-p-2">
+                        <i class="fas fa-user tw-ml-3 tw-mr-3"></i>
+                            Reporte Incidencias
+                    </h3>
+                </slot>
+            </Header>
 
-        <div class="tw-mt-8">
-            <div class="tw-overflow-x-auto tw-mx-2">
-                <Table id="incidencias">
-                    <template v-slot:TableHeader>
-                        <th class="columna">Núm. Empleado</th>
-                        <th class="columna">Empresa</th>
-                        <th class="columna">Nombre</th>
-                        <th class="columna">Paterno</th>
-                        <th class="columna">Materno</th>
-                        <th class="columna">Motivo</th>
-                        <th class="columna">Fecha</th>
-                        <th class="columna">Comentarios</th>
-                    </template>
+            <div class="tw-mt-8">
+                <div class="tw-overflow-x-auto tw-mx-2">
+                    <Table id="incidencias">
+                        <template v-slot:TableHeader>
+                            <th class="columna">Núm. Empleado</th>
+                            <th class="columna">Empresa</th>
+                            <th class="columna">Nombre</th>
+                            <th class="columna">Paterno</th>
+                            <th class="columna">Materno</th>
+                            <th class="columna">Motivo</th>
+                            <th class="columna">Fecha</th>
+                            <th class="columna">Comentarios</th>
+                        </template>
 
-                    <template v-slot:TableFooter>
-                        <tr class="fila" v-for="datos in Incidencias" :key="datos.id">
-                            <td class="tw-p-2">{{ datos.IdEmp }}</td>
-                            <td class="tw-p-2">{{ datos.incidencia_perfil.Empresa }}</td>
-                            <td class="tw-p-2">{{ datos.incidencia_perfil.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.incidencia_perfil.ApPat }}</td>
-                            <td class="tw-p-2">{{ datos.incidencia_perfil.ApMat }}</td>
-                            <td class="tw-p-2">{{ datos.TipoMotivo }}</td>
-                            <td class="tw-p-2">{{ datos.Fecha }}</td>
-                            <td class="tw-p-2">{{ datos.Comentarios }}</td>
-                        </tr>
-                    </template>
-                </Table>
+                        <template v-slot:TableFooter>
+                            <tr class="fila" v-for="datos in Incidencias" :key="datos.id">
+                                <td class="tw-p-2">{{ datos.IdEmp }}</td>
+                                <td class="tw-p-2">{{ datos.incidencia_perfil.Empresa }}</td>
+                                <td class="tw-p-2">{{ datos.incidencia_perfil.Nombre }}</td>
+                                <td class="tw-p-2">{{ datos.incidencia_perfil.ApPat }}</td>
+                                <td class="tw-p-2">{{ datos.incidencia_perfil.ApMat }}</td>
+                                <td class="tw-p-2">{{ datos.TipoMotivo }}</td>
+                                <td class="tw-p-2">{{ datos.Fecha }}</td>
+                                <td class="tw-p-2">{{ datos.Comentarios }}</td>
+                            </tr>
+                        </template>
+                    </Table>
+                </div>
             </div>
-        </div>
 
-        <modal :show="showModal" @close="chageClose" :maxWidth="tam">
-            <form>
-                <div class="tw-px-4 tw-py-4">
-                    <div class="tw-text-lg">
-                        <div class="ModalHeader">
-                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Reporte Vacaciones</h3>
+            <modal :show="showModal" @close="chageClose" :maxWidth="tam">
+                <form>
+                    <div class="tw-px-4 tw-py-4">
+                        <div class="tw-text-lg">
+                            <div class="ModalHeader">
+                                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Reporte Vacaciones</h3>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="tw-mt-4">
-                        <div class="ModalForm">
-                            <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Empresa</jet-label>
-                                    <select id="Empresa" v-model="form.Empresa" class="InputSelect">
-                                        <option value="HILATURAS">HILATURAS</option>
-                                        <option value="SERGES">SERGES</option>
-                                    </select>
-                                </div>
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Departamento</jet-label>
-                                    <select id="Jefe" v-model="form.Departamento_id" class="InputSelect">
-                                        <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
-                                    </select>
+                        <div class="tw-mt-4">
+                            <div class="ModalForm">
+                                <div class="tw-mb-6 md:tw-flex">
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Empresa</jet-label>
+                                        <select id="Empresa" v-model="form.Empresa" class="InputSelect">
+                                            <option value="HILATURAS">HILATURAS</option>
+                                            <option value="SERGES">SERGES</option>
+                                        </select>
+                                    </div>
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Departamento</jet-label>
+                                        <select id="Jefe" v-model="form.Departamento_id" class="InputSelect">
+                                            <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="ModalFooter">
-                    <jet-button type="button" @click="save(form)" v-show="!editMode">Genera Reporte</jet-button>
-                    <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
-                    <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
-                </div>
-            </form>
-        </modal>
+                    <div class="ModalFooter">
+                        <jet-button type="button" @click="save(form)" v-show="!editMode">Genera Reporte</jet-button>
+                        <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
+                        <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                    </div>
+                </form>
+            </modal>
 
-    </div>
+        </div>
 
-  </app-layout>
+    </app-layout>
 </template>
 
 <script>
@@ -101,6 +101,7 @@ import print from 'datatables.net-buttons/js/buttons.print';
 import jszip from 'jszip/dist/jszip';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import throttle from 'lodash/throttle';
 import $ from 'jquery';
 
 require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
@@ -274,7 +275,11 @@ export default {
             },
             rows: [
                 {name: ""}
-            ]
+            ],
+            params:{
+                ini: null,
+                fin: null,
+            },
         };
     },
 
@@ -478,11 +483,7 @@ export default {
                     'colvis'
                 ]
                 });
-                $.fn.dataTable.ext.search.push(
-                    function (settings, data, dataIndex) {
-                        //do stuff
-                    }
-                );
+
             });
         },
 
@@ -506,6 +507,14 @@ export default {
                 this.reset(), this.chageClose(), this.alertSucces();
                 },
             });
+        },
+    },
+    watch: {
+        params: {
+        deep: true,
+            handler: throttle(function() {
+                this.$inertia.get('/RecursosHumanos/ReporteIncidencias', this.params , { replace: true, preserveState: true })
+            }, 150),
         },
     },
 };

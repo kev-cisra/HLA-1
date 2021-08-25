@@ -240,18 +240,21 @@
                         },
                 });
             },
+            
             edit: function (data) {
                 this.form = Object.assign({}, data);
                 //this.vari = data.id;
                 this.editMode = true;
                 this.chageClose();
             },
+
             update(data) {
                 data._method = 'PUT';
                 this.$inertia.post('/Admin/Modulos/' + data.id, data, {
                     onSuccess: () => {this.reset(), this.chageClose()},
                 });
             },
+
             deleteRow: function (data) {
                 if (!confirm('¿Estas seguro de querer eliminar este Modulo?')) return;
                 data._method = 'DELETE';
