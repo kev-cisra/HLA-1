@@ -17756,7 +17756,7 @@ video {
 	--tw-transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.tw-border, .tw-border-2, .tw-border-8, .tw-border-t-4, .tw-border-l, .tw-border-t, .tw-border-r, .tw-border-b-2, .tw-border-l-4, .tw-border-b-4, .tw-border-t-2, .paginate, .btn-row, .btn-filter, .btn-form, .input-search, .InputSelect, .InputSelectFilter, .textarea, .InputSearch, .DetailsHeader, .SectionInfo, .DataContainer {
+.tw-border, .tw-border-2, .tw-border-t-4, .tw-border-l, .tw-border-t, .tw-border-r, .tw-border-b-2, .tw-border-l-4, .tw-border-b-4, .tw-border-t-2, .paginate, .btn-row, .btn-filter, .btn-form, .input-search, .InputSelect, .InputSelectFilter, .textarea, .InputSearch, .DetailsHeader, .SectionInfo, .DataContainer {
 	--tw-border-opacity: 1;
 	border-color: rgba(229, 231, 235, var(--tw-border-opacity));
 }
@@ -18447,12 +18447,6 @@ select {
 .tw-h-20 {
 	height: 5rem;
 }
-.tw-h-32 {
-	height: 8rem;
-}
-.tw-h-3 {
-	height: 0.75rem;
-}
 .tw-min-h-screen {
 	min-height: 100vh;
 }
@@ -18497,27 +18491,6 @@ select {
 }
 .tw-w-1\/3 {
 	width: 33.333333%;
-}
-.tw-w-auto {
-	width: auto;
-}
-.tw-w-14 {
-	width: 3.5rem;
-}
-.tw-w-9 {
-	width: 2.25rem;
-}
-.tw-w-28 {
-	width: 7rem;
-}
-.tw-w-32 {
-	width: 8rem;
-}
-.tw-w-52 {
-	width: 13rem;
-}
-.tw-w-72 {
-	width: 18rem;
 }
 .tw-w-64 {
 	width: 16rem;
@@ -18713,9 +18686,6 @@ select {
 }
 .tw-border-2 {
 	border-width: 2px;
-}
-.tw-border-8 {
-	border-width: 8px;
 }
 .tw-border-t-4 {
 	border-top-width: 4px;
