@@ -35,7 +35,7 @@ class ClamatController extends Controller
         $clamat = null;
 
         /*************** Información para mostrar áreas *************************/
-        if($perf->Departamento_id == 2 && $perf->Puesto_id != 16){
+        if(count($perf->dep_pers) != 0){
             //consulta las areas que le pertenecen al usuario
             $depa = dep_per::where('perfiles_usuarios_id','=',$perf->id)
                 ->with([

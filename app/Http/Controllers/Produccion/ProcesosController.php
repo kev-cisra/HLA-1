@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Stmt\Return_;
 
 class ProcesosController extends Controller
 {
@@ -31,12 +32,12 @@ class ProcesosController extends Controller
         $perf = PerfilesUsuarios::where('user_id','=',$usuario)
             ->with('dep_pers')
             ->first();
-
+        //return count($perf->dep_pers);
         $depa = NULL;
         $proce = NULL;
-
+        //condicion para usuarios $perf->Departamento_id == 2 && $perf->Puesto_id != 16
         /*************** Información para mostrar áreas *************************/
-        if($perf->Departamento_id == 2 && $perf->Puesto_id != 16){
+        if(count($perf->dep_pers) != 0){
             //consulta las areas que le pertenecen al usuario
             $depa = dep_per::where('perfiles_usuarios_id','=',$perf->id)
                 ->with([
