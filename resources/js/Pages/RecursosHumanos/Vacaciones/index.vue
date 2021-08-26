@@ -543,62 +543,65 @@ export default {
 
             if(dias > 0){
                 //calculo mes a partir de la fecha de incio de vacaciones
-                var mes  = fecha1.add(1,'M').format('DD/MM/YYYY');
-                console.log(fecha1);
-                console.log(mes);
 
-                var mas = moment(mes);
-                // var mas = mes.diff(fecha1, 'days');
-                console.log(mas);
+                var hoy = moment();
+                //Verifico si pasaron mas de 30 dias entre la fecha actual y la peticion de vacaciones
+                var FechaValida = fecha1.diff(hoy, 'days');
+
+                //Comprobar que la fecha solicitada para vacaciones no sea mayor a 30 dias naturales
+                if(FechaValida < 30 ){
+
+                    if(data.Empresa == 'SERGES'){ //En caso de ser SERGES no contar los fines de semana
+
+                        //Descuendo de fines de semana
+                        var from = moment(fecha1, 'DD/MM/YYY'),
+                            to = moment(fecha2, 'DD/MM/YYY');
+
+                        while (!from.isAfter(to)) {
+                                // Si no es sabado ni domingo
+                                if (from.isoWeekday() !== 6 && from.isoWeekday() !== 7) {
+                                    dias++;
+                                }
+                                from.add(1, 'days');
+                            }
+
+                            if(dias <= data.DiasVac){
+                                //Verificacion de dias de vacaciones disponibles no sean mayores a los solicitados
+                                data.DiasTomados = dias;
+                                data.DiasRestantes = data.DiasVac - data.DiasTomados;
+                            }else{
+                                this.alertWarningDias();
+                            }
+
+                    }else{ //En caso de ser Hilaturas se cuentan los fines de semana
+
+                        var dias = fecha2.diff(fecha1, 'days');
+                        data.DiasTomados = data.DiasTomados = dias+1;
+                        data.DiasRestantes = data.DiasVac - data.DiasTomados;
+                    }
+
+                    this.$inertia.post("/RecursosHumanos/Vacaciones", data, {
+                        onSuccess: () => {
+                            this.reset(), this.chageClose(), this.alertSucces();
+                        },
+                    });
+                }else{
+                    console.log(FechaValida);
+                    Swal.fire(
+                    'Fecha de solicitud excedida',
+                    'Fecha de solicitud de vacaciones excede los 30 días de anticipacion',
+                    'info'
+                    )
+                }
 
             }else{
                 //En caso contrario no se solicitaron dias de vacaciones
-                console.log('Verifica las fechas');
+                    Swal.fire(
+                    'Fecha Invalidas',
+                    'Verifica las fechas de Inicio y termino de vacaciones',
+                    'info'
+                    )
             }
-
-  /*           //Verifico que los dias sean mayoes a 0
-            if(data.DiasVac <= 0){
-                this.alertWarning();
-            }else{
-                //assigno el Id se session
-                data.IdUser = this.Session.id;
-                var DiasRestantes = 0;
-                //Conversion de fechas a momment Js
-                var fecha1 = moment(data.FechaInicio);
-                var fecha2 = moment(data.FechaFin);
-
-                if(data.Empresa == 'SERGES'){ //En caso de ser serges no contar los fines de semana
-                    var from = moment(fecha1, 'DD/MM/YYY'),
-                        to = moment(fecha2, 'DD/MM/YYY'),
-                        dias = 0;
-
-                    while (!from.isAfter(to)) {
-                            // Si no es sabado ni domingo
-                            if (from.isoWeekday() !== 6 && from.isoWeekday() !== 7) {
-                            dias++;
-                            }
-                            from.add(1, 'days');
-                        }
-
-                    if(dias <= data.DiasVac){
-                        //Verifico los dias descontados no sean mayoes a los dias tomados
-                        data.DiasTomados = dias;
-                        data.DiasRestantes = data.DiasVac - data.DiasTomados;
-                    }else{
-                        this.alertWarningDias();
-                    }
-                }else{ //En caso de ser Hilaturas se cuentan los fines de semana
-                    var dias = fecha2.diff(fecha1, 'days');
-                    data.DiasTomados = data.DiasTomados = dias+1;
-                    data.DiasRestantes = data.DiasVac - data.DiasTomados;
-                }
-
-                this.$inertia.post("/RecursosHumanos/Vacaciones", data, {
-                    onSuccess: () => {
-                        this.reset(), this.chageClose(), this.alertSucces();
-                    },
-                });
-            } */
         },
 
         vacaciones: function (data) {
