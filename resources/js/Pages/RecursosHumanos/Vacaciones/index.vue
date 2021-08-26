@@ -162,6 +162,7 @@
                             <th class="columna">Comentarios</th>
                             <th class="columna">Dias Tomados</th>
                             <th class="columna">Dias Restantes</th>
+                            <th class="columna">Cancela Vacaciones</th>
                         </template>
 
                         <template v-slot:TableFooter>
@@ -173,6 +174,9 @@
                                 <td class="tw-p-2">{{ dato.Comentarios }}</td>
                                 <td class="tw-p-2">{{ dato.DiasTomados }}</td>
                                 <td class="tw-p-2">{{ dato.DiasRestantes }}</td>
+                                <td class="tw-p-2">
+
+                                </td>
                             </tr>
                         </template>
                     </TableBlue>
