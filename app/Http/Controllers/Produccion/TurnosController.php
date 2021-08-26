@@ -32,6 +32,7 @@ class TurnosController extends Controller
 
         $turnos = null;
         $equipos = null;
+        $personal =null;
 
          /*************** Información para mostrar áreas *************************/
          if($perf->Departamento_id == 2 && $perf->Puesto_id !== 16){
@@ -54,11 +55,22 @@ class TurnosController extends Controller
                     ->with([
                         'equipos' => function($equ){
                             $equ->select('id','nombre','turno_id');
+                        },
+                        'departamento' => function($depa){
+                            $depa->select('id', 'Nombre');
                         }
                     ])
                     ->get();
-            /*$equipos = equipos::where('departamento_id', '=', $prime->departamentos->id)
-                    ->get();*/
+            $personal = dep_per::where('departamento_id', '=', $prime->departamentos->id)
+                    ->where('ope_puesto', '=', 'enc')
+                    ->orWhere('ope_puesto', '=','lid')
+                    ->orWhere('ope_puesto', '=','ope')
+                    ->with([
+                        'perfiles' => function($perfi){
+                            $perfi->select('id', 'Nombre', 'ApPat', 'ApMat');
+                        }
+                    ])
+                    ->get();
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')
@@ -77,16 +89,40 @@ class TurnosController extends Controller
                 ->with([
                     'equipos' => function($equ){
                         $equ->select('id','nombre','turno_id', 'departamento_id');
+                    },
+                    'departamento' => function($depa){
+                        $depa->select('id', 'Nombre');
                     }
                 ])
                 ->get();
 
+            $personal = dep_per::where('departamento_id', '=', $request->busca)
+                    ->where(function($query){
+                        $query->where('ope_puesto', '=', 'enc')
+                        ->orWhere('ope_puesto', '=','lid')
+                        ->orWhere('ope_puesto', '=','ope');
+                    })
+                    ->with([
+                        'perfiles' => function($perfi){
+                            $perfi->select('id', 'Nombre', 'ApPat', 'ApMat');
+                        }
+                    ])
+                    ->get();
+
+
             $equipos = equipos::where('departamento_id', '=', $request->busca)
+                    ->with([
+                        'turnos' => function($tur){
+                            $tur->select('id', 'nomtur');
+                        },
+                        'dep_pers.perfiles' => function($perfi){
+                            $perfi->select('id', 'Nombre', 'ApPat', 'ApMat');
+                        }
+                    ])
                     ->get();
         }
 
-
-        return Inertia::render('Produccion/Turnos', ['usuario' => $perf,'depa' => $depa,'turno' => $turnos,'equipos' => $equipos]);
+        return Inertia::render('Produccion/Turnos', ['usuario' => $perf,'depa' => $depa,'turno' => $turnos,'equipos' => $equipos, 'personal' => $personal]);
 
     }
 
@@ -114,7 +150,25 @@ class TurnosController extends Controller
             'departamento_id' => ['required']
         ])->validate();
 
-        turnos::create($request->all());
+        //consulta si ya esta registrado ese usuario
+        $query = turnos::where("nomtur", "=", $request->nomtur)
+            ->withTrashed ()
+            ->where('departamento_id', '=', $request->departamento_id)
+            ->first();
+        if(!empty($query)){
+            //revisa si el soft delete exite para restaurarlo
+            if(!empty($query->deleted_at))
+            {
+                $query->restore();
+            }//revisa si ya existe el usuario y el delete es nulo para mandar un aviso
+            else{
+                Validator::make($request->all(),[
+                    'nomtur' => ['unique:turnos']
+                ])->validate();
+            }
+        }else{
+            turnos::create($request->all());
+        }
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
@@ -152,6 +206,22 @@ class TurnosController extends Controller
     public function update(Request $request, turnos $turnos)
     {
         //
+        Validator::make($request->all(), [
+            'nomtur' => ['required'],
+            'departamento_id' => ['required'],
+            'horaIni' => ['required'],
+            'horaFin' => ['required'],
+            'cargaExt' => ['required'],
+        ])->validate();
+
+        if ($request->has('id')) {
+            turnos::find($request->input('id'))->update($request->all());
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
+
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
     }
 
     /**
@@ -160,8 +230,13 @@ class TurnosController extends Controller
      * @param  \App\Models\Produccion\turnos  $turnos
      * @return \Illuminate\Http\Response
      */
-    public function destroy(turnos $turnos)
+    public function destroy(Request $request)
     {
         //
+        if ($request->has('id')) {
+            turnos::find($request->input('id'))->delete();
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 }

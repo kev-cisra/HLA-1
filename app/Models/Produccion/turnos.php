@@ -23,4 +23,5 @@ class turnos extends Model
     public function departamento(){
         return $this->belongsTo(Departamentos::class, 'departamento_id');
     }
+
 }

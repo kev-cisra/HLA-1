@@ -29,4 +29,8 @@ class dep_per extends Model
     public function perfiles() {
         return $this->belongsTo(PerfilesUsuarios::class, 'perfiles_usuarios_id');
     }
+
+    public function equipo() {
+        return $this->belongsTo(equipos::class, 'equipo_id');
+    }
 }
