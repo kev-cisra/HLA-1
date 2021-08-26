@@ -50,15 +50,25 @@ class EquiposController extends Controller
                 ->where('nombre', '=', $request->nombre)
                 ->first();
         if(!empty($query)){
-            Validator::make($request->all(), [
+            /*Validator::make($request->all(), [
                 'nombre' => ['unique:equipos']
-            ])->validate();
+            ])->validate();*/
+            equipos::find($query->id)->update([
+                'turno_id' => $request->turno_id
+            ]);
+            if(count($request->emp) > 0){
+                foreach ($request->emp as $value) {
+                    dep_per::find($value)->update([
+                        'equipo_id' => $query->id
+                    ]);
+                }
+            }
+            //return $query;
         }else{
             $equi = equipos::create($request->all());
 
             if(count($request->emp) > 0){
                 foreach ($request->emp as $value) {
-                    echo $value." ";
                     dep_per::find($value)->update([
                         'equipo_id' => $equi->id
                     ]);

@@ -47,7 +47,9 @@
                         </tr>
                         <tr>
                             <th class="fila">Equipos asignados</th>
-                            <td class="fila">{{cTur.equipos}}</td>
+                            <td >
+                                <tr v-for="equ in cTur.equipos" :key="equ" @click="editE(equ)" class="columna tw-text-blue-700 hover:tw-text-blue-900">{{equ.nombre}}</tr>
+                            </td>
                         </tr>
                         <td colspan="2" class="tw-text-center ">
                             <jet-button type="button" class="tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-center tw-w-full md:tw-w-2/6 lg:tw-w-3/12" @click="edit(cTur)">Actualizar</jet-button>
@@ -62,9 +64,6 @@
                 </div>
             </div>
         </div>
-        <pre>
-            {{turno}}
-        </pre>
         <!------------------ Modal ------------------------->
         <modal :show="showModal" @close="chageClose">
             <form>
@@ -81,7 +80,7 @@
                             <div class="tw-mb-6 md:tw-flex" v-show="!editMode">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Departamento</jet-label>
-                                    <select class="InputSelect" @change="verMaqui" v-model="form.departamento_id" v-html="opc">
+                                    <select class="InputSelect" v-model="form.departamento_id" :disabled="S_Area != '' ? 1 : 0" v-html="opc">
                                     </select>
                                     <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
                                 </div>
@@ -162,7 +161,7 @@
                             <div class="tw-mb-6 md:tw-flex">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode2">
                                     <jet-label><span class="required">*</span>Departamento</jet-label>
-                                    <select class="InputSelect" @change="verMaqui" v-model="form2.departamento_id" v-html="opc">
+                                    <select class="InputSelect" @change="verTabla" v-model="form2.departamento_id" v-html="opc" :disabled="S_Area != '' ? 1 : 0">
                                     </select>
                                     <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
                                 </div>
@@ -405,19 +404,20 @@
                     },
                     "thousands": "."
                 },
+                eq_dep: null,
                 showModal: false,
                 showModal2: false,
                 editMode: false,
                 editMode2: false,
                 form: {
                     nomtur: '',
-                    departamento_id: '',
+                    departamento_id: this.S_Area,
                     horaIni: '',
                     horaFin: '',
                     cargaExt: '15'
                 },
                 form2: {
-                    departamento_id: '',
+                    departamento_id: this.S_Area,
                     turno_id: '',
                     nombre: '',
                     emp: []
@@ -507,7 +507,7 @@
             reset(){
                 this.form = {
                     nomtur: '',
-                    departamento_id: '',
+                    departamento_id: this.S_Area,
                     horaIni: '',
                     horaFin: '',
                     cargaExt: '15'
@@ -527,7 +527,7 @@
             //reset de modal procesos
             reset2(){
                 this.form2 = {
-                    departamento_id: '',
+                    departamento_id: this.S_Area,
                     turno_id: '',
                     nombre: '',
                     emp: []
@@ -561,9 +561,21 @@
             },
             /******************************** Acciones insert update y delet equipos *************************************/
             saveE(form) {
+                //console.log(form)
                 this.$inertia.post('/Produccion/Equipos', form, {
                     onSuccess: () => {this.alertSucces(), this.reset2(), this.chageClose2()}, preserveState: true
                 })
+            },
+            editE: function(data) {
+                //this.form2 = Object.assign({}, data);
+                this.form2 = {
+                    departamento_id: data.departamento_id,
+                    turno_id: data.turno_id,
+                    nombre: data.nombre,
+                    emp: []
+                }
+                this.editMode2 = true;
+                this.chageClose2();
             }
         }
     }

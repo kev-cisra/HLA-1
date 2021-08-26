@@ -28,6 +28,7 @@ class TurnosController extends Controller
         $usuario = Auth::id();
         //muestra la información del usuario que inicio sesion
         $perf = PerfilesUsuarios::where('user_id','=',$usuario)
+            ->with('dep_pers')
             ->first();
 
         $turnos = null;
@@ -35,7 +36,7 @@ class TurnosController extends Controller
         $personal =null;
 
          /*************** Información para mostrar áreas *************************/
-         if($perf->Departamento_id == 2 && $perf->Puesto_id !== 16){
+         if(count($perf->dep_pers) != 0){
             //consulta las areas que le pertenecen al usuario
             $depa = dep_per::where('perfiles_usuarios_id','=',$perf->id)
                 ->with([
@@ -52,25 +53,25 @@ class TurnosController extends Controller
                     }])
                 ->first(['id', 'departamento_id']);
             $turnos = turnos::where('departamento_id', '=', $prime->departamentos->id)
-                    ->with([
-                        'equipos' => function($equ){
-                            $equ->select('id','nombre','turno_id');
-                        },
-                        'departamento' => function($depa){
-                            $depa->select('id', 'Nombre');
-                        }
-                    ])
-                    ->get();
+                ->with([
+                    'equipos' => function($equ){
+                        $equ->select('id','nombre','turno_id');
+                    },
+                    'departamento' => function($depa){
+                        $depa->select('id', 'Nombre');
+                    }
+                ])
+                ->get();
             $personal = dep_per::where('departamento_id', '=', $prime->departamentos->id)
-                    ->where('ope_puesto', '=', 'enc')
-                    ->orWhere('ope_puesto', '=','lid')
-                    ->orWhere('ope_puesto', '=','ope')
-                    ->with([
-                        'perfiles' => function($perfi){
-                            $perfi->select('id', 'Nombre', 'ApPat', 'ApMat');
-                        }
-                    ])
-                    ->get();
+                ->where('ope_puesto', '=', 'enc')
+                ->orWhere('ope_puesto', '=','lid')
+                ->orWhere('ope_puesto', '=','ope')
+                ->with([
+                    'perfiles' => function($perfi){
+                        $perfi->select('id', 'Nombre', 'ApPat', 'ApMat');
+                    }
+                ])
+                ->get();
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')
