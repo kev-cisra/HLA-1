@@ -21,17 +21,17 @@
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Inicio
                                 </jet-nav-link>
                             </div>
-                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
+                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex" v-if="hasAnyPermission(['admin.index'])">
                                 <jet-nav-link :href="route('Admin')" :active="route().current('Admin')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Administrador
                                 </jet-nav-link>
                             </div>
                             <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
-                                <jet-nav-link :href="route('RecursosHumanos')" :active="route().current('RecursosHumanos')">
+                                <jet-nav-link :href="route('RecursosHumanos')" :active="route().current('RecursosHumanos')" v-if="hasAnyPermission(['admin.index', 'RecursosHumanos.index'])">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Recursos Humanos
                                 </jet-nav-link>
                             </div>
-                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
+                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex" v-if="hasAnyPermission(['admin.index', 'Produccion.index'])">
                                 <jet-nav-link :href="route('Produccion')" :active="route().current('Produccion')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Producción
                                 </jet-nav-link>

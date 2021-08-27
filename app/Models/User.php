@@ -69,4 +69,12 @@ class User extends Authenticatable
     public function user_perfil() {
         return $this->hasMany(PerfilesUsuarios::class);
     }
+
+    public function getPermissionArray()
+    {
+        return $this->getAllPermissions()->mapWithKeys(function($pr){
+            return [$pr['name'] => true];
+        });
+
+    }
 }

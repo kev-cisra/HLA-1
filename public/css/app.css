@@ -19033,6 +19033,7 @@ select {
 	color: rgba(239, 68, 68, var(--tw-text-opacity));
 }
 .tw-text-blue-700 {
+<<<<<<< HEAD
 	--tw-text-opacity: 1;
 	color: rgba(29, 78, 216, var(--tw-text-opacity));
 }
@@ -19041,8 +19042,14 @@ select {
 	color: rgba(34, 197, 94, var(--tw-text-opacity));
 }
 .tw-text-pink-600 {
+=======
+>>>>>>> 8849d67e26a883715fd145d83563c14a3acc9143
 	--tw-text-opacity: 1;
 	color: rgba(219, 39, 119, var(--tw-text-opacity));
+}
+.tw-text-green-500 {
+	--tw-text-opacity: 1;
+	color: rgba(34, 197, 94, var(--tw-text-opacity));
 }
 .tw-underline {
 	text-decoration: underline;
