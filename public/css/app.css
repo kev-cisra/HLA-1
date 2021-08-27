@@ -18399,6 +18399,12 @@ select {
 .tw-ml-16 {
 	margin-left: 4rem;
 }
+.tw-mb-3 {
+	margin-bottom: 0.75rem;
+}
+.tw-mb-14 {
+	margin-bottom: 3.5rem;
+}
 .tw-block {
 	display: block;
 }
@@ -18494,6 +18500,12 @@ select {
 }
 .tw-w-1\/3 {
 	width: 33.333333%;
+}
+.tw-w-96 {
+	width: 24rem;
+}
+.tw-w-0\.5 {
+	width: 0.125rem;
 }
 .tw-min-w-0 {
 	min-width: 0px;
@@ -18944,6 +18956,10 @@ select {
 .tw-text-xl {
 	font-size: 1.25rem;
 	line-height: 1.75rem;
+}
+.tw-text-9xl {
+	font-size: 8rem;
+	line-height: 1;
 }
 .tw-font-semibold {
 	font-weight: 600;
@@ -19873,6 +19889,30 @@ select {
 		margin-left: 1.5rem;
 	}
 
+	.sm\:tw-mb-6 {
+		margin-bottom: 1.5rem;
+	}
+
+	.sm\:tw-mb-32 {
+		margin-bottom: 8rem;
+	}
+
+	.sm\:tw-mb-96 {
+		margin-bottom: 24rem;
+	}
+
+	.sm\:tw-mb-10 {
+		margin-bottom: 2.5rem;
+	}
+
+	.sm\:tw-mb-20 {
+		margin-bottom: 5rem;
+	}
+
+	.sm\:tw-mb-14 {
+		margin-bottom: 3.5rem;
+	}
+
 	.sm\:tw-block {
 		display: block;
 	}
@@ -19895,6 +19935,10 @@ select {
 
 	.sm\:tw-w-full {
 		width: 100%;
+	}
+
+	.sm\:tw-w-3\/12 {
+		width: 25%;
 	}
 
 	.sm\:tw-max-w-md {
@@ -20067,6 +20111,10 @@ select {
 		width: 33.333333%;
 	}
 
+	.md\:tw-w-1\/6 {
+		width: 16.666667%;
+	}
+
 	.md\:tw-grid-cols-3 {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
@@ -20075,8 +20123,40 @@ select {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
+	.md\:tw-flex-row {
+		flex-direction: row;
+	}
+
+	.md\:tw-flex-col {
+		flex-direction: column;
+	}
+
+	.md\:tw-flex-col-reverse {
+		flex-direction: column-reverse;
+	}
+
 	.md\:tw-gap-6 {
 		gap: 1.5rem;
+	}
+
+	.md\:tw-text-3xl {
+		font-size: 1.875rem;
+		line-height: 2.25rem;
+	}
+
+	.md\:tw-text-6xl {
+		font-size: 3.75rem;
+		line-height: 1;
+	}
+
+	.md\:tw-text-7xl {
+		font-size: 4.5rem;
+		line-height: 1;
+	}
+
+	.md\:tw-text-8xl {
+		font-size: 6rem;
+		line-height: 1;
 	}
 }
 @media (min-width: 1024px) {
@@ -20096,6 +20176,55 @@ select {
 	.lg\:tw-px-8 {
 		padding-left: 2rem;
 		padding-right: 2rem;
+	}
+}
+@media (min-width: 1280px) {
+
+	.xl\:tw-mx-20 {
+		margin-left: 5rem;
+		margin-right: 5rem;
+	}
+
+	.xl\:tw-mx-10 {
+		margin-left: 2.5rem;
+		margin-right: 2.5rem;
+	}
+
+	.xl\:tw-mx-5 {
+		margin-left: 1.25rem;
+		margin-right: 1.25rem;
+	}
+
+	.xl\:tw-mx-2 {
+		margin-left: 0.5rem;
+		margin-right: 0.5rem;
+	}
+
+	.xl\:tw-mx-1 {
+		margin-left: 0.25rem;
+		margin-right: 0.25rem;
+	}
+
+	.xl\:tw-mx-0 {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+
+	.xl\:tw-mt-10 {
+		margin-top: 2.5rem;
+	}
+
+	.xl\:tw-mt-5 {
+		margin-top: 1.25rem;
+	}
+
+	.xl\:tw-mt-8 {
+		margin-top: 2rem;
+	}
+
+	.xl\:tw-text-9xl {
+		font-size: 8rem;
+		line-height: 1;
 	}
 }
 

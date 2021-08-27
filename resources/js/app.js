@@ -18,18 +18,18 @@ createApp({
         }),
 })
     .mixin({ methods: {
-        route,
-        hasAnyPermission: function (permissions) {
-
-        var allPermissions = this.$page.props.auth.can;
-        var hasPermission = false;
-        //console.log(allPermissions)
-        permissions.forEach(function(item){
-            if(allPermissions[item]) hasPermission = true;
-        });
-        return hasPermission;
-        },
-     } })
+            route,
+            hasAnyPermission: function (permissions) {
+                var allPermissions = this.$page.props.auth.can;
+                var hasPermission = false;
+                //console.log(allPermissions)
+                permissions.forEach(function(item){
+                    if(allPermissions[item]) hasPermission = true;
+                });
+                return hasPermission;
+            },
+        }
+    })
     .use(InertiaPlugin)
     .mount(el);
 
