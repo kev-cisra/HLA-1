@@ -34,7 +34,7 @@
                             <td class="tw-p-2">{{ dato.perfil_departamento.Nombre }}</td>
                             <td class="tw-p-2">{{ dato.DiasVac }} Dias</td>
                             <td class="fila tw-center">
-                                <div class="columnaIconos">
+                                <div class="tw-flex tw-justify-center tw-items-center">
                                     <div class="iconoEdit" @click="vacaciones(dato)">
                                         <span tooltip="Captura de Vacaciones" flow="left">
                                             <i class="fas fa-user-plus"></i>
@@ -175,7 +175,11 @@
                                 <td class="tw-p-2">{{ dato.DiasTomados }}</td>
                                 <td class="tw-p-2">{{ dato.DiasRestantes }}</td>
                                 <td class="tw-p-2">
-
+                                    <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-blue-500 hover:tw-scale-125" data-bs-toggle="modal" data-bs-target="#Cancelacion">
+                                        <span tooltip="Solicita una cancelacion de vacaciones" flow="left">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </span>
+                                    </div>
                                 </td>
                             </tr>
                         </template>
@@ -185,6 +189,30 @@
                     <Alert>No se encontraron vacaciones capturadas con anterioridad</Alert>
                 </div>
                 <div class="tw-bg-coolGray-100 tw-p-4 tw-border-b-4 tw-border-cyan-500">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="Cancelacion" tabindex="-1" aria-labelledby="Cancelacion" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content tw-bg-blueGray-50 tw-my-4">
+                <div class="DetailsHeader">
+                    <div class="tw-text-lg">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Cancelacion de Vacaciones</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="DetailsBody">
+                    <jet-label><span class="tw-text-pink-600">*</span>Motivo de la cancelacion</jet-label>
+                    <textarea class="textarea focus:tw-outline-none"></textarea>
+                </div>
+
+                <div class="ModalFooter">
+                    <jet-button type="button" @click="save(form)" v-show="!editMode">Solicitar Cancelacion</jet-button>
+                    <jet-CancelButton  data-bs-dismiss="modal">Cerrar</jet-CancelButton>
                 </div>
             </div>
         </div>
