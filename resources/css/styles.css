@@ -113,7 +113,7 @@
 }
 
 .DetailsBody{
-    @apply tw-space-y-2 tw-bg-blueGray-50 tw-mx-6;
+    @apply tw-space-y-2 tw-bg-blueGray-50 tw-mx-6 tw-mb-4;
 }
 
 .SectionInfo{
