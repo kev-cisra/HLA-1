@@ -10,7 +10,7 @@
                         <div class="tw-flex tw-text-gray-600">
                             <!-- Logo -->
                             <div class="tw-flex tw-items-center tw-flex-shrink-0">
-                                <a :href="route('dashboard')" >
+                                <a :href="route('dashboard')">
                                     <jet-application-mark> </jet-application-mark>
                                 </a>
                             </div>
@@ -31,7 +31,7 @@
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Recursos Humanos
                                 </jet-nav-link>
                             </div>
-                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex" v-if="hasAnyPermission(['admin.index', 'Produccion.index'])">
+                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex" v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index',])">
                                 <jet-nav-link :href="route('Produccion')" :active="route().current('Produccion')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Producción
                                 </jet-nav-link>
@@ -102,7 +102,7 @@
                             Inicio
                         </jet-responsive-nav-link>
                     </div>
-                    <div class="pt-2 pb-3 space-y-1">
+                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">
                         <jet-responsive-nav-link :href="route('Produccion')" :active="route().current('Produccion')">
                             <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Producción
                         </jet-responsive-nav-link>

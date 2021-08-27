@@ -82,7 +82,7 @@ class PuestosSeeder extends Seeder
         ]);
         Puestos::create([
             'IdUser' => '1',
-            'Nombre' => 'AYUDANTE MANTTO CIVIL',
+            'Nombre' => 'AYUDANTE MATTO CIVIL',
             'departamento_id' => '2'
         ]);
         Puestos::create([
@@ -127,6 +127,10 @@ class PuestosSeeder extends Seeder
         ]);
         Puestos::create([
             'IdUser' => '1',
+            'Nombre' => 'OFICIAL EN DESARROLLO A'
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
             'Nombre' => 'OFICIAL EN DESARROLLO',
             'departamento_id' => '2'
         ]);
@@ -139,6 +143,26 @@ class PuestosSeeder extends Seeder
             'IdUser' => '1',
             'Nombre' => 'AYUDANTE DE MECANICO C',
             'departamento_id' => '2'
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'JEFE DE ANALISIS DE MERCADOS'
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'AYUDANTE DE MECANICO A'
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'AYUDANTE DE LABORATORIO'
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'AYUDANTE DE MECANICO B'
+        ]);
+        Puestos::create([
+            'IdUser' => '1',
+            'Nombre' => 'AYUDANTE DE LOGISTICA'
         ]);
     }
 }

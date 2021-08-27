@@ -133,10 +133,19 @@ class UserSeeder extends Seeder
             //'email' => 'rhumanos@hlangeles.com',
             'password' => bcrypt('12345678')
         ])->assignRole('RecursosHumanos');
+
         User::create([
             'IdEmp' => '78',
             'name' => 'Kevin Cisneros Ramirez',
             'Departamento' => 'ANILII',
+            //'email' => 'programador2@hlangeles.com',
+            'password' => bcrypt('12345678')
+        ])->assignRole('Produccion');
+
+        User::create([
+            'IdEmp' => '83',
+            'name' => 'GERARDO ROJAS GARCIA',
+            'Departamento' => 'APERTURA',
             //'email' => 'programador2@hlangeles.com',
             'password' => bcrypt('12345678')
         ])->assignRole('Produccion');

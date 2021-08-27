@@ -18399,6 +18399,9 @@ select {
 .tw-ml-16 {
 	margin-left: 4rem;
 }
+.tw-mb-14 {
+	margin-bottom: 3.5rem;
+}
 .tw-block {
 	display: block;
 }
@@ -18944,6 +18947,10 @@ select {
 .tw-text-xl {
 	font-size: 1.25rem;
 	line-height: 1.75rem;
+}
+.tw-text-9xl {
+	font-size: 8rem;
+	line-height: 1;
 }
 .tw-font-semibold {
 	font-weight: 600;
@@ -20084,6 +20091,11 @@ select {
 	.md\:tw-gap-6 {
 		gap: 1.5rem;
 	}
+
+	.md\:tw-text-8xl {
+		font-size: 6rem;
+		line-height: 1;
+	}
 }
 @media (min-width: 1024px) {
 
@@ -20102,6 +20114,26 @@ select {
 	.lg\:tw-px-8 {
 		padding-left: 2rem;
 		padding-right: 2rem;
+	}
+}
+@media (min-width: 1280px) {
+
+	.xl\:tw-mx-0 {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+
+	.xl\:tw-mt-8 {
+		margin-top: 2rem;
+	}
+
+	.xl\:tw-mt-10 {
+		margin-top: 2.5rem;
+	}
+
+	.xl\:tw-text-9xl {
+		font-size: 8rem;
+		line-height: 1;
 	}
 }
 
