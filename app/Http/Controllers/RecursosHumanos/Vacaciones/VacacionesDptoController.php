@@ -49,9 +49,9 @@ class VacacionesDptoController extends Controller
         if(!empty($request->busca)){
             $Vacaciones = Vacaciones::where('IdEmp', '=', $request->busca)
             ->whereYear('FechaInicio', '=', $anio)
-            ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'Color', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
+            ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
         }else{
-            $Vacaciones = Vacaciones::get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'Color', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
+            $Vacaciones = Vacaciones::get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
         }
 
         //Catalogos
@@ -79,8 +79,7 @@ class VacacionesDptoController extends Controller
             'FechaInicio' => $request->FechaInicio,
             'FechaFin' => $request->FechaFin,
             'Comentarios' => $request->Comentarios,
-            'Estatus' => 'AUTORIZADO',
-            'Color'  => 'bg-green-600',
+            'Estatus' => 1,
             'DiasTomados' => $request->DiasTomados,
             'DiasRestantes' => $request->DiasRestantes,
         ]);
@@ -108,8 +107,7 @@ class VacacionesDptoController extends Controller
 
         Vacaciones::find($request->id)->update([
             'MotivoCancelacion' => $request->Motivo,
-            'Estatus' => 'CANCELADA',
-            'Color'  => 'bg-red-600',
+            'Estatus' => 2,
         ]);
         return redirect()->back();
     }

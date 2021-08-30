@@ -57,6 +57,14 @@ class ModulosSeeder extends Seeder
 
         Modulos::create([
             'Iduser' => '1',
+            'NombreModulo' => 'CANCELA VACACIONES',
+            'Icono' => 'fas fa-file-signature',
+            'Ruta' => 'RecursosHumanos/CancelaVacaciones',
+            'Area' => '2',
+        ]);
+
+        Modulos::create([
+            'Iduser' => '1',
             'NombreModulo' => 'REPORTE VACACIONES',
             'Icono' => 'fas fa-file-contract',
             'Ruta' => 'RecursosHumanos/ReporteVacaciones',

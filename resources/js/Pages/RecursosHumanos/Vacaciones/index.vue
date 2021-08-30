@@ -175,17 +175,21 @@
                                 <td class="tw-p-2">{{ dato.Comentarios }}</td>
                                 <td class="tw-p-2">{{ dato.DiasTomados }}</td>
                                 <td class="tw-p-2">{{ dato.DiasRestantes }}</td>
-                                 <td class="tw-p-2">
-                                    <span class="tw-relative tw-inline-block tw-px-3 tw-py-1 tw-font-semibold tw-leading-tigh">
-                                        <span aria-hidden class="tw-absolute tw-inset-0 tw-rounded-full tw-opacity-50 {{ dato.Color }}"></span>
-                                        <span class="tw-relative tw-text-white">{{ dato.Color }}</span>
-                                    </span>
-                                 </td>
                                 <td class="tw-p-2">
-                                    <div class="iconoDetails" @click="vacacion(dato)" data-bs-toggle="modal" data-bs-target="#Cancelacion">
-                                        <span tooltip="Solicita una cancelacion de vacaciones" flow="left">
-                                            <i class="fas fa-paper-plane"></i>
-                                        </span>
+                                    <div v-if="dato.Estatus == 1">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">AUTORIZADA</span>
+                                    </div>
+                                    <div v-else-if="dato.Estatus == 2">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-600 tw-rounded-full">EN CANCELACION</span>
+                                    </div>
+                                </td>
+                                <td class="tw-p-2 tw-flex tw-justify-center">
+                                    <div v-if="dato.Estatus == 1">
+                                        <div class="iconoDetails" @click="vacacion(dato)" data-bs-toggle="modal" data-bs-target="#Cancelacion">
+                                            <span tooltip="Solicita una cancelacion de vacaciones" flow="left">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -266,8 +270,7 @@ export default {
                 FechaInicio: null,
                 FechaFin: null,
                 Comentarios: null,
-                Estatus: 'APROVADO',
-                Color: '#14B8A6',
+                Estatus: 1,
                 DiasTomados: null,
                 DiasRestantes: null,
             },
@@ -373,12 +376,12 @@ export default {
             //Conversion de fechas a momment Js
             var fecha1 = moment(data.FechaInicio);
             var fecha2 = moment(data.FechaFin);
-
+            var dias = 0;
             //calculo que existe al menos 1 dia solicitado de vacaciones
-            var dias = fecha2.diff(fecha1, 'days');
-            dias = data.DiasTomados = data.DiasTomados = dias+1;
+            var DiasSolicitados = fecha2.diff(fecha1, 'days');
+            DiasSolicitados = data.DiasTomados = data.DiasTomados = DiasSolicitados+1;
 
-            if(dias > 0){
+            if(DiasSolicitados > 0){
                 //calculo mes a partir de la fecha de incio de vacaciones
 
                 var hoy = moment();
@@ -389,7 +392,7 @@ export default {
                 if(FechaValida < 30 ){
 
                     if(data.Empresa == 'SERGES'){ //En caso de ser SERGES no contar los fines de semana
-
+                        // DiasSolicitados -=1;
                         //Descuendo de fines de semana
                         var from = moment(fecha1, 'DD/MM/YYY'),
                             to = moment(fecha2, 'DD/MM/YYY');
@@ -411,7 +414,6 @@ export default {
                             }
 
                     }else{ //En caso de ser Hilaturas se cuentan los fines de semana
-
                         var dias = fecha2.diff(fecha1, 'days');
                         data.DiasTomados = data.DiasTomados = dias+1;
                         data.DiasRestantes = data.DiasVac - data.DiasTomados;

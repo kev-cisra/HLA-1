@@ -21,8 +21,7 @@ class CreateVacacionesTable extends Migration
             $table->date('FechaInicio');
             $table->date('FechaFin');
             $table->string('Comentarios')->nullable();
-            $table->string('Estatus',15)->nullable();
-            $table->string('Color',20)->nullable();
+            $table->integer('Estatus')->nullable();
             $table->integer('DiasTomados');
             $table->integer('DiasRestantes');
             $table->string('MotivoCancelacion')->nullable();
