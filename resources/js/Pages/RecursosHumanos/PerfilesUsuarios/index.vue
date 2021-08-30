@@ -326,10 +326,14 @@ import JetSelect from "@/Components/Select";
 import datatable from "datatables.net-bs5";
 import $ from "jquery";
 
+//Moment Js
+import moment from 'moment';
+import 'moment/locale/es';
 
 export default {
     data() {
         return {
+            now: moment().format("YYYY-MM-DD"),
             tam: "4xl",
             form: {
                 IdUser: this.Session.id,
@@ -472,16 +476,6 @@ export default {
                 Puesto_id: null,
                 Departamento_id: null,
             };
-        },
-
-        openModal() {
-        this.chageClose();
-        this.reset();
-        this.editMode = false;
-        },
-
-        chageClose() {
-        this.showModal = !this.showModal;
         },
 
         //datatable

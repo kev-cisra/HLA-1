@@ -79,11 +79,16 @@ class VacacionesDptoController extends Controller
             'FechaInicio' => $request->FechaInicio,
             'FechaFin' => $request->FechaFin,
             'Comentarios' => $request->Comentarios,
+            'Estatus' => 'AUTORIZADO',
+            'Color'  => 'bg-green-600',
             'DiasTomados' => $request->DiasTomados,
             'DiasRestantes' => $request->DiasRestantes,
         ]);
 
-        PerfilesUsuarios::where('IdEmp', $request->IdEmp)->update(['DiasVac' => $request->DiasRestantes]);
+        PerfilesUsuarios::where('IdEmp', $request->IdEmp)->update([
+            'IdUser' => $request->IdUser,
+            'DiasVac' => $request->DiasRestantes
+        ]);
 
         return redirect()->back()->with('message', 'Exito');
     }
@@ -97,7 +102,16 @@ class VacacionesDptoController extends Controller
     }
 
     public function update(Request $request, $id){
+        Validator::make($request->all(), [
+            'Motivo' => ['required'],
+        ])->validate();
 
+        Vacaciones::find($request->id)->update([
+            'MotivoCancelacion' => $request->Motivo,
+            'Estatus' => 'CANCELADA',
+            'Color'  => 'bg-red-600',
+        ]);
+        return redirect()->back();
     }
 
     public function destroy($id){

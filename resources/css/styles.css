@@ -53,7 +53,7 @@
 }
 
 .btn-form{
-    @apply tw-inline-flex tw-items-center tw-justify-center tw-px-4 tw-py-2 tw-text-xs tw-font-semibold tw-tracking-widest tw-text-white tw-uppercase tw-bg-blue-600 tw-border tw-border-transparent tw-rounded-md hover:tw-bg-blue-500;
+    @apply tw-inline-flex tw-items-center tw-justify-center tw-px-4 tw-py-2 tw-text-xs tw-font-semibold tw-tracking-widest tw-text-white tw-bg-blue-600 tw-border tw-border-transparent tw-rounded-md hover:tw-bg-blue-500;
 }
 
 .BtnNuevo{
@@ -101,7 +101,7 @@
 }
 
 .ModalForm{
-    @apply tw-flex tw-flex-col tw-uppercase tw-rounded;
+    @apply tw-flex tw-flex-col tw-rounded;
 }
 
 .ModalFooter{
