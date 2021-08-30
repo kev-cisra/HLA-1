@@ -17,6 +17,7 @@ class procesos extends Model
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
 
+    const Principal = 0;
     const Encargado = 1;
     const Coordinador = 2;
     const Formulas = 3;
@@ -38,5 +39,14 @@ class procesos extends Model
     //Relaciones 1 a muchos inversas
     public function departamentos() {
         return $this->belongsTo(Departamentos::class, 'departamento_id');
+    }
+
+    //Relaciones recursivas
+    public function proceso_sub(){
+        return $this->hasMany(procesos::class, 'proceso_id');
+    }
+
+    public function sub_proceso() {
+        return $this->hasMany(procesos::class, 'proceso_id')->with('proceso_sub');
     }
 }

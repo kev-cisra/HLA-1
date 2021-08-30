@@ -111,12 +111,12 @@ class ModulosSeeder extends Seeder
             'Area' => '7',
         ]);
 
-        /*Modulos::create([
+        Modulos::create([
             'Iduser' => '1',
-            'NombreModulo' => 'EQUIPO',
-            'Icono' => 'fas fa-people-carry',
-            'Ruta' => 'Produccion/Equipo',
+            'NombreModulo' => 'CARGA DE DATOS',
+            'Icono' => 'fas fa-clipboard-list',
+            'Ruta' => 'Produccion/Carga',
             'Area' => '7',
-        ]);*/
+        ]);
     }
 }

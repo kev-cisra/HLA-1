@@ -20,7 +20,6 @@ class CreateCargasTable extends Migration
             $table->string('semana');
             $table->double('valor')->nullable();
             $table->enum('notaPen', [1,2])->default(1)->nullable();
-            $table->string('nota')->nullable();
             $table->unsignedBigInteger('cargado')->nullable();
             $table->tinyInteger('equipo');
 

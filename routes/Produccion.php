@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Menus\MenuProducccionController;
+use App\Http\Controllers\Produccion\CargaController;
 use App\Http\Controllers\Produccion\ClamatController;
 use App\Http\Controllers\Produccion\ClavesController;
 use App\Http\Controllers\Produccion\EquiposController;
@@ -44,6 +45,9 @@ Route::resource('Turnos', TurnosController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('Equipos', EquiposController::class)
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::resource('Carga', CargaController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 
