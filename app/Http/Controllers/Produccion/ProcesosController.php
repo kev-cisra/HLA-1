@@ -59,6 +59,9 @@ class ProcesosController extends Controller
                 'departamentos' => function($dep){
                     $dep->select('id', 'Nombre', 'departamento_id');
                 },
+                'prin_proceso' => function($pp){
+                    $pp->select('id', 'nompro', 'tipo');
+                },
                 'maq_pros' => function($mp){
                     $mp->select('id', 'proceso_id', 'maquina_id')
                     ->with('maquinas');
@@ -83,6 +86,7 @@ class ProcesosController extends Controller
                 'departamentos' => function($dep){
                     $dep->select('id', 'Nombre', 'departamento_id');
                 },
+                'sub_proceso',
                 'maq_pros' => function($mp){
                     $mp->select('id', 'proceso_id', 'maquina_id')
                     ->with('maquinas');
@@ -117,6 +121,7 @@ class ProcesosController extends Controller
      */
     public function store(Request $request)
     {
+        //return $request;
         Validator::make($request->all(), [
             'nompro' => ['required'],
             'departamento_id' => ['required'],
@@ -126,13 +131,17 @@ class ProcesosController extends Controller
             Validator::make($request->all(), [
                 'operacion' => ['required']
             ])->validate();
+        }elseif ($request->tipo != 0) {
+            Validator::make($request->all(), [
+                'proceso_id' => ['required']
+            ])->validate();
         }
 
         //CARGA DE PROCESOS
         $proceso = procesos::create($request->all());
 
         //CARGA DEPENDIENDO DEL TURNO
-        if ($request->tipo == 1) {
+        if ($request->tipo == 1 || $request->tipo == 4) {
             foreach ($request->maquinas as $value) {
                 if ($value['value'] != null) {
                     maq_pro::create([
@@ -147,7 +156,7 @@ class ProcesosController extends Controller
                 foreach ($request->for_maq as $check) {
                     $ch = explode('-', $check);
                     if ($for['val'] == $ch[0]) {
-                        echo $for['val'].' '.$check.' '.'maquinas - ';
+                        //echo $for['val'].' '.$check.' '.'maquinas - ';
                         formulas::create([
                             'proc_rela' => $for['val'],
                             'maq_pros_id' => $ch[1],
@@ -162,7 +171,7 @@ class ProcesosController extends Controller
                                 ->where('proc_rela', '=', $for['val'])
                                 ->count();
                             if ($ver == 0) {
-                                echo 'T'.$tipo->tipo.' '.$for['val'].' '.$check.' '.'procesos - ';
+                                //echo 'T'.$tipo->tipo.' '.$for['val'].' '.$check.' '.'procesos - ';
                                 formulas::create([
                                     'proc_rela' => $for['val'],
                                     'proceso_id' => $proceso->id
@@ -195,7 +204,6 @@ class ProcesosController extends Controller
             'nompro' => ['required'],
             'departamento_id' => ['required'],
             'tipo' => ['required'],
-            'descripcion' => ['required'],
         ])->validate();
 
 

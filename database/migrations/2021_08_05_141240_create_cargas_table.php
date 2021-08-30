@@ -16,11 +16,10 @@ class CreateCargasTable extends Migration
         Schema::create('cargas', function (Blueprint $table) {
             $table->id();
 
-            $table->date('fecha');
+            $table->timestamp('fecha');
             $table->string('semana');
             $table->double('valor')->nullable();
             $table->enum('notaPen', [1,2])->default(1)->nullable();
-            $table->string('nota')->nullable();
             $table->unsignedBigInteger('cargado')->nullable();
             $table->tinyInteger('equipo');
 

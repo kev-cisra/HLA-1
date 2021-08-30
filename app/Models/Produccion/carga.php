@@ -15,6 +15,10 @@ class carga extends Model
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
 
+    public function notas(){
+        return $this->hasMany(notasCarga::class, 'carga_id');
+    }
+
     //Relacion 1 a muchos inversa
     public function dep_perf(){
         return $this->belongsTo(dep_perf::class, 'dep_perf_id');

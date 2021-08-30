@@ -19,14 +19,16 @@
                 <jet-button @click="openModal" class="BtnNuevo">Nuevo Proceso </jet-button>
             </template>
         </Accions>
+
         <div class="table-responsive">
             <Table id="t_pro">
                 <template v-slot:TableHeader>
-                    <th class="columna">Nombre</th>
-                    <th class="columna">Tipo</th>
-                    <th class="columna">Descripción</th>
-                    <th class="columna">Departamento</th>
-                    <th class="columna">Máquinas</th>
+                    <th class="columna tw-text-center">Nombre</th>
+                    <th class="columna tw-text-center">Tipo</th>
+                    <th class="columna tw-text-center">Descripción</th>
+                    <th class="columna tw-text-center">Departamento</th>
+                    <th class="columna tw-text-center tw-w-2/12">Máquinas</th>
+                    <th class="columna tw-text-center">Sub procesos</th>
                     <th></th>
                 </template>
                 <template v-slot:TableFooter>
@@ -36,10 +38,14 @@
                         <td class="fila">{{ proceso.descripcion }}</td>
                         <td class="fila">{{ proceso.departamentos.Nombre }}</td>
                         <td class="fila" >
-                            <tr v-for="mp in proceso.maq_pros" :key="mp.id">
-                                {{' - '+mp.maquinas.Nombre+' - '}}
+                            <tr class="fila" v-for="mp in proceso.maq_pros" :key="mp.id">
+                               - {{mp.maquinas.Nombre}} -
                             </tr>
-
+                        </td>
+                        <td class="fila ">
+                            <tr class="fila" v-for="sub_proce in proceso.sub_proceso" :key="sub_proce">
+                                - {{sub_proce.nompro}} -
+                            </tr>
                         </td>
                         <td class="fila">
                             <div class="columnaIconos">
@@ -100,7 +106,9 @@
                                     <jet-label><span class="required">*</span>Tipo de proceso</jet-label>
                                     <select v-model="form.tipo" class="InputSelect">
                                         <option value="" disabled>Seleccione</option>
+                                        <option value="0">Proceso principal</option>
                                         <option value="1">Encargado</option>
+                                        <option value="4">Paros</option>
                                         <option value="2" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">Coordinador</option>
                                         <option value="3" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">Formulas</option>
                                     </select>
@@ -115,8 +123,13 @@
                                         <option value="">Selecciona una operación</option>
                                         <option value="sm_d">SUMA DIARIA</option>
                                     </select>
-                                    <!--<jet-input type="text" v-model="form.operacion" @input="(val) => (form.operacion = form.operacion.toUpperCase())"></jet-input>-->
                                     <small v-if="errors.operacion" class="validation-alert">{{errors.operacion}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="form.tipo != 0">
+                                    <jet-label><span class="required">*</span>Proceso principal</jet-label>
+                                    <select class="InputSelect" v-model="form.proceso_id" v-html="options">
+                                    </select>
+                                    <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label>Descripción</jet-label>
@@ -126,8 +139,8 @@
                         </div>
                     </div>
                 </div>
-                <!-------------------------------- ENCARGADO --------------------------------------->
-                <div class="tw-px-4 tw-py-4" v-show="(form.tipo == 1 | form.tipo == 2) & !editMode">
+                <!-------------------------------- ENCARGADO Y OPERADOR --------------------------------------->
+                <div class="tw-px-4 tw-py-4" v-show="(form.tipo == 1 | form.tipo == 2 | form.tipo == 4) & !editMode">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de máquinas para el proceso</h3>
@@ -251,156 +264,19 @@
                 S_Area: '',
                 opc: '<option value="" disabled>Selecciona un departamento </option>',
                 opcMaq: '<option value="" disabled>Selecciona una máquina</option>',
+                options: '<option value="" disabled>Selecciona un proceso</option>',
                 campo_max: 10,
                 x: 1,
-                español: {
-                    "processing": "Procesando...",
-                    "lengthMenu": "Mostrar _MENU_ registros",
-                    "zeroRecords": "No se encontraron resultados",
-                    "emptyTable": "Ningún dato disponible en esta tabla",
-                    "info": "Registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "search": "Buscar:",
-                    "infoThousands": ",",
-                    "loadingRecords": "Cargando...",
-                    "paginate": {
-                        "first": "Primero",
-                        "last": "Último",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
-                    },
-                    "aria": {
-                        "sortAscending": ": Activar para ordenar la columna de manera ascendente",
-                        "sortDescending": ": Activar para ordenar la columna de manera descendente"
-                    },
-                    "buttons": {
-                        "copy": "Copiar",
-                        "colvis": "Visibilidad",
-                        "collection": "Colección",
-                        "colvisRestore": "Restaurar visibilidad",
-                        "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
-                        "copySuccess": {
-                            "1": "Copiada 1 fila al portapapeles",
-                            "_": "Copiadas %d fila al portapapeles"
-                        },
-                        "copyTitle": "Copiar al portapapeles",
-                        "csv": "CSV",
-                        "excel": "Excel",
-                        "pageLength": {
-                            "-1": "Mostrar todas las filas",
-                            "1": "Mostrar 1 fila",
-                            "_": "Mostrar %d filas"
-                        },
-                        "pdf": "PDF",
-                        "print": "Imprimir"
-                    },
-                    "autoFill": {
-                        "cancel": "Cancelar",
-                        "fill": "Rellene todas las celdas con <i>%d<\/i>",
-                        "fillHorizontal": "Rellenar celdas horizontalmente",
-                        "fillVertical": "Rellenar celdas verticalmentemente"
-                    },
-                    "decimal": ",",
-                    "searchBuilder": {
-                        "add": "Añadir condición",
-                        "button": {
-                            "0": "Constructor de búsqueda",
-                            "_": "Constructor de búsqueda (%d)"
-                        },
-                        "clearAll": "Borrar todo",
-                        "condition": "Condición",
-                        "conditions": {
-                            "date": {
-                                "after": "Despues",
-                                "before": "Antes",
-                                "between": "Entre",
-                                "empty": "Vacío",
-                                "equals": "Igual a",
-                                "not": "No",
-                                "notBetween": "No entre",
-                                "notEmpty": "No Vacio"
-                            },
-                            "moment": {
-                                "after": "Despues",
-                                "before": "Antes",
-                                "between": "Entre",
-                                "empty": "Vacío",
-                                "equals": "Igual a",
-                                "not": "No",
-                                "notBetween": "No entre",
-                                "notEmpty": "No vacio"
-                            },
-                            "number": {
-                                "between": "Entre",
-                                "empty": "Vacio",
-                                "equals": "Igual a",
-                                "gt": "Mayor a",
-                                "gte": "Mayor o igual a",
-                                "lt": "Menor que",
-                                "lte": "Menor o igual que",
-                                "not": "No",
-                                "notBetween": "No entre",
-                                "notEmpty": "No vacío"
-                            },
-                            "string": {
-                                "contains": "Contiene",
-                                "empty": "Vacío",
-                                "endsWith": "Termina en",
-                                "equals": "Igual a",
-                                "not": "No",
-                                "notEmpty": "No Vacio",
-                                "startsWith": "Empieza con"
-                            }
-                        },
-                        "data": "Data",
-                        "deleteTitle": "Eliminar regla de filtrado",
-                        "leftTitle": "Criterios anulados",
-                        "logicAnd": "Y",
-                        "logicOr": "O",
-                        "rightTitle": "Criterios de sangría",
-                        "title": {
-                            "0": "Constructor de búsqueda",
-                            "_": "Constructor de búsqueda (%d)"
-                        },
-                        "value": "Valor"
-                    },
-                    "searchPanes": {
-                        "clearMessage": "Borrar todo",
-                        "collapse": {
-                            "0": "Paneles de búsqueda",
-                            "_": "Paneles de búsqueda (%d)"
-                        },
-                        "count": "{total}",
-                        "countFiltered": "{shown} ({total})",
-                        "emptyPanes": "Sin paneles de búsqueda",
-                        "loadMessage": "Cargando paneles de búsqueda",
-                        "title": "Filtros Activos - %d"
-                    },
-                    "select": {
-                        "1": "%d fila seleccionada",
-                        "_": "%d filas seleccionadas",
-                        "cells": {
-                            "1": "1 celda seleccionada",
-                            "_": "$d celdas seleccionadas"
-                        },
-                        "columns": {
-                            "1": "1 columna seleccionada",
-                            "_": "%d columnas seleccionadas"
-                        }
-                    },
-                    "thousands": "."
-                },
                 showModal: false,
                 editMode: false,
                 puesCor: '',
-
                 form: {
                     nompro: null,
                     departamento_id: '',
                     tipo: '',
                     operacion: '',
                     descripcion: null,
+                    proceso_id: '',
                     maquinas: [
                         {value: ""}
                     ],
@@ -430,7 +306,7 @@
                 this.form.maquinas.push({value: ""});
             },
             removeRow: function (row) {
-                console.log(row);
+                //console.log(row);
                 this.form.maquinas.splice(row,1);
             },
             limpiar(event){
@@ -443,46 +319,11 @@
                 event.target.value == limp ? '' : $('#t_pro').DataTable().clear();
             },
             /****************************** Alertas *******************************************************/
-            alertSucces(){
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                })
-
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Registro Insertado',
-                    // background: '#99F6E4',
-                })
-            },
-            alertDelete(){
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                })
-
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Registro Eliminado Correctamente',
-                    // background: '#99F6E4',
-                })
-            },
             tipoProce(data){
                 switch (data) {
+                    case '0':
+                        return 'Proceso Principal';
+                        break;
                     case '1':
                         return 'Carga de encargado';
                         break;
@@ -492,7 +333,18 @@
                     case '3':
                         return 'Operaciones';
                         break;
+                    case '4':
+                        return 'Paros';
+                        break;
                 }
+            },
+            princiProcesos(){
+                this.options = '<option value="" disabled>Selecciona un proceso</option>';
+                this.procesos.forEach(element => {
+                    if (element.tipo == 0) {
+                        this.options += `<option value="${element.id}">${element.nompro}</option>`
+                    }
+                })
             },
             /****************************** opnciones de seect de maquinas ********************************/
             verMaqui(event) {
@@ -500,7 +352,7 @@
                 this.limpiar(event);
                 $('#t_pro').DataTable().destroy();
                 this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value ,maq: event.target.value }, {
-                    onSuccess: () => { this.tabla(), this.mostMaqui(), this.mostTipo() }, preserveState: true
+                    onSuccess: () => { this.tabla(), this.mostMaqui(), this.mostTipo(), this.princiProcesos() }, preserveState: true
                 });
             },
             mostMaqui() {
@@ -552,6 +404,7 @@
                 this.$nextTick(() => {
                     $('#t_pro').DataTable({
                         "language": this.español,
+                        "order": [6, 'asc'],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -619,6 +472,7 @@
                     tipo: '',
                     operacion: '',
                     descripcion: null,
+                    proceso_id: '',
                     maquinas: [
                         {value: ""}
                     ],
@@ -640,7 +494,7 @@
             },
             //manda datos de la tabla al modal
             edit: function (data) {
-                console.log(data);
+                //console.log(data);
                 this.form = Object.assign({}, data);
                 //this.vari = data.id;
                 this.editMode = true;
