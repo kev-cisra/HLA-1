@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('', [MenuAdminController::class,'index'])->name('Admin');
+
 Route::resource('Modulos', ModuloController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
