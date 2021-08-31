@@ -39,11 +39,25 @@
                             <td class="tw-p-2">{{ datos.FechaFin }}</td>
                             <td class="tw-p-2">{{ datos.DiasTomados }}</td>
                             <td class="tw-p-2">{{ datos.MotivoCancelacion }}</td>
-                            <td class="tw-p-2 tw-flex tw-justify-center">
-                                <div class="iconoDetails" @click="AutorizaCancelacion(datos)">
-                                    <span tooltip="Autoriza la cancelacion" flow="left">
-                                        <i class="fas fa-user-check"></i>
-                                    </span>
+                            <td class="fila">
+                                <div class="columnaIconos" v-if="datos.Estatus != 3">
+                                    <div class="iconoDetails"  @click="AutorizaCancelacion(datos)">
+                                        <span tooltip="Autoriza la cancelacion" flow="left">
+                                            <i class="fas fa-user-check"></i>
+                                        </span>
+                                    </div>
+                                    <div class="iconoDetails" v-if="datos.Estatus != 3" @click="RechazaCancelacion(datos, 2)">
+                                        <span tooltip="Autoriza la cancelacion" flow="left">
+                                            <i class="fas fa-times-circle"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-else>
+                                    <div class="iconoDetails">
+                                        <span tooltip="Vacaciones Canceladas" flow="left">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -116,29 +130,6 @@ export default {
     },
 
     methods: {
-        alertWarningDias() {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "center",
-                showConfirmButton: false,
-                timer: 1500,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-            });
-
-            Toast.fire({
-                icon: "warning",
-                title: "Dias de Vacaciones disponibles Excedidos",
-                // background: '#FDBA74',
-            });
-        },
-
-        reset() {
-        },
-
         //datatable
         tabla() {
         this.$nextTick(() => {
@@ -164,17 +155,50 @@ export default {
         },
 
         AutorizaCancelacion(data) {
-            console.log(data);
-
-            console.log(data.DiasTomados);
-
-            data._method = "PUT";
-            this.$inertia.post("/RecursosHumanos/CancelaVacaciones/" + data.id, data, {
-                onSuccess: () => {
-                    this.alertSucces();
-                },
-            });
+            Swal.fire({
+            title: 'Confirma esta Acción',
+            text: "No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Regresa los dias de vacaciones tomados',
+            cancelButtonText: 'No, Cancela!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    data._method = "PUT";
+                    data.metodo = 1;
+                    this.$inertia.post("/RecursosHumanos/CancelaVacaciones/" + data.id, data, {
+                        onSuccess: () => {
+                            this.alertSucces();
+                        },
+                    });
+                }
+            })
         },
+
+        RechazaCancelacion(data, metodo){
+            Swal.fire({
+                title: 'Confirma esta Acción',
+                text: "No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Rechaza la petición',
+                cancelButtonText: 'No, Cancela!',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        data._method = "PUT";
+                        data.metodo = 2;
+                        this.$inertia.post("/RecursosHumanos/CancelaVacaciones/" + data.id, data, {
+                            onSuccess: () => {
+                                this.alertSucces();
+                            },
+                        });
+                    }
+                })
+        }
 
 
     },

@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('test:task')
         ->timezone('America/Mexico_City')
-        ->dailyAt('11:00');
+        ->dailyAt('01:00');
     }
 
     /**

@@ -8,8 +8,5 @@ use Inertia\Inertia;
 
 Route::get('', [MenuComprasController::class,'index'])->name('Compras');
 
-Route::resource('Requisiciones', PerfilesUsuariosController::class)
-    ->middleware(['auth:sanctum', 'verified'])->names('Requisiciones');
-
 Route::resource('Requisiciones', RequisicionesController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('Requisiciones');

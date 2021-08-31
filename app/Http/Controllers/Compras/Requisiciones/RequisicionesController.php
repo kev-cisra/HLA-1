@@ -3,39 +3,26 @@
 namespace App\Http\Controllers\Compras\Requisiciones;
 
 use App\Http\Controllers\Controller;
+use App\Models\Compras\Requisiciones\Requisiciones;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+class RequisicionesController extends Controller{
 
-class RequisicionesController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function index(){
+
+        $Session = auth()->user();
+
+        $Requisicion = Requisiciones::with('RequisicionesPerfil')->get();
+
+        return Inertia::render('Compras/Requisiciones/index', compact('Session', 'Requisicion'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function create(){
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+
     }
 
     /**

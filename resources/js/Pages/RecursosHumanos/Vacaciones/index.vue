@@ -177,10 +177,24 @@
                                 <td class="tw-p-2">{{ dato.DiasRestantes }}</td>
                                 <td class="tw-p-2">
                                     <div v-if="dato.Estatus == 1">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">AUTORIZADA</span>
+                                        <span tooltip="Vacaciones Aprovadas" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">AUTORIZADA</span>
+                                        </span>
                                     </div>
                                     <div v-else-if="dato.Estatus == 2">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-600 tw-rounded-full">EN CANCELACION</span>
+                                        <span tooltip="En espera de autorizacion por RH" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-teal-600 tw-rounded-full">EN CANCELACION</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="dato.Estatus == 3">
+                                        <span tooltip="Vacaciones Canceladas por RH" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-600 tw-rounded-full">CANCELADA</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="dato.Estatus == 4">
+                                        <span tooltip="Solicitud de Cancelacion Rechazada" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZADA</span>
+                                        </span>
                                     </div>
                                 </td>
                                 <td class="tw-p-2 tw-flex tw-justify-center">

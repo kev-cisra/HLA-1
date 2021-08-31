@@ -18829,6 +18829,14 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(13, 148, 136, var(--tw-bg-opacity));
 }
+.tw-bg-cyan-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(8, 145, 178, var(--tw-bg-opacity));
+}
+.tw-bg-orange-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(234, 88, 12, var(--tw-bg-opacity));
+}
 .tw-fill-current {
 	fill: currentColor;
 }

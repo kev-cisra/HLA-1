@@ -2,6 +2,7 @@
 
 namespace App\Models\RecursosHumanos\Perfiles;
 
+use App\Models\Compras\Requisiciones\Requisiciones;
 use App\Models\Produccion\are_prof;
 use App\Models\Produccion\dep_per;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
@@ -33,6 +34,11 @@ class PerfilesUsuarios extends Model
     //relacion uno a muchos con Incidencias
     public function PerfilIncidencias() {
         return $this->hasMany(Incidencias::class);
+    }
+
+    //relacion muchos a uno
+    public function PerfilRequisiciones() {
+        return $this->hasMany(Requisiciones::class);
     }
 
     //relaciones uno a muchos inversa

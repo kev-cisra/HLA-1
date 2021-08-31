@@ -15,22 +15,38 @@ class CreateRequisicionesTable extends Migration
     {
         Schema::create('requisiciones', function (Blueprint $table) {
             $table->id();
-            $table->string('IdUser',6); //id de session
+            $table->unsignedBigInteger('IdUser')->nullable(); //Id de Session
+            $table->unsignedBigInteger('IdEmp'); //Numero control empleado
             $table->integer('Folio')->unique();
             $table->date('Fecha'); //fecha de solicitud
-            $table->string('NomJefe',65);
             $table->integer('NumReq');
-            $table->string('Area',45);
+            $table->integer('Departamento');
             $table->string('Codigo',45);
-            $table->string('Maquina',45)->nullable();
-            $table->string('Marca',45)->nullable();
+
+            $table->unsignedBigInteger('Maquina_id')->nullable();
+
+            $table->foreign("Maquina_id")->references("id")->on("maquinas")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
+            $table->unsignedBigInteger('Marca_id')->nullable();
+
+            $table->foreign("Marca_id")->references("id")->on("marcas_maquinas")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
             $table->string('TipCompra',45);
             $table->string('Observaciones')->nullable();
-            $table->string('NomSolicitante',65)->nullable();
-            $table->string('EstatusReq',15)->nullable();
-            $table->string('ColorReq',35)->nullable();
-            $table->string('OrdenCompra',10)->default('S/N');
+            $table->integer('Estatus')->nullable();
+            $table->integer('OrdenCompra')->default(0);
             $table->text('MotivoCancelacion')->nullable();
+
+            $table->unsignedBigInteger('Perfil_id')->nullable();
+
+            $table->foreign("Perfil_id")->references("id")->on("perfiles_usuarios")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });

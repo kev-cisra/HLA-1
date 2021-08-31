@@ -34,7 +34,7 @@ class AutorizaCancelacionesController extends Controller{
             'vacaciones.DiasRestantes AS DiasRestantes',
             'vacaciones.MotivoCancelacion AS MotivoCancelacion',
             'vacaciones.Estatus AS Estatus')
-            ->where('vacaciones.Estatus', 2)
+            ->where('vacaciones.Estatus', '!=', 1)
             ->join('puestos', 'perfiles_usuarios.Puesto_id', '=', 'puestos.id')
             ->join('vacaciones', 'perfiles_usuarios.IdEmp', '=', 'vacaciones.IdEmp')
             ->get();
@@ -42,34 +42,40 @@ class AutorizaCancelacionesController extends Controller{
         return Inertia::render('RecursosHumanos/CancelaVacaciones/index', compact('Vacaciones'));
     }
 
-
-    public function create(){
-
-    }
-
-    public function store(Request $request){
-
-    }
-
-    public function show($id){
-
-    }
-
-    public function edit($id){
-
-    }
-
     public function update(Request $request, $id){
 
-        $DiasRest = Vacaciones::find($request->id)->first();
-        $Dias = $DiasRest->DiasRestantes;
+        //Obtiene el Num de empleado correspondiente a la solicitud de vacaciones
+        $Perfil = PerfilesUsuarios::where('IdEmp', '=', $request->IdEmp)->first();
+        //Obtienes el id de la peticion de vacaciones
+        $DiasRest = Vacaciones::select('id','DiasRestantes')->find($request->id);
 
-        Vacaciones::find($request->id)->update([
-            'DiasRestantes' => $request->DiasTomados + $Dias,
-            // 'Estatus' => 3,
-        ]);
 
-        return $request;
+        switch($request->metodo){
+            case 1: //Caso 1 Cancelacion de vacaciones aprovada
+                //Regresa los dias de vacaciones correspondietes al perfil
+                PerfilesUsuarios::find($Perfil->id)->update([
+                    'DiasVac' => $Perfil->DiasVac + $request->DiasTomados,
+                ]);
+
+                //Regresa los dias de vacaciones correspondientes al historico de vacaciones
+                Vacaciones::find($request->id)->update([
+                    'DiasRestantes' => $DiasRest->DiasRestantes + $request->DiasTomados,
+                    'Estatus' => 3,
+                ]);
+
+                return redirect()->back()->with('message', 'Perfil y Usuario Creados Correctamente');
+                break;
+
+            case 2:
+                Vacaciones::find($request->id)->update([
+                    'Estatus' => 4,
+                ]);
+
+                return redirect()->back()->with('message', 'Perfil y Usuario Creados Correctamente');
+                break;
+        }
+
+
     }
 
     public function destroy($id){
