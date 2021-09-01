@@ -17,19 +17,19 @@ class MaquinasSeeder extends Seeder
         Maquinas::create([
             'IdUser' => '1',
             'Nombre' => 'CORTADORA',
-            'Area' => 'APERTURA',
+            'Departamento' => 'APERTURA',
         ]);
 
         Maquinas::create([
             'IdUser' => '1',
             'Nombre' => 'ROMPEDORA',
-            'Area' => 'APERTURA',
+            'Departamento' => 'APERTURA',
         ]);
 
         Maquinas::create([
             'IdUser' => '1',
             'Nombre' => 'PRENSA',
-            'Area' => 'APERTURA',
+            'Departamento' => 'APERTURA',
         ]);
     }
 }

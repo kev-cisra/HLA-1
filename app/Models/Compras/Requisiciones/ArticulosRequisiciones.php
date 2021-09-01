@@ -11,4 +11,9 @@ class ArticulosRequisiciones extends Model
     use SoftDeletes; //Implementamos
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id', 'created_at','updated_at'];
+
+    //relacion muchos a uno
+    public function ArticulosRequisicion() {
+        return $this->belongsTo(Requisiciones::class, 'requisiciones_id');
+    }
 }

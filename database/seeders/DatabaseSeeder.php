@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call(JefesAreaSeeder::class);
         $this->call(AreasModulosSeeder::class);
         $this->call(PerfilesUsuariosSeeder::class);
+        $this->call(MaquinasSeeder::class);
+        $this->call(MarcasMaquinasSeeder::class);
         $this->call(ModulosSeeder::class);
     }
 }
