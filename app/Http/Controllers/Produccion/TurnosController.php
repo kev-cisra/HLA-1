@@ -68,7 +68,7 @@ class TurnosController extends Controller
                 ->orWhere('ope_puesto', '=','ope')
                 ->with([
                     'perfiles' => function($perfi){
-                        $perfi->select('id', 'Nombre', 'ApPat', 'ApMat');
+                        $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
                     }
                 ])
                 ->get();
@@ -105,7 +105,7 @@ class TurnosController extends Controller
                     })
                     ->with([
                         'perfiles' => function($perfi){
-                            $perfi->select('id', 'Nombre', 'ApPat', 'ApMat');
+                            $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
                         }
                     ])
                     ->get();

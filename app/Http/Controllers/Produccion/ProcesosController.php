@@ -59,9 +59,7 @@ class ProcesosController extends Controller
                 'departamentos' => function($dep){
                     $dep->select('id', 'Nombre', 'departamento_id');
                 },
-                'prin_proceso' => function($pp){
-                    $pp->select('id', 'nompro', 'tipo');
-                },
+                'sub_proceso',
                 'maq_pros' => function($mp){
                     $mp->select('id', 'proceso_id', 'maquina_id')
                     ->with('maquinas');

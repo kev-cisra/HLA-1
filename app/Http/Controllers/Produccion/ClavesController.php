@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produccion\catalogos\claves;
+use App\Models\Produccion\dep_per;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ClavesController extends Controller
@@ -17,6 +19,7 @@ class ClavesController extends Controller
     public function index()
     {
         //
+
     }
 
     /**

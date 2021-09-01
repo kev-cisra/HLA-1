@@ -11,7 +11,7 @@
         </Header>
 
         <Accions>
-            <template  v-slot:SelectB>
+            <template  v-slot:SelectB v-if="usuario.dep_pers.length != 1">
                 <select @change="verTabla" class="InputSelect" v-model="S_Area" v-html="opc">
                 </select>
             </template>
