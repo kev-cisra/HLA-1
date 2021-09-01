@@ -9,7 +9,7 @@
             </slot>
         </Header>
         <Accions>
-            <template  v-slot:SelectB class="sm:tw-w-full">
+            <template  v-slot:SelectB class="sm:tw-w-full" v-if="usuario.dep_pers.length != 1">
                 <select @change="verTabla" class="InputSelect sm:tw-w-full" v-model="S_Area" v-html="opc">
                 </select>
             </template>
@@ -149,8 +149,13 @@
                                 <tr v-for="equipo in equipos" :key="equipo">
                                     <td class="fila">{{equipo.turnos.nomtur}}</td>
                                     <td class="fila">{{equipo.nombre}}</td>
-                                    <td>
-                                        <tr v-for="perso in equipo.dep_pers" :key="perso" class="fila tw-w-full">{{perso.perfiles.Nombre}} {{perso.perfiles.ApPat}} {{perso.perfiles.ApMat}}</tr>
+                                    <td class="">
+                                        <div class="overflow-auto tw-h-48">
+                                            <div v-for="perso in equipo.dep_pers" :key="perso" class="tw-border-b-4 tw-border-blueGray-700 hover:tw-bg-sky-600 tw-w-full">
+                                                    {{perso.perfiles.Nombre}} {{perso.perfiles.ApPat}}
+                                            </div>
+                                        </div>
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -186,14 +191,14 @@
                                 </div>
                             </div>
 
-                            <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0 tw-text-center">
+                            <div class="tw-mb-6 md:tw-flex tw-justify-center">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-96 md:tw-mb-0 tw-text-left">
                                     <jet-label><span class="required">*</span>Personal</jet-label>
-                                    <div class="overflow-auto tw-h-30 ">
-                                        <div v-for="persona in personal" :key="persona" >
+                                    <div class="overflow-auto tw-h-40 tw-mx-auto">
+                                        <div v-for="persona in personal" :key="persona" class="tw-gap-y-10 hover:tw-bg-sky-600">
                                             <input type="checkbox" :id="'ve'+persona.id" v-model="form2.emp" :value="persona.id">
                                             <label :for="'ve'+persona.id">
-                                                {{persona.perfiles.Nombre}} {{persona.perfiles.ApPat}} {{persona.perfiles.ApMat}}
+                                                 {{persona.perfiles.IdEmp}} - {{persona.perfiles.Nombre}} {{persona.perfiles.ApPat}}
                                             </label>
                                         </div>
                                     </div>
@@ -203,7 +208,6 @@
                             <div class="ModalFooter">
                                 <jet-button type="button" @click="saveE(form2)" v-show="!editMode">Guardar</jet-button>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -266,144 +270,6 @@
                 opc: '<option value="" disabled>Selecciona un departamento </option>',
                 campo_max: 10,
                 x: 1,
-                español: {
-                    "processing": "Procesando...",
-                    "lengthMenu": "Mostrar _MENU_ registros",
-                    "zeroRecords": "No se encontraron resultados",
-                    "emptyTable": "Ningún dato disponible en esta tabla",
-                    "info": "Registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "search": "Buscar:",
-                    "infoThousands": ",",
-                    "loadingRecords": "Cargando...",
-                    "paginate": {
-                        "first": "Primero",
-                        "last": "Último",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
-                    },
-                    "aria": {
-                        "sortAscending": ": Activar para ordenar la columna de manera ascendente",
-                        "sortDescending": ": Activar para ordenar la columna de manera descendente"
-                    },
-                    "buttons": {
-                        "copy": "Copiar",
-                        "colvis": "Visibilidad",
-                        "collection": "Colección",
-                        "colvisRestore": "Restaurar visibilidad",
-                        "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
-                        "copySuccess": {
-                            "1": "Copiada 1 fila al portapapeles",
-                            "_": "Copiadas %d fila al portapapeles"
-                        },
-                        "copyTitle": "Copiar al portapapeles",
-                        "csv": "CSV",
-                        "excel": "Excel",
-                        "pageLength": {
-                            "-1": "Mostrar todas las filas",
-                            "1": "Mostrar 1 fila",
-                            "_": "Mostrar %d filas"
-                        },
-                        "pdf": "PDF",
-                        "print": "Imprimir"
-                    },
-                    "autoFill": {
-                        "cancel": "Cancelar",
-                        "fill": "Rellene todas las celdas con <i>%d<\/i>",
-                        "fillHorizontal": "Rellenar celdas horizontalmente",
-                        "fillVertical": "Rellenar celdas verticalmentemente"
-                    },
-                    "decimal": ",",
-                    "searchBuilder": {
-                        "add": "Añadir condición",
-                        "button": {
-                            "0": "Constructor de búsqueda",
-                            "_": "Constructor de búsqueda (%d)"
-                        },
-                        "clearAll": "Borrar todo",
-                        "condition": "Condición",
-                        "conditions": {
-                            "date": {
-                                "after": "Despues",
-                                "before": "Antes",
-                                "between": "Entre",
-                                "empty": "Vacío",
-                                "equals": "Igual a",
-                                "not": "No",
-                                "notBetween": "No entre",
-                                "notEmpty": "No Vacio"
-                            },
-                            "moment": {
-                                "after": "Despues",
-                                "before": "Antes",
-                                "between": "Entre",
-                                "empty": "Vacío",
-                                "equals": "Igual a",
-                                "not": "No",
-                                "notBetween": "No entre",
-                                "notEmpty": "No vacio"
-                            },
-                            "number": {
-                                "between": "Entre",
-                                "empty": "Vacio",
-                                "equals": "Igual a",
-                                "gt": "Mayor a",
-                                "gte": "Mayor o igual a",
-                                "lt": "Menor que",
-                                "lte": "Menor o igual que",
-                                "not": "No",
-                                "notBetween": "No entre",
-                                "notEmpty": "No vacío"
-                            },
-                            "string": {
-                                "contains": "Contiene",
-                                "empty": "Vacío",
-                                "endsWith": "Termina en",
-                                "equals": "Igual a",
-                                "not": "No",
-                                "notEmpty": "No Vacio",
-                                "startsWith": "Empieza con"
-                            }
-                        },
-                        "data": "Data",
-                        "deleteTitle": "Eliminar regla de filtrado",
-                        "leftTitle": "Criterios anulados",
-                        "logicAnd": "Y",
-                        "logicOr": "O",
-                        "rightTitle": "Criterios de sangría",
-                        "title": {
-                            "0": "Constructor de búsqueda",
-                            "_": "Constructor de búsqueda (%d)"
-                        },
-                        "value": "Valor"
-                    },
-                    "searchPanes": {
-                        "clearMessage": "Borrar todo",
-                        "collapse": {
-                            "0": "Paneles de búsqueda",
-                            "_": "Paneles de búsqueda (%d)"
-                        },
-                        "count": "{total}",
-                        "countFiltered": "{shown} ({total})",
-                        "emptyPanes": "Sin paneles de búsqueda",
-                        "loadMessage": "Cargando paneles de búsqueda",
-                        "title": "Filtros Activos - %d"
-                    },
-                    "select": {
-                        "1": "%d fila seleccionada",
-                        "_": "%d filas seleccionadas",
-                        "cells": {
-                            "1": "1 celda seleccionada",
-                            "_": "$d celdas seleccionadas"
-                        },
-                        "columns": {
-                            "1": "1 columna seleccionada",
-                            "_": "%d columnas seleccionadas"
-                        }
-                    },
-                    "thousands": "."
-                },
                 eq_dep: null,
                 showModal: false,
                 showModal2: false,

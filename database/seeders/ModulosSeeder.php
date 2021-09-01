@@ -17,6 +17,14 @@ class ModulosSeeder extends Seeder
         //
         Modulos::create([
             'Iduser' => '16',
+            'NombreModulo' => 'PERSONAL',
+            'Icono' => 'fas fa-users',
+            'Ruta' => 'Produccion/Personal',
+            'Area' => '7',
+        ]);
+
+        Modulos::create([
+            'Iduser' => '16',
             'NombreModulo' => 'PROCESOS',
             'Icono' => 'fas fa-cogs',
             'Ruta' => 'Produccion/Procesos',
@@ -28,14 +36,6 @@ class ModulosSeeder extends Seeder
             'NombreModulo' => 'MAQUINAS',
             'Icono' => 'fas fa-digital-tachograph',
             'Ruta' => 'Produccion/Maquinas',
-            'Area' => '7',
-        ]);
-
-        Modulos::create([
-            'Iduser' => '16',
-            'NombreModulo' => 'PERSONAL',
-            'Icono' => 'fas fa-users',
-            'Ruta' => 'Produccion/Personal',
             'Area' => '7',
         ]);
 

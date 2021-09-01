@@ -9,7 +9,7 @@
             </slot>
         </Header>
         <Accions>
-            <template  v-slot:SelectB>
+            <template  v-slot:SelectB v-if="usuario.dep_pers.length != 1">
                 <select @change="verTabla" class="InputSelect" v-model="S_Area" v-html="opc">
                 </select>
             </template>
@@ -18,7 +18,10 @@
                 <jet-button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Agregar Reporte</jet-button>
             </template>
         </Accions>
-        <!------------------------------------ carga de datos de personal y areas ------------------------------------>
+        <pre>
+            {{usuario}}
+        </pre>
+        <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
         <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl" id="agPer">
             <div class="tw-mb-6 md:tw-flex">
                 <!----><div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
@@ -38,6 +41,20 @@
             <div class="w-100 tw-mx-auto" align="center">
                 <jet-button type="button" class="tw-mx-auto" @click="saveDM(form)">Guardar</jet-button>
             </div>
+        </div>
+        <!------------------------------------ Data table de carga ------------------------------------------------------->
+        <div class="table-responsive">
+            <Table>
+                <template v-slot:TableHeader>
+                    <th class="columna">Clave de maquina</th>
+                    <th class="columna">Nombre de la máquina</th>
+                    <th class="columna">Departamento</th>
+                    <th></th>
+                </template>
+                <template v-slot:TableFooter>
+                    <td></td>
+                </template>
+            </Table>
         </div>
         <!--------------------------------------- Caega de reportes y datatable ------------------------------------------->
         <div class="offcanvas offcanvas-bottom tw-h-5/6" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
@@ -611,9 +628,13 @@
         },
         mounted() {
             //this.mostSelect();
+            this.tabla();
             this.tablaRep();
         },
         methods: {
+            tabla() {
+
+            },
             tablaRep() {
                 this.$nextTick(() => {
                     $('#t_rep').DataTable({
