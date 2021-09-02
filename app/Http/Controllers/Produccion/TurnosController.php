@@ -63,9 +63,12 @@ class TurnosController extends Controller
                 ])
                 ->get();
             $personal = dep_per::where('departamento_id', '=', $prime->departamentos->id)
-                ->where('ope_puesto', '=', 'enc')
-                ->orWhere('ope_puesto', '=','lid')
-                ->orWhere('ope_puesto', '=','ope')
+                ->where(function($query){
+                    $query->where('ope_puesto', '=', 'enc')
+                        ->orWhere('ope_puesto', '=','lid')
+                        ->orWhere('ope_puesto', '=','ope');
+                    }
+                )
                 ->with([
                     'perfiles' => function($perfi){
                         $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');

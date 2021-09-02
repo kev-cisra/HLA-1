@@ -295,45 +295,6 @@
             this.mostSelect();
         },
         methods: {
-            /****************************** Alertas *******************************************************/
-            alertSucces(){
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                })
-
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Registro Insertado',
-                    // background: '#99F6E4',
-                })
-            },
-            alertDelete(){
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                })
-
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Registro Eliminado Correctamente',
-                    // background: '#99F6E4',
-                })
-            },
             /****************************** opciones de selec del departamento *****************************/
             //información del select area
             mostSelect() {
@@ -350,7 +311,6 @@
                         }
                     })
                 });
-                //console.log(this.areas)
             },
             //consulta para generar datos de la tabla
             verTabla(event){

@@ -108,7 +108,7 @@
                                         <option value="" disabled>Seleccione</option>
                                         <option value="0">Proceso principal</option>
                                         <option value="1">Encargado</option>
-                                        <option value="4">Paros</option>
+                                        <!--<option value="4">Paros</option>-->
                                         <option value="2" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">Coordinador</option>
                                         <option value="3" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">Formulas</option>
                                     </select>
