@@ -20,7 +20,19 @@ class CreateRequisicionesTable extends Migration
             $table->integer('Folio')->unique();
             $table->date('Fecha'); //fecha de solicitud
             $table->integer('NumReq');
-            $table->integer('Departamento');
+
+            $table->unsignedBigInteger('Departamento_id')->Nullable();
+
+            $table->foreign("Departamento_id")->references("id")->on("departamentos")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
+            $table->unsignedBigInteger('jefes_areas_id')->nullable();
+
+            $table->foreign("jefes_areas_id")->references("id")->on("jefes_areas")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
             $table->string('Codigo',45);
 
             $table->unsignedBigInteger('Maquina_id')->nullable();

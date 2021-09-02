@@ -42,6 +42,7 @@
         "jszip": "^3.7.1",
         "moment": "^2.29.1",
         "pdfmake": "^0.2.2",
-        "vue-chartjs": "^3.5.1"
+        "vue-chartjs": "^3.5.1",
+        "vue2-datepicker": "^3.10.1"
     }
 }

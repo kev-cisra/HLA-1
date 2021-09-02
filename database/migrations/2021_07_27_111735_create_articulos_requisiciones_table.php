@@ -18,8 +18,7 @@ class CreateArticulosRequisicionesTable extends Migration
             $table->integer('Cantidad');
             $table->string('Unidad',10);
             $table->string('Descripcion')->nullable();
-            $table->string('ColorArt',15)->nullable();
-            $table->string('EstatusArt',45)->nullable();
+            $table->integer('EstatusArt')->nullable();
             $table->string('MotivoCancelacion')->nullable();
             $table->integer('Resguardo')->default(1)->nullable();
 
@@ -28,6 +27,7 @@ class CreateArticulosRequisicionesTable extends Migration
             $table->foreign("requisiciones_id")->references("id")->on("requisiciones")
             ->onDelete("cascade")
             ->onUpdate("cascade");
+
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });
