@@ -7,6 +7,8 @@ use App\Models\Catalogos\Maquinas;
 use App\Models\Compras\Requisiciones\ArticulosRequisiciones;
 use App\Models\Compras\Requisiciones\Requisiciones;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
+use App\Models\RecursosHumanos\Catalogos\JefesArea;
+use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 class RequisicionesController extends Controller{
@@ -14,9 +16,23 @@ class RequisicionesController extends Controller{
     public function index(){
 
         $Session = auth()->user();
+        $SessionIdEmp = $Session->IdEmp;
+
+        //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
+        $ObtenJefe = JefesArea::where('IdEmp', '=', $SessionIdEmp)->first('id','IdEmp');
+        if(!isset($ObtenJefe)){
+            $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
+
+            //Consulta para obtener los datos de los trabajadores pertenecientes al id de la session
+            $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', '12')->get();
+        }else{
+            $PerfilesUsuarios = PerfilesUsuarios::get();
+        }
 
         $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
         $Maquinas = Maquinas::get(['id','Nombre']);
+
+        $Perfiles = PerfilesUsuarios::where('jefes_areas_id', '=', $Session->id)->get();
 
         $ArticuloRequisicion = ArticulosRequisiciones::with([
             'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
@@ -49,7 +65,7 @@ class RequisicionesController extends Controller{
         ])
         ->get(['id', 'Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisiciones_id']);
 
-        return Inertia::render('Compras/Requisiciones/index', compact('Session', 'ArticuloRequisicion', 'Departamentos', 'Maquinas'));
+        return Inertia::render('Compras/Requisiciones/index', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Departamentos', 'Maquinas'));
     }
 
     public function create(){

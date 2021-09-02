@@ -109,6 +109,8 @@
                 </Table>
             </div>
         </div>
+
+         <datepicker></datepicker>
     </div>
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
@@ -152,18 +154,73 @@
                         </div>
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>AREA</jet-label>
-                                <select id="Jefe" v-model="form.Maquina" class="InputSelect" @change="onChange()">
-                                    <option v-for="maq in Maquinas" :key="maq.id" :value="maq.id" > {{ maq.Nombre }}</option>
+                                <jet-label><span class="required">*</span>MÁQUINA</jet-label>
+                                <select id="Maquina" v-model="form.Maquina" name="Maquina" class="InputSelect" @change="loadMarcas($event)">
+                                    <option v-for="maq in Maquinas" :key="maq.id" :value="maq.id"> {{ maq.Nombre }}</option>
                                 </select>
                                 <small v-if="errors.Maquina" class="validation-alert">{{errors.Maquina}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>AREA</jet-label>
-                                <select id="Jefe" v-model="form.Marca" class="InputSelect">
-                                    <option v-for="maq in Maquinas" :key="maq.id" :value="maq.id" > {{ maq.Nombre }}</option>
+                                <jet-label><span class="required">*</span>MARCA</jet-label>
+                                <select id="Marca" v-model="form.Marca" class="InputSelect">
+                                    <option v-for="maq in Marcas" :key="maq.id" :value="maq.id" > {{ maq.Nombre }}</option>
                                 </select>
                                 <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
+                            </div>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>TIPO DE COMPRA</jet-label>
+                                <select id="Tipo" v-model="form.Tipo" class="InputSelect">
+                                    <option value="REQUISICIÓN">REQUISICIÓN</option>
+                                    <option value="REFACCIONES">REFACCIONES</option>
+                                    <option value="SERVICIOS EXTERNOS">SERVICIOS EXTERNOS</option>
+                                    <option value="ORDEN DE TRABAJO">ORDEN DE TRABAJO</option>
+                                    <option value="PRODUCTOS AUXILIARES">PRODUCTOS AUXILIARES</option>
+                                    <option value="MODIFICACIONES Y PROYECTOS">MODIFICACIONES Y PROYECTOS</option>
+                                </select>
+                                <small v-if="errors.Tipo" class="validation-alert">{{errors.Tipo}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>NOMBRE SOLICITANTE</jet-label>
+                                <select id="Nombre" v-model="form.Nombre" class="InputSelect">
+                                    <option v-for="per in PerfilesUsuarios" :key="per.id" :value="per.id" > {{ per.Nombre }} {{per.ApPat}} {{per.ApMat}}</option>
+                                </select>
+                                <small v-if="errors.Nombre" class="validation-alert">{{errors.Nombre}}</small>
+                            </div>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>CANTIDAD</jet-label>
+                                <jet-input type="number" v-model="form.Cantidad"></jet-input>
+                                <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>UNIDAD</jet-label>
+                                <select id="Unidad" v-model="form.Unidad" class="InputSelect">
+                                    <option value="PZ">PIEZAS</option>
+                                    <option value="LTS">LITROS</option>
+                                    <option value="KG">KILOGRAMOS</option>
+                                    <option value="MT">METROS</option>
+                                    <option value="SERVICIO">SERVICIO</option>
+                                    <option value="CAJA">CAJA</option>
+                                    <option value="OTRO">OTRO</option>
+                                </select>
+                                <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-6/12 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>DESCRIPCIÓN</jet-label>
+                                <jet-input type="text" v-model="form.Descripcion" @input="(val) => (form.Descripcion = form.Descripcion.toUpperCase())"></jet-input>
+                                <small v-if="errors.Descripcion" class="validation-alert">{{errors.Descripcion}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                <jet-CancelButton @click="addRow()">Añadir Partida</jet-CancelButton>
+                            </div>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label><span class="required">*</span>OBSERVACIONES</jet-label>
+                                <textarea name="" id="" cols="2" v-model="form.Observaciones" @input="(val) => (form.Observaciones = form.Observaciones.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
                             </div>
                         </div>
                     </div>
@@ -196,7 +253,8 @@ import JetSelect from "@/Components/Select";
 //imports de datatables
 import datatable from "datatables.net-bs5";
 import $ from "jquery";
-
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
 //Moment Js
 import moment from 'moment';
 import 'moment/locale/es';
@@ -211,15 +269,21 @@ export default {
             detalles: null,
             form: {
                 IdUser: this.Session.id,
-                Fecha: null,
-                Area: null,
+                Fecha: new Date(),
+                Departamento_id: null,
                 NumReq: null,
+                Codigo: null,
                 Maquina: null,
                 Marca: null,
+                Tipo: null,
+                Nombre: null,
+                Cantidad: null,
+                Marca: null,
+                Unidad: null,
+                Descripcion: null,
+                Observaciones: null,
             },
-            rows: [
-                {name: ""}
-            ]
+            Marcas: [],
         };
     },
 
@@ -239,6 +303,7 @@ export default {
         Pagination,
         JetInput,
         JetSelect,
+        DatePicker,
     },
 
     props: {
@@ -247,6 +312,7 @@ export default {
         ArticuloRequisicion: Object,
         Departamentos: Object,
         Maquinas: Object,
+        PerfilesUsuarios: Object,
     },
 
     methods: {
@@ -256,8 +322,14 @@ export default {
             };
         },
 
-        onChange(){
-             this.$inertia.get("/Compras/Requisiciones",{ onSuccess: () => { alert(); },});
+        loadMarcas(event) {
+            axios.get('/Compras/Marcas',{
+                params: {
+                    Maquina: event.target.value
+                }
+            })
+            .then(response => this.Marcas = response.data.Marcas)
+            .catch(error => console.log(error))
         },
 
         //datatable

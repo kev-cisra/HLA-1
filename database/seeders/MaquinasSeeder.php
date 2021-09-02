@@ -16,19 +16,109 @@ class MaquinasSeeder extends Seeder
     {
         Maquinas::create([
             'IdUser' => '1',
-            'Nombre' => 'CORTADORA',
+            'Nombre' => 'PRENSA 1',
             'Departamento' => 'APERTURA',
         ]);
 
         Maquinas::create([
             'IdUser' => '1',
-            'Nombre' => 'ROMPEDORA',
+            'Nombre' => 'ROMPEDORA 1',
             'Departamento' => 'APERTURA',
         ]);
 
         Maquinas::create([
             'IdUser' => '1',
-            'Nombre' => 'PRENSA',
+            'Nombre' => 'ROMPEDORA 2',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'MULTIWASTE',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'PRENSA 2 ROTATIVA',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'ROMPEDORA 2',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'CORTADORA 2',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'MULTIWASTE 2',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'PRENSA DE POLVOS',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'ROMPEDORA 1 CUERPO',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'CARDA',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'MONTACARGAS',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'COMPRESOR 1',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'COMPRESOR 2',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'AFILADORA',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'SOPLADOR 1',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'SOPLADOR 2',
+            'Departamento' => 'APERTURA',
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'CORTADORA 1',
             'Departamento' => 'APERTURA',
         ]);
     }
