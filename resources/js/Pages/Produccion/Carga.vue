@@ -44,7 +44,9 @@
             </div>
             <div class="tw-mb-6 md:tw-flex" v-if="veMa">
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                    <jet-label><span class="required">*</span></jet-label>
+                    <jet-label><span class="required">*</span>Maquinas</jet-label>
+                    <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ"></select>
+                    <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
             </div>
             <div class="w-100 tw-mx-auto" align="center">
@@ -216,6 +218,7 @@
                     semana: moment().format("GGGG-[W]WW"),
                     proceso_id: '',
                     dep_perf_id: '',
+                    maq_pro_id: '',
                 }
             }
         },
@@ -321,11 +324,9 @@
                 this.procesos.forEach(pm => {
                     if (event.target.value == pm.id) {
                         pm.maq_pros.forEach(mp => {
-                            console.log(mp)
+                            this.opcMQ += `<option value="${mp.id}" >${mp.maquinas.Nombre}</option>`;
                         })
                     }
-
-                    //this.opcMQ = `<option value="${pm}" >${pm}</option>`;
                 })
             },
             /****************************** datatables ********************************************************/
