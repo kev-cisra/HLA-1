@@ -24,8 +24,7 @@ class ProcesosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         //Muestra el id de la persona que inicio sesion
         $usuario = Auth::id();
         //muestra la información del usuario que inicio sesion

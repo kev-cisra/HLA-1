@@ -44,7 +44,7 @@
                             <td class="tw-p-2">{{ datos.Descripcion }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Estatus }}</td>
+                            <td class="tw-p-2">{{ datos.EstatusArt }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
                             <td class="fila">
                                 <div class="columnaIconos">
@@ -80,20 +80,16 @@
                                         </div>
                                         <div>
                                             <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
-                                                <p class="tw-text-gray-600">FOLIO</p>
+                                                <p class="tw-text-gray-600">FOLIO: </p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.Folio}}</p>
                                             </div>
                                             <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
-                                                <p class="tw-text-gray-600">NOMBRE DEL SOLICITANTE</p>
+                                                <p class="tw-text-gray-600">SOLICITANTE: </p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.requisiciones_perfil.Nombre}} {{datos.articulos_requisicion.requisiciones_perfil.ApPat}} {{datos.articulos_requisicion.requisiciones_perfil.ApMat}}</p>
                                             </div>
                                             <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">OBSERVACIONES</p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.Observaciones}}</p>
-                                            </div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
-                                                <p class="tw-text-gray-600">Comentarios.</p>
-                                                <p class="tw-font-semibold">{{datos.articulos_requisicion.Folio}}</p>
                                             </div>
                                             <div class="tw-flex tw-justify-center">
                                                 <div @click="hidden()" class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-red-500 hover:tw-scale-125">
@@ -109,9 +105,16 @@
                 </Table>
             </div>
         </div>
-
-         <datepicker></datepicker>
     </div>
+
+
+        <form>
+            <button type="button" class="btn btn-primary" @click="addRow()">Agregar proceso</button>
+            <div v-for="(row) in form.duplicado" :key="row.id">
+                <input type="text" v-model="row.value">
+            </div>
+        </form>
+
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
         <form>
@@ -127,7 +130,7 @@
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>FECHA</jet-label>
-                                <jet-input type="date" v-model="form.Fecha"></jet-input>
+                                <jet-input type="date" :min="min" v-model="form.Fecha"></jet-input>
                                 <small v-if="errors.Fecha" class="validation-alert">{{errors.Fecha}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
@@ -218,6 +221,13 @@
                             </div>
                         </div>
                         <div class="tw-mb-6 md:tw-flex">
+                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0" v-for="(row) in form.Cantidad" :key="row.id">
+                                <jet-label><span class="required">*</span>CANTIDAD</jet-label>
+                                <jet-input type="number" v-model="form.Cant"></jet-input>
+                                <small v-if="errors.Cant" class="validation-alert">{{errors.Cant}}</small>
+                            </div>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                                 <jet-label><span class="required">*</span>OBSERVACIONES</jet-label>
                                 <textarea name="" id="" cols="2" v-model="form.Observaciones" @input="(val) => (form.Observaciones = form.Observaciones.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
@@ -253,8 +263,6 @@ import JetSelect from "@/Components/Select";
 //imports de datatables
 import datatable from "datatables.net-bs5";
 import $ from "jquery";
-import DatePicker from 'vue2-datepicker';
-import 'vue2-datepicker/index.css';
 //Moment Js
 import moment from 'moment';
 import 'moment/locale/es';
@@ -262,6 +270,7 @@ import 'moment/locale/es';
 export default {
     data() {
         return {
+            min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
             tam: "5xl",
             color: "tw-bg-cyan-600",
@@ -269,6 +278,7 @@ export default {
             detalles: null,
             form: {
                 IdUser: this.Session.id,
+                IdEmp: this.Session.IdEmp,
                 Fecha: new Date(),
                 Departamento_id: null,
                 NumReq: null,
@@ -277,11 +287,12 @@ export default {
                 Marca: null,
                 Tipo: null,
                 Nombre: null,
-                Cantidad: null,
+                Cantidad: [{Cant: ""}],
                 Marca: null,
                 Unidad: null,
                 Descripcion: null,
                 Observaciones: null,
+                duplicado: [{value: ""}],
             },
             Marcas: [],
         };
@@ -303,7 +314,6 @@ export default {
         Pagination,
         JetInput,
         JetSelect,
-        DatePicker,
     },
 
     props: {
@@ -319,6 +329,24 @@ export default {
         reset() {
             this.form = {
                 IdUser: this.Session.id,
+                IdEmp: this.Session.IdEmp,
+                Fecha: new Date(),
+                Departamento_id: null,
+                NumReq: null,
+                Codigo: null,
+                Maquina: null,
+                Marca: null,
+                Tipo: null,
+                Nombre: null,
+                Cantidad: [{Cant: ""}],
+                Marca: null,
+                Unidad: null,
+                Descripcion: null,
+                Observaciones: null,
+                Marca: null,
+                Unidad: null,
+                Descripcion: null,
+                duplicado: [{value: ""}],
             };
         },
 
@@ -356,8 +384,19 @@ export default {
             this.detalles = null;
         },
 
-        save(data) {
+        addRow: function () {
+            this.form.Cantidad.push({Cant: ""});
+        },
+        removeRow: function (row) {
+            this.form.maquinas.splice(row,1);
+        },
 
+        save(data) {
+            this.$inertia.post("/Compras/Requisiciones", data, {
+                onSuccess: () => {
+                this.reset(), this.chageClose(), this.alertSucces();
+                },
+            });
         },
 
         edit: function (data) {

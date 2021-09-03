@@ -22,9 +22,9 @@ class CreateArticulosRequisicionesTable extends Migration
             $table->string('MotivoCancelacion')->nullable();
             $table->integer('Resguardo')->default(1)->nullable();
 
-            $table->unsignedBigInteger('requisiciones_id'); //Numero control empleado
+            $table->unsignedBigInteger('requisicion_id'); //Numero control empleado
 
-            $table->foreign("requisiciones_id")->references("id")->on("requisiciones")
+            $table->foreign("requisicion_id")->references("id")->on("requisiciones")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 

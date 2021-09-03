@@ -17756,7 +17756,7 @@ video {
 	--tw-transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.tw-border, .tw-border-2, .tw-border-t-4, .tw-border-l, .tw-border-t, .tw-border-r, .tw-border-b-2, .tw-border-l-4, .tw-border-b-4, .tw-border-t-2, .tw-border-b, .paginate, .btn-row, .btn-filter, .btn-form, .input-search, .InputSelect, .InputSelectFilter, .textarea, .InputSearch, .DetailsHeader, .SectionInfo, .DataContainer {
+.tw-border, .tw-border-2, .tw-border-t-4, .tw-border-l, .tw-border-t, .tw-border-r, .tw-border-b-2, .tw-border-l-4, .tw-border-b-4, .tw-border-b, .tw-border-t-2, .paginate, .btn-row, .btn-filter, .btn-form, .input-search, .InputSelect, .InputSelectFilter, .textarea, .InputSearch, .DetailsHeader, .SectionInfo, .DataContainer {
 	--tw-border-opacity: 1;
 	border-color: rgba(229, 231, 235, var(--tw-border-opacity));
 }
@@ -18507,11 +18507,11 @@ select {
 .tw-w-20 {
 	width: 5rem;
 }
-.tw-w-1\/3 {
-	width: 33.333333%;
-}
 .tw-w-80 {
 	width: 20rem;
+}
+.tw-w-1\/3 {
+	width: 33.333333%;
 }
 .tw-min-w-0 {
 	min-width: 0px;
@@ -18729,11 +18729,11 @@ select {
 .tw-border-b-4 {
 	border-bottom-width: 4px;
 }
-.tw-border-t-2 {
-	border-top-width: 2px;
-}
 .tw-border-b {
 	border-bottom-width: 1px;
+}
+.tw-border-t-2 {
+	border-top-width: 2px;
 }
 .tw-border-gray-300 {
 	--tw-border-opacity: 1;
@@ -18826,6 +18826,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(238, 242, 255, var(--tw-bg-opacity));
 }
+.tw-bg-cyan-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(8, 145, 178, var(--tw-bg-opacity));
+}
 .tw-bg-blueGray-50 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(248, 250, 252, var(--tw-bg-opacity));
@@ -18841,10 +18845,6 @@ select {
 .tw-bg-teal-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(13, 148, 136, var(--tw-bg-opacity));
-}
-.tw-bg-cyan-600 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(8, 145, 178, var(--tw-bg-opacity));
 }
 .tw-bg-orange-600 {
 	--tw-bg-opacity: 1;
@@ -20123,16 +20123,16 @@ select {
 		width: 24rem;
 	}
 
-	.md\:tw-w-1\/3 {
-		width: 33.333333%;
-	}
-
 	.md\:tw-w-2\/12 {
 		width: 16.666667%;
 	}
 
 	.md\:tw-w-6\/12 {
 		width: 50%;
+	}
+
+	.md\:tw-w-1\/3 {
+		width: 33.333333%;
 	}
 
 	.md\:tw-grid-cols-3 {
