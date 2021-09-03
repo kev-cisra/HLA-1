@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Produccion;
 use App\Http\Controllers\Controller;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\procesos;
+use App\Models\Produccion\dep_mat;
 use App\Models\Produccion\dep_per;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
@@ -39,7 +40,7 @@ class CargaController extends Controller
             ])
             ->first(['id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat', 'jefe_id', 'user_id', 'Puesto_id', 'Departamento_id', 'jefes_areas_id']);
 
-        $depa = NULL;
+        $depa = null;
         $carga = null;
         $procesos = null;
         $personal = null;
@@ -50,6 +51,12 @@ class CargaController extends Controller
             //muestra de procesos dependiendo del puesto
             $procesos = procesos::where('departamento_id', '=', $perf->Departamento_id)
                 ->where('tipo','!=', '3')
+                ->with([
+                    'maq_pros' => function($mp){
+                        $mp->select('id', 'proceso_id', 'maquina_id')
+                        ->with('maquinas');
+                    }
+                ])
                 ->get();
             //muestra el personal del departamento
             $personal = dep_per::where('departamento_id', '=', $perf->Departamento_id)
@@ -59,18 +66,6 @@ class CargaController extends Controller
                     }
                 ])
                 ->get();
-            $d = 0;
-            /*foreach ($perf->dep_pers as $value) {
-                if ($value->ope_puesto != 'ope'|| $value->ope_puesto != 'lid') {
-                    $procesos = procesos::where('tipo','!=', '2')
-                        ->where('tipo','!=', '3')
-                        ->get();
-                }elseif ($value->ope_puesto != 'cor') {
-                    $procesos = procesos::where('tipo','!=', '1')
-                        ->where('tipo','!=', '3')
-                        ->get();
-                }
-            }*/
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')
@@ -88,13 +83,19 @@ class CargaController extends Controller
             //muestran los departamentos
             $procesos = procesos::where('departamento_id', '=', $request->busca)
                 ->where('tipo', '!=', '3')
+                ->with([
+                    'maq_pros' => function($mp){
+                        $mp->select('id', 'proceso_id', 'maquina_id')
+                        ->with('maquinas');
+                    }
+                ])
                 ->get();
             //muestra el personal del departamento
             $personal = dep_per::where('departamento_id', '=', $request->busca)
                 ->with([
                     'perfiles' => function($perfi){
                         $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
-                    }
+                    },
                 ])
                 ->get();
         }

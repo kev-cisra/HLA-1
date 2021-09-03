@@ -22,12 +22,13 @@ class CreateCargasTable extends Migration
             $table->enum('notaPen', [1,2])->default(1)->nullable();
             $table->unsignedBigInteger('cargado')->nullable();
             $table->tinyInteger('equipo');
+            $table->string('partida')->nullable();
 
             $table->unsignedBigInteger('dep_perf_id');
-            $table->unsignedBigInteger('maq_pro_id');
+            $table->unsignedBigInteger('maq_pro_id')->nullable();
             $table->unsignedBigInteger('proceso_id');
-            $table->unsignedBigInteger('clave_id');
-            $table->unsignedBigInteger('turno_id');
+            $table->unsignedBigInteger('clave_id')->nullable();
+            $table->unsignedBigInteger('turno_id')->nullable();
 
             $table->foreign('maq_pro_id')->references("id")->on("maq_pros")
             ->onDelete("cascade")

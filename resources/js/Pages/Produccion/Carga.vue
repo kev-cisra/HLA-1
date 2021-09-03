@@ -21,6 +21,11 @@
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
         <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl" id="agPer">
             <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="veFec">
+                    <jet-label><span class="required">*</span>Fecha</jet-label>
+                    <jet-input type="date" :min="form.fecha" :max="diaFin" v-model="form.fecha"></jet-input>
+                    <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
+                </div>
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
                     <select class="InputSelect" @change="seleSP" v-model="proc_prin" v-html="opcPP"></select>
@@ -28,13 +33,20 @@
                 </div>
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="opcSP">
                     <jet-label><span class="required">*</span>Sub proceso </jet-label>
-                    <select class="InputSelect" v-model="form.proceso_id" v-html="opcSP"></select>
+                    <select class="InputSelect" v-model="form.proceso_id" @change="seleMQ" v-html="opcSP"></select>
                     <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
                 </div><!---->
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="ocuPE"> <!-- v-show="ocuPE" -->
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="ocuPE">
                     <jet-label><span class="required">*</span>Operador</jet-label>
                     <select class="InputSelect" v-model="form.dep_perf_id" v-html="opcPE"></select>
                     <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
+                </div>
+            </div>
+            <div class="tw-mb-6 md:tw-flex" v-if="veMa">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Maquinas</jet-label>
+                    <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ"></select>
+                    <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
             </div>
             <div class="w-100 tw-mx-auto" align="center">
@@ -42,7 +54,7 @@
             </div>
         </div>
         <pre>
-            {{personal}}
+            {{procesos}}
         </pre>
         <!------------------------------------ Data table de carga ------------------------------------------------------->
         <div class="table-responsive">
@@ -160,6 +172,9 @@
     import pdfFonts from 'pdfmake/build/vfs_fonts';
     import $ from 'jquery';
 
+    import moment from 'moment';
+    import 'moment/locale/es';
+
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     window.JSZip = jszip;
 
@@ -189,14 +204,21 @@
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
                 ocuPE: true,
+                veFec: true,
+                veMa: true,
                 opc: '<option value="" disabled>Selecciona</option>',
                 opcPP: '',
                 opcSP: '',
                 opcPE: '',
+                opcMQ: '',
                 proc_prin: '',
+                diaFin: moment().weekday(6).format("YYYY-MM-DD"),
                 form: {
+                    fecha: moment().format("YYYY-MM-DD"),
+                    semana: moment().format("GGGG-[W]WW"),
                     proceso_id: '',
                     dep_perf_id: '',
+                    maq_pro_id: '',
                 }
             }
         },
@@ -228,48 +250,82 @@
             //consulta para generar datos de la tabla
             verTabla(event){
                 this.$inertia.get('/Produccion/Carga',{ busca: event.target.value }, {
-                    onSuccess: () => {  }, preserveState: true
+                    onSuccess: () => { this.selePP(), this.selePE() }, preserveState: true
                 });
             },
             /****************************** Selects de muestra ************************************************/
             //select para proceso principal
             selePP(){
-                this.opcPP= '<option value="" disabled>Selecciona</option>'
-                this.procesos.forEach(pp =>{
-                    if (pp.tipo == 0) {
-                        this.opcPP += `<option value="${pp.id}">${pp.nompro}</option>`
-                    }
+                this.$nextTick(() => {
+                    this.veFec = this.usuario.dep_pers.length == 0 ? true : this.usuario.dep_pers[0].ope_puesto == 'cor';
+                    this.opcPP= '<option value="" disabled>SELECCIONA</option>'
+                    this.procesos == null ? '' : this.procesos.forEach(pp =>{
+                        if (pp.tipo == 0) {
+                            this.opcPP += `<option value="${pp.id}">${pp.nompro}</option>`
+                        }
+                    })
                 })
             },
             //select para sub proceso
             seleSP(event){
-                //console.log(event.target.value)
+                //console.log(this.usuario.dep_pers[0].ope_puesto)
                 this.form.proceso_id = '';
-                this.opcSP= '<option value="" disabled>Selecciona</option>';
-                this.procesos.forEach(sp =>{
-                    if (sp.tipo == 1 & sp.proceso_id == event.target.value ) {
-                        console.log(sp)
-                        this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`
-                    }
-                })
+                this.opcSP= '<option value="" disabled>SELECCIONA</option>';
+                //revisa si existe el usuario en procesos
+                if (this.usuario.dep_pers.length != 0) {
+                    this.procesos == null ? '' : this.procesos.forEach(sp =>{
+                        if (this.usuario.dep_pers[0].ope_puesto != 'cor' & (sp.tipo == 1 & sp.proceso_id == event.target.value) ) {
+                            //console.log(sp)
+                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`
+                        }
+                        if (this.usuario.dep_pers[0].ope_puesto == 'cor' & (sp.tipo == 2 & sp.proceso_id == event.target.value)) {
+                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`
+                        }
+                    })
+                }
+                //si no existe mandara todos los procesos de la area
+                else{
+                    this.procesos == null ? '' : this.procesos.forEach(sp =>{
+                        if (sp.tipo != 3 & sp.proceso_id == event.target.value) {
+                            //console.log(sp)
+                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`
+                        }
+                    })
+                }
+
             },
             //select para personal
             selePE(){
                 //console.log(this.usuario.dep_pers.length);
-                if (this.usuario.dep_pers.length == 1) {
-                    this.usuario.dep_pers.forEach(pe =>{
-                        //console.log(pe.ope_puesto)
-                        if (pe.ope_puesto == 'ope') {
-                            this.ocuPE = false;
-                            this.form.dep_perf_id = pe.id;
+                this.opcPE= '<option value="" disabled>SELECCIONA</option>';
+                //revisa si existe el usuario en procesos
+                if (this.usuario.dep_pers.length != 0) {
+                    if (this.usuario.dep_pers[0].ope_puesto == 'ope' || this.usuario.dep_pers[0].ope_puesto == 'cor') {
+                        this.ocuPE = false;
+                        this.form.dep_perf_id = this.usuario.dep_pers[0].id;
+                    }
+                    this.personal == null ? '' : this.personal.forEach(pe => {
+                        if (pe.ope_puesto == 'ope' | pe.ope_puesto == 'lid') {
+                            this.opcPE += `<option value="${pe.id}">${pe.perfiles.Nombre} ${pe.perfiles.ApPat} ${pe.perfiles.ApMat}</option>`;
                         }
                     })
                 }
-                this.opcPE= '<option value="" disabled>Selecciona</option>';
-                this.personal.forEach(pe => {
-                    //console.log(pe.id+' '+pe.perfiles.Nombre)
-                    if (pe.ope_puesto == 'ope' & pe.ope_puesto == 'lid') {
+                //muestra a todo el personal
+                else{
+                    this.personal == null ? '' : this.personal.forEach(pe => {
                         this.opcPE += `<option value="${pe.id}">${pe.perfiles.Nombre} ${pe.perfiles.ApPat} ${pe.perfiles.ApMat}</option>`;
+                    })
+                }
+            },
+            //select de maquinas
+            seleMQ(event){
+                //console.log(event.target.value)
+                this.opcMQ = '<option value="" disabled>SELECCIONA</option>';
+                this.procesos.forEach(pm => {
+                    if (event.target.value == pm.id) {
+                        pm.maq_pros.forEach(mp => {
+                            this.opcMQ += `<option value="${mp.id}" >${mp.maquinas.Nombre}</option>`;
+                        })
                     }
                 })
             },
