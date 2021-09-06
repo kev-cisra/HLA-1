@@ -14,6 +14,6 @@ class ArticulosRequisiciones extends Model
 
     //relacion muchos a uno
     public function ArticulosRequisicion() {
-        return $this->belongsTo(Requisiciones::class, 'requisiciones_id');
+        return $this->belongsTo(Requisiciones::class, 'requisicion_id');
     }
 }

@@ -23,9 +23,7 @@ class PerfilesUsuariosController extends Controller{
         $PerfilesUsuarios = PerfilesUsuarios::with('PerfilPuesto','PerfilDepartamento', 'PerfilJefe')->get();
 
         // $Session = Auth::user();
-
         $Session = auth()->user();
-
 
         $Jefes = JefesArea::get(['id','Nombre']);
         $Puestos = Puestos::get(['id','Nombre']);

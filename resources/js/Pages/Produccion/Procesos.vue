@@ -149,12 +149,12 @@
                     <div class="tw-mt-4">
                         <div class="ModalForm">
                             <button type="button" class="btn btn-primary" @click="addRow()">Agregar proceso</button>
-                            <div class="row overflow-auto" style="height: 22rem">
+                            <div class="overflow-auto row" style="height: 22rem">
                                 <div class="tw-m-5 col-md-5 tw-mx-auto" v-for="(row, index) in form.maquinas" :key="row.id">
                                     <div>
                                         <select class="InputSelect" v-model="row.value" v-html="opcMaq" >
                                         </select>
-                                        <div class="d-grid gap-2 tw-mt-2">
+                                        <div class="gap-2 d-grid tw-mt-2">
                                             <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar proceso</button>
                                         </div>
                                     </div>
@@ -175,21 +175,21 @@
                     <div class="tw-mt-4">
                         <div class="ModalForm">
                             <button type="button" class="btn btn-primary" @click="addForRow()">Agregar proceso</button>
-                            <div class="row overflow-auto" style="height: 22rem">
-                                <div v-for="(f, index) in form.formulas" :key="f.id" class="m-3 col-md-5 mx-auto">
+                            <div class="overflow-auto row" style="height: 22rem">
+                                <div v-for="(f, index) in form.formulas" :key="f.id" class="m-3 mx-auto col-md-5">
                                     <select class="InputSelect" v-model="f.val">
                                         <option value="">Selecciona un proceso</option>
                                         <option v-for="proceso in procesos" :key="proceso.id" :value="proceso.id">{{proceso.nompro}}</option>
                                     </select>
                                     <div v-for="proceso in procesos" :key="proceso.id">
                                         <div v-if="proceso.id == f.val && proceso.tipo == 1" class="overflow-auto tw-text-center" style="height: 10rem">
-                                            <label v-for="mp in proceso.maq_pros" :key="mp.id" class="w-100 m-2">
+                                            <label v-for="mp in proceso.maq_pros" :key="mp.id" class="m-2 w-100">
                                                 <input type="checkbox" :value="f.val+'-'+mp.id" v-model="form.for_maq" checked>
                                                 {{mp.maquinas.Nombre}}
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="d-grid gap-2 tw-mt-2">
+                                    <div class="gap-2 d-grid tw-mt-2">
                                         <button type="button" class="btn btn-primary" @click="removeForRow(index)">Quitar proceso</button>
                                     </div>
                                 </div>
