@@ -140,7 +140,7 @@
                     </div>
                 </div>
                 <!-------------------------------- ENCARGADO Y OPERADOR --------------------------------------->
-                <div class="tw-px-4 tw-py-4" v-show="(form.tipo == 1 | form.tipo == 2 | form.tipo == 4) & !editMode">
+                <div class="tw-px-4 tw-py-4" v-show="(form.tipo == 1 | form.tipo == 4) & !editMode">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de máquinas para el proceso</h3>
