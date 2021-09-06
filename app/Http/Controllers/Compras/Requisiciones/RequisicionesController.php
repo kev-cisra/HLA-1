@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 class RequisicionesController extends Controller{
 
-    public function index(){
+    public function index(Request $request){
 
         $Session = auth()->user();
         $SessionIdEmp = $Session->IdEmp;
@@ -34,39 +34,46 @@ class RequisicionesController extends Controller{
 
         $Perfiles = PerfilesUsuarios::where('jefes_areas_id', '=', $Session->id)->get();
 
+            $ArticuloRequisicion = ArticulosRequisiciones::with([
+                'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
+                    $req->whereMonth('Fecha', 9)->
+                    select(
+                        'id', 'IdUser',
+                        'IdEmp', 'Folio',
+                        'Fecha', 'NumReq',
+                        'Departamento_id',
+                        'jefes_areas_id',
+                        'Codigo', 'Maquina_id',
+                        'Marca_id', 'TipCompra',
+                        'Observaciones',
+                        'OrdenCompra', 'Perfil_id');
+                },
+                'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
+                    $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                },
+                'ArticulosRequisicion.RequisicionDepartamento' => function($departamento) { //Relacion 1 a 1 De puestos
+                    $departamento->select('id', 'Nombre');
+                },
+                'ArticulosRequisicion.RequisicionJefe' => function($jefe) { //Relacion 1 a 1 De puestos
+                    $jefe->select('id', 'Nombre');
+                },
+                'ArticulosRequisicion.RequisicionMaquina' => function($maquina) { //Relacion 1 a 1 De puestos
+                    $maquina->select('id', 'Nombre');
+                },
+                'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
+                    $marca->select('id', 'Nombre');
+                },
+            ])
+            ->get(['id', 'Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
 
-        $ArticuloRequisicion = ArticulosRequisiciones::with([
-            'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
-                $req->select(
-                    'id', 'IdUser',
-                    'IdEmp', 'Folio',
-                    'Fecha', 'NumReq',
-                    'Departamento_id',
-                    'jefes_areas_id',
-                    'Codigo', 'Maquina_id',
-                    'Marca_id', 'TipCompra',
-                    'Observaciones',
-                    'OrdenCompra', 'Perfil_id');
-            },
-            'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
-                $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
-            },
-            'ArticulosRequisicion.RequisicionDepartamento' => function($departamento) { //Relacion 1 a 1 De puestos
-                $departamento->select('id', 'Nombre');
-            },
-            'ArticulosRequisicion.RequisicionJefe' => function($jefe) { //Relacion 1 a 1 De puestos
-                $jefe->select('id', 'Nombre');
-            },
-            'ArticulosRequisicion.RequisicionMaquina' => function($maquina) { //Relacion 1 a 1 De puestos
-                $maquina->select('id', 'Nombre');
-            },
-            'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
-                $marca->select('id', 'Nombre');
-            },
-        ])
-        ->get(['id', 'Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
 
-        return Inertia::render('Compras/Requisiciones/index', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Departamentos', 'Maquinas'));
+        $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 3)->count();
+
+        $Cotizacion = ArticulosRequisiciones::where('EstatusArt', '=', 4)->count();
+
+        $Autorizados = ArticulosRequisiciones::where('EstatusArt', '=', 5)->count();
+
+        return Inertia::render('Compras/Requisiciones/index', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Departamentos', 'Maquinas', 'Almacen', 'Cotizacion', 'Autorizados'));
     }
 
     public function create(){
@@ -118,49 +125,30 @@ class RequisicionesController extends Controller{
 
         $RequicisionId = $Requisicion->id;
 
-        $Articulos = ArticulosRequisiciones::create([
-            'Cantidad' => $request->Cantidad,
-            'Unidad' => $request->Unidad,
-            'Descripcion' => $request->Descripcion,
-            'EstatusArt' => 0,
-            'requisicion_id' => 1,
-        ]);
+        foreach ($request->Partida as $value) {
+            $Articulos = ArticulosRequisiciones::create([
+                'Cantidad' => $value['Cantidad'],
+                'Unidad' => $value['Unidad'],
+                'Descripcion' => $value['Descripcion'],
+                'EstatusArt' => 1,
+                'requisicion_id' => $RequicisionId,
+            ]);
+        }
 
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
+    public function edit($id){
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    public function update(Request $request, $id){
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        ArticulosRequisiciones::find($request->id)->update([
+            'EstatusArt' => 2,
+        ]);
+
+        return redirect()->back();
     }
 
     /**

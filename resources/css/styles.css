@@ -44,6 +44,19 @@
     @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-green-500 hover:tw-scale-110;
 }
 
+.iconoPurple{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-purple-500 hover:tw-scale-110;
+}
+
+.iconoCyan{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-cyan-500 hover:tw-text-cyan-500 hover:tw-scale-110;
+}
+
+.iconoTeal{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-teal-500 hover:tw-text-teal-500 hover:tw-scale-110;
+}
+
+
 .btn-row{
     @apply tw-block tw-w-full tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none;
 }
@@ -58,6 +71,10 @@
 
 .BtnNuevo{
     @apply tw-bg-blue-500 tw-m-5 tw-rounded focus:tw-outline-none hover:tw-bg-blue-300;
+}
+
+.BtnCancel{
+    @apply tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-bg-gray-700 tw-border tw-border-transparent tw-rounded-md tw-font-semibold tw-text-xs tw-text-white tw-uppercase tw-tracking-widest hover:tw-bg-gray-500 active:tw-bg-gray-700 focus:tw-outline-none focus:tw-border-blue-700 focus:tw-ring focus:tw-ring-gray-300 disabled:tw-opacity-25 tw-transition;
 }
 
 .input-search{
