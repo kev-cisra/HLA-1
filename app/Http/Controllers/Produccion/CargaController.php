@@ -44,6 +44,7 @@ class CargaController extends Controller
         $carga = null;
         $procesos = null;
         $personal = null;
+        $mate = null;
 
         if (count($perf->dep_pers) != 0) {
             //muestran los departamentos
@@ -63,6 +64,17 @@ class CargaController extends Controller
                 ->with([
                     'perfiles' => function($perfi){
                         $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                    }
+                ])
+                ->get();
+            //materiales
+            $mate = dep_mat::where('departamento_id', '=', $perf->Departamento_id)
+                ->with([
+                    'materiales' => function($mat){
+                        $mat->select('id','idmat', 'nommat');
+                    },
+                    'claves' => function($cla){
+                        $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
                     }
                 ])
                 ->get();
@@ -98,10 +110,21 @@ class CargaController extends Controller
                     },
                 ])
                 ->get();
+            //muestra materiales
+            $mate = dep_mat::where('departamento_id', '=', $request->busca)
+                    ->with([
+                        'materiales' => function($mat){
+                            $mat->select('id','idmat', 'nommat');
+                        },
+                        'claves' => function($cla){
+                            $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
+                        }
+                    ])
+                    ->get();
         }
 
 
-        return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal]);
+        return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate]);
 
     }
 
@@ -124,6 +147,7 @@ class CargaController extends Controller
     public function store(Request $request)
     {
         //
+        return $request;
     }
 
     /**

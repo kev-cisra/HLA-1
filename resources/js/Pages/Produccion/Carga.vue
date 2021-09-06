@@ -19,7 +19,7 @@
             </template>
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
-        <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl" id="agPer">
+        <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <div class="tw-mb-6 md:tw-flex">
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="veFec">
                     <jet-label><span class="required">*</span>Fecha</jet-label>
@@ -35,30 +35,48 @@
                     <jet-label><span class="required">*</span>Sub proceso </jet-label>
                     <select class="InputSelect" v-model="form.proceso_id" @change="seleMQ" v-html="opcSP"></select>
                     <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
-                </div><!---->
+                </div>
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="ocuPE">
                     <jet-label><span class="required">*</span>Operador</jet-label>
                     <select class="InputSelect" v-model="form.dep_perf_id" v-html="opcPE"></select>
                     <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
                 </div>
             </div>
-            <div class="tw-mb-6 md:tw-flex" v-if="veMa">
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+            <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0"  v-if="veMa">
                     <jet-label><span class="required">*</span>Maquinas</jet-label>
                     <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ"></select>
                     <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Norma</jet-label>
+                    <select class="InputSelect" @change="seleCL" v-model="norma" v-html="opcNM"></select>
+                </div>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Clave</jet-label>
+                    <select class="InputSelect" v-model="form.clave_id" v-html="opcCL"></select>
+                    <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
+                </div>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0">
+                    <jet-label>Partida</jet-label>
+                    <jet-input class="InputSelect" v-model="form.partida"></jet-input>
+                    <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                </div>
+                <div class="tw-px-3 tw-mb-6 tw-w-full md:tw-w-1/5 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>KG</jet-label>
+                    <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
+                </div>
             </div>
             <div class="w-100 tw-mx-auto" align="center">
-                <jet-button type="button" class="tw-mx-auto" @click="saveDM(form)">Guardar</jet-button>
+                <jet-button type="button" class="tw-mx-auto" @click="saveCA(form)">Guardar</jet-button>
             </div>
         </div>
         <pre>
-            {{procesos}}
+            {{materiales}}
         </pre>
         <!------------------------------------ Data table de carga ------------------------------------------------------->
         <div class="table-responsive">
-            <Table id="">
+            <Table id="t_carg">
                 <template v-slot:TableHeader>
                     <th class="columna">Clave de maquina</th>
                     <th class="columna">Nombre de la máquina</th>
@@ -184,6 +202,7 @@
             'depa',
             'cargas',
             'procesos',
+            'materiales',
             'personal',
             'errors'
         ],
@@ -202,23 +221,34 @@
             return {
                 color: "tw-bg-blue-600",
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
+                s1: '',
                 S_Area: '',
                 ocuPE: true,
                 veFec: true,
-                veMa: true,
+                veMa: false,
                 opc: '<option value="" disabled>Selecciona</option>',
                 opcPP: '',
                 opcSP: '',
                 opcPE: '',
                 opcMQ: '',
+                opcNM: '<option value="" disabled>Selecciona</option>',
+                opcCL: '<option value="" disabled>SELECCIONA</option>',
                 proc_prin: '',
+                norma: '',
                 diaFin: moment().weekday(6).format("YYYY-MM-DD"),
                 form: {
                     fecha: moment().format("YYYY-MM-DD"),
                     semana: moment().format("GGGG-[W]WW"),
+                    per_carga: '',
                     proceso_id: '',
                     dep_perf_id: '',
                     maq_pro_id: '',
+                    partida: '',
+                    valor: '',
+                    notaPen: 0,
+                    equipo_id: '',
+                    clave_id: '',
+                    turno_id: '',
                 }
             }
         },
@@ -228,6 +258,7 @@
             this.tablaRep();
             this.selePP();
             this.selePE();
+            this.seleNM();
         },
         methods: {
             /****************************** opciones de selec del departamento *****************************/
@@ -250,14 +281,26 @@
             //consulta para generar datos de la tabla
             verTabla(event){
                 this.$inertia.get('/Produccion/Carga',{ busca: event.target.value }, {
-                    onSuccess: () => { this.selePP(), this.selePE() }, preserveState: true
+                    onSuccess: () => { this.selePP(), this.selePE(), this.seleNM() }, preserveState: true
                 });
+                this.proc_prin = '';
+                this.form.proceso_id = '';
+                this.form.dep_perf_id = '';
+                this.form.maq_pro_id = '';
+                this.form.maq_pro_id = '';
+                this.form.clave_id = '';
             },
             /****************************** Selects de muestra ************************************************/
             //select para proceso principal
             selePP(){
                 this.$nextTick(() => {
-                    this.veFec = this.usuario.dep_pers.length == 0 ? true : this.usuario.dep_pers[0].ope_puesto == 'cor';
+                    if (this.usuario.dep_pers.length == 0) {
+                        this.form.per_carga = '';
+                        this.veFec = true;
+                    }else{
+                        this.form.per_carga = this.usuario.dep_pers[0].id;
+                        this.veFec = this.usuario.dep_pers[0].ope_puesto == 'cor';
+                    }
                     this.opcPP= '<option value="" disabled>SELECCIONA</option>'
                     this.procesos == null ? '' : this.procesos.forEach(pp =>{
                         if (pp.tipo == 0) {
@@ -319,12 +362,33 @@
             },
             //select de maquinas
             seleMQ(event){
-                //console.log(event.target.value)
+                this.form.maq_pro_id = '';
                 this.opcMQ = '<option value="" disabled>SELECCIONA</option>';
                 this.procesos.forEach(pm => {
                     if (event.target.value == pm.id) {
-                        pm.maq_pros.forEach(mp => {
+                        //console.log(pm.maq_pros.length)
+                        pm.maq_pros.length == 0 ? this.veMa = false : this.veMa = true, pm.maq_pros.forEach(mp => {
                             this.opcMQ += `<option value="${mp.id}" >${mp.maquinas.Nombre}</option>`;
+                        })
+                    }
+                })
+            },
+            //select normas
+            seleNM(){
+                this.opcNM = '<option value="" disabled>SELECCIONA</option>';
+                this.materiales == null ? '' : this.materiales.forEach(ma => {
+                    this.opcNM += `<option value="${ma.id}">${ma.materiales.idmat} - ${ma.materiales.nommat}</option>`;
+                })
+            },
+            //claves
+            seleCL(event){
+                this.form.clave_id = '';
+                this.opcCL = '<option value="" disabled>SELECCIONA</option>';
+                this.materiales.forEach(cl => {
+                    if (event.target.value == cl.id) {
+                        //console.log(cl.claves)
+                        cl.claves.forEach(c => {
+                            this.opcCL += `<option value="${c.id}">${c.CVE_ART} - ${c.DESCR}</option>`;
                         })
                     }
                 })
@@ -332,7 +396,14 @@
             /****************************** datatables ********************************************************/
             //datatable de carga
             tabla() {
-
+                this.$nextTick(() => {
+                    $('#t_carg').DataTable({
+                        "language": this.español,
+                        "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                                "<'row'<'col-sm-12'tr>>" +
+                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    })
+                })
             },
             //datatable de paros
             tablaRep() {
@@ -348,6 +419,14 @@
 
                 })
             },
+            /****************************** carga de carga de datos ******************************************/
+            saveCA(form){
+                $('#t_carg').DataTable().destroy();
+                this.$inertia.post('/Produccion/Carga', form, {
+                    onSuccess: () => { this.tabla(), this.alertSucces()}, preserveState: true
+                });
+                //console.log(form);
+            }
         }
     }
 </script>

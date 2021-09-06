@@ -154,9 +154,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" @click="regre(formCla)" data-bs-target="#tabla_clave" data-bs-toggle="modal" data-bs-dismiss="modal">Regresar</button>
                     <jet-button type="button" class="btn btn-primary" @click="updateCL(formCla)" v-show="editMode" data-bs-target="#tabla_clave" data-bs-toggle="modal" data-bs-dismiss="modal">Actualizar</jet-button>
                     <button class="btn btn-primary" @click="saveCL(formCla)" v-show="!editMode" data-bs-target="#tabla_clave" data-bs-toggle="modal" data-bs-dismiss="modal">Agregar</button>
+                    <button class="btn btn-secondary" @click="regre(formCla)" data-bs-target="#tabla_clave" data-bs-toggle="modal" data-bs-dismiss="modal">Regresar</button>
                 </div>
                 </div>
             </div>
