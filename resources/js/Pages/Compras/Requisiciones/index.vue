@@ -10,6 +10,141 @@
             </slot>
         </Header>
 
+        <div class="tw-flex tw-items-center tw-justify-center tw-mt-4">
+            <div class="tw-w-full tw-mx-auto tw-max-w-7xl sm:tw-px-8 lg:tw-px-10">
+                <div class="tw-flex tw-flex-col tw-w-full tw-mb-2 tw-space-y-8 lg:tw-flex-row lg:tw-space-x-10 lg:tw-space-y-0 lg:tw-mb-4">
+
+                    <div class="tw-w-full lg:tw-w-1/4">
+                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-green-400 tw-rounded-lg tw-widget">
+                            <div class="tw-flex tw-items-center">
+                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-green-400 tw-text-white tw-rounded-full tw-mr-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                    </svg>
+                                </div>
+                                <div class="tw-flex tw-flex-col tw-justify-center">
+                                    <div class="tw-text-lg">{{Almacen}}</div>
+                                    <div class="tw-text-xs tw-text-gray-400">Artículos pendientes por recoger en almacén</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tw-w-full lg:tw-w-1/4">
+                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-indigo-400 tw-rounded-lg tw-widget">
+                            <div class="tw-flex tw-items-center">
+                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-indigo-400 tw-text-white tw-rounded-full tw-mr-3">
+                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div class="tw-flex tw-flex-col tw-justify-center">
+                                    <div class="tw-text-lg"> {{ Cotizacion }} </div>
+                                    <div class="tw-text-xs tw-text-gray-400">En espera de Cotización</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tw-w-full lg:tw-w-1/4">
+                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-indigo-400 tw-rounded-lg tw-widget">
+                            <div class="tw-flex tw-items-center">
+                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-indigo-400 tw-text-white tw-rounded-full tw-mr-3">
+                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div class="tw-flex tw-flex-col tw-justify-center">
+                                    <div class="tw-text-lg"> {{ Autorizados }} </div>
+                                    <div class="tw-text-xs tw-text-gray-400">Articulos Autorizados</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="tw-overflow-auto">
+            <div class="tw-shadow-full tw-row tw-justify-content-center">
+                <div class="tw-flex tw-items-center tw-mt-2 tw-text-center tw-text-white tw-border tw-shadow-xl">
+                    <div class="tw-m-3" @click="FiltroMes(1)">
+                        <button class="tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-green-500 tw-rounded tw-shadow-md hover:tw-border-green-600 hover:tw-bg-green-200 hover:tw-text-white">
+                            <span class="mx-auto">Enero</span>
+                        </button>
+                    </div>
+
+                    <div class="tw-m-3" @click="FiltroMes(2)">
+                        <button class="tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-cyan-500 tw-rounded tw-shadow-md hover:tw-border-cyan-600 hover:tw-bg-cyan-200 hover:tw-text-white">
+                            <span class="mx-auto">Febrero</span>
+                        </button>
+                    </div>
+
+                    <div class="tw-m-3">
+                        <button class="tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-cyan-500 tw-rounded tw-shadow-md hover:tw-border-cyan-600 hover:tw-bg-cyan-200 hover:tw-text-white">
+                            <span class="mx-auto">Marzo</span>
+                        </button>
+                    </div>
+
+                    <div class="tw-m-3">
+                        <button class="tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-cyan-500 tw-rounded tw-shadow-md hover:tw-border-cyan-600 hover:tw-bg-cyan-200 hover:tw-text-white">
+                            <span class="mx-auto">Abril</span>
+                        </button>
+                    </div>
+
+                    <div class="tw-m-3">
+                        <button class="tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-cyan-500 tw-rounded tw-shadow-md hover:tw-border-cyan-600 hover:tw-bg-cyan-200 hover:tw-text-white">
+                            <span class="mx-auto">Mayo</span>
+                        </button>
+                    </div>
+
+                    <div class="tw-m-3">
+                        <button class="tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-cyan-500 tw-rounded tw-shadow-md hover:tw-border-cyan-600 hover:tw-bg-cyan-200 hover:tw-text-white">
+                            <span class="mx-auto">Junio</span>
+                        </button>
+                    </div>
+
+                    <div class="tw-m-3">
+                        <button class="tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-cyan-500 tw-rounded tw-shadow-md hover:tw-border-cyan-600 hover:tw-bg-cyan-200 hover:tw-text-white">
+                            <span class="mx-auto">Julio</span>
+                        </button>
+                    </div>
+
+                    <div class="tw-m-3">
+                        <button class="tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-cyan-500 tw-rounded tw-shadow-md hover:tw-border-cyan-600 hover:tw-bg-cyan-200 hover:tw-text-white">
+                            <span class="mx-auto">Agosto</span>
+                        </button>
+                    </div>
+
+                    <div class="tw-m-3">
+                        <button class="tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-cyan-500 tw-rounded tw-shadow-md hover:tw-border-cyan-600 hover:tw-bg-cyan-200 hover:tw-text-white">
+                            <span class="mx-auto">Septiembre</span>
+                        </button>
+                    </div>
+
+                    <div class="tw-m-3">
+                        <button class="tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-cyan-500 tw-rounded tw-shadow-md hover:tw-border-cyan-600 hover:tw-bg-cyan-200 hover:tw-text-white">
+                            <span class="mx-auto">Octubre</span>
+                        </button>
+                    </div>
+
+                    <div class="tw-m-3">
+                        <button class="tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-cyan-500 tw-rounded tw-shadow-md hover:tw-border-cyan-600 hover:tw-bg-cyan-200 hover:tw-text-white">
+                            <span class="mx-auto">Noviembre</span>
+                        </button>
+                    </div>
+
+                    <div class="tw-m-3">
+                        <button class="tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-cyan-500 tw-rounded tw-shadow-md hover:tw-border-cyan-600 hover:tw-bg-cyan-200 hover:tw-text-white">
+                            <span class="mx-auto">Diciembre</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <div class="tw-mt-8">
             <div class="tw-flex tw-justify-end">
                 <div>
@@ -17,104 +152,13 @@
                 </div>
             </div>
 
-            <div class="tw-overflow-x-auto tw-mx-2">
-                <Table id="Articulos">
-                    <template v-slot:TableHeader>
-                        <th class="columna">FECHA</th>
-                        <th class="columna"># REQUISICIÓN</th>
-                        <th class="columna">CÓDIGO</th>
-                        <th class="columna">CANTIDAD</th>
-                        <th class="columna">UNIDAD</th>
-                        <th class="columna">DESCRIPCIÓN</th>
-                        <th class="columna">MAQUINA</th>
-                        <th class="columna">MARCA</th>
-                        <th class="columna">ESTATUS</th>
-                        <th class="columna">FECHA LLEGADA</th>
-                        <th class="columna">ACCIONES</th>
-                        <th class="columna">DETALLES</th>
-                    </template>
 
-                    <template v-slot:TableFooter>
-                        <tr class="fila" v-for="datos in ArticuloRequisicion" :key="datos.id">
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.NumReq }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Codigo }}</td>
-                            <td class="tw-p-2">{{ datos.Cantidad }}</td>
-                            <td class="tw-p-2">{{ datos.Unidad }}</td>
-                            <td class="tw-p-2">{{ datos.Descripcion }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.EstatusArt }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
-                            <td class="fila">
-                                <div class="columnaIconos">
-                                    <div class="iconoEdit" @click="edit(datos)">
-                                        <span tooltip="Editar" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                    <div class="iconoDelete" @click="deleteRow(datos)">
-                                        <span tooltip="Eliminar" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="tw-p-2">
-                                <div class="tw-flex tw-justify-center">
-                                    <div class="iconoDetails" v-if="detalles != datos.id" @click="show(datos.id)">
-                                        <span tooltip="Detalles" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                    <div v-if="detalles == datos.id" class="tw-w-80">
-                                        <div class="border-b">
-                                            <h2 class="tw-text-sm tw-text-center">Requisición <strong>#{{datos.articulos_requisicion.NumReq}}</strong> </h2>
-                                        </div>
-                                        <div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
-                                                <p class="tw-text-gray-600">FOLIO: </p>
-                                                <p class="tw-font-semibold">{{datos.articulos_requisicion.Folio}}</p>
-                                            </div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
-                                                <p class="tw-text-gray-600">SOLICITANTE: </p>
-                                                <p class="tw-font-semibold">{{datos.articulos_requisicion.requisiciones_perfil.Nombre}} {{datos.articulos_requisicion.requisiciones_perfil.ApPat}} {{datos.articulos_requisicion.requisiciones_perfil.ApMat}}</p>
-                                            </div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
-                                                <p class="tw-text-gray-600">OBSERVACIONES</p>
-                                                <p class="tw-font-semibold">{{datos.articulos_requisicion.Observaciones}}</p>
-                                            </div>
-                                            <div class="tw-flex tw-justify-center">
-                                                <div @click="hidden()" class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-red-500 hover:tw-scale-125">
-                                                    <i class="fas fa-window-close"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </template>
-                </Table>
-            </div>
         </div>
     </div>
 
-
-        <form>
-            <button type="button" class="btn btn-primary" @click="addRow()">Agregar proceso</button>
-            <div v-for="(row) in form.duplicado" :key="row.id">
-                <input type="text" v-model="row.value">
-            </div>
-        </form>
-
+    <pre>
+        {{ ArticuloRequisicion }}
+    </pre>
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
         <form>
@@ -192,7 +236,8 @@
                                 <small v-if="errors.Nombre" class="validation-alert">{{errors.Nombre}}</small>
                             </div>
                         </div>
-                        <div class="tw-mb-6 md:tw-flex">
+                        <input type="button" @click="addRow()" value="Añadir Partida" class="BtnCancel">
+                        <div class="tw-mb-6 md:tw-flex" v-for="(form) in form.Partida" :key="form.id">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>CANTIDAD</jet-label>
                                 <jet-input type="number" v-model="form.Cantidad"></jet-input>
@@ -217,14 +262,7 @@
                                 <small v-if="errors.Descripcion" class="validation-alert">{{errors.Descripcion}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
-                                <jet-CancelButton @click="addRow()">Añadir Partida</jet-CancelButton>
-                            </div>
-                        </div>
-                        <div class="tw-mb-6 md:tw-flex">
-                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0" v-for="(row) in form.Cantidad" :key="row.id">
-                                <jet-label><span class="required">*</span>CANTIDAD</jet-label>
-                                <jet-input type="number" v-model="form.Cant"></jet-input>
-                                <small v-if="errors.Cant" class="validation-alert">{{errors.Cant}}</small>
+                                <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
                             </div>
                         </div>
                         <div class="tw-mb-6 md:tw-flex">
@@ -245,7 +283,7 @@
         </form>
     </modal>
 
-  </app-layout>
+    </app-layout>
 </template>
 
 <script>
@@ -287,12 +325,15 @@ export default {
                 Marca: null,
                 Tipo: null,
                 Nombre: null,
-                Cantidad: [{Cant: ""}],
-                Marca: null,
-                Unidad: null,
-                Descripcion: null,
+                Partida: [{
+                    Cantidad: null,
+                    Unidad: null,
+                    Descripcion: null,
+                    }],
                 Observaciones: null,
-                duplicado: [{value: ""}],
+            },
+            params:{
+                month: null,
             },
             Marcas: [],
         };
@@ -323,6 +364,9 @@ export default {
         Departamentos: Object,
         Maquinas: Object,
         PerfilesUsuarios: Object,
+        Almacen: Object,
+        Cotizacion: Object,
+        Autorizados: Object,
     },
 
     methods: {
@@ -338,15 +382,12 @@ export default {
                 Marca: null,
                 Tipo: null,
                 Nombre: null,
-                Cantidad: [{Cant: ""}],
-                Marca: null,
-                Unidad: null,
-                Descripcion: null,
+                Partida: [{
+                    Cantidad: null,
+                    Unidad: null,
+                    Descripcion: null,
+                    }],
                 Observaciones: null,
-                Marca: null,
-                Unidad: null,
-                Descripcion: null,
-                duplicado: [{value: ""}],
             };
         },
 
@@ -358,6 +399,18 @@ export default {
             })
             .then(response => this.Marcas = response.data.Marcas)
             .catch(error => console.log(error))
+        },
+
+        FiltroMes(value){
+
+            this.params.month = value;
+            console.log(this.params.month);
+            $('#Articulos').DataTable().clear(); //limpio
+            $('#Articulos').DataTable().destroy(); //destruyo tabla
+            this.$inertia.get('/Compras/Requisiciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    this.tabla() //regeneracion de tabla
+                }, preserveState: true})
         },
 
         //datatable
@@ -385,16 +438,20 @@ export default {
         },
 
         addRow: function () {
-            this.form.Cantidad.push({Cant: ""});
+            this.form.Partida.push({Part: ""});
         },
+
         removeRow: function (row) {
-            this.form.maquinas.splice(row,1);
+            this.form.Partida.splice(row,1);
         },
 
         save(data) {
+            console.log(data);
             this.$inertia.post("/Compras/Requisiciones", data, {
                 onSuccess: () => {
-                this.reset(), this.chageClose(), this.alertSucces();
+                    this.reset(),
+                    this.chageClose(),
+                    this.alertSucces();
                 },
             });
         },
@@ -404,7 +461,16 @@ export default {
         },
 
         update(data) {
+        },
 
+        ConfirmaReq(data, metodo){
+            data.metodo = 2;
+            data._method = "PUT";
+            this.$inertia.post("/Compras/Requisiciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
         },
 
         deleteRow: function (data) {
