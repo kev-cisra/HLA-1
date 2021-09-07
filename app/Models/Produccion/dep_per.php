@@ -18,7 +18,7 @@ class dep_per extends Model
 
     // Relaciones 1 a muchos
     public function cargas() {
-        return $this->hasMany(carga::class);
+        return $this->hasMany(carga::class, 'dep_perf_id');
     }
 
     // Relaciones inversas 1 a muchos

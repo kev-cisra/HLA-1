@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MaquinasSeeder::class);
         $this->call(MarcasMaquinasSeeder::class);
         $this->call(ModulosSeeder::class);
+        $this->call(MaterialSeeder::class);
     }
 }

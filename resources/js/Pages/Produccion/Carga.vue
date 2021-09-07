@@ -21,11 +21,12 @@
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
         <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <div class="tw-mb-6 md:tw-flex">
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="veFec">
+                <!--<div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="veFec">
                     <jet-label><span class="required">*</span>Fecha</jet-label>
-                    <jet-input type="date" :min="form.fecha" :max="diaFin" v-model="form.fecha"></jet-input>
+                    <jet-input type="date" :min="diaIni" :max="diaFin" v-model="form.fecha"></jet-input>
                     <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
-                </div>
+                     <input type="datetime-local" name="" id="">
+                </div>-->
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
                     <select class="InputSelect" @change="seleSP" v-model="proc_prin" v-html="opcPP"></select>
@@ -38,7 +39,7 @@
                 </div>
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="ocuPE">
                     <jet-label><span class="required">*</span>Operador</jet-label>
-                    <select class="InputSelect" v-model="form.dep_perf_id" v-html="opcPE"></select>
+                    <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" v-html="opcPE"></select>
                     <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
                 </div>
             </div>
@@ -48,11 +49,12 @@
                     <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ"></select>
                     <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="usuario.dep_pers[0].ope_puesto != 'cor'">
                     <jet-label><span class="required">*</span>Norma</jet-label>
-                    <select class="InputSelect" @change="seleCL" v-model="norma" v-html="opcNM"></select>
+                    <select class="InputSelect" @change="seleCL" v-model="form.norma" v-html="opcNM"></select>
+                    <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="usuario.dep_pers[0].ope_puesto != 'cor'">
                     <jet-label><span class="required">*</span>Clave</jet-label>
                     <select class="InputSelect" v-model="form.clave_id" v-html="opcCL"></select>
                     <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
@@ -65,6 +67,7 @@
                 <div class="tw-px-3 tw-mb-6 tw-w-full md:tw-w-1/5 md:tw-mb-0">
                     <jet-label><span class="required">*</span>KG</jet-label>
                     <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
+                    <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
                 </div>
             </div>
             <div class="w-100 tw-mx-auto" align="center">
@@ -72,19 +75,40 @@
             </div>
         </div>
         <pre>
-            {{materiales}}
+            {{ cargas }}
         </pre>
         <!------------------------------------ Data table de carga ------------------------------------------------------->
         <div class="table-responsive">
             <Table id="t_carg">
                 <template v-slot:TableHeader>
-                    <th class="columna">Clave de maquina</th>
-                    <th class="columna">Nombre de la máquina</th>
+                    <th class="columna">Fecha</th>
+                    <th class="columna">Nombre</th>
                     <th class="columna">Departamento</th>
+                    <th class="columna">Equipo</th>
+                    <th class="columna">Turno</th>
+                    <th class="columna">Partida</th>
+                    <th class="columna">Norma</th>
+                    <th class="columna">Clave</th>
+                    <th class="columna">Maquina</th>
+                    <th class="columna">KG</th>
                     <th></th>
                 </template>
                 <template v-slot:TableFooter>
-                    <td></td>
+                    <!-- <tr v-for="pe in personal" :key="pe">
+                        <div v-for="ca in pe.cargas" :key="ca">
+                            <td class="fila">{{ca.fecha}}</td>
+                            <td class="fila">{{pe.perfiles.Nombre}} {{pe.perfiles.ApPat}} {{pe.perfiles.ApMat}}</td>
+                            <td class="fila">Departamento</td>
+                            <td class="fila">Equipo</td>
+                            <td class="fila">Turno</td>
+                            <td class="fila">Partida</td>
+                            <td class="fila">Norma</td>
+                            <td class="fila">Clave</td>
+                            <td class="fila">Maquina</td>
+                            <td class="fila">KG</td>
+                            <td></td>
+                        </div>
+                    </tr> -->
                 </template>
             </Table>
         </div>
@@ -181,20 +205,10 @@
     import Select from '../../Components/Select.vue';
     //datatable
     import datatable from 'datatables.net-bs5';
-    require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
-    require( 'datatables.net-buttons/js/buttons.html5' );
-    require ( 'datatables.net-buttons/js/buttons.colVis' );
-    import print from 'datatables.net-buttons/js/buttons.print';
-    import jszip from 'jszip/dist/jszip';
-    import pdfMake from 'pdfmake/build/pdfmake';
-    import pdfFonts from 'pdfmake/build/vfs_fonts';
     import $ from 'jquery';
 
     import moment from 'moment';
     import 'moment/locale/es';
-
-    pdfMake.vfs = pdfFonts.pdfMake.vfs;
-    window.JSZip = jszip;
 
     export default {
         props: [
@@ -204,6 +218,7 @@
             'procesos',
             'materiales',
             'personal',
+            'cargas',
             'errors'
         ],
         components: {
@@ -235,9 +250,10 @@
                 opcCL: '<option value="" disabled>SELECCIONA</option>',
                 proc_prin: '',
                 norma: '',
+                diaIni: moment().format("YYYY-MM-DD"),
                 diaFin: moment().weekday(6).format("YYYY-MM-DD"),
                 form: {
-                    fecha: moment().format("YYYY-MM-DD"),
+                    //fecha: moment().format("YYYY-MM-DD H:mm:ss"),
                     semana: moment().format("GGGG-[W]WW"),
                     per_carga: '',
                     proceso_id: '',
@@ -245,7 +261,7 @@
                     maq_pro_id: '',
                     partida: '',
                     valor: '',
-                    notaPen: 0,
+                    norma: '',
                     equipo_id: '',
                     clave_id: '',
                     turno_id: '',
@@ -291,6 +307,15 @@
                 this.form.clave_id = '';
             },
             /****************************** Selects de muestra ************************************************/
+            //equipo y turno
+            eq_tu(event){
+                this.personal.forEach(sp => {
+                    if (sp.id == event.target.value) {
+                        this.form.equipo_id = sp.equipo.id == null ? null : sp.equipo.id;
+                        this.form.turno_id = sp.equipo.turno_id == null ? null : sp.equipo.turno_id;
+                    }
+                })
+            },
             //select para proceso principal
             selePP(){
                 this.$nextTick(() => {
@@ -346,6 +371,8 @@
                     if (this.usuario.dep_pers[0].ope_puesto == 'ope' || this.usuario.dep_pers[0].ope_puesto == 'cor') {
                         this.ocuPE = false;
                         this.form.dep_perf_id = this.usuario.dep_pers[0].id;
+                        this.form.equipo_id = this.usuario.dep_pers[0].equipo == null ? null : this.usuario.dep_pers[0].equipo.id;
+                        this.form.turno_id = this.usuario.dep_pers[0].equipo == null ? null : this.usuario.dep_pers[0].equipo.turno_id;
                     }
                     this.personal == null ? '' : this.personal.forEach(pe => {
                         if (pe.ope_puesto == 'ope' | pe.ope_puesto == 'lid') {
@@ -399,7 +426,7 @@
                 this.$nextTick(() => {
                     $('#t_carg').DataTable({
                         "language": this.español,
-                        "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                        "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                     })
@@ -423,9 +450,25 @@
             saveCA(form){
                 $('#t_carg').DataTable().destroy();
                 this.$inertia.post('/Produccion/Carga', form, {
-                    onSuccess: () => { this.tabla(), this.alertSucces()}, preserveState: true
+                    onSuccess: () => { this.tabla(), this.resetCA() ,this.alertSucces()}, preserveState: true
                 });
                 //console.log(form);
+            },
+            resetCA(){
+                this.form = {
+                    //fecha: moment().format("YYYY-MM-DD"),
+                    semana: moment().format("GGGG-[W]WW"),
+                    per_carga: '',
+                    proceso_id: '',
+                    dep_perf_id: '',
+                    maq_pro_id: '',
+                    partida: '',
+                    valor: '',
+                    norma: '',
+                    equipo_id: '',
+                    clave_id: '',
+                    turno_id: '',
+                }
             }
         }
     }
