@@ -11,6 +11,8 @@ use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class CargaController extends Controller
@@ -45,6 +47,7 @@ class CargaController extends Controller
         $procesos = null;
         $personal = null;
         $mate = null;
+        $carga = null;
 
         if (count($perf->dep_pers) != 0) {
             //muestran los departamentos
@@ -64,9 +67,12 @@ class CargaController extends Controller
                 ->with([
                     'perfiles' => function($perfi){
                         $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                    },
+                    'equipo' => function($eq){
+                        $eq -> select('id', 'nombre', 'turno_id');
                     }
                 ])
-                ->get();
+                ->get(['id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id', 'equipo_id']);
             //materiales
             $mate = dep_mat::where('departamento_id', '=', $perf->Departamento_id)
                 ->with([
@@ -77,6 +83,19 @@ class CargaController extends Controller
                         $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
                     }
                 ])
+                ->get();
+            //carga
+            /* select(
+                'dep_pers.id AS DPid',
+                'dep_pers.ope_puesto AS DPpuesto',
+                'dep_pers.departamento_id AS DP'
+            ) */
+            $carga = dep_per::where('dep_pers.departamento_id', '=', $perf->Departamento_id)
+                ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
+                ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
+                ->join('equipos', 'equipos.id', '=', 'dep_pers.equipo_id')
+                ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
+                ->join('cargas', 'cargas.maq_pro_id', '=', 'maq_pros.id')
                 ->get();
         }else{
             //consulta el id de la area produccion
@@ -108,8 +127,11 @@ class CargaController extends Controller
                     'perfiles' => function($perfi){
                         $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
                     },
+                    'equipo' => function($eq){
+                        $eq -> select('id', 'nombre', 'turno_id');
+                    }
                 ])
-                ->get();
+                ->get(['id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id', 'equipo_id']);
             //muestra materiales
             $mate = dep_mat::where('departamento_id', '=', $request->busca)
                     ->with([
@@ -121,10 +143,17 @@ class CargaController extends Controller
                         }
                     ])
                     ->get();
+            //carga
+            $carga = dep_per::where('departamento_id', '=', $request->busca)
+                ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
+                ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
+                ->join('equipos', 'equipos.id', '=', 'dep_pers.equipo_id')
+                ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
+                ->get();
         }
 
 
-        return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate]);
+        return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate, 'cargas' => $carga]);
 
     }
 
@@ -147,7 +176,16 @@ class CargaController extends Controller
     public function store(Request $request)
     {
         //
-        return $request;
+        Validator::make($request->all(), [
+            'proceso_id' => ['required'],
+            'dep_perf_id' => ['required'],
+            'valor' => ['required']
+        ])->validate();
+
+        carga::create($request->all());
+
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
     }
 
     /**
