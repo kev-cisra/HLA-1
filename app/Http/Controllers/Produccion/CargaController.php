@@ -42,12 +42,12 @@ class CargaController extends Controller
             ])
             ->first(['id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat', 'jefe_id', 'user_id', 'Puesto_id', 'Departamento_id', 'jefes_areas_id']);
 
-        $depa = null;
-        $carga = null;
-        $procesos = null;
-        $personal = null;
-        $mate = null;
-        $carga = null;
+        $depa = [];
+        $carga = [];
+        $procesos = [];
+        $personal = [];
+        $mate = [];
+        $carga = [];
 
         if (count($perf->dep_pers) != 0) {
             //muestran los departamentos
@@ -85,18 +85,39 @@ class CargaController extends Controller
                 ])
                 ->get();
             //carga
-            /* select(
-                'dep_pers.id AS DPid',
-                'dep_pers.ope_puesto AS DPpuesto',
-                'dep_pers.departamento_id AS DP'
-            ) */
-            /* $carga = dep_per::where('dep_pers.departamento_id', '=', $perf->Departamento_id)
-                ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
-                ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
-                ->join('equipos', 'equipos.id', '=', 'dep_pers.equipo_id')
-                ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
-                ->join('cargas', 'cargas.maq_pro_id', '=', 'maq_pros.id')
-                ->get(); */
+            $carga = dep_per::select(
+                'cargas.id AS id',
+                'perfiles_usuarios.Nombre AS Pnom',
+                'perfiles_usuarios.ApPat AS Pap',
+                'perfiles_usuarios.ApMat AS Pam',
+                'dep_pers.ope_puesto AS DPpue',
+                'departamentos.Nombre AS Dnom',
+                'equipos.nombre AS Enom',
+                'turnos.nomtur AS Tnom',
+                'cargas.fecha AS Cfec',
+                'cargas.semana AS Csem',
+                'cargas.valor AS Cval',
+                'cargas.partida AS Cpar',
+                'cargas.notaPen AS Cnp',
+                'materiales.idmat AS Midm',
+                'materiales.nommat AS Mnom',
+                'maquinas.nombre AS MAnom',
+                'claves.CVE_ART AS CLcla',
+                'claves.DESCR AS CLdes'
+            )
+            ->where('dep_pers.departamento_id', '=', $perf->Departamento_id)
+            ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
+            ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
+            ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
+            ->leftJoin('equipos', 'equipos.id', '=', 'cargas.equipo_id')
+            ->leftJoin('turnos', 'turnos.id', '=', 'cargas.turno_id')
+            ->leftJoin('dep_mats', 'dep_mats.id', '=', 'cargas.norma')
+            ->leftJoin('materiales', 'materiales.id', '=', 'dep_mats.material_id')
+            ->leftJoin('claves', 'claves.id', '=', 'cargas.clave_id')
+            ->leftJoin('maq_pros', 'maq_pros.id', '=', 'cargas.maq_pro_id')
+            ->leftJoin('maquinas', 'maquinas.id', '=', 'maq_pros.maquina_id')
+            ->leftJoin('procesos', 'procesos.id', '=', 'maq_pros.proceso_id')
+            ->get();
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')
@@ -144,12 +165,39 @@ class CargaController extends Controller
                     ])
                     ->get();
             //carga
-            /* $carga = dep_per::where('departamento_id', '=', $request->busca)
-                ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
-                ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
-                ->join('equipos', 'equipos.id', '=', 'dep_pers.equipo_id')
-                ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
-                ->get(); */
+            $carga = dep_per::select(
+                'cargas.id AS id',
+                'perfiles_usuarios.Nombre AS Pnom',
+                'perfiles_usuarios.ApPat AS Pap',
+                'perfiles_usuarios.ApMat AS Pam',
+                'dep_pers.ope_puesto AS DPpue',
+                'departamentos.Nombre AS Dnom',
+                'equipos.nombre AS Enom',
+                'turnos.nomtur AS Tnom',
+                'cargas.fecha AS Cfec',
+                'cargas.semana AS Csem',
+                'cargas.valor AS Cval',
+                'cargas.partida AS Cpar',
+                'cargas.notaPen AS Cnp',
+                'materiales.idmat AS Midm',
+                'materiales.nommat AS Mnom',
+                'maquinas.nombre AS MAnom',
+                'claves.CVE_ART AS CLcla',
+                'claves.DESCR AS CLdes'
+            )
+            ->where('dep_pers.departamento_id', '=', $request->busca)
+            ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
+            ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
+            ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
+            ->leftJoin('equipos', 'equipos.id', '=', 'cargas.equipo_id')
+            ->leftJoin('turnos', 'turnos.id', '=', 'cargas.turno_id')
+            ->leftJoin('dep_mats', 'dep_mats.id', '=', 'cargas.norma')
+            ->leftJoin('materiales', 'materiales.id', '=', 'dep_mats.material_id')
+            ->leftJoin('claves', 'claves.id', '=', 'cargas.clave_id')
+            ->leftJoin('maq_pros', 'maq_pros.id', '=', 'cargas.maq_pro_id')
+            ->leftJoin('maquinas', 'maquinas.id', '=', 'maq_pros.maquina_id')
+            ->leftJoin('procesos', 'procesos.id', '=', 'maq_pros.proceso_id')
+            ->get();
         }
 
 
