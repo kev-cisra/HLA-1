@@ -87,6 +87,22 @@ class ModulosSeeder extends Seeder
             'Area' => '2',
         ]);
 
+        ///////////////// Compras ///////////////////
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'PROVEEDORES',
+            'Icono' => 'fas fa-truck',
+            'Ruta' => 'Compras/Proveedores',
+            'Area' => '4',
+        ]);
+
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'COTIZACIONES',
+            'Icono' => 'fas fa-calculator',
+            'Ruta' => 'Compras/Cotizaciones',
+            'Area' => '4',
+        ]);
 
         Modulos::create([
             'Iduser' => '1',

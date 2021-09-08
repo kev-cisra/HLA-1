@@ -3,39 +3,28 @@
 namespace App\Http\Controllers\Compras\Proveedores;
 
 use App\Http\Controllers\Controller;
+use App\Models\Compras\Proveedores;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+class ProveedoresController extends Controller{
 
-class ProveedoresController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function index(){
+
+        $Session = auth()->user();
+
+        $Proveedores = Proveedores::get();
+
+        return Inertia::render('Compras/Proveedores/Proveedores', compact('Session', 'Proveedores'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+
+    public function create(){
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+
+    public function store(Request $request){
+
     }
 
     /**
