@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 class RequisicionesController extends Controller{
 
     public function index(Request $request){
@@ -41,6 +43,7 @@ class RequisicionesController extends Controller{
         $Perfiles = PerfilesUsuarios::where('jefes_areas_id', '=', $Session->id)->get();
 
         if($request->Estatus == ''){
+
             $ArticuloRequisicion = ArticulosRequisiciones::with([
                 'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
                     $req->select(
@@ -69,9 +72,13 @@ class RequisicionesController extends Controller{
                 'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
                     $marca->select('id', 'Nombre');
                 },
-            ])->whereMonth('Fecha', $mes)
+            ])
+            ->orderBy('EstatusArt', 'asc')
+            ->whereMonth('Fecha', $mes)
             ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
+
         }else{
+
             $ArticuloRequisicion = ArticulosRequisiciones::with([
                 'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
                     $req->select(
@@ -100,9 +107,11 @@ class RequisicionesController extends Controller{
                 'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
                     $marca->select('id', 'Nombre');
                 },
-            ])->whereMonth('Fecha', $mes)
+            ])
+            ->orderBy('EstatusArt', 'asc')
             ->where('EstatusArt', $request->Estatus)
             ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
+
         }
 
 
@@ -206,7 +215,7 @@ class RequisicionesController extends Controller{
                     'Fecha' => $request->Fecha,
                     'Cantidad' => $request->Cantidad,
                     'Unidad' => $request->Unidad,
-                    'Descripcion' => $request->Descripcion,                
+                    'Descripcion' => $request->Descripcion,
                 ]);
 
                 break;

@@ -17756,7 +17756,7 @@ video {
 	--tw-transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.tw-border, .tw-border-2, .tw-border-8, .tw-border-t-4, .tw-border-l, .tw-border-t, .tw-border-r, .tw-border-b-2, .tw-border-l-4, .tw-border-b-4, .tw-border-b, .tw-border-t-2, .paginate, .btn-row, .btn-filter, .btn-form, .BtnCancel, .input-search, .InputSelect, .InputSelectFilter, .textarea, .InputSearch, .DetailsHeader, .SectionInfo, .DataContainer, .Enero, .EneroActivo, .Febrero, .FebreroActivo, .Marzo, .MarzoActivo, .Abril, .AbrilActivo, .Mayo, .MayoActivo, .Junio, .JunioActivo, .Julio, .JulioActivo, .Agosto, .AgostoActivo, .Septiembre, .SeptiembreActivo, .Octubre, .OctubreActivo, .Noviembre, .NoviembreActivo, .Diciembre, .DiciembreActivo {
+.tw-border, .tw-border-2, .tw-border-t-4, .tw-border-l, .tw-border-t, .tw-border-r, .tw-border-b-2, .tw-border-l-4, .tw-border-b-4, .tw-border-b, .tw-border-t-2, .paginate, .btn-row, .btn-filter, .btn-form, .BtnCancel, .input-search, .InputSelect, .InputSelectFilter, .textarea, .InputSearch, .DetailsHeader, .SectionInfo, .DataContainer, .Enero, .EneroActivo, .Febrero, .FebreroActivo, .Marzo, .MarzoActivo, .Abril, .AbrilActivo, .Mayo, .MayoActivo, .Junio, .JunioActivo, .Julio, .JulioActivo, .Agosto, .AgostoActivo, .Septiembre, .SeptiembreActivo, .Octubre, .OctubreActivo, .Noviembre, .NoviembreActivo, .Diciembre, .DiciembreActivo {
 	--tw-border-opacity: 1;
 	border-color: rgba(229, 231, 235, var(--tw-border-opacity));
 }
@@ -18620,6 +18620,9 @@ select {
 .tw-justify-between {
 	justify-content: space-between;
 }
+.tw-justify-items-stretch {
+	justify-items: stretch;
+}
 .tw-gap-4 {
 	gap: 1rem;
 }
@@ -18676,6 +18679,9 @@ select {
 	--tw-divide-opacity: 1;
 	border-color: rgba(209, 213, 219, var(--tw-divide-opacity));
 }
+.tw-justify-self-start {
+	justify-self: start;
+}
 .tw-overflow-auto {
 	overflow: auto;
 }
@@ -18724,9 +18730,6 @@ select {
 }
 .tw-border-2 {
 	border-width: 2px;
-}
-.tw-border-8 {
-	border-width: 8px;
 }
 .tw-border-t-4 {
 	border-top-width: 4px;
@@ -18886,21 +18889,25 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(129, 140, 248, var(--tw-bg-opacity));
 }
-.tw-bg-gray-400 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(156, 163, 175, var(--tw-bg-opacity));
-}
 .tw-bg-violet-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(167, 139, 250, var(--tw-bg-opacity));
 }
-.tw-bg-violet-600 {
+.tw-bg-indigo-500 {
 	--tw-bg-opacity: 1;
-	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
+	background-color: rgba(99, 102, 241, var(--tw-bg-opacity));
 }
 .tw-bg-orange-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(234, 88, 12, var(--tw-bg-opacity));
+}
+.tw-bg-gray-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(156, 163, 175, var(--tw-bg-opacity));
+}
+.tw-bg-violet-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
 }
 .tw-fill-current {
 	fill: currentColor;
@@ -19384,7 +19391,7 @@ select {
 	width: 1rem;
 	transform: var(--tw-transform);
 	--tw-text-opacity: 1;
-	color: rgba(6, 182, 212, var(--tw-text-opacity));
+	color: rgba(107, 114, 128, var(--tw-text-opacity));
 }
 .iconoCyan:hover {
 	--tw-scale-x: 1.1;
@@ -19398,7 +19405,7 @@ select {
 	width: 1rem;
 	transform: var(--tw-transform);
 	--tw-text-opacity: 1;
-	color: rgba(20, 184, 166, var(--tw-text-opacity));
+	color: rgba(107, 114, 128, var(--tw-text-opacity));
 }
 .iconoTeal:hover {
 	--tw-scale-x: 1.1;
@@ -20979,6 +20986,10 @@ select {
 		width: 20%;
 	}
 
+	.md\:tw-w-2\/3 {
+		width: 66.666667%;
+	}
+
 	.md\:tw-w-96 {
 		width: 24rem;
 	}
@@ -20995,10 +21006,6 @@ select {
 		width: 66.666667%;
 	}
 
-	.md\:tw-w-2\/3 {
-		width: 66.666667%;
-	}
-
 	.md\:tw-grid-cols-3 {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
@@ -21009,6 +21016,12 @@ select {
 
 	.md\:tw-gap-6 {
 		gap: 1.5rem;
+	}
+
+	.md\:tw-space-y-0 > :not([hidden]) ~ :not([hidden]) {
+		--tw-space-y-reverse: 0;
+		margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
+		margin-bottom: calc(0px * var(--tw-space-y-reverse));
 	}
 
 	.md\:tw-text-8xl {
