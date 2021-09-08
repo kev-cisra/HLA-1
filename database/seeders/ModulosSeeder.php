@@ -91,7 +91,7 @@ class ModulosSeeder extends Seeder
         Modulos::create([
             'Iduser' => '1',
             'NombreModulo' => 'REQUISICIONES SOLICITADAS',
-            'Icono' => 'fa-clipboard-list',
+            'Icono' => 'fas fa-clipboard-list',
             'Ruta' => 'Almacen/Requisiciones',
             'Area' => '3',
         ]);

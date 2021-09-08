@@ -49,11 +49,11 @@
 }
 
 .iconoCyan{
-    @apply tw-w-4 tw-mr-2 tw-transform tw-text-cyan-500 hover:tw-text-cyan-500 hover:tw-scale-110;
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-cyan-500 hover:tw-scale-110;
 }
 
 .iconoTeal{
-    @apply tw-w-4 tw-mr-2 tw-transform tw-text-teal-500 hover:tw-text-teal-500 hover:tw-scale-110;
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-teal-500 hover:tw-scale-110;
 }
 
 
