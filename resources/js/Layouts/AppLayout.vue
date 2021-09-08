@@ -31,6 +31,16 @@
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Recursos Humanos
                                 </jet-nav-link>
                             </div>
+                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
+                                <jet-nav-link :href="route('Compras')" :active="route().current('Compras')" v-if="hasAnyPermission(['admin.index', 'Compras.index'])">
+                                        <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Compras
+                                </jet-nav-link>
+                            </div>
+                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
+                                <jet-nav-link :href="route('Almacen')" :active="route().current('Almacen')" v-if="hasAnyPermission(['admin.index', 'Almacen.index'])">
+                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Almacen
+                                </jet-nav-link>
+                            </div>
                             <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex" >
                                 <jet-nav-link :href="route('Produccion')" :active="route().current('Produccion')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Producción
@@ -100,6 +110,11 @@
                     <div class="pt-2 pb-3 space-y-1">
                         <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                             Inicio
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">
+                        <jet-responsive-nav-link :href="route('Admin')" :active="route().current('Admin')">
+                            Administrador
                         </jet-responsive-nav-link>
                     </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">
