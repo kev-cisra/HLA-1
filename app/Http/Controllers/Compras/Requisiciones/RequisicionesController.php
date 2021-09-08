@@ -202,6 +202,13 @@ class RequisicionesController extends Controller{
                     'Observaciones ' => $request->Observaciones,
                 ]);
 
+                ArticulosRequisiciones::find($request->editId)->update([
+                    'Fecha' => $request->Fecha,
+                    'Cantidad' => $request->Cantidad,
+                    'Unidad' => $request->Unidad,
+                    'Descripcion' => $request->Descripcion,                
+                ]);
+
                 break;
 
             case 2:
