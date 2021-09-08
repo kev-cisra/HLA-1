@@ -49,12 +49,12 @@
                     <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ"></select>
                     <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="usuario.dep_pers[0].ope_puesto != 'cor'">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" ><!-- v-if="usuario.dep_pers[0].ope_puesto != 'cor'" -->
                     <jet-label><span class="required">*</span>Norma</jet-label>
                     <select class="InputSelect" @change="seleCL" v-model="form.norma" v-html="opcNM"></select>
                     <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="usuario.dep_pers[0].ope_puesto != 'cor'">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" >
                     <jet-label><span class="required">*</span>Clave</jet-label>
                     <select class="InputSelect" v-model="form.clave_id" v-html="opcCL"></select>
                     <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>

@@ -90,13 +90,13 @@ class CargaController extends Controller
                 'dep_pers.ope_puesto AS DPpuesto',
                 'dep_pers.departamento_id AS DP'
             ) */
-            $carga = dep_per::where('dep_pers.departamento_id', '=', $perf->Departamento_id)
+            /* $carga = dep_per::where('dep_pers.departamento_id', '=', $perf->Departamento_id)
                 ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
                 ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
                 ->join('equipos', 'equipos.id', '=', 'dep_pers.equipo_id')
                 ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
                 ->join('cargas', 'cargas.maq_pro_id', '=', 'maq_pros.id')
-                ->get();
+                ->get(); */
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')
@@ -144,12 +144,12 @@ class CargaController extends Controller
                     ])
                     ->get();
             //carga
-            $carga = dep_per::where('departamento_id', '=', $request->busca)
+            /* $carga = dep_per::where('departamento_id', '=', $request->busca)
                 ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
                 ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
                 ->join('equipos', 'equipos.id', '=', 'dep_pers.equipo_id')
                 ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
-                ->get();
+                ->get(); */
         }
 
 
