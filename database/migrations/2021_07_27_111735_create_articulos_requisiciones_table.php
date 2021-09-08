@@ -15,6 +15,7 @@ class CreateArticulosRequisicionesTable extends Migration
     {
         Schema::create('articulos_requisiciones', function (Blueprint $table) {
             $table->id();
+            $table->date('Fecha'); //fecha de solicitud
             $table->integer('Cantidad');
             $table->string('Unidad',10);
             $table->string('Descripcion')->nullable();
