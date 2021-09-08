@@ -18324,10 +18324,6 @@ select {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 }
-.tw-mx-20 {
-	margin-left: 5rem;
-	margin-right: 5rem;
-}
 .tw-mt-5 {
 	margin-top: 1.25rem;
 }
@@ -19057,10 +19053,6 @@ select {
 .tw-text-9xl {
 	font-size: 8rem;
 	line-height: 1;
-}
-.tw-text-2xl {
-	font-size: 1.5rem;
-	line-height: 2rem;
 }
 .tw-font-semibold {
 	font-weight: 600;
@@ -20996,6 +20988,10 @@ select {
 
 	.md\:tw-w-1\/5 {
 		width: 20%;
+	}
+
+	.md\:tw-w-2\/3 {
+		width: 66.666667%;
 	}
 
 	.md\:tw-w-96 {
