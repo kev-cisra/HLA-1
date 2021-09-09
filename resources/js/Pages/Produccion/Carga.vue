@@ -14,7 +14,7 @@
                 </select>
             </template>
             <template v-slot:BtnNuevo>
-                <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer">Cargar datos</jet-button>
+                <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar datos</jet-button>
                 <jet-button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Agregar Reporte</jet-button>
             </template>
         </Accions>
@@ -31,31 +31,31 @@
                     <select class="InputSelect" v-model="form.proceso_id" @change="seleMQ" v-html="opcSP"></select>
                     <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="ocuPE">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="noCor != 'cor' & noCor != 'ope'">
                     <jet-label><span class="required">*</span>Operador</jet-label>
                     <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" v-html="opcPE"></select>
                     <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
                 </div>
             </div>
-            <div class="tw-mb-6 md:tw-flex" v-if="form.notaPen == 1">
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0"  v-if="veMa">
+            <div class="tw-mb-6 md:tw-flex" v-if="form.notaPen == 1 & form.proceso_id != ''">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0" v-show="noCor != 'cor'">
                     <jet-label><span class="required">*</span>Maquinas</jet-label>
                     <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ"></select>
                     <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="veCor">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="noCor != 'cor'">
                     <jet-label><span class="required">*</span>Norma</jet-label>
                     <select class="InputSelect" @change="seleCL" v-model="form.norma" v-html="opcNM"></select>
                     <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="veCor">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="noCor != 'cor'">
                     <jet-label><span class="required">*</span>Clave</jet-label>
                     <select class="InputSelect" v-model="form.clave_id" v-html="opcCL"></select>
                     <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="veCor">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="noCor != 'cor'">
                     <jet-label>Partida</jet-label>
-                    <jet-input class="InputSelect" v-model="form.partida"></jet-input>
+                    <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
                     <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
                 </div>
                 <div class="tw-px-3 tw-mb-6 tw-w-full md:tw-w-1/5 md:tw-mb-0">
@@ -67,12 +67,12 @@
             <div class="tw-mb-6" v-if="form.notaPen == 2">
                 <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 tw-text-center tw-mx-auto md:tw-mb-0">
                     <jet-label><span class="required">*</span>Nota</jet-label>
-                    <textarea class="InputSelect"></textarea>
-                    <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                    <textarea class="InputSelect" v-model="form.nota" @input="(val) => (form.nota = form.nota.toUpperCase())"></textarea>
+                    <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
                 </div>
             </div>
             <div class="w-100 tw-mx-auto" align="center">
-                <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2">Guardar</jet-button>
+                <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2" @click="saveNot(form)">Agregar</jet-button>
                 <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1" @click="saveCA(form)">Guardar</jet-button>
             </div>
         </div>
@@ -108,7 +108,7 @@
                         <td class="fila">{{ca.Cval}}</td>
                         <td class="fila">
                             <div class="columnaIconos">
-                                <div class="iconoDetails" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & ((noCor == 'cor' & ca.Enom == null) | (noCor != 'cor' & ca.Enom != null))" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer">
+                                <div class="iconoDetails" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & ((noCor == 'cor' & ca.Enom == null) | (noCor != 'cor' & ca.Enom != null))">
                                     <span tooltip="Agregar nota" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -116,7 +116,7 @@
                                     </span>
 
                                 </div>
-                                <div class="iconoEdit" @click="edit(proceso)" v-show="usuario.dep_pers.length == 0 | (ca.Cnp == 2 & ca.DPpue != 'cor' & !veCor)">
+                                <div class="iconoEdit" @click="edit(proceso)" v-show="usuario.dep_pers.length == 0 | (ca.Cnp == 2 & ca.DPpue != 'cor' & noCor == 'cor')">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -137,7 +137,7 @@
             </Table>
         </div>
         <pre>
-            {{ v }}
+            {{ form }}
         </pre>
         <!--------------------------------------- Carga de reportes y datatable ------------------------------------------->
         <div class="offcanvas offcanvas-bottom tw-h-5/6" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
@@ -260,29 +260,22 @@
         },
         data() {
             return {
+
                 color: "tw-bg-blue-600",
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
-                s1: '',
                 S_Area: '',
-                ocuPE: true,
-                veFec: true,
-                veMa: false,
-                veCor: true,
                 noCor: '',
                 opc: '<option value="" disabled>Selecciona</option>',
                 opcPP: '',
                 opcSP: '',
                 opcPE: '',
-                opcMQ: '',
-                opcNM: '<option value="" disabled>Selecciona</option>',
+                opcMQ: '<option value="" disabled>SELECCIONA</option>',
+                opcNM: '<option value="" disabled>SELECCIONA</option>',
                 opcCL: '<option value="" disabled>SELECCIONA</option>',
                 proc_prin: '',
-                norma: '',
                 v: [],
-                diaIni: moment().format("YYYY-MM-DD"),
-                diaFin: moment().weekday(6).format("YYYY-MM-DD"),
                 form: {
-                    //fecha: moment().format("YYYY-MM-DD H:mm:ss"),
+                    idnota: null,
                     semana: moment().format("GGGG-[W]WW"),
                     per_carga: '',
                     proceso_id: '',
@@ -294,17 +287,20 @@
                     equipo_id: '',
                     clave_id: '',
                     turno_id: '',
-                    notaPen: 1
+                    notaPen: 1,
+                    nota: '',
+                    agNot: 0
                 }
             }
         },
         mounted() {
             this.mostSelect();
-            this.tabla();
-            this.tablaRep();
+            this.global();
             this.selePP();
+            this.tabla();
+            /*this.tablaRep();
             this.selePE();
-            this.seleNM();
+            this.seleNM();*/
             this.reCarga();
         },
         methods: {
@@ -330,14 +326,17 @@
                 event.target.value == '' ? '' : $('#t_carg').DataTable().clear();
                 $('#t_carg').DataTable().destroy();
                 this.$inertia.get('/Produccion/Carga',{ busca: event.target.value }, {
-                    onSuccess: () => { this.selePP(), this.selePE(), this.seleNM(), this.reCarga(), this.tabla() }, preserveState: true
+                    onSuccess: () => { this.selePP(),/* this.selePE(), this.seleNM(),*/ this.reCarga(), this.tabla()  }, preserveState: true
                 });
-                this.proc_prin = '';
-                this.form.proceso_id = '';
-                this.form.dep_perf_id = '';
-                this.form.maq_pro_id = '';
-                this.form.maq_pro_id = '';
-                this.form.clave_id = '';
+            },
+            /****************************** Globales **********************************************************/
+            global(){
+                if (this.usuario.dep_pers.length == 0) {
+
+                }else{
+                    //asigna el puesto a una variable
+                    this.noCor = this.usuario.dep_pers[0].ope_puesto;
+                }
             },
             /****************************** Selects de muestra ************************************************/
             //equipo y turno
@@ -349,22 +348,39 @@
                     }
                 })
             },
-            //select para proceso principal
+            //select para proceso principal, normas y personal
             selePP(){
                 this.$nextTick(() => {
-                    if (this.usuario.dep_pers.length == 0) {
-                        this.form.per_carga = '';
-                        this.veFec = true;
-                    }else{
-                        this.noCor = this.usuario.dep_pers[0].ope_puesto;
-                        this.form.per_carga = this.usuario.dep_pers[0].id;
-                        this.veFec = this.usuario.dep_pers[0].ope_puesto == 'cor';
-                    }
+                    //select de procesos principales
                     this.opcPP= '<option value="" >SELECCIONA</option>'
-                    this.procesos == null ? '' : this.procesos.forEach(pp =>{
+                    this.procesos.forEach(pp =>{
                         if (pp.tipo == 0) {
                             this.opcPP += `<option value="${pp.id}">${pp.nompro}</option>`
                         }
+                    })
+                    //select de personal
+                    this.opcPE= '<option value="" >SELECCIONA</option>';
+                    if (this.usuario.dep_pers.length == 0) {
+                        //asignacion de select personal
+                        this.personal.forEach(pe => {
+                            this.opcPE += `<option value="${pe.id}">${pe.perfiles.Nombre} ${pe.perfiles.ApPat} ${pe.perfiles.ApMat}</option>`;
+                        })
+                    }else{
+                        //asigna el puesto a una variable
+                        this.noCor = this.usuario.dep_pers[0].ope_puesto;
+                        //asigna quien carga
+                        this.form.per_carga = this.usuario.dep_pers[0].id;
+                        //asignacion de personal a select
+                        this.personal.forEach(pe => {
+                            if (pe.ope_puesto == 'ope' | pe.ope_puesto == 'lid') {
+                                this.opcPE += `<option value="${pe.id}">${pe.perfiles.Nombre} ${pe.perfiles.ApPat} ${pe.perfiles.ApMat}</option>`;
+                            }
+                        })
+                    }
+                    //select normas
+                    this.opcNM = '<option value="">SELECCIONA</option>';
+                    this.materiales.forEach(ma => {
+                        this.opcNM += `<option value="${ma.id}">${ma.materiales.idmat} - ${ma.materiales.nommat}</option>`;
                     })
                 })
             },
@@ -373,54 +389,25 @@
                 //console.log(this.usuario.dep_pers[0].ope_puesto)
                 this.form.proceso_id = '';
                 this.opcSP= '<option value="" >SELECCIONA</option>';
-                //revisa si existe el usuario en procesos
                 if (this.usuario.dep_pers.length != 0) {
-                    this.procesos == null ? '' : this.procesos.forEach(sp =>{
+                    //recorre y muestra los procesos
+                    this.procesos.forEach(sp =>{
                         if (this.usuario.dep_pers[0].ope_puesto != 'cor' & (sp.tipo == 1 & sp.proceso_id == event.target.value) ) {
-                            //console.log(sp)
-                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`
+                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
                         }
                         if (this.usuario.dep_pers[0].ope_puesto == 'cor' & (sp.tipo == 2 & sp.proceso_id == event.target.value)) {
-                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`
+                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
                         }
                     })
-                }
-                //si no existe mandara todos los procesos de la area
-                else{
-                    this.procesos == null ? '' : this.procesos.forEach(sp =>{
+                }else{
+                    //recorre y muestra los procesos
+                    this.procesos.forEach(sp =>{
                         if (sp.tipo != 3 & sp.proceso_id == event.target.value) {
-                            //console.log(sp)
                             this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`
                         }
                     })
                 }
 
-            },
-            //select para personal
-            selePE(){
-                //console.log(this.usuario.dep_pers.length);
-                this.opcPE= '<option value="" >SELECCIONA</option>';
-                //revisa si existe el usuario en procesos
-                if (this.usuario.dep_pers.length != 0) {
-                    this.veCor = this.usuario.dep_pers[0].ope_puesto != 'cor';
-                    if (this.usuario.dep_pers[0].ope_puesto == 'ope' || this.usuario.dep_pers[0].ope_puesto == 'cor') {
-                        this.ocuPE = false;
-                        this.form.dep_perf_id = this.usuario.dep_pers[0].id;
-                        this.form.equipo_id = this.usuario.dep_pers[0].equipo == null ? null : this.usuario.dep_pers[0].equipo.id;
-                        this.form.turno_id = this.usuario.dep_pers[0].equipo == null ? null : this.usuario.dep_pers[0].equipo.turno_id;
-                    }
-                    this.personal == null ? '' : this.personal.forEach(pe => {
-                        if (pe.ope_puesto == 'ope' | pe.ope_puesto == 'lid') {
-                            this.opcPE += `<option value="${pe.id}">${pe.perfiles.Nombre} ${pe.perfiles.ApPat} ${pe.perfiles.ApMat}</option>`;
-                        }
-                    })
-                }
-                //muestra a todo el personal
-                else{
-                    this.personal == null ? '' : this.personal.forEach(pe => {
-                        this.opcPE += `<option value="${pe.id}">${pe.perfiles.Nombre} ${pe.perfiles.ApPat} ${pe.perfiles.ApMat}</option>`;
-                    })
-                }
             },
             //select de maquinas
             seleMQ(event){
@@ -429,17 +416,10 @@
                 this.procesos.forEach(pm => {
                     if (event.target.value == pm.id) {
                         //console.log(pm.maq_pros.length)
-                        pm.maq_pros.length == 0 ? this.veMa = false : this.veMa = true, pm.maq_pros.forEach(mp => {
+                        pm.maq_pros.forEach(mp => {
                             this.opcMQ += `<option value="${mp.id}" >${mp.maquinas.Nombre}</option>`;
                         })
                     }
-                })
-            },
-            //select normas
-            seleNM(){
-                this.opcNM = '<option value="">SELECCIONA</option>';
-                this.materiales == null ? '' : this.materiales.forEach(ma => {
-                    this.opcNM += `<option value="${ma.id}">${ma.materiales.idmat} - ${ma.materiales.nommat}</option>`;
                 })
             },
             //claves
@@ -455,6 +435,7 @@
                     }
                 })
             },
+            //reordana los datos para mostrar la información en el datatable
             reCarga(){
                 this.cargas.forEach(ca => {
                     if (this.usuario.dep_pers.length != 0) {
@@ -475,36 +456,15 @@
                 this.$nextTick(() => {
                     $('#t_carg').DataTable({
                         "language": this.español,
-                        'order': [0, 'desc'],
-                        "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                        "order": [0, 'desc'],
+                        "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
-                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                        buttons: [
-                            {
-                                extend: 'copyHtml5',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'excelHtml5',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'pdfHtml5',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            'colvis'
-                        ]
+                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
                     })
                 })
             },
             //datatable de paros
-            tablaRep() {
+            /* tablaRep() {
                 this.$nextTick(() => {
                     $('#t_rep').DataTable({
                         "language": this.español,
@@ -516,35 +476,65 @@
                     });
 
                 })
-            },
+            }, */
             /****************************** carga de carga de datos ******************************************/
             saveCA(form){
+                $('#t_carg').DataTable().clear();
                 $('#t_carg').DataTable().destroy();
                 this.$inertia.post('/Produccion/Carga', form, {
-                    onSuccess: () => { this.tabla(), this.resetCA() ,this.alertSucces()}, preserveState: true
+                    onSuccess: () => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, preserveState: true
                 });
                 //console.log(form);
             },
             resetCA(){
-                this.form = {
-                    //fecha: moment().format("YYYY-MM-DD"),
-                    semana: moment().format("GGGG-[W]WW"),
-                    per_carga: '',
-                    proceso_id: '',
-                    dep_perf_id: '',
-                    maq_pro_id: '',
-                    partida: '',
-                    valor: '',
-                    norma: '',
-                    equipo_id: '',
-                    clave_id: '',
-                    turno_id: '',
-                    notaPen: 1
+                this.form.valor = '';
+                this.form.norma = '';
+                this.form.partida = '';
+                this.form.maq_pro_id = '';
+                this.form.clave_id = '';
+                this.form.agNot = 0;
+                this.form.notaPen = 1;
+                this.form.nota = '';
+
+                if (this.usuario.dep_pers.length != 0) {
+                    if (this.usuario.dep_pers[0].ope_puesto != 'ope' | this.usuario.dep_pers[0].ope_puesto != 'cor') {
+                        this.form.dep_perf_id = '';
+                        this.form.turno_id = '';
+                        this.form.equipo_id = '';
+                    }
+                    if(this.usuario.dep_pers[0].ope_puesto == 'ope'){
+                        this.form.dep_perf_id = this.usuario.dep_pers[0].id;
+                        this.form.equipo_id = this.usuario.dep_pers[0].equipo.id;
+                        this.form.turno_id = this.usuario.dep_pers[0].equipo.turno_id;
+                    }
+                    if(this.usuario.dep_pers[0].ope_puesto == 'cor'){
+                        this.form.dep_perf_id = this.usuario.dep_pers[0].id;
+                    }
+                }else{
+                    this.form.dep_perf_id = '';
+                    this.form.turno_id = '';
+                    this.form.equipo_id = '';
                 }
             },
-            notaCA(form){
+            editCA(form){
                 console.log(form)
-                this.form.notaPen = 2
+            },
+            /****************************** Carga de notas */
+            notaCA(form){
+                //console.log(form)
+                this.form.idnota = form.id;
+                //console.log(this.form.idnota);
+                this.form.agNot = 1;
+                this.form.notaPen = 2;
+                $('#agPer').addClass('show')
+
+            },
+            saveNot(data){
+                //console.log(data)
+                //data._method = 'PUT';
+                this.$inertia.put('/Produccion/Nota/' + data.id, data, {
+                    onSuccess: () => {},
+                });
             }
         }
     }

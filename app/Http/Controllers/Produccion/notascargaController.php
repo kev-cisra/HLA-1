@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
+use App\Models\Produccion\carga;
 use App\Models\Produccion\notasCarga;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class notascargaController extends Controller
 {
@@ -37,6 +39,7 @@ class notascargaController extends Controller
     public function store(Request $request)
     {
         //
+
     }
 
     /**
@@ -71,6 +74,13 @@ class notascargaController extends Controller
     public function update(Request $request, notasCarga $notasCarga)
     {
         //
+        Validator::make($request->all(), [
+            'nota' => ['required']
+        ])->validate();
+        //return $request;
+        carga::find($request->input('idnota'))->update(['notaPen' => 2]);
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
     }
 
     /**
