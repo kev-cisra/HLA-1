@@ -348,6 +348,7 @@
             },
             //actualiza información de las maquinas
             update(data) {
+                console.log(data);
                 data._method = 'PUT';
                 this.$inertia.post('/Produccion/Maquinas/' + data.id, data, {
                     onSuccess: () => {this.reset(), this.chageClose()},

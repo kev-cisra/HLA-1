@@ -48,6 +48,10 @@ class CargaController extends Controller
         $personal = [];
         $mate = [];
         $carga = [];
+        $hoy = date('Y-m-d');
+        $dia = date("Y-m-d",strtotime($hoy."- 1 days")).' 19:00:00';
+        $mañana = date("Y-m-d",strtotime($hoy."+ 1 days")).' 07:00:00';
+        //return $mañana;
 
         if (count($perf->dep_pers) != 0) {
             //muestran los departamentos
@@ -106,6 +110,11 @@ class CargaController extends Controller
                 'claves.DESCR AS CLdes'
             )
             ->where('dep_pers.departamento_id', '=', $perf->Departamento_id)
+            ->whereBetween('cargas.fecha', [$dia, $mañana])
+            ->orWhere(function($q) use ($dia){
+                $q->whereDate('cargas.fecha', '<=', $dia)
+                ->where('cargas.notaPen', '=', '2');
+            })
             ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
             ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
             ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
@@ -186,6 +195,11 @@ class CargaController extends Controller
                 'claves.DESCR AS CLdes'
             )
             ->where('dep_pers.departamento_id', '=', $request->busca)
+            ->whereBetween('cargas.fecha', [$dia, $mañana])
+            ->orWhere(function($q) use ($dia){
+                $q->whereDate('cargas.fecha', '<=', $dia)
+                ->where('cargas.notaPen', '=', '2');
+            })
             ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
             ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
             ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
@@ -224,6 +238,7 @@ class CargaController extends Controller
     public function store(Request $request)
     {
         //
+        //return $request;
         Validator::make($request->all(), [
             'proceso_id' => ['required'],
             'dep_perf_id' => ['required'],
@@ -268,6 +283,8 @@ class CargaController extends Controller
     public function update(Request $request, carga $carga)
     {
         //
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
     }
 
     /**
