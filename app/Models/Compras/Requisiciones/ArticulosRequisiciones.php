@@ -16,4 +16,9 @@ class ArticulosRequisiciones extends Model
     public function ArticulosRequisicion() {
         return $this->belongsTo(Requisiciones::class, 'requisicion_id');
     }
+
+    //relacion muchos a uno
+    public function ArticuloPrecios() {
+        return $this->hasMany(PreciosCotizaciones::class, 'articulos_requisiciones_id');
+    }
 }

@@ -19081,6 +19081,9 @@ select {
 .tw-tracking-widest {
 	letter-spacing: 0.1em;
 }
+.tw-tracking-wide {
+	letter-spacing: 0.025em;
+}
 .tw-text-gray-500 {
 	--tw-text-opacity: 1;
 	color: rgba(107, 114, 128, var(--tw-text-opacity));

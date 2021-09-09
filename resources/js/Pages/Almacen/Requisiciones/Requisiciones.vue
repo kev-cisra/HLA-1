@@ -519,7 +519,6 @@ export default {
         },
 
         EnviaCotizar(data, metodo){
-            console.log(data);
             data.metodo = 3;
             data._method = "PUT";
             this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
@@ -530,7 +529,6 @@ export default {
         },
 
         Parcialidad(data){
-            console.log(data);
             this.form.IdArt = data.id;
             this.form.NumReq = data.articulos_requisicion.NumReq;
             this.form.Fecha = data.Fecha;
@@ -543,7 +541,6 @@ export default {
 
         update(data, metodo) {
             data.metodo = "Parcialidad";
-            console.log(data);
             data._method = "PUT";
             this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
                     onSuccess: () => {
