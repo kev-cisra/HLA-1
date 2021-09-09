@@ -67,14 +67,7 @@ class ModuloController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Administrador\Modulos  $modulos
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request)
-    {
+    public function destroy(Request $request){
         //
         if ($request->has('id')) {
             Modulos::find($request->input('id'))->delete();

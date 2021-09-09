@@ -745,7 +745,6 @@ export default {
         },
 
         save(data) {
-            console.log(data);
             this.$inertia.post("/Compras/Requisiciones", data, {
                 onSuccess: () => {
                     this.reset(),

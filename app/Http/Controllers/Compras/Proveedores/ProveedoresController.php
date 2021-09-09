@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Compras\Proveedores;
 
 use App\Http\Controllers\Controller;
 use App\Models\Compras\Proveedores;
+use App\Models\RecursosHumanos\Catalogos\Departamentos;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 class ProveedoresController extends Controller{
@@ -12,63 +14,52 @@ class ProveedoresController extends Controller{
 
         $Session = auth()->user();
 
-        $Proveedores = Proveedores::get();
+        $Proveedores = Proveedores::with('ProveedorDepartamento')->get();
 
-        return Inertia::render('Compras/Proveedores/Proveedores', compact('Session', 'Proveedores'));
-    }
+        $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
 
-
-    public function create(){
-
+        return Inertia::render('Compras/Proveedores/Proveedores', compact('Session', 'Proveedores', 'Departamentos'));
     }
 
 
     public function store(Request $request){
 
+        Validator::make($request->all(), [
+            'Nombre' => ['required'],
+            'Departamentos_id' => ['required'],
+            'TipoPago' => ['required'],
+        ])->validate();
+
+        Proveedores::create([
+            'IdUser' => $request->IdUser,
+            'Nombre' => $request->Nombre,
+            'Departamentos_id' => $request->Departamentos_id,
+            'TipoPago' =>  $request->TipoPago,
+        ]);
+
+        return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    public function update(Request $request, $id){
+
+        Validator::make($request->all(), [
+            'Nombre' => ['required'],
+            'Departamentos_id' => ['required'],
+            'TipoPago' => ['required'],
+        ])->validate();
+
+        if ($request->has('id')) {
+            Proveedores::find($request->input('id'))->update($request->all());
+            return redirect()->back();
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    public function destroy(Request $request){
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if ($request->has('id')) {
+            Proveedores::find($request->input('id'))->delete();
+            return redirect()->back();
+        }
     }
 }

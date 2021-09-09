@@ -11,57 +11,58 @@ class ProveedoresSeeder extends Seeder
         Proveedores::create([
             'IdUser' => 18,
             'Nombre' => 'MAQUINADOS MEYADO',
-            'Departamento' => 'COMPRAS',
+            'Departamentos_id' => '14',
             'TipoPago' => 'REMISION',
         ]);
 
         Proveedores::create([
             'IdUser' => 18,
             'Nombre' => 'SEDICO',
-            'Departamento' => 'COMPRAS',
+            'Departamentos_id' => '14',
             'TipoPago' => 'REMISION',
         ]);
 
         Proveedores::create([
             'IdUser' => 18,
             'Nombre' => 'ESIME',
-            'Departamento' => 'COMPRAS',
+            'Departamentos_id' => '14',
             'TipoPago' => 'REMISION',
         ]);
 
         Proveedores::create([
             'IdUser' => 18,
             'Nombre' => 'ROBERTO MORA',
-            'Departamento' => 'APERTURA',
+            'Departamentos_id' => '7',
             'TipoPago' => 'REMISION',
         ]);
 
         Proveedores::create([
             'IdUser' => 18,
             'Nombre' => 'ADRIAN JUAREZ',
-            'Departamento' => 'APERTURA',
+            'Departamentos_id' => '7',
             'TipoPago' => 'REMISION',
         ]);
 
         Proveedores::create([
             'IdUser' => 18,
             'Nombre' => 'RILSA 2000 SA DE C',
-            'Departamento' => 'APERTURA',
+            'Departamentos_id' => '7',
             'TipoPago' => 'REMISION',
         ]);
 
         Proveedores::create([
             'IdUser' => 18,
             'Nombre' => 'TALLER ESPINOZA',
-            'Departamento' => 'APERTURA',
+            'Departamentos_id' => '7',
             'TipoPago' => 'REMISION',
         ]);
 
         Proveedores::create([
             'IdUser' => 18,
             'Nombre' => 'GASOLINERA PEMEX',
-            'Departamento' => 'APERTURA',
+            'Departamentos_id' => '7',
             'TipoPago' => 'REMISION',
         ]);
+
     }
 }

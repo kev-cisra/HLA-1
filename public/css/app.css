@@ -18324,10 +18324,6 @@ select {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 }
-.tw-mx-20 {
-	margin-left: 5rem;
-	margin-right: 5rem;
-}
 .tw-mt-5 {
 	margin-top: 1.25rem;
 }
@@ -18391,14 +18387,14 @@ select {
 .tw-mb-4 {
 	margin-bottom: 1rem;
 }
-.tw-ml-4 {
-	margin-left: 1rem;
-}
 .tw-mt-10 {
 	margin-top: 2.5rem;
 }
 .tw-ml-6 {
 	margin-left: 1.5rem;
+}
+.tw-ml-4 {
+	margin-left: 1rem;
 }
 .tw-mr-16 {
 	margin-right: 4rem;
@@ -18861,6 +18857,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(8, 145, 178, var(--tw-bg-opacity));
 }
+.tw-bg-teal-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(13, 148, 136, var(--tw-bg-opacity));
+}
 .tw-bg-blueGray-50 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(248, 250, 252, var(--tw-bg-opacity));
@@ -18873,6 +18873,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(14, 165, 233, var(--tw-bg-opacity));
 }
+.tw-bg-teal-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(20, 184, 166, var(--tw-bg-opacity));
+}
 .tw-bg-blue-300 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(147, 197, 253, var(--tw-bg-opacity));
@@ -18880,10 +18884,6 @@ select {
 .tw-bg-lime-300 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(190, 242, 100, var(--tw-bg-opacity));
-}
-.tw-bg-teal-600 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(13, 148, 136, var(--tw-bg-opacity));
 }
 .tw-bg-green-400 {
 	--tw-bg-opacity: 1;
@@ -18912,10 +18912,6 @@ select {
 .tw-bg-violet-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
-}
-.tw-bg-teal-500 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(20, 184, 166, var(--tw-bg-opacity));
 }
 .tw-fill-current {
 	fill: currentColor;
@@ -19057,10 +19053,6 @@ select {
 .tw-text-9xl {
 	font-size: 8rem;
 	line-height: 1;
-}
-.tw-text-2xl {
-	font-size: 1.5rem;
-	line-height: 2rem;
 }
 .tw-font-semibold {
 	font-weight: 600;
@@ -20998,6 +20990,10 @@ select {
 		width: 20%;
 	}
 
+	.md\:tw-w-2\/3 {
+		width: 66.666667%;
+	}
+
 	.md\:tw-w-96 {
 		width: 24rem;
 	}
@@ -21011,10 +21007,6 @@ select {
 	}
 
 	.md\:tw-w-8\/12 {
-		width: 66.666667%;
-	}
-
-	.md\:tw-w-2\/3 {
 		width: 66.666667%;
 	}
 

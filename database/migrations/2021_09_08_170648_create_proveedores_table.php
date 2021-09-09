@@ -17,7 +17,13 @@ class CreateProveedoresTable extends Migration
             $table->id();
             $table->unsignedBigInteger('IdUser'); //Id de Session
             $table->string('Nombre',65);
-            $table->string('Departamento')->nullable();
+
+            $table->unsignedBigInteger('Departamentos_id'); //Numero control empleado
+
+            $table->foreign("Departamentos_id")->references("id")->on("departamentos")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
             $table->string('TipoPago',35)->nullable();
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();

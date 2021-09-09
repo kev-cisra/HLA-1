@@ -29,18 +29,10 @@
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="dato in Proveedores" :key="dato.id">
                             <td class="tw-p-2">{{ dato.Nombre }}</td>
-                            <td class="tw-p-2">{{ dato.Departamento }}</td>
+                            <td class="tw-p-2">{{ dato.proveedor_departamento.Nombre }}</td>
                             <td class="tw-p-2">{{ dato.TipoPago }}</td>
                             <td class="fila">
                                 <div class="columnaIconos">
-                                    <div class="iconoDetails" @click="show(dato)" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                        <span tooltip="Detalles" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </span>
-                                    </div>
                                     <div class="iconoEdit" @click="edit(dato)">
                                         <span tooltip="Editar" flow="left">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -65,7 +57,6 @@
 
     </div>
 
-
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
         <form>
             <div class="tw-px-4 tw-py-4">
@@ -79,16 +70,24 @@
                     <div class="ModalForm">
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>variable</jet-label>
-                                <jet-input type="text" v-model="form.variable"></jet-input>
-                                <small v-if="errors.variable" class="validation-alert">{{errors.variable}}</small>
+                                <jet-label><span class="required">*</span>NOMBRE</jet-label>
+                                <jet-input type="text" v-model="form.Nombre" @input="(val) => (form.Nombre = form.Nombre.toUpperCase())"></jet-input>
+                                <small v-if="errors.Nombre" class="validation-alert">{{errors.Nombre}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>variable</jet-label>
-                                <select id="Jefe" v-model="form.variable"  class="InputSelect">
-                                    <option v-for="select in selects" :key="select.id" :value="select.id" >{{ select.variable2 }}</option>
+                                <jet-label><span class="required">*</span>DEPARTAMENTO</jet-label>
+                                <select id="Jefe" v-model="form.Departamentos_id" class="InputSelect">
+                                    <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
                                 </select>
-                                <small v-if="errors.variable" class="validation-alert" >{{ errors.variable }}</small>
+                                <small v-if="errors.Departamentos_id" class="validation-alert">{{errors.Departamentos_id}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>TIPO PAGO</jet-label>
+                                <select id="Jefe" v-model="form.TipoPago" class="InputSelect">
+                                    <option value="REMISION">REMISIÓN</option>
+                                    <option value="FACTURADO">FACTURADO</option>
+                                </select>
+                                <small v-if="errors.TipoPago" class="validation-alert">{{errors.TipoPago}}</small>
                             </div>
                         </div>
                     </div>
@@ -134,8 +133,10 @@ export default {
             tam: "3xl",
             color: "tw-bg-teal-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
-            showModal: false,
             form: {
+                Nombre: null,
+                Departamentos_id: null,
+                TipoPago: null,
             },
         };
     },
@@ -155,8 +156,10 @@ export default {
     },
 
     props: {
+        errors: Object,
         Session: Object,
         Proveedores: Object,
+        Departamentos: Object,
     },
 
     methods: {
@@ -164,6 +167,9 @@ export default {
             this.form = {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
+                Nombre: null,
+                Departamentos_id: null,
+                TipoPago: null,
             };
         },
 
@@ -181,6 +187,61 @@ export default {
             $("#Proveedores").DataTable().destroy();
                 this.$inertia.get("/Compras/Proveedores", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
         },
+
+        save(data) {
+            console.log(data);
+            this.$inertia.post("/Compras/Proveedores", data, {
+                onSuccess: () => {
+                    this.reset(),
+                    this.chageClose(),
+                    this.alertSucces();
+                },
+            });
+        },
+
+        edit: function (data) {
+                this.form = Object.assign({}, data);
+                this.editMode = true;
+                this.chageClose();
+        },
+
+        update(data) {
+            data._method = 'PUT';
+            this.$inertia.post('/Compras/Proveedores/' + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces(),
+                    this.reset(),
+                    this.chageClose()
+                },
+            });
+        },
+
+        deleteRow: function (data) {
+            Swal.fire({
+                title: '¿Estas seguro de querer eliminar esta información',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '¡Sí, bórralo!',
+                cancelButtonText: 'No, Cancelar!',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        data._method = "DELETE";
+                        this.$inertia.post("/Compras/Proveedores/" + data.id, data, {
+                            onSuccess: () => {
+                                Swal.fire(
+                                    'Eliminado!',
+                                    'El registro fue eliminado con éxito',
+                                    'success'
+                                )
+                            },
+                        });
+                    }
+                })
+        }
+
     },
 };
 </script>
