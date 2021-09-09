@@ -3,83 +3,63 @@
 namespace App\Http\Controllers\Compras\Proveedores;
 
 use App\Http\Controllers\Controller;
+use App\Models\Compras\Proveedores;
+use App\Models\RecursosHumanos\Catalogos\Departamentos;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+class ProveedoresController extends Controller{
 
-class ProveedoresController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function index(){
+
+        $Session = auth()->user();
+
+        $Proveedores = Proveedores::with('ProveedorDepartamento')->get();
+
+        $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
+
+        return Inertia::render('Compras/Proveedores/Proveedores', compact('Session', 'Proveedores', 'Departamentos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+
+    public function store(Request $request){
+
+        Validator::make($request->all(), [
+            'Nombre' => ['required'],
+            'Departamentos_id' => ['required'],
+            'TipoPago' => ['required'],
+        ])->validate();
+
+        Proveedores::create([
+            'IdUser' => $request->IdUser,
+            'Nombre' => $request->Nombre,
+            'Departamentos_id' => $request->Departamentos_id,
+            'TipoPago' =>  $request->TipoPago,
+        ]);
+
+        return redirect()->back();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function update(Request $request, $id){
+
+        Validator::make($request->all(), [
+            'Nombre' => ['required'],
+            'Departamentos_id' => ['required'],
+            'TipoPago' => ['required'],
+        ])->validate();
+
+        if ($request->has('id')) {
+            Proveedores::find($request->input('id'))->update($request->all());
+            return redirect()->back();
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    public function destroy(Request $request){
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if ($request->has('id')) {
+            Proveedores::find($request->input('id'))->delete();
+            return redirect()->back();
+        }
     }
 }
