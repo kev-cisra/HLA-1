@@ -233,6 +233,11 @@
                                     </span>
                                 </div>
                                 <div v-else-if="datos.EstatusArt == 4">
+                                    <span tooltip="Confirma Cotización" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-600 tw-rounded-full">COTIZADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 5">
                                     <span tooltip="COTIZAR MATERIAL SOLICITADO" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZADA</span>
                                     </span>
@@ -246,16 +251,30 @@
                                             <i class="fas fa-file-invoice-dollar"></i>
                                         </span>
                                     </div>
+                                    <div class="iconoPurple" @click="Cancelacion(datos)">
+                                        <span tooltip="Solicitar Cancelacion" flow="left">
+                                            <i class="fas fa-ban"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="columnaIconos" v-if="datos.EstatusArt == 4">
+                                    <div class="iconoPurple" @click="Cotizar(datos, 4)">
+                                        <span tooltip="Añadir otra Cotizacion" flow="left">
+                                            <i class="fas fa-file-invoice-dollar"></i>
+                                        </span>
+                                    </div>
                                     <div class="iconoEdit" @click="ConfirmaCotizacion(datos)">
                                         <span tooltip="Enviar Cotizacion a Autorización" flow="left">
                                             <i class="fas fa-check-circle"></i>
                                         </span>
                                     </div>
-                                </div>
-                                <div class="columnaIconos" v-else>
-                                    <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
-                                        <span tooltip="En proceso" flow="left">
-                                            <i class="fas fa-thumbs-up"></i>
+                                    <div class="iconoDetails" @click="Detalle(datos)">
+                                        <span tooltip="Información de la cotización" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
                                         </span>
                                     </div>
                                 </div>
@@ -346,19 +365,19 @@
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>PRECIO UNITARIO</jet-label>
                                 <jet-input type="text" v-model="form.Precio"></jet-input>
-                                <!-- <small v-if="errors.variable" class="validation-alert">{{errors.variable}}</small> -->
+                                <!-- <small v-if="errors.Precio" class="validation-alert">{{errors.Precio}}</small> -->
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>MARCA</jet-label>
                                 <jet-input type="text" v-model="form.Marca"></jet-input>
-                                <!-- <small v-if="errors.variable" class="validation-alert">{{errors.variable}}</small> -->
+                                <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
                                 <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
                                     <option v-for="select in Proveedores" :key="select.id" :value="select.id" >{{ select.Nombre }}</option>
                                 </select>
-                                <!-- <small v-if="errors.variable" class="validation-alert" >{{ errors.variable }}</small> -->
+                                <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label>ARCHIVO</jet-label>
@@ -369,7 +388,7 @@
                                     <span class="tw-mt-2 tw-text-xs">Selecciona un Archivo</span>
                                     <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
                                 </label>
-                                <!-- <small v-if="errors.variable" class="validation-alert">{{errors.variable}}</small> -->
+                                <small v-if="errors.archivo" class="validation-alert">{{errors.archivo}}</small>
                             </div>
                         </div>
 
@@ -391,6 +410,106 @@
         </form>
     </modal>
 
+    <modal :show="showDetalle" @close="chageDetalle" :maxWidth="tam">
+
+        <form>
+            <div class="tw-px-4 tw-py-4">
+                <div class="tw-text-lg">
+                    <div class="ModalHeader">
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Detalle de Cotización</h3>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="tw-flex tw-flex-col tw-flex-1 tw-h-full tw-w-full sm:tw-px-0">
+                        <div class="tw-flex tw-rounded-lg tw-shadow-lg tw-w-full tw-bg-white sm:tw-mx-0">
+                            <div class="tw-flex tw-flex-col tw-w-full md:tw-w-1/2 tw-p-4">
+                                <div class="tw-flex tw-flex-col tw-flex-1 tw-justify-center tw-mb-8">
+                                    <div class="tw-flex tw-flex-col tw-mt-4">
+                                        <div class="tw-flex tw-flex-col tw-mt-4">
+                                            <div class="tw-relative tw-p-1 tw-transition-all tw-duration-500 tw-border tw-rounded">
+                                                <div class="tw-absolute tw-px-1 tw--mt-4 tw-text-xs tw-tracking-wider tw-uppercase">
+                                                    <p><label for="name" class="tw-px-1 tw-text-gray-600 tw-bg-white">Número de Requisición</label></p>
+                                                </div>
+                                                    <p><input id="name" autocomplete="false" type="text" class="InfoRow" v-model="form.NumReq"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tw-w-full tw-mt-4 tw-flex tw-gap-2">
+                                            <div class="tw-relative tw-p-1 tw-transition-all tw-duration-500 tw-border tw-rounded">
+                                                <div class="tw-absolute tw-px-1 tw--mt-4 tw-text-xs tw-tracking-wider tw-uppercase">
+                                                    <p><label for="name" class="tw-px-1 tw-text-gray-600 tw-bg-white">Cantidad</label></p>
+                                                </div>
+                                                    <p><input id="name" autocomplete="false" type="text" class="InfoRow" v-model="form.Cantidad"></p>
+                                            </div>
+                                            <div class="tw-relative tw-p-1 tw-transition-all tw-duration-500 tw-border tw-rounded">
+                                                <div class="tw-absolute tw-px-1 tw--mt-4 tw-text-xs tw-tracking-wider tw-uppercase">
+                                                    <p><label for="name" class="tw-px-1 tw-text-gray-600 tw-bg-white">Unidad</label></p>
+                                                </div>
+                                                    <p><input id="name" autocomplete="false" type="text" class="InfoRow" v-model="form.Unidad"></p>
+                                            </div>
+                                            <div class="tw-relative tw-p-1 tw-transition-all tw-duration-500 tw-border tw-rounded">
+                                                <div class="tw-absolute tw-px-1 tw--mt-4 tw-text-xs tw-tracking-wider tw-uppercase">
+                                                    <p><label for="name" class="tw-px-1 tw-text-gray-600 tw-bg-white">Descripción</label></p>
+                                                </div>
+                                                    <p><input id="name" autocomplete="false" type="text" class="InfoRow" v-model="form.Descripcion"></p>
+                                            </div>
+                                    </div>
+
+                                    <div class="tw-w-full tw-mt-4 tw-flex tw-gap-2">
+                                        <div class="tw-relative tw-p-1 tw-transition-all tw-duration-500 tw-border tw-rounded">
+                                            <div class="tw-absolute tw-px-1 tw--mt-4 tw-text-xs tw-tracking-wider tw-uppercase">
+                                                <p><label for="name" class="tw-px-1 tw-text-gray-600 tw-bg-white">Precio</label></p>
+                                            </div>
+                                                <p><input id="name" autocomplete="false" type="text" class="InfoRow" v-model="form.Precio"></p>
+                                        </div>
+                                        <div class="tw-relative tw-p-1 tw-transition-all tw-duration-500 tw-border tw-rounded">
+                                            <div class="tw-absolute tw-px-1 tw--mt-4 tw-text-xs tw-tracking-wider tw-uppercase">
+                                                <p><label for="name" class="tw-px-1 tw-text-gray-600 tw-bg-white">Total</label></p>
+                                            </div>
+                                                <p><input id="name" autocomplete="false" type="text" class="InfoRow" v-model="form.Total"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="tw-w-full tw-mt-4 tw-flex tw-gap-2">
+                                        <div class="tw-relative tw-p-1 tw-transition-all tw-duration-500 tw-border tw-rounded">
+                                            <div class="tw-absolute tw-px-1 tw--mt-4 tw-text-xs tw-tracking-wider tw-uppercase">
+                                                <p><label for="name" class="tw-px-1 tw-text-gray-600 tw-bg-white">Marca</label></p>
+                                            </div>
+                                                <p><input id="name" autocomplete="false" type="text" class="InfoRow" v-model="form.Marca"></p>
+                                        </div>
+                                        <div class="tw-relative tw-p-1 tw-transition-all tw-duration-500 tw-border tw-rounded">
+                                            <div class="tw-absolute tw-px-1 tw--mt-4 tw-text-xs tw-tracking-wider tw-uppercase">
+                                                <p><label for="name" class="tw-px-1 tw-text-gray-600 tw-bg-white">Proveedor</label></p>
+                                            </div>
+                                                <p><input id="name" autocomplete="false" type="text" class="InfoRow" v-model="form.Proveedor"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="tw-flex tw-flex-col tw-mt-4">
+                                        <div class="tw-flex tw-flex-col tw-mt-4">
+                                            <div class="tw-relative tw-p-1 tw-transition-all tw-duration-500 tw-border tw-rounded">
+                                                <div class="tw-absolute tw-px-1 tw--mt-4 tw-text-xs tw-tracking-wider tw-uppercase">
+                                                    <p><label for="name" class="tw-px-1 tw-text-gray-600 tw-bg-white">Comentarios</label></p>
+                                                </div>
+                                                    <p><input id="name" autocomplete="false" type="text" class="InfoRow" v-model="form.Comentarios"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="tw-hidden md:tw-block md:tw-w-1/2 tw-p-2 tw-mt-2">
+                                <iframe :src="path + form.archivo" style="width: 100%; height: 350px; border: none;">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </modal>
 
     </app-layout>
 </template>
@@ -414,10 +533,12 @@ import $ from "jquery";
 import moment from 'moment';
 import 'moment/locale/es';
 import throttle from 'lodash/throttle'
+import { Inertia } from '@inertiajs/inertia';
 
 export default {
     data() {
         return {
+            showDetalle: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
             tam: "5xl",
@@ -437,16 +558,20 @@ export default {
                 Unidad: null,
                 Descripcion: null,
                 Comentarios: null,
+
+                Precios: [{
                     Precio: null,
+                    Total: null,
                     Marca: null,
+                    Proveedor: null,
                     archivo: null,
+                }],
             },
             params:{
                 month: null,
                 Estatus: null,
                 Proveedor: null,
             },
-            Marcas: [],
         };
     },
 
@@ -485,7 +610,7 @@ export default {
 
         reset() {
             this.form = {
-                IdUser: this.Session.id,
+               IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
                 IdArt: null,
                 requisicion_id: null,
@@ -497,9 +622,15 @@ export default {
                 Unidad: null,
                 Descripcion: null,
                 Comentarios: null,
+                MotivoCancelacion: null,
+
+                Precios: [{
                 Precio: null,
+                Total: null,
                 Marca: null,
+                Proveedor: null,
                 archivo: null,
+                }],
             };
         },
 
@@ -548,11 +679,6 @@ export default {
                 }, preserveState: true})
         },
 
-        getImage(event){
-            this.form.archivo = event.target.files[0];
-            console.log(this.form.archivo);
-        },
-
         Cotizar(data, metodo){
             this.chageClose();
             this.reset();
@@ -579,7 +705,6 @@ export default {
         },
 
         save(data) {
-            console.log(data);
             this.$inertia.post("/Compras/Cotizaciones", data, {
                 onSuccess: () => {
                     this.reset(),
@@ -589,6 +714,34 @@ export default {
             });
         },
 
+        chageDetalle() {
+            this.showDetalle = !this.showDetalle;
+        },
+
+        Detalle(data){
+            this.chageDetalle();
+            this.reset();
+            this.editMode = false;
+            this.form.requisicion_id = data.requisicion_id;
+            this.form.IdArt = data.articulos_requisicion.id;
+            this.form.NumReq = data.articulos_requisicion.NumReq;
+            this.form.Folio = data.articulos_requisicion.Folio;
+            this.form.Area = data.articulos_requisicion.requisicion_departamento.Nombre;
+            this.form.Nombre = data.articulos_requisicion.requisiciones_perfil.Nombre + " " + data.articulos_requisicion.requisiciones_perfil.ApPat + " " + data.articulos_requisicion.requisiciones_perfil.ApMat;
+            this.form.Observaciones = data.articulos_requisicion.Observaciones;
+
+            this.form.Cantidad = data.Cantidad;
+            this.form.Unidad = data.Unidad;
+            this.form.Descripcion = data.Descripcion;
+
+            this.form.Precio = data.articulo_precios[0].Precio;
+            this.form.Total = data.articulo_precios[0].Total;
+            this.form.Marca = data.articulo_precios[0].Marca;
+            this.form.Proveedor = data.articulo_precios[0].Proveedor;
+            this.form.archivo = data.articulo_precios[0].Archivo;
+            this.form.Comentarios = data.articulo_precios[0].Comentarios;
+
+        }
     },
 
     watch: {

@@ -58,6 +58,9 @@ class CotizacionesController extends Controller{
                         'Observaciones',
                         'OrdenCompra', 'Perfil_id');
                 },
+                'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
+                    $pre->select('id', 'Precio', 'Total', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
                 },
@@ -94,6 +97,9 @@ class CotizacionesController extends Controller{
                         'Marca_id', 'TipCompra',
                         'Observaciones',
                         'OrdenCompra', 'Perfil_id');
+                },
+                'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
+                    $pre->select('id', 'Precio', 'Total', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                 },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
@@ -135,43 +141,42 @@ class CotizacionesController extends Controller{
 
         if(isset($request)){
 
-            return $request;
+            $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
 
-/*             PreciosCotizaciones::create([
+            //Guardado de Imagen en la carpeta Public/Storage.. (Uso del disco Public pora la restriccion de los archivos)
+            $url = $request->archivo->storePubliclyAs('Archivos/Compras/Requisiciones/Cotizaciones',  $file, 'public');
+
+            PreciosCotizaciones::create([
                 'IdUser' => $request->IdUser,
                 'Precio' => $request->Precio,
                 'Total' => $request->Cantidad * $request->Precio,
                 'Marca' => $request->Marca,
                 'Proveedor' => $request->Proveedor,
                 'Comentarios' => $request->Comentarios,
-                'Archivo' => $request->Archivo,
+                'Archivo' => $url,
                 'articulos_requisiciones_id' => $request->IdArt,
                 'requisiciones_id' => $request->requisicion_id,
-            ]); */
+            ]);
+
+            ArticulosRequisiciones::where('id', '=', $request->IdArt)->update([
+                'EstatusArt' => 4,
+            ]);
 
             return redirect()->back();
 
         }else{
-
+            return "Ocurrio un Error Intente nuevamente";
         }
-
-/*         if ($request->hasFile('archivo')) {
-
-           $url = $request->archivo->storePublicly('Files/Requisiciones/Cotizaciones','public_uploads');
-
-        }else{
-            return "Noo Llego una imagen";
-        } */
-
-
 
     }
 
     public function update(Request $request, $id){
 
 
+        return "Hola";
 
-        if($request->metodo == 'Parcialidad'){
+
+/*         if($request->metodo == 'Parcialidad'){
 
             $id = $request->IdArt;
 
@@ -201,6 +206,6 @@ class CotizacionesController extends Controller{
             ]);
         }
 
-        return redirect()->back();
+        return redirect()->back(); */
     }
 }

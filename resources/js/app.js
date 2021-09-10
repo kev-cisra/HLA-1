@@ -20,6 +20,7 @@ createApp({
     .mixin({
         data(){
             return{
+                path: 'http://HLA.test/storage/',
                 showModal: false,
                 español: {
                     processing: "Procesando...",
