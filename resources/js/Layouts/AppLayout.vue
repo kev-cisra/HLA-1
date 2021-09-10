@@ -41,6 +41,11 @@
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Almacen
                                 </jet-nav-link>
                             </div>
+                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
+                                <jet-nav-link :href="route('Supply')" :active="route().current('Supply')" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
+                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Supply
+                                </jet-nav-link>
+                            </div>
                             <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex" >
                                 <jet-nav-link :href="route('Produccion')" :active="route().current('Produccion')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Producción
@@ -115,6 +120,11 @@
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">
                         <jet-responsive-nav-link :href="route('Admin')" :active="route().current('Admin')">
                             Administrador
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Supply.index'])">
+                        <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
+                            Supply
                         </jet-responsive-nav-link>
                     </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">

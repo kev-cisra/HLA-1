@@ -157,6 +157,10 @@
     @apply tw-select-text tw-outline-none tw-font-bold tw-bg-blueGray-50 tw-border-none;
 }
 
+.InfoRow{
+    @apply tw-block tw-w-full tw-h-full tw-px-1 tw-py-1 tw-text-gray-900 tw-outline-none tw-select-text tw-font-bold tw-bg-blueGray-50 tw-border-none focus:tw-outline-none;
+}
+
 .Enero{
     @apply tw-inline-flex tw-items-center tw-w-32 tw-px-6 tw-py-2 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-white tw-border-b-2 tw-border-green-500 tw-rounded tw-shadow-md hover:tw-border-green-600 hover:tw-bg-green-200 hover:tw-text-white;
 }
