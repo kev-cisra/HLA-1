@@ -104,6 +104,9 @@ class ModulosSeeder extends Seeder
             'Area' => '4',
         ]);
 
+
+        ////////////// ALMACEN ////////////////////////
+
         Modulos::create([
             'Iduser' => '1',
             'NombreModulo' => 'REQUISICIONES SOLICITADAS',
@@ -111,6 +114,21 @@ class ModulosSeeder extends Seeder
             'Ruta' => 'Almacen/Requisiciones',
             'Area' => '3',
         ]);
+
+
+        ////////////////////// SUPPLY /////////////////////////
+
+
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'AUTORIZA REQUISICIONES',
+            'Icono' => 'fas fa-stamp',
+            'Ruta' => 'Supply/AutorizaRequisiciones',
+            'Area' => '8',
+        ]);
+
+
+        ////////////// PRODUCCCION ///////////////////
 
         Modulos::create([
             'Iduser' => '1',

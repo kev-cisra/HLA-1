@@ -18931,6 +18931,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(6, 182, 212, var(--tw-bg-opacity));
 }
+.tw-bg-sky-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(2, 132, 199, var(--tw-bg-opacity));
+}
 .tw-fill-current {
 	fill: currentColor;
 }
