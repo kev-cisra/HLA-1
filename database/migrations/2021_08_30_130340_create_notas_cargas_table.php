@@ -17,7 +17,12 @@ class CreateNotasCargasTable extends Migration
             $table->id();
 
             $table->timestamp('fecha');
-            $table->string('descripcion');
+            $table->string('nota');
+
+            $table->unsignedBigInteger('perfil_id');
+            $table->foreign('perfil_id')->references('id')->on('perfiles_usuarios')
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
 
             $table->unsignedBigInteger('carga_id');
             $table->foreign('carga_id')->references("id")->on("cargas")

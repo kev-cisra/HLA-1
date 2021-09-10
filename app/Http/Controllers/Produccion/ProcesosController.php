@@ -32,8 +32,8 @@ class ProcesosController extends Controller
             ->with('dep_pers')
             ->first();
         //return count($perf->dep_pers);
-        $depa = NULL;
-        $proce = NULL;
+        $depa = [];
+        $proce = [];
         //condicion para usuarios $perf->Departamento_id == 2 && $perf->Puesto_id != 16
         /*************** Información para mostrar áreas *************************/
         if(count($perf->dep_pers) != 0){
@@ -93,7 +93,7 @@ class ProcesosController extends Controller
         }
 
         /**************************** Consulta si existe maquinas *****************************************************/
-        $maq = empty($request->maq) ? NULL : Maquinas::where('departamento_id', '=', $request->maq)->get();
+        $maq = Maquinas::get();
 
 
         return Inertia::render('Produccion/Procesos', ['usuario' => $perf,'procesos' => $proce,'depa' => $depa, 'maquinas' => $maq]);

@@ -31,9 +31,9 @@ class TurnosController extends Controller
             ->with('dep_pers')
             ->first();
 
-        $turnos = null;
-        $equipos = null;
-        $personal =null;
+        $turnos = [];
+        $equipos = [];
+        $personal =[];
 
          /*************** Información para mostrar áreas *************************/
          if(count($perf->dep_pers) != 0){
@@ -72,6 +72,16 @@ class TurnosController extends Controller
                 ->with([
                     'perfiles' => function($perfi){
                         $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                    }
+                ])
+                ->get();
+            $equipos = equipos::where('departamento_id', '=', $prime->departamentos->id)
+                ->with([
+                    'turnos' => function($tur){
+                        $tur->select('id', 'nomtur');
+                    },
+                    'dep_pers.perfiles' => function($perfi){
+                        $perfi->select('id', 'Nombre', 'ApPat', 'ApMat');
                     }
                 ])
                 ->get();

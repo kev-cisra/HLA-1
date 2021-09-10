@@ -137,7 +137,7 @@
             </Table>
         </div>
         <pre>
-            {{ form }}
+            {{ materiales }}
         </pre>
         <!--------------------------------------- Carga de reportes y datatable ------------------------------------------->
         <div class="offcanvas offcanvas-bottom tw-h-5/6" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
@@ -274,6 +274,7 @@
                 opcCL: '<option value="" disabled>SELECCIONA</option>',
                 proc_prin: '',
                 v: [],
+                editMode: false,
                 form: {
                     idnota: null,
                     semana: moment().format("GGGG-[W]WW"),
@@ -440,7 +441,9 @@
                 this.cargas.forEach(ca => {
                     if (this.usuario.dep_pers.length != 0) {
                         if (this.usuario.dep_pers[0].ope_puesto != 'cor') {
-                            ca.DPpue != 'cor' ? this.v.push(ca) : '';
+                            if (ca.DPpue != 'cor' & ca.Cnp == 1) {
+                                this.v.push(ca);
+                            }
                         }else{
                             this.v.push(ca);
                         }

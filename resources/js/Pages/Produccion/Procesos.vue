@@ -49,15 +49,7 @@
                         </td>
                         <td class="fila">
                             <div class="columnaIconos">
-                                <div class="iconoDetails">
-                                    <span tooltip="Detalles" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="iconoEdit" @click="edit(proceso)" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">
+                                <div class="iconoEdit" @click="edit(proceso)" v-show="(puesCor == 'cor' & proceso.tipo == 1) | usuario.dep_pers.length == 0">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -93,7 +85,7 @@
                             <div class="tw-mb-6 md:tw-flex">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode">
                                     <jet-label><span class="required">*</span>Departamento</jet-label>
-                                    <select class="InputSelect" @change="verMaqui" v-model="form.departamento_id" v-html="opc">
+                                    <select class="InputSelect" @change="verTabla" v-model="form.departamento_id" v-html="opc">
                                     </select>
                                     <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
                                 </div>
@@ -140,7 +132,7 @@
                     </div>
                 </div>
                 <!-------------------------------- ENCARGADO Y OPERADOR --------------------------------------->
-                <div class="tw-px-4 tw-py-4" v-show="(form.tipo == 1 | form.tipo == 4) & !editMode">
+                <div class="tw-px-4 tw-py-4" v-show="(form.tipo == 1 | form.tipo == 4)">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de máquinas para el proceso</h3>
@@ -165,7 +157,7 @@
                     </div>
                 </div>
                 <!-------------------------------- FORMULAS --------------------------------------->
-                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 3 & !editMode">
+                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 3">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Formulas</h3>
@@ -199,8 +191,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 <div class="ModalFooter">
                     <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
                     <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
@@ -226,6 +216,7 @@
     //datatable
     import datatable from 'datatables.net-bs5';
     require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
+
     require( 'datatables.net-buttons/js/buttons.html5' );
     require ( 'datatables.net-buttons/js/buttons.colVis' );
     import print from 'datatables.net-buttons/js/buttons.print';
@@ -233,6 +224,7 @@
     import pdfMake from 'pdfmake/build/pdfmake';
     import pdfFonts from 'pdfmake/build/vfs_fonts';
     import $ from 'jquery';
+
 
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     window.JSZip = jszip;
@@ -347,19 +339,6 @@
                 })
             },
             /****************************** opnciones de seect de maquinas ********************************/
-            verMaqui(event) {
-                this.opcMaq = '<option value="" disabled>Selecciona una máquina</option>';
-                this.limpiar(event);
-                $('#t_pro').DataTable().destroy();
-                this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value ,maq: event.target.value }, {
-                    onSuccess: () => { this.tabla(), this.mostMaqui(), this.mostTipo(), this.princiProcesos() }, preserveState: true
-                });
-            },
-            mostMaqui() {
-                this.maquinas == null ? "" : this.maquinas.forEach(r => {
-                    this.opcMaq += `<option value="${r.id}"> ${r.Nombre} </option>`;
-                })
-            },
             mostTipo() {
                 const valores = window.location.search;
                 const urlParams = new URLSearchParams(valores);
@@ -376,6 +355,7 @@
             //información del select area
             mostSelect() {
                 this.$nextTick(() => {
+                    console.log(this.m);
                     this.depa.forEach(r => {
                         if (r.departamentos) {
                             this.opc += `<option value="${r.departamentos.id}"> ${r.departamentos.Nombre} </option>`;
@@ -395,8 +375,9 @@
                 this.limpiar(event);
                 $('#t_pro').DataTable().destroy();
                 this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value }, {
-                    onSuccess: () => { this.tabla(), this.mostTipo() }, preserveState: true
+                    onSuccess: () => { this.tabla(), this.mostTipo(), this.princiProcesos() }, preserveState: true
                 });
+                //select
             },
             /******************************* opciones de data table ****************************************/
             //datatable
@@ -480,6 +461,7 @@
                         {val: ""}
                     ],
                     for_maq: [],
+
                 }
             },
             /******************************** Acciones insert update y delet *************************************/
@@ -495,8 +477,16 @@
             //manda datos de la tabla al modal
             edit: function (data) {
                 //console.log(data);
-                this.form = Object.assign({}, data);
-                //this.vari = data.id;
+                this.form.id = data.id;
+                this.form.departamento_id = data.departamento_id;
+                this.form.nompro = data.nompro;
+                this.form.tipo = data.tipo;
+                this.form.operacion = data.operacion;
+                this.form.proceso_id = data.proceso_id;
+                this.form.maquinas = [];
+                data.maq_pros.forEach(mp => {
+                    this.form.maquinas.push({value: mp.maquina_id});
+                })
                 this.editMode = true;
                 this.chageClose();
             },
@@ -512,8 +502,26 @@
                 $('#t_pro').DataTable().destroy()
                 data._method = 'DELETE';
                 this.$inertia.post('/Produccion/Procesos/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tabla() }});
-            }
-
-        }
+            },
+        },
+        watch: {
+            form: {
+                deep: true,
+                handler: function(f) {
+                    //dependiendo del departamento
+                    if (f.departamento_id != '') {
+                        //select de maquinas
+                        this.opcMaq = '<option value="" disabled>Selecciona una máquina</option>';
+                        this.maquinas.forEach(r => {
+                            if (r.departamento_id == f.departamento_id) {
+                                this.opcMaq += `<option value="${r.id}"> ${r.Nombre} </option>`;
+                            }
+                        })
+                    }else{
+                        this.opcMaq = '<option value="" disabled>Selecciona una máquina</option>';
+                    }
+                }
+            },
+        },
     }
 </script>

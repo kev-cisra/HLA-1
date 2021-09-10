@@ -19,7 +19,6 @@
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ------------------------------------>
         <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl" id="agPer">
-            <form >
                 <div class="tw-mb-6 md:tw-flex">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>Departamento </jet-label>
@@ -52,7 +51,6 @@
                 <div class="w-100 tw-mx-auto" align="center">
                     <jet-button type="button" class="tw-mx-auto" @click="save(form)" v-if="personal.length != 0">Guardar</jet-button>
                 </div>
-            </form>
         </div>
         <!----------------------------------- tabla de datos -------------------------------------------------------->
         <div class="table-responsive">
