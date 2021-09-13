@@ -755,7 +755,6 @@ export default {
         },
 
         edit: function (data) {
-            console.log(data);
             this.form.editId = data.id;
             this.form.NumReq = data.articulos_requisicion.NumReq;
             this.form.Fecha = data.Fecha;

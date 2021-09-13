@@ -18324,6 +18324,14 @@ select {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 }
+.tw-mx-6 {
+	margin-left: 1.5rem;
+	margin-right: 1.5rem;
+}
+.tw-mx-10 {
+	margin-left: 2.5rem;
+	margin-right: 2.5rem;
+}
 .tw-mt-5 {
 	margin-top: 1.25rem;
 }
@@ -18803,6 +18811,18 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(20, 184, 166, var(--tw-border-opacity));
 }
+.tw-border-blue-200 {
+	--tw-border-opacity: 1;
+	border-color: rgba(191, 219, 254, var(--tw-border-opacity));
+}
+.tw-border-cyan-200 {
+	--tw-border-opacity: 1;
+	border-color: rgba(165, 243, 252, var(--tw-border-opacity));
+}
+.tw-border-teal-200 {
+	--tw-border-opacity: 1;
+	border-color: rgba(153, 246, 228, var(--tw-border-opacity));
+}
 .tw-bg-gray-200 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
@@ -18931,6 +18951,14 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
 }
+.tw-bg-blue-100 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(219, 234, 254, var(--tw-bg-opacity));
+}
+.tw-bg-cyan-100 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(207, 250, 254, var(--tw-bg-opacity));
+}
 .tw-fill-current {
 	fill: currentColor;
 }
@@ -19006,6 +19034,10 @@ select {
 .tw-px-1 {
 	padding-left: 0.25rem;
 	padding-right: 0.25rem;
+}
+.tw-px-5 {
+	padding-left: 1.25rem;
+	padding-right: 1.25rem;
 }
 .tw-pl-4 {
 	padding-left: 1rem;
@@ -19183,6 +19215,22 @@ select {
 .tw-text-pink-600 {
 	--tw-text-opacity: 1;
 	color: rgba(219, 39, 119, var(--tw-text-opacity));
+}
+.tw-text-blue-900 {
+	--tw-text-opacity: 1;
+	color: rgba(30, 58, 138, var(--tw-text-opacity));
+}
+.tw-text-cyan-900 {
+	--tw-text-opacity: 1;
+	color: rgba(22, 78, 99, var(--tw-text-opacity));
+}
+.tw-text-emerald-900 {
+	--tw-text-opacity: 1;
+	color: rgba(6, 78, 59, var(--tw-text-opacity));
+}
+.tw-text-sky-900 {
+	--tw-text-opacity: 1;
+	color: rgba(12, 74, 110, var(--tw-text-opacity));
 }
 .tw-underline {
 	text-decoration: underline;
@@ -21065,12 +21113,12 @@ select {
 		width: 16.666667%;
 	}
 
-	.md\:tw-w-6\/12 {
-		width: 50%;
-	}
-
 	.md\:tw-w-8\/12 {
 		width: 66.666667%;
+	}
+
+	.md\:tw-w-6\/12 {
+		width: 50%;
 	}
 
 	.md\:tw-grid-cols-3 {
