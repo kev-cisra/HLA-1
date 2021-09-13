@@ -689,8 +689,6 @@ export default {
         },
 
         Cotizar(data, metodo){
-            console.log("Cotizar");
-            console.log(data);
             this.chageClose();
             this.reset();
             this.editMode = false;
@@ -725,7 +723,7 @@ export default {
             this.form.Cotizacion.splice(row,1);
         },
 
-        save(data) {            
+        save(data) {
             console.log("SAVE");
             console.log(data);
             this.$inertia.post("/Compras/Cotizaciones", data, {
