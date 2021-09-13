@@ -43,12 +43,12 @@
                     <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ"></select>
                     <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="noCor != 'cor'">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Norma</jet-label>
                     <select class="InputSelect" @change="seleCL" v-model="form.norma" v-html="opcNM"></select>
                     <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="noCor != 'cor'">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Clave</jet-label>
                     <select class="InputSelect" v-model="form.clave_id" v-html="opcCL"></select>
                     <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
@@ -83,6 +83,7 @@
                     <th class="columna">Fecha</th>
                     <th class="columna">Nombre</th>
                     <th class="columna">Departamento</th>
+                    <th class="columna">Estatus</th>
                     <th class="columna">Equipo</th>
                     <th class="columna">Turno</th>
                     <th class="columna">Partida</th>
@@ -98,6 +99,11 @@
                         <td class="fila">{{ca.Cfec}}</td>
                         <td class="fila">{{ca.Pnom}} {{ca.Pap}} {{ca.Pam}}</td>
                         <td class="fila">{{ca.Dnom}}</td>
+                        <td class="fila tw-w-32">
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-emerald-600 tw-rounded-full" v-if="ca.Cnp == 2 & ca.DPpue == 'cor'">NOTA COORDINADOR</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-else-if="ca.Cnp == 2 & (ca.DPpue == 'ope' | ca.DPpue == 'lid')">NOTA OPERADOR</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-coolGray-600 tw-rounded-full" v-if="ca.Cnp == 1">SIN NOTA</div>
+                        </td>
                         <td class="fila">{{ca.Enom}}</td>
                         <td class="fila">{{ca.Tnom}}</td>
                         <td class="fila">{{ca.Cpar}}</td>
@@ -108,7 +114,7 @@
                         <td class="fila">{{ca.Cval}}</td>
                         <td class="fila">
                             <div class="columnaIconos">
-                                <div class="iconoDetails" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & ((noCor == 'cor' & ca.Enom == null) | (noCor != 'cor' & ca.Enom != null))">
+                                <div class="iconoDetails" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & ((noCor == 'cor' & ca.Enom == null) | (noCor != 'cor' & ca.Enom != null & ca.Cnp == 1))">
                                     <span tooltip="Agregar nota" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -116,7 +122,7 @@
                                     </span>
 
                                 </div>
-                                <div class="iconoEdit" @click="edit(proceso)" v-show="usuario.dep_pers.length == 0 | (ca.Cnp == 2 & ca.DPpue != 'cor' & noCor == 'cor')">
+                                <div class="iconoEdit" @click="edit(proceso)" v-show="usuario.dep_pers.length == 0 | (ca.DPpue != 'cor' & noCor == 'cor')">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -137,7 +143,7 @@
             </Table>
         </div>
         <pre>
-            {{ materiales }}
+            {{  }}
         </pre>
         <!--------------------------------------- Carga de reportes y datatable ------------------------------------------->
         <div class="offcanvas offcanvas-bottom tw-h-5/6" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
@@ -277,6 +283,7 @@
                 editMode: false,
                 form: {
                     idnota: null,
+                    fecha: moment().format("YYYY-MM-DD HH:mm:ss"),
                     semana: moment().format("GGGG-[W]WW"),
                     per_carga: '',
                     proceso_id: '',
@@ -441,7 +448,7 @@
                 this.cargas.forEach(ca => {
                     if (this.usuario.dep_pers.length != 0) {
                         if (this.usuario.dep_pers[0].ope_puesto != 'cor') {
-                            if (ca.DPpue != 'cor' & ca.Cnp == 1) {
+                            if (ca.DPpue != 'cor') {
                                 this.v.push(ca);
                             }
                         }else{
@@ -459,7 +466,7 @@
                 this.$nextTick(() => {
                     $('#t_carg').DataTable({
                         "language": this.español,
-                        "order": [0, 'desc'],
+                        "order": [[3, 'asc'], [0, 'desc']],
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
@@ -529,14 +536,15 @@
                 //console.log(this.form.idnota);
                 this.form.agNot = 1;
                 this.form.notaPen = 2;
+                this.form.nota = '';
                 $('#agPer').addClass('show')
 
             },
             saveNot(data){
-                //console.log(data)
-                //data._method = 'PUT';
+                $('#t_carg').DataTable().clear();
+                $('#t_carg').DataTable().destroy();
                 this.$inertia.put('/Produccion/Nota/' + data.id, data, {
-                    onSuccess: () => {},
+                    onSuccess: () => {this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()},
                 });
             }
         }

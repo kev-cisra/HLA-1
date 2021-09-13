@@ -16,7 +16,7 @@ class CreateCargasTable extends Migration
         Schema::create('cargas', function (Blueprint $table) {
             $table->id();
 
-            $table->timestamp('fecha');
+            $table->dateTimeTz('fecha');
             $table->string('semana');
             $table->double('valor')->nullable();
             $table->string('partida')->nullable();

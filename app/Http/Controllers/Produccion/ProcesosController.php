@@ -203,12 +203,73 @@ class ProcesosController extends Controller
             'tipo' => ['required'],
         ])->validate();
 
-
+        //actualiza los procesos
         if ($request->has('id')) {
             procesos::find($request->input('id'))->update($request->all());
+            /* return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.'); */
+        }
+
+        if ($request->tipo == 1) {
+            //recorrido de la base de datos
+            $mpS = maq_pro::where('proceso_id', '=', $request->id)
+                ->withTrashed()
+                ->get(['id', 'proceso_id', 'maquina_id', 'deleted_at']);
+            $sv = array();
+            foreach ($request->maquinas as $v) {
+                array_push($sv,strval($v['value']));
+            }
+            foreach ($request->maquinas as $val) {
+
+                foreach ($mpS as $vS) {
+
+                    //recorrido de request
+                    $mpR = maq_pro::where('proceso_id', '=', $request->id)
+                    ->where('maquina_id', '=', $val['value'])
+                    ->withTrashed()
+                    ->first(['id', 'proceso_id', 'maquina_id', 'deleted_at']);
+                    if ($val['value'] != $vS->maquina_id) {
+                        //echo $mpR;
+                        if (empty($mpR)) {
+                            //echo 'insert';
+                            maq_pro::create([
+                                'proceso_id' => $request->id,
+                                'maquina_id' => $val['value'],
+                            ]);
+                        }
+                        echo $vS->maquina_id . ' - ' . in_array($vS->maquina_id,$sv).'/ ';
+                        if(empty(in_array($vS->maquina_id,$sv)) & !empty($mpR) & empty($vS->deleted_at)){
+                            echo 'delet';
+                            maq_pro::where('proceso_id', '=', $request->id)
+                                ->where('maquina_id', '=', $vS->maquina_id)
+                                ->delete();
+                        }
+                    }else{
+
+                        //recorrido de request
+                        $mpR = maq_pro::where('proceso_id', '=', $request->id)
+                        ->where('maquina_id', '=', $val['value'])
+                        ->withTrashed()
+                        ->first(['id', 'proceso_id', 'maquina_id', 'deleted_at']);
+                        //revisa si el soft delete exite para restaurarlo
+                        if(!empty($mpR->deleted_at))
+                        {
+                            //echo 'restaura';
+                            $mpR->restore();
+                        }
+                    }
+                }
+
+            }
+
             return redirect()->back()
                     ->with('message', 'Post Updated Successfully.');
+            /* return($sv); */
+
         }
+
+
+
     }
 
     /**
