@@ -78,8 +78,7 @@ class AutorizaRequisicionesController extends Controller{
                 },
             ])
             ->orderBy('EstatusArt', 'asc')
-            ->where('EstatusArt', '!=', 1)
-            ->where('EstatusArt','!=', 2)
+            ->where('EstatusArt', '>=', 5)
             ->whereMonth('Fecha', $mes)
             ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
 
@@ -118,8 +117,7 @@ class AutorizaRequisicionesController extends Controller{
                 },
             ])
             ->orderBy('EstatusArt', 'asc')
-            ->where('EstatusArt', '!=', 1)
-            ->where('EstatusArt','!=', 2)
+            ->where('EstatusArt', '>=', 5)
             ->where('EstatusArt', $request->Estatus)
             ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
 

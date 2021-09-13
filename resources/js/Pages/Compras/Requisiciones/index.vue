@@ -237,14 +237,14 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
                                     </span>
                                 </div>
-                                <div v-else-if="datos.EstatusArt == 3">
+                                <div v-else-if="datos.EstatusArt == 3 || datos.EstatusArt == 4">
                                     <span tooltip="En Espera de Cotización" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
                                     </span>
                                 </div>
-                                <div v-else-if="datos.EstatusArt == 4">
-                                    <span tooltip="Solicitud de Cancelacion Rechazada" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZADA</span>
+                                <div v-else-if="datos.EstatusArt == 5">
+                                    <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
                                     </span>
                                 </div>
                             </td>

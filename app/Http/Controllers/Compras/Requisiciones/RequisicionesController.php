@@ -221,7 +221,10 @@ class RequisicionesController extends Controller{
                 break;
 
             case 2:
-                ArticulosRequisiciones::find($request->id)->update([
+
+                $ReqId = ArticulosRequisiciones::where('id', '=', $request->id)->first('requisicion_id');
+
+                ArticulosRequisiciones::where('requisicion_id', '=', $ReqId->requisicion_id)->update([
                     'EstatusArt' => 2,
                 ]);
                 break;
