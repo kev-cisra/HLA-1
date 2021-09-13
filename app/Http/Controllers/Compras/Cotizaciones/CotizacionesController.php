@@ -173,39 +173,19 @@ class CotizacionesController extends Controller{
     public function update(Request $request, $id){
 
 
-        return "Hola";
+        switch($request->metodo){
+            case 5:{
 
+                ArticulosRequisiciones::find($request->id)->update([
+                    'EstatusArt' => 5,
+                ]);
 
-/*         if($request->metodo == 'Parcialidad'){
+                break;
 
-            $id = $request->IdArt;
-
-            //Obtengo la cantidad solicitada previamente
-            $Articulo = ArticulosRequisiciones::where('id', '=', $request->IdArt)->first();
-            $Articulo->Cantidad;
-
-            //Resto la diferencia que existen en almacen
-            $Par = $Articulo->Cantidad - $request->Parcialidad;
-
-            ArticulosRequisiciones::where('id', '=', $id)->update([
-                'Cantidad' => $Par,
-            ]);
-
-            $Parcialidad = ArticulosRequisiciones::create([
-                'Fecha' => $Articulo->Fecha,
-                'Cantidad' => $request->Parcialidad,
-                'Unidad' => $Articulo->Unidad,
-                'Descripcion' => $Articulo->Descripcion,
-                'EstatusArt' => $Articulo->EstatusArt,
-                'requisicion_id' => $Articulo->requisicion_id,
-            ]);
-
-        }else{
-            ArticulosRequisiciones::find($request->id)->update([
-                'EstatusArt' => 3,
-            ]);
+            }
         }
 
-        return redirect()->back(); */
+        return redirect()->back();
+
     }
 }

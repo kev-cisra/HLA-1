@@ -238,8 +238,8 @@
                                     </span>
                                 </div>
                                 <div v-else-if="datos.EstatusArt == 5">
-                                    <span tooltip="COTIZAR MATERIAL SOLICITADO" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZADA</span>
+                                    <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
                                     </span>
                                 </div>
                             </td>
@@ -264,11 +264,21 @@
                                             <i class="fas fa-file-invoice-dollar"></i>
                                         </span>
                                     </div>
-                                    <div class="iconoEdit" @click="ConfirmaCotizacion(datos)">
+                                    <div class="iconoEdit" @click="ConfirmaCotizacion(datos, 5)">
                                         <span tooltip="Enviar Cotizacion a Autorización" flow="left">
                                             <i class="fas fa-check-circle"></i>
                                         </span>
                                     </div>
+                                    <div class="iconoDetails" @click="Detalle(datos)">
+                                        <span tooltip="Información de la cotización" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-if="datos.EstatusArt == 5">
                                     <div class="iconoDetails" @click="Detalle(datos)">
                                         <span tooltip="Información de la cotización" flow="left">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
@@ -610,7 +620,7 @@ export default {
 
         reset() {
             this.form = {
-               IdUser: this.Session.id,
+                IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
                 IdArt: null,
                 requisicion_id: null,
@@ -622,14 +632,13 @@ export default {
                 Unidad: null,
                 Descripcion: null,
                 Comentarios: null,
-                MotivoCancelacion: null,
 
                 Precios: [{
-                Precio: null,
-                Total: null,
-                Marca: null,
-                Proveedor: null,
-                archivo: null,
+                    Precio: null,
+                    Total: null,
+                    Marca: null,
+                    Proveedor: null,
+                    archivo: null,
                 }],
             };
         },
@@ -680,11 +689,13 @@ export default {
         },
 
         Cotizar(data, metodo){
+            console.log("Cotizar");
+            console.log(data);
             this.chageClose();
             this.reset();
             this.editMode = false;
+            this.form.IdArt = data.id;
             this.form.requisicion_id = data.requisicion_id;
-            this.form.IdArt = data.articulos_requisicion.id;
             this.form.NumReq = data.articulos_requisicion.NumReq;
             this.form.Folio = data.articulos_requisicion.Folio;
             this.form.Area = data.articulos_requisicion.requisicion_departamento.Nombre;
@@ -696,6 +707,16 @@ export default {
             this.form.Descripcion = data.Descripcion;
         },
 
+        ConfirmaCotizacion(data, metodo){
+            data.metodo = 5;
+            data._method = "PUT";
+            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
+        },
+
         addRow: function () {
             this.form.Cotizacion.push({Cot: ""});
         },
@@ -704,7 +725,9 @@ export default {
             this.form.Cotizacion.splice(row,1);
         },
 
-        save(data) {
+        save(data) {            
+            console.log("SAVE");
+            console.log(data);
             this.$inertia.post("/Compras/Cotizaciones", data, {
                 onSuccess: () => {
                     this.reset(),
