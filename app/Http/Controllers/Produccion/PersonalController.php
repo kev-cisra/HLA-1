@@ -121,7 +121,7 @@ class PersonalController extends Controller
             'name' => $request->perfiles['Nombre'].' '.$request->perfiles['ApPat'].' '.$request->perfiles['ApMat'],
             'Departamento' => $request->departamentos['Nombre'],
             'password' => bcrypt($request->perfiles['IdEmp'])
-        ]);
+        ])->assignRole('Produccion');
         //actualiza la informacion de perfiles para relacionar con el nuevo usuario
         PerfilesUsuarios::find($request->perfiles['id'])->update(['user_id' => $n_user->id]);
         return redirect()->back()

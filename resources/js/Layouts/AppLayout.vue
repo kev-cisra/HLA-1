@@ -47,7 +47,7 @@
                                 </jet-nav-link>
                             </div>
                             <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex" >
-                                <jet-nav-link :href="route('Produccion')" :active="route().current('Produccion')" >
+                                <jet-nav-link :href="route('Produccion')" :active="route().current('Produccion')" v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index', 'Produccion.coordi', 'Produccion.encar', 'Produccion.lider', 'Produccion.oper'])">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Producción
                                 </jet-nav-link>
                             </div>

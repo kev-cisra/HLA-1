@@ -5,6 +5,7 @@ namespace App\Models\RecursosHumanos\Perfiles;
 use App\Models\Compras\Requisiciones\Requisiciones;
 use App\Models\Produccion\are_prof;
 use App\Models\Produccion\dep_per;
+use App\Models\Produccion\notasCarga;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Catalogos\Puestos;
@@ -39,6 +40,10 @@ class PerfilesUsuarios extends Model
     //relacion muchos a uno
     public function PerfilRequisiciones() {
         return $this->hasMany(Requisiciones::class);
+    }
+
+    public function notas() {
+        return $this->hasMany(notasCarga::class, 'perfil_id');
     }
 
     //relaciones uno a muchos inversa

@@ -7,6 +7,7 @@ use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
 use App\Models\Produccion\dep_per;
+use App\Models\Produccion\notasCarga;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
@@ -103,11 +104,22 @@ class CargaController extends Controller
                 'cargas.valor AS Cval',
                 'cargas.partida AS Cpar',
                 'cargas.notaPen AS Cnp',
+                'cargas.equipo_id AS Cidequ',
+                'cargas.dep_perf_id AS Cidde_pe',
+                'cargas.per_carga AS Cidper_car',
+                'cargas.maq_pro_id AS Cidma_pr',
+                'cargas.proceso_id AS Cidpro',
+                'cargas.norma AS Cidnor',
+                'cargas.clave_id AS Cclave',
+                'cargas.turno_id AS Ctur',
                 'materiales.idmat AS Midm',
                 'materiales.nommat AS Mnom',
                 'maquinas.nombre AS MAnom',
                 'claves.CVE_ART AS CLcla',
-                'claves.DESCR AS CLdes'
+                'claves.DESCR AS CLdes',
+                'procesos.proceso_id AS PRpro_prin',
+                'notas_cargas.id AS NCid',
+                'notas_cargas.nota AS NCnota'
             )
             ->where('dep_pers.departamento_id', '=', $perf->Departamento_id)
             ->whereBetween('cargas.fecha', [$dia, $mañana])
@@ -115,6 +127,7 @@ class CargaController extends Controller
                 $q->whereDate('cargas.fecha', '<=', $dia)
                 ->where('cargas.notaPen', '=', '2');
             })
+            ->orderBy('notas_cargas.id', 'desc')
             ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
             ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
             ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
@@ -126,6 +139,7 @@ class CargaController extends Controller
             ->leftJoin('maq_pros', 'maq_pros.id', '=', 'cargas.maq_pro_id')
             ->leftJoin('maquinas', 'maquinas.id', '=', 'maq_pros.maquina_id')
             ->leftJoin('procesos', 'procesos.id', '=', 'maq_pros.proceso_id')
+            ->leftJoin('notas_cargas', 'notas_cargas.carga_id', '=', 'cargas.id')
             ->get();
         }else{
             //consulta el id de la area produccion
@@ -188,11 +202,22 @@ class CargaController extends Controller
                 'cargas.valor AS Cval',
                 'cargas.partida AS Cpar',
                 'cargas.notaPen AS Cnp',
+                'cargas.equipo_id AS Cidequ',
+                'cargas.dep_perf_id AS Cidde_pe',
+                'cargas.per_carga AS Cidper_car',
+                'cargas.maq_pro_id AS Cidma_pr',
+                'cargas.proceso_id AS Cidpro',
+                'cargas.norma AS Cidnor',
+                'cargas.clave_id AS Cclave',
+                'cargas.turno_id AS Ctur',
                 'materiales.idmat AS Midm',
                 'materiales.nommat AS Mnom',
                 'maquinas.nombre AS MAnom',
                 'claves.CVE_ART AS CLcla',
-                'claves.DESCR AS CLdes'
+                'claves.DESCR AS CLdes',
+                'procesos.proceso_id AS PRpro_prin',
+                'notas_cargas.id AS NCid',
+                'notas_cargas.nota AS NCnota'
             )
             ->where('dep_pers.departamento_id', '=', $request->busca)
             ->whereBetween('cargas.fecha', [$dia, $mañana])
@@ -200,6 +225,7 @@ class CargaController extends Controller
                 $q->whereDate('cargas.fecha', '<=', $dia)
                 ->where('cargas.notaPen', '=', '2');
             })
+            ->orderBy('notas_cargas.id', 'desc')
             ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
             ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
             ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
@@ -211,6 +237,7 @@ class CargaController extends Controller
             ->leftJoin('maq_pros', 'maq_pros.id', '=', 'cargas.maq_pro_id')
             ->leftJoin('maquinas', 'maquinas.id', '=', 'maq_pros.maquina_id')
             ->leftJoin('procesos', 'procesos.id', '=', 'maq_pros.proceso_id')
+            ->leftJoin('notas_cargas', 'notas_cargas.carga_id', '=', 'cargas.id')
             ->get();
         }
 
@@ -283,6 +310,29 @@ class CargaController extends Controller
     public function update(Request $request, carga $carga)
     {
         //
+
+        Validator::make($request->all(), [
+            'clave_id' => ['required'],
+            'partida' => ['required'],
+            'valor' => ['required'],
+            'nota' => ['required']
+        ])->validate();
+        //carga de procesos
+        carga::find($request->input('id'))
+        ->update([
+            'clave_id' => $request->clave_id,
+            'partida' => $request->partida,
+            'valor' => $request->valor,
+            'nota' => $request->nota,
+            'notaPen' => 1
+        ]);
+        //carga de notas
+        notasCarga::create([
+            'fecha' => $request->fecha,
+            'nota' => $request->nota,
+            'perfil_id' => $request->usu,
+            'carga_id' => $request->id
+        ]);
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
     }

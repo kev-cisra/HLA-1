@@ -77,8 +77,13 @@ class notascargaController extends Controller
         Validator::make($request->all(), [
             'nota' => ['required']
         ])->validate();
-        //return $request;
-        carga::find($request->input('idnota'))->update(['notaPen' => 2]);
+        carga::find($request->input('id'))->update(['notaPen' => 2]);
+        notasCarga::create([
+            'fecha' => $request->fecha,
+            'nota' => $request->nota,
+            'perfil_id' => $request->usu,
+            'carga_id' => $request->idnota
+        ]);
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
     }

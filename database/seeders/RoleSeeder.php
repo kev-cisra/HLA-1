@@ -26,6 +26,14 @@ class RoleSeeder extends Seeder
         $ProduccionRole  = Role::create(['name' => 'Produccion']);
         $SupplyRole  = Role::create(['name' => 'Supply']);
         $VisitanteRole  = Role::create(['name' => 'Visitante']);
+        //Produccion modulos
+        /* $ProPersoRole = Role::create(['name' => 'Produccion/Personal']);
+        $ProProceRole = Role::create(['name' => 'Produccion/Procesos']);
+        $ProMaquiRole = Role::create(['name' => 'Produccion/Maquinas']);
+        $ProTurnoRole = Role::create(['name' => 'Produccion/Turnos']);
+        $ProMaterRole = Role::create(['name' => 'Produccion/Materiales']);
+        $ProClaveRole = Role::create(['name' => 'Produccion/Clamat']);
+        $ProCargaRole = Role::create(['name' => 'Produccion/Carga']); */
 
         Permission::create(['name' => 'admin.index'])->syncRoles([$ONEPIECE, $AdminRole]);
         Permission::create(['name' => 'RecursosHumanos.index'])->syncRoles([$ONEPIECE, $RHRole]);
@@ -34,8 +42,17 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'Compras.index'])->syncRoles([$ONEPIECE, $ComprasRole]);
         Permission::create(['name' => 'Contabilidad.index'])->syncRoles([$ONEPIECE, $ContabilidadRole]);
         Permission::create(['name' => 'Direccion.index'])->syncRoles([$ONEPIECE, $DireccionRole]);
-        Permission::create(['name' => 'Produccion.index'])->syncRoles($ONEPIECE, [$ProduccionRole]);
+        Permission::create(['name' => 'Produccion.index'])->syncRoles([$ONEPIECE, $ProduccionRole]);
         Permission::create(['name' => 'Supply.index'])->syncRoles([$ONEPIECE, $SupplyRole]);
+        //permisos modulos de produccion
+        /* Permission::create(['name' => 'Personal.index'])->syncRoles([$ONEPIECE, $ProPersoRole, $SistemasRole]);
+        Permission::create(['name' => 'Procesos.index'])->syncRoles([$ONEPIECE, $ProProceRole, $SistemasRole]);
+        Permission::create(['name' => 'Maquinas.index'])->syncRoles([$ONEPIECE, $ProMaquiRole, $SistemasRole]);
+        Permission::create(['name' => 'Turnos.index'])->syncRoles([$ONEPIECE, $ProTurnoRole, $SistemasRole]);
+        Permission::create(['name' => 'Materiales.index'])->syncRoles([$ONEPIECE, $ProMaterRole, $SistemasRole]);
+        Permission::create(['name' => 'Clamat.index'])->syncRoles([$ONEPIECE, $ProClaveRole, $SistemasRole]);
+        Permission::create(['name' => 'Carga.index'])->syncRoles([$ONEPIECE, $ProCargaRole, $SistemasRole]); */
+
 
         //Permisos especificos en cada menu
     }

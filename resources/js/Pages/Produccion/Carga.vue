@@ -20,32 +20,32 @@
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
         <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
-            <div class="tw-mb-6 md:tw-flex" v-if="form.notaPen == 1">
+            <div class="tw-mb-6 md:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
-                    <select class="InputSelect" @change="seleSP" v-model="proc_prin" v-html="opcPP"></select>
+                    <select class="InputSelect" v-model="proc_prin" v-html="opcPP" :disabled="editMode"></select>
                     <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="opcSP">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="opcSP">
                     <jet-label><span class="required">*</span>Sub proceso </jet-label>
-                    <select class="InputSelect" v-model="form.proceso_id" @change="seleMQ" v-html="opcSP"></select>
+                    <select class="InputSelect" v-model="form.proceso_id" v-html="opcSP" :disabled="editMode"></select>
                     <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="noCor != 'cor' & noCor != 'ope'">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="(noCor != 'cor' & noCor != 'ope') | editMode">
                     <jet-label><span class="required">*</span>Operador</jet-label>
-                    <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" v-html="opcPE"></select>
+                    <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" v-html="opcPE" :disabled="editMode"></select>
                     <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
                 </div>
             </div>
-            <div class="tw-mb-6 md:tw-flex" v-if="form.notaPen == 1 & form.proceso_id != ''">
+            <div class="tw-mb-6 md:tw-flex" v-if="(form.notaPen == 1 & form.proceso_id != '') | editMode">
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0" v-show="noCor != 'cor'">
                     <jet-label><span class="required">*</span>Maquinas</jet-label>
-                    <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ"></select>
+                    <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ" :disabled="editMode"></select>
                     <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Norma</jet-label>
-                    <select class="InputSelect" @change="seleCL" v-model="form.norma" v-html="opcNM"></select>
+                    <select class="InputSelect" v-model="form.norma" v-html="opcNM" :disabled="editMode"></select>
                     <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                 </div>
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0">
@@ -53,7 +53,7 @@
                     <select class="InputSelect" v-model="form.clave_id" v-html="opcCL"></select>
                     <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="noCor != 'cor'">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/5 md:tw-mb-0" v-if="noCor != 'cor' | editMode">
                     <jet-label>Partida</jet-label>
                     <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
                     <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
@@ -64,16 +64,30 @@
                     <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
                 </div>
             </div>
-            <div class="tw-mb-6" v-if="form.notaPen == 2">
+            <div class="tw-mb-6 md:tw-flex" v-if="form.notaPen == 2">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 tw-text-center tw-mx-auto md:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
+                    <jet-label>Nota anterior</jet-label>
+                    <jet-label v-text="nAnte"></jet-label>
+                </div>
                 <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 tw-text-center tw-mx-auto md:tw-mb-0">
                     <jet-label><span class="required">*</span>Nota</jet-label>
                     <textarea class="InputSelect" v-model="form.nota" @input="(val) => (form.nota = form.nota.toUpperCase())"></textarea>
                     <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
                 </div>
             </div>
-            <div class="w-100 tw-mx-auto" align="center">
-                <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2" @click="saveNot(form)">Agregar</jet-button>
-                <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1" @click="saveCA(form)">Guardar</jet-button>
+            <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+              <div>
+                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
+              </div>
+               <div>
+                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
+               </div>
+               <div>
+                    <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+               </div>
+                <div>
+                    <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
+                </div>
             </div>
         </div>
         <!------------------------------------ Data table de carga ------------------------------------------------------->
@@ -99,7 +113,7 @@
                         <td class="fila">{{ca.Cfec}}</td>
                         <td class="fila">{{ca.Pnom}} {{ca.Pap}} {{ca.Pam}}</td>
                         <td class="fila">{{ca.Dnom}}</td>
-                        <td class="fila tw-w-32">
+                        <td class="fila tw-w-40">
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-emerald-600 tw-rounded-full" v-if="ca.Cnp == 2 & ca.DPpue == 'cor'">NOTA COORDINADOR</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-else-if="ca.Cnp == 2 & (ca.DPpue == 'ope' | ca.DPpue == 'lid')">NOTA OPERADOR</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-coolGray-600 tw-rounded-full" v-if="ca.Cnp == 1">SIN NOTA</div>
@@ -122,14 +136,14 @@
                                     </span>
 
                                 </div>
-                                <div class="iconoEdit" @click="edit(proceso)" v-show="usuario.dep_pers.length == 0 | (ca.DPpue != 'cor' & noCor == 'cor')">
+                                <div class="iconoEdit" @click="editCA(ca)" v-show="usuario.dep_pers.length == 0 | (ca.DPpue != 'cor' & noCor == 'cor')">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoDelete" @click="deleteRow(proceso)" v-show="usuario.dep_pers.length == 0">
+                                <div class="iconoDelete" @click="deleteRow(ca)" v-show="usuario.dep_pers.length == 0">
                                     <span tooltip="Eliminar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -142,9 +156,6 @@
                 </template>
             </Table>
         </div>
-        <pre>
-            {{  }}
-        </pre>
         <!--------------------------------------- Carga de reportes y datatable ------------------------------------------->
         <div class="offcanvas offcanvas-bottom tw-h-5/6" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
             <div class="offcanvas-header">
@@ -266,7 +277,6 @@
         },
         data() {
             return {
-
                 color: "tw-bg-blue-600",
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
@@ -281,10 +291,12 @@
                 proc_prin: '',
                 v: [],
                 editMode: false,
+                nAnte: '',
                 form: {
-                    idnota: null,
+                    id: null,
                     fecha: moment().format("YYYY-MM-DD HH:mm:ss"),
                     semana: moment().format("GGGG-[W]WW"),
+                    usu: this.usuario.id,
                     per_carga: '',
                     proceso_id: '',
                     dep_perf_id: '',
@@ -306,9 +318,7 @@
             this.global();
             this.selePP();
             this.tabla();
-            /*this.tablaRep();
-            this.selePE();
-            this.seleNM();*/
+            this.tablaRep();
             this.reCarga();
         },
         methods: {
@@ -333,6 +343,8 @@
             verTabla(event){
                 event.target.value == '' ? '' : $('#t_carg').DataTable().clear();
                 $('#t_carg').DataTable().destroy();
+                this.resetCA();
+                this.proc_prin = '';
                 this.$inertia.get('/Produccion/Carga',{ busca: event.target.value }, {
                     onSuccess: () => { this.selePP(),/* this.selePE(), this.seleNM(),*/ this.reCarga(), this.tabla()  }, preserveState: true
                 });
@@ -392,57 +404,6 @@
                     })
                 })
             },
-            //select para sub proceso
-            seleSP(event){
-                //console.log(this.usuario.dep_pers[0].ope_puesto)
-                this.form.proceso_id = '';
-                this.opcSP= '<option value="" >SELECCIONA</option>';
-                if (this.usuario.dep_pers.length != 0) {
-                    //recorre y muestra los procesos
-                    this.procesos.forEach(sp =>{
-                        if (this.usuario.dep_pers[0].ope_puesto != 'cor' & (sp.tipo == 1 & sp.proceso_id == event.target.value) ) {
-                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
-                        }
-                        if (this.usuario.dep_pers[0].ope_puesto == 'cor' & (sp.tipo == 2 & sp.proceso_id == event.target.value)) {
-                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
-                        }
-                    })
-                }else{
-                    //recorre y muestra los procesos
-                    this.procesos.forEach(sp =>{
-                        if (sp.tipo != 3 & sp.proceso_id == event.target.value) {
-                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`
-                        }
-                    })
-                }
-
-            },
-            //select de maquinas
-            seleMQ(event){
-                this.form.maq_pro_id = '';
-                this.opcMQ = '<option value="" >SELECCIONA</option>';
-                this.procesos.forEach(pm => {
-                    if (event.target.value == pm.id) {
-                        //console.log(pm.maq_pros.length)
-                        pm.maq_pros.forEach(mp => {
-                            this.opcMQ += `<option value="${mp.id}" >${mp.maquinas.Nombre}</option>`;
-                        })
-                    }
-                })
-            },
-            //claves
-            seleCL(event){
-                this.form.clave_id = '';
-                this.opcCL = '<option value="">SELECCIONA</option>';
-                this.materiales.forEach(cl => {
-                    if (event.target.value == cl.id) {
-                        //console.log(cl.claves)
-                        cl.claves.forEach(c => {
-                            this.opcCL += `<option value="${c.id}">${c.CVE_ART} - ${c.DESCR}</option>`;
-                        })
-                    }
-                })
-            },
             //reordana los datos para mostrar la información en el datatable
             reCarga(){
                 this.cargas.forEach(ca => {
@@ -474,7 +435,7 @@
                 })
             },
             //datatable de paros
-            /* tablaRep() {
+            tablaRep() {
                 this.$nextTick(() => {
                     $('#t_rep').DataTable({
                         "language": this.español,
@@ -486,7 +447,7 @@
                     });
 
                 })
-            }, */
+            },
             /****************************** carga de carga de datos ******************************************/
             saveCA(form){
                 $('#t_carg').DataTable().clear();
@@ -497,6 +458,8 @@
                 //console.log(form);
             },
             resetCA(){
+                this.proc_prin = '';
+                this.editMode = false;
                 this.form.valor = '';
                 this.form.norma = '';
                 this.form.partida = '';
@@ -505,6 +468,7 @@
                 this.form.agNot = 0;
                 this.form.notaPen = 1;
                 this.form.nota = '';
+                this.form.usu = this.usuario.id;
 
                 if (this.usuario.dep_pers.length != 0) {
                     if (this.usuario.dep_pers[0].ope_puesto != 'ope' | this.usuario.dep_pers[0].ope_puesto != 'cor') {
@@ -527,12 +491,38 @@
                 }
             },
             editCA(form){
-                console.log(form)
+                //console.log(form)
+                this.proc_prin = form.PRpro_prin;
+                this.form.dep_perf_id = form.Cidde_pe;
+                this.form.turno_id = form.Ctur;
+                this.form.equipo_id = form.Cidequ;
+                this.form.proceso_id = form.Cidpro;
+                this.form.id = form.id;
+                this.form.valor = form.Cval;
+                this.form.norma = form.Cidnor;
+                this.form.partida = form.Cpar;
+                this.form.maq_pro_id = form.Cidma_pr;
+                this.form.clave_id = form.Cclave;
+                this.form.notaPen = 2;
+                this.form.nota = '';
+                this.editMode = true;
+                this.nAnte = form.NCnota;
+                $('#agPer').addClass('show')
+            },
+            updateCA(data){
+                console.log(data)
+                if (data.nota != '' & data.clave_id != '' & data.valor != '') {
+                    $('#t_carg').DataTable().clear();
+                    $('#t_carg').DataTable().destroy();
+                }
+                this.$inertia.put('/Produccion/Carga/' + data.id, data, {
+                    onSuccess: () => {this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()},
+                });
             },
             /****************************** Carga de notas */
             notaCA(form){
                 //console.log(form)
-                this.form.idnota = form.id;
+                this.form.id = form.id;
                 //console.log(this.form.idnota);
                 this.form.agNot = 1;
                 this.form.notaPen = 2;
@@ -546,6 +536,68 @@
                 this.$inertia.put('/Produccion/Nota/' + data.id, data, {
                     onSuccess: () => {this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()},
                 });
+            }
+        },
+        watch: {
+            proc_prin: function(v) {
+                //console.log(v)
+
+                //cuando no se edita
+                if (!this.editMode) {
+                    this.form.proceso_id = '';
+                    this.form.maq_pro_id = '';
+                    this.form.clave_id = '';
+                    this.form.norma = '';
+                }
+                this.opcSP= '<option value="" >SELECCIONA</option>';
+                if (this.usuario.dep_pers.length != 0) {
+                    //recorre y muestra los procesos
+                    this.procesos.forEach(sp =>{
+                        if (this.usuario.dep_pers[0].ope_puesto != 'cor' & (sp.tipo == 1 & sp.proceso_id == v) | this.editMode ) {
+                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
+                        }
+                        if (this.usuario.dep_pers[0].ope_puesto == 'cor' & (sp.tipo == 2 & sp.proceso_id == v) | this.editMode) {
+                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
+                        }
+                    })
+                }else{
+                    //recorre y muestra los procesos
+                    this.procesos.forEach(sp =>{
+                        if (sp.tipo != 3 & sp.proceso_id == v) {
+                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`
+                        }
+                    })
+                }
+            },
+            form: {
+                deep: true,
+                handler: function(f) {
+                    //console.log(f)
+                    //select de maquinas
+                    if (f.proceso_id != '') {
+                        this.opcMQ = '<option value="" >SELECCIONA</option>';
+                        this.procesos.forEach(pm => {
+                            if (f.proceso_id == pm.id) {
+                                //console.log(pm.maq_pros.length)
+                                pm.maq_pros.forEach(mp => {
+                                    this.opcMQ += `<option value="${mp.id}" >${mp.maquinas.Nombre}</option>`;
+                                })
+                            }
+                        })
+                    }
+                    //select para claves
+                    if (f.norma != '') {
+                        this.opcCL = '<option value="">SELECCIONA</option>';
+                        this.materiales.forEach(cl => {
+                            if (f.norma == cl.id) {
+                                //console.log(cl.claves)
+                                cl.claves.forEach(c => {
+                                    this.opcCL += `<option value="${c.id}">${c.CVE_ART} - ${c.DESCR}</option>`;
+                                })
+                            }
+                        })
+                    }
+                }
             }
         }
     }
