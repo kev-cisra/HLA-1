@@ -18328,6 +18328,14 @@ select {
 	margin-left: 2.5rem;
 	margin-right: 2.5rem;
 }
+.tw-mx-48 {
+	margin-left: 12rem;
+	margin-right: 12rem;
+}
+.tw-mx-24 {
+	margin-left: 6rem;
+	margin-right: 6rem;
+}
 .tw-mt-5 {
 	margin-top: 1.25rem;
 }
@@ -19124,6 +19132,9 @@ select {
 }
 .tw-font-black {
 	font-weight: 900;
+}
+.tw-font-extrabold {
+	font-weight: 800;
 }
 .tw-uppercase {
 	text-transform: uppercase;

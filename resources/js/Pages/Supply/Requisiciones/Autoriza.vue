@@ -246,7 +246,7 @@
                             <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
                             <td class="fila">
                                 <div class="columnaIconos" v-if="datos.EstatusArt == 5">
-                                    <div class="iconoPurple" @click="show(datos)">
+                                    <div class="iconoPurple" @click="Precios(datos)">
                                         <span tooltip="Visualiza Cotizaciones" flow="left">
                                             <i class="fas fa-file-invoice-dollar"></i>
                                         </span>
@@ -294,7 +294,6 @@
                     </template>
                 </Table>
             </div>
-
         </div>
     </div>
 
@@ -309,7 +308,7 @@
                 </div>
 
                 <div class="tw-mt-4">
-                    <Table id="Articulos">
+                    <Table>
                         <template v-slot:TableHeader>
                             <th class="columna">CANTIDAD</th>
                             <th class="columna">UNIDAD</th>
@@ -321,7 +320,43 @@
                             <th class="columna">ESTATUS</th>
                             <th class="columna">ACCIONES</th>
                         </template>
-                        <template v-slot:TableFooter>                            
+                        <template v-slot:TableFooter>
+                            <tr class="fila" v-for="datos in PreciosCotizacion" :key="datos">
+                                <td class="tw-p-2">{{ datos.precios_articulo.Cantidad }}</td>
+                                <td class="tw-p-2">{{ datos.precios_articulo.Unidad }}</td>
+                                <td class="tw-p-2">{{ datos.precios_articulo.Descripcion }}</td>
+                                <td class="tw-p-2">{{ datos.Precio }}</td>
+                                <td class="tw-p-2">{{ datos.Total }}</td>
+                                <td class="tw-p-2">{{ datos.Marca }}</td>
+                                <td class="tw-p-2">{{ datos.Archivo }}</td>
+                                <td class="fila">
+                                    <div class="columnaIconos">
+                                        <div class="iconoCyan" @click="Autorizar(datos)">
+                                            <span tooltip="Autoriza" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="fila">
+                                    <div class="columnaIconos">
+                                        <div class="iconoCyan">
+                                            <span tooltip="Visualiza Archivo Adjunto" flow="left">
+                                                <a target="_blank" :href="datos.Archivo" style="color:black;">
+                                                    <i class="far fa-file-image"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                        <div class="iconoCyan" @click="HabilitaResguardo(datos)">
+                                            <span tooltip="Habilita Resguardo" flow="left">
+                                                <i class="fas fa-user-shield"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                         </template>
                     </Table>
                 </div>
@@ -381,7 +416,6 @@ export default {
                 Unidad: null,
                 Descripcion: null,
                 Comentarios: null,
-
                 Precios: [{
                     Precio: null,
                     Total: null,
@@ -389,6 +423,11 @@ export default {
                     Proveedor: null,
                     archivo: null,
                 }],
+            },
+            Cotizacion:{
+                Cot: null,
+            },
+            PreciosArt: {
             },
             params:{
                 month: null,
@@ -420,7 +459,7 @@ export default {
         Session: Object,
         errors: Object,
         ArticuloRequisicion: Object,
-        Precios: Object,
+        PreciosCotizacion: Object,
         Proveedores: Object,
         PerfilesUsuarios: Object,
         Almacen: Object,
@@ -488,7 +527,7 @@ export default {
             $('#Articulos').DataTable().clear(); //limpio
             $('#Articulos').DataTable().destroy(); //destruyo tabla
             this.params.Estatus = value;
-            this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
+            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
                     this.tabla() //regeneracion de tabla
                 }, preserveState: true})
@@ -496,16 +535,18 @@ export default {
 
         FiltroMes(value){
             this.params.month = value;
-            this.$inertia.get('/Compras/Requisiciones', this.params , { //envio de variables por url
+            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
                     this.tabla() //regeneracion de tabla
                 }, preserveState: true})
         },
 
-        show(data){
-            this.chageClose();
-            this.reset();
-            this.editMode = false;
+        Precios(data){
+            this.Cotizacion.Cot = data.id;
+            this.$inertia.get('/Supply/AutorizaRequisiciones', this.Cotizacion , { //envio de variables por url
+                onSuccess: () => {
+                    this.chageClose();
+            }, preserveState: true })
         }
 
     },

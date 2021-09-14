@@ -28,11 +28,12 @@ class RequisicionesController extends Controller{
 
         //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
         $ObtenJefe = JefesArea::where('IdEmp', '=', $SessionIdEmp)->first('id','IdEmp');
-        if(!isset($ObtenJefe)){
+
+        if(isset($ObtenJefe)){
             $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
 
             //Consulta para obtener los datos de los trabajadores pertenecientes al id de la session
-            $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', '12')->get();
+            $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', $IdJefe)->get();
         }else{
             $PerfilesUsuarios = PerfilesUsuarios::get();
         }
@@ -73,6 +74,7 @@ class RequisicionesController extends Controller{
                     $marca->select('id', 'Nombre');
                 },
             ])
+            ->where('IdEmp', '=', $Session->IdEmp)
             ->orderBy('EstatusArt', 'asc')
             ->whereMonth('Fecha', $mes)
             ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
@@ -108,6 +110,7 @@ class RequisicionesController extends Controller{
                     $marca->select('id', 'Nombre');
                 },
             ])
+            ->where('IdEmp', '=', $Session->IdEmp)
             ->orderBy('EstatusArt', 'asc')
             ->where('EstatusArt', $request->Estatus)
             ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
@@ -135,11 +138,11 @@ class RequisicionesController extends Controller{
 
         //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
         $ObtenJefe = JefesArea::where('IdEmp', '=', $request->IdEmp)->first('id','IdEmp');
-        if(!isset($ObtenJefe)){
+        if(isset($ObtenJefe)){
             $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
         }else{
             $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $request->IdEmp)->first('id','jefes_areas_id');
-            $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
+            $IdJefe = $PerfilesUsuarios->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
         }
 
         //Genracion de folio automatico
@@ -158,7 +161,7 @@ class RequisicionesController extends Controller{
 
         $Requisicion = Requisiciones::create([
             'IdUser' => $request->IdUser,
-            'IdEmp' => 5310,
+            'IdEmp' => $Session->IdEmp,
             'Folio' => $serial,
             'NumReq' => $request->NumReq,
             'Departamento_id' => $request->Departamento_id,
@@ -175,6 +178,7 @@ class RequisicionesController extends Controller{
 
         foreach ($request->Partida as $value) {
             $Articulos = ArticulosRequisiciones::create([
+                'IdEmp' => $Session->IdEmp,
                 'Fecha' => $request->Fecha,
                 'Cantidad' => $value['Cantidad'],
                 'Unidad' => $value['Unidad'],

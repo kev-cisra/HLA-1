@@ -12,19 +12,50 @@ use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class SolicitudesPapeleriaController extends Controller{
 
     public function index(){
+
+        $hoy = Carbon::now();
+
+        $mes = $hoy->format('n');
 
         $Session = auth()->user();
 
         $Material = MaterialPapeleria::orderBy('Nombre', 'asc')->get(['id','Nombre']);
         $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
 
-        $Papeleria = ArticulosPapeleriaRequisicion::with('ArticulosPapeleria', 'ArticuloMaterial' , 'ArticulosPapeleria.RequisicionDepartamento', 'ArticulosPapeleria.RequisicionJefe')->get();
+        $Papeleria = ArticulosPapeleriaRequisicion::with([
+            'ArticulosPapeleria' => function($Art) {
+                $Art->select('id', 'IdUser', 'IdEmp', 'Departamento_id', 'jefes_areas_id', 'Fecha', 'Comentarios');
+            },
+            'ArticuloMaterial' => function($Art) {
+                $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
+            },
+            'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
+                $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
+            },
+            'ArticulosPapeleria.RequisicionJefe' => function($Art) {
+                $Art->select('id', 'IdUser', 'Nombre', 'Area');
+            },
+        ])
+        ->where('Estatus', '>', 0)
+        ->orderBy('id', 'desc')
+        ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
 
-        return Inertia::render('Compras/Papeleria/SolicitudPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria'));
+        $Solicitud = (DB::select("
+        SELECT M.Unidad, M.Nombre, SUM(A.Cantidad) AS Total FROM articulos_papeleria_requisicions AS A
+        JOIN material_papelerias AS M
+        ON A.material_id = M.id
+        WHERE MONTH(A.created_at) = ".$mes."
+        AND A.Estatus = 1
+        GROUP BY M.Unidad, M.Nombre"));
+
+
+        return Inertia::render('Compras/Papeleria/SolicitudPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria', 'Solicitud'));
     }
 
     public function store(Request $request){
@@ -65,16 +96,13 @@ class SolicitudesPapeleriaController extends Controller{
 
     public function update(Request $request, $id){
 
-        PapeleriaRequisicion::find($request->ReqId)->update([
-            'Fecha' => $request->Fecha,
-            'Departamento_id' => $request->Departamento_id,
-            'Comentarios' => $request->Comentarios,
-        ]);
-
-        ArticulosPapeleriaRequisicion::find($request->ArtId)->update([
-            'Cantidad' => $request->Cantidad,
-            'material_id' => $request->Material,
-        ]);
+        switch ($request->metodo){
+            case 2:
+                ArticulosPapeleriaRequisicion::where('id', '=', $request->id)->update([
+                    'Estatus' => 2,
+                ]);
+            break;
+        }
 
         return redirect()->back();
     }

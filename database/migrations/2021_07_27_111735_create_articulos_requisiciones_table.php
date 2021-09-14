@@ -15,6 +15,7 @@ class CreateArticulosRequisicionesTable extends Migration
     {
         Schema::create('articulos_requisiciones', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('IdEmp'); //Numero control empleado
             $table->date('Fecha'); //fecha de solicitud
             $table->integer('Cantidad');
             $table->string('Unidad',10);
@@ -23,7 +24,7 @@ class CreateArticulosRequisicionesTable extends Migration
             $table->string('MotivoCancelacion')->nullable();
             $table->integer('Resguardo')->default(1)->nullable();
 
-            $table->unsignedBigInteger('requisicion_id'); //Numero control empleado
+            $table->unsignedBigInteger('requisicion_id');
 
             $table->foreign("requisicion_id")->references("id")->on("requisiciones")
             ->onDelete("cascade")

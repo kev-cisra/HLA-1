@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AutorizaRequisicionesController extends Controller{
 
@@ -123,79 +124,33 @@ class AutorizaRequisicionesController extends Controller{
 
         }
 
+        if($request->Cot != ''){
+            $PreciosCotizacion = PreciosCotizaciones::with('PreciosArticulo')->where('articulos_requisiciones_id','=', $request->Cot)->get();
+        }else{
+            $PreciosCotizacion = PreciosCotizaciones::with('PreciosArticulo')->get();
+        }
+
+
+
         $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 3)->count();
 
         $Cotizacion = ArticulosRequisiciones::where('EstatusArt', '=', 4)->count();
 
         $Autorizados = ArticulosRequisiciones::where('EstatusArt', '=', 5)->count();
 
-        $Precios = ArticulosRequisiciones::with('ArticuloPrecios')->get();
-
-
-        return Inertia::render('Supply/Requisiciones/Autoriza', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Precios', 'Proveedores', 'Almacen', 'Cotizacion', 'Autorizados', 'mes'));
+        return Inertia::render('Supply/Requisiciones/Autoriza', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'PreciosCotizacion', 'Proveedores', 'Almacen', 'Cotizacion', 'Autorizados', 'mes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+
+    public function store(Request $request){
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+    public function update(Request $request, $id){
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

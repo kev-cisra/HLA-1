@@ -385,7 +385,7 @@
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
                                 <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
-                                    <option v-for="select in Proveedores" :key="select.id" :value="select.id" >{{ select.Nombre }}</option>
+                                    <option v-for="select in Proveedores" :key="select.id" :value="select.Nombre" >{{ select.Nombre }}</option>
                                 </select>
                                 <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
                             </div>
@@ -724,8 +724,6 @@ export default {
         },
 
         save(data) {
-            console.log("SAVE");
-            console.log(data);
             this.$inertia.post("/Compras/Cotizaciones", data, {
                 onSuccess: () => {
                     this.reset(),
