@@ -18,15 +18,17 @@ class RequisicionPapeleriaController extends Controller{
     public function index(){
 
         $Session = auth()->user();
+        $IdEmp = $Session->id;
 
         $Material = MaterialPapeleria::orderBy('Nombre', 'asc')->get(['id','Nombre']);
         $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
 
         $Papeleria = ArticulosPapeleriaRequisicion::with([
-            'ArticulosPapeleria' => function($Art) { //Relacion 1 a 1 De puestos
+            'ArticulosPapeleria' => function($Art) {
+                $Art->where('IdUser', '=', 1);
                 $Art->select('id', 'IdUser', 'IdEmp', 'Departamento_id', 'jefes_areas_id', 'Fecha', 'Comentarios');
             },
-            'ArticuloMaterial' => function($Art) { //Relacion 1 a 1 De puestos
+            'ArticuloMaterial' => function($Art) {
                 $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
             },
             'ArticulosPapeleria.RequisicionDepartamento' => function($Art) { //Relacion 1 a 1 De puestos
@@ -35,7 +37,8 @@ class RequisicionPapeleriaController extends Controller{
             'ArticulosPapeleria.RequisicionJefe' => function($Art) { //Relacion 1 a 1 De puestos
                 $Art->select('id', 'IdUser', 'Nombre', 'Area');
             },
-        ])->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
+        ])->where('IdEmp', '=', $Session->IdEmp)
+        ->get(['id', 'IdEmp', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
 
         return Inertia::render('Compras/Papeleria/RequisicionPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria'));
     }
@@ -67,6 +70,7 @@ class RequisicionPapeleriaController extends Controller{
 
         foreach ($request->Partida as $value) {
             $Articulos = ArticulosPapeleriaRequisicion::create([
+                'IdEmp' => $Session->IdEmp,
                 'Cantidad' => $value['Cantidad'],
                 'material_id' => $value['Cantidad'],
                 'papeleria_id' => $PapeleriaId,

@@ -11,7 +11,6 @@
         </Header>
 
         <div class="tw-mt-8">
-
             <div class="tw-overflow-x-auto tw-mx-2">
                 <Table id="Papeleria">
                     <template v-slot:TableHeader>
@@ -22,7 +21,8 @@
                         <th class="columna">UNIDAD</th>
                         <th class="columna">MATERIAL</th>
                         <th class="columna">COMENTARIOS</th>
-                        <th class="columna">Acciones</th>
+                        <th class="columna">ESTATUS</th>
+                        <th class="columna">ACCIONES</th>
                     </template>
 
                     <template v-slot:TableFooter>
@@ -34,20 +34,30 @@
                             <td class="tw-p-2">{{ dato.articulo_material.Unidad }}</td>
                             <td class="tw-p-2">{{ dato.articulo_material.Nombre }}</td>
                             <td class="tw-p-2">{{ dato.articulos_papeleria.Comentarios }}</td>
+                            <td class="tw-p-2">
+                                <div v-if="dato.Estatus == 1">
+                                    <span tooltip="Confirmar Solicitud de Papeleria" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-teal-500 tw-rounded-full">SOLICITADO</span>
+                                    </span>
+                                </div>
+                                <div v-if="dato.Estatus == 2">
+                                    <span tooltip="Material en posesión" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-sky-500 tw-rounded-full">EN STOCK</span>
+                                    </span>
+                                </div>
+                            </td>
                             <td class="fila">
-                                <div class="columnaIconos">
-                                    <div class="iconoEdit" @click="edit(dato)">
-                                        <span tooltip="Editar" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                            </svg>
+                                <div class="columnaIconos" v-if="dato.Estatus == 1">
+                                    <div class="iconoTeal" @click="Confirma(dato, 2)">
+                                        <span tooltip="Confirma Material" flow="left">
+                                            <i class="fas fa-check-circle"></i>
                                         </span>
                                     </div>
-                                    <div class="iconoDelete" @click="deleteRow(dato)">
-                                        <span tooltip="Eliminar" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                            </svg>
+                                </div>
+                                <div class="columnaIconos" v-else>
+                                    <div class="iconoPurple">
+                                        <span tooltip="Material en espera de entrega" flow="left">
+                                            <i class="fas fa-info-circle"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -58,6 +68,28 @@
             </div>
         </div>
 
+        <div class="tw-mt-8">
+            <h4 class="tw-bg-teal-500 tw-p-2 tw-rounded-full tw-mx-48 tw-text-center tw-shadow tw-text-white tw-font-extrabold">Concentrado de Papeleria del mes</h4>
+        </div>
+
+
+        <div class="tw-p-4 tw-mt-8 tw-mx-24">
+            <Table id="Concentrado">
+                <template v-slot:TableHeader>
+                    <th class="columna">UNIDAD</th>
+                    <th class="columna">CANTIDAD</th>
+                    <th class="columna">TOTAL</th>
+                </template>
+
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="dato in Solicitud" :key="dato.id">
+                        <td class="tw-p-2">{{ dato.Unidad }}</td>
+                        <td class="tw-p-2">{{ dato.Nombre }}</td>
+                        <td class="tw-p-2">{{ dato.Total }}</td>
+                    </tr>
+                </template>
+            </Table>
+        </div>
     </div>
 
   </app-layout>
@@ -97,6 +129,7 @@ window.JSZip = jszip
 export default {
     mounted() {
         this.tabla();
+        this.tablaReporte();
     },
 
     data() {
@@ -108,14 +141,6 @@ export default {
             form: {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
-                Departamento_id: null,
-                Partida: [{
-                    Cantidad: null,
-                    Material: null,
-                    }],
-                Comentarios: null,
-                ReqId: null,
-                ArtId: null,
             },
         };
     },
@@ -140,6 +165,7 @@ export default {
         Departamentos: Object,
         Material: Object,
         Papeleria: Object,
+        Solicitud: Object,
     },
 
     methods: {
@@ -147,14 +173,6 @@ export default {
             this.form = {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
-                Departamento_id: null,
-                Partida: [{
-                    Cantidad: null,
-                    Material: null,
-                    }],
-                Comentarios: null,
-                ReqId: null,
-                ArtId: null,
             };
         },
 
@@ -163,9 +181,19 @@ export default {
             this.$nextTick(() => {
                 $("#Papeleria").DataTable({
                 language: this.español,
-                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                });
+            });
+        },
+
+        tablaReporte() {
+            this.$nextTick(() => {
+                $("#Concentrado").DataTable({
+                language: this.español,
+                "bPaginate": false,
+                "searching": false,
+                "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                     buttons: [
                         {
                             extend: 'excelHtml5',
@@ -215,7 +243,7 @@ export default {
                                             {
                                                 alignment: 'right',
                                                 fontSize: 12,
-                                                text: 'Reporte de Vacaciones'
+                                                text: 'Reporte de Papeleria'
                                             }
                                         ],
                                         margin: 20
@@ -252,7 +280,6 @@ export default {
                                 doc.content[0].layout = objLayout;
                             }
                         },
-                        'colvis'
                     ]
                 });
             });
@@ -261,46 +288,19 @@ export default {
         //consulta para generar datos de la tabla
         verTabla(event) {
             $("#Papeleria").DataTable().destroy();
-                this.$inertia.get("/Compras/RequisicionPapeleria", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
+                this.$inertia.get("/Compras/Papeleria", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
         },
 
-        addRow: function () {
-            this.form.Partida.push({Part: ""});
+        verTablaReporte(event) {
+            $("#Concentrado").DataTable().destroy();
+                this.$inertia.get("/Compras/Papeleria", { busca: event.target.value },{ onSuccess: () => { this.tablaReporte(); },});
         },
 
-        removeRow: function (row) {
-            this.form.Partida.splice(row,1);
-        },
-
-        chageCloseEdit() {
-            this.showEdit = !this.showEdit;
-        },
-
-        save(data) {
-            this.$inertia.post("/Compras/RequisicionPapeleria", data, {
-                onSuccess: () => {
-                    this.reset(),
-                    this.chageClose(),
-                    this.alertSucces();
-                },
-            });
-        },
-
-        edit: function (data) {
-            this.chageCloseEdit();
-            this.form.ArtId = data.id,
-            this.form.ReqId = data.papeleria_id,
-            this.form.Fecha = data.articulos_papeleria.Fecha;
-            this.form.Departamento_id = data.articulos_papeleria.Departamento_id;
-            this.form.Cantidad = data.Cantidad;
-            this.form.Material = data.material_id;
-            this.form.Comentarios = data.articulos_papeleria.Comentarios;
-            this.editMode = true;
-        },
-
-        update(data) {
+        Confirma(data, metodo) {
+            console.log(data);
+            data.metodo = 2;
             data._method = 'PUT';
-            this.$inertia.post('/Compras/RequisicionPapeleria/' + data.id, data, {
+            this.$inertia.post('/Compras/Papeleria/' + data.id, data, {
                 onSuccess: () => {
                     this.alertSucces(),
                     this.reset(),
@@ -309,30 +309,12 @@ export default {
             });
         },
 
-        deleteRow: function (data) {
-            Swal.fire({
-                title: '¿Estas seguro de querer eliminar esta información',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: '¡Sí, bórralo!',
-                cancelButtonText: 'No, Cancelar!',
-                }).then((result) => {
-                    if (result.isConfirmed) {
+        chageCloseEdit() {
+            this.showEdit = !this.showEdit;
+        },
 
-                        data._method = "DELETE";
-                        this.$inertia.post("/Compras/RequisicionPapeleria/" + data.id, data, {
-                            onSuccess: () => {
-                                Swal.fire(
-                                    'Eliminado!',
-                                    'El registro fue eliminado con éxito',
-                                    'success'
-                                )
-                            },
-                        });
-                    }
-                })
+        Reporte(){
+            this.chageCloseEdit();
         }
 
     },

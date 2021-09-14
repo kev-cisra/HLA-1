@@ -15,6 +15,7 @@ class CreateArticulosPapeleriaRequisicionsTable extends Migration
     {
         Schema::create('articulos_papeleria_requisicions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('IdEmp'); //Numero control empleado
 
             $table->integer('Cantidad');
 

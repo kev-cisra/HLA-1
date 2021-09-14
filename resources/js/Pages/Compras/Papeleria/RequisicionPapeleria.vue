@@ -56,9 +56,14 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-teal-500 tw-rounded-full">SOLICITADO</span>
                                     </span>
                                 </div>
+                                <div v-else-if="dato.Estatus == 2">
+                                    <span tooltip="Pasar a recoger material" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-sky-500 tw-rounded-full">EN STOCK</span>
+                                    </span>
+                                </div>
                             </td>
                             <td class="fila">
-                                <div class="columnaIconos">
+                                <div class="columnaIconos" v-if="dato.Estatus == 0">
                                     <div class="iconoEdit" @click="edit(dato)">
                                         <span tooltip="Editar" flow="left">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -69,6 +74,20 @@
                                     <div class="iconoEdit" @click="Confirma(dato, 1)">
                                         <span tooltip="Enviar Solicitud a Compra" flow="left">
                                             <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-else-if="dato.Estatus == 1">
+                                    <div class="iconoPurple">
+                                        <span tooltip="Material en proceso" flow="left">
+                                            <i class="fas fa-info-circle"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-else-if="dato.Estatus == 2">
+                                    <div class="iconoPurple">
+                                        <span tooltip="Pasar a recoger material" flow="left">
+                                            <i class="fas fa-info-circle"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -323,7 +342,6 @@ export default {
         chageCloseEdit() {
             this.showEdit = !this.showEdit;
         },
-
 
         Confirma(data, metodo){
             console.log(data);
