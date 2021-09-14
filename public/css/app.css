@@ -18328,33 +18328,13 @@ select {
 	margin-left: 2.5rem;
 	margin-right: 2.5rem;
 }
-.tw-mx-8 {
-	margin-left: 2rem;
-	margin-right: 2rem;
-}
-.tw-mx-16 {
-	margin-left: 4rem;
-	margin-right: 4rem;
+.tw-mx-48 {
+	margin-left: 12rem;
+	margin-right: 12rem;
 }
 .tw-mx-24 {
 	margin-left: 6rem;
 	margin-right: 6rem;
-}
-.tw-my-24 {
-	margin-top: 6rem;
-	margin-bottom: 6rem;
-}
-.tw-mx-28 {
-	margin-left: 7rem;
-	margin-right: 7rem;
-}
-.tw-mx-32 {
-	margin-left: 8rem;
-	margin-right: 8rem;
-}
-.tw-mx-48 {
-	margin-left: 12rem;
-	margin-right: 12rem;
 }
 .tw-mt-5 {
 	margin-top: 1.25rem;
@@ -18442,9 +18422,6 @@ select {
 }
 .tw--mt-4 {
 	margin-top: -1rem;
-}
-.tw-mt-16 {
-	margin-top: 4rem;
 }
 .tw-block {
 	display: block;
@@ -19244,10 +19221,6 @@ select {
 .tw-text-pink-600 {
 	--tw-text-opacity: 1;
 	color: rgba(219, 39, 119, var(--tw-text-opacity));
-}
-.tw-text-coolGray-200 {
-	--tw-text-opacity: 1;
-	color: rgba(229, 231, 235, var(--tw-text-opacity));
 }
 .tw-underline {
 	text-decoration: underline;
