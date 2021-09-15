@@ -157,6 +157,10 @@ class AutorizaRequisicionesController extends Controller{
             'Autorizado' => 2,
         ]);
 
+        ArticulosRequisiciones::where('id', '=', $request->articulos_requisiciones_id)->update([
+            'EstatusArt' => 6,
+        ]);
+
         return redirect()->back();
 
     }

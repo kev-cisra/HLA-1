@@ -239,20 +239,24 @@
                                 </div>
                                 <div v-else-if="datos.EstatusArt == 5">
                                     <span tooltip="COTIZAR MATERIAL SOLICITADO" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZADA</span>
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZAR</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 6">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
                                     </span>
                                 </div>
                             </td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
                             <td class="fila">
-                                <div class="columnaIconos" v-if="datos.EstatusArt == 5">
+                                <div class="columnaIconos" v-if="datos.EstatusArt == 5 || datos.EstatusArt == 6">
                                     <div class="iconoPurple" @click="Precios(datos)">
                                         <span tooltip="Visualiza Cotizaciones" flow="left">
                                             <i class="fas fa-file-invoice-dollar"></i>
                                         </span>
                                     </div>
                                 </div>
-
                             </td>
                             <td class="tw-p-2">
                                 <div class="tw-flex tw-justify-center">
@@ -327,7 +331,7 @@
                                 <td class="tw-p-2">{{ datos.precios_articulo.Descripcion }}</td>
                                 <td class="tw-p-2">{{ datos.Precio }}</td>
                                 <td class="tw-p-2">{{ datos.Total }}</td>
-                                <td class="tw-p-2">{{ datos.Marca }}</td>
+                                <td class="tw-p-2">{{ datos.Autorizado }}</td>
                                 <td class="tw-p-2">{{ datos.Autorizado }}</td>
                                 <td class="fila">
                                     <div class="columnaIconos" v-if="datos.Autorizado == 0">
@@ -373,7 +377,6 @@
             </div>
 
             <div class="ModalFooter">
-                <jet-button type="button" @click="save(form)">Guardar</jet-button>
                 <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
             </div>
         </form>

@@ -242,6 +242,11 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
                                     </span>
                                 </div>
+                                <div v-else-if="datos.EstatusArt == 6">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                    </span>
+                                </div>
                             </td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
                             <td class="fila">
@@ -285,6 +290,13 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                             </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-if="datos.EstatusArt == 6">
+                                    <div class="iconoPurple" @click="Precios(datos)">
+                                        <span tooltip="Visualiza Cotizaciones" flow="left">
+                                            <i class="fas fa-comment-dollar"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -521,6 +533,86 @@
         </form>
     </modal>
 
+    <modal :show="showPrecios" @close="chagePrecios" :maxWidth="tam">
+        <form>
+            <div class="tw-px-4 tw-py-4">
+                <div class="tw-text-lg">
+                    <div class="ModalHeader">
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Precio Autorizado</h3>
+                    </div>
+                </div>
+
+                <div class="tw-mt-4">
+                    <Table>
+                        <template v-slot:TableHeader>
+                            <th class="columna">CANTIDAD</th>
+                            <th class="columna">UNIDAD</th>
+                            <th class="columna">DESCRIPCIÓN</th>
+                            <th class="columna">PRECIO UNITARIO</th>
+                            <th class="columna">TOTAL</th>
+                            <th class="columna">MARCA</th>
+                            <th class="columna">COMENTARIOS</th>
+                            <th class="columna">ESTATUS</th>
+                            <th class="columna">ACCIONES</th>
+                        </template>
+                        <template v-slot:TableFooter>
+                            <tr class="fila" v-for="datos in PreciosCotizacion" :key="datos">
+                                <td class="tw-p-2">{{ datos.precios_articulo.Cantidad }}</td>
+                                <td class="tw-p-2">{{ datos.precios_articulo.Unidad }}</td>
+                                <td class="tw-p-2">{{ datos.precios_articulo.Descripcion }}</td>
+                                <td class="tw-p-2">{{ datos.Precio }}</td>
+                                <td class="tw-p-2">{{ datos.Total }}</td>
+                                <td class="tw-p-2">{{ datos.Autorizado }}</td>
+                                <td class="tw-p-2">{{ datos.Autorizado }}</td>
+                                <td class="fila">
+                                    <div class="columnaIconos" v-if="datos.Autorizado == 0">
+                                        <div class="iconoCyan" @click="Autoriza(datos)">
+                                            <span tooltip="Autoriza" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.Autorizado == 1">
+                                        <span tooltip="Precio no Autorizado" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-400 tw-rounded-full">No Autorizado</span>
+                                        </span>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.Autorizado == 2">
+                                        <span tooltip="Precio Autorizado" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-400 tw-rounded-full">Autorizado</span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="fila">
+                                    <div class="columnaIconos">
+                                        <div class="iconoCyan">
+                                            <span tooltip="Visualiza Archivo Adjunto" flow="left">
+                                                <a target="_blank" :href="path + datos.Archivo" style="color:black;">
+                                                    <i class="far fa-file-image"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                        <div class="iconoCyan" @click="HabilitaResguardo(datos)">
+                                            <span tooltip="Habilita Resguardo" flow="left">
+                                                <i class="fas fa-user-shield"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </Table>
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </form>
+    </modal>
+
     </app-layout>
 </template>
 
@@ -549,12 +641,16 @@ export default {
     data() {
         return {
             showDetalle: false,
+            showPrecios: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
             tam: "5xl",
             color: "tw-bg-teal-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             detalles: null,
+            Cotizacion:{
+                Cot: null,
+            },
             form: {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
@@ -614,6 +710,7 @@ export default {
         Cotizacion: Object,
         Autorizados: Object,
         mes: Object,
+        PreciosCotizacion: Object,
     },
 
     methods: {
@@ -668,6 +765,10 @@ export default {
 
         chageClose() {
             this.showModal = !this.showModal;
+        },
+
+        chagePrecios() {
+            this.showPrecios = !this.showPrecios;
         },
 
         Filtro(value){
@@ -738,6 +839,7 @@ export default {
         },
 
         Detalle(data){
+            console.log(data);
             this.chageDetalle();
             this.reset();
             this.editMode = false;
@@ -760,7 +862,15 @@ export default {
             this.form.archivo = data.articulo_precios[0].Archivo;
             this.form.Comentarios = data.articulo_precios[0].Comentarios;
 
-        }
+        },
+
+        Precios(data){
+            this.Cotizacion.Cot = data.id;
+            this.$inertia.get('/Compras/Cotizaciones', this.Cotizacion , { //envio de variables por url
+                onSuccess: () => {
+                    this.chagePrecios();
+            }, preserveState: true })
+        },
     },
 
     watch: {

@@ -20,6 +20,7 @@ class CreateArticulosRequisicionesTable extends Migration
             $table->integer('Cantidad');
             $table->string('Unidad',10);
             $table->string('Descripcion')->nullable();
+            $table->integer('OrdenCompra')->default(0)->nullable();
             $table->integer('EstatusArt')->nullable();
             $table->string('MotivoCancelacion')->nullable();
             $table->integer('Resguardo')->default(1)->nullable();

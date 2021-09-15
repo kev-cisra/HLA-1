@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Compras\Requisiciones;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Compras\Requisiciones\RequisicionesRequest;
 use App\Models\Catalogos\Maquinas;
 use App\Models\Compras\Requisiciones\ArticulosRequisiciones;
 use App\Models\Compras\Requisiciones\Requisiciones;
@@ -128,10 +129,7 @@ class RequisicionesController extends Controller{
         return Inertia::render('Compras/Requisiciones/index', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Departamentos', 'Maquinas', 'Almacen', 'Cotizacion', 'Autorizados', 'mes'));
     }
 
-    public function create(){
-    }
-
-    public function store(Request $request){
+    public function store(RequisicionesRequest $request){
 
         $Session = auth()->user();
         $SessionIdEmp = $Session->IdEmp;
@@ -191,14 +189,25 @@ class RequisicionesController extends Controller{
         return redirect()->back();
     }
 
-    public function edit($id){
-        //
-    }
-
     public function update(Request $request, $id){
 
         switch($request->metodo){
             case 1:
+
+                Validator::make($request->all(), [
+                    'IdUser' => ['required'],
+                    'IdEmp' => ['required'],
+                    'Fecha' => ['required'],
+                    'Departamento_id' => ['required'],
+                    'NumReq' => ['numeric','required','digits_between:4,5'],
+                    'Codigo' => ['required'],
+                    'Maquina' => ['required'],
+                    'Marca' => ['required'],
+                    'Tipo' => ['required'],
+                    'Nombre' => ['required'],
+                    'Marca' => ['required'],
+                    'Observaciones' => ['required'],
+                ])->validate();
 
                 $ReqId = ArticulosRequisiciones::where('id', '=', $request->editId)->first('requisicion_id');
 
@@ -222,6 +231,8 @@ class RequisicionesController extends Controller{
                     'Descripcion' => $request->Descripcion,
                 ]);
 
+                return redirect()->back();
+
                 break;
 
             case 2:
@@ -231,10 +242,12 @@ class RequisicionesController extends Controller{
                 ArticulosRequisiciones::where('requisicion_id', '=', $ReqId->requisicion_id)->update([
                     'EstatusArt' => 2,
                 ]);
+
+                return redirect()->back();
+
                 break;
         }
 
-        return redirect()->back();
     }
 
     public function destroy($id)
