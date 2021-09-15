@@ -81,7 +81,7 @@ class AutorizaRequisicionesController extends Controller{
             ->orderBy('EstatusArt', 'asc')
             ->where('EstatusArt', '>=', 5)
             ->whereMonth('Fecha', $mes)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
 
         }else{
 
@@ -120,7 +120,7 @@ class AutorizaRequisicionesController extends Controller{
             ->orderBy('EstatusArt', 'asc')
             ->where('EstatusArt', '>=', 5)
             ->where('EstatusArt', $request->Estatus)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
 
         }
 
@@ -147,7 +147,6 @@ class AutorizaRequisicionesController extends Controller{
     }
 
     public function update(Request $request, $id){
-        // return $request->articulos_requisiciones_id;
 
         PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->articulos_requisiciones_id)->update([
             'Autorizado' => 1,
@@ -157,8 +156,18 @@ class AutorizaRequisicionesController extends Controller{
             'Autorizado' => 2,
         ]);
 
+        //Genracion de Orden de Compra
+        $MaxOrdenCompra = ArticulosRequisiciones::max('OrdenCompra');
+
+        if($MaxOrdenCompra >= 1000){
+            $OrdenCompra = $MaxOrdenCompra + 1;
+        }else{
+            $OrdenCompra = 1000;
+        }
+
         ArticulosRequisiciones::where('id', '=', $request->articulos_requisiciones_id)->update([
             'EstatusArt' => 6,
+            'OrdenCompra' => $OrdenCompra,
         ]);
 
         return redirect()->back();

@@ -210,8 +210,9 @@
                         <th class="columna">DESCRIPCIÓN</th>
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
+                        <th class="columna">F. LLEGADA</th>
+                        <th class="columna">O.C</th>
                         <th class="columna">ESTATUS</th>
-                        <th class="columna">FECHA LLEGADA</th>
                         <th class="columna">ACCIONES</th>
                         <th class="columna">DETALLES</th>
                     </template>
@@ -226,6 +227,8 @@
                             <td class="tw-p-2">{{ datos.Descripcion }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
+                            <td class="tw-p-2">{{ datos.OrdenCompra }}</td>
                             <td class="tw-p-2">
                                 <div v-if="datos.EstatusArt == 3">
                                     <span tooltip="Articulo en espera de cotización" flow="left">
@@ -248,7 +251,6 @@
                                     </span>
                                 </div>
                             </td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
                             <td class="fila">
                                 <div class="columnaIconos" v-if="datos.EstatusArt == 5 || datos.EstatusArt == 6">
                                     <div class="iconoPurple" @click="Precios(datos)">
