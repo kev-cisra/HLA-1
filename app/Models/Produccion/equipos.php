@@ -23,6 +23,10 @@ class equipos extends Model
         return $this->hasMany(Departamentos::class);
     }
 
+    public function cargas() {
+        return $this->hasMany(carga::class, 'equipo_id');
+    }
+
     //relacion uno a muchos inversa
     public function turnos() {
         return $this->belongsTo(turnos::class, 'turno_id');

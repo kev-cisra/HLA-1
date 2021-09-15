@@ -82,7 +82,7 @@ class notascargaController extends Controller
             'fecha' => $request->fecha,
             'nota' => $request->nota,
             'perfil_id' => $request->usu,
-            'carga_id' => $request->idnota
+            'carga_id' => $request->id
         ]);
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
