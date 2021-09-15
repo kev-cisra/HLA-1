@@ -112,6 +112,14 @@ class ModulosSeeder extends Seeder
             'Area' => '4',
         ]);
 
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'ALTA PAPELERIA',
+            'Icono' => 'fas fa-pencil-alt',
+            'Ruta' => 'Compras/AltaPapeleria',
+            'Area' => '4',
+        ]);
+
 
         ////////////// ALMACEN ////////////////////////
 
