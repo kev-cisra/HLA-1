@@ -147,7 +147,18 @@ class AutorizaRequisicionesController extends Controller{
     }
 
     public function update(Request $request, $id){
-        //
+        // return $request->articulos_requisiciones_id;
+
+        PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->articulos_requisiciones_id)->update([
+            'Autorizado' => 1,
+        ]);
+
+        PreciosCotizaciones::where('id', '=', $request->id)->update([
+            'Autorizado' => 2,
+        ]);
+
+        return redirect()->back();
+
     }
 
 

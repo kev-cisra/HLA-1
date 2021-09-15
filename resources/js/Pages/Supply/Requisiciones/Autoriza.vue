@@ -328,10 +328,10 @@
                                 <td class="tw-p-2">{{ datos.Precio }}</td>
                                 <td class="tw-p-2">{{ datos.Total }}</td>
                                 <td class="tw-p-2">{{ datos.Marca }}</td>
-                                <td class="tw-p-2">{{ datos.Archivo }}</td>
+                                <td class="tw-p-2">{{ datos.Autorizado }}</td>
                                 <td class="fila">
-                                    <div class="columnaIconos">
-                                        <div class="iconoCyan" @click="Autorizar(datos)">
+                                    <div class="columnaIconos" v-if="datos.Autorizado == 0">
+                                        <div class="iconoCyan" @click="Autoriza(datos)">
                                             <span tooltip="Autoriza" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -339,12 +339,22 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <div class="columnaIconos" v-else-if="datos.Autorizado == 1">
+                                        <span tooltip="Precio no Autorizado" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-400 tw-rounded-full">No Autorizado</span>
+                                        </span>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.Autorizado == 2">
+                                        <span tooltip="Precio Autorizado" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-400 tw-rounded-full">Autorizado</span>
+                                        </span>
+                                    </div>
                                 </td>
                                 <td class="fila">
                                     <div class="columnaIconos">
                                         <div class="iconoCyan">
                                             <span tooltip="Visualiza Archivo Adjunto" flow="left">
-                                                <a target="_blank" :href="datos.Archivo" style="color:black;">
+                                                <a target="_blank" :href="path + datos.Archivo" style="color:black;">
                                                     <i class="far fa-file-image"></i>
                                                 </a>
                                             </span>
@@ -547,6 +557,16 @@ export default {
                 onSuccess: () => {
                     this.chageClose();
             }, preserveState: true })
+        },
+
+        Autoriza(data){
+            console.log(data);
+            data._method = "PUT";
+            this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
         }
 
     },
