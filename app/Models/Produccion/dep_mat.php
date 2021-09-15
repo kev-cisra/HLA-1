@@ -23,6 +23,10 @@ class dep_mat extends Model
         return $this->hasMany(claves::class);
     }
 
+    public function cargas() {
+        return $this->hasMany(carga::class, 'norma');
+    }
+
     // Relaciones inversas 1 a muchos
     public function departamentos() {
         return $this->belongsTo(Departamentos::class, 'departamento_id');

@@ -21,7 +21,7 @@ class carga extends Model
 
     //Relacion 1 a muchos inversa
     public function dep_perf(){
-        return $this->belongsTo(dep_perf::class, 'dep_perf_id');
+        return $this->belongsTo(dep_per::class, 'dep_perf_id');
     }
 
     public function proceso(){
@@ -38,5 +38,13 @@ class carga extends Model
 
     public function turno() {
         return $this->belongsTo(turnos::class, 'turno_id');
+    }
+
+    public function equipo() {
+        return $this->belongsTo(equipos::class, 'equipo_id');
+    }
+
+    public function dep_mat(){
+        return $this->belongsTo(dep_mat::class, 'norma');
     }
 }

@@ -117,6 +117,7 @@
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-emerald-600 tw-rounded-full" v-if="ca.Cnp == 2 & ca.DPpue == 'cor'">NOTA COORDINADOR</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-else-if="ca.Cnp == 2 & (ca.DPpue == 'ope' | ca.DPpue == 'lid')">NOTA OPERADOR</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-coolGray-600 tw-rounded-full" v-if="ca.Cnp == 1">SIN NOTA</div>
+                            <!-- <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-coolGray-600 tw-rounded-full" v-if=" ca.Cnp == 1">ACTUALIZADO COORDINADOR</div> -->
                         </td>
                         <td class="fila">{{ca.Enom}}</td>
                         <td class="fila">{{ca.Tnom}}</td>
@@ -143,19 +144,15 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoDelete" @click="deleteRow(ca)" v-show="usuario.dep_pers.length == 0">
-                                    <span tooltip="Eliminar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                    </span>
-                                </div>
                             </div>
                         </td>
                     </tr>
                 </template>
             </Table>
         </div>
+        <pre>
+            {{cargas}}
+        </pre>
         <!--------------------------------------- Carga de reportes y datatable ------------------------------------------->
         <div class="offcanvas offcanvas-bottom tw-h-5/6" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
             <div class="offcanvas-header">
@@ -407,17 +404,20 @@
             //reordana los datos para mostrar la información en el datatable
             reCarga(){
                 this.cargas.forEach(ca => {
-                    if (this.usuario.dep_pers.length != 0) {
-                        if (this.usuario.dep_pers[0].ope_puesto != 'cor') {
-                            if (ca.DPpue != 'cor') {
+                    if (ca.dep_perf) {
+                        if (this.usuario.dep_pers.length != 0) {
+                            if (this.usuario.dep_pers[0].ope_puesto != 'cor') {
+                                if (ca.DPpue != 'cor') {
+                                    this.v.push(ca);
+                                }
+                            }else{
                                 this.v.push(ca);
                             }
                         }else{
-                            this.v.push(ca);
+                            this.v.push(ca)
                         }
-                    }else{
-                        this.v.push(ca)
                     }
+
                 })
                 //console.log(this.v)
             },

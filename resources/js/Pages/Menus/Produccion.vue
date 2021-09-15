@@ -109,10 +109,6 @@
                 </div>
             </div>
         </section>
-
-        <pre>
-            {{puesto}}
-        </pre>
     </app-layout>
 </template>
 
@@ -141,7 +137,7 @@
         methods: {
             asigPuesto(){
                     //asigna el puesto a una variable
-                    this.noCor = this.usuario.dep_pers.length == 0 ? '' : this.usuario.dep_pers[0].ope_puesto;
+                    this.puesto = this.usuario.dep_pers.length == 0 ? '' : this.usuario.dep_pers[0].ope_puesto;
             }
         }
     }
