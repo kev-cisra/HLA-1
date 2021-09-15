@@ -242,6 +242,11 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
                                     </span>
                                 </div>
+                                <div v-else-if="datos.EstatusArt == 6">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                    </span>
+                                </div>
                             </td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
                             <td class="fila">
@@ -486,7 +491,7 @@ export default {
         verTabla(event) {
             $("#Articulos").DataTable().destroy();
                 this.$inertia.get("/Compras/Requisiciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
-        }, 
+        },
 
         show(id){
             this.detalles = id;

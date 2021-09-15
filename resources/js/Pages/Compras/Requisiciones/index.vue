@@ -247,6 +247,11 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
                                     </span>
                                 </div>
+                                <div v-else-if="datos.EstatusArt == 6">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                    </span>
+                                </div>
                             </td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
                             <td class="fila">
@@ -338,7 +343,7 @@
                                 <select id="Jefe" v-model="form.Departamento_id" class="InputSelect">
                                     <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
                                 </select>
-                                <small v-if="errors.Fecha" class="validation-alert">{{errors.Fecha}}</small>
+                                <small v-if="errors.Departamento_id" class="validation-alert">{{errors.Departamento_id}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Num Requisicion</jet-label>
@@ -429,6 +434,7 @@
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                                 <jet-label><span class="required">*</span>OBSERVACIONES</jet-label>
                                 <textarea name="" id="" cols="2" v-model="form.Observaciones" @input="(val) => (form.Observaciones = form.Observaciones.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                                <small v-if="errors.Observaciones" class="validation-alert">{{errors.Observaciones}}</small>
                             </div>
                         </div>
                     </div>

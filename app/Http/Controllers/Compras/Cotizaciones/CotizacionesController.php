@@ -125,6 +125,13 @@ class CotizacionesController extends Controller{
 
         }
 
+        if($request->Cot != ''){
+            $PreciosCotizacion = PreciosCotizaciones::with('PreciosArticulo')->where('articulos_requisiciones_id','=', $request->Cot)->get();
+        }else{
+            $PreciosCotizacion = PreciosCotizaciones::with('PreciosArticulo')->get();
+        }
+
+
         $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 3)->count();
 
         $Cotizacion = ArticulosRequisiciones::where('EstatusArt', '=', 4)->count();
@@ -134,7 +141,7 @@ class CotizacionesController extends Controller{
         $Precios = ArticulosRequisiciones::with('ArticuloPrecios')->get();
 
 
-        return Inertia::render('Compras/Cotizaciones/Cotizaciones', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Precios', 'Proveedores', 'Almacen', 'Cotizacion', 'Autorizados', 'mes'));
+        return Inertia::render('Compras/Cotizaciones/Cotizaciones', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'PreciosCotizacion', 'Precios', 'Proveedores', 'Almacen', 'Cotizacion', 'Autorizados', 'mes'));
     }
 
     public function store(Request $request){

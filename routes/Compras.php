@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Compras\Cotizaciones\CotizacionesController;
 use App\Http\Controllers\Compras\MarcasController;
+use App\Http\Controllers\Compras\Papeleria\AltaMaterialPapeleriaController;
 use App\Http\Controllers\Compras\Papeleria\RequisicionPapeleriaController;
 use App\Http\Controllers\Compras\Papeleria\SolicitudesPapeleriaController;
 use App\Http\Controllers\Compras\Proveedores\ProveedoresController;
@@ -27,5 +28,8 @@ Route::resource('RequisicionPapeleria', RequisicionPapeleriaController::class)
 
 Route::resource('Papeleria', SolicitudesPapeleriaController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('Papeleria');
+
+Route::resource('AltaPapeleria', AltaMaterialPapeleriaController::class)
+    ->middleware(['auth:sanctum', 'verified'])->names('AltaPapeleria');
 
 Route::get("/Marcas", [MarcasController::class, "Dropdown"]);
