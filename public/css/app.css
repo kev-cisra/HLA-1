@@ -18954,6 +18954,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(234, 88, 12, var(--tw-bg-opacity));
 }
+.tw-bg-red-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(248, 113, 113, var(--tw-bg-opacity));
+}
 .tw-bg-cyan-100 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(207, 250, 254, var(--tw-bg-opacity));
@@ -18965,10 +18969,6 @@ select {
 .tw-bg-violet-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
-}
-.tw-bg-red-400 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(248, 113, 113, var(--tw-bg-opacity));
 }
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
