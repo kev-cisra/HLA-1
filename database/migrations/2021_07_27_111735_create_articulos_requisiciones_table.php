@@ -22,8 +22,11 @@ class CreateArticulosRequisicionesTable extends Migration
             $table->string('Descripcion')->nullable();
             $table->integer('OrdenCompra')->default(0)->nullable();
             $table->integer('EstatusArt')->nullable();
-            $table->string('MotivoCancelacion')->nullable();
-            $table->integer('Resguardo')->default(1)->nullable();
+            $table->integer('Resguardo')->default(0)->nullable();
+            $table->date('Fechallegada')->nullable();
+            $table->string('Comentariollegada')->nullable();
+            $table->text('MotivoCancelacion')->nullable();
+            $table->integer('RecibidoPor')->nullable();
 
             $table->unsignedBigInteger('requisicion_id');
 

@@ -143,6 +143,14 @@ class ModulosSeeder extends Seeder
             'Area' => '8',
         ]);
 
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'PRESUPUESTOS',
+            'Icono' => 'fas fa-coins',
+            'Ruta' => 'Supply/Presupuestos',
+            'Area' => '8',
+        ]);
+
 
         ////////////// PRODUCCCION ///////////////////
 

@@ -209,8 +209,8 @@
                         <th class="columna">DESCRIPCIÓN</th>
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
-                        <th class="columna">ESTATUS</th>
                         <th class="columna">FECHA LLEGADA</th>
+                        <th class="columna">ESTATUS</th>
                         <th class="columna">ACCIONES</th>
                         <th class="columna">DETALLES</th>
                     </template>
@@ -225,6 +225,7 @@
                             <td class="tw-p-2">{{ datos.Descripcion }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="tw-p-2">{{ datos.Fechallegada }}</td>
                             <td class="tw-p-2">
                                 <div v-if="datos.EstatusArt == 1">
                                     <span tooltip="SIN ENVIAR" flow="left">
@@ -252,8 +253,22 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
                                     </span>
                                 </div>
+                                <div v-else-if="datos.EstatusArt == 7">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 8">
+                                    <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 9">
+                                    <span tooltip="Entregado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                    </span>
+                                </div>
                             </td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
                             <td class="fila">
                                 <div class="columnaIconos" v-if="datos.EstatusArt == 1">
                                     <div class="iconoPurple" @click="ConfirmaReq(datos, 2)">
@@ -266,6 +281,13 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                                             </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-else-if="datos.EstatusArt == 9">
+                                    <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
+                                        <span tooltip="Articulo Adquirido" flow="left">
+                                            <i class="fas fa-check-square"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -303,6 +325,14 @@
                                             <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">OBSERVACIONES</p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.Observaciones}}</p>
+                                            </div>
+                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                                <p class="tw-text-gray-600">RECIBIÓ</p>
+                                                <p class="tw-font-semibold">{{datos.RecibidoPor}}</p>
+                                            </div>
+                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                                <p class="tw-text-gray-600">COMENTARIOS</p>
+                                                <p class="tw-font-semibold">{{datos.Comentariollegada}}</p>
                                             </div>
                                             <div class="tw-flex tw-justify-center">
                                                 <div @click="hidden()" class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-red-500 hover:tw-scale-125">

@@ -227,7 +227,7 @@
                             <td class="tw-p-2">{{ datos.Descripcion }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
+                            <td class="tw-p-2">{{ datos.Fechallegada }}</td>
                             <td class="tw-p-2">{{ datos.OrdenCompra }}</td>
                             <td class="tw-p-2">
                                 <div v-if="datos.EstatusArt == 3">
@@ -250,9 +250,36 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
                                     </span>
                                 </div>
+                                <div v-else-if="datos.EstatusArt == 7">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 8">
+                                    <span tooltip="Articulo en almacén" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 9">
+                                    <span tooltip="Entregado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                    </span>
+                                </div>
                             </td>
                             <td class="fila">
-                                <div class="columnaIconos" v-if="datos.EstatusArt == 5 || datos.EstatusArt == 6">
+                                <div class="columnaIconos" v-if="datos.EstatusArt >= 5 && datos.EstatusArt < 9">
+                                    <div class="iconoPurple" @click="Precios(datos)">
+                                        <span tooltip="Visualiza Cotizaciones" flow="left">
+                                            <i class="fas fa-file-invoice-dollar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-else-if="datos.EstatusArt == 9">
+                                    <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
+                                        <span tooltip="Articulo Adquirido" flow="left">
+                                            <i class="fas fa-check-square"></i>
+                                        </span>
+                                    </div>
                                     <div class="iconoPurple" @click="Precios(datos)">
                                         <span tooltip="Visualiza Cotizaciones" flow="left">
                                             <i class="fas fa-file-invoice-dollar"></i>
@@ -365,7 +392,7 @@
                                                 </a>
                                             </span>
                                         </div>
-                                        <div class="iconoCyan" @click="HabilitaResguardo(datos)">
+                                        <div class="iconoCyan" @click="HabilitaResguardo(datos, 0)">
                                             <span tooltip="Habilita Resguardo" flow="left">
                                                 <i class="fas fa-user-shield"></i>
                                             </span>
@@ -565,14 +592,24 @@ export default {
         },
 
         Autoriza(data){
-            console.log(data);
             data._method = "PUT";
             this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
                 onSuccess: () => {
                     this.alertSucces();
                 },
             });
-        }
+        },
+
+        HabilitaResguardo(data, resguardo){
+            data.resguardo = 0;
+            data._method = "PUT";
+            this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.chageClose();
+                    this.alertSucces();
+                },
+            });
+        },
 
     },
 
