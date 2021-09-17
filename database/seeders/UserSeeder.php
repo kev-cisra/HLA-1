@@ -140,7 +140,7 @@ class UserSeeder extends Seeder
             'Departamento' => 'ANILII',
             //'email' => 'programador2@hlangeles.com',
             'password' => bcrypt('12345678')
-        ])->assignRole('Produccion');
+        ])->assignRole('Administrador');
 
         User::create([
             'IdEmp' => '83',
@@ -148,6 +148,6 @@ class UserSeeder extends Seeder
             'Departamento' => 'APERTURA',
             //'email' => 'programador2@hlangeles.com',
             'password' => bcrypt('12345678')
-        ])->assignRole('Produccion');
+        ])->assignRole(['Produccion', 'Cordinador']);
     }
 }

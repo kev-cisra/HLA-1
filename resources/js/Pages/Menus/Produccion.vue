@@ -23,7 +23,7 @@
                     </div> -->
                     <!-- Fin for -->
                     <!-- Modulo personal -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="usuario.dep_pers.length == 0 | puesto == 'cor'">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.personal.index'])">
                         <Link href="Produccion/Personal" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-users"></i>
@@ -35,7 +35,7 @@
                         </Link>
                     </div>
                     <!-- modulo procesos -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="usuario.dep_pers.length == 0 | (puesto == 'cor')">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.procesos.index'])">
                         <Link href="Produccion/Procesos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-cogs"></i>
@@ -47,7 +47,7 @@
                         </Link>
                     </div>
                     <!-- Modulo maquinas -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="usuario.dep_pers.length == 0 | (puesto == 'cor')">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.maquinas.index'])">
                         <Link href="Produccion/Maquinas" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-digital-tachograph"></i>
@@ -59,7 +59,7 @@
                         </Link>
                     </div>
                     <!-- Modulos turnos -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="usuario.dep_pers.length == 0 | (puesto == 'cor')">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.turnos.index'])">
                         <Link href="Produccion/Turnos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-user-clock"></i>
@@ -71,7 +71,7 @@
                         </Link>
                     </div>
                     <!-- Modulo materiales -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="usuario.dep_pers.length == 0">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.materiales.index'])">
                         <Link href="Produccion/Materiales" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-boxes"></i>
@@ -83,7 +83,7 @@
                         </Link>
                     </div>
                     <!-- Modulo claves -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="usuario.dep_pers.length == 0">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.clamat.index'])">
                         <Link href="Produccion/Clamat" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-truck-loading"></i>
@@ -95,13 +95,25 @@
                         </Link>
                     </div>
                     <!-- modulo cargas -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.carga.index'])">
                         <Link href="Produccion/Carga" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-clipboard-list"></i>
                             </div>
                             <div>
                                 <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">CARGA DE DATOS</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
+                    </div>
+                    <!-- modulo cargas -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.paros.index'])">
+                        <Link href="Produccion/Carga" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-business-time"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">PAROS</h4>
                                 <span class="linea"></span>
                             </div>
                         </Link>
@@ -125,20 +137,6 @@
         components: {
             AppLayout,
             Link,
-        },
-        data() {
-            return{
-                puesto: '',
-            }
-        },
-        mounted() {
-            this.asigPuesto();
-        },
-        methods: {
-            asigPuesto(){
-                    //asigna el puesto a una variable
-                    this.puesto = this.usuario.dep_pers.length == 0 ? '' : this.usuario.dep_pers[0].ope_puesto;
-            }
         }
     }
 </script>

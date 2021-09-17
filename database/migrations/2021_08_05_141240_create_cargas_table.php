@@ -20,7 +20,8 @@ class CreateCargasTable extends Migration
             $table->string('semana');
             $table->double('valor')->nullable();
             $table->string('partida')->nullable();
-            $table->enum('notaPen', [1,2])->default(1)->nullable();
+            $table->enum('notaPen', [1,2,3])->default(1)->nullable();
+            $table->enum('estatus', [1,2,3])->default(1)->nullable();
 
             $table->unsignedBigInteger('equipo_id')->nullable();
             $table->unsignedBigInteger('dep_perf_id')->nullable();

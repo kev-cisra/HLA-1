@@ -19143,6 +19143,9 @@ select {
 .tw-uppercase {
 	text-transform: uppercase;
 }
+.tw-capitalize {
+	text-transform: capitalize;
+}
 .tw-leading-5 {
 	line-height: 1.25rem;
 }
@@ -19220,6 +19223,10 @@ select {
 .tw-text-red-500 {
 	--tw-text-opacity: 1;
 	color: rgba(239, 68, 68, var(--tw-text-opacity));
+}
+.tw-text-black {
+	--tw-text-opacity: 1;
+	color: rgba(0, 0, 0, var(--tw-text-opacity));
 }
 .tw-text-blue-700 {
 	--tw-text-opacity: 1;

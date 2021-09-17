@@ -100,8 +100,8 @@
                                         <option value="" disabled>Seleccione</option>
                                         <option value="0">Proceso principal</option>
                                         <option value="1">Lider / Operador</option>
-                                        <!--<option value="4">Paros</option>-->
-                                        <option value="2" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">Coordinador / Encargado</option>
+                                        <option value="4" v-show="usuario.dep_pers.length == 0">Entregas</option>
+                                        <option value="2" v-show="usuario.dep_pers.length == 0">Coordinador / Encargado</option>
                                         <option value="3" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">Formulas</option>
                                     </select>
                                     <small v-if="errors.tipo" class="validation-alert">{{errors.tipo}}</small>
@@ -132,7 +132,7 @@
                     </div>
                 </div>
                 <!-------------------------------- ENCARGADO Y OPERADOR --------------------------------------->
-                <div class="tw-px-4 tw-py-4" v-show="(form.tipo == 1 | form.tipo == 4)">
+                <div class="tw-px-4 tw-py-4" v-show="(form.tipo == 1 | form.tipo == 2)">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de máquinas para el proceso</h3>
@@ -355,7 +355,6 @@
             //información del select area
             mostSelect() {
                 this.$nextTick(() => {
-                    console.log(this.m);
                     this.depa.forEach(r => {
                         if (r.departamentos) {
                             this.opc += `<option value="${r.departamentos.id}"> ${r.departamentos.Nombre} </option>`;

@@ -90,57 +90,53 @@ class CargaController extends Controller
                 ])
                 ->get();
             //carga
-            $carga = dep_per::select(
-                'cargas.id AS id',
-                'perfiles_usuarios.Nombre AS Pnom',
-                'perfiles_usuarios.ApPat AS Pap',
-                'perfiles_usuarios.ApMat AS Pam',
-                'dep_pers.ope_puesto AS DPpue',
-                'departamentos.Nombre AS Dnom',
-                'equipos.nombre AS Enom',
-                'turnos.nomtur AS Tnom',
-                'cargas.fecha AS Cfec',
-                'cargas.semana AS Csem',
-                'cargas.valor AS Cval',
-                'cargas.partida AS Cpar',
-                'cargas.notaPen AS Cnp',
-                'cargas.equipo_id AS Cidequ',
-                'cargas.dep_perf_id AS Cidde_pe',
-                'cargas.per_carga AS Cidper_car',
-                'cargas.maq_pro_id AS Cidma_pr',
-                'cargas.proceso_id AS Cidpro',
-                'cargas.norma AS Cidnor',
-                'cargas.clave_id AS Cclave',
-                'cargas.turno_id AS Ctur',
-                'materiales.idmat AS Midm',
-                'materiales.nommat AS Mnom',
-                'maquinas.nombre AS MAnom',
-                'claves.CVE_ART AS CLcla',
-                'claves.DESCR AS CLdes',
-                'procesos.proceso_id AS PRpro_prin',
-                /* 'notas_cargas.id AS NCid',
-                'notas_cargas.nota AS NCnota' */
-            )
-            ->where('dep_pers.departamento_id', '=', $perf->Departamento_id)
-            ->whereBetween('cargas.fecha', [$dia, $mañana])
+            $bus = $perf->Departamento_id;
+            $carga = carga::whereBetween('fecha', [$dia, $mañana])
             ->orWhere(function($q) use ($dia){
-                $q->whereDate('cargas.fecha', '<=', $dia)
-                ->where('cargas.notaPen', '=', '2');
+                $q->whereDate('fecha', '<=', $dia)
+                ->where('notaPen', '=', '2');
             })
-            /* ->orderBy('notas_cargas.id', 'desc') */
-            ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
-            ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
-            ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
-            ->leftJoin('equipos', 'equipos.id', '=', 'cargas.equipo_id')
-            ->leftJoin('turnos', 'turnos.id', '=', 'cargas.turno_id')
-            ->leftJoin('dep_mats', 'dep_mats.id', '=', 'cargas.norma')
-            ->leftJoin('materiales', 'materiales.id', '=', 'dep_mats.material_id')
-            ->leftJoin('claves', 'claves.id', '=', 'cargas.clave_id')
-            ->leftJoin('maq_pros', 'maq_pros.id', '=', 'cargas.maq_pro_id')
-            ->leftJoin('maquinas', 'maquinas.id', '=', 'maq_pros.maquina_id')
-            ->leftJoin('procesos', 'procesos.id', '=', 'maq_pros.proceso_id')
-            /* ->leftJoin('notas_cargas', 'notas_cargas.carga_id', '=', 'cargas.id') */
-            ->get();
+            ->with([
+                'dep_perf' => function($dp) use($bus) {
+                    $dp -> where('departamento_id', '=', $bus)
+                        ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
+                },
+                'dep_perf.perfiles' => function($perfi){
+                    $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'dep_perf.departamentos' => function($dp_de){
+                    $dp_de -> select('id', 'Nombre', 'departamento_id');
+                },
+                'equipo' => function($eq){
+                    $eq -> select('id', 'nombre');
+                },
+                'turno' => function($tu){
+                    $tu ->select('id', 'nomtur');
+                },
+                'maq_pro' => function($mp){
+                    $mp ->select('id', 'proceso_id', 'maquina_id');
+                },
+                'maq_pro.maquinas' => function($ma){
+                    $ma -> select('id', 'Nombre');
+                },
+                'proceso' => function($pr){
+                    $pr -> select('id', 'nompro', 'tipo', 'proceso_id');
+                },
+                'dep_mat' => function($dp){
+                    $dp -> select('id', 'material_id');
+                },
+                'dep_mat.materiales' => function($mat){
+                    $mat -> select('id', 'idmat', 'nommat');
+                },
+                'clave' => function($cla){
+                    $cla -> select('id', 'CVE_ART', 'DESCR');
+                },
+                'notas' => function($not){
+                    $not -> latest()
+                    -> select('id', 'fecha', 'nota', 'carga_id');
+                }
+            ])
+            ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id']);
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')
@@ -188,57 +184,6 @@ class CargaController extends Controller
                     ])
                     ->get();
             //carga
-            /* $carga = dep_per::select(
-                'cargas.id AS id',
-                'perfiles_usuarios.Nombre AS Pnom',
-                'perfiles_usuarios.ApPat AS Pap',
-                'perfiles_usuarios.ApMat AS Pam',
-                'dep_pers.ope_puesto AS DPpue',
-                'departamentos.Nombre AS Dnom',
-                'equipos.nombre AS Enom',
-                'turnos.nomtur AS Tnom',
-                'cargas.fecha AS Cfec',
-                'cargas.semana AS Csem',
-                'cargas.valor AS Cval',
-                'cargas.partida AS Cpar',
-                'cargas.notaPen AS Cnp',
-                'cargas.equipo_id AS Cidequ',
-                'cargas.dep_perf_id AS Cidde_pe',
-                'cargas.per_carga AS Cidper_car',
-                'cargas.maq_pro_id AS Cidma_pr',
-                'cargas.proceso_id AS Cidpro',
-                'cargas.norma AS Cidnor',
-                'cargas.clave_id AS Cclave',
-                'cargas.turno_id AS Ctur',
-                'materiales.idmat AS Midm',
-                'materiales.nommat AS Mnom',
-                'maquinas.nombre AS MAnom',
-                'claves.CVE_ART AS CLcla',
-                'claves.DESCR AS CLdes',
-                'procesos.proceso_id AS PRpro_prin',
-                //'notas_cargas.id AS NCid',
-                //'notas_cargas.nota AS NCnota'
-            )
-            ->where('dep_pers.departamento_id', '=', $request->busca)
-            ->whereBetween('cargas.fecha', [$dia, $mañana])
-            ->orWhere(function($q) use ($dia){
-                $q->whereDate('cargas.fecha', '<=', $dia)
-                ->where('cargas.notaPen', '=', '2');
-            })
-            //->orderBy('notas_cargas.id', 'desc')
-            ->join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id' )
-            ->join('departamentos', 'departamentos.id', '=', 'dep_pers.departamento_id')
-            ->join('cargas', 'cargas.dep_perf_id', '=', 'dep_pers.id')
-            ->leftJoin('equipos', 'equipos.id', '=', 'cargas.equipo_id')
-            ->leftJoin('turnos', 'turnos.id', '=', 'cargas.turno_id')
-            ->leftJoin('dep_mats', 'dep_mats.id', '=', 'cargas.norma')
-            ->leftJoin('materiales', 'materiales.id', '=', 'dep_mats.material_id')
-            ->leftJoin('claves', 'claves.id', '=', 'cargas.clave_id')
-            ->leftJoin('maq_pros', 'maq_pros.id', '=', 'cargas.maq_pro_id')
-            ->leftJoin('maquinas', 'maquinas.id', '=', 'maq_pros.maquina_id')
-            ->leftJoin('procesos', 'procesos.id', '=', 'maq_pros.proceso_id')
-            //->leftJoin('notas_cargas', 'notas_cargas.carga_id', '=', 'cargas.id')
-            ->get(); */
             $bus = $request->busca;
             $carga = carga::whereBetween('fecha', [$dia, $mañana])
             ->orWhere(function($q) use ($dia){
@@ -268,39 +213,24 @@ class CargaController extends Controller
                 'maq_pro.maquinas' => function($ma){
                     $ma -> select('id', 'Nombre');
                 },
-                'maq_pro.procesos' => function($pr){
-                    $pr -> select('id', 'nompro', 'tipo');
+                'proceso' => function($pr){
+                    $pr -> select('id', 'nompro', 'tipo', 'proceso_id');
+                },
+                'dep_mat' => function($dp){
+                    $dp -> select('id', 'material_id');
+                },
+                'dep_mat.materiales' => function($mat){
+                    $mat -> select('id', 'idmat', 'nommat');
+                },
+                'clave' => function($cla){
+                    $cla -> select('id', 'CVE_ART', 'DESCR');
+                },
+                'notas' => function($not){
+                    $not -> latest()
+                    -> select('id', 'fecha', 'nota', 'carga_id');
                 }
             ])
             ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id']);
-
-            //forma dep_per
-            /* dep_per::where('departamento_id', '=', $request->busca)
-            ->with([
-                'perfiles' => function($perfi){
-                    $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
-                },
-                'equipo' => function($eq){
-                    $eq -> select('id', 'nombre', 'turno_id');
-                },
-                'departamentos' => function($dp_de){
-                    $dp_de -> select('id', 'Nombre', 'departamento_id');
-                },
-                'cargas' => function($car) use ($dia, $mañana){
-                    $car ->whereBetween('fecha', [$dia, $mañana])
-                    ->orWhere(function($q) use ($dia){
-                        $q->whereDate('fecha', '<=', $dia)
-                        ->where('notaPen', '=', '2');
-                    })
-                    ->select('id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id');
-                },
-                'cargas.notas' => function($not) {
-                    $not ->orderBy('id', 'desc')
-                        ->select();
-                }
-            ])
-            ->get(['id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id', 'equipo_id']); */
-
 
         }
         return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate, 'cargas' => $carga]);
@@ -374,7 +304,6 @@ class CargaController extends Controller
 
         Validator::make($request->all(), [
             'clave_id' => ['required'],
-            'partida' => ['required'],
             'valor' => ['required'],
             'nota' => ['required']
         ])->validate();
