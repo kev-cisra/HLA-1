@@ -48,8 +48,6 @@ class CreateRequisicionesTable extends Migration
 
             $table->string('TipCompra',45);
             $table->string('Observaciones')->nullable();
-            $table->integer('OrdenCompra')->default(0);
-            $table->text('MotivoCancelacion')->nullable();
 
             $table->unsignedBigInteger('Perfil_id')->nullable();
 

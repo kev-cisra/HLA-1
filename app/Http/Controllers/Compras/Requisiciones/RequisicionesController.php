@@ -56,8 +56,7 @@ class RequisicionesController extends Controller{
                         'jefes_areas_id',
                         'Codigo', 'Maquina_id',
                         'Marca_id', 'TipCompra',
-                        'Observaciones',
-                        'OrdenCompra', 'Perfil_id');
+                        'Observaciones', 'Perfil_id');
                 },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
@@ -78,7 +77,7 @@ class RequisicionesController extends Controller{
             ->where('IdEmp', '=', $Session->IdEmp)
             ->orderBy('EstatusArt', 'asc')
             ->whereMonth('Fecha', $mes)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
         }else{
 
@@ -92,8 +91,7 @@ class RequisicionesController extends Controller{
                         'jefes_areas_id',
                         'Codigo', 'Maquina_id',
                         'Marca_id', 'TipCompra',
-                        'Observaciones',
-                        'OrdenCompra', 'Perfil_id');
+                        'Observaciones', 'Perfil_id');
                 },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
@@ -114,7 +112,7 @@ class RequisicionesController extends Controller{
             ->where('IdEmp', '=', $Session->IdEmp)
             ->orderBy('EstatusArt', 'asc')
             ->where('EstatusArt', $request->Estatus)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
         }
 

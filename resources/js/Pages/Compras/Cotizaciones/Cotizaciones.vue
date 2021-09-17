@@ -210,8 +210,9 @@
                         <th class="columna">DESCRIPCIÓN</th>
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
+                        <th class="columna">F. LLEGADA</th>
+                        <th class="columna">O.C</th>
                         <th class="columna">ESTATUS</th>
-                        <th class="columna">FECHA LLEGADA</th>
                         <th class="columna">ACCIONES</th>
                         <th class="columna">DETALLES</th>
                     </template>
@@ -226,6 +227,8 @@
                             <td class="tw-p-2">{{ datos.Descripcion }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="tw-p-2">{{ datos.Fechallegada }}</td>
+                            <td class="tw-p-2">{{ datos.OrdenCompra }}</td>
                             <td class="tw-p-2">
                                 <div v-if="datos.EstatusArt == 3">
                                     <span tooltip="Articulo en espera de cotización" flow="left">
@@ -247,8 +250,22 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
                                     </span>
                                 </div>
+                                <div v-else-if="datos.EstatusArt == 7">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 8">
+                                    <span tooltip="Articulo en almacén" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 9">
+                                    <span tooltip="Entregado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                    </span>
+                                </div>
                             </td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Fecha }}</td>
                             <td class="fila">
                                 <div class="columnaIconos" v-if="datos.EstatusArt == 3">
                                     <div class="iconoPurple" @click="Cotizar(datos, 4)">
@@ -262,7 +279,6 @@
                                         </span>
                                     </div>
                                 </div>
-
                                 <div class="columnaIconos" v-if="datos.EstatusArt == 4">
                                     <div class="iconoPurple" @click="Cotizar(datos, 4)">
                                         <span tooltip="Añadir otra Cotizacion" flow="left">
@@ -294,9 +310,35 @@
                                     </div>
                                 </div>
                                 <div class="columnaIconos" v-if="datos.EstatusArt == 6">
+                                    <div class="iconoPurple" @click="CapturaFecha(datos)">
+                                        <span tooltip="Confirma Fecha de Entrega" flow="left">
+                                            <i class="fas fa-shipping-fast"></i>
+                                        </span>
+                                    </div>
                                     <div class="iconoPurple" @click="Precios(datos)">
                                         <span tooltip="Visualiza Cotizaciones" flow="left">
                                             <i class="fas fa-comment-dollar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-if="datos.EstatusArt == 7">
+                                    <div class="iconoPurple" @click="Precios(datos)">
+                                        <span tooltip="Visualiza Cotizaciones" flow="left">
+                                            <i class="fas fa-comment-dollar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-else-if="datos.EstatusArt == 8">
+                                    <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
+                                        <span tooltip="Articulo en Almacén" flow="left">
+                                            <i class="fas fa-thumbs-up"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-else-if="datos.EstatusArt == 9">
+                                    <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
+                                        <span tooltip="Articulo Adquirido" flow="left">
+                                            <i class="fas fa-check-square"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -391,7 +433,7 @@
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>MARCA</jet-label>
-                                <jet-input type="text" v-model="form.Marca"></jet-input>
+                                <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
                                 <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
@@ -608,7 +650,41 @@
             </div>
 
             <div class="ModalFooter">
-                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                <jet-CancelButton @click="chagePrecios">Cerrar</jet-CancelButton>
+            </div>
+        </form>
+    </modal>
+
+    <modal :show="showFecha" @close="chageFecha" :maxWidth="tam2">
+        <form>
+            <div class="tw-px-4 tw-py-4">
+                <div class="tw-text-lg">
+                    <div class="ModalHeader">
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Confirma fecha aproximada de entrega</h3>
+                    </div>
+                </div>
+
+                <div class="tw-mt-4">
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                            <jet-label><span class="required">*</span>FECHA</jet-label>
+                            <jet-input type="date" :min="min" v-model="form.Fechallegada"></jet-input>
+                            <small v-if="errors.Fechallegada" class="validation-alert">{{errors.Fechallegada}}</small>
+                        </div>
+                    </div>
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                            <jet-label>COMENTARIOS</jet-label>
+                            <textarea name="" id="" cols="2" v-model="form.Comentariollegada" @input="(val) => (form.Comentariollegada = form.Comentariollegada.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                            <small v-if="errors.Comentariollegada" class="validation-alert">{{errors.Comentariollegada}}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="Confirma(form, metodo)">Guardar</jet-button>
+                <jet-CancelButton @click="chageFecha">Cerrar</jet-CancelButton>
             </div>
         </form>
     </modal>
@@ -642,9 +718,11 @@ export default {
         return {
             showDetalle: false,
             showPrecios: false,
+            showFecha: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
             tam: "5xl",
+            tam2: "xl",
             color: "tw-bg-teal-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             detalles: null,
@@ -664,6 +742,8 @@ export default {
                 Unidad: null,
                 Descripcion: null,
                 Comentarios: null,
+                Comentariollegada: null,
+                Fechallegada: null,
 
                 Precios: [{
                     Precio: null,
@@ -771,6 +851,14 @@ export default {
             this.showPrecios = !this.showPrecios;
         },
 
+        chageDetalle() {
+            this.showDetalle = !this.showDetalle;
+        },
+
+        chageFecha() {
+            this.showFecha = !this.showFecha;
+        },
+
         Filtro(value){
             $('#Articulos').DataTable().clear(); //limpio
             $('#Articulos').DataTable().destroy(); //destruyo tabla
@@ -816,14 +904,6 @@ export default {
             });
         },
 
-        addRow: function () {
-            this.form.Cotizacion.push({Cot: ""});
-        },
-
-        removeRow: function (row) {
-            this.form.Cotizacion.splice(row,1);
-        },
-
         save(data) {
             this.$inertia.post("/Compras/Cotizaciones", data, {
                 onSuccess: () => {
@@ -832,10 +912,6 @@ export default {
                     this.alertSucces();
                 },
             });
-        },
-
-        chageDetalle() {
-            this.showDetalle = !this.showDetalle;
         },
 
         Detalle(data){
@@ -870,6 +946,24 @@ export default {
                 onSuccess: () => {
                     this.chagePrecios();
             }, preserveState: true })
+        },
+
+        CapturaFecha(data){
+            this.chageFecha();
+            this.form.IdArt = data.id;
+        },
+
+        Confirma(data, metodo){
+            data.metodo = 7;
+            data._method = "PUT";
+            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.form.Fechallegada = null,
+                    this.form.Comentariollegada = null;
+                    this.chageFecha();
+                    this.alertSucces();
+                },
+            });
         },
     },
 

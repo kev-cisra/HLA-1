@@ -55,8 +55,7 @@ class CotizacionesController extends Controller{
                         'jefes_areas_id',
                         'Codigo', 'Maquina_id',
                         'Marca_id', 'TipCompra',
-                        'Observaciones',
-                        'OrdenCompra', 'Perfil_id');
+                        'Observaciones', 'Perfil_id');
                 },
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
                     $pre->select('id', 'Precio', 'Total', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
@@ -81,7 +80,7 @@ class CotizacionesController extends Controller{
             ->where('EstatusArt', '!=', 1)
             ->where('EstatusArt','!=', 2)
             ->whereMonth('Fecha', $mes)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'OrdenCompra', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id']);
 
         }else{
 
@@ -95,8 +94,7 @@ class CotizacionesController extends Controller{
                         'jefes_areas_id',
                         'Codigo', 'Maquina_id',
                         'Marca_id', 'TipCompra',
-                        'Observaciones',
-                        'OrdenCompra', 'Perfil_id');
+                        'Observaciones', 'Perfil_id');
                 },
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
                     $pre->select('id', 'Precio', 'Total', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
@@ -121,7 +119,7 @@ class CotizacionesController extends Controller{
             ->where('EstatusArt', '!=', 1)
             ->where('EstatusArt','!=', 2)
             ->where('EstatusArt', $request->Estatus)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'OrdenCompra', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id']);
 
         }
 
@@ -148,10 +146,15 @@ class CotizacionesController extends Controller{
 
         if(isset($request)){
 
-            $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
+            if(isset($request->archivo)){
 
-            //Guardado de Imagen en la carpeta Public/Storage.. (Uso del disco Public pora la restriccion de los archivos)
-            $url = $request->archivo->storePubliclyAs('Archivos/Compras/Requisiciones/Cotizaciones',  $file, 'public');
+                $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
+
+                //Guardado de Imagen en la carpeta Public/Storage.. (Uso del disco Public pora la restriccion de los archivos)
+                $url = $request->archivo->storePubliclyAs('Archivos/Compras/Requisiciones/Cotizaciones',  $file, 'public');
+            }else{
+                $url = 'Archivos/FileNotFound404.jpg';
+            }
 
             PreciosCotizaciones::create([
                 'IdUser' => $request->IdUser,
@@ -188,7 +191,17 @@ class CotizacionesController extends Controller{
                 ]);
 
                 break;
+            }
 
+            case 7:{
+
+                ArticulosRequisiciones::find($request->IdArt)->update([
+                    'Fechallegada' => $request->Fechallegada,
+                    'Comentariollegada' => $request->Comentariollegada,
+                    'EstatusArt' => 7,
+                ]);
+
+                break;
             }
         }
 

@@ -9,11 +9,13 @@ use App\Models\Compras\Requisiciones\Requisiciones;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class RequisicionesSolicitadasController extends Controller {
 
@@ -54,8 +56,7 @@ class RequisicionesSolicitadasController extends Controller {
                         'jefes_areas_id',
                         'Codigo', 'Maquina_id',
                         'Marca_id', 'TipCompra',
-                        'Observaciones',
-                        'OrdenCompra', 'Perfil_id');
+                        'Observaciones', 'Perfil_id');
                 },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
@@ -76,7 +77,7 @@ class RequisicionesSolicitadasController extends Controller {
             ->orderBy('EstatusArt', 'asc')
             ->where('EstatusArt', '!=', 1)
             ->whereMonth('Fecha', $mes)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'OrdenCompra', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id']);
 
         }else{
 
@@ -90,8 +91,7 @@ class RequisicionesSolicitadasController extends Controller {
                         'jefes_areas_id',
                         'Codigo', 'Maquina_id',
                         'Marca_id', 'TipCompra',
-                        'Observaciones',
-                        'OrdenCompra', 'Perfil_id');
+                        'Observaciones', 'Perfil_id');
                 },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
@@ -112,7 +112,7 @@ class RequisicionesSolicitadasController extends Controller {
             ->orderBy('EstatusArt', 'asc')
             ->where('EstatusArt', '!=', 1)
             ->where('EstatusArt', $request->Estatus)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'OrdenCompra', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id']);
 
         }
 
@@ -122,13 +122,10 @@ class RequisicionesSolicitadasController extends Controller {
 
         $Autorizados = ArticulosRequisiciones::where('EstatusArt', '=', 5)->count();
 
-
         return Inertia::render('Almacen/Requisiciones/Requisiciones', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Departamentos', 'Maquinas', 'Almacen', 'Cotizacion', 'Autorizados', 'mes'));
     }
 
     public function update(Request $request, $id){
-
-
 
         if($request->metodo == 'Parcialidad'){
 
@@ -155,9 +152,61 @@ class RequisicionesSolicitadasController extends Controller {
             ]);
 
         }else{
-            ArticulosRequisiciones::find($request->id)->update([
-                'EstatusArt' => 3,
-            ]);
+
+            switch ($request->metodo) {
+                case 3:
+                    ArticulosRequisiciones::find($request->id)->update([
+                        'EstatusArt' => 3,
+                    ]);
+                    break;
+
+
+                case 8:
+                    ArticulosRequisiciones::find($request->id)->update([
+                        'EstatusArt' => 8,
+                    ]);
+                    break;
+
+                case 9:
+                    $User = User::where('IdEmp', '=', $request->User)->first(['id', 'IdEmp', 'password']);
+
+                    if(!empty($User->IdEmp)){
+                        $User->IdEmp;
+                        $User->password;
+
+                        if($request->User == $User->IdEmp){
+
+                            if (Hash::check($request->Pass, $User->password)){
+                                return back()->with([
+                                    'flash' => 0,
+                                ]);
+                            }else{
+                                return back()->with([
+                                    'flash' => 3,
+                                ]);
+                            }
+                        }else{
+                            return back()->with([
+                                'flash' => 2,
+                            ]);
+                        }
+                    }else{
+                        return back()->with([
+                            'flash' => 1,
+                        ]);
+                    }
+                    break;
+                case 10:
+                    ArticulosRequisiciones::where('id', '=', $request->IdArt)->update([
+                        'RecibidoPor' => $request->User,
+                    ]);
+
+                    ArticulosRequisiciones::find($request->IdArt)->update([
+                        'EstatusArt' => 9,
+                    ]);
+                    break;
+            }
+
         }
 
         return redirect()->back();

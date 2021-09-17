@@ -17745,7 +17745,7 @@ video {
   display: none;
 }
 
-.tw-translate-y-4, .tw-translate-y-0, .tw-scale-95, .tw-scale-100, .tw-transform, .iconoDetails, .iconoAcept, .iconoDelete, .iconoEdit, .iconoPurple, .iconoCyan, .iconoTeal, .hover\:tw--translate-y-1, .hover\:tw-scale-110, .hover\:tw-scale-125, .sm\:tw-translate-y-0, .sm\:tw-scale-95, .sm\:tw-scale-100 {
+.tw-translate-y-4, .tw-translate-y-0, .tw-scale-95, .tw-scale-100, .tw-transform, .iconoDetails, .iconoAcept, .iconoDelete, .iconoEdit, .iconoPurple, .iconoCyan, .iconoTeal, .iconoAmber, .iconoLime, .iconoWhite, .hover\:tw--translate-y-1, .hover\:tw-scale-110, .hover\:tw-scale-125, .sm\:tw-translate-y-0, .sm\:tw-scale-95, .sm\:tw-scale-100 {
 	--tw-translate-x: 0;
 	--tw-translate-y: 0;
 	--tw-rotate: 0;
@@ -18954,6 +18954,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(234, 88, 12, var(--tw-bg-opacity));
 }
+.tw-bg-fuchsia-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(192, 38, 211, var(--tw-bg-opacity));
+}
 .tw-bg-red-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(248, 113, 113, var(--tw-bg-opacity));
@@ -19511,6 +19515,48 @@ select {
 	transform: var(--tw-transform);
 	--tw-text-opacity: 1;
 	color: rgba(20, 184, 166, var(--tw-text-opacity));
+}
+.iconoAmber {
+	margin-right: 0.5rem;
+	width: 1rem;
+	transform: var(--tw-transform);
+	--tw-text-opacity: 1;
+	color: rgba(107, 114, 128, var(--tw-text-opacity));
+}
+.iconoAmber:hover {
+	--tw-scale-x: 1.1;
+	--tw-scale-y: 1.1;
+	transform: var(--tw-transform);
+	--tw-text-opacity: 1;
+	color: rgba(245, 158, 11, var(--tw-text-opacity));
+}
+.iconoLime {
+	margin-right: 0.5rem;
+	width: 1rem;
+	transform: var(--tw-transform);
+	--tw-text-opacity: 1;
+	color: rgba(107, 114, 128, var(--tw-text-opacity));
+}
+.iconoLime:hover {
+	--tw-scale-x: 1.1;
+	--tw-scale-y: 1.1;
+	transform: var(--tw-transform);
+	--tw-text-opacity: 1;
+	color: rgba(132, 204, 22, var(--tw-text-opacity));
+}
+.iconoWhite {
+	margin-right: 0.5rem;
+	width: 1rem;
+	transform: var(--tw-transform);
+	--tw-text-opacity: 1;
+	color: rgba(107, 114, 128, var(--tw-text-opacity));
+}
+.iconoWhite:hover {
+	--tw-scale-x: 1.1;
+	--tw-scale-y: 1.1;
+	transform: var(--tw-transform);
+	--tw-text-opacity: 1;
+	color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
 .btn-row {
 	display: block;
