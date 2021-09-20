@@ -99,96 +99,6 @@
         </form>
     </modal>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content tw-bg-blueGray-50 tw-my-4">
-                <div class="DetailsHeader">
-                    <div class="tw-max-w-sm tw-mx-auto md:tw-w-full md:tw-mx-0">
-                        <div class="tw-inline-flex tw-items-center tw-space-x-4">
-                            <img class="tw-object-cover tw-w-10 tw-h-10 tw-rounded-full" src="https://picsum.photos/200/300"/>
-                            <h1 class="titleDetails">Informacion Personal</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="DetailsBody">
-
-                    <div class="SectionInfo">
-                        <h2 class="SectionTitle md:tw-w-1/4">Datos Personales</h2>
-                        <div class="tw-max-w-sm tw-mx-auto md:tw-w-3/4">
-                            <div>
-                                <label class="info">Nombre</label>
-                                <div class="DataContainer">
-                                    <input type="text" class="InfoData" v-model="form.Nombre" disabled/>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="info">Apellido Paterno</label>
-                                <div class="DataContainer">
-                                    <input type="text" class="InfoData" v-model="form.ApPat" disabled/>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="info">Apellido Materno</label>
-                                <div class="DataContainer">
-                                    <input type="text" class="InfoData" v-model="form.ApMat" disabled/>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="info">Cumpleaños</label>
-                                <div class="DataContainer">
-                                    <input type="date" class="InfoData" v-model="form.Cumpleaños" disabled/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="SectionInfo">
-                        <h2 class="SectionTitle md:tw-w-1/4">Datos de Pila</h2>
-                        <div class="tw-max-w-sm tw-mx-auto md:tw-w-3/4">
-                            <div>
-                                <label class="info">CURP</label>
-                                <div class="DataContainer">
-                                    <input type="text" class="InfoData" v-model="form.Curp" disabled/>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="info">RFC</label>
-                                <div class="DataContainer">
-                                    <input type="text" class="InfoData" v-model="form.Rfc" disabled/>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="info">NSS</label>
-                                <div class="DataContainer">
-                                    <input type="text" class="InfoData" v-model="form.Nss" disabled/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="SectionInfo">
-                        <h2 class="SectionTitle md:tw-w-1/4">Datos de Contacto</h2>
-                        <div class="tw-max-w-sm tw-mx-auto md:tw-w-3/4">
-                            <div>
-                                <label class="info">Telefono</label>
-                                <div class="DataContainer">
-                                    <input type="text" class="InfoData" v-model="form.Telefono" disabled/>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="info">Direccion</label>
-                                <div class="DataContainer">
-                                    <input type="text" class="InfoData" v-model="form.Direccion" disabled/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tw-bg-coolGray-100 tw-p-4 tw-border-b-4 tw-border-cyan-500">
-                </div>
-            </div>
-        </div>
-    </div>
   </app-layout>
 </template>
 
@@ -222,6 +132,8 @@ export default {
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             showModal: false,
             form: {
+                IdUser: this.Session.id,
+                IdEmp: this.Session.IdEmp,
             },
         };
     },
