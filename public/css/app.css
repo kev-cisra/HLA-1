@@ -18954,13 +18954,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(234, 88, 12, var(--tw-bg-opacity));
 }
-<<<<<<< HEAD
 .tw-bg-fuchsia-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(192, 38, 211, var(--tw-bg-opacity));
 }
-=======
->>>>>>> 34a3c06851e59a6ba145986ebe66e3e797afedb5
 .tw-bg-red-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(248, 113, 113, var(--tw-bg-opacity));
@@ -18977,29 +18974,6 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
 }
-<<<<<<< HEAD
-.tw-bg-emerald-500 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(16, 185, 129, var(--tw-bg-opacity));
-}
-.tw-bg-blueGray-500 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(100, 116, 139, var(--tw-bg-opacity));
-}
-.tw-bg-blueGray-300 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(203, 213, 225, var(--tw-bg-opacity));
-}
-.tw-bg-fuchsia-300 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(240, 171, 252, var(--tw-bg-opacity));
-}
-.tw-bg-teal-300 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(94, 234, 212, var(--tw-bg-opacity));
-}
-=======
->>>>>>> 34a3c06851e59a6ba145986ebe66e3e797afedb5
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
 }
@@ -19266,34 +19240,6 @@ select {
 .tw-text-pink-600 {
 	--tw-text-opacity: 1;
 	color: rgba(219, 39, 119, var(--tw-text-opacity));
-}
-.tw-text-cyan-400 {
-	--tw-text-opacity: 1;
-	color: rgba(34, 211, 238, var(--tw-text-opacity));
-}
-.tw-text-cyan-500 {
-	--tw-text-opacity: 1;
-	color: rgba(6, 182, 212, var(--tw-text-opacity));
-}
-.tw-text-purple-500 {
-	--tw-text-opacity: 1;
-	color: rgba(168, 85, 247, var(--tw-text-opacity));
-}
-.tw-text-emerald-100 {
-	--tw-text-opacity: 1;
-	color: rgba(209, 250, 229, var(--tw-text-opacity));
-}
-.tw-text-emerald-500 {
-	--tw-text-opacity: 1;
-	color: rgba(16, 185, 129, var(--tw-text-opacity));
-}
-.tw-text-emerald-400 {
-	--tw-text-opacity: 1;
-	color: rgba(52, 211, 153, var(--tw-text-opacity));
-}
-.tw-text-emerald-700 {
-	--tw-text-opacity: 1;
-	color: rgba(4, 120, 87, var(--tw-text-opacity));
 }
 .tw-underline {
 	text-decoration: underline;
@@ -20795,13 +20741,13 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(30, 58, 138, var(--tw-text-opacity));
 }
-.hover\:tw-text-red-500:hover {
-	--tw-text-opacity: 1;
-	color: rgba(239, 68, 68, var(--tw-text-opacity));
-}
 .hover\:tw-text-green-500:hover {
 	--tw-text-opacity: 1;
 	color: rgba(34, 197, 94, var(--tw-text-opacity));
+}
+.hover\:tw-text-red-500:hover {
+	--tw-text-opacity: 1;
+	color: rgba(239, 68, 68, var(--tw-text-opacity));
 }
 .focus\:tw-border-blue-700:focus {
 	--tw-border-opacity: 1;
@@ -21223,6 +21169,10 @@ select {
 	}
 
 	.md\:tw-w-6\/12 {
+		width: 50%;
+	}
+
+	.md\:tw-w-2\/4 {
 		width: 50%;
 	}
 
