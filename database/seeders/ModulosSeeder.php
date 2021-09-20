@@ -151,6 +151,14 @@ class ModulosSeeder extends Seeder
             'Area' => '8',
         ]);
 
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'GASTOS REQUISICIONES',
+            'Icono' => 'fas fa-cash-register',
+            'Ruta' => 'Supply/GastosRequisiciones',
+            'Area' => '8',
+        ]);
+
 
         ////////////// PRODUCCCION ///////////////////
 

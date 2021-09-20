@@ -72,7 +72,7 @@ class RequisicionPapeleriaController extends Controller{
             $Articulos = ArticulosPapeleriaRequisicion::create([
                 'IdEmp' => $Session->IdEmp,
                 'Cantidad' => $value['Cantidad'],
-                'material_id' => $value['Cantidad'],
+                'material_id' => $value['Material'],
                 'papeleria_id' => $PapeleriaId,
             ]);
         }

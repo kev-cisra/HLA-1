@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Menus\MenuSupplyController;
 use App\Http\Controllers\Supply\Requisiciones\AutorizaRequisicionesController;
+use App\Http\Controllers\Supply\Requisiciones\GastosRequisiciones;
 use App\Http\Controllers\Supply\Requisiciones\PresupuestosRequisicionesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -14,3 +15,6 @@ Route::resource('AutorizaRequisiciones', AutorizaRequisicionesController::class)
 
 Route::resource('Presupuestos', PresupuestosRequisicionesController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('Presupuestos');
+
+Route::resource('GastosRequisiciones', GastosRequisiciones::class)
+    ->middleware(['auth:sanctum', 'verified'])->names('GastosRequisiciones');

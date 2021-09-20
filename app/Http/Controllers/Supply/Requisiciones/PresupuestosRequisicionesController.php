@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Supply\Requisiciones;
 
 use App\Http\Controllers\Controller;
+use App\Models\Compras\Requisiciones\PreciosCotizaciones;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\Supply\Presupuestos\Presupuesto;
 use Illuminate\Http\Request;
@@ -14,14 +15,26 @@ class PresupuestosRequisicionesController extends Controller
 {
 
     public function index(Request $request){
+
+        $date = Carbon::now();
+        $año = $date->format('Y');
+
         $Session = auth()->user();
         $Departamentos = Departamentos::get();
 
         if($request->dpto == ''){
-            $Presupuestos = Presupuesto::with('PresupuestoDepartamento')->get();
+            $Presupuestos = Presupuesto::with('PresupuestoDepartamento')
+            ->orderBy('Departamento_id', 'asc')
+            ->orderBy('Mes', 'asc')
+            ->where('Anio', '=', $año)->get();
         }else{
-            $Presupuestos = Presupuesto::with('PresupuestoDepartamento')->where('Departamento_id', '=', $request->dpto)->get();
+            $Presupuestos = Presupuesto::with('PresupuestoDepartamento')
+            ->orderBy('Departamento_id', 'asc')
+            ->orderBy('Mes', 'asc')
+            ->where('Anio', '=', $año)
+            ->where('Departamento_id', '=', $request->dpto)->get();
         }
+
 
         return Inertia::render('Supply/Presupuestos/Presupuestos', compact('Session', 'Departamentos', 'Presupuestos'));
     }
