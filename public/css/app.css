@@ -18977,6 +18977,9 @@ select {
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
 }
+.tw-bg-center {
+	background-position: center;
+}
 .tw-fill-current {
 	fill: currentColor;
 }
@@ -19098,6 +19101,9 @@ select {
 }
 .tw-text-right {
 	text-align: right;
+}
+.tw-align-middle {
+	vertical-align: middle;
 }
 .tw-font-sans {
 	font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";

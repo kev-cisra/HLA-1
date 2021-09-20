@@ -22,6 +22,7 @@ class CreateCargasTable extends Migration
             $table->string('partida')->nullable();
             $table->enum('notaPen', [1,2,3])->default(1)->nullable();
             $table->enum('estatus', [1,2,3])->default(1)->nullable();
+            $table->enum('est_ent', [1,2,3,4,5,6])->nullable();
 
             $table->unsignedBigInteger('equipo_id')->nullable();
             $table->unsignedBigInteger('dep_perf_id')->nullable();
@@ -44,7 +45,7 @@ class CreateCargasTable extends Migration
             $table->foreign('proceso_id')->references("id")->on("procesos")
             ->onDelete("cascade")
             ->onUpdate("cascade");
-            $table->foreign('per_carga')->references("id")->on("dep_pers")
+            $table->foreign('per_carga')->references("id")->on("perfiles_usuarios")
             ->onDelete("cascade")
             ->onUpdate("cascade");
             $table->foreign('dep_perf_id')->references("id")->on("dep_pers")

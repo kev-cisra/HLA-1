@@ -60,6 +60,7 @@ class CargaController extends Controller
             //muestra de procesos dependiendo del puesto
             $procesos = procesos::where('departamento_id', '=', $perf->Departamento_id)
                 ->where('tipo','!=', '3')
+                ->where('tipo', '!=', '4')
                 ->with([
                     'maq_pros' => function($mp){
                         $mp->select('id', 'proceso_id', 'maquina_id')
@@ -154,6 +155,7 @@ class CargaController extends Controller
             //muestran los departamentos
             $procesos = procesos::where('departamento_id', '=', $request->busca)
                 ->where('tipo', '!=', '3')
+                ->where('tipo', '!=', '4')
                 ->with([
                     'maq_pros' => function($mp){
                         $mp->select('id', 'proceso_id', 'maquina_id')

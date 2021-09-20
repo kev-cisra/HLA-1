@@ -326,7 +326,7 @@
                         return 'Operaciones';
                         break;
                     case '4':
-                        return 'Paros';
+                        return 'Entregas';
                         break;
                 }
             },
