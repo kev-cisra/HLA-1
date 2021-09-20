@@ -4,6 +4,7 @@ namespace App\Models\Produccion;
 
 use App\Models\Produccion\catalogos\claves;
 use App\Models\Produccion\catalogos\procesos;
+use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
@@ -46,5 +47,9 @@ class carga extends Model
 
     public function dep_mat(){
         return $this->belongsTo(dep_mat::class, 'norma');
+    }
+
+    public function perfil(){
+        return $this->belongsTo(PerfilesUsuarios::class, 'per_carga');
     }
 }

@@ -19031,6 +19031,9 @@ select {
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
 }
+.tw-bg-center {
+	background-position: center;
+}
 .tw-fill-current {
 	fill: currentColor;
 }
@@ -19289,6 +19292,10 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(239, 68, 68, var(--tw-text-opacity));
 }
+.tw-text-black {
+	--tw-text-opacity: 1;
+	color: rgba(0, 0, 0, var(--tw-text-opacity));
+}
 .tw-text-blue-700 {
 	--tw-text-opacity: 1;
 	color: rgba(29, 78, 216, var(--tw-text-opacity));
@@ -19305,6 +19312,7 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(219, 39, 119, var(--tw-text-opacity));
 }
+<<<<<<< HEAD
 .tw-text-black {
 	--tw-text-opacity: 1;
 	color: rgba(0, 0, 0, var(--tw-text-opacity));
@@ -19320,6 +19328,8 @@ select {
 .tw-text-coolGray-50 {
 	color: #F9FAFB ;
 }
+=======
+>>>>>>> d0c9f4000214946e8c54be6d95691fbdadec91f7
 .tw-underline {
 	text-decoration: underline;
 }

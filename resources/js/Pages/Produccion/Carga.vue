@@ -116,7 +116,7 @@
                         <td class="fila">{{ca.dep_perf.departamentos.Nombre}}</td>
                         <td class="fila">{{ca.proceso.nompro}}</td>
                         <td class="fila tw-w-40">
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-emerald-600 tw-rounded-full" v-if="ca.notaPen == 2 & ca.dep_perf.ope_puesto == 'cor'">NOTA COORDINADOR</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-emerald-600 tw-rounded-full" v-if="ca.notaPen == 2 & ca.proceso.tipo == 2">NOTA COORDINADOR</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-else-if="ca.notaPen == 2 & (ca.dep_perf.ope_puesto == 'ope' | ca.dep_perf.ope_puesto == 'lid')">NOTA OPERADOR</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-coolGray-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length <= 1">SIN NOTA</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1">ACTUALIZADO</div>
@@ -131,15 +131,14 @@
                         <td class="fila">{{ca.valor}}</td>
                         <td class="fila">
                             <div class="columnaIconos">
-                                <div class="iconoDetails tw-cursor-pointer" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & ((noCor == 'cor' & ca.equipo_id == null) | (noCor != 'cor' & ca.equipo_id != null & ca.notaPen == 1))">
+                                <div class="iconoDetails tw-cursor-pointer" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & (((noCor == 'cor' | noCor == 'enc') & ca.proceso.tipo == 2 & ca.notaPen == 1) | ((noCor == 'lid' | noCor == 'ope') & ca.equipo_id != null & ca.notaPen == 1))">
                                     <span tooltip="Agregar nota" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
                                     </span>
-
                                 </div>
-                                <div class="iconoEdit tw-cursor-pointer" @click="editCA(ca)" v-show="usuario.dep_pers.length == 0 | (ca.dep_perf.ope_puesto != 'cor' & noCor == 'cor')">
+                                <div class="iconoEdit tw-cursor-pointer" @click="editCA(ca)" v-show="usuario.dep_pers.length == 0 | (ca.proceso.tipo != 2 & (noCor == 'cor' | noCor == 'enc'))">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -152,6 +151,9 @@
                 </template>
             </Table>
         </div>
+        <pre>
+            {{cargas}}
+        </pre>
         <!--------------------------------------- Carga de reportes y datatable ------------------------------------------->
         <!-- <div class="offcanvas offcanvas-bottom tw-h-5/6" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
             <div class="offcanvas-header">
@@ -293,7 +295,7 @@
                     fecha: moment().format("YYYY-MM-DD HH:mm:ss"),
                     semana: moment().format("GGGG-[W]WW"),
                     usu: this.usuario.id,
-                    per_carga: '',
+                    per_carga: this.usuario.id,
                     proceso_id: '',
                     dep_perf_id: '',
                     maq_pro_id: '',
@@ -382,15 +384,18 @@
                             this.opcPE += `<option value="${pe.id}">${pe.perfiles.Nombre} ${pe.perfiles.ApPat} ${pe.perfiles.ApMat}</option>`;
                         })
                     }else{
-                        //asigna el puesto a una variable
-                        this.noCor = this.usuario.dep_pers[0].ope_puesto;
-                        //asigna quien carga
-                        this.form.per_carga = this.usuario.dep_pers[0].id;
                         //asignacion de personal a select
                         this.personal.forEach(pe => {
-                            if (pe.ope_puesto == 'ope' | pe.ope_puesto == 'lid') {
-                                this.opcPE += `<option value="${pe.id}">${pe.perfiles.Nombre} ${pe.perfiles.ApPat} ${pe.perfiles.ApMat}</option>`;
+                            if (this.noCor == 'enc') {
+                                if (pe.ope_puesto != 'cor') {
+                                    this.opcPE += `<option value="${pe.id}">${pe.perfiles.Nombre} ${pe.perfiles.ApPat} ${pe.perfiles.ApMat}</option>`;
+                                }
+                            }else{
+                                if (pe.ope_puesto != 'cor' & pe.ope_puesto != 'enc') {
+                                    this.opcPE += `<option value="${pe.id}">${pe.perfiles.Nombre} ${pe.perfiles.ApPat} ${pe.perfiles.ApMat}</option>`;
+                                }
                             }
+
                         })
                     }
                     //select normas
@@ -405,8 +410,8 @@
                 this.cargas.forEach(ca => {
                     if (ca.dep_perf) {
                         if (this.usuario.dep_pers.length != 0) {
-                            if (this.usuario.dep_pers[0].ope_puesto != 'cor') {
-                                if (ca.dep_perf.ope_puesto != 'cor') {
+                            if (this.noCor != 'cor' & this.noCor != 'enc') {
+                                if (ca.proceso.tipo != 2) {
                                     this.v.push(ca);
                                 }
                             }else{
@@ -449,6 +454,8 @@
             },
             /****************************** carga de carga de datos ******************************************/
             saveCA(form){
+                this.form.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
+                this.form.semana = moment().format("GGGG-[W]WW");
                 $('#t_carg').DataTable().clear();
                 $('#t_carg').DataTable().destroy();
                 this.$inertia.post('/Produccion/Carga', form, {
@@ -470,18 +477,19 @@
                 this.form.usu = this.usuario.id;
 
                 if (this.usuario.dep_pers.length != 0) {
-                    if (this.usuario.dep_pers[0].ope_puesto != 'ope' | this.usuario.dep_pers[0].ope_puesto != 'cor') {
-                        this.form.dep_perf_id = '';
-                        this.form.turno_id = '';
-                        this.form.equipo_id = '';
-                    }
-                    if(this.usuario.dep_pers[0].ope_puesto == 'ope'){
+                    /* if (this.noCor != 'ope' | this.noCor != 'cor') {
+                    } */
+                    if(this.noCor == 'ope' | this.noCor == 'lid'){
                         this.form.dep_perf_id = this.usuario.dep_pers[0].id;
                         this.form.equipo_id = this.usuario.dep_pers[0].equipo.id;
                         this.form.turno_id = this.usuario.dep_pers[0].equipo.turno_id;
                     }
-                    if(this.usuario.dep_pers[0].ope_puesto == 'cor'){
+                    else if(this.noCor == 'cor'){
                         this.form.dep_perf_id = this.usuario.dep_pers[0].id;
+                    }else{
+                        this.form.dep_perf_id = this.usuario.dep_pers[0] != null ? this.usuario.dep_pers[0].id : '';
+                        this.form.turno_id = this.usuario.dep_pers[0] != null ? this.usuario.dep_pers[0].equipo_id : '';
+                        this.form.equipo_id = this.usuario.dep_pers[0].equipo.length != 0 ? this.usuario.dep_pers[0].equipo.turno_id : '';
                     }
                 }else{
                     this.form.dep_perf_id = '';
@@ -548,12 +556,24 @@
                 }
                 this.opcSP= '<option value="" >SELECCIONA</option>';
                 if (this.usuario.dep_pers.length != 0) {
-                    //recorre y muestra los procesos
+                    /* para encargado
                     this.procesos.forEach(sp =>{
-                        if (this.usuario.dep_pers[0].ope_puesto != 'cor' & (sp.tipo == 1 & sp.proceso_id == v) | this.editMode ) {
+                        if ((this.noCor == 'lid' | this.noCor == 'ope') & (sp.tipo == 1 & sp.proceso_id == v) | this.editMode ) {
                             this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
                         }
-                        if (this.usuario.dep_pers[0].ope_puesto == 'cor' & (sp.tipo == 2 & sp.proceso_id == v) | this.editMode) {
+                        if ((this.noCor == 'cor' | this.noCor == 'enc') & (sp.tipo == 2 & sp.proceso_id == v) | this.editMode) {
+                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
+                        }
+                    }) */
+                    //recorre y muestra los procesos
+                    this.procesos.forEach(sp =>{
+                        if ((this.noCor == 'lid' | this.noCor == 'ope') & (sp.tipo == 1 & sp.proceso_id == v) | this.editMode ) {
+                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
+                        }
+                        if (this.noCor == 'enc' & sp.proceso_id == v | this.editMode ) {
+                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
+                        }
+                        if (this.noCor == 'cor' & (sp.tipo == 2 & sp.proceso_id == v) | this.editMode) {
                             this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
                         }
                     })

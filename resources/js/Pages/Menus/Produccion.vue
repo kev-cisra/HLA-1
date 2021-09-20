@@ -65,7 +65,7 @@
                                 <i class="fas fa-user-clock"></i>
                             </div>
                             <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">TURNOS</h4>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">TURNOS Y EQUIPOS</h4>
                                 <span class="linea"></span>
                             </div>
                         </Link>
