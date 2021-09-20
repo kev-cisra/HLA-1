@@ -3,7 +3,7 @@
         <Header :class="[color, style]">
             <slot>
                 <h3 class="tw-p-2">
-                    <i class="fas fa-toolbox"></i>
+                    <i class="fas fa-clipboard-list"></i>
                         Carga de datos
                 </h3>
             </slot>
@@ -15,7 +15,7 @@
             </template>
             <template v-slot:BtnNuevo>
                 <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar datos</jet-button>
-                <jet-button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Agregar Reporte</jet-button>
+                <!-- <jet-button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Agregar Reporte</jet-button> -->
             </template>
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="tw-mb-6 md:tw-flex" v-if="(form.notaPen == 1 & form.proceso_id != '') | editMode">
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0" v-show="noCor != 'cor'">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Maquinas</jet-label>
                     <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ" :disabled="editMode"></select>
                     <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
@@ -67,11 +67,11 @@
             <div class="tw-mb-6 md:tw-flex" v-if="form.notaPen == 2">
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 tw-text-center tw-mx-auto md:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
                     <jet-label>Nota anterior</jet-label>
-                    <jet-label v-text="nAnte"></jet-label>
+                    <jet-label v-html="nAnte"></jet-label>
                 </div>
                 <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 tw-text-center tw-mx-auto md:tw-mb-0">
                     <jet-label><span class="required">*</span>Nota</jet-label>
-                    <textarea class="InputSelect" v-model="form.nota" @input="(val) => (form.nota = form.nota.toUpperCase())"></textarea>
+                    <textarea class="InputSelect" v-model="form.nota" maxlength="250" @input="(val) => (form.nota = form.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
                     <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
                 </div>
             </div>
@@ -97,6 +97,7 @@
                     <th class="columna">Fecha</th>
                     <th class="columna">Nombre</th>
                     <th class="columna">Departamento</th>
+                    <th class="columna">Proceso</th>
                     <th class="columna">Estatus</th>
                     <th class="columna">Equipo</th>
                     <th class="columna">Turno</th>
@@ -109,27 +110,28 @@
                     <th></th>
                 </template>
                 <template v-slot:TableFooter >
-                    <tr v-for="ca in v" :key="ca">
-                        <td class="fila">{{ca.Cfec}}</td>
-                        <td class="fila">{{ca.Pnom}} {{ca.Pap}} {{ca.Pam}}</td>
-                        <td class="fila">{{ca.Dnom}}</td>
+                    <tr v-for="ca in v" :key="ca.id">
+                        <td class="fila">{{ca.fecha}}</td>
+                        <td class="fila">{{ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf.perfiles.ApMat}}</td>
+                        <td class="fila">{{ca.dep_perf.departamentos.Nombre}}</td>
+                        <td class="fila">{{ca.proceso.nompro}}</td>
                         <td class="fila tw-w-40">
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-emerald-600 tw-rounded-full" v-if="ca.Cnp == 2 & ca.DPpue == 'cor'">NOTA COORDINADOR</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-else-if="ca.Cnp == 2 & (ca.DPpue == 'ope' | ca.DPpue == 'lid')">NOTA OPERADOR</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-coolGray-600 tw-rounded-full" v-if="ca.Cnp == 1">SIN NOTA</div>
-                            <!-- <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-coolGray-600 tw-rounded-full" v-if=" ca.Cnp == 1">ACTUALIZADO COORDINADOR</div> -->
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-emerald-600 tw-rounded-full" v-if="ca.notaPen == 2 & ca.dep_perf.ope_puesto == 'cor'">NOTA COORDINADOR</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-else-if="ca.notaPen == 2 & (ca.dep_perf.ope_puesto == 'ope' | ca.dep_perf.ope_puesto == 'lid')">NOTA OPERADOR</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-coolGray-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length <= 1">SIN NOTA</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1">ACTUALIZADO</div>
                         </td>
-                        <td class="fila">{{ca.Enom}}</td>
-                        <td class="fila">{{ca.Tnom}}</td>
-                        <td class="fila">{{ca.Cpar}}</td>
-                        <td class="fila">{{ca.Midm}} - {{ca.Mnom}}</td>
-                        <td class="fila">{{ca.CLcla}}</td>
-                        <td class="fila">{{ca.CLdes}}</td>
-                        <td class="fila">{{ca.MAnom}}</td>
-                        <td class="fila">{{ca.Cval}}</td>
+                        <td class="fila">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
+                        <td class="fila">{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
+                        <td class="fila">{{ca.partida == null ? 'N/A' : ca.partida}}</td>
+                        <td class="fila">{{ca.dep_mat == null ? 'N/A' : ca.dep_mat.materiales.idmat+' - '+ca.dep_mat.materiales.nommat}}</td>
+                        <td class="fila">{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
+                        <td class="fila">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
+                        <td class="fila">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
+                        <td class="fila">{{ca.valor}}</td>
                         <td class="fila">
                             <div class="columnaIconos">
-                                <div class="iconoDetails" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & ((noCor == 'cor' & ca.Enom == null) | (noCor != 'cor' & ca.Enom != null & ca.Cnp == 1))">
+                                <div class="iconoDetails tw-cursor-pointer" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & ((noCor == 'cor' & ca.equipo_id == null) | (noCor != 'cor' & ca.equipo_id != null & ca.notaPen == 1))">
                                     <span tooltip="Agregar nota" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -137,7 +139,7 @@
                                     </span>
 
                                 </div>
-                                <div class="iconoEdit" @click="editCA(ca)" v-show="usuario.dep_pers.length == 0 | (ca.DPpue != 'cor' & noCor == 'cor')">
+                                <div class="iconoEdit tw-cursor-pointer" @click="editCA(ca)" v-show="usuario.dep_pers.length == 0 | (ca.dep_perf.ope_puesto != 'cor' & noCor == 'cor')">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -150,11 +152,8 @@
                 </template>
             </Table>
         </div>
-        <pre>
-            {{cargas}}
-        </pre>
         <!--------------------------------------- Carga de reportes y datatable ------------------------------------------->
-        <div class="offcanvas offcanvas-bottom tw-h-5/6" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+        <!-- <div class="offcanvas offcanvas-bottom tw-h-5/6" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasBottomLabel">Reportes</h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -162,7 +161,7 @@
             <div class="offcanvas-body">
                 <div class="tw-p-6 tw-bg-blue-300 tw-rounded-3xl">
                     <div class="tw-mb-6 md:tw-flex">
-                        <!--<div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                             <jet-label><span class="required">*</span>Departamento </jet-label>
                             <select class="InputSelect" v-model="form.departamento_id" v-html="opc"></select>
                             <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
@@ -174,7 +173,7 @@
                             <datalist id="per">
                                 <option v-for="material in materiales" :key="material" :value="material.id">{{ material.idmat }} - {{ material.nommat }}</option>
                             </datalist>
-                        </div>-->
+                        </div>
                     </div>
                     <div class="w-100 tw-mx-auto" align="center">
                         <jet-button type="button" class="tw-mx-auto" @click="saveDM(form)">Guardar</jet-button>
@@ -229,7 +228,7 @@
                     </tfoot>
                 </table>
             </div>
-        </div>
+        </div> -->
     </app-layout>
 </template>
 
@@ -407,7 +406,7 @@
                     if (ca.dep_perf) {
                         if (this.usuario.dep_pers.length != 0) {
                             if (this.usuario.dep_pers[0].ope_puesto != 'cor') {
-                                if (ca.DPpue != 'cor') {
+                                if (ca.dep_perf.ope_puesto != 'cor') {
                                     this.v.push(ca);
                                 }
                             }else{
@@ -427,7 +426,7 @@
                 this.$nextTick(() => {
                     $('#t_carg').DataTable({
                         "language": this.español,
-                        "order": [[3, 'asc'], [0, 'desc']],
+                        "order": [[4, 'asc'], [0, 'desc']],
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
@@ -492,25 +491,25 @@
             },
             editCA(form){
                 //console.log(form)
-                this.proc_prin = form.PRpro_prin;
-                this.form.dep_perf_id = form.Cidde_pe;
-                this.form.turno_id = form.Ctur;
-                this.form.equipo_id = form.Cidequ;
-                this.form.proceso_id = form.Cidpro;
+                this.proc_prin = form.proceso.proceso_id;
+                this.form.dep_perf_id = form.dep_perf_id;
+                this.form.turno_id = form.turno_id;
+                this.form.equipo_id = form.equipo_id;
+                this.form.proceso_id = form.proceso_id;
                 this.form.id = form.id;
-                this.form.valor = form.Cval;
-                this.form.norma = form.Cidnor;
-                this.form.partida = form.Cpar;
-                this.form.maq_pro_id = form.Cidma_pr;
-                this.form.clave_id = form.Cclave;
+                this.form.valor = form.valor;
+                this.form.norma = form.norma;
+                this.form.partida = form.partida;
+                this.form.maq_pro_id = form.maq_pro_id;
+                this.form.clave_id = form.clave_id;
                 this.form.notaPen = 2;
                 this.form.nota = '';
                 this.editMode = true;
-                this.nAnte = form.NCnota;
+                this.nAnte = form.notas.length == 0 ? '' : `<label class="tw-text-base tw-w-full tw-text-black">Fecha: ${form.notas[0].fecha}</label><label class="tw-text-base tw-w-full tw-text-black tw-capitalize"> ${form.notas[0].nota}</label>`;
                 $('#agPer').addClass('show')
             },
             updateCA(data){
-                console.log(data)
+                //console.log(data)
                 if (data.nota != '' & data.clave_id != '' & data.valor != '') {
                     $('#t_carg').DataTable().clear();
                     $('#t_carg').DataTable().destroy();
@@ -522,8 +521,8 @@
             /****************************** Carga de notas */
             notaCA(form){
                 //console.log(form)
+                this.resetCA();
                 this.form.id = form.id;
-                //console.log(this.form.idnota);
                 this.form.agNot = 1;
                 this.form.notaPen = 2;
                 this.form.nota = '';
@@ -540,8 +539,6 @@
         },
         watch: {
             proc_prin: function(v) {
-                //console.log(v)
-
                 //cuando no se edita
                 if (!this.editMode) {
                     this.form.proceso_id = '';

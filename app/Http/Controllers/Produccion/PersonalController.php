@@ -114,14 +114,27 @@ class PersonalController extends Controller
      */
     public function update(Request $request)
     {
+        switch ($request->ope_puesto) {
+            case 'cor':
+                $per = 'Cordinador';
+                break;
+            case 'enc':
+                $per = 'Encargado';
+                break;
+            case 'lid':
+                $per = 'Lider';
+                break;
+            case 'ope':
+                $per = 'Operador';
+                break;
+        }
         // crea un nuevo usuario para que ocupe la aplicación
-        //return $request->departamentos['Nombre'];
         $n_user = User::create([
             'IdEmp' => $request->perfiles['IdEmp'],
             'name' => $request->perfiles['Nombre'].' '.$request->perfiles['ApPat'].' '.$request->perfiles['ApMat'],
             'Departamento' => $request->departamentos['Nombre'],
             'password' => bcrypt($request->perfiles['IdEmp'])
-        ])->assignRole('Produccion');
+        ])->assignRole(['Produccion', $per]);
         //actualiza la informacion de perfiles para relacionar con el nuevo usuario
         PerfilesUsuarios::find($request->perfiles['id'])->update(['user_id' => $n_user->id]);
         return redirect()->back()

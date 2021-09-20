@@ -18,7 +18,7 @@ class CreateProcesosTable extends Migration
             $table->id();
 
             $table->string('nompro');
-            $table->enum('tipo',[procesos::Principal, procesos::Encargado, procesos::Coordinador, procesos::Formulas, procesos::Paros]);
+            $table->enum('tipo',[procesos::Principal, procesos::Encargado, procesos::Coordinador, procesos::Formulas, procesos::Entregas]);
             $table->string('descripcion')->nullable();
             $table->string('operacion')->nullable();
             $table->enum('estatus',[1,2,3])->default(1);
