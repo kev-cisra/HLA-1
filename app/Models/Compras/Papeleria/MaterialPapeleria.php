@@ -12,5 +12,4 @@ class MaterialPapeleria extends Model
     use SoftDeletes; //Implementamos
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id', 'created_at','updated_at'];
-    use HasFactory;
 }
