@@ -26,18 +26,18 @@ class AutorizaRequisicionesController extends Controller{
         $request->month == '' ? $mes = $hoy->format('n') : $mes = $request->month;
 
         $Session = auth()->user();
-        $SessionIdEmp = $Session->IdEmp;
 
         //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
-        $ObtenJefe = JefesArea::where('IdEmp', '=', $SessionIdEmp)->first('id','IdEmp');
-        if(!isset($ObtenJefe)){
+        $ObtenJefe = JefesArea::where('IdEmp', '=', $Session->IdEmp)->first(['id','IdEmp']);
+        if(isset($ObtenJefe)){
             $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
 
             //Consulta para obtener los datos de los trabajadores pertenecientes al id de la session
-            $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', '12')->get();
+            $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', $IdJefe)->get();
         }else{
             $PerfilesUsuarios = PerfilesUsuarios::get();
         }
+
 
         $Proveedores = Proveedores::get();
 
@@ -128,14 +128,22 @@ class AutorizaRequisicionesController extends Controller{
         }
 
 
+        $Cotizacion = ArticulosRequisiciones::whereBetween('EstatusArt', [3, 4])->count();
 
-        $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 3)->count();
+        $Pendientes = ArticulosRequisiciones::where('EstatusArt', '=', 5)->count();
 
-        $Cotizacion = ArticulosRequisiciones::where('EstatusArt', '=', 4)->count();
+        $Confirmar = ArticulosRequisiciones::where('EstatusArt', '=', 6)->count();
 
-        $Autorizados = ArticulosRequisiciones::where('EstatusArt', '=', 5)->count();
-
-        return Inertia::render('Supply/Requisiciones/Autoriza', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'PreciosCotizacion', 'Proveedores', 'Almacen', 'Cotizacion', 'Autorizados', 'mes'));
+        return Inertia::render('Supply/Requisiciones/Autoriza', compact(
+            'Session',
+            'PerfilesUsuarios',
+            'ArticuloRequisicion',
+            'PreciosCotizacion',
+            'Proveedores',
+            'Cotizacion',
+            'Pendientes',
+            'Confirmar',
+            'mes'));
     }
 
     public function store(Request $request){
@@ -174,11 +182,5 @@ class AutorizaRequisicionesController extends Controller{
 
         return redirect()->back();
 
-    }
-
-
-    public function destroy($id)
-    {
-        //
     }
 }

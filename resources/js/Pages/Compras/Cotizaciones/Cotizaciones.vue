@@ -15,9 +15,9 @@
                 <div class="tw-flex tw-flex-col tw-w-full tw-mb-2 tw-space-y-8 lg:tw-flex-row lg:tw-space-x-10 lg:tw-space-y-0 lg:tw-mb-4">
 
                     <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="Filtro(1)">
-                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-green-400 tw-rounded-lg tw-widget">
+                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-green-600 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
-                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-green-400 tw-text-white tw-rounded-full tw-mr-3">
+                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-green-600 tw-text-white tw-rounded-full tw-mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                                     </svg>
@@ -31,9 +31,9 @@
                     </div>
 
                     <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4">
-                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-indigo-400 tw-rounded-lg tw-widget">
+                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-indigo-500 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
-                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-indigo-400 tw-text-white tw-rounded-full tw-mr-3">
+                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-indigo-500 tw-text-white tw-rounded-full tw-mr-3">
                                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
@@ -47,16 +47,32 @@
                     </div>
 
                     <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4">
-                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-indigo-400 tw-rounded-lg tw-widget">
+                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-emerald-600 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
-                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-indigo-400 tw-text-white tw-rounded-full tw-mr-3">
+                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-emerald-600 tw-text-white tw-rounded-full tw-mr-3">
                                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
                                 </div>
                                 <div class="tw-flex tw-flex-col tw-justify-center">
-                                    <div class="tw-text-lg"> {{ Autorizados }} </div>
-                                    <div class="tw-text-xs tw-text-gray-400">Pendientes por revisar</div>
+                                    <div class="tw-text-lg"> {{ SinConfirmar }} </div>
+                                    <div class="tw-text-xs tw-text-gray-400">Pendientes por enviar a Autorizar</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4">
+                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-cyan-600 tw-rounded-lg tw-widget">
+                            <div class="tw-flex tw-items-center">
+                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-cyan-600 tw-text-white tw-rounded-full tw-mr-3">
+                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div class="tw-flex tw-flex-col tw-justify-center">
+                                    <div class="tw-text-lg"> {{ Confirmar }} </div>
+                                    <div class="tw-text-xs tw-text-gray-400">Pendientes por agregar Fecha Entrega</div>
                                 </div>
                             </div>
                         </div>
@@ -193,9 +209,6 @@
                             <option value="EN AUTORIZACION">EN AUTORIZACION</option>
                             <option value="ENTREGADO">ENTREGADO</option>
                     </select>
-                </div>
-                <div>
-
                 </div>
             </div>
 
@@ -788,6 +801,8 @@ export default {
         PerfilesUsuarios: Object,
         Almacen: Object,
         Cotizacion: Object,
+        SinConfirmar: Object,
+        Confirmar: Object,
         Autorizados: Object,
         mes: Object,
         PreciosCotizacion: Object,

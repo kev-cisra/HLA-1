@@ -23,7 +23,7 @@
                                     </svg>
                                 </div>
                                 <div class="tw-flex tw-flex-col tw-justify-center">
-                                    <div class="tw-text-lg">{{ GastoAño[0].Total }}</div>
+                                    <div class="tw-text-lg">$ {{ GastoAño[0].Total }}</div>
                                     <div class="tw-text-xs tw-text-gray-400">Gasto Total de Año</div>
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                                     </svg>
                                 </div>
                                 <div class="tw-flex tw-flex-col tw-justify-center">
-                                    <div class="tw-text-lg"> {{ GastoMes[0].Total }} </div>
+                                    <div class="tw-text-lg"> $ {{ GastoMes[0].Total }} </div>
                                     <div class="tw-text-xs tw-text-gray-400">Gasto Total de Mes</div>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                                     </svg>
                                 </div>
                                 <div class="tw-flex tw-flex-col tw-justify-center">
-                                    <div class="tw-text-lg"> {{ PresupuestoAño[0].Total }} </div>
+                                    <div class="tw-text-lg"> $ {{ PresupuestoAño[0].Total }} </div>
                                     <div class="tw-text-xs tw-text-gray-400">Presupuesto Total del Año</div>
                                 </div>
                             </div>
@@ -68,8 +68,93 @@
 
         <div class="tw-p-2 tw-bg-teal-500 tw-mx-56 tw-rounded-full tw-text-center tw-font-semibold tw-text-white">Gastos del Mes</div>
 
-        <div class="tw-flex tw-items-center tw-justify-center tw-my-4">
-            <div class="tw-border-l-8 tw-border-2 tw-border-teal-500 tw-shadow tw-rounded-xl">
+        <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-center tw-my-4 tw-gap-8 tw-uppercase">
+
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            DIRECCIÓN
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 000000
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            %
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            SISTEMAS
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 0000
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            %
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            CONTABILIDAD
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            %
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            COMPRAS
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            -4.5%
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
                 <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
                     <div>
                         <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -89,404 +174,262 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="tw-flex tw-flex-wrap tw-gap-4 tw-justify-center tw-mt-8">
-            <div class="">
-                <div class="tw-flex md:tw-flex-row tw-space-x-8 tw-border-l-4 tw-border-emerald-400">
-                    <div class="tw-shadow-md tw-p-4">
-                        <div class="">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-flex tw-space-x-8 tw-w-48">
-                                    <div class="">
-                                        <div class="tw-uppercase tw-text-sm tw-text-gray-400 tw-font-extrabold">
-                                            APERTURA
-                                        </div>
-                                    <div class="tw-mt-1">
-                                            <div class="tw-flex tw-space-x-2 tw-items-center">
-                                                <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
-                                                    $ {{ GastosApertura[0].Total }}
-                                                </div>
-                                                <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-md tw-p-1">
-                                                    -4.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="">
-                                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            TEJIDO
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            -4.5%
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="">
-                <div class="tw-flex md:tw-flex-row tw-space-x-8 tw-border-l-4 tw-border-emerald-400">
-                    <div class="tw-shadow-md tw-p-4">
-                        <div class="">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-flex tw-space-x-8 tw-w-48">
-                                    <div class="">
-                                        <div class="tw-uppercase tw-text-sm tw-text-gray-400 tw-font-extrabold">
-                                            APERTURA
-                                        </div>
-                                    <div class="tw-mt-1">
-                                            <div class="tw-flex tw-space-x-2 tw-items-center">
-                                                <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
-                                                    $15000
-                                                </div>
-                                                <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-md tw-p-1">
-                                                    -4.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="">
-                                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            MANTENIMIENTO
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            -4.5%
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="">
-                <div class="tw-flex md:tw-flex-row tw-space-x-8 tw-border-l-4 tw-border-emerald-400">
-                    <div class="tw-shadow-md tw-p-4">
-                        <div class="">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-flex tw-space-x-8 tw-w-48">
-                                    <div class="">
-                                        <div class="tw-uppercase tw-text-sm tw-text-gray-400 tw-font-extrabold">
-                                            APERTURA
-                                        </div>
-                                    <div class="tw-mt-1">
-                                            <div class="tw-flex tw-space-x-2 tw-items-center">
-                                                <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
-                                                    $15000
-                                                </div>
-                                                <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-md tw-p-1">
-                                                    -4.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="">
-                                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            LOGISTICA
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            -4.5%
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="">
-                <div class="tw-flex md:tw-flex-row tw-space-x-8 tw-border-l-4 tw-border-emerald-400">
-                    <div class="tw-shadow-md tw-p-4">
-                        <div class="">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-flex tw-space-x-8 tw-w-48">
-                                    <div class="">
-                                        <div class="tw-uppercase tw-text-sm tw-text-gray-400 tw-font-extrabold">
-                                            APERTURA
-                                        </div>
-                                    <div class="tw-mt-1">
-                                            <div class="tw-flex tw-space-x-2 tw-items-center">
-                                                <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
-                                                    $15000
-                                                </div>
-                                                <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-md tw-p-1">
-                                                    -4.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="">
-                                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            HILATURA DE ANILLO
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            -4.5%
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="">
-                <div class="tw-flex md:tw-flex-row tw-space-x-8 tw-border-l-4 tw-border-emerald-400">
-                    <div class="tw-shadow-md tw-p-4">
-                        <div class="">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-flex tw-space-x-8 tw-w-48">
-                                    <div class="">
-                                        <div class="tw-uppercase tw-text-sm tw-text-gray-400 tw-font-extrabold">
-                                            APERTURA
-                                        </div>
-                                    <div class="tw-mt-1">
-                                            <div class="tw-flex tw-space-x-2 tw-items-center">
-                                                <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
-                                                    $15000
-                                                </div>
-                                                <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-md tw-p-1">
-                                                    -4.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="">
-                                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            APERTURA
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            -4.5%
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="">
-                <div class="tw-flex md:tw-flex-row tw-space-x-8 tw-border-l-4 tw-border-emerald-400">
-                    <div class="tw-shadow-md tw-p-4">
-                        <div class="">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-flex tw-space-x-8 tw-w-48">
-                                    <div class="">
-                                        <div class="tw-uppercase tw-text-sm tw-text-gray-400 tw-font-extrabold">
-                                            APERTURA
-                                        </div>
-                                    <div class="tw-mt-1">
-                                            <div class="tw-flex tw-space-x-2 tw-items-center">
-                                                <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
-                                                    $15000
-                                                </div>
-                                                <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-md tw-p-1">
-                                                    -4.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="">
-                                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            HILATURA 1
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            -4.5%
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="">
-                <div class="tw-flex md:tw-flex-row tw-space-x-8 tw-border-l-4 tw-border-emerald-400">
-                    <div class="tw-shadow-md tw-p-4">
-                        <div class="">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-flex tw-space-x-8 tw-w-48">
-                                    <div class="">
-                                        <div class="tw-uppercase tw-text-sm tw-text-gray-400 tw-font-extrabold">
-                                            APERTURA
-                                        </div>
-                                    <div class="tw-mt-1">
-                                            <div class="tw-flex tw-space-x-2 tw-items-center">
-                                                <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
-                                                    $15000
-                                                </div>
-                                                <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-md tw-p-1">
-                                                    -4.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="">
-                                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            HILATURA 2
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            -4.5%
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="">
-                <div class="tw-flex md:tw-flex-row tw-space-x-8 tw-border-l-4 tw-border-emerald-400">
-                    <div class="tw-shadow-md tw-p-4">
-                        <div class="">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-flex tw-space-x-8 tw-w-48">
-                                    <div class="">
-                                        <div class="tw-uppercase tw-text-sm tw-text-gray-400 tw-font-extrabold">
-                                            APERTURA
-                                        </div>
-                                    <div class="tw-mt-1">
-                                            <div class="tw-flex tw-space-x-2 tw-items-center">
-                                                <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
-                                                    $15000
-                                                </div>
-                                                <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-md tw-p-1">
-                                                    -4.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="">
-                                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            OPERACIONES
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            -4.5%
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="">
-                <div class="tw-flex md:tw-flex-row tw-space-x-8 tw-border-l-4 tw-border-emerald-400">
-                    <div class="tw-shadow-md tw-p-4">
-                        <div class="">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-flex tw-space-x-8 tw-w-48">
-                                    <div class="">
-                                        <div class="tw-uppercase tw-text-sm tw-text-gray-400 tw-font-extrabold">
-                                            APERTURA
-                                        </div>
-                                    <div class="tw-mt-1">
-                                            <div class="tw-flex tw-space-x-2 tw-items-center">
-                                                <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
-                                                    $15000
-                                                </div>
-                                                <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-md tw-p-1">
-                                                    -4.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="">
-                                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            HILATURA 3
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            -4.5%
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="">
-                <div class="tw-flex md:tw-flex-row tw-space-x-8 tw-border-l-4 tw-border-emerald-400">
-                    <div class="tw-shadow-md tw-p-4">
-                        <div class="">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-flex tw-space-x-8 tw-w-48">
-                                    <div class="">
-                                        <div class="tw-uppercase tw-text-sm tw-text-gray-400 tw-font-extrabold">
-                                            APERTURA
-                                        </div>
-                                    <div class="tw-mt-1">
-                                            <div class="tw-flex tw-space-x-2 tw-items-center">
-                                                <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
-                                                    $15000
-                                                </div>
-                                                <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-md tw-p-1">
-                                                    -4.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="">
-                                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            LABORATORIO Y BONETERIA
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            -4.5%
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="">
-                <div class="tw-flex md:tw-flex-row tw-space-x-8 tw-border-l-4 tw-border-emerald-400">
-                    <div class="tw-shadow-md tw-p-4">
-                        <div class="">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-flex tw-space-x-8 tw-w-48">
-                                    <div class="">
-                                        <div class="tw-uppercase tw-text-sm tw-text-gray-400 tw-font-extrabold">
-                                            APERTURA
-                                        </div>
-                                    <div class="tw-mt-1">
-                                            <div class="tw-flex tw-space-x-2 tw-items-center">
-                                                <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
-                                                    $15000
-                                                </div>
-                                                <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-md tw-p-1">
-                                                    -4.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="">
-                                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            SEG Y SERVICIOS GENERALES
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ 1500
+                        </div>
+                        <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            -4.5%
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="">
-                <div class="tw-flex md:tw-flex-row tw-space-x-8 tw-border-l-4 tw-border-emerald-400">
-                    <div class="tw-shadow-md tw-p-4">
-                        <div class="">
-                            <div class="tw-flex tw-flex-col">
-                                <div class="tw-flex tw-space-x-8 tw-w-48">
-                                    <div class="">
-                                        <div class="tw-uppercase tw-text-sm tw-text-gray-400 tw-font-extrabold">
-                                            APERTURA
-                                        </div>
-                                    <div class="tw-mt-1">
-                                            <div class="tw-flex tw-space-x-2 tw-items-center">
-                                                <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
-                                                    $15000
-                                                </div>
-                                                <div class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-md tw-p-1">
-                                                    -4.5%
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="">
-                                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="tw-border-t-8 tw-border-teal-500 tw-shadow-xl tw-rounded">
+                <div class="tw-p-4 tw-flex tw-gap-2 tw-align-middle">
+                    <div>
+                        <svg class="tw-h-16 tw-w-16 tw-text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="tw-flex-col">
+                        <div class="tw-text-gray-400 tw-font-extrabold">
+                            ALMACÉN MATERIA PRIMA
+                        </div>
+                        <div class="tw-text-sm tw-text-gray-600 tw-font-extrabold">
+                            $ {{ GastoApertura[0].Total }}
+                        </div>
+                        <div v-if="PerApertura <= 15" class="tw-text-xs tw-text-red-500 tw-bg-red-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                            {{ PerApertura }} %
+                        </div>
+                        <div v-else-if="PerApertura > 15 " class="tw-text-xs tw-text-emerald-500 tw-bg-emerald-200 tw-rounded-full tw-text-center tw-p-1 tw-mt-2">
+                              {{ PerApertura }} %
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
   </app-layout>
@@ -556,8 +499,10 @@ export default {
         Presupuestos: Object,
         GastoAño: Object,
         GastoMes: Object,
+        GastoApertura: Object,
         PresupuestoAño: Object,
-        GastosApertura: Object,
+        GastoApertura: Object,
+        PerApertura: Object,
     },
 
     methods: {
