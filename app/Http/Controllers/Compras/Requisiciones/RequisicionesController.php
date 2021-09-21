@@ -118,11 +118,11 @@ class RequisicionesController extends Controller{
 
 
 
-        $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 3)->count();
+        $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 3)->where('IdEmp', '=', $Session->IdEmp)->count();
 
-        $Cotizacion = ArticulosRequisiciones::where('EstatusArt', '=', 4)->count();
+        $Cotizacion = ArticulosRequisiciones::where('EstatusArt', '=', 4)->where('IdEmp', '=', $Session->IdEmp)->count();
 
-        $Autorizados = ArticulosRequisiciones::where('EstatusArt', '=', 5)->count();
+        $Autorizados = ArticulosRequisiciones::where('EstatusArt', '=', 5)->where('IdEmp', '=', $Session->IdEmp)->count();
 
         return Inertia::render('Compras/Requisiciones/index', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Departamentos', 'Maquinas', 'Almacen', 'Cotizacion', 'Autorizados', 'mes'));
     }
@@ -137,8 +137,8 @@ class RequisicionesController extends Controller{
         if(isset($ObtenJefe)){
             $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
         }else{
-            $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $request->IdEmp)->first('id','jefes_areas_id');
-            $IdJefe = $PerfilesUsuarios->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
+            $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $request->IdEmp)->first(['id','jefes_areas_id']);
+            $IdJefe = $PerfilesUsuarios->jefes_areas_id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
         }
 
         //Genracion de folio automatico
