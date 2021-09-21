@@ -273,7 +273,7 @@
                                                 <i class="fas fa-money-bill-wave"></i>
                                             </span>
                                         </div>
-                                        <div class="iconoEdit" @click="ConfirmaExistencia(datos)">
+                                        <div class="iconoEdit" @click="ProductoAlmacen(datos, 8)">
                                             <span tooltip="Confirma existencia en Almacén" flow="left">
                                                 <i class="fas fa-check-circle"></i>
                                             </span>
@@ -679,7 +679,7 @@ export default {
                     }
                 },
             });
-        }
+        },
     },
     watch: {
         params: {
