@@ -30,7 +30,7 @@
                         </div>
                     </div>
 
-                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4">
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="Filtro(5)">
                         <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-orange-500 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
                                 <div class="icon tw-w-14 tw-p-3.5 tw-bg-orange-400 tw-text-white tw-rounded-full tw-mr-3">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
 
-                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4">
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="Filtro(6)">
                         <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-cyan-600 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
                                 <div class="icon tw-w-14 tw-p-3.5 tw-bg-cyan-600 tw-text-white tw-rounded-full tw-mr-3">
@@ -185,13 +185,11 @@
             <div class="tw-flex tw-justify-between tw-px-4">
                 <div class="tw-flex tw-flex-wrap tw-content-center">
                     <select class="InputSelect" v-model="params.Estatus">
-                            <option value="">QUITA FILTRO</option>
-                            <option value="1">SIN ENVIAR</option>
-                            <option value="EN ALMACEN">EN ALMACEN</option>
-                            <option value="3">EN COTIZACION</option>
-                            <option value="2">SOLICITADO</option>
-                            <option value="EN AUTORIZACION">EN AUTORIZACION</option>
-                            <option value="ENTREGADO">ENTREGADO</option>
+                        <option value="5">SIN AUTORIZAR</option>
+                        <option value="6">AUTORIZADO</option>
+                        <option value="7">CONFIRMADOS</option>
+                        <option value="8">EN ALMACEN</option>
+                        <option value="9">ENTREGADO</option>
                     </select>
                 </div>
                 <div>
