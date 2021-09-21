@@ -19,7 +19,7 @@
                 <jet-button @click="openModal" class="BtnNuevo">Nuevo Proceso </jet-button>
             </template>
         </Accions>
-
+        <!-- datatables de los procesos -->
         <div class="table-responsive">
             <Table id="t_pro">
                 <template v-slot:TableHeader>
@@ -49,7 +49,7 @@
                         </td>
                         <td class="fila">
                             <div class="columnaIconos">
-                                <div class="iconoEdit" @click="edit(proceso)" v-show="(puesCor == 'cor' & proceso.tipo == 1) | usuario.dep_pers.length == 0">
+                                <div class="iconoEdit" @click="edit(proceso)" v-show="(puesCor == 'cor' & (proceso.tipo == 1 | proceso.tipo == 4 | proceso.tipo == 5)) | usuario.dep_pers.length == 0">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -85,7 +85,7 @@
                             <div class="tw-mb-6 md:tw-flex">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode">
                                     <jet-label><span class="required">*</span>Departamento</jet-label>
-                                    <select class="InputSelect" @change="verTabla" v-model="form.departamento_id" v-html="opc">
+                                    <select class="InputSelect" v-model="form.departamento_id" v-html="opc" :disabled="S_Area != '' ? 1 : 0">
                                     </select>
                                     <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
                                 </div>
@@ -99,9 +99,10 @@
                                     <select v-model="form.tipo" class="InputSelect">
                                         <option value="" disabled>Seleccione</option>
                                         <option value="0">Proceso principal</option>
-                                        <option value="1">Lider / Operador</option>
-                                        <option value="4" v-show="usuario.dep_pers.length == 0">Entregas</option>
-                                        <option value="2" v-show="usuario.dep_pers.length == 0">Coordinador / Encargado</option>
+                                        <option value="1">Produccion Lider / Operador</option>
+                                        <option value="5">Merma</option>
+                                        <option value="4">Entregas</option>
+                                        <option value="2" v-show="usuario.dep_pers.length == 0">Produccion Coordinador</option>
                                         <option value="3" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">Formulas</option>
                                     </select>
                                     <small v-if="errors.tipo" class="validation-alert">{{errors.tipo}}</small>
@@ -109,6 +110,17 @@
                             </div>
 
                             <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="form.tipo == 0 & form.tipo != ''">
+                                    <jet-label><span class="required">*</span>Tipo de Carga</jet-label>
+                                    <select class="InputSelect" v-model="form.tipo_carga">
+                                        <option value="">Selecciona</option>
+                                        <option value="ent">Entregas</option>
+                                        <option value="pro">Producción Lider/Operador</option>
+                                        <option value="pro-cor">Producción Coordinador/Encargado</option>
+                                        <!-- <option value="for">Formulas</option> -->
+                                    </select>
+                                    <small v-if="errors.tipo_carga" class="validation-alert">{{errors.tipo_carga}}</small>
+                                </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="form.tipo == 3">
                                     <jet-label><span class="required">*</span>Tipo de formula</jet-label>
                                     <select class="InputSelect" v-model="form.operacion">
@@ -132,7 +144,7 @@
                     </div>
                 </div>
                 <!-------------------------------- ENCARGADO Y OPERADOR --------------------------------------->
-                <div class="tw-px-4 tw-py-4" v-show="(form.tipo == 1 | form.tipo == 2)">
+                <div class="tw-px-4 tw-py-4" v-show="(form.tipo == 1 | form.tipo == 2 | form.tipo == 5)">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de máquinas para el proceso</h3>
@@ -264,8 +276,9 @@
                 puesCor: '',
                 form: {
                     nompro: null,
-                    departamento_id: '',
+                    departamento_id: this.S_Area,
                     tipo: '',
+                    tipo_carga: '',
                     operacion: '',
                     descripcion: null,
                     proceso_id: '',
@@ -317,7 +330,7 @@
                         return 'Proceso Principal';
                         break;
                     case '1':
-                        return 'Carga de encargado';
+                        return 'Carga de Operador';
                         break;
                     case '2':
                         return 'Carga de Coordinador';
@@ -328,15 +341,18 @@
                     case '4':
                         return 'Entregas';
                         break;
+                    case '5':
+                        return 'Merma';
+                        break;
                 }
             },
             princiProcesos(){
-                this.options = '<option value="" disabled>Selecciona un proceso</option>';
+                /* this.options = '<option value="" disabled>Selecciona un proceso</option>';
                 this.procesos.forEach(element => {
                     if (element.tipo == 0) {
                         this.options += `<option value="${element.id}">${element.nompro}</option>`
                     }
-                })
+                }) */
             },
             /****************************** opnciones de seect de maquinas ********************************/
             mostTipo() {
@@ -384,7 +400,7 @@
                 this.$nextTick(() => {
                     $('#t_pro').DataTable({
                         "language": this.español,
-                        "order": [6, 'asc'],
+                        "order": [1, 'desc'],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -448,8 +464,9 @@
             reset(){
                 this.form = {
                     nompro: null,
-                    departamento_id: '',
+                    departamento_id: this.S_Area,
                     tipo: '',
+                    tipo_carga: '',
                     operacion: '',
                     descripcion: null,
                     proceso_id: '',
@@ -475,13 +492,15 @@
             },
             //manda datos de la tabla al modal
             edit: function (data) {
-                //console.log(data);
+                console.log(data);
                 this.form.id = data.id;
                 this.form.departamento_id = data.departamento_id;
                 this.form.nompro = data.nompro;
                 this.form.tipo = data.tipo;
+                this.form.tipo_carga = data.tipo_carga;
                 this.form.operacion = data.operacion;
                 this.form.proceso_id = data.proceso_id;
+                this.form.descripcion = data.descripcion;
                 this.form.maquinas = [];
                 data.maq_pros.forEach(mp => {
                     this.form.maquinas.push({value: mp.maquina_id});
@@ -509,15 +528,19 @@
                 handler: function(f) {
                     //dependiendo del departamento
                     if (f.departamento_id != '') {
+                        //console.log(f)
                         //select de maquinas
                         this.opcMaq = '<option value="" disabled>Selecciona una máquina</option>';
                         this.maquinas.forEach(r => {
-                            if (r.departamento_id == f.departamento_id) {
-                                this.opcMaq += `<option value="${r.id}"> ${r.Nombre} </option>`;
+                            this.opcMaq += `<option value="${r.id}"> ${r.Nombre} - ${r.marca.Nombre} </option>`;
+                        })
+                        //select proceso principal
+                        this.options = '<option value="" disabled>Selecciona un proceso</option>';
+                        this.procesos.forEach(element => {
+                            if (element.tipo == 0) {
+                                this.options += `<option value="${element.id}">${element.nompro}</option>`;
                             }
                         })
-                    }else{
-                        this.opcMaq = '<option value="" disabled>Selecciona una máquina</option>';
                     }
                 }
             },

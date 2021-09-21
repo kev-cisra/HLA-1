@@ -12,7 +12,6 @@ use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
@@ -48,7 +47,6 @@ class CargaController extends Controller
         $procesos = [];
         $personal = [];
         $mate = [];
-        $carga = [];
         $hoy = date('Y-m-d');
         $dia = date("Y-m-d",strtotime($hoy."- 1 days")).' 19:00:00';
         $mañana = date("Y-m-d",strtotime($hoy."+ 1 days")).' 07:00:00';
@@ -235,7 +233,7 @@ class CargaController extends Controller
             ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id']);
 
         }
-        return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate, 'cargas' => $carga]);
+        return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate]);
 
     }
 

@@ -16,7 +16,7 @@ class CreateParosTable extends Migration
         Schema::create('paros', function (Blueprint $table) {
             $table->id();
 
-            $table->string('clave');
+            $table->string('clave')->unique();
             $table->string('descri')->nullable();
             $table->enum('tipo', [1,2,3,4,5,6])->nullable();
 

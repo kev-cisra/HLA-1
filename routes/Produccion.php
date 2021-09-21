@@ -8,9 +8,11 @@ use App\Http\Controllers\Produccion\EquiposController;
 use App\Http\Controllers\Produccion\MaquinasController;
 use App\Http\Controllers\Produccion\MaterialesController;
 use App\Http\Controllers\Produccion\notascargaController;
+use App\Http\Controllers\Produccion\ParosController;
 use App\Http\Controllers\Produccion\PersonalController;
 use App\Http\Controllers\Produccion\ProcesosController;
 use App\Http\Controllers\Produccion\TurnosController;
+use App\Models\Produccion\parosCarga;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -54,4 +56,5 @@ Route::resource('Carga', CargaController::class)
 Route::resource('Nota', notascargaController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
-
+Route::resource('Paros', ParosController::class)
+    ->middleware(['auth:sanctum', 'verified']);

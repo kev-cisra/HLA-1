@@ -20,6 +20,10 @@ class Maquinas extends Model
         return $this->hasMany(maq_pro::class);
     }
 
+    public function marca(){
+        return $this->hasOne(MarcasMaquinas::class, 'maquinas_id');
+    }
+
     //relaciones uno a muchos inversa
     public function departamentos(){
         return $this->belongsTo(Departamentos::class, 'departamento_id');

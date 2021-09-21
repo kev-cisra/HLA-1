@@ -15,7 +15,6 @@
             </template>
             <template v-slot:BtnNuevo>
                 <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar datos</jet-button>
-                <!-- <jet-button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Agregar Reporte</jet-button> -->
             </template>
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
@@ -152,85 +151,8 @@
             </Table>
         </div>
         <pre>
-            {{cargas}}
+            {{depa}}
         </pre>
-        <!--------------------------------------- Carga de reportes y datatable ------------------------------------------->
-        <!-- <div class="offcanvas offcanvas-bottom tw-h-5/6" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasBottomLabel">Reportes</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <div class="tw-p-6 tw-bg-blue-300 tw-rounded-3xl">
-                    <div class="tw-mb-6 md:tw-flex">
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>Departamento </jet-label>
-                            <select class="InputSelect" v-model="form.departamento_id" v-html="opc"></select>
-                            <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>Material </jet-label>
-                            <jet-input type="text" list="per" v-model="form.material_id"></jet-input>
-                            <small v-if="errors.material_id" class="validation-alert">{{errors.material_id}}</small>
-                            <datalist id="per">
-                                <option v-for="material in materiales" :key="material" :value="material.id">{{ material.idmat }} - {{ material.nommat }}</option>
-                            </datalist>
-                        </div>
-                    </div>
-                    <div class="w-100 tw-mx-auto" align="center">
-                        <jet-button type="button" class="tw-mx-auto" @click="saveDM(form)">Guardar</jet-button>
-                    </div>
-                </div>
-                <table id="t_rep" >
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Age</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Shad Decker</td>
-                            <td>Regional Director</td>
-                            <td>Edinburgh</td>
-                            <td>51</td>
-                            <td>2008/11/13</td>
-                            <td>$183,000</td>
-                        </tr>
-                        <tr>
-                            <td>Michael Bruce</td>
-                            <td>Javascript Developer</td>
-                            <td>Singapore</td>
-                            <td>29</td>
-                            <td>2011/06/27</td>
-                            <td>$183,000</td>
-                        </tr>
-                        <tr>
-                            <td>Donna Snider</td>
-                            <td>Customer Support</td>
-                            <td>New York</td>
-                            <td>27</td>
-                            <td>2011/01/25</td>
-                            <td>$112,000</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Age</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div> -->
     </app-layout>
 </template>
 
@@ -316,7 +238,6 @@
             this.global();
             this.selePP();
             this.tabla();
-            this.tablaRep();
             this.reCarga();
         },
         methods: {
@@ -372,9 +293,29 @@
                     //select de procesos principales
                     this.opcPP= '<option value="" >SELECCIONA</option>'
                     this.procesos.forEach(pp =>{
-                        if (pp.tipo == 0) {
-                            this.opcPP += `<option value="${pp.id}">${pp.nompro}</option>`
+                        switch (this.noCor) {
+                            case 'cor':
+                                if (pp.tipo == 0 & pp.tipo_carga == 'pro-cor') {
+                                    this.opcPP += `<option value="${pp.id}">${pp.nompro}</option>`
+                                }
+                                break;
+                            case 'enc':
+                                if (pp.tipo == 0 & (pp.tipo_carga == 'pro-cor' | pp.tipo_carga == 'pro')) {
+                                    this.opcPP += `<option value="${pp.id}">${pp.nompro}</option>`
+                                }
+                                break;
+                            case '':
+                                if (pp.tipo == 0 & (pp.tipo_carga == 'pro-cor' | pp.tipo_carga == 'pro')) {
+                                    this.opcPP += `<option value="${pp.id}">${pp.nompro}</option>`
+                                }
+                                break;
+                            default:
+                                if (pp.tipo == 0 & pp.tipo_carga == 'pro') {
+                                    this.opcPP += `<option value="${pp.id}">${pp.nompro}</option>`
+                                }
+                                break;
                         }
+
                     })
                     //select de personal
                     this.opcPE= '<option value="" >SELECCIONA</option>';
@@ -436,20 +377,6 @@
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
                     })
-                })
-            },
-            //datatable de paros
-            tablaRep() {
-                this.$nextTick(() => {
-                    $('#t_rep').DataTable({
-                        "language": this.español,
-                        "scrollY":        "30vh",
-                        "scrollCollapse": true,
-                        "paging":         false,
-                        "dom": '<"row"<"col-sm-12"f>>'+
-                                "<'row'<'col-sm-12'tr>>",
-                    });
-
                 })
             },
             /****************************** carga de carga de datos ******************************************/
@@ -556,15 +483,6 @@
                 }
                 this.opcSP= '<option value="" >SELECCIONA</option>';
                 if (this.usuario.dep_pers.length != 0) {
-                    /* para encargado
-                    this.procesos.forEach(sp =>{
-                        if ((this.noCor == 'lid' | this.noCor == 'ope') & (sp.tipo == 1 & sp.proceso_id == v) | this.editMode ) {
-                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
-                        }
-                        if ((this.noCor == 'cor' | this.noCor == 'enc') & (sp.tipo == 2 & sp.proceso_id == v) | this.editMode) {
-                            this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
-                        }
-                    }) */
                     //recorre y muestra los procesos
                     this.procesos.forEach(sp =>{
                         if ((this.noCor == 'lid' | this.noCor == 'ope') & (sp.tipo == 1 & sp.proceso_id == v) | this.editMode ) {

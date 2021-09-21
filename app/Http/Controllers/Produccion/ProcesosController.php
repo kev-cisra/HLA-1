@@ -34,6 +34,7 @@ class ProcesosController extends Controller
         //return count($perf->dep_pers);
         $depa = [];
         $proce = [];
+        $maq = [];
         //condicion para usuarios $perf->Departamento_id == 2 && $perf->Puesto_id != 16
         /*************** Información para mostrar áreas *************************/
         if(count($perf->dep_pers) != 0){
@@ -65,7 +66,14 @@ class ProcesosController extends Controller
                 }
                 ])
             ->get();
-
+            /**************************** Consulta si existe maquinas *****************************************************/
+            $maq = Maquinas::where('departamento_id', '=', $prime->departamentos->id)
+                ->with([
+                    'marca'=> function($maq){
+                        $maq->select('id', 'Nombre', 'maquinas_id');
+                    }
+                ])
+                ->get(['id', 'Nombre', 'departamento_id']);
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')
@@ -90,10 +98,15 @@ class ProcesosController extends Controller
                 }
                 ])
             ->get();
+            /**************************** Consulta si existe maquinas *****************************************************/
+            $maq = Maquinas::where('departamento_id', '=', $request->busca)
+                ->with([
+                    'marca'=> function($maq){
+                        $maq->select('id', 'Nombre', 'maquinas_id');
+                    }
+                ])
+                ->get(['id', 'Nombre', 'departamento_id']);
         }
-
-        /**************************** Consulta si existe maquinas *****************************************************/
-        $maq = Maquinas::get();
 
 
         return Inertia::render('Produccion/Procesos', ['usuario' => $perf,'procesos' => $proce,'depa' => $depa, 'maquinas' => $maq]);
@@ -137,8 +150,8 @@ class ProcesosController extends Controller
         //CARGA DE PROCESOS
         $proceso = procesos::create($request->all());
 
-        //CARGA DEPENDIENDO DEL TURNO
-        if ($request->tipo == 1 || $request->tipo == 2) {
+        //CARGA DEPENDIENDO DEL TIPO
+        if ($request->tipo == 1 || $request->tipo == 2 || $request->tipo == 5) {
             foreach ($request->maquinas as $value) {
                 if ($value['value'] != null) {
                     maq_pro::create([
@@ -210,7 +223,7 @@ class ProcesosController extends Controller
                     ->with('message', 'Post Updated Successfully.'); */
         }
 
-        if ($request->tipo == 1 || $request->tipo == 2) {
+        if ($request->tipo == 1 || $request->tipo == 2 || $request->tipo == 5) {
             //recorrido de la base de datos
             $mpS = maq_pro::where('proceso_id', '=', $request->id)
                 ->withTrashed()
