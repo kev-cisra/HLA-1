@@ -18,6 +18,19 @@ use Illuminate\Support\Facades\DB;
 
 class RequisicionesController extends Controller{
 
+    // ***************** NOTAS DE ESTATUS **********************
+/*     ************************************************
+            1 => MATERIAL SOLICITADO
+            2 => SOLICITADO
+            3 => EN COTIZACION
+            4 => COTIZADO
+            5 => EN AUTORIZACION
+            6 => AUTORIZADO
+            7 => CONFIRMADO COMPRAS
+            8 => EN ALMACEN
+            9 => ENTREGADO
+    ************************************************* */
+
     public function index(Request $request){
 
         $hoy = Carbon::now();
@@ -116,15 +129,25 @@ class RequisicionesController extends Controller{
 
         }
 
+        $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 8)->where('IdEmp', '=', $Session->IdEmp)->count();
 
+        $Cotizacion = ArticulosRequisiciones::whereBetween('EstatusArt', [3, 4])->where('IdEmp', '=', $Session->IdEmp)->count();
 
-        $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 3)->count();
+        $Autorizados = ArticulosRequisiciones::where('EstatusArt', '=', 6)->where('IdEmp', '=', $Session->IdEmp)->count();
 
-        $Cotizacion = ArticulosRequisiciones::where('EstatusArt', '=', 4)->count();
+        $Confirmado = ArticulosRequisiciones::where('EstatusArt', '=', 7)->where('IdEmp', '=', $Session->IdEmp)->count();
 
-        $Autorizados = ArticulosRequisiciones::where('EstatusArt', '=', 5)->count();
-
-        return Inertia::render('Compras/Requisiciones/index', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Departamentos', 'Maquinas', 'Almacen', 'Cotizacion', 'Autorizados', 'mes'));
+        return Inertia::render('Compras/Requisiciones/index',
+            compact('Session',
+            'PerfilesUsuarios',
+            'ArticuloRequisicion',
+            'Departamentos',
+            'Maquinas',
+            'Almacen',
+            'Cotizacion',
+            'Autorizados',
+            'Confirmado',
+            'mes'));
     }
 
     public function store(RequisicionesRequest $request){
@@ -135,10 +158,10 @@ class RequisicionesController extends Controller{
         //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
         $ObtenJefe = JefesArea::where('IdEmp', '=', $request->IdEmp)->first('id','IdEmp');
         if(isset($ObtenJefe)){
-            $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
+            $IdJefe = $ObtenJefe->id; //Obtengo el Id del Jefe logueado
         }else{
-            $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $request->IdEmp)->first('id','jefes_areas_id');
-            $IdJefe = $PerfilesUsuarios->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
+            $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $request->IdEmp)->first(['id','jefes_areas_id']);
+            $IdJefe = $PerfilesUsuarios->jefes_areas_id; //Obtengo el Id de Jefe que corresponde a la session del empleado
         }
 
         //Genracion de folio automatico

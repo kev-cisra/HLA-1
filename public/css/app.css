@@ -17701,14 +17701,14 @@ samp {
  *    CSS Remedy, with `svg` added as well.
  *
  *    https://github.com/mozdevs/cssremedy/issues/14
- * 
+ *
  * 2. Add `vertical-align: middle` to align replaced elements more
  *    sensibly by default when overriding `display` by adding a
  *    utility like `inline`.
  *
  *    This can trigger a poorly considered linting error in some
  *    tools but is included by design.
- * 
+ *
  *    https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210
  */
 
@@ -17756,7 +17756,7 @@ video {
 	--tw-transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.tw-border, .tw-border-2, .tw-border-t-4, .tw-border-l, .tw-border-t, .tw-border-r, .tw-border-b-2, .tw-border-l-4, .tw-border-b-4, .tw-border-b, .tw-border-t-2, .tw-border-l-8, .paginate, .btn-row, .btn-filter, .btn-form, .BtnCancel, .input-search, .InputSelect, .InputSelectFilter, .textarea, .InputSearch, .DetailsHeader, .SectionInfo, .DataContainer, .Enero, .EneroActivo, .Febrero, .FebreroActivo, .Marzo, .MarzoActivo, .Abril, .AbrilActivo, .Mayo, .MayoActivo, .Junio, .JunioActivo, .Julio, .JulioActivo, .Agosto, .AgostoActivo, .Septiembre, .SeptiembreActivo, .Octubre, .OctubreActivo, .Noviembre, .NoviembreActivo, .Diciembre, .DiciembreActivo {
+.tw-border, .tw-border-2, .tw-border-t-4, .tw-border-l, .tw-border-t, .tw-border-r, .tw-border-b-2, .tw-border-l-4, .tw-border-b-4, .tw-border-b, .tw-border-t-2, .tw-border-t-8, .paginate, .btn-row, .btn-filter, .btn-form, .BtnCancel, .input-search, .InputSelect, .InputSelectFilter, .textarea, .InputSearch, .DetailsHeader, .SectionInfo, .DataContainer, .Enero, .EneroActivo, .Febrero, .FebreroActivo, .Marzo, .MarzoActivo, .Abril, .AbrilActivo, .Mayo, .MayoActivo, .Junio, .JunioActivo, .Julio, .JulioActivo, .Agosto, .AgostoActivo, .Septiembre, .SeptiembreActivo, .Octubre, .OctubreActivo, .Noviembre, .NoviembreActivo, .Diciembre, .DiciembreActivo {
 	--tw-border-opacity: 1;
 	border-color: rgba(229, 231, 235, var(--tw-border-opacity));
 }
@@ -18691,11 +18691,6 @@ select {
 	margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
 	margin-bottom: calc(2rem * var(--tw-space-y-reverse));
 }
-.tw-space-x-2 > :not([hidden]) ~ :not([hidden]) {
-	--tw-space-x-reverse: 0;
-	margin-right: calc(0.5rem * var(--tw-space-x-reverse));
-	margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
-}
 .tw-divide-y > :not([hidden]) ~ :not([hidden]) {
 	--tw-divide-y-reverse: 0;
 	border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
@@ -18747,9 +18742,6 @@ select {
 .tw-rounded-3xl {
 	border-radius: 1.5rem;
 }
-.tw-rounded-xl {
-	border-radius: 0.75rem;
-}
 .tw-rounded-b {
 	border-bottom-right-radius: 0.25rem;
 	border-bottom-left-radius: 0.25rem;
@@ -18791,8 +18783,8 @@ select {
 .tw-border-t-2 {
 	border-top-width: 2px;
 }
-.tw-border-l-8 {
-	border-left-width: 8px;
+.tw-border-t-8 {
+	border-top-width: 8px;
 }
 .tw-border-gray-300 {
 	--tw-border-opacity: 1;
@@ -18829,9 +18821,29 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(74, 222, 128, var(--tw-border-opacity));
 }
+.tw-border-orange-600 {
+	--tw-border-opacity: 1;
+	border-color: rgba(234, 88, 12, var(--tw-border-opacity));
+}
+.tw-border-green-600 {
+	--tw-border-opacity: 1;
+	border-color: rgba(22, 163, 74, var(--tw-border-opacity));
+}
+.tw-border-emerald-600 {
+	--tw-border-opacity: 1;
+	border-color: rgba(5, 150, 105, var(--tw-border-opacity));
+}
+.tw-border-cyan-600 {
+	--tw-border-opacity: 1;
+	border-color: rgba(8, 145, 178, var(--tw-border-opacity));
+}
 .tw-border-teal-200 {
 	--tw-border-opacity: 1;
 	border-color: rgba(153, 246, 228, var(--tw-border-opacity));
+}
+.tw-border-fuchsia-600 {
+	--tw-border-opacity: 1;
+	border-color: rgba(192, 38, 211, var(--tw-border-opacity));
 }
 .tw-border-teal-500 {
 	--tw-border-opacity: 1;
@@ -18844,6 +18856,10 @@ select {
 .tw-border-cyan-400 {
 	--tw-border-opacity: 1;
 	border-color: rgba(34, 211, 238, var(--tw-border-opacity));
+}
+.tw-border-orange-500 {
+	--tw-border-opacity: 1;
+	border-color: rgba(249, 115, 22, var(--tw-border-opacity));
 }
 .tw-bg-gray-200 {
 	--tw-bg-opacity: 1;
@@ -18961,14 +18977,6 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(74, 222, 128, var(--tw-bg-opacity));
 }
-.tw-bg-indigo-400 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(129, 140, 248, var(--tw-bg-opacity));
-}
-.tw-bg-violet-400 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(167, 139, 250, var(--tw-bg-opacity));
-}
 .tw-bg-indigo-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(99, 102, 241, var(--tw-bg-opacity));
@@ -18976,6 +18984,10 @@ select {
 .tw-bg-orange-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(234, 88, 12, var(--tw-bg-opacity));
+}
+.tw-bg-violet-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(167, 139, 250, var(--tw-bg-opacity));
 }
 .tw-bg-fuchsia-600 {
 	--tw-bg-opacity: 1;
@@ -18988,6 +19000,10 @@ select {
 .tw-bg-cyan-100 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(207, 250, 254, var(--tw-bg-opacity));
+}
+.tw-bg-indigo-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(129, 140, 248, var(--tw-bg-opacity));
 }
 .tw-bg-gray-400 {
 	--tw-bg-opacity: 1;
@@ -19009,13 +19025,13 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(254, 202, 202, var(--tw-bg-opacity));
 }
-.tw-bg-red-500 {
+.tw-bg-emerald-200 {
 	--tw-bg-opacity: 1;
-	background-color: rgba(239, 68, 68, var(--tw-bg-opacity));
+	background-color: rgba(167, 243, 208, var(--tw-bg-opacity));
 }
-.tw-bg-red-300 {
+.tw-bg-orange-400 {
 	--tw-bg-opacity: 1;
-	background-color: rgba(252, 165, 165, var(--tw-bg-opacity));
+	background-color: rgba(251, 146, 60, var(--tw-bg-opacity));
 }
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
@@ -19297,6 +19313,10 @@ select {
 .tw-text-gray-300 {
 	--tw-text-opacity: 1;
 	color: rgba(209, 213, 219, var(--tw-text-opacity));
+}
+.tw-text-emerald-500 {
+	--tw-text-opacity: 1;
+	color: rgba(16, 185, 129, var(--tw-text-opacity));
 }
 .tw-underline {
 	text-decoration: underline;
@@ -21239,10 +21259,6 @@ select {
 
 	.md\:tw-grid-cols-2 {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
-
-	.md\:tw-flex-row {
-		flex-direction: row;
 	}
 
 	.md\:tw-gap-6 {

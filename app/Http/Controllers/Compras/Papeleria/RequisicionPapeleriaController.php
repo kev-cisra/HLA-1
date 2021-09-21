@@ -20,7 +20,7 @@ class RequisicionPapeleriaController extends Controller{
         $Session = auth()->user();
         $IdEmp = $Session->id;
 
-        $Material = MaterialPapeleria::orderBy('Nombre', 'asc')->get(['id','Nombre']);
+        $Material = MaterialPapeleria::all();
         $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
 
         $Papeleria = ArticulosPapeleriaRequisicion::with([

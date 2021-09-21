@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\DB;
+use SebastianBergmann\CodeCoverage\Report\Xml\Totals;
 
 class GastosRequisiciones extends Controller{
 
@@ -16,7 +18,11 @@ class GastosRequisiciones extends Controller{
         $date = Carbon::now();
         $año = $date->format('Y');
         $mes = $date->format('m');
-        $mesLetra = $date->format('M');
+
+        setlocale(LC_ALL, 'spanish');
+        $monthNum  = $mes;
+        $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+        $mesLetra = strtoupper(strftime('%B', $dateObj->getTimestamp()));
 
         $Session = auth()->user();
         $Departamentos = Departamentos::get();
@@ -35,7 +41,7 @@ class GastosRequisiciones extends Controller{
         SELECT SUM(Presupuesto) AS Total FROM presupuestos
         WHERE YEAR(`created_at`) = ".$año.""));
 
-        $GastosApertura = (DB::select("
+        $GastoApertura = (DB::select("
         SELECT SUM(P.Precio) AS Total FROM precios_cotizaciones AS P
         JOIN requisiciones AS R ON R.id = P.requisiciones_id
         WHERE MONTH(P.created_at) = '".$mes."'AND P.Autorizado = 2 AND R.Departamento_id = 7"));
@@ -46,14 +52,17 @@ class GastosRequisiciones extends Controller{
         AND Mes = '".$mesLetra."'
         AND `Departamento_id` = 7"));
 
+        $DifApertura = $PresupuestoApertura[0]->Total - $GastoApertura[0]->Total;
+        $PerApertura= ($DifApertura/$PresupuestoApertura[0]->Total)*100;
+
 
         return Inertia::render('Supply/Presupuestos/GastosRequisiciones', compact(
             'Session', 'Departamentos',
             'GastoAño',
             'GastoMes',
             'PresupuestoAño',
-            'GastosApertura',
-            'PresupuestoApertura'
+            'GastoApertura',
+            'PerApertura',
         ));
     }
 

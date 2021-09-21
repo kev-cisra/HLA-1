@@ -26,12 +26,12 @@ class PresupuestosRequisicionesController extends Controller
             $Presupuestos = Presupuesto::with('PresupuestoDepartamento')
             ->orderBy('Departamento_id', 'asc')
             ->orderBy('Mes', 'asc')
-            ->where('Anio', '=', $año)->get();
+            ->where('Año', '=', $año)->get();
         }else{
             $Presupuestos = Presupuesto::with('PresupuestoDepartamento')
             ->orderBy('Departamento_id', 'asc')
             ->orderBy('Mes', 'asc')
-            ->where('Anio', '=', $año)
+            ->where('Año', '=', $año)
             ->where('Departamento_id', '=', $request->dpto)->get();
         }
 
@@ -53,7 +53,7 @@ class PresupuestosRequisicionesController extends Controller
         // return $request;
 
         $ValidadMes = Presupuesto::where('Departamento_id', '=', $request->Departamento_id)
-        ->where('Anio', '=', $año)
+        ->where('Año', '=', $año)
         ->where('Mes', '=', $request->Mes)
         ->get();
 
@@ -61,7 +61,7 @@ class PresupuestosRequisicionesController extends Controller
             Presupuesto::create([
                 'IdUser' => $request->IdUser,
                 'Departamento_id'  => $request->Departamento_id,
-                'Anio' => $año,
+                'Año' => $año,
                 'Mes'  => $request->Mes,
                 'Presupuesto'  => $request->Presupuesto,
             ]);
