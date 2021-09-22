@@ -1,9 +1,14 @@
 <template>
     <app-layout>
         <div>
-            <Header>
-                <slot>Usuarios del Sistema</slot>
-            </Header>
+        <Header :class="[color, style]">
+            <slot>
+                <h3 class="tw-p-2">
+                    <i class="fas fa-calendar-check tw-ml-3 tw-mr-3"></i>
+                    USUARIOS DEL SISTEMA
+                </h3>
+            </slot>
+        </Header>
 
             <Accions>
                 <template v-slot:paginate>
@@ -33,6 +38,7 @@
 
             </Accions>
 
+        <div class="tw-mx-8">
             <TableGreen>
                 <template v-slot:TableHeader>
                     <th class="columna" @click="sort('id')">Id
@@ -78,6 +84,7 @@
             </TableGreen>
             <pagination class="tw-mt-6 tw-ml-4" :links="users.links" />
         </div>
+        </div>
     </app-layout>
 </template>
 
@@ -108,6 +115,8 @@
         },
         data(){
             return{
+                color: "tw-bg-green-600",
+                style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 params:{
                     search: this.filters.search,
                     column: 'id',
