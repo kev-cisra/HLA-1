@@ -52,7 +52,7 @@ class MarcasMaquinasSeeder extends Seeder
 
         MarcasMaquinas::create([
             'IdUser' => '1',
-            'Nombre' => 'MARGASA',
+            'Nombre' => 'SIN MARCA',
             'maquinas_id' => '7',
         ]);
 
@@ -70,19 +70,19 @@ class MarcasMaquinasSeeder extends Seeder
 
         MarcasMaquinas::create([
             'IdUser' => '1',
-            'Nombre' => 'SIN MARCA',
+            'Nombre' => 'ROSIQUE',
             'maquinas_id' => '10',
         ]);
 
         MarcasMaquinas::create([
             'IdUser' => '1',
-            'Nombre' => 'ROSIQUE',
+            'Nombre' => 'CLARK',
             'maquinas_id' => '11',
         ]);
 
         MarcasMaquinas::create([
             'IdUser' => '1',
-            'Nombre' => 'CLARK',
+            'Nombre' => 'INGERSOLL RAND',
             'maquinas_id' => '12',
         ]);
 
@@ -94,13 +94,13 @@ class MarcasMaquinasSeeder extends Seeder
 
         MarcasMaquinas::create([
             'IdUser' => '1',
-            'Nombre' => 'INGERSOLL RAND',
+            'Nombre' => 'SIN MARCA',
             'maquinas_id' => '14',
         ]);
 
         MarcasMaquinas::create([
             'IdUser' => '1',
-            'Nombre' => 'SIN MARCA',
+            'Nombre' => 'APERTURA',
             'maquinas_id' => '15',
         ]);
 
@@ -112,14 +112,8 @@ class MarcasMaquinasSeeder extends Seeder
 
         MarcasMaquinas::create([
             'IdUser' => '1',
-            'Nombre' => 'APERTURA',
-            'maquinas_id' => '17',
-        ]);
-
-        MarcasMaquinas::create([
-            'IdUser' => '1',
             'Nombre' => 'OMT',
-            'maquinas_id' => '18',
+            'maquinas_id' => '17',
         ]);
     }
 }

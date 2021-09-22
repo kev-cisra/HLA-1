@@ -225,6 +225,7 @@
                         <th class="columna">CANTIDAD</th>
                         <th class="columna">UNIDAD</th>
                         <th class="columna">DESCRIPCIÓN</th>
+                        <th class="columna"># PARTE</th>
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
                         <th class="columna">FECHA LLEGADA</th>
@@ -241,6 +242,7 @@
                             <td class="tw-p-2">{{ datos.Cantidad }}</td>
                             <td class="tw-p-2">{{ datos.Unidad }}</td>
                             <td class="tw-p-2">{{ datos.Descripcion }}</td>
+                            <td class="tw-p-2">{{ datos.NumParte }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
                             <td class="tw-p-2">{{ datos.Fechallegada }}</td>
@@ -346,7 +348,7 @@
                                             </div>
                                             <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">RECIBIÓ</p>
-                                                <p class="tw-font-semibold">{{datos.RecibidoPor}}</p>
+                                                <p class="tw-font-semibold">{{datos.articulo_user.name}}</p>
                                             </div>
                                             <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">COMENTARIOS</p>
@@ -469,12 +471,17 @@
                                 </select>
                                 <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
                             </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-6/12 md:tw-mb-0">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                <jet-label>NÚM PARTE</jet-label>
+                                <jet-input type="text" v-model="form.NumParte" @input="(val) => (form.NumParte = form.NumParte.toUpperCase())"></jet-input>
+                                <small v-if="errors.NumParte" class="validation-alert">{{errors.NumParte}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-5/12 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>DESCRIPCIÓN</jet-label>
                                 <jet-input type="text" v-model="form.Descripcion" @input="(val) => (form.Descripcion = form.Descripcion.toUpperCase())"></jet-input>
                                 <small v-if="errors.Descripcion" class="validation-alert">{{errors.Descripcion}}</small>
                             </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/12 md:tw-mb-0">
                                 <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
                             </div>
                         </div>
@@ -664,6 +671,7 @@ export default {
                     Cantidad: null,
                     Unidad: null,
                     Descripcion: null,
+                    NumParte: null,
                     }],
                 Observaciones: null,
             },
@@ -733,6 +741,7 @@ export default {
                     Cantidad: null,
                     Unidad: null,
                     Descripcion: null,
+                    NumParte: null,
                     }],
                 Observaciones: null,
             };
@@ -853,7 +862,6 @@ export default {
         },
 
         deleteRow: function (data) {
-
         },
     },
     watch: {

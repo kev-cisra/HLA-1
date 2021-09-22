@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+    <app-layout>
     <div class="uppercase tw-mx-4">
         <Header :class="[color, style]">
             <slot>
@@ -329,7 +329,6 @@
     </div>
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
-
         <form>
             <div class="tw-px-4 tw-py-4">
                 <div class="tw-text-lg">
@@ -358,8 +357,8 @@
                                 <td class="tw-p-2">{{ datos.precios_articulo.Descripcion }}</td>
                                 <td class="tw-p-2">{{ datos.Precio }}</td>
                                 <td class="tw-p-2">{{ datos.Total }}</td>
-                                <td class="tw-p-2">{{ datos.Autorizado }}</td>
-                                <td class="tw-p-2">{{ datos.Autorizado }}</td>
+                                <td class="tw-p-2">{{ datos.Marca }}</td>
+                                <td class="tw-p-2">{{ datos.Comentarios }}</td>
                                 <td class="fila">
                                     <div class="columnaIconos" v-if="datos.Autorizado == 0">
                                         <div class="iconoCyan" @click="Autoriza(datos)">

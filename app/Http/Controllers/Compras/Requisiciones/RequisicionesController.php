@@ -10,6 +10,7 @@ use App\Models\Compras\Requisiciones\Requisiciones;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use App\Models\Supply\Requisiciones\TiemposRequisiciones;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,7 +19,6 @@ use Illuminate\Support\Facades\DB;
 
 class RequisicionesController extends Controller{
 
-    // ***************** NOTAS DE ESTATUS **********************
 /*     ************************************************
             1 => MATERIAL SOLICITADO
             2 => SOLICITADO
@@ -71,6 +71,9 @@ class RequisicionesController extends Controller{
                         'Marca_id', 'TipCompra',
                         'Observaciones', 'Perfil_id');
                 },
+                'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
+                    $perfil->select('id', 'name');
+                },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
                 },
@@ -90,7 +93,7 @@ class RequisicionesController extends Controller{
             ->where('IdEmp', '=', $Session->IdEmp)
             ->orderBy('EstatusArt', 'asc')
             ->whereMonth('Fecha', $mes)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
         }else{
 
@@ -105,6 +108,9 @@ class RequisicionesController extends Controller{
                         'Codigo', 'Maquina_id',
                         'Marca_id', 'TipCompra',
                         'Observaciones', 'Perfil_id');
+                },
+                'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
+                    $perfil->select('id', 'name');
                 },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
@@ -125,7 +131,7 @@ class RequisicionesController extends Controller{
             ->where('IdEmp', '=', $Session->IdEmp)
             ->orderBy('EstatusArt', 'asc')
             ->where('EstatusArt', $request->Estatus)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
         }
 
@@ -151,6 +157,8 @@ class RequisicionesController extends Controller{
     }
 
     public function store(RequisicionesRequest $request){
+
+        $hoy = Carbon::now();
 
         $Session = auth()->user();
         $SessionIdEmp = $Session->IdEmp;
@@ -201,9 +209,19 @@ class RequisicionesController extends Controller{
                 'Fecha' => $request->Fecha,
                 'Cantidad' => $value['Cantidad'],
                 'Unidad' => $value['Unidad'],
+                'NumParte' => $value['NumParte'],
                 'Descripcion' => $value['Descripcion'],
                 'EstatusArt' => 1,
                 'requisicion_id' => $RequicisionId,
+            ]);
+
+            $ArticulosId = $Articulos->id;
+
+            $TiempoReq = TiemposRequisiciones::create([
+                'IdUser' => $Session->id,
+                'IdEmp' => $Session->IdEmp,
+                'requisicion_id' => $RequicisionId,
+                'articulo_requisicion_id' => $ArticulosId,
             ]);
         }
 
@@ -212,7 +230,10 @@ class RequisicionesController extends Controller{
 
     public function update(Request $request, $id){
 
+        $hoy = Carbon::now();
+
         switch($request->metodo){
+
             case 1:
 
                 Validator::make($request->all(), [
@@ -256,12 +277,17 @@ class RequisicionesController extends Controller{
 
                 break;
 
+
             case 2:
 
                 $ReqId = ArticulosRequisiciones::where('id', '=', $request->id)->first('requisicion_id');
 
                 ArticulosRequisiciones::where('requisicion_id', '=', $ReqId->requisicion_id)->update([
                     'EstatusArt' => 2,
+                ]);
+
+                TiemposRequisiciones::where('requisicion_id', '=', $ReqId->requisicion_id)->update([
+                    'Solicitado' => $hoy,
                 ]);
 
                 return redirect()->back();

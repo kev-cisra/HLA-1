@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+    <app-layout>
     <div class="uppercase tw-mx-4">
         <Header :class="[color, style]">
             <slot>
@@ -221,6 +221,7 @@
                         <th class="columna">CANTIDAD</th>
                         <th class="columna">UNIDAD</th>
                         <th class="columna">DESCRIPCIÓN</th>
+                        <th class="columna"># PARTE</th>
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
                         <th class="columna">F. LLEGADA</th>
@@ -238,6 +239,7 @@
                             <td class="tw-p-2">{{ datos.Cantidad }}</td>
                             <td class="tw-p-2">{{ datos.Unidad }}</td>
                             <td class="tw-p-2">{{ datos.Descripcion }}</td>
+                            <td class="tw-p-2">{{ datos.NumParte }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
                             <td class="tw-p-2">{{ datos.Fechallegada }}</td>
@@ -378,6 +380,10 @@
                                             <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">SOLICITANTE: </p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.requisiciones_perfil.Nombre}} {{datos.articulos_requisicion.requisiciones_perfil.ApPat}} {{datos.articulos_requisicion.requisiciones_perfil.ApMat}}</p>
+                                            </div>
+                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                                <p class="tw-text-gray-600">RECIBIÓ</p>
+                                                <p class="tw-font-semibold">{{datos.articulo_user.name}}</p>
                                             </div>
                                             <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">OBSERVACIONES</p>

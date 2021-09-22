@@ -18340,6 +18340,10 @@ select {
 	margin-left: 14rem;
 	margin-right: 14rem;
 }
+.tw-mx-8 {
+	margin-left: 2rem;
+	margin-right: 2rem;
+}
 .tw-mt-5 {
 	margin-top: 1.25rem;
 }
@@ -21280,6 +21284,18 @@ select {
 
 	.md\:tw-w-2\/4 {
 		width: 50%;
+	}
+
+	.md\:tw-w-4\/12 {
+		width: 33.333333%;
+	}
+
+	.md\:tw-w-5\/12 {
+		width: 41.666667%;
+	}
+
+	.md\:tw-w-1\/12 {
+		width: 8.333333%;
 	}
 
 	.md\:tw-grid-cols-3 {

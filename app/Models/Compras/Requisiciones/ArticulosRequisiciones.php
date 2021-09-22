@@ -2,6 +2,7 @@
 
 namespace App\Models\Compras\Requisiciones;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
@@ -20,5 +21,10 @@ class ArticulosRequisiciones extends Model
     //relacion muchos a uno
     public function ArticuloPrecios() {
         return $this->hasMany(PreciosCotizaciones::class, 'articulos_requisiciones_id');
+    }
+
+    //relacion uno a uno
+    public function ArticuloUser() {
+        return $this->belongsTo(User::class, 'RecibidoPor');
     }
 }

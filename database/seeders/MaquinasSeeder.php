@@ -51,13 +51,6 @@ class MaquinasSeeder extends Seeder
 
         Maquinas::create([
             'IdUser' => '1',
-            'Nombre' => 'ROMPEDORA 2',
-            'Departamento' => 'APERTURA',
-            'departamento_id' => '7'
-        ]);
-
-        Maquinas::create([
-            'IdUser' => '1',
             'Nombre' => 'CORTADORA 2',
             'Departamento' => 'APERTURA',
             'departamento_id' => '7'

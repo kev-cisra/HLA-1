@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\Administrador\ModuloController;
+use App\Http\Controllers\Administrador\Roles\RolesUsuariosController;
 use App\Http\Controllers\Administrador\Usuarios\UsersController;
 use App\Http\Controllers\Menus\MenuAdminController;
 use Illuminate\Foundation\Application;
@@ -15,3 +16,6 @@ Route::resource('Modulos', ModuloController::class)
 
 Route::resource('Usuarios', UsersController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('Usuarios');
+
+Route::resource('RolesUsuarios', RolesUsuariosController::class)
+    ->middleware(['auth:sanctum', 'verified'])->names('RolesUsuarios');

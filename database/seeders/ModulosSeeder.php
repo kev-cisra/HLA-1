@@ -14,7 +14,12 @@ class ModulosSeeder extends Seeder
      */
     public function run()
     {
-        //
+
+        // *****************ADMINISTRADOR *******************
+
+
+
+        // ************ PRODUCCCION *******************
         Modulos::create([
             'Iduser' => '16',
             'NombreModulo' => 'PERSONAL',
