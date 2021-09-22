@@ -9,6 +9,7 @@ use App\Models\Compras\Requisiciones\Requisiciones;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use App\Models\Supply\Requisiciones\TiemposRequisiciones;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -57,6 +58,9 @@ class RequisicionesSolicitadasController extends Controller {
                         'Marca_id', 'TipCompra',
                         'Observaciones', 'Perfil_id');
                 },
+                'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
+                    $perfil->select('id', 'name');
+                },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
                 },
@@ -76,7 +80,7 @@ class RequisicionesSolicitadasController extends Controller {
             ->orderBy('EstatusArt', 'asc')
             ->where('EstatusArt', '!=', 1)
             ->whereMonth('Fecha', $mes)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'OrdenCompra', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
         }else{
 
@@ -91,6 +95,9 @@ class RequisicionesSolicitadasController extends Controller {
                         'Codigo', 'Maquina_id',
                         'Marca_id', 'TipCompra',
                         'Observaciones', 'Perfil_id');
+                },
+                'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
+                    $perfil->select('id', 'name');
                 },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
@@ -111,7 +118,7 @@ class RequisicionesSolicitadasController extends Controller {
             ->orderBy('EstatusArt', 'asc')
             ->where('EstatusArt', '!=', 1)
             ->where('EstatusArt', $request->Estatus)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'OrdenCompra', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
         }
 
@@ -157,12 +164,21 @@ class RequisicionesSolicitadasController extends Controller {
                     ArticulosRequisiciones::find($request->id)->update([
                         'EstatusArt' => 3,
                     ]);
+
+                    TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->id)->update([
+                        'Revision' => Carbon::now(),
+                    ]);
+
                     break;
 
 
                 case 8:
                     ArticulosRequisiciones::find($request->id)->update([
                         'EstatusArt' => 8,
+                    ]);
+
+                    TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->id)->update([
+                        'Almacen' => Carbon::now(),
                     ]);
                     break;
 
@@ -196,13 +212,21 @@ class RequisicionesSolicitadasController extends Controller {
                     }
                     break;
                 case 10:
+
+                    $User = User::where('IdEmp', '=', $request->User)->first(['id', 'IdEmp', 'password']);
+
                     ArticulosRequisiciones::where('id', '=', $request->IdArt)->update([
-                        'RecibidoPor' => $request->User,
+                        'RecibidoPor' => $User->id,
                     ]);
 
                     ArticulosRequisiciones::find($request->IdArt)->update([
                         'EstatusArt' => 9,
                     ]);
+
+                    TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->IdArt)->update([
+                        'Entregado' => Carbon::now(),
+                    ]);
+
                     break;
             }
 

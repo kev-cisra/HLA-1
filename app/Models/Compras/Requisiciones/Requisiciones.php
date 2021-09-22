@@ -43,4 +43,5 @@ class Requisiciones extends Model
     public function RequisicionMarca() {
         return $this->hasOne(MarcasMaquinas::class, 'id', 'Marca_id');
     }
+
 }

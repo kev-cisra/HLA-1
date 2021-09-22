@@ -11,6 +11,7 @@ use App\Models\Compras\Requisiciones\Requisiciones;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use App\Models\Supply\Requisiciones\TiemposRequisiciones;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -159,6 +160,10 @@ class AutorizaRequisicionesController extends Controller{
 
             PreciosCotizaciones::where('id', '=', $request->id)->update([
                 'Autorizado' => 2,
+            ]);
+
+            TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->id)->update([
+                'Autorizado' => Carbon::now(),
             ]);
 
             //Genracion de Orden de Compra

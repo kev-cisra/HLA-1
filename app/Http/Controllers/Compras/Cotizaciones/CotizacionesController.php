@@ -11,6 +11,7 @@ use App\Models\Compras\Requisiciones\Requisiciones;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use App\Models\Supply\Requisiciones\TiemposRequisiciones;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -56,6 +57,9 @@ class CotizacionesController extends Controller{
                         'Marca_id', 'TipCompra',
                         'Observaciones', 'Perfil_id');
                 },
+                'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
+                    $perfil->select('id', 'name');
+                },
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
                     $pre->select('id', 'Precio', 'Total', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                 },
@@ -79,7 +83,7 @@ class CotizacionesController extends Controller{
             ->where('EstatusArt', '!=', 1)
             ->where('EstatusArt','!=', 2)
             ->whereMonth('Fecha', $mes)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'OrdenCompra', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
         }else{
 
@@ -94,6 +98,9 @@ class CotizacionesController extends Controller{
                         'Codigo', 'Maquina_id',
                         'Marca_id', 'TipCompra',
                         'Observaciones', 'Perfil_id');
+                },
+                'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
+                    $perfil->select('id', 'name');
                 },
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
                     $pre->select('id', 'Precio', 'Total', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
@@ -118,7 +125,7 @@ class CotizacionesController extends Controller{
             ->where('EstatusArt', '!=', 1)
             ->where('EstatusArt','!=', 2)
             ->where('EstatusArt', $request->Estatus)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'OrdenCompra', 'Descripcion', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
         }
 
@@ -205,6 +212,10 @@ class CotizacionesController extends Controller{
                     'EstatusArt' => 5,
                 ]);
 
+                TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->id)->update([
+                    'Cotizado' => Carbon::now(),
+                ]);
+
                 break;
             }
 
@@ -214,6 +225,10 @@ class CotizacionesController extends Controller{
                     'Fechallegada' => $request->Fechallegada,
                     'Comentariollegada' => $request->Comentariollegada,
                     'EstatusArt' => 7,
+                ]);
+
+                TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->IdArt)->update([
+                    'Confirmado' => Carbon::now(),
                 ]);
 
                 break;

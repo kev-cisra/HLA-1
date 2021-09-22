@@ -21253,6 +21253,18 @@ select {
 		width: 50%;
 	}
 
+	.md\:tw-w-4\/12 {
+		width: 33.333333%;
+	}
+
+	.md\:tw-w-5\/12 {
+		width: 41.666667%;
+	}
+
+	.md\:tw-w-1\/12 {
+		width: 8.333333%;
+	}
+
 	.md\:tw-grid-cols-3 {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
