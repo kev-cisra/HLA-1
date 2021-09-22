@@ -47,12 +47,6 @@ class MarcasMaquinasSeeder extends Seeder
         MarcasMaquinas::create([
             'IdUser' => '1',
             'Nombre' => 'MARGASA',
-            'maquinas_id' => '6',
-        ]);
-
-        MarcasMaquinas::create([
-            'IdUser' => '1',
-            'Nombre' => 'MARGASA',
             'maquinas_id' => '7',
         ]);
 
