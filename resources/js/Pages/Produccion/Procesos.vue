@@ -542,6 +542,9 @@
                             }
                         })
                     }
+                    if (f.tipo != 0){
+                        this.form.tipo_carga = '';
+                    }
                 }
             },
         },

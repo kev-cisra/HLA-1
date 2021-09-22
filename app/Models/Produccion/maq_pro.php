@@ -24,6 +24,10 @@ class maq_pro extends Model
         return $this->hasMany(formulas::class);
     }
 
+    public function parocargas(){
+        return $this->hasMany(parosCarga::class, 'maq_pro_id');
+    }
+
     //relacion 1 a muchos inversas
     public function procesos() {
         return $this->belongsTo(procesos::class, 'proceso_id');

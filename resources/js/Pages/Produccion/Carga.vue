@@ -150,9 +150,6 @@
                 </template>
             </Table>
         </div>
-        <pre>
-            {{depa}}
-        </pre>
     </app-layout>
 </template>
 
@@ -515,7 +512,7 @@
                             if (f.proceso_id == pm.id) {
                                 //console.log(pm.maq_pros.length)
                                 pm.maq_pros.forEach(mp => {
-                                    this.opcMQ += `<option value="${mp.id}" >${mp.maquinas.Nombre}</option>`;
+                                    this.opcMQ += `<option value="${mp.id}" >${mp.maquinas.Nombre} - ${mp.maquinas.marca.Nombre}</option>`;
                                 })
                             }
                         })

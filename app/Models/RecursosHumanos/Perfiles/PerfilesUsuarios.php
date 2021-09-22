@@ -76,4 +76,12 @@ class PerfilesUsuarios extends Model
     public function PerfilJefe() {
         return $this->hasOne(JefesArea::class, 'id', 'jefes_areas_id');
     }
+
+    public function parocargas_ini(){
+        return $this->hasMany(parosCarga::class, 'perfil_ini_id');
+    }
+
+    public function parocargas_fin(){
+        return $this->hasMany(parosCarga::class, 'perfil_fin_id');
+    }
 }

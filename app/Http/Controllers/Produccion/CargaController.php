@@ -61,9 +61,14 @@ class CargaController extends Controller
                 ->where('tipo', '!=', '4')
                 ->with([
                     'maq_pros' => function($mp){
-                        $mp->select('id', 'proceso_id', 'maquina_id')
-                        ->with('maquinas');
-                    }
+                        $mp->select('id', 'proceso_id', 'maquina_id');
+                    },
+                    'maq_pros.maquinas' => function($ma){
+                        $ma->select('id', 'Nombre', 'departamento_id');
+                    },
+                    'maq_pros.maquinas.marca'=> function($maq){
+                        $maq->select('id', 'Nombre', 'maquinas_id');
+                    },
                 ])
                 ->get();
             //muestra el personal del departamento
@@ -156,9 +161,14 @@ class CargaController extends Controller
                 ->where('tipo', '!=', '4')
                 ->with([
                     'maq_pros' => function($mp){
-                        $mp->select('id', 'proceso_id', 'maquina_id')
-                        ->with('maquinas');
-                    }
+                        $mp->select('id', 'proceso_id', 'maquina_id');
+                    },
+                    'maq_pros.maquinas' => function($ma){
+                        $ma->select('id', 'Nombre', 'departamento_id');
+                    },
+                    'maq_pros.maquinas.marca'=> function($maq){
+                        $maq->select('id', 'Nombre', 'maquinas_id');
+                    },
                 ])
                 ->get();
             //muestra el personal del departamento

@@ -7,6 +7,7 @@ use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
 use App\Models\User;
 use App\Models\Produccion\dep_perf;
+use App\Models\Produccion\parosCarga;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
@@ -37,6 +38,10 @@ class Departamentos extends Model
 
     public function puestos() {
         return $this->hasMany(Puestos::class);
+    }
+
+    public function parocargas(){
+        return $this->hasMany(parosCarga::class);
     }
 
     // Relaciones recursiva
