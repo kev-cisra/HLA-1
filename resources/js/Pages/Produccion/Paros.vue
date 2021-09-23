@@ -10,7 +10,7 @@
         </Header>
         <Accions>
             <template  v-slot:SelectB v-if="usuario.dep_pers.length != 1">
-                <select @change="verTabla" class="InputSelect" v-model="S_Area" v-html="opc">
+                <select class="InputSelect" @change="verTabla" v-model="S_Area" v-html="opc">
                 </select>
             </template>
             <template v-slot:BtnNuevo>
@@ -18,7 +18,7 @@
             </template>
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
-        <div class="collapse m-5 tw-p-6 tw-bg-red-400 tw-rounded-3xl tw-shadow-xl" id="agPer">
+        <div class="collapse m-5 tw-p-6 tw-bg-green-600 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <div class="tw-mb-6 md:tw-flex">
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
@@ -34,10 +34,27 @@
                     <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ" :disabled="editMode"></select>
                     <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Tipo de paro</jet-label>
+                    <select class="InputSelect" v-model="form.paro_id" v-html="opcPR" :disabled="editMode"></select>
+                    <small v-if="errors.paro_id" class="validation-alert">{{errors.paro_id}}</small>
+                </div>
+            </div>
+            <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 tw-text-center tw-mx-auto md:tw-mb-0">
+                    <jet-label>Orden</jet-label>
+                    <jet-input type="text" v-model="form.orden" @input="(val) => (form.orden = form.orden.toUpperCase())"></jet-input>
+                    <small v-if="errors.orden" class="validation-alert">{{errors.orden}}</small>
+                </div>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 tw-text-center tw-mx-auto md:tw-mb-0">
+                    <jet-label>Descripción</jet-label>
+                    <textarea class="InputSelect" v-model="form.descri" maxlength="250" @input="(val) => (form.descri = form.descri.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
+                    <small v-if="errors.descri" class="validation-alert">{{errors.descri}}</small>
+                </div>
             </div>
             <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
                <div>
-                    <jet-button type="button" class="tw-mx-auto" v-if="!editMode" @click="saveCA(form)">Guardar</jet-button>
+                    <jet-button type="button" class="tw-mx-auto" v-if="!editMode" @click="save(form)">Guardar</jet-button>
                </div>
                <div>
                     <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
@@ -51,43 +68,26 @@
         <div class="table-responsive">
             <Table id="t_paros">
                 <template v-slot:TableHeader>
-                    <th class="columna">Fecha</th>
-                    <th class="columna">Nombre</th>
-                    <th class="columna">Departamento</th>
-                    <th class="columna">Proceso</th>
-                    <th class="columna">Estatus</th>
-                    <th class="columna">Equipo</th>
-                    <th class="columna">Turno</th>
-                    <th class="columna">Partida</th>
-                    <th class="columna">Norma</th>
-                    <th class="columna">Clave</th>
-                    <th class="columna">Descripción de clave</th>
+                    <th class="columna">Orden</th>
+                    <th class="columna">Clave de paro</th>
+                    <th class="columna">Nombre de paro</th>
+                    <th class="columna">Inicio</th>
+                    <th class="columna">Final</th>
+                    <th class="columna">Tiempo cargado</th>
                     <th class="columna">Maquina</th>
-                    <th class="columna">KG</th>
                     <th></th>
                 </template>
                 <template v-slot:TableFooter >
                     <tr v-for="ca in cargas" :key="ca.id">
-                        <td class="fila">{{ca.fecha}}</td>
-                        <td class="fila">{{ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf.perfiles.ApMat}}</td>
-                        <td class="fila">{{ca.dep_perf.departamentos.Nombre}}</td>
-                        <td class="fila">{{ca.proceso.nompro}}</td>
-                        <td class="fila tw-w-40">
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-emerald-600 tw-rounded-full" v-if="ca.notaPen == 2 & ca.proceso.tipo == 2">NOTA COORDINADOR</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-else-if="ca.notaPen == 2 & (ca.dep_perf.ope_puesto == 'ope' | ca.dep_perf.ope_puesto == 'lid')">NOTA OPERADOR</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-coolGray-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length <= 1">SIN NOTA</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1">ACTUALIZADO</div>
-                        </td>
-                        <td class="fila">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
-                        <td class="fila">{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
-                        <td class="fila">{{ca.partida == null ? 'N/A' : ca.partida}}</td>
-                        <td class="fila">{{ca.dep_mat == null ? 'N/A' : ca.dep_mat.materiales.idmat+' - '+ca.dep_mat.materiales.nommat}}</td>
-                        <td class="fila">{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
-                        <td class="fila">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
-                        <td class="fila">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
-                        <td class="fila">{{ca.valor}}</td>
+                        <td class="fila">{{ca.orden}}</td>
+                        <td class="fila">{{ca.paros.clave}}</td>
+                        <td class="fila">{{ca.paros.descri}}</td>
+                        <td class="fila">{{ca.iniFecha}}</td>
+                        <td class="fila">{{ca.finFecha == null ? '' : ca.finFecha}}</td>
+                        <td class="fila">{{tiempo(ca.iniFecha, ca.finFecha)}}</td>
+                        <td class="fila">{{ca.maq_pro.maquinas.Nombre}}</td>
                         <td class="fila">
-                            <div class="columnaIconos">
+                            <!-- <div class="columnaIconos">
                                 <div class="iconoDetails tw-cursor-pointer" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & (((noCor == 'cor' | noCor == 'enc') & ca.proceso.tipo == 2 & ca.notaPen == 1) | ((noCor == 'lid' | noCor == 'ope') & ca.equipo_id != null & ca.notaPen == 1))">
                                     <span tooltip="Agregar nota" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,16 +102,12 @@
                                         </svg>
                                     </span>
                                 </div>
-                            </div>
+                            </div> -->
                         </td>
                     </tr>
                 </template>
             </Table>
         </div>
-
-        <pre>
-            {{paros}}
-        </pre>
     </app-layout>
 </template>
 
@@ -161,18 +157,22 @@
                 color: "tw-bg-blue-600",
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
-                opc: '<option value="" disabled>Selecciona</option>',
+                opc: '<option value="" disabled>SELECCIONA</option>',
                 opcPP: '',
-                opcSP: '<option value="" disabled>Selecciona</option>',
-                opcMQ: '<option value="" disabled>Selecciona</option>',
+                opcSP: '<option value="" disabled>SELECCIONA</option>',
+                opcMQ: '<option value="" disabled>SELECCIONA</option>',
+                opcPR: '',
                 proc_prin: '',
                 editMode: false,
                 form: {
                     fecha: moment().format("YYYY-MM-DD HH:mm:ss"),
-                    semana: moment().format("GGGG-[W]WW"),
                     usu:  this.usuario.id,
+                    departamento_id: this.S_Area,
                     proceso_id: '',
                     maq_pro_id: '',
+                    paro_id: '',
+                    descri: '',
+                    orden: '',
                 }
             }
         },
@@ -186,6 +186,12 @@
             //información del select area
             mostSelect() {
                 this.$nextTick(() => {
+                    if (this.usuario.dep_pers.length != 0) {
+                        console.log(this.usuario.dep_pers[0].departamento_id)
+                        this.S_Area = this.usuario.dep_pers[0].departamento_id;
+                    }else{
+                        this.S_Area = 7;
+                    }
                     this.depa.forEach(r => {
                         if (r.departamentos) {
                             this.opc += `<option value="${r.departamentos.id}"> ${r.departamentos.Nombre} </option>`;
@@ -201,30 +207,29 @@
             },
             //consulta para generar datos de la tabla
             verTabla(event){
-                event.target.value == '' ? '' : $('#t_paros').DataTable().clear();
-                $('#t_paros').DataTable().destroy();
-                /* this.reset(); */
-                this.proc_prin = '';
-                this.$inertia.get('/Produccion/Paros',{ busca: event.target.value }, {
-                    onSuccess: () => { this.selePP(), this.tabla() }, preserveState: true
-                });
+                $('#t_paros').DataTable().clear();
             },
             //select para proceso principal, normas y personal
             selePP(){
                 this.$nextTick(() => {
                     //select de procesos principales
-                    this.opcPP= '<option value="" >SELECCIONA</option>'
+                    this.opcPP= '<option value="" disabled>SELECCIONA</option>'
                     this.procesos.forEach(pp =>{
                         if (pp.tipo == 0 & pp.tipo_carga == 'pro') {
                             this.opcPP += `<option value="${pp.id}">${pp.nompro}</option>`
                         }
                     })
-                    //select normas
-                    this.opcNM = '<option value="">SELECCIONA</option>';
-                    this.materiales.forEach(ma => {
-                        this.opcNM += `<option value="${ma.id}">${ma.materiales.idmat} - ${ma.materiales.nommat}</option>`;
+                    //select paros
+                    this.opcPR = '<option value="" disabled>SELECCIONA</option>';
+                    this.paros.forEach(pa => {
+                        this.opcPR += `<option value="${pa.id}">${pa.clave} - ${pa.descri}</option>`;
                     })
                 })
+            },
+            tiempo(ini, fin){
+                var tini = moment(ini);
+                var tfin = fin == null ? moment() : moment(fin);
+                return tini.diff(tfin, 'hours');
             },
             /****************************** datatables ********************************************************/
             //datatable de carga
@@ -232,7 +237,7 @@
                 this.$nextTick(() => {
                     $('#t_paros').DataTable({
                         "language": this.español,
-                        "order": [[4, 'asc'], [0, 'desc']],
+                        "order": [[3, 'desc']],
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
@@ -241,25 +246,41 @@
             },
             /****************************** carga de carga de datos ******************************************/
             reset(){
-
+                this.proc_prin = '';
+                this.form.proceso_id = '';
+                this.form.maq_pro_id = '';
+                this.form.paro_id = '';
+                this.form.descri = '';
+                this.form.orden = '';
+                this.form.departamento_id = this.S_Area;
+                this.editMode = false;
+            },
+            save(data){
+                //$('#t_paros').DataTable().clear();
+                $('#t_paros').DataTable().destroy();
+                this.$inertia.post('/Produccion/Paros', data, {
+                    onSuccess: () => { this.tabla(), this.reset(), this.alertSucces()}, preserveState: true
+                });
             }
-        },
+        },/*
         computed: {
             noCor: function() {
                 if (this.usuario.dep_pers.length != 0) {
                     return this.usuario.dep_pers[0].ope_puesto;
                 }
             }
-        },
+        }, */
         watch: {
+            S_Area: function(b){
+                //$('#t_paros').DataTable().clear();
+                $('#t_paros').DataTable().destroy();
+                /* this.reset(); */
+                this.proc_prin = '';
+                this.$inertia.get('/Produccion/Paros',{ busca: b }, {
+                    onSuccess: () => { this.selePP(), this.tabla() }, preserveState: true
+                });
+            },
             proc_prin: function(v) {
-                //cuando no se edita
-                if (!this.editMode) {
-                    this.form.proceso_id = '';
-                    this.form.maq_pro_id = '';
-                    this.form.clave_id = '';
-                    this.form.norma = '';
-                }
                 //select sub peocesos
                 this.opcSP= '<option value="" >SELECCIONA</option>';
                 //recorre y muestra los procesos
@@ -280,7 +301,7 @@
                             if (f.proceso_id == pm.id) {
                                 //console.log(pm.maq_pros.length)
                                 pm.maq_pros.forEach(mp => {
-                                    this.opcMQ += `<option value="${mp.id}" >${mp.maquinas.Nombre}</option>`;
+                                    this.opcMQ += `<option value="${mp.id}" >${mp.maquinas.Nombre} - ${mp.maquinas.marca.Nombre}</option>`;
                                 })
                             }
                         })

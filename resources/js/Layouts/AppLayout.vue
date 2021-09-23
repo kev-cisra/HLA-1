@@ -16,46 +16,46 @@
                             </div>
 
                             <!-- Navigation Links -->
-                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex">
+                            <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex">
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Inicio
                                 </jet-nav-link>
                             </div>
-                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex" v-if="hasAnyPermission(['admin.index'])">
+                            <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index'])">
                                 <jet-nav-link :href="route('Admin')" :active="route().current('Admin')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Administrador
                                 </jet-nav-link>
                             </div>
-                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex" v-if="hasAnyPermission(['admin.index', 'RecursosHumanos.index'])">
+                            <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'RecursosHumanos.index'])">
                                 <jet-nav-link :href="route('RecursosHumanos')" :active="route().current('RecursosHumanos')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Recursos Humanos
                                 </jet-nav-link>
                             </div>
-                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex" v-if="hasAnyPermission(['admin.index', 'Compras.index'])">
+                            <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'Compras.index'])">
                                 <jet-nav-link :href="route('Compras')" :active="route().current('Compras')">
                                         <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Compras
                                 </jet-nav-link>
                             </div>
-                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex" v-if="hasAnyPermission(['admin.index', 'Almacen.index'])">
+                            <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'Almacen.index'])">
                                 <jet-nav-link :href="route('Almacen')" :active="route().current('Almacen')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Almacen
                                 </jet-nav-link>
                             </div>
-                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
+                            <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
                                 <jet-nav-link :href="route('Supply')" :active="route().current('Supply')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Supply
                                 </jet-nav-link>
                             </div>
-                            <div class="tw-hidden tw-space-x-8 sm:tw--my-px sm:tw-ml-10 sm:tw-flex"  v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">
+                            <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex"  v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">
                                 <jet-nav-link :href="route('Produccion')" :active="route().current('Produccion')">
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Producción
                                 </jet-nav-link>
                             </div>
                         </div><!--- v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index',])" -->
 
-                        <div class="tw-hidden sm:tw-flex sm:tw-items-center sm:tw-ml-6">
+                        <div class="tw-hidden lg:tw-flex lg:tw-items-center lg:tw-ml-6">
                             <!-- Settings Dropdown -->
-                            <div class="tw-hidden sm:tw-flex sm:tw-items-center sm:tw-ml-6">
+                            <div class="tw-hidden lg:tw-flex lg:tw-items-center lg:tw-ml-6">
                                 <div class="tw-relative">
                                     <jet-dropdown align="tw-right" width="48">
                                         <template #trigger>
@@ -99,7 +99,7 @@
                         </div>
 
                         <!-- Hamburger -->
-                        <div class="tw--mr-2 tw-flex tw-items-center sm:tw-hidden">
+                        <div class="tw--mr-2 tw-flex tw-items-center lg:tw-hidden">
                             <button @click="showingNavigationDropdown = ! showingNavigationDropdown" class="tw-inline-flex tw-items-center tw-justify-center tw-p-2 tw-rounded-md tw-text-gray-400 hover:tw-text-gray-500 hover:tw-bg-gray-100 focus:tw-outline-none focus:tw-bg-gray-100 focus:tw-text-gray-500 tw-transition">
                                 <svg class="tw-h-6 tw-w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                     <path :class="{'tw-hidden': showingNavigationDropdown, 'tw-inline-flex': ! showingNavigationDropdown }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -111,7 +111,7 @@
                 </div>
 
                 <!-- Responsive Navigation Menu -->
-                <div :class="{'tw-block': showingNavigationDropdown, 'tw-hidden': ! showingNavigationDropdown}" class="sm:tw-hidden">
+                <div :class="{'tw-block': showingNavigationDropdown, 'tw-hidden': ! showingNavigationDropdown}" class="lg:tw-hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                             Inicio

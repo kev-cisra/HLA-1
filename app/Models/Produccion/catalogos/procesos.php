@@ -5,6 +5,7 @@ namespace App\Models\Produccion\catalogos;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\formulas;
 use App\Models\Produccion\maq_pro;
+use App\Models\Produccion\parosCarga;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +36,10 @@ class procesos extends Model
 
     public function formulas(){
         return $this->hasMany(formulas::class, 'proceso_id');
+    }
+
+    public function paroscargas(){
+        return $this->hasMany(parosCarga::class, 'proceso_id');
     }
 
     //Relaciones 1 a muchos inversas

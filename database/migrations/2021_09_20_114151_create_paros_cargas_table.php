@@ -17,15 +17,25 @@ class CreateParosCargasTable extends Migration
             $table->id();
 
             $table->dateTimeTz('fecha');
+            $table->string('orden')->nullable();
+            $table->string('causa')->nullable();
+            $table->string('pla_acci')->nullable();
             $table->dateTimeTz('iniFecha');
             $table->dateTimeTz('finFecha')->nullable();
             $table->string('tiempo')->nullable();
+            $table->string('descri')->nullable();
+            $table->text('nota')->nullable();
 
+            $table->unsignedBigInteger('paro_id');
             $table->unsignedBigInteger('perfil_ini_id');
             $table->unsignedBigInteger('perfil_fin_id')->nullable();
             $table->unsignedBigInteger('maq_pro_id')->nullable();
             $table->unsignedBigInteger('proceso_id');
             $table->unsignedBigInteger('departamento_id')->nullable();
+
+            $table->foreign('paro_id')->references("id")->on("paros")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
 
             $table->foreign('maq_pro_id')->references("id")->on("maq_pros")
             ->onDelete("cascade")

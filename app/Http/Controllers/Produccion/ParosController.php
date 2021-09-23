@@ -49,14 +49,19 @@ class ParosController extends Controller
             //muestran los departamentos
             $depa = $perf->dep_pers;
             //muestra de procesos dependiendo del puesto
-            $procesos = procesos::where('departamento_id', '=', $perf->Departamento_id)
+            /* $procesos = procesos::where('departamento_id', '=', $perf->Departamento_id)
                 ->where('tipo','!=', '3')
                 ->where('tipo', '!=', '4')
                 ->with([
                     'maq_pros' => function($mp){
-                        $mp->select('id', 'proceso_id', 'maquina_id')
-                        ->with('maquinas');
-                    }
+                        $mp->select('id', 'proceso_id', 'maquina_id');
+                    },
+                    'maq_pros.maquinas' => function($ma){
+                        $ma->select('id', 'Nombre', 'departamento_id');
+                    },
+                    'maq_pros.maquinas.marca'=> function($maq){
+                        $maq->select('id', 'Nombre', 'maquinas_id');
+                    },
                 ])
                 ->get();
             //materiales
@@ -118,7 +123,7 @@ class ParosController extends Controller
                     }
                 ])
                 ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id']);
-
+                     */
 
         }else{
             //consulta el id de la area produccion
@@ -138,9 +143,14 @@ class ParosController extends Controller
                 ->where('tipo', '!=', '4')
                 ->with([
                     'maq_pros' => function($mp){
-                        $mp->select('id', 'proceso_id', 'maquina_id')
-                        ->with('maquinas');
-                    }
+                        $mp->select('id', 'proceso_id', 'maquina_id');
+                    },
+                    'maq_pros.maquinas' => function($ma){
+                        $ma->select('id', 'Nombre', 'departamento_id');
+                    },
+                    'maq_pros.maquinas.marca'=> function($maq){
+                        $maq->select('id', 'Nombre', 'maquinas_id');
+                    },
                 ])
                 ->get();
             //muestra materiales
@@ -156,52 +166,28 @@ class ParosController extends Controller
                     ->get();
             //carga
             $bus = $request->busca;
-            $carga = carga::whereBetween('fecha', [$dia, $mañana])
-            ->orWhere(function($q) use ($dia){
-                $q->whereDate('fecha', '<=', $dia)
-                ->where('notaPen', '=', '2');
-            })
-            ->with([
-                'dep_perf' => function($dp) use($bus) {
-                    $dp -> where('departamento_id', '=', $bus)
-                        ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
-                },
-                'dep_perf.perfiles' => function($perfi){
-                    $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
-                },
-                'dep_perf.departamentos' => function($dp_de){
-                    $dp_de -> select('id', 'Nombre', 'departamento_id');
-                },
-                'equipo' => function($eq){
-                    $eq -> select('id', 'nombre');
-                },
-                'turno' => function($tu){
-                    $tu ->select('id', 'nomtur');
-                },
-                'maq_pro' => function($mp){
-                    $mp ->select('id', 'proceso_id', 'maquina_id');
-                },
-                'maq_pro.maquinas' => function($ma){
-                    $ma -> select('id', 'Nombre');
-                },
-                'proceso' => function($pr){
-                    $pr -> select('id', 'nompro', 'tipo_carga', 'proceso_id');
-                },
-                'dep_mat' => function($dp){
-                    $dp -> select('id', 'material_id');
-                },
-                'dep_mat.materiales' => function($mat){
-                    $mat -> select('id', 'idmat', 'nommat');
-                },
-                'clave' => function($cla){
-                    $cla -> select('id', 'CVE_ART', 'DESCR');
-                },
-                'notas' => function($not){
-                    $not -> latest()
-                    -> select('id', 'fecha', 'nota', 'carga_id');
-                }
-            ])
-            ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id']);
+            $carga = parosCarga::where('departamento_id', '=', $request->busca)
+                ->with([
+                    'paros' => function($pr){
+                        $pr->select('id', 'clave', 'descri', 'tipo');
+                    },
+                    'perfil_ini' => function($pini){
+                        $pini->select('id', 'Nombre', 'ApPat', 'ApMat');
+                    },
+                    'maq_pro' => function($mp){
+                        $mp->select('id', 'maquina_id', 'proceso_id');
+                    },
+                    'maq_pro.maquinas' => function($ma) {
+                        $ma->select('id', 'Nombre');
+                    },
+                    'proceso' => function($po) {
+                        $po->select('id', 'nompro');
+                    },
+                    'departamento' => function($dep) {
+                        $dep->select('id', 'Nombre');
+                    }
+                ])
+                ->get(['id', 'fecha', 'iniFecha', 'orden', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'departamento_id']);
 
         }
 
@@ -214,12 +200,25 @@ class ParosController extends Controller
     public function store(Request $request)
     {
         //
+        //return $request;
         Validator::make($request->all(), [
-            'dep_perf_id' => ['required'],
-            'maq_pro_id' => ['required']
-        ])->validate();
+            'proceso_id' => ['required'],
+            'maq_pro_id' => ['required'],
+            'paro_id' => ['required'],
+            'departamento_id' => ['required'],
+            ])->validate();
 
-        parosCarga::create($request->all());
+        parosCarga::create([
+            'fecha' => $request->fecha,
+            'iniFecha' => $request->fecha,
+            'paro_id' => $request->paro_id,
+            'perfil_ini_id' => $request->usu,
+            'maq_pro_id' => $request->maq_pro_id,
+            'proceso_id' => $request->proceso_id,
+            'orden' => $request->orden,
+            'descri' => $request->descri,
+            'departamento_id' => $request->departamento_id
+        ]);
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
