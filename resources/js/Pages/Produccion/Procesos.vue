@@ -99,11 +99,11 @@
                                     <select v-model="form.tipo" class="InputSelect">
                                         <option value="" disabled>Seleccione</option>
                                         <option value="0">Proceso principal</option>
-                                        <option value="1">Produccion Lider / Operador</option>
+                                        <option value="1">Carga para Lider / Operador</option>
+                                        <option value="2">Carga para Coordinador</option>
                                         <option value="5">Merma</option>
-                                        <option value="4">Entregas</option>
-                                        <option value="2" v-show="usuario.dep_pers.length == 0">Produccion Coordinador</option>
-                                        <option value="3" v-show="puesCor != 'cor' | usuario.dep_pers.length == 0">Formulas</option>
+                                        <!-- <option value="4">Entregas</option> -->
+                                        <option value="3">Formulas</option>
                                     </select>
                                     <small v-if="errors.tipo" class="validation-alert">{{errors.tipo}}</small>
                                 </div>
@@ -114,9 +114,9 @@
                                     <jet-label><span class="required">*</span>Tipo de Carga</jet-label>
                                     <select class="InputSelect" v-model="form.tipo_carga">
                                         <option value="">Selecciona</option>
-                                        <option value="ent">Entregas</option>
-                                        <option value="pro">Producción Lider/Operador</option>
-                                        <option value="pro-cor">Producción Coordinador/Encargado</option>
+                                        <!-- <option value="ent">Entregas</option> -->
+                                        <option value="pro">Principales para Lider/Operador</option>
+                                        <option value="pro-cor">Principales para Coordinador/Encargado</option>
                                         <!-- <option value="for">Formulas</option> -->
                                     </select>
                                     <small v-if="errors.tipo_carga" class="validation-alert">{{errors.tipo_carga}}</small>
@@ -530,9 +530,11 @@
                     if (f.departamento_id != '') {
                         //console.log(f)
                         //select de maquinas
+                        var mar = '';
                         this.opcMaq = '<option value="" disabled>Selecciona una máquina</option>';
                         this.maquinas.forEach(r => {
-                            this.opcMaq += `<option value="${r.id}"> ${r.Nombre} - ${r.marca.Nombre} </option>`;
+                            mar = r.marca == null ? 'N/A' : r.marca.Nombre;
+                            this.opcMaq += `<option value="${r.id}"> ${r.Nombre} - ${mar} </option>`;
                         })
                         //select proceso principal
                         this.options = '<option value="" disabled>Selecciona un proceso</option>';
