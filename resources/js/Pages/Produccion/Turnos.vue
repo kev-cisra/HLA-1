@@ -196,8 +196,8 @@
                                     <jet-label><span class="required">*</span>Personal</jet-label>
                                     <div class="overflow-auto tw-h-40 tw-mx-auto">
                                         <div v-for="persona in personal" :key="persona" class="tw-gap-y-10 hover:tw-bg-sky-600">
-                                            <input type="checkbox" :id="'ve'+persona.id" v-model="form2.emp" :value="persona.id">
-                                            <label :for="'ve'+persona.id">
+                                            <input type="checkbox" :id="persona.id" v-model="form2.emp" :value="persona.id">
+                                            <label :for="persona.id">
                                                  {{persona.perfiles.IdEmp}} - {{persona.perfiles.Nombre}} {{persona.perfiles.ApPat}}
                                             </label>
                                         </div>
@@ -394,12 +394,14 @@
             },
             editE: function(data) {
                 //this.form2 = Object.assign({}, data);
-                this.form2 = {
-                    departamento_id: data.departamento_id,
-                    turno_id: data.turno_id,
-                    nombre: data.nombre,
-                    emp: []
-                }
+                /* console.log(data) */
+                this.form2.departamento_id = data.departamento_id;
+                this.form2.turno_id = data.turno_id;
+                this.form2.nombre = data.nombre;
+                this.form2.emp = [];
+                data.dep_pers.forEach(e => {
+                    this.form2.emp.push(e.id);
+                })
                 this.editMode2 = true;
                 this.chageClose2();
             }

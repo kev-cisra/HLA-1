@@ -59,6 +59,9 @@ class TurnosController extends Controller
                     },
                     'departamento' => function($depa){
                         $depa->select('id', 'Nombre');
+                    },
+                    'equipos.dep_pers.perfiles' => function($perfi){
+                        $perfi->select('id', 'Nombre', 'ApPat', 'ApMat');
                     }
                 ])
                 ->get();
@@ -106,6 +109,9 @@ class TurnosController extends Controller
                     },
                     'departamento' => function($depa){
                         $depa->select('id', 'Nombre');
+                    },
+                    'equipos.dep_pers.perfiles' => function($perfi){
+                        $perfi->select('id', 'Nombre', 'ApPat', 'ApMat');
                     }
                 ])
                 ->get();
