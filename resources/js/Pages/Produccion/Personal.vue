@@ -97,9 +97,6 @@
                 </template>
             </Table>
         </div>
-        <pre>
-            {{areper}}
-        </pre>
     </app-layout>
 </template>
 

@@ -26,9 +26,9 @@ class ProcesosController extends Controller
      */
     public function index(Request $request){
         //Muestra el id de la persona que inicio sesion
-        $usuario = Auth::user();
+        $usuario = Auth::id();
         //muestra la información del usuario que inicio sesion
-        $perf = PerfilesUsuarios::where('IdEmp','=',$usuario->IdEmp)
+        $perf = PerfilesUsuarios::where('user_id','=',$usuario)
             ->with('dep_pers')
             ->first();
         //return count($perf->dep_pers);

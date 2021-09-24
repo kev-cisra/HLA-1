@@ -25,9 +25,9 @@ class TurnosController extends Controller
         //
         /***************** Información de la persona  *****************************/
         //Muestra el id de la persona que inicio sesion
-        $usuario = Auth::user();
+        $usuario = Auth::id();
         //muestra la información del usuario que inicio sesion
-        $perf = PerfilesUsuarios::where('IdEmp','=',$usuario->IdEmp)
+        $perf = PerfilesUsuarios::where('user_id','=',$usuario)
             ->with('dep_pers')
             ->first();
 
@@ -229,13 +229,23 @@ class TurnosController extends Controller
         Validator::make($request->all(), [
             'nomtur' => ['required'],
             'departamento_id' => ['required'],
-            'horaIni' => ['required'],
-            'horaFin' => ['required'],
+            'LVIni' => ['required'],
+            'LVFin' => ['required'],
+            'SDIni' => ['required'],
+            'SDFin' => ['required'],
             'cargaExt' => ['required'],
         ])->validate();
 
         if ($request->has('id')) {
-            turnos::find($request->input('id'))->update($request->all());
+            turnos::find($request->input('id'))->update([
+                'nomtur' => $request->nomtur,
+                'departamento_id' => $request->departamento_id,
+                'LVIni' => $request->LVIni,
+                'LVFin' => $request->LVFin,
+                'SDIni' => $request->SDIni,
+                'SDFin' => $request->SDFin,
+                'cargaExt' => $request->cargaExt,
+            ]);
             return redirect()->back()
                     ->with('message', 'Post Updated Successfully.');
         }
