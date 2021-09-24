@@ -164,7 +164,7 @@
                     <div class="tw-mt-4">
                         <div class="ModalForm">
                             <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode2">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" >
                                     <jet-label><span class="required">*</span>Departamento</jet-label>
                                     <select class="InputSelect" @change="verTabla" v-model="form2.departamento_id" v-html="opc" :disabled="S_Area != '' ? 1 : 0">
                                     </select>

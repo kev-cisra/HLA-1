@@ -141,7 +141,7 @@ class UserSeeder extends Seeder
         User::create(['IdEmp' => '74', 'name' =>'OSIRIS YOSEF HERNANDEZ PEREZ','Departamento' => 1,'password' => bcrypt('74')]);
         User::create(['IdEmp' => '75', 'name' =>'GISELA LIZBETH JARAMILLO MARIN','Departamento' => 1,'password' => bcrypt('75')]);
         User::create(['IdEmp' => '76', 'name' =>'LUIS ENRIQUE GALVAN BARON','Departamento' => 1,'password' => bcrypt('76')])->assignRole('Almacen');;
-        User::create(['IdEmp' => '78', 'name' =>'KEVIN CISNEROS RAMIREZ','Departamento' => 1,'password' => bcrypt('78')]);
+        User::create(['IdEmp' => '78', 'name' =>'KEVIN CISNEROS RAMIREZ','Departamento' => 1,'password' => bcrypt('78')])->assignRole('Sistemas');
         User::create(['IdEmp' => '780', 'name' =>'IGNACIO MITRE RODRIGUEZ','Departamento' => 1,'password' => bcrypt('780')]);
         User::create(['IdEmp' => '870', 'name' =>'CARLOS GABRIEL LOPEZ MENDEZ','Departamento' => 1,'password' => bcrypt('870')]);
         User::create(['IdEmp' => '15', 'name' =>'MIGUEL PALACIOS SOSA','Departamento' => 3,'password' => bcrypt('15')]);
@@ -170,7 +170,7 @@ class UserSeeder extends Seeder
         User::create(['IdEmp' => '1251', 'name' =>'OSCAR PEREZ CONTRERAS','Departamento' => 3,'password' => bcrypt('1251')]);
         User::create(['IdEmp' => '1268', 'name' =>'KARINA SANTOS VAZQUEZ','Departamento' => 3,'password' => bcrypt('1268')]);
         User::create(['IdEmp' => '1272', 'name' =>'GEORGINA RAMIREZ ESTRADA','Departamento' => 3,'password' => bcrypt('1272')]);
-        User::create(['IdEmp' => '83', 'name' =>'GERARDO ROJAS GARCIA','Departamento' => 7,'password' => bcrypt('1270')])->assignRole('Produccion');;
+        User::create(['IdEmp' => '83', 'name' =>'GERARDO ROJAS GARCIA','Departamento' => 7,'password' => bcrypt('1270')])->assignRole('Produccion','Cordinador');;
         User::create(['IdEmp' => '500', 'name' =>'VICENTE SOSA PEÑA','Departamento' => 7,'password' => bcrypt('500')]);
         User::create(['IdEmp' => '606', 'name' =>'ELEGARDO RODRIGUEZ ALVAREZ','Departamento' => 7,'password' => bcrypt('606')]);
         User::create(['IdEmp' => '686', 'name' =>'MARCO ANTONIO GALAN CHAVEZ','Departamento' => 7,'password' => bcrypt('686')]);

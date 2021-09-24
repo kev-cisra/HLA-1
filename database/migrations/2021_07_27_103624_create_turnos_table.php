@@ -17,8 +17,10 @@ class CreateTurnosTable extends Migration
             $table->id();
 
             $table->string('nomtur');
-            $table->string('horaIni')->nullable();
-            $table->string('horaFin')->nullable();
+            $table->string('LVIni')->nullable();
+            $table->string('LVFin')->nullable();
+            $table->string('SDIni')->nullable();
+            $table->string('SDFin')->nullable();
             $table->integer('cargaExt')->nullable();
 
             $table->unsignedBigInteger('departamento_id');
