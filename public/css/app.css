@@ -18746,6 +18746,9 @@ select {
 .tw-rounded-3xl {
 	border-radius: 1.5rem;
 }
+.tw-rounded-xl {
+	border-radius: 0.75rem;
+}
 .tw-rounded-b {
 	border-bottom-right-radius: 0.25rem;
 	border-bottom-left-radius: 0.25rem;

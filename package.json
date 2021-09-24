@@ -43,9 +43,14 @@
         "jszip": "^3.7.1",
         "moment": "^2.29.1",
         "pdfmake": "^0.2.2",
+        "sign-canvas": "^1.1.4",
+        "signature_pad": "^3.0.0-beta.4",
         "v-select2-component": "^0.4.7",
+        "vue-canvas-nest": "^2.0.0",
         "vue-chartjs": "^3.5.1",
         "vue-select": "^3.13.0",
+        "vue-signature-canvas": "^1.0.1",
+        "vue-signature-pad": "^3.0.1",
         "vue2-datepicker": "^3.10.1",
         "vuejs-datepicker": "^1.6.2"
     }
