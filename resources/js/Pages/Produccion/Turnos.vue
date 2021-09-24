@@ -15,51 +15,51 @@
             </template>
             <template v-slot:BtnNuevo>
                 <jet-button @click="openModal" class="BtnNuevo">Nuevo Turno </jet-button>
-                <jet-button @click="openModal2" class="BtnNuevo">Agregar Equipo</jet-button>
+                <jet-button class="BtnNuevo" data-bs-toggle="modal" href="#tablaEquipo">Agregar Equipo</jet-button>
             </template>
         </Accions>
         <div class="">
             <jet-button v-for="bTur in turno" :key="bTur" class="BtnNuevo" data-bs-toggle="collapse" :data-bs-target="'#col'+bTur.id" aria-expanded="false" :aria-controls="'col'+bTur.id">{{bTur.nomtur}}</jet-button>
         </div>
-        <div class="md:tw-flex tw-p-4 tw-gap-3">
+        <div class="lg:tw-flex tw-p-4 tw-gap-3">
             <div v-for="cTur in turno" :key="cTur" :id="'col'+cTur.id" class="collapse multi-collapse tw-flex-auto">
                 <div class="card card-body">
                     <!----------------- Tabla de turnos -------------->
-                    <table class="table table-striped tw-table-fixed ">
+                    <table class="table table-striped tw-table-fixed">
                         <tr class="tw-text-center tw-bg-teal-600">
-                            <th colspan="2" class="columna">{{ cTur.nomtur }}</th>
+                            <th colspan="2" class="columna tw-border-2">{{ cTur.nomtur }}</th>
                         </tr>
                         <tr >
-                            <th class="fila">Departamento</th>
-                            <td class="fila">{{cTur.departamento.Nombre}}</td>
+                            <th class="fila tw-text-center tw-border-2">Departamento</th>
+                            <td class="fila tw-text-center tw-border-2">{{cTur.departamento.Nombre}}</td>
                         </tr>
                         <tr >
-                            <th class="fila">Hora de Inició</th>
-                            <td class="fila">{{cTur.horaIni}}</td>
+                            <th class="fila tw-text-center tw-font-semibold tw-border-2" colspan="2">Horario de la semana</th>
                         </tr>
                         <tr >
-                            <th class="fila">Hora Fin</th>
-                            <td class="fila">{{cTur.horaFin}}</td>
+                            <th class="fila">
+                                <label class="tw-w-full tw-h-full tw-text-center tw-border-2">Lunes A Viernes</label>
+                                <label class="tw-w-full tw-h-full tw-text-center tw-border-2">{{cTur.LVIni}} - {{cTur.LVFin}}</label>
+                            </th>
+                            <th class="fila">
+                                <label class="tw-w-full tw-h-full tw-text-center tw-border-2">Sabado y Domingo</label>
+                                <label class="tw-w-full tw-h-full tw-text-center tw-border-2">{{cTur.SDIni}} - {{cTur.SDFin}}</label>
+                            </th>
                         </tr>
                         <tr >
-                            <th class="fila">Hora de inició</th>
-                            <td class="fila">{{cTur.cargaExt}}</td>
+                            <th class="fila tw-text-center tw-border-2">Tiempo extra</th>
+                            <td class="fila tw-text-center tw-border-2">{{cTur.cargaExt}}</td>
                         </tr>
                         <tr>
-                            <th class="fila">Equipos asignados</th>
-                            <td >
-                                <tr v-for="equ in cTur.equipos" :key="equ" @click="editE(equ)" class="columna tw-text-blue-700 hover:tw-text-blue-900">{{equ.nombre}}</tr>
+                            <th class="fila tw-text-center  tw-border-2">Equipos asignados</th>
+                            <td class="fila tw-text-center  tw-border-2">
+                                <tr v-for="equ in cTur.equipos" :key="equ" @click="editE(equ)"  data-bs-target="#modla2" data-bs-toggle="modal" data-bs-dismiss="modal" class="columna tw-text-blue-700 hover:tw-text-blue-900 tw-text-center">{{equ.nombre}}</tr>
                             </td>
                         </tr>
                         <td colspan="2" class="tw-text-center ">
                             <jet-button type="button" class="tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-center tw-w-full md:tw-w-2/6 lg:tw-w-3/12" @click="edit(cTur)">Actualizar</jet-button>
                             <jet-CancelButton type="button" class=" tw-text-center tw-w-full md:tw-w-2/6 lg:tw-w-3/12" @click="deleteRow(cTur)">Eliminar</jet-CancelButton>
                         </td>
-                    </table>
-                    <table v-for="equipo in equipos" :key="equipo" class="table">
-                        <tr>
-                            <th></th>
-                        </tr>
                     </table>
                 </div>
             </div>
@@ -91,21 +91,9 @@
                                         <option value="Turno 1">Turno 1</option>
                                         <option value="Turno 2">Turno 2</option>
                                         <option value="Turno 3">Turno 3</option>
+                                        <option value="Vacio">Turno Vacío</option>
                                     </select>
                                     <small v-if="errors.nomtur" class="validation-alert">{{errors.nomtur}}</small>
-                                </div>
-                            </div>
-
-                            <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label>Inicio del turno</jet-label>
-                                    <jet-input type="time" v-model="form.horaIni" class=""></jet-input>
-                                    <small v-if="errors.horaIni" class="validation-alert">{{errors.horaFin}}</small>
-                                </div>
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label>Fin del turno</jet-label>
-                                    <jet-input type="time" v-model="form.horaFin" class=""></jet-input>
-                                    <small v-if="errors.horaFin" class="validation-alert">{{errors.horaFin}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label>Tiempo para carga</jet-label>
@@ -118,6 +106,30 @@
                                     <small v-if="errors.cargaExt" class="validation-alert">{{errors.cargaExt}}</small>
                                 </div>
                             </div>
+
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Inicio del turno de Lunes a viernes</jet-label>
+                                    <jet-input type="time" v-model="form.LVIni" class=""></jet-input>
+                                    <small v-if="errors.LVIni" class="validation-alert">{{errors.LVIni}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Fin del turno de Lunes a viernes</jet-label>
+                                    <jet-input type="time" v-model="form.LVFin" class=""></jet-input>
+                                    <small v-if="errors.LVFin" class="validation-alert">{{errors.LVFin}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Inicio del turno de sabado a domingo</jet-label>
+                                    <jet-input type="time" v-model="form.SDIni" class=""></jet-input>
+                                    <small v-if="errors.SDIni" class="validation-alert">{{errors.SDIni}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Fin del turno de sabado a domingo</jet-label>
+                                    <jet-input type="time" v-model="form.SDFin" class=""></jet-input>
+                                    <small v-if="errors.SDFin" class="validation-alert">{{errors.SDFin}}</small>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -129,90 +141,202 @@
             </form>
         </modal>
         <!---------------------- Modal 2 --------------------------------->
-        <modal :show="showModal2" @close="chageClose2">
-            <!---------------------------  ------------------------------------>
+        <div class="modal fade" id="tablaEquipo" aria-hidden="true" aria-labelledby="tablaEquipoLabel" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered  modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Equipos</h3>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="columna">Turno</th>
+                                        <th class="columna">Equipo</th>
+                                        <th class="columna tw-w-64">Personal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="equipo in equipos" :key="equipo">
+                                        <td class="fila">{{equipo.turnos.nomtur}}</td>
+                                        <td class="fila">{{equipo.nombre}}</td>
+                                        <td class="">
+                                            <div class="overflow-auto tw-h-48">
+                                                <div v-for="perso in equipo.dep_pers" :key="perso" class="tw-border-b-4 tw-border-blueGray-700 hover:tw-bg-sky-600 tw-w-full">
+                                                        {{perso.perfiles.Nombre}} {{perso.perfiles.ApPat}}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" data-bs-target="#modla2" data-bs-toggle="modal" data-bs-dismiss="modal">Agregar Equipo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!----------------------------------------------- modal insert ----------------------------------------------->
+        <div class="modal fade" id="modla2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered  modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Equipos</h3>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" >
+                                <jet-label><span class="required">*</span>Departamento</jet-label>
+                                <select class="InputSelect" @change="verTabla" v-model="form2.departamento_id" v-html="opc" :disabled="S_Area != '' ? 1 : 0">
+                                </select>
+                                <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Turno</jet-label>
+                                <select v-model="form2.turno_id" class="InputSelect">
+                                    <option value="" disabled>Selecciona un turno</option>
+                                    <option v-for="(item, index) in turno" :key="index" :value="item.id" >{{ item.nomtur }}</option>
+                                </select>
+                                <small v-if="errors.turno_id" class="validation-alert">{{errors.turno_id}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Equipo</jet-label>
+                                <select v-model="form2.nombre" class="InputSelect">
+                                    <option value="" disabled>Selecciona un Equipo</option>
+                                    <option value="Equipo 1">Equipo 1</option>
+                                    <option value="Equipo 2">Equipo 2</option>
+                                    <option value="Equipo 3">Equipo 3</option>
+                                    <option value="Equipo 4">Equipo 4</option>
+                                </select>
+                                <small v-if="errors.nombre" class="validation-alert">{{errors.nombre}}</small>
+                            </div>
+                        </div>
+
+                        <div class="tw-mb-6 md:tw-flex tw-justify-center">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-96 md:tw-mb-0 tw-text-left">
+                                <jet-label><span class="required">*</span>Personal</jet-label>
+                                <div class="overflow-auto tw-h-40 tw-mx-auto">
+                                    <div v-for="persona in personal" :key="persona" class="tw-gap-y-10 hover:tw-bg-sky-600">
+                                        <input type="checkbox" :id="persona.id" v-model="form2.emp" :value="persona.id">
+                                        <label :for="persona.id">
+                                            {{persona.perfiles.IdEmp}} - {{persona.perfiles.Nombre}} {{persona.perfiles.ApPat}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-target="#tablaEquipo" data-bs-toggle="modal" data-bs-dismiss="modal" @click="reset2()">Regresar</button>
+                        <jet-button type="button" data-bs-target="#tablaEquipo" data-bs-toggle="modal" data-bs-dismiss="modal" @click="saveE(form2)">Guardar</jet-button>
+                        <!-- <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Back to first</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- <modal :show="showModal2" @close="chageClose2">
             <div class="tw-px-4 tw-py-4">
                 <div class="tw-text-lg">
                     <div class="ModalHeader">
                         <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Equipos</h3>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="columna">Turno</th>
-                                    <th class="columna">Equipo</th>
-                                    <th class="columna tw-w-64">Personal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="equipo in equipos" :key="equipo">
-                                    <td class="fila">{{equipo.turnos.nomtur}}</td>
-                                    <td class="fila">{{equipo.nombre}}</td>
-                                    <td class="">
-                                        <div class="overflow-auto tw-h-48">
-                                            <div v-for="perso in equipo.dep_pers" :key="perso" class="tw-border-b-4 tw-border-blueGray-700 hover:tw-bg-sky-600 tw-w-full">
-                                                    {{perso.perfiles.Nombre}} {{perso.perfiles.ApPat}}
+                    <div class="tw-flex">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="columna">Turno</th>
+                                        <th class="columna">Equipo</th>
+                                        <th class="columna tw-w-64">Personal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="equipo in equipos" :key="equipo">
+                                        <td class="fila">{{equipo.turnos.nomtur}}</td>
+                                        <td class="fila">{{equipo.nombre}}</td>
+                                        <td class="">
+                                            <div class="overflow-auto tw-h-48">
+                                                <div v-for="perso in equipo.dep_pers" :key="perso" class="tw-border-b-4 tw-border-blueGray-700 hover:tw-bg-sky-600 tw-w-full">
+                                                        {{perso.perfiles.Nombre}} {{perso.perfiles.ApPat}}
+                                                </div>
                                             </div>
-                                        </div>
 
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tw-mt-4">
-                        <div class="ModalForm">
-                            <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" >
-                                    <jet-label><span class="required">*</span>Departamento</jet-label>
-                                    <select class="InputSelect" @change="verTabla" v-model="form2.departamento_id" v-html="opc" :disabled="S_Area != '' ? 1 : 0">
-                                    </select>
-                                    <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tw-mt-4">
+                            <div class="ModalForm">
+                                <div class="tw-mb-6 md:tw-flex">
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" >
+                                        <jet-label><span class="required">*</span>Departamento</jet-label>
+                                        <select class="InputSelect" @change="verTabla" v-model="form2.departamento_id" v-html="opc" :disabled="S_Area != '' ? 1 : 0">
+                                        </select>
+                                        <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
+                                    </div>
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Turno</jet-label>
+                                        <select v-model="form2.turno_id" class="InputSelect">
+                                            <option value="" disabled>Selecciona un turno</option>
+                                            <option v-for="(item, index) in turno" :key="index" :value="item.id" >{{ item.nomtur }}</option>
+                                        </select>
+                                        <small v-if="errors.turno_id" class="validation-alert">{{errors.turno_id}}</small>
+                                    </div>
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Equipo</jet-label>
+                                        <select v-model="form2.nombre" class="InputSelect">
+                                            <option value="" disabled>Selecciona un Equipo</option>
+                                            <option value="Equipo 1">Equipo 1</option>
+                                            <option value="Equipo 2">Equipo 2</option>
+                                            <option value="Equipo 3">Equipo 3</option>
+                                            <option value="Equipo 4">Equipo 4</option>
+                                        </select>
+                                        <small v-if="errors.nombre" class="validation-alert">{{errors.nombre}}</small>
+                                    </div>
                                 </div>
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Turno</jet-label>
-                                    <select v-model="form2.turno_id" class="InputSelect">
-                                        <option value="" disabled>Selecciona un turno</option>
-                                        <option v-for="(item, index) in turno" :key="index" :value="item.id" >{{ item.nomtur }}</option>
-                                    </select>
-                                    <small v-if="errors.turno_id" class="validation-alert">{{errors.turno_id}}</small>
-                                </div>
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Equipo</jet-label>
-                                    <select v-model="form2.nombre" class="InputSelect">
-                                        <option value="" disabled>Selecciona un Equipo</option>
-                                        <option value="Equipo 1">Equipo 1</option>
-                                        <option value="Equipo 2">Equipo 2</option>
-                                        <option value="Equipo 3">Equipo 3</option>
-                                        <option value="Equipo 4">Equipo 4</option>
-                                    </select>
-                                    <small v-if="errors.nombre" class="validation-alert">{{errors.nombre}}</small>
-                                </div>
-                            </div>
 
-                            <div class="tw-mb-6 md:tw-flex tw-justify-center">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-96 md:tw-mb-0 tw-text-left">
-                                    <jet-label><span class="required">*</span>Personal</jet-label>
-                                    <div class="overflow-auto tw-h-40 tw-mx-auto">
-                                        <div v-for="persona in personal" :key="persona" class="tw-gap-y-10 hover:tw-bg-sky-600">
-                                            <input type="checkbox" :id="persona.id" v-model="form2.emp" :value="persona.id">
-                                            <label :for="persona.id">
-                                                 {{persona.perfiles.IdEmp}} - {{persona.perfiles.Nombre}} {{persona.perfiles.ApPat}}
-                                            </label>
+                                <div class="tw-mb-6 md:tw-flex tw-justify-center">
+                                    <div class="tw-px-3 tw-mb-6 md:tw-w-96 md:tw-mb-0 tw-text-left">
+                                        <jet-label><span class="required">*</span>Personal</jet-label>
+                                        <div class="overflow-auto tw-h-40 tw-mx-auto">
+                                            <div v-for="persona in personal" :key="persona" class="tw-gap-y-10 hover:tw-bg-sky-600">
+                                                <input type="checkbox" :id="persona.id" v-model="form2.emp" :value="persona.id">
+                                                <label :for="persona.id">
+                                                    {{persona.perfiles.IdEmp}} - {{persona.perfiles.Nombre}} {{persona.perfiles.ApPat}}
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="ModalFooter">
-                                <jet-button type="button" @click="saveE(form2)" v-show="!editMode">Guardar</jet-button>
+
                             </div>
                         </div>
                     </div>
+                    <div class="ModalFooter">
+                        <jet-button type="button" @click="saveE(form2)">Guardar</jet-button>
+                    </div>
                 </div>
             </div>
-        </modal>
+        </modal> -->
+        <pre>
+            {{turno}}
+        </pre>
     </app-layout>
 </template>
 
@@ -278,8 +402,10 @@
                 form: {
                     nomtur: '',
                     departamento_id: this.S_Area,
-                    horaIni: '',
-                    horaFin: '',
+                    LVIni: '',
+                    LVFin: '',
+                    SDIni: '',
+                    SDFin: '',
                     cargaExt: '15'
                 },
                 form2: {
@@ -334,8 +460,10 @@
                 this.form = {
                     nomtur: '',
                     departamento_id: this.S_Area,
-                    horaIni: '',
-                    horaFin: '',
+                    LVIni: '',
+                    LVFin: '',
+                    SDIni: '',
+                    SDFin: '',
                     cargaExt: '15'
                 }
             },
@@ -363,6 +491,12 @@
             //guardar información de procesos
             save(form) {
                 //console.log(form)
+                if (form.nomtur == 'Vacio') {
+                    form.LVIni = '00:01';
+                    form.LVFin = '00:01';
+                    form.SDIni = '00:01';
+                    form.SDFin = '00:01';
+                }
                 this.$inertia.post('/Produccion/Turnos', form, {
                     onSuccess: () => { this.alertSucces(), this.reset(), this.chageClose()}, preserveState: true
                 });
@@ -375,6 +509,12 @@
                 this.chageClose();
             },
             update(data) {
+                if (data.nomtur == 'Vacio') {
+                    data.LVIni = '00:01';
+                    data.LVFin = '00:01';
+                    data.SDIni = '00:01';
+                    data.SDFin = '00:01';
+                }
                 data._method = 'PUT';
                 this.$inertia.post('/Produccion/Turnos/' + data.id, data, {
                     onSuccess: () => {this.reset(), this.chageClose()},
@@ -402,7 +542,7 @@
                 data.dep_pers.forEach(e => {
                     this.form2.emp.push(e.id);
                 })
-                this.editMode2 = true;
+                /* this.editMode2 = true; */
                 this.chageClose2();
             }
         }

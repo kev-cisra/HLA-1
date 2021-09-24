@@ -26,9 +26,9 @@ class MaquinasController extends Controller
         //
         /***************** Información de la persona  *****************************/
         //Muestra el id de la persona que inicio sesion
-        $usuario = Auth::user();
+        $usuario = Auth::id();
         //muestra la información del usuario que inicio sesion
-        $perf = PerfilesUsuarios::where('IdEmp','=',$usuario->IdEmp)
+        $perf = PerfilesUsuarios::where('user_id','=',$usuario)
             ->with('dep_pers')
             ->first();
         $maquinas = null;
