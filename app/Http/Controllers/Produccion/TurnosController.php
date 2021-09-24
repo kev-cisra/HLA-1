@@ -25,9 +25,9 @@ class TurnosController extends Controller
         //
         /***************** Información de la persona  *****************************/
         //Muestra el id de la persona que inicio sesion
-        $usuario = Auth::id();
+        $usuario = Auth::user();
         //muestra la información del usuario que inicio sesion
-        $perf = PerfilesUsuarios::where('user_id','=',$usuario)
+        $perf = PerfilesUsuarios::where('IdEmp','=',$usuario->IdEmp)
             ->with('dep_pers')
             ->first();
 
@@ -55,7 +55,7 @@ class TurnosController extends Controller
             $turnos = turnos::where('departamento_id', '=', $prime->departamentos->id)
                 ->with([
                     'equipos' => function($equ){
-                        $equ->select('id','nombre','turno_id');
+                        $equ->select('id','nombre','turno_id','departamento_id');
                     },
                     'departamento' => function($depa){
                         $depa->select('id', 'Nombre');

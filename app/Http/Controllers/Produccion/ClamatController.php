@@ -9,7 +9,6 @@ use App\Models\Produccion\dep_mat;
 use App\Models\Produccion\dep_per;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -25,9 +24,9 @@ class ClamatController extends Controller
     public function index(Request $request)
     {
         //Muestra el id de la persona que inicio sesion
-        $usuario = Auth::id();
+        $usuario = Auth::user();
         //muestra la información del usuario que inicio sesion
-        $perf = PerfilesUsuarios::where('user_id','=',$usuario)
+        $perf = PerfilesUsuarios::where('IdEmp','=',$usuario->IdEmp)
             ->with('dep_pers')
             ->first();
 

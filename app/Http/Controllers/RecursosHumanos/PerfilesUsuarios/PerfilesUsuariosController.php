@@ -39,6 +39,8 @@ class PerfilesUsuariosController extends Controller{
 
     public function store(Request $request){
 
+        $Session = auth()->user();
+
         Validator::make($request->all(), [
             'IdUser' => ['required'],
             'IdEmp' => ['required'],
@@ -58,8 +60,6 @@ class PerfilesUsuariosController extends Controller{
             'Departamento_id' => ['required'],
         ])->validate();
 
-        PerfilesUsuarios::create($request->all());
-
         $Departamento = Departamentos::where('id', '=', $request->Departamento_id)->first();
 
         $Nick = User::create([
@@ -69,15 +69,30 @@ class PerfilesUsuariosController extends Controller{
             'password' => bcrypt($request->IdEmp)
         ]);
 
-        $User = User::latest('id')->first();
-        $Perfil = PerfilesUsuarios::latest('id')->first();
+        PerfilesUsuarios::create([
+            'IdUser' => $Session->id,
+            'IdEmp' => $request->IdEmp,
+            'Empresa' => $request->Empresa,
+            'Nombre' => $request->Nombre,
+            'ApPat' => $request->ApPat,
+            'ApMat' => $request->ApMat,
+            'Curp' => $request->Curp,
+            'Rfc' => $request->Rfc,
+            'Nss' => $request->Nss,
+            'Direccion' => $request->Direccion,
+            'Telefono' => $request->Telefono,
+            'Cumpleaños' => $request->Cumpleaños,
+            'FecIng' => $request->FecIng,
+            'Antiguedad' => $request->Antiguedad,
+            'DiasVac' => $request->DiasVac,
+            'jefe_id' => $request->jefe_id,
+            'user_id' => $Nick->id,
+            'Puesto_id' => $request->Puesto_id,
+            'Departamento_id' => $request->Departamento_id,
+            'jefes_areas_id' => $request->jefes_areas_id,
+        ]);
 
-        if(!empty($User) || !empty($Perfil)){
-            PerfilesUsuarios::find($Perfil->id)->update(['user_id' => $User->id]);
-            return redirect()->back()->with('message', 'Perfil y Usuario Creados Correctamente');
-        }else{
-            return redirect()->back()->with('message', 'Error');
-        }
+            return redirect()->back();
     }
 
     public function show($id){
