@@ -22,7 +22,6 @@ class CreateParosTable extends Migration
 
             $table->unsignedBigInteger('departamento_id')->nullable();
             $table->foreign("departamento_id")->references("id")->on("departamentos")
-            ->onDelete("cascade")
             ->onUpdate("cascade");
 
             $table->softDeletes(); //Columna para soft delete

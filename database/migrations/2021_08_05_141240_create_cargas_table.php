@@ -34,28 +34,20 @@ class CreateCargasTable extends Migration
             $table->unsignedBigInteger('turno_id')->nullable();
 
             $table->foreign('norma')->references('id')->on('dep_mats')
-            ->onDelete('cascade')
             ->onUpdate('cascade');
             $table->foreign('equipo_id')->references("id")->on("equipos")
-            ->onDelete("cascade")
             ->onUpdate("cascade");
             $table->foreign('maq_pro_id')->references("id")->on("maq_pros")
-            ->onDelete("cascade")
             ->onUpdate("cascade");
             $table->foreign('proceso_id')->references("id")->on("procesos")
-            ->onDelete("cascade")
             ->onUpdate("cascade");
             $table->foreign('per_carga')->references("id")->on("perfiles_usuarios")
-            ->onDelete("cascade")
             ->onUpdate("cascade");
             $table->foreign('dep_perf_id')->references("id")->on("dep_pers")
-            ->onDelete("cascade")
             ->onUpdate("cascade");
             $table->foreign('clave_id')->references("id")->on("claves")
-            ->onDelete("cascade")
             ->onUpdate("cascade");
             $table->foreign('turno_id')->references("id")->on("turnos")
-            ->onDelete("cascade")
             ->onUpdate("cascade");
 
             $table->softDeletes(); //Columna para soft delete

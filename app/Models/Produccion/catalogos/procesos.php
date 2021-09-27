@@ -10,13 +10,16 @@ use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
+use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 class procesos extends Model
 {
     use HasFactory;
     use SoftDeletes; //Implementamos
+    use SoftCascadeTrait;
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
+    protected $softCascade = ['maq_pros', 'formulas']; //eliminar en cascada
 
     const Principal = 0;
     const Encargado = 1;
