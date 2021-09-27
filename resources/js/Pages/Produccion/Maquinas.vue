@@ -22,6 +22,7 @@
                 <template v-slot:TableHeader>
                     <th class="columna">Clave de maquina</th>
                     <th class="columna">Nombre de la máquina</th>
+                    <th class="columna">Marca</th>
                     <th class="columna">Departamento</th>
                     <th></th>
                 </template>
@@ -29,6 +30,7 @@
                     <tr v-for="mq in maquinas" :key="mq.id">
                         <td class="fila">{{ mq.id }}</td>
                         <td class="fila">{{ mq.Nombre }}</td>
+                        <td class="fila">{{mq.marca.Nombre}}</td>
                         <td class="fila">{{ mq.departamentos.Nombre }}</td>
                         <td class="fila">
                             <div class="columnaIconos">
@@ -78,8 +80,13 @@
                                 </div>
                             </div>
 
-                            <div class="tw-mb-6 md:tw-flex" hidden>
+                            <div class="tw-mb-6 md:tw-flex">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Marca</jet-label>
+                                    <jet-input type="text" v-model="form.marca" @input="(val) => (form.marca = form.marca.toUpperCase())">{{departamento_id}}</jet-input>
+                                    <small v-if="errors.marca" class="validation-alert">{{errors.marca}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" hidden>
                                     <jet-input type="text" v-model="form.Departamento">{{departamento_id}}</jet-input>
                                     <small v-if="errors.Departamento" class="validation-alert">{{errors.Departamento}}</small>
                                 </div>
@@ -157,6 +164,7 @@
                     departamento_id: '',
                     Nombre: '',
                     Departamento: 'PRODUCCION',
+                    marca: ''
                 }
             }
         },
@@ -326,6 +334,7 @@
                     departamento_id: '',
                     Nombre: '',
                     Departamento: 'PRODUCCION',
+                    marca: ''
                 }
             },
             /******************************** Acciones insert update y delet *************************************/
@@ -341,7 +350,14 @@
             },
             //manda datos de la tabla al modal
             edit: function (data) {
-                this.form = Object.assign({}, data);
+                /* console.log(data); */
+                /* this.form = Object.assign({}, data); */
+                this.form.IdUser = data.IdUser;
+                this.form.departamento_id = data.departamento_id;
+                this.form.Nombre = data.Nombre;
+                this.form.Departamento = data.departamentos.Nombre;
+                this.form.id = data.id;
+                this.form.marca = data.marca.Nombre;
                 //this.vari = data.id;
                 this.editMode = true;
                 this.chageClose();
@@ -349,8 +365,7 @@
             //actualiza información de las maquinas
             update(data) {
                 console.log(data);
-                data._method = 'PUT';
-                this.$inertia.post('/Produccion/Maquinas/' + data.id, data, {
+                this.$inertia.put('/Produccion/Maquinas/' + data.id, data, {
                     onSuccess: () => {this.reset(), this.chageClose()},
                 });
             },

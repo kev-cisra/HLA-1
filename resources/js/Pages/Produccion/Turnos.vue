@@ -15,7 +15,7 @@
             </template>
             <template v-slot:BtnNuevo>
                 <jet-button @click="openModal" class="BtnNuevo">Nuevo Turno </jet-button>
-                <jet-button class="BtnNuevo" data-bs-toggle="modal" href="#tablaEquipo">Agregar Equipo</jet-button>
+                <jet-button class="BtnNuevo" data-bs-toggle="modal" href="#tablaEquipo" @click="reset2">Agregar Equipo</jet-button>
             </template>
         </Accions>
         <div class="">
@@ -86,12 +86,12 @@
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Turno</jet-label>
-                                    <select v-model="form.nomtur" class="InputSelect">
+                                    <select v-model="form.nomtur" @change="cambio" class="InputSelect">
                                         <option value="" disabled>Selecciona un turno</option>
                                         <option value="Turno 1">Turno 1</option>
                                         <option value="Turno 2">Turno 2</option>
                                         <option value="Turno 3">Turno 3</option>
-                                        <option value="Vacio">Turno Vacío</option>
+                                        <option value="Vacío">Turno Vacío</option>
                                     </select>
                                     <small v-if="errors.nomtur" class="validation-alert">{{errors.nomtur}}</small>
                                 </div>
@@ -110,22 +110,22 @@
                             <div class="tw-mb-6 md:tw-flex">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Inicio del turno de Lunes a viernes</jet-label>
-                                    <jet-input type="time" v-model="form.LVIni" class=""></jet-input>
+                                    <jet-input type="time" :disabled="camt" v-model="form.LVIni" class=""></jet-input>
                                     <small v-if="errors.LVIni" class="validation-alert">{{errors.LVIni}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Fin del turno de Lunes a viernes</jet-label>
-                                    <jet-input type="time" v-model="form.LVFin" class=""></jet-input>
+                                    <jet-input type="time" :disabled="camt" v-model="form.LVFin" class=""></jet-input>
                                     <small v-if="errors.LVFin" class="validation-alert">{{errors.LVFin}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Inicio del turno de sabado a domingo</jet-label>
-                                    <jet-input type="time" v-model="form.SDIni" class=""></jet-input>
+                                    <jet-input type="time" :disabled="camt" v-model="form.SDIni" class=""></jet-input>
                                     <small v-if="errors.SDIni" class="validation-alert">{{errors.SDIni}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Fin del turno de sabado a domingo</jet-label>
-                                    <jet-input type="time" v-model="form.SDFin" class=""></jet-input>
+                                    <jet-input type="time" :disabled="camt" v-model="form.SDFin" class=""></jet-input>
                                     <small v-if="errors.SDFin" class="validation-alert">{{errors.SDFin}}</small>
                                 </div>
 
@@ -243,100 +243,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-        <!-- <modal :show="showModal2" @close="chageClose2">
-            <div class="tw-px-4 tw-py-4">
-                <div class="tw-text-lg">
-                    <div class="ModalHeader">
-                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Equipos</h3>
-                    </div>
-                    <div class="tw-flex">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th class="columna">Turno</th>
-                                        <th class="columna">Equipo</th>
-                                        <th class="columna tw-w-64">Personal</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="equipo in equipos" :key="equipo">
-                                        <td class="fila">{{equipo.turnos.nomtur}}</td>
-                                        <td class="fila">{{equipo.nombre}}</td>
-                                        <td class="">
-                                            <div class="overflow-auto tw-h-48">
-                                                <div v-for="perso in equipo.dep_pers" :key="perso" class="tw-border-b-4 tw-border-blueGray-700 hover:tw-bg-sky-600 tw-w-full">
-                                                        {{perso.perfiles.Nombre}} {{perso.perfiles.ApPat}}
-                                                </div>
-                                            </div>
-
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="tw-mt-4">
-                            <div class="ModalForm">
-                                <div class="tw-mb-6 md:tw-flex">
-                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" >
-                                        <jet-label><span class="required">*</span>Departamento</jet-label>
-                                        <select class="InputSelect" @change="verTabla" v-model="form2.departamento_id" v-html="opc" :disabled="S_Area != '' ? 1 : 0">
-                                        </select>
-                                        <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
-                                    </div>
-                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                        <jet-label><span class="required">*</span>Turno</jet-label>
-                                        <select v-model="form2.turno_id" class="InputSelect">
-                                            <option value="" disabled>Selecciona un turno</option>
-                                            <option v-for="(item, index) in turno" :key="index" :value="item.id" >{{ item.nomtur }}</option>
-                                        </select>
-                                        <small v-if="errors.turno_id" class="validation-alert">{{errors.turno_id}}</small>
-                                    </div>
-                                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                        <jet-label><span class="required">*</span>Equipo</jet-label>
-                                        <select v-model="form2.nombre" class="InputSelect">
-                                            <option value="" disabled>Selecciona un Equipo</option>
-                                            <option value="Equipo 1">Equipo 1</option>
-                                            <option value="Equipo 2">Equipo 2</option>
-                                            <option value="Equipo 3">Equipo 3</option>
-                                            <option value="Equipo 4">Equipo 4</option>
-                                        </select>
-                                        <small v-if="errors.nombre" class="validation-alert">{{errors.nombre}}</small>
-                                    </div>
-                                </div>
-
-                                <div class="tw-mb-6 md:tw-flex tw-justify-center">
-                                    <div class="tw-px-3 tw-mb-6 md:tw-w-96 md:tw-mb-0 tw-text-left">
-                                        <jet-label><span class="required">*</span>Personal</jet-label>
-                                        <div class="overflow-auto tw-h-40 tw-mx-auto">
-                                            <div v-for="persona in personal" :key="persona" class="tw-gap-y-10 hover:tw-bg-sky-600">
-                                                <input type="checkbox" :id="persona.id" v-model="form2.emp" :value="persona.id">
-                                                <label :for="persona.id">
-                                                    {{persona.perfiles.IdEmp}} - {{persona.perfiles.Nombre}} {{persona.perfiles.ApPat}}
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ModalFooter">
-                        <jet-button type="button" @click="saveE(form2)">Guardar</jet-button>
-                    </div>
-                </div>
-            </div>
-        </modal> -->
-        <pre>
-            {{turno}}
-        </pre>
     </app-layout>
 </template>
 
@@ -398,7 +304,7 @@
                 showModal: false,
                 showModal2: false,
                 editMode: false,
-                editMode2: false,
+                camt: false,
                 form: {
                     nomtur: '',
                     departamento_id: this.S_Area,
@@ -444,6 +350,21 @@
                     onSuccess: () => {  }, preserveState: true
                 });
             },
+            cambio(event){
+                if (event.target.value == 'Vacío') {
+                    this.camt = true;
+                    this.form.LVIni = "00:00";
+                    this.form.LVFin = "00:00";
+                    this.form.SDIni = "00:00";
+                    this.form.SDFin = "00:00";
+                }else{
+                    this.camt = false;
+                    this.form.LVIni = "";
+                    this.form.LVFin = "";
+                    this.form.SDIni = "";
+                    this.form.SDFin = "";
+                }
+            },
             /******************************* opciones de modal funciones basicas *******************************************/
             //abrir y reset del modal procesos
             openModal() {
@@ -472,7 +393,7 @@
             openModal2() {
                 this.chageClose2();
                 this.reset2();
-                this.editMode2 = false;
+                //this.editMode2 = false;
             },
             //abrir o cerrar modal procesos
             chageClose2(){

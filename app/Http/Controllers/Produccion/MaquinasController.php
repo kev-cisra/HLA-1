@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Catalogos\Maquinas;
+use App\Models\Catalogos\MarcasMaquinas;
 use App\Models\Produccion\dep_per;
 use App\Models\Produccion\maq_pro;
 use App\Models\RecursosHumanos\Catalogos\Areas;
@@ -45,13 +46,19 @@ class MaquinasController extends Controller
             //se consulta el primer departamento que tiene la persona asignada
             $prime = dep_per::where('perfiles_usuarios_id','=',$perf->id)
                 ->with([
-                'departamentos' => function($dep){
+                    'departamentos' => function($dep){
                         $dep->select('id');
-                    }])
+                    }
+                ])
                 ->first(['id', 'departamento_id']);
             //se consultan las maquinas que estan en ese departamento
             $maquinas = Maquinas::where('departamento_id', '=', $prime->departamentos->id)
-            ->with('departamentos')
+            ->with([
+                'departamentos',
+                'marca' => function($mar){
+                    $mar->select('id', 'Nombre', 'maquinas_id');
+                }
+            ])
             ->get();
 
         }else{
@@ -67,21 +74,16 @@ class MaquinasController extends Controller
 
         if(!empty($request->busca)){
             $maquinas = Maquinas::where('departamento_id', '=', $request->busca)
-            ->with('departamentos')
+            ->with([
+                'departamentos',
+                'marca' => function($mar){
+                    $mar->select('id', 'Nombre', 'maquinas_id');
+                }
+            ])
             ->get();
         }
 
         return Inertia::render('Produccion/Maquinas', ['usuario' => $perf,'depa' => $depa, 'maquinas' => $maquinas]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -96,40 +98,25 @@ class MaquinasController extends Controller
         Validator::make($request->all(), [
             'departamento_id' => 'required',
             'Nombre' => ['required'],
-            'Departamento' => 'required'
+            'Departamento' => 'required',
+            'marca' => 'required'
         ])->validate();
         //return $request;
-        Maquinas::create([
+        $maq = Maquinas::create([
             'IdUser' => $request->IdUser,
             'departamento_id' => $request->departamento_id,
             'Nombre' => strtoupper($request->Nombre),
             'Departamento' => $request->Departamento
         ]);
 
+        MarcasMaquinas::create([
+            'IdUser' => $request->IdUser,
+            'Nombre' => $request->marca,
+            'maquinas_id' => $maq->id
+        ]);
+
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');/**/
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Produccion\maq_pro  $maq_pro
-     * @return \Illuminate\Http\Response
-     */
-    public function show(maq_pro $maq_pro)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Produccion\maq_pro  $maq_pro
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(maq_pro $maq_pro)
-    {
-        //
     }
 
     /**
@@ -145,11 +132,21 @@ class MaquinasController extends Controller
         Validator::make($request->all(), [
             'departamento_id' => 'required',
             'Nombre' => ['required'],
-            'Departamento' => 'required'
+            'Departamento' => 'required',
+            'marca' => 'required'
         ])->validate();
 
         if ($request->has('id')) {
-            Maquinas::find($request->input('id'))->update($request->all());
+            Maquinas::find($request->input('id'))->update([
+                'IdUser' => $request->IdUser,
+                'departamento_id' => $request->departamento_id,
+                'Nombre' => strtoupper($request->Nombre),
+                'Departamento' => $request->Departamento
+            ]);
+
+            MarcasMaquinas::where('maquinas_id', '=', $request->id)->update([
+                'Nombre' => $request->marca
+            ]);
             return redirect()->back()
                     ->with('message', 'Post Updated Successfully.');
         }
