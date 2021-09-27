@@ -3,18 +3,38 @@
 namespace App\Http\Controllers\Administrador\Roles;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
-
+use phpDocumentor\Reflection\DocBlock\Tags\Uses;
+use Spatie\Permission\Models\Role;
 class RolesUsuariosController extends Controller{
 
-    public function index(){
+    public function index(Request $request){
 
-        $Session = auth()->user();
+        request()->validate([
+            'direction' => ['in:asc,desc'],
+            'field' => ['in:id,name,email']
+        ]);
 
-        return Inertia::render('Administrador/Roles/RolesUsuarios', compact('Session'));
+        $query = User::query();
+        $Roles = Role::get();
+
+        if(request('search')){
+            $query->where(request('column'), 'LIKE', '%'.request('search'). '%');
+        }
+
+        if(request()->has(['field', 'direction'])){
+            $query->orderBy(request('field'), request('direction'));
+        }
+
+        return Inertia::render('Administrador/Roles/RolesUsuarios',[
+            'Roles' => $Roles,
+            'Users' => $query->paginate(request('paginate')),
+            'filters' => request()->all(['search','field', 'direction'])
+        ]);
     }
 
     /**
