@@ -301,6 +301,11 @@
                                                 <i class="fas fa-fingerprint"></i>
                                             </span>
                                         </div>
+                                        <div class="iconoLime" @click="PrecioProveedor(datos)">
+                                            <span tooltip="Entrega el Artículo" flow="left">
+                                                <i class="fas fa-truck"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="columnaIconos" v-else-if="datos.EstatusArt == 9">
                                         <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
@@ -362,6 +367,10 @@
                     </Table>
                 </div>
             </div>
+
+            <pre>
+                {{ ArticuloRequisicion }}
+            </pre>
 
             <modal :show="showModal" @close="chageClose" :maxWidth="tam">
                 <form>
@@ -454,6 +463,38 @@
                 </form>
             </modal>
 
+            <modal :show="showProveedor" @close="chageProveedor" maxWidth="2xl">
+                <form>
+                    <div class="tw-px-4 tw-py-4">
+                        <div class="tw-text-lg">
+                            <div class="ModalHeader">
+                                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Firma de Proveedor</h3>
+                            </div>
+                        </div>
+
+                        <div class="tw-mt-4">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 tw-w-full md:tw-w-full md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Nombre Completo</jet-label>
+                                    <jet-input type="text" :min="min" v-model="form.NomProveedor"></jet-input>
+                                    <small v-if="errors.NomProveedor" class="validation-alert">{{errors.NomProveedor}}</small>
+                                </div>
+                            </div>
+                            <div class="tw-mb-6 md:tw-flex">
+                                <Canvas/>
+                            </div>
+                            <div class="tw-mb-6 md:tw-flex">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ModalFooter">
+                        <jet-button type="button">Guardar</jet-button>
+                        <jet-CancelButton @click="chageProveedor">Cerrar</jet-CancelButton>
+                    </div>
+                </form>
+            </modal>
+
         </div>
     </app-layout>
 </template>
@@ -477,10 +518,12 @@ import $ from "jquery";
 import moment from 'moment';
 import 'moment/locale/es';
 import throttle from 'lodash/throttle'
+import Canvas from "@/Components/Canvas";
 
 export default {
     data() {
         return {
+            showProveedor: false,
             showConfirm: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
@@ -499,6 +542,7 @@ export default {
                 Desc: null,
                 User: null,
                 Pass: null,
+                NomProveedor: null,
             },
             params:{
                 month: null,
@@ -524,6 +568,7 @@ export default {
         Pagination,
         JetInput,
         JetSelect,
+        Canvas,
     },
 
     props: {
@@ -541,7 +586,17 @@ export default {
     },
 
     methods: {
-
+        ClearCanvas(){
+            var c = document.getElementById("myCanvas");
+            this.canvas.clearRect(0, 0, c.width, c.height);
+        },
+        GuardarCanvas(){
+            console.log("Guardar Canvas");
+            var c = document.getElementById("myCanvas");
+            var dataUrl = c.toDataURL();
+            // drawImage.setAttribute("src", dataUrl);
+            console.log(dataUrl);
+        },
         reset() {
             this.form = {
                 IdUser: this.Session.id,
@@ -554,6 +609,7 @@ export default {
                 Cant: null,
                 Uni: null,
                 Desc: null,
+                NomProveedor: null,
             };
         },
 
@@ -586,6 +642,10 @@ export default {
 
         chageConfirm() {
             this.showConfirm = !this.showConfirm;
+        },
+
+        chageProveedor(){
+            this.showProveedor = !this.showProveedor;
         },
 
         Filtro(value){
@@ -686,6 +746,11 @@ export default {
                 },
             });
         },
+
+        PrecioProveedor(data){
+            this.chageProveedor();
+            this.form.IdArt = data.id;
+        }
     },
     watch: {
         params: {

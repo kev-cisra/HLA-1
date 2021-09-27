@@ -18169,6 +18169,12 @@ video {
 	--tw-scale-x: 1;
 	--tw-scale-y: 1;
 	--tw-transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+<<<<<<< HEAD
+}
+
+.tw-border, .tw-border-2, .tw-border-t-4, .tw-border-l, .tw-border-t, .tw-border-r, .tw-border-b-2, .tw-border-l-4, .tw-border-b-4, .tw-border-b, .tw-border-t-2, .tw-border-t-8, .paginate, .btn-row, .btn-filter, .btn-form, .BtnCancel, .input-search, .InputSelect, .InputSelectFilter, .textarea, .InputSearch, .DetailsHeader, .SectionInfo, .DataContainer, .Enero, .EneroActivo, .Febrero, .FebreroActivo, .Marzo, .MarzoActivo, .Abril, .AbrilActivo, .Mayo, .MayoActivo, .Junio, .JunioActivo, .Julio, .JulioActivo, .Agosto, .AgostoActivo, .Septiembre, .SeptiembreActivo, .Octubre, .OctubreActivo, .Noviembre, .NoviembreActivo, .Diciembre, .DiciembreActivo {
+=======
+>>>>>>> c7af961902163c2ffa9e22071c3259d408c8a2cc
 	--tw-border-opacity: 1;
 	border-color: rgba(229, 231, 235, var(--tw-border-opacity));
 	--tw-ring-offset-shadow: 0 0 #0000;
@@ -18709,6 +18715,9 @@ select {
 }
 .tw-m-3 {
 	margin: 0.75rem;
+}
+.tw-m-10 {
+	margin: 2.5rem;
 }
 .tw-mx-auto {
 	margin-left: auto;
@@ -19442,6 +19451,10 @@ select {
 .tw-bg-orange-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(251, 146, 60, var(--tw-bg-opacity));
+}
+.tw-bg-green-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(34, 197, 94, var(--tw-bg-opacity));
 }
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;

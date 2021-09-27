@@ -58,6 +58,9 @@ class RequisicionesSolicitadasController extends Controller {
                         'Marca_id', 'TipCompra',
                         'Observaciones', 'Perfil_id');
                 },
+                'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
+                    $pre->select('id', 'Precio', 'Total', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                },
                 'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'name');
                 },
