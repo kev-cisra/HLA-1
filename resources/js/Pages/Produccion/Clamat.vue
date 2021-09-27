@@ -328,7 +328,7 @@
                 $('#t_clamat').DataTable().clear();
                 $('#t_clamat').DataTable().destroy();
                 this.$inertia.get('/Produccion/Clamat',{ busca: event.target.value }, {
-                    onSuccess: () => { this.tabla(); }, preserveState: true
+                    onSuccess: () => { this.tabla(); }, onError: () => {this.tabla()}, preserveState: true
                 });
             },
             //reset de modal
@@ -343,7 +343,7 @@
             saveDM(form) {
                 $('#t_clamat').DataTable().destroy();
                 this.$inertia.post('/Produccion/Clamat', form, {
-                    onSuccess: () => { this.tabla(), this.reset() ,this.alertSucces()}, preserveState: true
+                    onSuccess: () => { this.tabla(), this.reset() ,this.alertSucces()}, onError: () => {this.tabla()}, preserveState: true
                 });
             },
             destroyDM(data){
@@ -351,7 +351,7 @@
                 if (!confirm('¿Estás seguro de querer eliminar este registro?')) return;
                 $('#t_clamat').DataTable().destroy()
                 data._method = 'DELETE';
-                this.$inertia.post('/Produccion/Clamat/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tabla() }});
+                this.$inertia.post('/Produccion/Clamat/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tabla() },onError: () => {this.tabla()}});
             },
             show(data) {
                 this.resetCL(data.id)
@@ -359,7 +359,7 @@
                 $('#t_clave').DataTable().clear();
                 $('#t_clave').DataTable().destroy();
                 this.$inertia.get('/Produccion/Clamat',{ busca: data.departamentos.id, cls: data.id }, {
-                    onSuccess: () => { this.tablaCL(); }, preserveState: true
+                    onSuccess: () => { this.tablaCL(); }, onError: () => {this.tabla()}, preserveState: true
                 });
                 //this.tablaVi = data.claves;
             },
@@ -378,7 +378,7 @@
                 $('#t_clave').DataTable().clear();
                 $('#t_clave').DataTable().destroy();
                 this.$inertia.post('/Produccion/Claves', form, {
-                    onSuccess: () => { this.tablaCL(), this.alertSucces() }, preserveState: true
+                    onSuccess: () => { this.tablaCL(), this.alertSucces() }, onError: () => {this.tabla()}, preserveState: true
                 });
                 this.resetCL(form.dep_mat_id)
                 //console.log(form.dep_mat_id)
@@ -406,7 +406,7 @@
                 $('#t_clave').DataTable().clear()
                 $('#t_clave').DataTable().destroy()
                 data._method = 'DELETE';
-                this.$inertia.post('/Produccion/Claves/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tablaCL() }});
+                this.$inertia.post('/Produccion/Claves/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tablaCL() },onError: () => {this.tabla()}});
             }
 
         }

@@ -447,8 +447,9 @@
                     $('#t_carg').DataTable().destroy();
                 }
                 this.$inertia.put('/Produccion/Carga/' + data.id, data, {
-                    onSuccess: () => {this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()},
+                    onSuccess: () => {this.reCarga(), this.resetCA(), this.alertSucces()},
                 });
+                this.tabla()
             },
             /****************************** Carga de notas */
             notaCA(form){
@@ -465,8 +466,9 @@
                 $('#t_carg').DataTable().clear();
                 $('#t_carg').DataTable().destroy();
                 this.$inertia.put('/Produccion/Nota/' + data.id, data, {
-                    onSuccess: () => {this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()},
+                    onSuccess: () => {this.reCarga(), this.resetCA(), this.alertSucces()},
                 });
+                this.tabla()
             }
         },
         watch: {

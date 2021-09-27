@@ -241,7 +241,7 @@
                 event.target.value == limp ? '' : $('#t_maq').DataTable().clear();
                 $('#t_maq').DataTable().destroy()
                 this.$inertia.get('/Produccion/Maquinas',{ busca: event.target.value }, {
-                    onSuccess: () => { this.tabla(); }, preserveState: true
+                    onSuccess: () => { this.tabla(); }, onError: () => {this.tabla()}, preserveState: true
                 });
             },
             /******************************* opciones de data table ****************************************/
@@ -344,6 +344,7 @@
                 $('#t_maq').DataTable().destroy();
                 this.$inertia.post('/Produccion/Maquinas', form, {
                     onSuccess: () => { this.alertSucces(), this.tabla(), this.reset(), this.chageClose()},
+                    onError: () => {this.tabla()}
                 });
                 //$('#t_pro').DataTable();
 
@@ -364,17 +365,39 @@
             },
             //actualiza información de las maquinas
             update(data) {
-                console.log(data);
+                /* console.log(data); */
                 this.$inertia.put('/Produccion/Maquinas/' + data.id, data, {
                     onSuccess: () => {this.reset(), this.chageClose()},
                 });
             },
             deleteRow: function (data) {
-                if (!confirm('¿Estás seguro de querer eliminar esta Máquina?')) return;
-                this.maquinas.length == 1 ? $('#t_maq').DataTable().clear() : '';
-                $('#t_maq').DataTable().destroy()
-                data._method = 'DELETE';
-                this.$inertia.post('/Produccion/Maquinas/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tabla() }});
+                /* console.log(data) */
+                Swal.fire({
+                    title: '¿Estás seguro de querer eliminar esta Máquina?',
+                    text: "¡Si se elimina no se podrá revertir!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                    'Eliminadó!',
+                    '¡El registro se eliminó correctamente!.',
+                    'success'
+                    )
+                    this.maquinas.length == 1 ? $('#t_maq').DataTable().clear() : '';
+                    $('#t_maq').DataTable().destroy()
+                    data._method = 'DELETE';
+                    this.$inertia.post('/Produccion/Maquinas/' + data.id, data, {
+                            onSuccess: () => { this.alertDelete(), this.tabla() },
+                            onError: () => {this.tabla()}
+                        }
+                    );
+                }
+                })
+
             }
         }
     }

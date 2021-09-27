@@ -20,7 +20,7 @@ class Maquinas extends Model
 
     //relaciones 1 a muchos
     public function maq_pros() {
-        return $this->hasMany(maq_pro::class);
+        return $this->hasMany(maq_pro::class, 'maquina_id');
     }
 
     public function marca(){

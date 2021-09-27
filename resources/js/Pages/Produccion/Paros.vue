@@ -68,27 +68,37 @@
         <div class="table-responsive">
             <Table id="t_paros">
                 <template v-slot:TableHeader>
-                    <th class="columna">Orden</th>
-                    <th class="columna">Clave de paro</th>
-                    <th class="columna">Nombre de paro</th>
-                    <th class="columna">Inicio</th>
-                    <th class="columna">Final</th>
-                    <th class="columna">Tiempo cargado</th>
-                    <th class="columna">Maquina</th>
+                    <th class="columna tw-text-center">Orden</th>
+                    <th class="columna tw-text-center">Clave de paro</th>
+                    <th class="columna tw-text-center">Nombre de paro</th>
+                    <th class="columna tw-text-center">Inicio</th>
+                    <th class="columna tw-text-center">Final</th>
+                    <th class="columna tw-text-center">Tiempo cargado</th>
+                    <th class="columna tw-text-center">Maquina</th>
                     <th></th>
                 </template>
                 <template v-slot:TableFooter >
                     <tr v-for="ca in cargas" :key="ca.id">
-                        <td class="fila">{{ca.orden}}</td>
-                        <td class="fila">{{ca.paros.clave}}</td>
-                        <td class="fila">{{ca.paros.descri}}</td>
-                        <td class="fila">{{ca.iniFecha}}</td>
-                        <td class="fila">{{ca.finFecha == null ? '' : ca.finFecha}}</td>
-                        <td class="fila">{{tiempo(ca.iniFecha, ca.finFecha)}}</td>
-                        <td class="fila">{{ca.maq_pro.maquinas.Nombre}}</td>
-                        <td class="fila">
-                            <!-- <div class="columnaIconos">
-                                <div class="iconoDetails tw-cursor-pointer" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & (((noCor == 'cor' | noCor == 'enc') & ca.proceso.tipo == 2 & ca.notaPen == 1) | ((noCor == 'lid' | noCor == 'ope') & ca.equipo_id != null & ca.notaPen == 1))">
+                        <td class="fila tw-text-center">{{ca.orden}}</td>
+                        <td class="fila tw-text-center">{{ca.paros.clave}}</td>
+                        <td class="fila tw-text-center">{{ca.paros.descri}}</td>
+                        <td class="fila tw-text-center">{{ca.iniFecha}}</td>
+                        <td class="fila tw-text-center">{{ca.finFecha == null ? '' : ca.finFecha}}</td>
+                        <td class="fila tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}}</td>
+                        <td class="fila tw-text-center">{{ca.maq_pro.maquinas.Nombre}}</td>
+                        <td class="fila tw-text-center">
+                            <div class="columnaIconos">
+                                <div class="iconoDelete">
+                                    <span tooltip="Detener" flow="left">
+                                        <svg class="h-8 w-8 text-red-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+
+
+                                <!-- <div class="iconoDetails tw-cursor-pointer" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & (((noCor == 'cor' | noCor == 'enc') & ca.proceso.tipo == 2 & ca.notaPen == 1) | ((noCor == 'lid' | noCor == 'ope') & ca.equipo_id != null & ca.notaPen == 1))">
                                     <span tooltip="Agregar nota" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -101,8 +111,8 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                         </svg>
                                     </span>
-                                </div>
-                            </div> -->
+                                </div> -->
+                            </div>
                         </td>
                     </tr>
                 </template>
@@ -187,7 +197,7 @@
             mostSelect() {
                 this.$nextTick(() => {
                     if (this.usuario.dep_pers.length != 0) {
-                        console.log(this.usuario.dep_pers[0].departamento_id)
+                        /* console.log(this.usuario.dep_pers[0].departamento_id) */
                         this.S_Area = this.usuario.dep_pers[0].departamento_id;
                     }else{
                         this.S_Area = 7;
@@ -229,7 +239,7 @@
             tiempo(ini, fin){
                 var tini = moment(ini);
                 var tfin = fin == null ? moment() : moment(fin);
-                return tini.diff(tfin, 'hours');
+                return tfin.diff(tini, 'hours');
             },
             /****************************** datatables ********************************************************/
             //datatable de carga
@@ -259,17 +269,17 @@
                 //$('#t_paros').DataTable().clear();
                 $('#t_paros').DataTable().destroy();
                 this.$inertia.post('/Produccion/Paros', data, {
-                    onSuccess: () => { this.tabla(), this.reset(), this.alertSucces()}, preserveState: true
+                    onSuccess: () => { this.tabla(), this.reset(), this.alertSucces()}, onError: () => {this.tabla()}, preserveState: true
                 });
             }
-        },/*
+        },
         computed: {
             noCor: function() {
                 if (this.usuario.dep_pers.length != 0) {
                     return this.usuario.dep_pers[0].ope_puesto;
                 }
             }
-        }, */
+        },
         watch: {
             S_Area: function(b){
                 //$('#t_paros').DataTable().clear();
@@ -277,7 +287,7 @@
                 /* this.reset(); */
                 this.proc_prin = '';
                 this.$inertia.get('/Produccion/Paros',{ busca: b }, {
-                    onSuccess: () => { this.selePP(), this.tabla() }, preserveState: true
+                    onSuccess: () => { this.selePP(), this.tabla() }, onError: () => {this.tabla()}, preserveState: true
                 });
             },
             proc_prin: function(v) {
