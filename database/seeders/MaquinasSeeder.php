@@ -12,8 +12,8 @@ class MaquinasSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
+    public function run(){
+
         Maquinas::create([
             'IdUser' => '1',
             'Nombre' => 'PRENSA 1',
@@ -129,6 +129,13 @@ class MaquinasSeeder extends Seeder
         Maquinas::create([
             'IdUser' => '1',
             'Nombre' => 'CORTADORA 1',
+            'Departamento' => 'APERTURA',
+            'departamento_id' => '7'
+        ]);
+
+        Maquinas::create([
+            'IdUser' => '1',
+            'Nombre' => 'MANTENIMIENTO APERTURA',
             'Departamento' => 'APERTURA',
             'departamento_id' => '7'
         ]);
