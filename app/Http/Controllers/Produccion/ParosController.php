@@ -48,83 +48,6 @@ class ParosController extends Controller
         if (count($perf->dep_pers) != 0) {
             //muestran los departamentos
             $depa = $perf->dep_pers;
-            //muestra de procesos dependiendo del puesto
-            /* $procesos = procesos::where('departamento_id', '=', $perf->Departamento_id)
-                ->where('tipo','!=', '3')
-                ->where('tipo', '!=', '4')
-                ->with([
-                    'maq_pros' => function($mp){
-                        $mp->select('id', 'proceso_id', 'maquina_id');
-                    },
-                    'maq_pros.maquinas' => function($ma){
-                        $ma->select('id', 'Nombre', 'departamento_id');
-                    },
-                    'maq_pros.maquinas.marca'=> function($maq){
-                        $maq->select('id', 'Nombre', 'maquinas_id');
-                    },
-                ])
-                ->get();
-            //materiales
-            $mate = dep_mat::where('departamento_id', '=', $perf->Departamento_id)
-                ->with([
-                    'materiales' => function($mat){
-                        $mat->select('id','idmat', 'nommat');
-                    },
-                    'claves' => function($cla){
-                        $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
-                    }
-                ])
-                ->get();
-            //carga
-            $bus = $perf->Departamento_id;
-            $carga = carga::whereBetween('fecha', [$dia, $mañana])
-                ->orWhere(function($q) use ($dia){
-                    $q->whereDate('fecha', '<=', $dia)
-                    ->where('notaPen', '=', '2');
-                })
-                ->with([
-                    'dep_perf' => function($dp) use($bus) {
-                        $dp -> where('departamento_id', '=', $bus)
-                            ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
-                    },
-                    'dep_perf.perfiles' => function($perfi){
-                        $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
-                    },
-                    'dep_perf.departamentos' => function($dp_de){
-                        $dp_de -> select('id', 'Nombre', 'departamento_id');
-                    },
-                    'equipo' => function($eq){
-                        $eq -> select('id', 'nombre');
-                    },
-                    'turno' => function($tu){
-                        $tu ->select('id', 'nomtur');
-                    },
-                    'maq_pro' => function($mp){
-                        $mp ->select('id', 'proceso_id', 'maquina_id');
-                    },
-                    'maq_pro.maquinas' => function($ma){
-                        $ma -> select('id', 'Nombre');
-                    },
-                    'proceso' => function($pr){
-                        $pr -> select('id', 'nompro', 'tipo_carga', 'proceso_id');
-                    },
-                    'dep_mat' => function($dp){
-                        $dp -> select('id', 'material_id');
-                    },
-                    'dep_mat.materiales' => function($mat){
-                        $mat -> select('id', 'idmat', 'nommat');
-                    },
-                    'clave' => function($cla){
-                        $cla -> select('id', 'CVE_ART', 'DESCR');
-                    },
-                    'notas' => function($not){
-                        $not -> latest()
-                        -> select('id', 'fecha', 'nota', 'carga_id');
-                    }
-                ])
-                ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id']);
-                     */
-
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')
@@ -165,8 +88,12 @@ class ParosController extends Controller
                     ])
                     ->get();
             //carga
-            $bus = $request->busca;
             $carga = parosCarga::where('departamento_id', '=', $request->busca)
+                ->whereBetween('fecha', [$dia, $mañana])
+                ->orWhere(function($q) use ($dia){
+                    $q->whereDate('fecha', '<=', $dia)
+                    ->where('estatus', '!=', 'Autorizado');
+                })
                 ->with([
                     'paros' => function($pr){
                         $pr->select('id', 'clave', 'descri', 'tipo');
@@ -187,7 +114,7 @@ class ParosController extends Controller
                         $dep->select('id', 'Nombre');
                     }
                 ])
-                ->get(['id', 'fecha', 'iniFecha', 'orden', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'departamento_id']);
+                ->get(['id', 'fecha', 'iniFecha', 'orden', 'estatus', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'departamento_id']);
 
         }
 
@@ -212,6 +139,7 @@ class ParosController extends Controller
             'fecha' => $request->fecha,
             'iniFecha' => $request->fecha,
             'paro_id' => $request->paro_id,
+            'estatus' => $request->estatus,
             'perfil_ini_id' => $request->usu,
             'maq_pro_id' => $request->maq_pro_id,
             'proceso_id' => $request->proceso_id,
@@ -219,6 +147,21 @@ class ParosController extends Controller
             'descri' => $request->descri,
             'departamento_id' => $request->departamento_id
         ]);
+
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
+    }
+
+    public function update(Request $request)
+    {
+        //
+        if ($request->has('id')) {
+            parosCarga::find($request->input('id'))->update([
+                'finFecha' => $request->finFecha,
+                'estatus' => $request->estatus,
+                'tiempo' => $request->tiempo
+            ]);
+        }
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');

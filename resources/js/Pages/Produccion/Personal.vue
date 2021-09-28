@@ -49,7 +49,7 @@
 
                 </div>
                 <div class="w-100 tw-mx-auto" align="center">
-                    <jet-button type="button" class="tw-mx-auto" @click="save(form)" v-if="personal.length != 0">Guardar</jet-button>
+                    <jet-button type="button" class="tw-mx-auto" @click="save(form)">Guardar</jet-button>
                 </div>
         </div>
         <!----------------------------------- tabla de datos -------------------------------------------------------->
@@ -273,7 +273,7 @@
                 $('#t_per').DataTable().clear();
                 $('#t_per').DataTable().destroy();
                 this.$inertia.get('/Produccion/Personal',{ busca: event.target.value }, {
-                    onSuccess: () => { this.tabla(); }, preserveState: true
+                    onSuccess: () => { this.tabla(); }, onError: () => {this.tabla()}, preserveState: true
                 });
             },
             //reset de modal
@@ -289,7 +289,7 @@
                 //console.log(form)
                 $('#t_per').DataTable().destroy();
                 this.$inertia.post('/Produccion/Personal', form, {
-                    onSuccess: () => { this.tabla(), this.reset(form.departamento_id),this.alertSucces()}, preserveState: true
+                    onSuccess: () => { this.tabla(), this.reset(form.departamento_id),this.alertSucces()}, onError: () => {this.tabla()}, preserveState: true
                 });
                 //$('#t_mat').DataTable();
             },
@@ -299,7 +299,7 @@
                     $('#t_per').DataTable().destroy()
                     data._method = 'DELETE';
                     this.$inertia.post('/Produccion/Personal/' + data.id, data, {
-                        onSuccess: () => { this.tabla(), this.alertDelete() }, preserveState: true
+                        onSuccess: () => { this.tabla(), this.alertDelete() }, onError: () => {this.tabla()}, preserveState: true
                 });
             },
             updateUser(data) {

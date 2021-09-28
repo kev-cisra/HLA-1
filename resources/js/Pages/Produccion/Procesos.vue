@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode">
                                     <jet-label><span class="required">*</span>Tipo de proceso</jet-label>
-                                    <select v-model="form.tipo" class="InputSelect">
+                                    <select v-model="form.tipo" @change="limpTipo()" class="InputSelect">
                                         <option value="" disabled>Seleccione</option>
                                         <option value="0">Proceso principal</option>
                                         <option value="1">Carga para Lider / Operador</option>
@@ -390,7 +390,7 @@
                 this.limpiar(event);
                 $('#t_pro').DataTable().destroy();
                 this.$inertia.get('/Produccion/Procesos',{ busca: event.target.value }, {
-                    onSuccess: () => { this.tabla(), this.mostTipo(), this.princiProcesos() }, preserveState: true
+                    onSuccess: () => { this.tabla(), this.mostTipo() }, onError: () => {this.tabla()}, preserveState: true
                 });
                 //select
             },
@@ -480,19 +480,30 @@
 
                 }
             },
+            //limpia tipo
+            limpTipo(){
+                if (this.editMode == false) {
+                    this.form.proceso_id= '';
+                    this.form.operacion= '';
+                    this.form.tipo_carga= '';
+                    this.form.maquinas= [{value: ""}];
+                    this.form.formulas= [{val: ""}];
+                    this.form.for_maq= [];
+                }
+            },
             /******************************** Acciones insert update y delet *************************************/
             //guardar información de procesos
             save(form) {
                 //console.log(form)
                 $('#t_pro').DataTable().destroy();
                 this.$inertia.post('/Produccion/Procesos', form, {
-                    onSuccess: () => { this.alertSucces(), this.tabla(), this.reset(), this.chageClose()},
+                    onSuccess: () => { this.alertSucces(), this.tabla(), this.reset(), this.chageClose()}, onError: () => {this.tabla()}
                 });
 
             },
             //manda datos de la tabla al modal
             edit: function (data) {
-                console.log(data);
+                /* console.log(data); */
                 this.form.id = data.id;
                 this.form.departamento_id = data.departamento_id;
                 this.form.nompro = data.nompro;
@@ -519,7 +530,7 @@
                 if (!confirm('¿Estás seguro de querer eliminar este Proceso?')) return;
                 $('#t_pro').DataTable().destroy()
                 data._method = 'DELETE';
-                this.$inertia.post('/Produccion/Procesos/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tabla() }});
+                this.$inertia.post('/Produccion/Procesos/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tabla() }, onError: () => {this.tabla()}});
             },
         },
         watch: {
@@ -543,9 +554,6 @@
                                 this.options += `<option value="${element.id}">${element.nompro}</option>`;
                             }
                         })
-                    }
-                    if (f.tipo != 0){
-                        this.form.tipo_carga = '';
                     }
                 }
             },

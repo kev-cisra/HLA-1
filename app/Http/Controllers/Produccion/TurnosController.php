@@ -167,7 +167,12 @@ class TurnosController extends Controller
         //
         Validator::make($request->all(), [
             'nomtur' => ['required'],
-            'departamento_id' => ['required']
+            'departamento_id' => ['required'],
+            'LVIni' => ['required'],
+            'LVFin' => ['required'],
+            'SDIni' => ['required'],
+            'SDFin' => ['required'],
+            'cargaExt' => ['required'],
         ])->validate();
 
         //consulta si ya esta registrado ese usuario

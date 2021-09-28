@@ -103,40 +103,52 @@ class CargaController extends Controller
             ->with([
                 'dep_perf' => function($dp) use($bus) {
                     $dp -> where('departamento_id', '=', $bus)
+                        ->withTrashed()
                         ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
                 },
                 'dep_perf.perfiles' => function($perfi){
-                    $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                    $perfi->withTrashed()
+                    ->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
                 },
                 'dep_perf.departamentos' => function($dp_de){
-                    $dp_de -> select('id', 'Nombre', 'departamento_id');
+                    $dp_de ->withTrashed()
+                    -> select('id', 'Nombre', 'departamento_id');
                 },
                 'equipo' => function($eq){
-                    $eq -> select('id', 'nombre');
+                    $eq ->withTrashed()
+                    -> select('id', 'nombre');
                 },
                 'turno' => function($tu){
-                    $tu ->select('id', 'nomtur');
+                    $tu ->withTrashed()
+                    ->select('id', 'nomtur');
                 },
                 'maq_pro' => function($mp){
-                    $mp ->select('id', 'proceso_id', 'maquina_id');
+                    $mp ->withTrashed()
+                    ->select('id', 'proceso_id', 'maquina_id');
                 },
                 'maq_pro.maquinas' => function($ma){
-                    $ma -> select('id', 'Nombre');
+                    $ma ->withTrashed()
+                    -> select('id', 'Nombre');
                 },
                 'proceso' => function($pr){
-                    $pr -> select('id', 'nompro', 'tipo', 'proceso_id');
+                    $pr ->withTrashed()
+                    -> select('id', 'nompro', 'tipo', 'proceso_id');
                 },
                 'dep_mat' => function($dp){
-                    $dp -> select('id', 'material_id');
+                    $dp ->withTrashed()
+                    -> select('id', 'material_id');
                 },
                 'dep_mat.materiales' => function($mat){
-                    $mat -> select('id', 'idmat', 'nommat');
+                    $mat ->withTrashed()
+                    -> select('id', 'idmat', 'nommat');
                 },
                 'clave' => function($cla){
-                    $cla -> select('id', 'CVE_ART', 'DESCR');
+                    $cla ->withTrashed()
+                    -> select('id', 'CVE_ART', 'DESCR');
                 },
                 'notas' => function($not){
-                    $not -> latest()
+                    $not ->withTrashed()
+                    -> latest()
                     -> select('id', 'fecha', 'nota', 'carga_id');
                 }
             ])
@@ -203,10 +215,12 @@ class CargaController extends Controller
             ->with([
                 'dep_perf' => function($dp) use($bus) {
                     $dp -> where('departamento_id', '=', $bus)
+                        ->withTrashed()
                         ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
                 },
                 'dep_perf.perfiles' => function($perfi){
-                    $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                    $perfi->withTrashed()
+                    ->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
                 },
                 'dep_perf.departamentos' => function($dp_de){
                     $dp_de -> select('id', 'Nombre', 'departamento_id');
@@ -218,22 +232,27 @@ class CargaController extends Controller
                     $tu ->select('id', 'nomtur');
                 },
                 'maq_pro' => function($mp){
-                    $mp ->select('id', 'proceso_id', 'maquina_id');
+                    $mp ->withTrashed()
+                    ->select('id', 'proceso_id', 'maquina_id');
                 },
                 'maq_pro.maquinas' => function($ma){
-                    $ma -> select('id', 'Nombre');
+                    $ma ->withTrashed()
+                    -> select('id', 'Nombre');
                 },
                 'proceso' => function($pr){
                     $pr -> select('id', 'nompro', 'tipo', 'proceso_id');
                 },
                 'dep_mat' => function($dp){
-                    $dp -> select('id', 'material_id');
+                    $dp ->withTrashed()
+                    -> select('id', 'material_id');
                 },
                 'dep_mat.materiales' => function($mat){
-                    $mat -> select('id', 'idmat', 'nommat');
+                    $mat ->withTrashed()
+                    -> select('id', 'idmat', 'nommat');
                 },
                 'clave' => function($cla){
-                    $cla -> select('id', 'CVE_ART', 'DESCR');
+                    $cla ->withTrashed()
+                    -> select('id', 'CVE_ART', 'DESCR');
                 },
                 'notas' => function($not){
                     $not -> latest()

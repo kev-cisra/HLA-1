@@ -203,7 +203,7 @@ export default {
             $('#t_mat').DataTable().clear();
             $('#t_mat').DataTable().destroy();
             this.$inertia.get('/Produccion/Materiales',{ busca: event.target.value }, {
-                onSuccess: () => { this.tabla() }, preserveState: true
+                onSuccess: () => { this.tabla() }, onError: () => {this.tabla()}, preserveState: true
             })
         },
         //abrir y reset del modal procesos
@@ -228,7 +228,7 @@ export default {
         save(form) {
             $('#t_mat').DataTable().destroy();
             this.$inertia.post('/Produccion/Materiales', form, {
-                onSuccess: () => { this.tabla(), this.reset(), this.chageClose()}, preserveState: true
+                onSuccess: () => { this.tabla(), this.reset(), this.chageClose()}, onError: () => {this.tabla()}, preserveState: true
             });
         },
         //manda datos de la tabla al modal
@@ -251,7 +251,7 @@ export default {
             $('#t_mat').DataTable().destroy()
             data._method = 'DELETE';
             this.$inertia.post('/Produccion/Materiales/' + data.id, data, {
-                onSuccess: () => { this.tabla() }, preserveState: true
+                onSuccess: () => { this.tabla() }, onError: () => {this.tabla()}, preserveState: true
             });
         }
     }

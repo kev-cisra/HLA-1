@@ -235,7 +235,6 @@ class ProcesosController extends Controller
             foreach ($request->maquinas as $val) {
                 echo 'entro';
                 if (count($mpS) == 0) {
-                    echo 'insert';
                     maq_pro::create([
                         'proceso_id' => $request->id,
                         'maquina_id' => $val['value'],
