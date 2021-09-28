@@ -22,6 +22,8 @@ class CreatePreciosCotizacionesTable extends Migration
             $table->string('Proveedor',65)->nullable();
             $table->string('Comentarios')->nullable();
             $table->string('Archivo')->nullable();
+            $table->text('Firma')->nullable();
+            $table->string('NombreProveedor',45)->nullable();
             $table->integer('Autorizado')->default(0);
 
             $table-> unsignedBigInteger('articulos_requisiciones_id'); //Numero control empleado

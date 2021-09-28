@@ -1,12 +1,21 @@
 <template>
-    <span>{{x}}, {{y}}</span>
-    <canvas id="myCanvas" width="560" height="360" @mousedown="beginDrawing" @mousemove="keepDrawing" @mouseup="stopDrawing" />
+    <div class="tw-flex tw-flex-col tw-p-2 tw-mx-4 ">
+        <div class="">
+            <span>{{x}}, {{y}}</span>
+            <canvas id="myCanvas" width="590" height="350" @mousedown="beginDrawing" @mousemove="keepDrawing" @mouseup="stopDrawing" />
+        </div>
+        <div>
+            <button type="button" @click="ClearCanvas()">Limpiar</button>
+            <button type="button" @click="GuardarCanvas()">Guardar</button>
+        </div>
+    </div>
 </template>
 
 <style>
     #myCanvas {
-    border: 1px solid grey;
+    border: 2px solid grey;
     cursor: crosshair;
+    background: gainsboro;
     }
 </style>
 <script>
@@ -18,6 +27,7 @@ export default {
             y: 0,
             isDrawing: false,
             canvas: null,
+            dataUrl: null,
         }
     },
     mounted() {
@@ -32,9 +42,9 @@ export default {
         GuardarCanvas(){
             console.log("Guardar Canvas");
             var c = document.getElementById("myCanvas");
-            var dataUrl = c.toDataURL();
+            this.dataUrl = c.toDataURL();
             // drawImage.setAttribute("src", dataUrl);
-            console.log(dataUrl);
+            console.log(this.dataUrl);
         },
         drawLine(x1, y1, x2, y2) {
             let ctx = this.canvas;

@@ -6,6 +6,7 @@ use App\Http\Controllers\Compras\Papeleria\AltaMaterialPapeleriaController;
 use App\Http\Controllers\Compras\Papeleria\RequisicionPapeleriaController;
 use App\Http\Controllers\Compras\Papeleria\SolicitudesPapeleriaController;
 use App\Http\Controllers\Compras\Proveedores\ProveedoresController;
+use App\Http\Controllers\Compras\Requisiciones\MaquinasController;
 use App\Http\Controllers\Compras\Requisiciones\RequisicionesController;
 use App\Http\Controllers\Menus\MenuComprasController;
 use Illuminate\Foundation\Application;
@@ -32,4 +33,8 @@ Route::resource('Papeleria', SolicitudesPapeleriaController::class)
 Route::resource('AltaPapeleria', AltaMaterialPapeleriaController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('AltaPapeleria');
 
+Route::get("/Maquinas", [MaquinasController::class, "Dropdown"]);
+
 Route::get("/Marcas", [MarcasController::class, "Dropdown"]);
+
+
