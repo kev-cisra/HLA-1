@@ -48,7 +48,7 @@
                 </div>
                 <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 tw-text-center tw-mx-auto md:tw-mb-0">
                     <jet-label>Descripción</jet-label>
-                    <textarea class="InputSelect" v-model="form.descri" maxlength="250" @input="(val) => (form.descri = form.descri.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
+                    <textarea class="InputSelect" v-model="form.descri" maxlength="250" @input="(val) => (form.descri = form.descri.toUpperCase())" placeholder="Máximo 250 caracteres"></textarea>
                     <small v-if="errors.descri" class="validation-alert">{{errors.descri}}</small>
                 </div>
             </div>
@@ -71,6 +71,7 @@
                     <th class="columna tw-text-center">Orden</th>
                     <th class="columna tw-text-center">Clave de paro</th>
                     <th class="columna tw-text-center">Nombre de paro</th>
+                    <th class="columna tw-text-center">Estatus</th>
                     <th class="columna tw-text-center">Inicio</th>
                     <th class="columna tw-text-center">Final</th>
                     <th class="columna tw-text-center">Tiempo cargado</th>
@@ -82,13 +83,18 @@
                         <td class="fila tw-text-center">{{ca.orden}}</td>
                         <td class="fila tw-text-center">{{ca.paros.clave}}</td>
                         <td class="fila tw-text-center">{{ca.paros.descri}}</td>
+                        <td class="fila tw-text-center">
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full" v-if="ca.estatus == 'Activo'">{{ca.estatus}}</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">{{ca.estatus}}</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
+                        </td>
                         <td class="fila tw-text-center">{{ca.iniFecha}}</td>
                         <td class="fila tw-text-center">{{ca.finFecha == null ? '' : ca.finFecha}}</td>
-                        <td class="fila tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}}</td>
+                        <td class="fila tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}} minutos</td>
                         <td class="fila tw-text-center">{{ca.maq_pro.maquinas.Nombre}}</td>
                         <td class="fila tw-text-center">
                             <div class="columnaIconos">
-                                <div class="iconoDelete">
+                                <div class="iconoDelete" @click="detener(1, ca)" v-if="ca.estatus == 'Activo'">
                                     <span tooltip="Detener" flow="left">
                                         <svg class="h-8 w-8 text-red-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -96,22 +102,13 @@
                                         </svg>
                                     </span>
                                 </div>
-
-
-                                <!-- <div class="iconoDetails tw-cursor-pointer" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & (((noCor == 'cor' | noCor == 'enc') & ca.proceso.tipo == 2 & ca.notaPen == 1) | ((noCor == 'lid' | noCor == 'ope') & ca.equipo_id != null & ca.notaPen == 1))">
-                                    <span tooltip="Agregar nota" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                <div class="iconoDetails" @click="detener(2, ca)" v-if="(usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')) & ca.estatus == 'En revisión'">
+                                    <span  tooltip="Autorizar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoEdit tw-cursor-pointer" @click="editCA(ca)" v-show="usuario.dep_pers.length == 0 | (ca.proceso.tipo != 2 & (noCor == 'cor' | noCor == 'enc'))">
-                                    <span tooltip="Editar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                        </svg>
-                                    </span>
-                                </div> -->
                             </div>
                         </td>
                     </tr>
@@ -178,8 +175,10 @@
                     fecha: moment().format("YYYY-MM-DD HH:mm:ss"),
                     usu:  this.usuario.id,
                     departamento_id: this.S_Area,
+                    tiempo: null,
                     proceso_id: '',
                     maq_pro_id: '',
+                    estatus: 'Activo',
                     paro_id: '',
                     descri: '',
                     orden: '',
@@ -190,6 +189,7 @@
             this.mostSelect();
             this.selePP();
             this.tabla();
+            
         },
         methods: {
             /****************************** opciones de selec del departamento *****************************/
@@ -239,7 +239,7 @@
             tiempo(ini, fin){
                 var tini = moment(ini);
                 var tfin = fin == null ? moment() : moment(fin);
-                return tfin.diff(tini, 'hours');
+                return tfin.diff(tini, 'minutes');
             },
             /****************************** datatables ********************************************************/
             //datatable de carga
@@ -261,6 +261,8 @@
                 this.form.maq_pro_id = '';
                 this.form.paro_id = '';
                 this.form.descri = '';
+                this.form.tiempo = null;
+                this.form.estatus = 'Activo',
                 this.form.orden = '';
                 this.form.departamento_id = this.S_Area;
                 this.editMode = false;
@@ -270,6 +272,66 @@
                 $('#t_paros').DataTable().destroy();
                 this.$inertia.post('/Produccion/Paros', data, {
                     onSuccess: () => { this.tabla(), this.reset(), this.alertSucces()}, onError: () => {this.tabla()}, preserveState: true
+                });
+            },
+            //actualiza el estatus y lo detiene 
+            detener(det, data){
+                if (det == 1) {
+                    data.estatus = 'En revisión';
+                    data.finFecha = this.form.fecha;
+                    data.tiempo = this.tiempo(data.iniFecha, data.finFecha);
+                    this.update(data);
+                }
+                else if(det == 2){
+                    
+                    const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger mx-3'
+                    },
+                    buttonsStyling: false
+                    })
+
+                    swalWithBootstrapButtons.fire({
+                        title: '¿Autorizar?',
+                        text: "Selecciona una opción",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Denegar',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            swalWithBootstrapButtons.fire(
+                            '¡Autorizado!',
+                            'El paro fue autorizado correctamente',
+                            'success'
+                            )
+                            data.estatus = 'Autorizado';
+                            this.update(data);
+                        } else if (
+                            /* Read more about handling dismissals below */
+                            result.dismiss === Swal.DismissReason.cancel
+                        ) {
+                            swalWithBootstrapButtons.fire(
+                            '¡Denegado!',
+                            'El paro se actualizó correctamente',
+                            'error'
+                            )
+                            data.estatus = 'Activo';
+                            data.finFecha = null;
+                            data.tiempo = null;
+                            this.update(data);
+                        }
+                    })
+
+                }
+                
+            },
+            update(data){
+                $('#t_paros').DataTable().destroy();
+                this.$inertia.put('/Produccion/Paros/' + data.id, data, {
+                    onSuccess: () => {this.tabla(), this.alertSucces()}, onError: () => {this.tabla()}
                 });
             }
         },
@@ -299,7 +361,9 @@
                         this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
                     }
                 })
-
+                this.form.proceso_id = '';
+                this.form.maq_pro_id = '';
+                this.form.paro_id = '';
             },
             form: {
                 deep: true,

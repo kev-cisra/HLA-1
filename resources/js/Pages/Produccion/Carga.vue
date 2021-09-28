@@ -150,6 +150,9 @@
                 </template>
             </Table>
         </div>
+        <pre>
+            {{usuario}}
+        </pre>
     </app-layout>
 </template>
 
@@ -262,7 +265,7 @@
                 this.resetCA();
                 this.proc_prin = '';
                 this.$inertia.get('/Produccion/Carga',{ busca: event.target.value }, {
-                    onSuccess: () => { this.selePP(),/* this.selePE(), this.seleNM(),*/ this.reCarga(), this.tabla()  }, preserveState: true
+                    onSuccess: () => { this.selePP(),/* this.selePE(), this.seleNM(),*/ this.reCarga(), this.tabla()  }, onError: () => {this.tabla()}, preserveState: true
                 });
             },
             /****************************** Globales **********************************************************/
@@ -383,7 +386,7 @@
                 $('#t_carg').DataTable().clear();
                 $('#t_carg').DataTable().destroy();
                 this.$inertia.post('/Produccion/Carga', form, {
-                    onSuccess: () => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, preserveState: true
+                    onSuccess: () => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: () => {this.tabla()}, preserveState: true
                 });
                 //console.log(form);
             },
@@ -413,7 +416,7 @@
                     }else{
                         this.form.dep_perf_id = this.usuario.dep_pers[0] != null ? this.usuario.dep_pers[0].id : '';
                         this.form.turno_id = this.usuario.dep_pers[0] != null ? this.usuario.dep_pers[0].equipo_id : '';
-                        this.form.equipo_id = this.usuario.dep_pers[0].equipo.length != 0 ? this.usuario.dep_pers[0].equipo.turno_id : '';
+                        this.form.equipo_id = this.usuario.dep_pers[0].equipo != null ? this.usuario.dep_pers[0].equipo.turno_id : '';
                     }
                 }else{
                     this.form.dep_perf_id = '';
@@ -447,9 +450,8 @@
                     $('#t_carg').DataTable().destroy();
                 }
                 this.$inertia.put('/Produccion/Carga/' + data.id, data, {
-                    onSuccess: () => {this.reCarga(), this.resetCA(), this.alertSucces()},
+                    onSuccess: () => {this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: () => {this.tabla()}
                 });
-                this.tabla()
             },
             /****************************** Carga de notas */
             notaCA(form){
@@ -466,9 +468,8 @@
                 $('#t_carg').DataTable().clear();
                 $('#t_carg').DataTable().destroy();
                 this.$inertia.put('/Produccion/Nota/' + data.id, data, {
-                    onSuccess: () => {this.reCarga(), this.resetCA(), this.alertSucces()},
+                    onSuccess: () => {this.reCarga(), this.resetCA(), this.tabla(), this.alertSucces()}, onError: () => {this.tabla()},
                 });
-                this.tabla()
             }
         },
         watch: {

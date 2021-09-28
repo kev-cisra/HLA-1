@@ -20,6 +20,7 @@ class CreateParosCargasTable extends Migration
             $table->string('orden')->nullable();
             $table->string('causa')->nullable();
             $table->string('pla_acci')->nullable();
+            $table->string('estatus')->nullable();
             $table->dateTimeTz('iniFecha');
             $table->dateTimeTz('finFecha')->nullable();
             $table->string('tiempo')->nullable();

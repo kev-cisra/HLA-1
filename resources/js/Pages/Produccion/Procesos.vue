@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode">
                                     <jet-label><span class="required">*</span>Tipo de proceso</jet-label>
-                                    <select v-model="form.tipo" class="InputSelect">
+                                    <select v-model="form.tipo" @change="limpTipo()" class="InputSelect">
                                         <option value="" disabled>Seleccione</option>
                                         <option value="0">Proceso principal</option>
                                         <option value="1">Carga para Lider / Operador</option>
@@ -480,6 +480,17 @@
 
                 }
             },
+            //limpia tipo
+            limpTipo(){
+                if (this.editMode == false) {
+                    this.form.proceso_id= '';
+                    this.form.operacion= '';
+                    this.form.tipo_carga= '';
+                    this.form.maquinas= [{value: ""}];
+                    this.form.formulas= [{val: ""}];
+                    this.form.for_maq= [];
+                }
+            },
             /******************************** Acciones insert update y delet *************************************/
             //guardar información de procesos
             save(form) {
@@ -543,9 +554,6 @@
                                 this.options += `<option value="${element.id}">${element.nompro}</option>`;
                             }
                         })
-                    }
-                    if (f.tipo != 0){
-                        this.form.tipo_carga = '';
                     }
                 }
             },
