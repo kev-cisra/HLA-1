@@ -150,9 +150,6 @@
                 </template>
             </Table>
         </div>
-        <pre>
-            {{usuario}}
-        </pre>
     </app-layout>
 </template>
 
