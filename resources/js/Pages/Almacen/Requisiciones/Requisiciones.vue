@@ -368,10 +368,6 @@
                 </div>
             </div>
 
-            <pre>
-                {{ ArticuloRequisicion }}
-            </pre>
-
             <modal :show="showModal" @close="chageClose" :maxWidth="tam">
                 <form>
                     <div class="tw-px-4 tw-py-4">
@@ -586,10 +582,12 @@ export default {
     },
 
     methods: {
+
         ClearCanvas(){
             var c = document.getElementById("myCanvas");
             this.canvas.clearRect(0, 0, c.width, c.height);
         },
+
         GuardarCanvas(){
             console.log("Guardar Canvas");
             var c = document.getElementById("myCanvas");
@@ -597,6 +595,7 @@ export default {
             // drawImage.setAttribute("src", dataUrl);
             console.log(dataUrl);
         },
+
         reset() {
             this.form = {
                 IdUser: this.Session.id,

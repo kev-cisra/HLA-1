@@ -48,8 +48,6 @@ class RequisicionesController extends Controller{
             $Rol = 0;
         }
 
-
-
         if($Rol != 'ONEPIECE' && $Rol != 'Administrador'){
             //Consulta para obtener el id de Jefe de acuerdo al numero de empleado del trabajador
             $ObtenJefe = JefesArea::where('IdEmp', '=', $SessionIdEmp)->first('id','IdEmp');
@@ -64,8 +62,13 @@ class RequisicionesController extends Controller{
                 $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $Session->IdEmp)->get();
             }
 
-            $Departamentos = Departamentos::where('id', '=', $Session->Departamento)->orderBy('Nombre', 'asc')->get(['id','Nombre']);
-            $Maquinas = Maquinas::where('departamento_id', '=', $Session->Departamento)->get(['id','Nombre']);
+                if($Session->Departamento == 11){
+                    $Departamentos = Departamentos::get(['id','Nombre']);
+                    $Maquinas = Maquinas::where('departamento_id', '!=', 7)->get(['id','Nombre']);
+                }else{
+                    $Departamentos = Departamentos::where('id', '=', $Session->Departamento)->orderBy('Nombre', 'asc')->get(['id','Nombre']);
+                    $Maquinas = Maquinas::where('departamento_id', '=', $Session->Departamento)->get(['id','Nombre']);
+                }
 
             if($request->Estatus == ''){
 
