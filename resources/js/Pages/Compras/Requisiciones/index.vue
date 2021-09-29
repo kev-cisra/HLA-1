@@ -390,7 +390,7 @@
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>AREA</jet-label>
-                                <select id="Jefe" v-model="form.Departamento_id" class="InputSelect" @change="loadMaquinas($event)">
+                                <select id="Departamento" v-model="form.Departamento_id" class="InputSelect" @change="loadMaquinas($event)">
                                     <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
                                 </select>
                                 <small v-if="errors.Departamento_id" class="validation-alert">{{errors.Departamento_id}}</small>
@@ -414,7 +414,7 @@
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>MÁQUINA</jet-label>
                                 <select id="Maquina" v-model="form.Maquina" name="Maquina" class="InputSelect" @change="loadMarcas($event)">
-                                    <option v-for="maq in Maquinas" :key="maq.id" :value="maq.id"> {{ maq.Nombre }}</option>
+                                    <option v-for="maq in MaquinasDpto" :key="maq.id" :value="maq.id"> {{ maq.Nombre }}</option>
                                 </select>
                                 <small v-if="errors.Maquina" class="validation-alert">{{errors.Maquina}}</small>
                             </div>
@@ -679,6 +679,7 @@ export default {
                 month: null,
                 Estatus: null,
             },
+            MaquinasDpto:[],
             Marcas: [],
         };
     },
@@ -750,10 +751,10 @@ export default {
         loadMaquinas(event) {
             axios.get('/Compras/Maquinas',{
                 params: {
-                    Departamento_id: event.target.value
+                    Departamento: event.target.value
                 }
             })
-            .then(response => this.Departamento_id = response.data.Departamento_id)
+            .then(response => this.MaquinasDpto = response.data.Marcas)
             .catch(error => console.log(error))
         },
 
