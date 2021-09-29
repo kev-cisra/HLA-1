@@ -21,21 +21,22 @@ class CreatePapeleriaRequisicionsTable extends Migration
 
             $table->date('Fecha');
 
-            $table->unsignedBigInteger('Departamento_id')->Nullable();
+            $table->unsignedBigInteger('Perfil_id')->Nullable();
 
-            $table->foreign("Departamento_id")->references("id")->on("departamentos")
+            $table->foreign("Perfil_id")->references("id")->on("perfiles_usuarios")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
-            $table->unsignedBigInteger('jefes_areas_id')->nullable();
+            $table->unsignedBigInteger('Departamento_id')->nullable();
 
-            $table->foreign("jefes_areas_id")->references("id")->on("jefes_areas")
+            $table->foreign("Departamento_id")->references("id")->on("departamentos")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
             $table->string('Comentarios')->nullable();
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
+
         });
     }
 

@@ -38,13 +38,13 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="dato in Papeleria" :key="dato.id">
-                            <td class="tw-p-2">{{ dato.articulos_papeleria == null ? 'N/A' : dato.articulos_papeleria.Fecha }}</td>
-                            <td class="tw-p-2">{{ dato.articulos_papeleria == null ? 'N/A' : dato.articulos_papeleria.requisicion_departamento.Nombre }}</td>
-                            <td class="tw-p-2">{{ dato.articulos_papeleria.requisicion_jefe == null ? 'N/A' : dato.articulos_papeleria.requisicion_jefe.Nombre }}</td>
+                            <td class="tw-p-2">{{ dato.articulos_papeleria.Fecha }}</td>
+                            <td class="tw-p-2">{{ dato.articulos_papeleria.requisicion_departamento.Nombre }}</td>
+                            <td class="tw-p-2">{{ dato.articulos_papeleria.requisicion_perfil.Nombre }}</td>
                             <td class="tw-p-2">{{ dato.Cantidad }}</td>
                             <td class="tw-p-2">{{ dato.articulo_material.Unidad }}</td>
                             <td class="tw-p-2">{{ dato.articulo_material.Nombre }}</td>
-                            <td class="tw-p-2">{{ dato.articulos_papeleria == null ? 'N/A' : dato.articulos_papeleria.Comentarios }}</td>
+                            <td class="tw-p-2">{{ dato.articulos_papeleria.Comentarios }}</td>
                             <td class="tw-p-2">
                                 <div v-if="dato.Estatus == 0">
                                     <span tooltip="Confirmar Solicitud de Papeleria" flow="left">
@@ -98,6 +98,9 @@
             </div>
         </div>
 
+<pre>
+    {{ Papeleria }}
+</pre>
     </div>
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
