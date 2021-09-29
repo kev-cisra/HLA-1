@@ -297,12 +297,19 @@ class RequisicionesController extends Controller{
         $RequicisionId = $Requisicion->id;
 
         foreach ($request->Partida as $value) {
+            
+            if(!empty($value['NumParte'])){
+                $NumParte = $value['NumParte'];
+            }else{
+                $NumParte = '';
+            }
+
             $Articulos = ArticulosRequisiciones::create([
                 'IdEmp' => $Session->IdEmp,
                 'Fecha' => $request->Fecha,
                 'Cantidad' => $value['Cantidad'],
                 'Unidad' => $value['Unidad'],
-                'NumParte' => $value['NumParte'],
+                'NumParte' => $NumParte,
                 'Descripcion' => $value['Descripcion'],
                 'EstatusArt' => 1,
                 'requisicion_id' => $RequicisionId,
