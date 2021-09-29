@@ -19379,6 +19379,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(75, 85, 99, var(--tw-bg-opacity));
 }
+.tw-bg-amber-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(217, 119, 6, var(--tw-bg-opacity));
+}
 .tw-bg-green-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(74, 222, 128, var(--tw-bg-opacity));
@@ -19438,10 +19442,6 @@ select {
 .tw-bg-orange-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(251, 146, 60, var(--tw-bg-opacity));
-}
-.tw-bg-amber-600 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(217, 119, 6, var(--tw-bg-opacity));
 }
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
