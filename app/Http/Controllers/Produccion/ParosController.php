@@ -90,8 +90,9 @@ class ParosController extends Controller
             //carga
             $carga = parosCarga::where('departamento_id', '=', $request->busca)
                 ->whereBetween('fecha', [$dia, $mañana])
-                ->orWhere(function($q) use ($dia){
+                ->orWhere(function($q) use ($dia, $request){
                     $q->whereDate('fecha', '<=', $dia)
+                    ->where('departamento_id', '=', $request->busca)
                     ->where('estatus', '!=', 'Autorizado');
                 })
                 ->with([

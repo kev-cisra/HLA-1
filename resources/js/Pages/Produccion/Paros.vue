@@ -189,7 +189,7 @@
             this.mostSelect();
             this.selePP();
             this.tabla();
-            
+
         },
         methods: {
             /****************************** opciones de selec del departamento *****************************/
@@ -217,7 +217,7 @@
             },
             //consulta para generar datos de la tabla
             verTabla(event){
-                $('#t_paros').DataTable().clear();
+                /* $('#t_paros').DataTable().clear(); */
             },
             //select para proceso principal, normas y personal
             selePP(){
@@ -274,7 +274,7 @@
                     onSuccess: () => { this.tabla(), this.reset(), this.alertSucces()}, onError: () => {this.tabla()}, preserveState: true
                 });
             },
-            //actualiza el estatus y lo detiene 
+            //actualiza el estatus y lo detiene
             detener(det, data){
                 if (det == 1) {
                     data.estatus = 'En revisión';
@@ -283,7 +283,7 @@
                     this.update(data);
                 }
                 else if(det == 2){
-                    
+
                     const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
                         confirmButton: 'btn btn-success',
@@ -326,7 +326,7 @@
                     })
 
                 }
-                
+
             },
             update(data){
                 $('#t_paros').DataTable().destroy();
@@ -344,12 +344,12 @@
         },
         watch: {
             S_Area: function(b){
-                //$('#t_paros').DataTable().clear();
+                $('#t_paros').DataTable().clear();
                 $('#t_paros').DataTable().destroy();
-                /* this.reset(); */
                 this.proc_prin = '';
                 this.$inertia.get('/Produccion/Paros',{ busca: b }, {
-                    onSuccess: () => { this.selePP(), this.tabla() }, onError: () => {this.tabla()}, preserveState: true
+                    onSuccess: () => {
+                         this.selePP(), this.tabla() }, onError: () => {this.tabla()}, preserveState: true
                 });
             },
             proc_prin: function(v) {

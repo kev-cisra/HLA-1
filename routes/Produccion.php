@@ -4,6 +4,7 @@ use App\Http\Controllers\Menus\MenuProducccionController;
 use App\Http\Controllers\Produccion\CargaController;
 use App\Http\Controllers\Produccion\ClamatController;
 use App\Http\Controllers\Produccion\ClavesController;
+use App\Http\Controllers\Produccion\EntregasController;
 use App\Http\Controllers\Produccion\EquiposController;
 use App\Http\Controllers\Produccion\MaquinasController;
 use App\Http\Controllers\Produccion\MaterialesController;
@@ -57,4 +58,7 @@ Route::resource('Nota', notascargaController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('Paros', ParosController::class)
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::resource('Entregas', EntregasController::class)
     ->middleware(['auth:sanctum', 'verified']);
