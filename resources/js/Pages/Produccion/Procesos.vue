@@ -114,10 +114,10 @@
                                     <jet-label><span class="required">*</span>Tipo de Carga</jet-label>
                                     <select class="InputSelect" v-model="form.tipo_carga">
                                         <option value="">Selecciona</option>
-                                        <!-- <option value="ent">Entregas</option> -->
+                                        <option value="ent">Entregas</option>
                                         <option value="pro">Principales para Lider/Operador</option>
                                         <option value="pro-cor">Principales para Coordinador/Encargado</option>
-                                        <!-- <option value="for">Formulas</option> -->
+                                        <option value="for">Formulas</option>
                                     </select>
                                     <small v-if="errors.tipo_carga" class="validation-alert">{{errors.tipo_carga}}</small>
                                 </div>
@@ -147,20 +147,21 @@
                 <div class="tw-px-4 tw-py-4" v-show="(form.tipo == 1 | form.tipo == 2 | form.tipo == 5)">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
-                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de máquinas para el proceso</h3>
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de máquinas</h3>
                         </div>
                     </div>
                     <div class="tw-mt-4">
                         <div class="ModalForm">
-                            <button type="button" class="btn btn-primary" @click="addRow()">Agregar proceso</button>
-                            <div class="overflow-auto row" style="height: 22rem">
-                                <div class="tw-m-5 col-md-5 tw-mx-auto" v-for="(row, index) in form.maquinas" :key="row.id">
-                                    <div>
-                                        <select class="InputSelect" v-model="row.value" v-html="opcMaq" >
+                            <div class="tw-flex tw-justify-center">
+                                <button type="button" class="btn btn-success tw-w-1/3 " @click="addRow()">Agregar Máquina</button>
+                            </div>
+                            <div class="row tw-overflow-auto" style="height: 20rem">
+                                <div class="tw-flex tw-justify-center tw-h-1/6" v-for="(row, index) in form.maquinas" :key="row.id">
+                                    <div class="input-group tw-my-2">
+                                        <select class="form-select" v-model="row.value" v-html="opcMaq" >
                                         </select>
-                                        <div class="gap-2 d-grid tw-mt-2">
-                                            <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar proceso</button>
-                                        </div>
+                                        <button type="button" class="btn btn-success" @click="addRow()">Agregar</button>
+                                        <button type="button" class="btn btn-danger" @click="removeRow(index)">Quitar</button>
                                     </div>
                                 </div>
                             </div>
@@ -550,7 +551,7 @@
                         //select proceso principal
                         this.options = '<option value="" disabled>Selecciona un proceso</option>';
                         this.procesos.forEach(element => {
-                            if (element.tipo == 0) {
+                            if (element.tipo == 0 & element.tipo_carga != 'ent') {
                                 this.options += `<option value="${element.id}">${element.nompro}</option>`;
                             }
                         })

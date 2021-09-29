@@ -46,7 +46,6 @@
         "pdfmake": "^0.2.2",
         "sign-canvas": "^1.1.4",
         "signature_pad": "^3.0.0-beta.4",
-        "v-select2-component": "^0.4.7",
         "vue-canvas-nest": "^2.0.0",
         "vue-chartjs": "^3.5.1",
         "vue-easytable": "^2.8.0",

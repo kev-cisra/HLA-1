@@ -25,7 +25,6 @@ class RequisicionPapeleriaController extends Controller{
 
         $Papeleria = ArticulosPapeleriaRequisicion::with([
             'ArticulosPapeleria' => function($Art) {
-                $Art->where('IdUser', '=', 1);
                 $Art->select('id', 'IdUser', 'IdEmp', 'Departamento_id', 'jefes_areas_id', 'Fecha', 'Comentarios');
             },
             'ArticuloMaterial' => function($Art) {
@@ -50,11 +49,11 @@ class RequisicionPapeleriaController extends Controller{
 
         //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
         $ObtenJefe = JefesArea::where('IdEmp', '=', $request->IdEmp)->first('id','IdEmp');
-        if(!isset($ObtenJefe)){
+        if(!empty($ObtenJefe)){
             $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
         }else{
             $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $request->IdEmp)->first('id','jefes_areas_id');
-            $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
+            $IdJefe = $PerfilesUsuarios->jefes_areas_id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
         }
 
         $Papeleria = PapeleriaRequisicion::create([

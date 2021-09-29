@@ -17,6 +17,7 @@
                 <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar datos</jet-button>
             </template>
         </Accions>
+        <JetBanner><h1>listo para empezar</h1></JetBanner>
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
         <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <div class="tw-mb-6 md:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
@@ -161,9 +162,8 @@
     import JetButton from '@/Components/Button';
     import JetCancelButton from '@/Components/CancelButton';
     import JetInput from '@/Components/Input';
-    import JetSelect from '@/Components/Select';
+    import JetBanner from '@/Components/Banner';
     import JetLabel from '@/Jetstream/Label';
-    import Select from '../../Components/Select.vue';
     //datatable
     import datatable from 'datatables.net-bs5';
     import $ from 'jquery';
@@ -182,6 +182,7 @@
             'errors'
         ],
         components: {
+            JetBanner,
             AppLayout,
             Header,
             Accions,
@@ -189,7 +190,6 @@
             JetButton,
             JetCancelButton,
             JetInput,
-            JetSelect,
             JetLabel
         },
         data() {
