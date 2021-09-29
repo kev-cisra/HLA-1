@@ -23,21 +23,10 @@ class RequisicionPapeleriaController extends Controller{
         $Material = MaterialPapeleria::all();
         $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
 
-        $Papeleria = ArticulosPapeleriaRequisicion::with([
-            'ArticulosPapeleria' => function($Art) {
-                $Art->select('id', 'IdUser', 'IdEmp', 'Departamento_id', 'jefes_areas_id', 'Fecha', 'Comentarios');
-            },
-            'ArticuloMaterial' => function($Art) {
-                $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
-            },
-            'ArticulosPapeleria.RequisicionDepartamento' => function($Art) { //Relacion 1 a 1 De puestos
-                $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
-            },
-            'ArticulosPapeleria.RequisicionJefe' => function($Art) { //Relacion 1 a 1 De puestos
-                $Art->select('id', 'IdUser', 'Nombre', 'Area');
-            },
-        ])->where('IdEmp', '=', $Session->IdEmp)
-        ->get(['id', 'IdEmp', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
+        $Papeleria = ArticulosPapeleriaRequisicion::with(['ArticulosPapeleria',
+        'ArticuloMaterial', 'ArticulosPapeleria.RequisicionPerfil',
+        'ArticulosPapeleria.RequisicionDepartamento'
+        ])->get();
 
         return Inertia::render('Compras/Papeleria/RequisicionPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria'));
     }
@@ -45,23 +34,15 @@ class RequisicionPapeleriaController extends Controller{
     public function store(Request $request){
 
         $Session = auth()->user();
-        $SessionIdEmp = $Session->IdEmp;
 
-        //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
-        $ObtenJefe = JefesArea::where('IdEmp', '=', $request->IdEmp)->first('id','IdEmp');
-        if(!empty($ObtenJefe)){
-            $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
-        }else{
-            $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $request->IdEmp)->first('id','jefes_areas_id');
-            $IdJefe = $PerfilesUsuarios->jefes_areas_id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
-        }
+        $Perfil = PerfilesUsuarios::where('IdEmp', '=', $Session->IdEmp)->get();
 
         $Papeleria = PapeleriaRequisicion::create([
             'Fecha' => date('Y-m-d'),
             'IdUser' => $request->IdUser,
             'IdEmp' => $request->IdEmp,
-            'Departamento_id' => $request->Departamento_id,
-            'jefes_areas_id' => $IdJefe,
+            'Perfil_id' => $Perfil[0]->id,
+            'Departamento_id' => $Perfil[0]->Departamento,
             'Comentarios' => $request->Comentarios,
         ]);
 
