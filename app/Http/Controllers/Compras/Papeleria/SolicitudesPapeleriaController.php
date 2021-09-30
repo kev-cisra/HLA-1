@@ -30,7 +30,7 @@ class SolicitudesPapeleriaController extends Controller{
 
         $Papeleria = ArticulosPapeleriaRequisicion::with([
             'ArticulosPapeleria' => function($Art) {
-                $Art->select('id', 'IdUser', 'IdEmp', 'Departamento_id', 'jefes_areas_id', 'Fecha', 'Comentarios');
+                $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Perfil_id', 'Departamento_id',  'Comentarios');
             },
             'ArticuloMaterial' => function($Art) {
                 $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
@@ -38,8 +38,8 @@ class SolicitudesPapeleriaController extends Controller{
             'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
                 $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
             },
-            'ArticulosPapeleria.RequisicionJefe' => function($Art) {
-                $Art->select('id', 'IdUser', 'Nombre', 'Area');
+            'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
+                $Art->select('id', 'IdUser', 'Nombre');
             },
         ])
         ->where('Estatus', '>', 0)

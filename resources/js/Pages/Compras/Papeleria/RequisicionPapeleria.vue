@@ -48,7 +48,7 @@
                             <td class="tw-p-2">
                                 <div v-if="dato.Estatus == 0">
                                     <span tooltip="Confirmar Solicitud de Papeleria" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">CONFIRMAR</span>
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">SIN CONFIRMAR</span>
                                     </span>
                                 </div>
                                 <div v-else-if="dato.Estatus == 1">
@@ -97,10 +97,6 @@
                 </Table>
             </div>
         </div>
-
-<pre>
-    {{ Papeleria }}
-</pre>
     </div>
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
@@ -347,7 +343,6 @@ export default {
         },
 
         Confirma(data, metodo){
-            console.log(data);
             data.metodo = 1;
             data._method = "PUT";
             this.$inertia.post("/Compras/RequisicionPapeleria/" + data.id, data, {
@@ -358,6 +353,7 @@ export default {
         },
 
         save(data) {
+            console.log(data);
             this.$inertia.post("/Compras/RequisicionPapeleria", data, {
                 onSuccess: () => {
                     this.reset(),
