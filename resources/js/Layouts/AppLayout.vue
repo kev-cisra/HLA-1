@@ -117,7 +117,7 @@
                             Inicio
                         </jet-responsive-nav-link>
                     </div>
-                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Sistemas.index'])">
+                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'RecursosHumanos.index'])">
                         <jet-responsive-nav-link :href="route('Admin')" :active="route().current('Admin')">
                             Administrador
                         </jet-responsive-nav-link>
@@ -127,9 +127,25 @@
                             Supply
                         </jet-responsive-nav-link>
                     </div>
+                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
+                        <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
+                            Supply
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
+                        <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
+                            Supply
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
+                        <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
+                            Supply
+                        </jet-responsive-nav-link>
+                    </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">
                         <jet-responsive-nav-link :href="route('Produccion')" :active="route().current('Produccion')">
-                            <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Producción
+                            <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>
+                            Producción
                         </jet-responsive-nav-link>
                     </div>
 
