@@ -23,10 +23,28 @@ class RequisicionPapeleriaController extends Controller{
         $Material = MaterialPapeleria::all();
         $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
 
-        $Papeleria = ArticulosPapeleriaRequisicion::with(['ArticulosPapeleria',
+/*         $Papeleria = ArticulosPapeleriaRequisicion::with(['ArticulosPapeleria',
         'ArticuloMaterial', 'ArticulosPapeleria.RequisicionPerfil',
         'ArticulosPapeleria.RequisicionDepartamento'
-        ])->get();
+        ])->get(); */
+
+        $Papeleria = ArticulosPapeleriaRequisicion::with([
+            'ArticulosPapeleria' => function($Art) {
+                $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Perfil_id', 'Departamento_id',  'Comentarios');
+            },
+            'ArticuloMaterial' => function($Art) {
+                $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
+            },
+            'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
+                $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
+            },
+            'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
+                $Art->select('id', 'IdUser', 'Nombre');
+            },
+        ])
+        ->where('IdEmp', '=', $Session->IdEmp)
+        ->orderBy('id', 'desc')
+        ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
 
         return Inertia::render('Compras/Papeleria/RequisicionPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria'));
     }
@@ -42,7 +60,7 @@ class RequisicionPapeleriaController extends Controller{
             'IdUser' => $request->IdUser,
             'IdEmp' => $request->IdEmp,
             'Perfil_id' => $Perfil[0]->id,
-            'Departamento_id' => $Perfil[0]->Departamento,
+            'Departamento_id' => $request->Departamento_id,
             'Comentarios' => $request->Comentarios,
         ]);
 
