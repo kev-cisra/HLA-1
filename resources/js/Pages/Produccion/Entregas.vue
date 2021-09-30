@@ -19,16 +19,71 @@
                 <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer">Cargar datos</jet-button>
             </template>
         </Accions>
+        <!-- fomulario  -->
+        <div class="collapse m-5 tw-p-6 tw-bg-green-600 tw-rounded-3xl tw-shadow-xl" id="agPer">
+            <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
+                    <select class="InputSelect" v-model="proc_prin" v-html="opcPP" :disabled="editMode"></select>
+                </div>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="opcSP">
+                    <jet-label><span class="required">*</span>Sub proceso </jet-label>
+                    <select class="InputSelect" v-model="form.proceso_id" v-html="opcSP" :disabled="editMode"></select>
+                    <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
+                </div>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Maquinas</jet-label>
+                    <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ" :disabled="editMode"></select>
+                    <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                </div>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Tipo de paro</jet-label>
+                    <select class="InputSelect" v-model="form.paro_id" v-html="opcPR" :disabled="editMode"></select>
+                    <small v-if="errors.paro_id" class="validation-alert">{{errors.paro_id}}</small>
+                </div>
+            </div>
+            <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 tw-text-center tw-mx-auto md:tw-mb-0">
+                    <jet-label>Orden</jet-label>
+                    <jet-input type="text" v-model="form.orden" @input="(val) => (form.orden = form.orden.toUpperCase())"></jet-input>
+                    <small v-if="errors.orden" class="validation-alert">{{errors.orden}}</small>
+                </div>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 tw-text-center tw-mx-auto md:tw-mb-0">
+                    <jet-label>Descripción</jet-label>
+                    <textarea class="InputSelect" v-model="form.descri" maxlength="250" @input="(val) => (form.descri = form.descri.toUpperCase())" placeholder="Máximo 250 caracteres"></textarea>
+                    <small v-if="errors.descri" class="validation-alert">{{errors.descri}}</small>
+                </div>
+            </div>
+            <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+               <div>
+                    <jet-button type="button" class="tw-mx-auto" v-if="!editMode" @click="save(form)">Guardar</jet-button>
+               </div>
+               <div>
+                    <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+               </div>
+                <div>
+                    <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
+                </div>
+            </div>
+        </div>
         <!-- Data table de las entregas -->
         <div class="table-responsive">
-            <table-sky id="t_entregas">
+            <TableSky id="t_entregas">
                 <template v-slot:TableHeader>
                     <th class="columna tw-text-center">1</th>
                     <th class="columna tw-text-center">1</th>
                     <th class="columna tw-text-center">1</th>
                     <th class="columna tw-text-center">1</th>
                 </template>
-            </table-sky>
+                <template v-slot:TableFooter>
+                    <tr v-for="ca in cargas" :key="ca.id">
+                        <td class="fila tw-text-center">2</td>
+                        <td class="fila tw-text-center">2</td>
+                        <td class="fila tw-text-center">2</td>
+                        <td class="fila tw-text-center">2</td>
+                    </tr>
+                </template>
+            </TableSky>
         </div>
     </app-layout>
 </template>
@@ -133,8 +188,7 @@
                 $('#t_entregas').DataTable().clear();
                 $('#t_entregas').DataTable().destroy();
                 this.$inertia.get('/Produccion/Entregas',{ busca: b }, {
-                    onSuccess: () => {
-                         this.tabla() }, onError: () => {this.tabla()}, preserveState: true
+                    onSuccess: () => { this.tabla() }, onError: () => {this.tabla()}, preserveState: true
                 });
             },
         }

@@ -23,6 +23,7 @@ class CreateCargasTable extends Migration
             $table->enum('notaPen', [1,2,3])->default(1)->nullable();
             $table->enum('estatus', [1,2,3])->default(1)->nullable();
             $table->enum('est_ent', [1,2,3,4,5,6])->nullable();
+            $table->string('VerInv');
 
             $table->unsignedBigInteger('equipo_id')->nullable();
             $table->unsignedBigInteger('dep_perf_id')->nullable();

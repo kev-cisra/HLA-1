@@ -22,6 +22,7 @@ class CreateTurnosTable extends Migration
             $table->string('SDIni')->nullable();
             $table->string('SDFin')->nullable();
             $table->integer('cargaExt')->nullable();
+            $table->string('VerInv');
 
             $table->unsignedBigInteger('departamento_id');
             $table->foreign('departamento_id')->references("id")->on("departamentos")

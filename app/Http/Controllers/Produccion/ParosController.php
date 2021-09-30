@@ -145,6 +145,7 @@ class ParosController extends Controller
             'maq_pro_id' => $request->maq_pro_id,
             'proceso_id' => $request->proceso_id,
             'orden' => $request->orden,
+            'VerInv' => $request->VerInv,
             'descri' => $request->descri,
             'departamento_id' => $request->departamento_id
         ]);

@@ -380,6 +380,11 @@
             saveCA(form){
                 this.form.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
                 this.form.semana = moment().format("GGGG-[W]WW");
+                if (moment().isDST()) {
+                    form.VerInv = 'Verano';
+                }else{
+                    form.VerInv = 'Invierno';
+                }
                 $('#t_carg').DataTable().clear();
                 $('#t_carg').DataTable().destroy();
                 this.$inertia.post('/Produccion/Carga', form, {

@@ -291,7 +291,7 @@ class CargaController extends Controller
             'dep_perf_id' => ['required'],
             'valor' => ['required']
         ])->validate();
-
+        return $request;
         carga::create($request->all());
 
         return redirect()->back()

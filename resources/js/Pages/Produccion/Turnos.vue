@@ -14,7 +14,7 @@
                 </select>
             </template>
             <template v-slot:BtnNuevo>
-                <jet-button @click="openModal" class="BtnNuevo">Nuevo Turno </jet-button>
+                <jet-button @click="openModal" class="BtnNuevo" v-if="usuario.IdEmp == 78">Nuevo Turno </jet-button>
                 <jet-button class="BtnNuevo" data-bs-toggle="modal" href="#tablaEquipo" @click="reset2">Agregar Equipo</jet-button>
             </template>
         </Accions>
@@ -34,7 +34,7 @@
                             <td class="fila tw-text-center tw-border-2">{{cTur.departamento.Nombre}}</td>
                         </tr>
                         <tr >
-                            <th class="fila tw-text-center tw-font-semibold tw-border-2" colspan="2">Horario de la semana</th>
+                            <th class="fila tw-text-center tw-font-semibold tw-border-2" colspan="2">Horario de {{cTur.VerInv}}</th>
                         </tr>
                         <tr >
                             <th class="fila">
@@ -57,17 +57,18 @@
                             </td>
                         </tr>
                         <td colspan="2" class="tw-text-center ">
-                            <jet-button type="button" class="tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-center tw-w-full md:tw-w-2/6 lg:tw-w-3/12" @click="edit(cTur)">Actualizar</jet-button>
-                            <jet-CancelButton type="button" class=" tw-text-center tw-w-full md:tw-w-2/6 lg:tw-w-3/12" @click="deleteRow(cTur)">Eliminar</jet-CancelButton>
+
+                    <jet-button type="button" @click="cambio(cTur)" v-if="S_Area == 7">Cambiar Horario</jet-button>
+                            <jet-button type="button" class="tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-center tw-w-full md:tw-w-2/6 lg:tw-w-3/12" @click="edit(cTur)" v-if="usuario.IdEmp == 78">Actualizar</jet-button>
+                            <jet-CancelButton type="button" class=" tw-text-center tw-w-full md:tw-w-2/6 lg:tw-w-3/12" @click="deleteRow(cTur)" v-if="usuario.IdEmp == 78">Eliminar</jet-CancelButton>
                         </td>
                     </table>
                 </div>
             </div>
         </div>
-        <!------------------ Modal ------------------------->
+        <!------------------ Modal Turnos------------------------->
         <modal :show="showModal" @close="chageClose">
             <form>
-                <!---------------------------  ------------------------------------>
                 <div class="tw-px-4 tw-py-4">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
@@ -86,7 +87,7 @@
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Turno</jet-label>
-                                    <select v-model="form.nomtur" @change="cambio" class="InputSelect">
+                                    <select v-model="form.nomtur" class="InputSelect">
                                         <option value="" disabled>Selecciona un turno</option>
                                         <option value="Turno 1">Turno 1</option>
                                         <option value="Turno 2">Turno 2</option>
@@ -104,6 +105,13 @@
                                         <option value="60">60 minutos</option>
                                     </select>
                                     <small v-if="errors.cargaExt" class="validation-alert">{{errors.cargaExt}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label>Tiempo para carga</jet-label>
+                                    <select v-model="form.VerInv" class="InputSelect">
+                                        <option value="Verano">Verano</option>
+                                        <option value="Invierno">Invierno</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -140,7 +148,7 @@
                 </div>
             </form>
         </modal>
-        <!---------------------- Modal 2 --------------------------------->
+        <!---------------------- Modal equipo 2 --------------------------------->
         <div class="modal fade" id="tablaEquipo" aria-hidden="true" aria-labelledby="tablaEquipoLabel" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered  modal-lg">
                 <div class="modal-content">
@@ -268,6 +276,7 @@
     import pdfMake from 'pdfmake/build/pdfmake';
     import pdfFonts from 'pdfmake/build/vfs_fonts';
     import $ from 'jquery';
+    import moment from 'moment';
 
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     window.JSZip = jszip;
@@ -312,7 +321,8 @@
                     LVFin: '',
                     SDIni: '',
                     SDFin: '',
-                    cargaExt: '15'
+                    cargaExt: '30',
+                    VerInv: 'Verano'
                 },
                 form2: {
                     departamento_id: this.S_Area,
@@ -331,6 +341,12 @@
             //información del select area
             mostSelect() {
                 this.$nextTick(() => {
+                    if (this.usuario.dep_pers.length != 0) {
+                        this.S_Area = this.usuario.dep_pers[0].departamento_id;
+                    }else{
+                        this.S_Area = 7;
+                    }
+                    /* console.log(moment('2021-04-28 16:23:44').isDST()) */
                     this.depa.forEach(r => {
                         if (r.departamentos) {
                             this.opc += `<option value="${r.departamentos.id}"> ${r.departamentos.Nombre} </option>`;
@@ -345,25 +361,47 @@
                 });
             },
             //consulta para generar datos de la tabla
-            verTabla(event){
+            /* verTabla(event){
                 this.$inertia.get('/Produccion/Turnos',{ busca: event.target.value }, {
                     onSuccess: () => {  }, preserveState: true
                 });
-            },
-            cambio(event){
-                if (event.target.value == 'Vacío') {
-                    this.camt = true;
-                    this.form.LVIni = "00:00";
-                    this.form.LVFin = "00:00";
-                    this.form.SDIni = "00:00";
-                    this.form.SDFin = "00:00";
-                }else{
-                    this.camt = false;
-                    this.form.LVIni = "";
-                    this.form.LVFin = "";
-                    this.form.SDIni = "";
-                    this.form.SDFin = "";
+            }, */
+            cambio(data){
+
+                if (data.departamento_id == 7 & moment().isDST() == true) {
+                    switch (data.nomtur) {
+                        case 'Turno 1':
+                            data.LVIni= '09:00',
+                            data.LVFin= '20:00',
+                            data.SDIni= '09:00',
+                            data.SDFin= '21:00'
+                            break;
+                        case 'Turno 2':
+                            data.LVIni= '22:00',
+                            data.LVFin= '09:00',
+                            data.SDIni= '21:00',
+                            data.SDFin= '09:00'
+                            break;
+                    }
+                    data.VerInv = 'Verano'
+                }else if (data.departamento_id == 7 & moment().isDST() == false) {
+                    switch (data.nomtur) {
+                        case 'Turno 1':
+                            data.LVIni= '08:00',
+                            data.LVFin= '18:00',
+                            data.SDIni= '08:00',
+                            data.SDFin= '20:00'
+                            break;
+                        case 'Turno 2':
+                            data.LVIni= '22:00',
+                            data.LVFin= '08:00',
+                            data.SDIni= '20:00',
+                            data.SDFin= '08:00'
+                            break;
+                    }
+                    data.VerInv = 'Invierno'
                 }
+                console.log(data)
             },
             /******************************* opciones de modal funciones basicas *******************************************/
             //abrir y reset del modal procesos
@@ -430,12 +468,6 @@
                 this.chageClose();
             },
             update(data) {
-                if (data.nomtur == 'Vacio') {
-                    data.LVIni = '00:01';
-                    data.LVFin = '00:01';
-                    data.SDIni = '00:01';
-                    data.SDFin = '00:01';
-                }
                 data._method = 'PUT';
                 this.$inertia.post('/Produccion/Turnos/' + data.id, data, {
                     onSuccess: () => {this.reset(), this.chageClose()},
@@ -466,6 +498,13 @@
                 /* this.editMode2 = true; */
                 this.chageClose2();
             }
+        },
+        watch: {
+            S_Area: function(b){
+                this.$inertia.get('/Produccion/Turnos',{ busca: b }, {
+                    onSuccess: () => {  }, preserveState: true
+                });
+            },
         }
     }
 </script>

@@ -269,6 +269,11 @@
             },
             save(data){
                 //$('#t_paros').DataTable().clear();
+                if (moment().isDST()) {
+                    data.VerInv = 'Verano';
+                }else{
+                    data.VerInv = 'Invierno';
+                }
                 $('#t_paros').DataTable().destroy();
                 this.$inertia.post('/Produccion/Paros', data, {
                     onSuccess: () => { this.tabla(), this.reset(), this.alertSucces()}, onError: () => {this.tabla()}, preserveState: true

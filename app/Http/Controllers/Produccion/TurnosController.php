@@ -249,6 +249,7 @@ class TurnosController extends Controller
                 'LVFin' => $request->LVFin,
                 'SDIni' => $request->SDIni,
                 'SDFin' => $request->SDFin,
+                'VerInv' => $request->VerInv,
                 'cargaExt' => $request->cargaExt,
             ]);
             return redirect()->back()
