@@ -111,7 +111,7 @@ class UserSeeder extends Seeder
         User::create(['IdEmp' => '10','name' => 'ARTURO RODRIGUEZ CARMONA','Departamento' => '1','password' => bcrypt('10')]);
         User::create(['IdEmp' => '12','name' => 'MARIA MARINA MORALES SANCHEZ','Departamento' => '1','password' => bcrypt('12')])->assignRole('RecursosHumanos');
         User::create(['IdEmp' => '13','name' => 'FRUMENCIA LEYDEN LOPEZ SILVA','Departamento' => '1','password' => bcrypt('13')]);
-        User::create(['IdEmp' => '14','name' => 'EDILBERTO ROJAS MORALES','Departamento' => '1','password' => bcrypt('14')]);
+        User::create(['IdEmp' => '14','name' => 'EDILBERTO ROJAS MORALES','Departamento' => '1','password' => bcrypt('14')])->assignRole('Compras');
         User::create(['IdEmp' => '15','name' => 'FLOR ERENDIRA PEREZ ALTAMIRANO','Departamento' => '1','password' => bcrypt('15')]);
         User::create(['IdEmp' => '16','name' => 'ELIZABETH HERNANDEZ PEREZ','Departamento' => '1','password' => bcrypt('16')]);
         User::create(['IdEmp' => '17','name' => 'BEATRIZ EUGENIA LOPEZ LOZADA','Departamento' => '1','password' => bcrypt('17')])->assignRole('Compras');
