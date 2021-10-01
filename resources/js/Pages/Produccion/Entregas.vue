@@ -11,7 +11,7 @@
         <Accions>
             <template  v-slot:SelectB >
                 <select class="InputSelect" @change="verTabla" v-model="S_Area">
-                    <option value="">Selecciona un departamento</option>
+                    <option value="" disabled>Selecciona un departamento</option>
                     <option v-for="o in opc" :key="o.value" :value="o.value">{{o.text}}</option>
                 </select>
             </template>
@@ -20,7 +20,7 @@
             </template>
         </Accions>
         <!-- fomulario  -->
-        <div class="collapse m-5 tw-p-6 tw-bg-green-600 tw-rounded-3xl tw-shadow-xl" id="agPer">
+        <!-- <div class="collapse m-5 tw-p-6 tw-bg-green-600 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <div class="tw-mb-6 md:tw-flex">
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
@@ -65,7 +65,7 @@
                     <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Data table de las entregas -->
         <div class="table-responsive">
             <TableSky id="t_entregas">

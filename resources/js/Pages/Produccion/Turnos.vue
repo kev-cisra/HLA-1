@@ -175,7 +175,7 @@
                                         <td class="">
                                             <div class="overflow-auto tw-h-48">
                                                 <div v-for="perso in equipo.dep_pers" :key="perso" class="tw-border-b-4 tw-border-blueGray-700 hover:tw-bg-sky-600 tw-w-full">
-                                                        {{perso.perfiles.Nombre}} {{perso.perfiles.ApPat}}
+                                                    {{perso.perfiles.IdEmp}} - {{perso.perfiles.Nombre}} {{perso.perfiles.ApPat}}
                                                 </div>
                                             </div>
                                         </td>

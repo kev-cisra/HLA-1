@@ -30,7 +30,7 @@
                     <tr v-for="mq in maquinas" :key="mq.id">
                         <td class="fila">{{ mq.id }}</td>
                         <td class="fila">{{ mq.Nombre }}</td>
-                        <td class="fila">{{mq.marca.Nombre}}</td>
+                        <td class="fila">{{mq.marca == null ? 'N/A' : mq.marca.Nombre}}</td>
                         <td class="fila">{{ mq.departamentos.Nombre }}</td>
                         <td class="fila">
                             <div class="columnaIconos">
