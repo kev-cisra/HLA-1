@@ -345,7 +345,7 @@
                                                     <p class="tw-text-gray-600">SOLICITANTE: </p>
                                                     <p class="tw-font-semibold">{{datos.articulos_requisicion.requisiciones_perfil.Nombre}} {{datos.articulos_requisicion.requisiciones_perfil.ApPat}} {{datos.articulos_requisicion.requisiciones_perfil.ApMat}}</p>
                                                 </div>
-                                                <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                                <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50" v-if="datos.articulo_user != null">
                                                     <p class="tw-text-gray-600">RECIBIÓ</p>
                                                     <p class="tw-font-semibold">{{datos.articulo_user.name}}</p>
                                                 </div>
