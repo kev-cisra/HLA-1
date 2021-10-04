@@ -8,6 +8,7 @@ use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
 use App\Models\Produccion\dep_per;
 use App\Models\Produccion\notasCarga;
+use App\Models\Produccion\turnos;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
@@ -79,6 +80,9 @@ class CargaController extends Controller
                     },
                     'equipo' => function($eq){
                         $eq -> select('id', 'nombre', 'turno_id');
+                    },
+                    'equipo.turnos' => function($tur){
+                        $tur -> select('id', 'nomtur');
                     }
                 ])
                 ->get(['id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id', 'equipo_id']);
@@ -191,6 +195,9 @@ class CargaController extends Controller
                     },
                     'equipo' => function($eq){
                         $eq -> select('id', 'nombre', 'turno_id');
+                    },
+                    'equipo.turnos' => function($tur){
+                        $tur -> select('id', 'nomtur');
                     }
                 ])
                 ->get(['id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id', 'equipo_id']);
@@ -291,8 +298,11 @@ class CargaController extends Controller
             'dep_perf_id' => ['required'],
             'valor' => ['required']
         ])->validate();
-        return $request;
-        carga::create($request->all());
+
+        if ($request->vacio == 'N/A' | $request->vacio != 'Vacío') {
+            carga::create($request->all());
+        }
+
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');

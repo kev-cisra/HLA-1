@@ -852,6 +852,7 @@ export default {
         },
 
         show(id){
+            console.log("entre");
             this.detalles = id;
         },
 

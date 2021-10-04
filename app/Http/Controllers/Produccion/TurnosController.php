@@ -84,7 +84,7 @@ class TurnosController extends Controller
                         $tur->select('id', 'nomtur');
                     },
                     'dep_pers.perfiles' => function($perfi){
-                        $perfi->select('id', 'Nombre', 'ApPat', 'ApMat');
+                        $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
                     }
                 ])
                 ->get();
@@ -136,7 +136,7 @@ class TurnosController extends Controller
                             $tur->select('id', 'nomtur');
                         },
                         'dep_pers.perfiles' => function($perfi){
-                            $perfi->select('id', 'Nombre', 'ApPat', 'ApMat');
+                            $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
                         }
                     ])
                     ->get();
