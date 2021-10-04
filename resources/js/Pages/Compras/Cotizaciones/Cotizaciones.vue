@@ -482,7 +482,7 @@
             </div>
 
             <div class="ModalFooter">
-                <jet-button type="button" @click="save(form)">Guardar</jet-button>
+                <jet-button type="button" @click="save(form)" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
                 <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
             </div>
         </form>

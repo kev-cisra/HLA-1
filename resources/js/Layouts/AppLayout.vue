@@ -142,21 +142,6 @@
                             <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i> SUPPLY
                         </jet-responsive-nav-link>
                     </div>
-                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
-                        <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
-                            Supply
-                        </jet-responsive-nav-link>
-                    </div>
-                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
-                        <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
-                            Supply
-                        </jet-responsive-nav-link>
-                    </div>
-                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
-                        <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
-                            Supply
-                        </jet-responsive-nav-link>
-                    </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">
                         <jet-responsive-nav-link :href="route('Produccion')" :active="route().current('Produccion')">
                             <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i> PRODUCCIÓN
