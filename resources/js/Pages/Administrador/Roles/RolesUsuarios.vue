@@ -39,9 +39,6 @@
         </Accions>
 
         <div class="tw-mx-8">
-            <pre>
-                {{ Roles }}
-            </pre>
             <Table>
                 <template v-slot:TableHeader>
                     <th class="columna" @click="sort('id')">Id
@@ -67,11 +64,13 @@
                         <td class="tw-p-2">
                             <div class="columnaIconos">
                                 <div class="iconoEdit">
-                                    <span tooltip="Editar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                        </svg>
-                                    </span>
+                                    <a :href="route('admin.users.edit', user.id)">
+                                        <span tooltip="Editar" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
                         </td>
@@ -80,52 +79,6 @@
             </Table>
             <pagination class="tw-mt-6 tw-ml-4" :links="Users.links" />
         </div>
-
-        <modal :show="showModal" @close="chageClose" :maxWidth="tam">
-        <form>
-            <div class="tw-px-4 tw-py-4">
-                <div class="tw-text-lg">
-                    <div class="ModalHeader">
-                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Registro de Información</h3>
-                    </div>
-                </div>
-
-                <div class="tw-mt-4">
-                    <div class="ModalForm">
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>NOMBRE</jet-label>
-                                <jet-input type="text" v-model="form.Nombre" @input="(val) => (form.Nombre = form.Nombre.toUpperCase())"></jet-input>
-                                <small v-if="errors.Nombre" class="validation-alert">{{errors.Nombre}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>DEPARTAMENTO</jet-label>
-                                <select id="Jefe" v-model="form.Departamentos_id" class="InputSelect">
-                                    <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
-                                </select>
-                                <small v-if="errors.Departamentos_id" class="validation-alert">{{errors.Departamentos_id}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>TIPO PAGO</jet-label>
-                                <select id="Jefe" v-model="form.TipoPago" class="InputSelect">
-                                    <option value="REMISION">REMISIÓN</option>
-                                    <option value="FACTURADO">FACTURADO</option>
-                                </select>
-                                <small v-if="errors.TipoPago" class="validation-alert">{{errors.TipoPago}}</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ModalFooter">
-                <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
-                <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
-                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
-            </div>
-        </form>
-        </modal>
-
         </div>
     </app-layout>
 </template>

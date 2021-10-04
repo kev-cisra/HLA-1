@@ -346,7 +346,7 @@
                                                 <p class="tw-text-gray-600">OBSERVACIONES</p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.Observaciones}}</p>
                                             </div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50" v-if="datos.articulo_user != null">
                                                 <p class="tw-text-gray-600">RECIBIÓ</p>
                                                 <p class="tw-font-semibold">{{datos.articulo_user.name}}</p>
                                             </div>
