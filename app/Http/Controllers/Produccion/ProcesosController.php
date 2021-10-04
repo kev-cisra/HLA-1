@@ -60,6 +60,8 @@ class ProcesosController extends Controller
                     $dep->select('id', 'Nombre', 'departamento_id');
                 },
                 'sub_proceso',
+                'formulas.maq_pros.maquinas',
+                'formulas.proc_rela',
                 'maq_pros' => function($mp){
                     $mp->select('id', 'proceso_id', 'maquina_id')
                     ->with('maquinas');
@@ -92,6 +94,8 @@ class ProcesosController extends Controller
                     $dep->select('id', 'Nombre', 'departamento_id');
                 },
                 'sub_proceso',
+                'formulas.maq_pros.maquinas',
+                'formulas.proc_rela',
                 'maq_pros' => function($mp){
                     $mp->select('id', 'proceso_id', 'maquina_id')
                     ->with('maquinas');
@@ -165,6 +169,7 @@ class ProcesosController extends Controller
                 //echo $for['val'];
                 foreach ($request->for_maq as $check) {
                     $ch = explode('-', $check);
+                    //si los procesos a cargar tienen maquinas
                     if ($for['val'] == $ch[0]) {
                         //echo $for['val'].' '.$check.' '.'maquinas - ';
                         formulas::create([
@@ -172,11 +177,15 @@ class ProcesosController extends Controller
                             'maq_pros_id' => $ch[1],
                             'proceso_id' => $proceso->id
                         ]);
-                    }else{
+                    }
+                    //en caso de que no cuente con maquinas
+                    else{
+                        /* consulta el tipo de proceso  */
                         $tipo = procesos::where('id', '=', $for['val'])
                             ->first();
-                            //echo $tipo->id.' ';
-                        if ($tipo->tipo != 1) {
+                        //en caso de que sea proceso principal o formula va a insertar
+                        if ($tipo->tipo == 0 | $tipo->tipo == 3) {
+                            //consulta si ese proceso ya existe de lo contrario lo omite
                             $ver = formulas::where('proceso_id', '=', $proceso->id)
                                 ->where('proc_rela', '=', $for['val'])
                                 ->count();

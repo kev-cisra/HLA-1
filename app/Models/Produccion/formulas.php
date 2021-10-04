@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion;
 
+use App\Models\Produccion\catalogos\procesos;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
@@ -18,6 +19,10 @@ class formulas extends Model
     //relacion uno a muchos inversa
     public function procesos() {
         return $this->belongsTo(procesos::class, 'proceso_id');
+    }
+
+    public function proc_rela() {
+        return $this->belongsTo(procesos::class, 'proc_rela');
     }
 
     public function maq_pros() {

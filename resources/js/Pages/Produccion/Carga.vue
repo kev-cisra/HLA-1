@@ -10,16 +10,24 @@
         </Header>
         <Accions>
             <template  v-slot:SelectB v-if="usuario.dep_pers.length != 1">
-                <select class="InputSelect" @change="verTabla" v-model="S_Area">
+                <select class="InputSelect sm:tw-w-full" @change="verTabla" v-model="S_Area">
                     <option value="" disabled>Selecciona un departamento</option>
                     <option v-for="o in opc" :key="o.value" :value="o.value">{{o.text}}</option>
                 </select>
+            </template>
+            <template v-slot:calcula>
+                <div class="input-group" tooltip="Calcular" flow="right">
+                    <input type="date" class="form-control tw-rounded-lg" v-model="calcu" :max="hoy" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-success" type="button" id="button-addon2" @click="calcula()">
+                        <i class="fas fa-calculator" ></i>
+                    </button>
+                </div>
             </template>
             <template v-slot:BtnNuevo>
                 <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar datos</jet-button>
             </template>
         </Accions>
-        <JetBanner><h1>listo para empezar</h1></JetBanner>
+
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
         <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <form>
@@ -110,13 +118,13 @@
                 <!-- Botones -->
                 <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
                 <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
+                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
                 </div>
                 <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
+                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
                 </div>
                 <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+                    <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
                 </div>
                     <div>
                         <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
@@ -234,6 +242,8 @@
                 noCor: '',
                 proc_prin: '',
                 v: [],
+                calcu: '',
+                hoy: moment().format('YYYY-MM-DD'),
                 editMode: false,
                 nAnte: '',
                 form: {
@@ -263,6 +273,15 @@
             this.reCarga();
         },
         methods: {
+            //calcula
+            calcula() {
+                if (this.calcu) {
+                    console.log(this.calcu);
+
+                }else{
+                    Swal.fire('Por favor selecciona una fecha')
+                }
+            },
             //consulta para generar datos de la tabla
             verTabla(event){
                 event.target.value == '' ? '' : $('#t_carg').DataTable().clear();
@@ -573,13 +592,6 @@
                     this.form.maq_pro_id = '';
                     this.form.clave_id = '';
                     this.form.norma = '';
-                }
-            },
-            form: {
-                deep: true,
-                handler: function(f) {
-                    //select para claves
-
                 }
             }
         }
