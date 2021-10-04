@@ -23,17 +23,17 @@
                             </div>
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index'])">
                                 <jet-nav-link :href="route('Admin')" :active="route().current('Admin')">
-                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Administrador
+                                    <i class="tw-mr-2 fas fa-laptop-code tw-text-gray-600"></i>Administrador
                                 </jet-nav-link>
                             </div>
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'RecursosHumanos.index'])">
                                 <jet-nav-link :href="route('RecursosHumanos')" :active="route().current('RecursosHumanos')">
-                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Recursos Humanos
+                                    <i class="tw-mr-2 fas fa-user-tie tw-text-gray-600"></i>Recursos Humanos
                                 </jet-nav-link>
                             </div>
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'Compras.index'])">
                                 <jet-nav-link :href="route('Compras')" :active="route().current('Compras')">
-                                        <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Compras
+                                        <i class="tw-mr-2 fas fa-business-time tw-text-gray-600"></i>Compras
                                 </jet-nav-link>
                             </div>
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'Almacen.index'])">
@@ -43,12 +43,12 @@
                             </div>
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
                                 <jet-nav-link :href="route('Supply')" :active="route().current('Supply')">
-                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Supply
+                                    <i class="tw-mr-2 fas fa-warehouse tw-text-gray-600"></i>Supply
                                 </jet-nav-link>
                             </div>
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex"  v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">
                                 <jet-nav-link :href="route('Produccion')" :active="route().current('Produccion')">
-                                    <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Producción
+                                    <i class="tw-mr-2 fas fa-shipping-fast tw-text-gray-600"></i>Producción
                                 </jet-nav-link>
                             </div>
                         </div><!--- v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index',])" -->
@@ -114,38 +114,37 @@
                 <div :class="{'tw-block': showingNavigationDropdown, 'tw-hidden': ! showingNavigationDropdown}" class="lg:tw-hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                            Inicio
+                            <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i> INICIO
                         </jet-responsive-nav-link>
                     </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'RecursosHumanos.index'])">
                         <jet-responsive-nav-link :href="route('Admin')" :active="route().current('Admin')">
-                            Administrador
+                            <i class="tw-mr-2 fas fa-laptop-code tw-text-gray-600"></i> ADMINISTRADOR
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'RecursosHumanos.index'])">
+                        <jet-responsive-nav-link :href="route('RecursosHumanos')" :active="route().current('RecursosHumanos')">
+                            <i class="tw-mr-2 fas fa-user-tie"></i> RECURSOS HUMANOS
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Compras.index'])">
+                        <jet-responsive-nav-link :href="route('Compras')" :active="route().current('AlComprasmacen')">
+                            <i class="tw-mr-2 fas fa-business-time"></i> COMPRAS
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Almacen.index'])">
+                        <jet-responsive-nav-link :href="route('Almacen')" :active="route().current('Almacen')">
+                            <i class="tw-mr-2 fas fa-warehouse"></i> ALMACÉN
                         </jet-responsive-nav-link>
                     </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
                         <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
-                            Supply
-                        </jet-responsive-nav-link>
-                    </div>
-                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
-                        <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
-                            Supply
-                        </jet-responsive-nav-link>
-                    </div>
-                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
-                        <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
-                            Supply
-                        </jet-responsive-nav-link>
-                    </div>
-                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
-                        <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
-                            Supply
+                            <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i> SUPPLY
                         </jet-responsive-nav-link>
                     </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">
                         <jet-responsive-nav-link :href="route('Produccion')" :active="route().current('Produccion')">
-                            <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>
-                            Producción
+                            <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i> PRODUCCIÓN
                         </jet-responsive-nav-link>
                     </div>
 

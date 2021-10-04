@@ -129,9 +129,9 @@ class RequisicionesSolicitadasController extends Controller {
 
         $Cotizacion = ArticulosRequisiciones::whereBetween('EstatusArt', [3, 4])->count();
 
-        $Autorizados = ArticulosRequisiciones::where('EstatusArt', '=', 5)->count();
+        $SinConfirmar = ArticulosRequisiciones::where('EstatusArt', '=', 7)->count();
 
-        return Inertia::render('Almacen/Requisiciones/Requisiciones', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Departamentos', 'Maquinas', 'Almacen', 'Cotizacion', 'Autorizados', 'mes'));
+        return Inertia::render('Almacen/Requisiciones/Requisiciones', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Departamentos', 'Maquinas', 'Almacen', 'Cotizacion', 'SinConfirmar', 'mes'));
     }
 
     public function update(Request $request, $id){
