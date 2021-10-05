@@ -15,7 +15,10 @@ class CreateFormulasTable extends Migration
     {
         Schema::create('formulas', function (Blueprint $table) {
             $table->id();
-            $table->string('proc_rela');
+            $table->unsignedBigInteger('proc_rela');
+            $table->foreign('proc_rela')->references("id")->on("procesos")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
 
             $table->unsignedBigInteger('maq_pros_id')->nullable();
             $table->foreign('maq_pros_id')->references("id")->on("maq_pros")

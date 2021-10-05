@@ -41,6 +41,10 @@ class procesos extends Model
         return $this->hasMany(formulas::class, 'proceso_id');
     }
 
+    public function formu_proc(){
+        return $this->hasMany(formulas::class, 'proc_rela');
+    }
+
     public function paroscargas(){
         return $this->hasMany(parosCarga::class, 'proceso_id');
     }
