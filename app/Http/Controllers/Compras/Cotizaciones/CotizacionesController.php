@@ -170,6 +170,10 @@ class CotizacionesController extends Controller{
 
             if(isset($request->archivo)){
 
+                Validator::make($request->all(), [
+                    'archivo' => 'required|mimes:jpg,png,jpeg,svg,pdf',
+                ])->validate();
+
                 $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
 
                 //Guardado de Imagen en la carpeta Public/Storage.. (Uso del disco Public pora la restriccion de los archivos)

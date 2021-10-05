@@ -19628,6 +19628,10 @@ select {
 	font-size: 8rem;
 	line-height: 1;
 }
+.tw-text-4xl {
+	font-size: 2.25rem;
+	line-height: 2.5rem;
+}
 .tw-font-semibold {
 	font-weight: 600;
 }
@@ -19746,6 +19750,10 @@ select {
 .tw-text-green-500 {
 	--tw-text-opacity: 1;
 	color: rgba(34, 197, 94, var(--tw-text-opacity));
+}
+.tw-text-blueGray-400 {
+	--tw-text-opacity: 1;
+	color: rgba(148, 163, 184, var(--tw-text-opacity));
 }
 .tw-text-sky-900 {
 	--tw-text-opacity: 1;
@@ -21725,11 +21733,6 @@ select {
 
 	.md\:tw-text-8xl {
 		font-size: 6rem;
-		line-height: 1;
-	}
-
-	.md\:tw-text-7xl {
-		font-size: 4.5rem;
 		line-height: 1;
 	}
 }
