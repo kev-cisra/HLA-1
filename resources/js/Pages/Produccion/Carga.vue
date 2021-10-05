@@ -10,15 +10,15 @@
         </Header>
         <Accions>
             <template  v-slot:SelectB v-if="usuario.dep_pers.length != 1">
-                <select class="InputSelect sm:tw-w-full" @change="verTabla" v-model="S_Area">
+                <select class="InputSelect sm:tw-w-full" v-model="S_Area">
                     <option value="" disabled>Selecciona un departamento</option>
                     <option v-for="o in opc" :key="o.value" :value="o.value">{{o.text}}</option>
                 </select>
             </template>
-            <template v-slot:calcula>
+            <template v-slot:calcula v-if="usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')">
                 <div class="input-group" tooltip="Calcular" flow="right">
                     <input type="date" class="form-control tw-rounded-lg" v-model="calcu" :max="hoy" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-success" type="button" id="button-addon2" @click="calcula()">
+                    <button class="btn btn-outline-success" type="button" id="button-addon2" :disabled="btnOff" @click="calcula()">
                         <i class="fas fa-calculator" ></i>
                     </button>
                 </div>
@@ -241,6 +241,7 @@
                 S_Area: '',
                 noCor: '',
                 proc_prin: '',
+                btnOff: false,
                 v: [],
                 calcu: '',
                 hoy: moment().format('YYYY-MM-DD'),
@@ -269,21 +270,27 @@
         },
         mounted() {
             this.global();
-            this.tabla();
+            /* this.tabla(); */
             this.reCarga();
         },
         methods: {
             //calcula
             calcula() {
-                if (this.calcu) {
-                    console.log(this.calcu);
-
+                if (this.calcu != '' & this.S_Area != '') {
+                    console.log(this.calcu+' '+this.S_Area);
+                    /* this.btnOff = true; */
+                    const form = {fecha: this.calcu, depa: this.S_Area};
+                    this.$inertia.post('/Produccion/Calcula', form, {
+                        onSuccess: (v) => { this.btnOff = false, this.alertSucces()}, onError: (e) => { this.btnOff = false }, preserveState: true
+                    });
                 }else{
-                    Swal.fire('Por favor selecciona una fecha')
+                    this.calcu == '' ? Swal.fire('Por favor selecciona una fecha') : '';
+                    this.S_Area == '' ? Swal.fire('Por favor selecciona un departamento') : '';
                 }
+
             },
             //consulta para generar datos de la tabla
-            verTabla(event){
+            /* verTabla(event){
                 event.target.value == '' ? '' : $('#t_carg').DataTable().clear();
                 $('#t_carg').DataTable().destroy();
                 this.resetCA();
@@ -291,12 +298,14 @@
                 this.$inertia.get('/Produccion/Carga',{ busca: event.target.value }, {
                     onSuccess: () => { this.reCarga(), this.tabla()  }, onError: () => {this.tabla()}, preserveState: true
                 });
-            },
+            }, */
             /****************************** Globales **********************************************************/
             global(){
                 if (this.usuario.dep_pers.length == 0) {
-
+                    this.S_Area = 7;
                 }else{
+                    //Asigna el primer departamento
+                    this.S_Area = this.usuario.dep_pers[0].departamento_id;
                     //asigna el puesto a una variable
                     this.noCor = this.usuario.dep_pers[0].ope_puesto;
                 }
@@ -585,6 +594,15 @@
             }
         },
         watch: {
+            S_Area: function(b){
+                $('#t_carg').DataTable().clear();
+                $('#t_carg').DataTable().destroy();
+                this.resetCA();
+                this.proc_prin = '';
+                this.$inertia.get('/Produccion/Carga',{ busca: b }, {
+                    onSuccess: () => { this.reCarga(), this.tabla()  }, onError: () => {this.tabla()}, preserveState: true
+                });
+            },
             proc_prin: function(v) {
                 //cuando no se edita
                 if (!this.editMode) {

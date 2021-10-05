@@ -41,7 +41,7 @@
                         <td class="fila">{{ proceso.departamentos.Nombre }}</td>
                         <td class="fila" >
                             <tr class="fila" v-for="f in proceso.formulas" :key="f.id">
-                                - {{f.proc_rela.nompro}} / {{f.maq_pros == null ? 'N/A' : f.maq_pros.maquinas.Nombre}} -
+                                - {{f.proc_rela == null ? 'N/A' : f.proc_rela.nompro}} / {{f.maq_pros == null ? 'N/A' : f.maq_pros.maquinas.Nombre}} -
                             </tr>
                             <tr class="fila" v-for="mp in proceso.maq_pros" :key="mp.id">
                                - {{mp.maquinas.Nombre}} -
@@ -183,7 +183,7 @@
                     </div>
                 </div>
                 <!-------------------------------- FORMULAS --------------------------------------->
-                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 3">
+                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 3 & !editMode">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Formulas</h3>
@@ -242,7 +242,7 @@
     import JetSelect from '@/Components/Select';
     import Modal from '@/Jetstream/Modal';
     import JetLabel from '@/Jetstream/Label';
-    import Select from '../../Components/Select.vue';
+
     //datatable
     import datatable from 'datatables.net-bs5';
     require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
@@ -477,11 +477,12 @@
                 this.form.descripcion = data.descripcion;
                 this.form.maquinas = [];
                 this.form.formulas = [];
+                this.form.for_maq = [];
                 data.maq_pros.forEach(mp => {
                     this.form.maquinas.push({value: mp.maquina_id});
                 })
                 data.formulas.forEach(fo => {
-                    this.form.formulas.push({val: fo.proc_rela})
+                    this.form.formulas.push({val: fo.proc_rela.id})
                 })
                 this.editMode = true;
                 this.chageClose();
@@ -494,10 +495,27 @@
                 });
             },
             deleteRow: function (data) {
-                if (!confirm('¿Estás seguro de querer eliminar este Proceso?')) return;
-                $('#t_pro').DataTable().destroy()
-                data._method = 'DELETE';
-                this.$inertia.post('/Produccion/Procesos/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tabla() }, onError: () => {this.tabla()}});
+                Swal.fire({
+                    title: '¿Estás seguro de querer eliminar este Proceso?',
+                    text: "¡Si se elimina no se podrá revertir!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                        'Eliminadó!',
+                        '¡El registro se eliminó correctamente!',
+                        'success'
+                        )
+                        $('#t_pro').DataTable().destroy()
+                        data._method = 'DELETE';
+                        this.$inertia.post('/Produccion/Procesos/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tabla() }, onError: () => {this.tabla()}});
+                    }
+                })
+
             },
         },
         computed:{
