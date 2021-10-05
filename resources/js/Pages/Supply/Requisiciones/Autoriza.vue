@@ -346,6 +346,7 @@
                             <th class="columna">PRECIO UNITARIO</th>
                             <th class="columna">TOTAL</th>
                             <th class="columna">MARCA</th>
+                            <th class="columna">PROVEEDOR</th>
                             <th class="columna">COMENTARIOS</th>
                             <th class="columna">ESTATUS</th>
                             <th class="columna">ACCIONES</th>
@@ -358,6 +359,7 @@
                                 <td class="tw-p-2">{{ datos.Precio }}</td>
                                 <td class="tw-p-2">{{ datos.Total }}</td>
                                 <td class="tw-p-2">{{ datos.Marca }}</td>
+                                <td class="tw-p-2">{{ datos.Proveedor }}</td>
                                 <td class="tw-p-2">{{ datos.Comentarios }}</td>
                                 <td class="fila">
                                     <div class="columnaIconos" v-if="datos.Autorizado == 0">

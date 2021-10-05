@@ -579,6 +579,7 @@
                             </div>
 
                             <div class="tw-hidden md:tw-block md:tw-w-1/2 tw-p-2 tw-mt-2">
+                                <p>{{ path + form.archivo }}</p>
                                 <iframe :src="path + form.archivo" style="width: 100%; height: 350px; border: none;">
                                 </iframe>
                             </div>

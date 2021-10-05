@@ -254,7 +254,7 @@ export default {
     data() {
         return {
             showEdit: false,
-            FinMes: false,
+            FinMes: true,
             hoy: '2021-09-15',
             // hoy: moment().format('DD-MM-YYYY'),
             Ini: moment().startOf('month').format('YYYY-MM-DD hh:mm'),

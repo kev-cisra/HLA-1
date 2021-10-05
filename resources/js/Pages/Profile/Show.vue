@@ -1,8 +1,8 @@
 <template>
     <app-layout>
         <template #header>
-            <h2 class="tw-font-semibold tw-text-xl tw-text-gray-800 tw-leading-tight">
-                Perfil
+            <h2 class="tw-uppercase tw-p-2 tw-mt-4 tw-text-center tw-text-4xl tw-font-black tw-text-blueGray-400">
+                <i class="fas fa-user-cog tw-mr-2"></i> mi perfil
             </h2>
         </template>
 

@@ -18,7 +18,7 @@ createApp({
     .mixin({
         data(){
             return{
-                path: 'http://HLA.test/storage/',
+                path: 'https://intranethlangeles.com/storage/app/public/',
                 showModal: false,
                 español: {
                     processing: "Procesando...",
