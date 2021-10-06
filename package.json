@@ -50,7 +50,6 @@
         "vue-chartjs": "^3.5.1",
         "vue-easytable": "^2.8.0",
         "vue-qart": "^2.2.0",
-        "vue-select": "^3.13.0",
         "vue-signature-canvas": "^1.0.1",
         "vue-signature-pad": "^3.0.1",
         "vue2-datepicker": "^3.10.2",
