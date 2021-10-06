@@ -15,14 +15,14 @@
                     <option v-for="o in opc" :key="o.value" :value="o.value">{{o.text}}</option>
                 </select>
             </template>
-            <template v-slot:calcula v-if="usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')">
+            <!-- <template v-slot:calcula v-if="usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')">
                 <div class="input-group" tooltip="Calcular" flow="right">
                     <input type="date" class="form-control tw-rounded-lg" v-model="calcu" :max="hoy" aria-describedby="button-addon2">
                     <button class="btn btn-outline-success" type="button" id="button-addon2" :disabled="btnOff" @click="calcula()">
                         <i class="fas fa-calculator" ></i>
                     </button>
                 </div>
-            </template>
+            </template> -->
             <template v-slot:BtnNuevo>
                 <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar datos</jet-button>
             </template>
