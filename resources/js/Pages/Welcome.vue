@@ -9,13 +9,13 @@
                 </div>
                 <div class="carousel-inner fullHeight">
                     <div class="h-full carousel-item active" data-bs-interval="3500">
-                    <img src="img/anuncios/Anuncio1.jpeg" class="d-block w-100 fullHeight" alt="...">
+                    <img src="img/anuncios/Anuncio1.jpg" class="d-block w-100 fullHeight" alt="...">
                     </div>
                     <div class="carousel-item fullHeight" data-bs-interval="3500">
-                    <img src="img/anuncios/Anuncio2.jpeg" class="d-block w-100 fullHeight" alt="...">
+                    <img src="img/anuncios/Anuncio2.jpg" class="d-block w-100 fullHeight" alt="...">
                     </div>
                     <div class="carousel-item fullHeight" data-bs-interval="3500">
-                    <img src="img/anuncios/Anuncio3.jpeg" class="d-block w-100 fullHeight" alt="...">
+                    <img src="img/anuncios/Plantilla3.png" class="d-block w-100 fullHeight" alt="...">
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
