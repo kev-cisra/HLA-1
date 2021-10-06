@@ -640,12 +640,24 @@ import Pagination from "@/Components/pagination";
 import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
 //imports de datatables
-import datatable from "datatables.net-bs5";
+import datatable from 'datatables.net-bs5';
+import print from 'datatables.net-buttons/js/buttons.print';
+import jszip from 'jszip/dist/jszip';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 import $ from "jquery";
 //Moment Js
 import moment from 'moment';
 import 'moment/locale/es';
 import throttle from 'lodash/throttle'
+
+require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
+require( 'datatables.net-buttons/js/buttons.html5' );
+require ( 'datatables.net-buttons/js/buttons.colVis' );
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+window.JSZip = jszip
+
 
 export default {
     data() {
@@ -796,6 +808,24 @@ export default {
         this.$nextTick(() => {
             $("#Articulos").DataTable({
             language: this.español,
+            "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                'colvis'
+            ]
             });
         });
         },
