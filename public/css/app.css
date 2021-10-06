@@ -19035,6 +19035,9 @@ select {
 .tw-grid-cols-1 {
 	grid-template-columns: repeat(1, minmax(0, 1fr));
 }
+.tw-flex-row {
+	flex-direction: row;
+}
 .tw-flex-col {
 	flex-direction: column;
 }
@@ -19079,6 +19082,9 @@ select {
 }
 .tw-gap-y-10 {
 	row-gap: 2.5rem;
+}
+.tw-gap-y-2 {
+	row-gap: 0.5rem;
 }
 .tw-space-x-8 > :not([hidden]) ~ :not([hidden]) {
 	--tw-space-x-reverse: 0;
@@ -21492,6 +21498,14 @@ select {
 
 	.sm\:tw-w-10 {
 		width: 2.5rem;
+	}
+
+	.sm\:tw-w-10\/12 {
+		width: 83.333333%;
+	}
+
+	.sm\:tw-w-2\/12 {
+		width: 16.666667%;
 	}
 
 	.sm\:tw-max-w-md {

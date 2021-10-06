@@ -16,12 +16,23 @@
                 </select>
             </template>
             <template v-slot:calcula v-if="usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')">
-                <div class="input-group" tooltip="Calcular" flow="right">
+                <div class="lg:tw-flex lg:tw-flex-row tw-gap-2">
+                    <div class="sm:tw-w-full" tooltip="Inicio del primer turno" flow="right">
+                        <jet-input class="InputSelect" type="datetime-local" v-model="calcuIni" :max="form.fecha"></jet-input>
+                    </div>
+                    <div class="tw-flex tw-flex-row">
+                        <jet-input class="InputSelect sm:tw-w-10/12" type="datetime-local" v-model="calcuFin" tooltip="Fin de la carga" flow="right" :max="form.fecha"></jet-input>
+                        <button class="btn btn-outline-success sm:tw-w-2/12" type="button" id="button-addon2" :disabled="btnOff" @click="calcula()" tooltip="Calcular" flow="right">
+                            <i class="fas fa-calculator" ></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- <div class="input-group" >
                     <input type="date" class="form-control tw-rounded-lg" v-model="calcu" :max="hoy" aria-describedby="button-addon2">
                     <button class="btn btn-outline-success" type="button" id="button-addon2" :disabled="btnOff" @click="calcula()">
                         <i class="fas fa-calculator" ></i>
                     </button>
-                </div>
+                </div> -->
             </template>
             <template v-slot:BtnNuevo>
                 <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar datos</jet-button>
@@ -84,7 +95,7 @@
                     <!-- select Clave -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Clave</jet-label>
-                        <jet-input class="InputSelect" list="cla" v-model="form.clave_id" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
+                        <jet-input class="InputSelect" list="cla" v-model="form.clave_id" @input="(val) => (form.partida = form.partida.toUpperCase())" :disabled="form.norma == ''"></jet-input>
                         <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
                         <datalist id="cla">
                             <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
@@ -247,7 +258,8 @@
                 proc_prin: '',
                 btnOff: false,
                 v: [],
-                calcu: '',
+                calcuIni: '',
+                calcuFin: '',
                 hoy: moment().format('YYYY-MM-DD'),
                 editMode: false,
                 nAnte: '',
@@ -280,15 +292,15 @@
         methods: {
             //calcula
             calcula() {
-                if (this.calcu != '' & this.S_Area != '') {
-                    console.log(this.calcu+' '+this.S_Area);
+                if (this.calcuIni != '' & this.calcuFin != '' & this.S_Area != '') {
+                    console.log(this.calcuIni+' '+this.S_Area);
                     /* this.btnOff = true; */
                     const form = {fecha: this.calcu, depa: this.S_Area};
                     this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => { this.btnOff = false, this.alertSucces()}, onError: (e) => { this.btnOff = false }, preserveState: true
                     });
                 }else{
-                    this.calcu == '' ? Swal.fire('Por favor selecciona una fecha') : '';
+                    this.calcuIni == '' | this.calcuFin ? Swal.fire('Por favor selecciona una fecha') : '';
                     this.S_Area == '' ? Swal.fire('Por favor selecciona un departamento') : '';
                 }
 
