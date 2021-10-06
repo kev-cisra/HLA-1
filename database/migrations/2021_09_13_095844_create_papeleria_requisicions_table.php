@@ -20,6 +20,7 @@ class CreatePapeleriaRequisicionsTable extends Migration
             $table->unsignedBigInteger('IdEmp'); //Numero control empleado
 
             $table->date('Fecha');
+            $table->integer('Folio')->default(0);
 
             $table->unsignedBigInteger('Perfil_id')->Nullable();
 

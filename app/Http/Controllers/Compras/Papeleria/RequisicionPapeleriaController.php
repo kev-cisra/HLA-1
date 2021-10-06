@@ -30,7 +30,7 @@ class RequisicionPapeleriaController extends Controller{
 
         $Papeleria = ArticulosPapeleriaRequisicion::with([
             'ArticulosPapeleria' => function($Art) {
-                $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
             },
             'ArticuloMaterial' => function($Art) {
                 $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
@@ -55,8 +55,23 @@ class RequisicionPapeleriaController extends Controller{
 
         $Perfil = PerfilesUsuarios::where('IdEmp', '=', $Session->IdEmp)->get();
 
+        //Genracion de folio automatico
+        $Numfolio = PapeleriaRequisicion::all(['Folio']);
+
+        if($Numfolio->count()){
+            $Nfolio = $Numfolio->last(); //Obtengo el ultimo folio con el metodo last
+
+            foreach ($Nfolio as $item){
+                $serial = $Nfolio->Folio; //asigno el folio a la variable serial
+            }
+        }else{
+            $serial = 1000; //en caso de no haber registros asigno un folio
+        }
+        $serial += 1; //Incremento de folio
+
         $Papeleria = PapeleriaRequisicion::create([
             'Fecha' => date('Y-m-d'),
+            'Folio' => $serial,
             'IdUser' => $request->IdUser,
             'IdEmp' => $request->IdEmp,
             'Perfil_id' => $Perfil[0]->id,
@@ -67,12 +82,14 @@ class RequisicionPapeleriaController extends Controller{
         $PapeleriaId = $Papeleria->id;
 
         foreach ($request->Partida as $value) {
-            $Articulos = ArticulosPapeleriaRequisicion::create([
-                'IdEmp' => $Session->IdEmp,
-                'Cantidad' => $value['Cantidad'],
-                'material_id' => $value['Material'],
-                'papeleria_id' => $PapeleriaId,
-            ]);
+            if(isset($value['Cantidad'])){
+                $Articulos = ArticulosPapeleriaRequisicion::create([
+                    'IdEmp' => $Session->IdEmp,
+                    'Cantidad' => $value['Cantidad'],
+                    'material_id' => $value['Material'],
+                    'papeleria_id' => $PapeleriaId,
+                ]);
+            }
         }
 
         return redirect()->back();

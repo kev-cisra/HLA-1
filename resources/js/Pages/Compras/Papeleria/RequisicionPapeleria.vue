@@ -26,6 +26,7 @@
                 <Table id="Papeleria">
                     <template v-slot:TableHeader>
                         <th class="columna">FECHA</th>
+                        <th class="columna">FOLIO</th>
                         <th class="columna">DEPARTAMENTO</th>
                         <th class="columna">SOLICITADO</th>
                         <th class="columna">CANTIDAD</th>
@@ -39,6 +40,7 @@
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="dato in Papeleria" :key="dato.id">
                             <td class="tw-p-2">{{ dato.articulos_papeleria.Fecha }}</td>
+                            <td class="tw-p-2">{{ dato.articulos_papeleria.Folio }}</td>
                             <td class="tw-p-2">{{ dato.articulos_papeleria.requisicion_departamento.Nombre }}</td>
                             <td class="tw-p-2">{{ dato.articulos_papeleria.requisicion_perfil.Nombre }}</td>
                             <td class="tw-p-2">{{ dato.Cantidad }}</td>
@@ -127,7 +129,7 @@
                         <div class="tw-mb-6 md:tw-flex" v-for="(form) in form.Partida" :key="form.id">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>CANTIDAD</jet-label>
-                                <jet-input type="number" v-model="form.Cantidad"></jet-input>
+                                <jet-input type="number" v-model="form.Cantidad" min="1"></jet-input>
                                 <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-8/12 md:tw-mb-0">

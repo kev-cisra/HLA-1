@@ -30,7 +30,7 @@ class SolicitudesPapeleriaController extends Controller{
 
         $Papeleria = ArticulosPapeleriaRequisicion::with([
             'ArticulosPapeleria' => function($Art) {
-                $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
             },
             'ArticuloMaterial' => function($Art) {
                 $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
