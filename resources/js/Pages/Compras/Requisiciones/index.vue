@@ -228,6 +228,7 @@
                         <th class="columna"># PARTE</th>
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
+                        <th class="columna">NOMBRE</th>
                         <th class="columna">FECHA LLEGADA</th>
                         <th class="columna">ESTATUS</th>
                         <th class="columna">ACCIONES</th>
@@ -245,6 +246,7 @@
                             <td class="tw-p-2">{{ datos.NumParte }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }}</td>
                             <td class="tw-p-2">{{ datos.Fechallegada }}</td>
                             <td class="tw-p-2">
                                 <div v-if="datos.EstatusArt == 1">
