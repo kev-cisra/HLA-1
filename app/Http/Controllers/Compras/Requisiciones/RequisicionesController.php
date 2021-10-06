@@ -45,7 +45,7 @@ class RequisicionesController extends Controller{
         if(count($Session->roles) != 0){
             $Rol = $Session->roles[0]->name;
         }else{
-            $Rol = 0;
+            $Rol = "SINROLASIGNADO";
         }
 
         if($Rol != 'ONEPIECE' && $Rol != 'Administrador'){
@@ -297,7 +297,7 @@ class RequisicionesController extends Controller{
         $RequicisionId = $Requisicion->id;
 
         foreach ($request->Partida as $value) {
-            
+
             if(!empty($value['NumParte'])){
                 $NumParte = $value['NumParte'];
             }else{

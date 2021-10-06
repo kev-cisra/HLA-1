@@ -117,5 +117,15 @@ class DepartamentosSeeder extends Seeder
             'IdUser' => '1',
             'Nombre' => 'PREPARACION DE ANILLO',
         ]);
+
+        Departamentos::create([
+            'IdUser' => '1',
+            'Nombre' => 'PREPARACION Y MOVIMIENTO',
+        ]);
+
+        Departamentos::create([
+            'IdUser' => '1',
+            'Nombre' => 'SHIELDTEX',
+        ]);
     }
 }
