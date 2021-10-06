@@ -10,19 +10,19 @@
         </Header>
         <Accions>
             <template  v-slot:SelectB v-if="usuario.dep_pers.length != 1">
-                <select class="InputSelect sm:tw-w-full" v-model="S_Area">
+                <select class="InputSelect sm:tw-w-full" @change="verTabla()" v-model="S_Area">
                     <option value="" disabled>Selecciona un departamento</option>
                     <option v-for="o in opc" :key="o.value" :value="o.value">{{o.text}}</option>
                 </select>
             </template>
-            <!-- <template v-slot:calcula v-if="usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')">
+            <template v-slot:calcula v-if="usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')">
                 <div class="input-group" tooltip="Calcular" flow="right">
                     <input type="date" class="form-control tw-rounded-lg" v-model="calcu" :max="hoy" aria-describedby="button-addon2">
                     <button class="btn btn-outline-success" type="button" id="button-addon2" :disabled="btnOff" @click="calcula()">
                         <i class="fas fa-calculator" ></i>
                     </button>
                 </div>
-            </template> -->
+            </template>
             <template v-slot:BtnNuevo>
                 <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar datos</jet-button>
             </template>
@@ -84,11 +84,15 @@
                     <!-- select Clave -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Clave</jet-label>
-                        <select class="InputSelect" v-model="form.clave_id">
+                        <jet-input class="InputSelect" list="cla" v-model="form.clave_id" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
+                        <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
+                        <datalist id="cla">
+                            <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
+                        </datalist>
+                        <!-- <select class="InputSelect" v-model="form.clave_id">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
-                        </select>
-                        <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
+                        </select> -->
                     </div>
                     <!-- Inout partida -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0" v-if="noCor != 'cor' | editMode">
@@ -290,15 +294,9 @@
 
             },
             //consulta para generar datos de la tabla
-            /* verTabla(event){
+            verTabla(event){
                 event.target.value == '' ? '' : $('#t_carg').DataTable().clear();
-                $('#t_carg').DataTable().destroy();
-                this.resetCA();
-                this.proc_prin = '';
-                this.$inertia.get('/Produccion/Carga',{ busca: event.target.value }, {
-                    onSuccess: () => { this.reCarga(), this.tabla()  }, onError: () => {this.tabla()}, preserveState: true
-                });
-            }, */
+            },
             /****************************** Globales **********************************************************/
             global(){
                 if (this.usuario.dep_pers.length == 0) {
@@ -585,7 +583,7 @@
                         if (this.form.norma == cl.id) {
                             //console.log(cl.claves)
                             cl.claves.forEach(c => {
-                                scl.push({id: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
+                                scl.push({value: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
                             })
                         }
                     })
@@ -595,7 +593,6 @@
         },
         watch: {
             S_Area: function(b){
-                $('#t_carg').DataTable().clear();
                 $('#t_carg').DataTable().destroy();
                 this.resetCA();
                 this.proc_prin = '';

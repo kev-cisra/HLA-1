@@ -296,7 +296,8 @@ class CargaController extends Controller
         Validator::make($request->all(), [
             'proceso_id' => ['required'],
             'dep_perf_id' => ['required'],
-            'valor' => ['required']
+            'valor' => ['required'],
+            'clave_id' => ['numeric'],
         ])->validate();
 
         if ($request->vacio == 'N/A' | $request->vacio != 'Vacío') {
