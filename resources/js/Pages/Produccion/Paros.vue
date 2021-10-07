@@ -19,50 +19,59 @@
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
         <div class="collapse m-5 tw-p-6 tw-bg-green-600 tw-rounded-3xl tw-shadow-xl" id="agPer">
-            <div class="tw-mb-6 md:tw-flex">
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                    <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
-                    <select class="InputSelect" v-model="proc_prin" v-html="opcPP" :disabled="editMode"></select>
+            <form>
+                <!-- inputs principales -->
+                <div class="tw-mb-6 md:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
+                        <select class="InputSelect" v-model="proc_prin" v-html="opcPP" :disabled="editMode"></select>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="opcSP">
+                        <jet-label><span class="required">*</span>Sub proceso </jet-label>
+                        <select class="InputSelect" v-model="form.proceso_id" v-html="opcSP" :disabled="editMode"></select>
+                        <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>Maquinas</jet-label>
+                        <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ" :disabled="editMode"></select>
+                        <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>Tipo de paro</jet-label>
+                        <select class="InputSelect" v-model="form.paro_id" v-html="opcPR" :disabled="editMode"></select>
+                        <small v-if="errors.paro_id" class="validation-alert">{{errors.paro_id}}</small>
+                    </div>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="opcSP">
-                    <jet-label><span class="required">*</span>Sub proceso </jet-label>
-                    <select class="InputSelect" v-model="form.proceso_id" v-html="opcSP" :disabled="editMode"></select>
-                    <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
+                <!-- inputs orden y descripcion -->
+                <div class="tw-mb-6 md:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 tw-text-center tw-mx-auto md:tw-mb-0">
+                        <jet-label>Orden</jet-label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon3" v-text="tOrden"></span>
+                            <jet-input type="text" class="form-control" v-model="form.orden" @input="(val) => (form.orden = form.orden.toUpperCase())"></jet-input>
+                        </div>
+                        <small v-if="errors.orden" class="validation-alert">{{errors.orden}}</small>
+
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 tw-text-center tw-mx-auto md:tw-mb-0">
+                        <jet-label>Descripción</jet-label>
+                        <textarea class="InputSelect" v-model="form.descri" maxlength="250" @input="(val) => (form.descri = form.descri.toUpperCase())" placeholder="Máximo 250 caracteres"></textarea>
+                        <small v-if="errors.descri" class="validation-alert">{{errors.descri}}</small>
+                    </div>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
-                    <jet-label><span class="required">*</span>Maquinas</jet-label>
-                    <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ" :disabled="editMode"></select>
-                    <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                <!-- Botones Actualizar guardar y cancelar -->
+                <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+                    <div>
+                        <jet-button type="button" class="tw-mx-auto" v-if="!editMode" @click="save(form)">Guardar</jet-button>
+                    </div>
+                    <div>
+                        <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+                    </div>
+                    <div>
+                        <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
+                    </div>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
-                    <jet-label><span class="required">*</span>Tipo de paro</jet-label>
-                    <select class="InputSelect" v-model="form.paro_id" v-html="opcPR" :disabled="editMode"></select>
-                    <small v-if="errors.paro_id" class="validation-alert">{{errors.paro_id}}</small>
-                </div>
-            </div>
-            <div class="tw-mb-6 md:tw-flex">
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 tw-text-center tw-mx-auto md:tw-mb-0">
-                    <jet-label>Orden</jet-label>
-                    <jet-input type="text" v-model="form.orden" @input="(val) => (form.orden = form.orden.toUpperCase())"></jet-input>
-                    <small v-if="errors.orden" class="validation-alert">{{errors.orden}}</small>
-                </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 tw-text-center tw-mx-auto md:tw-mb-0">
-                    <jet-label>Descripción</jet-label>
-                    <textarea class="InputSelect" v-model="form.descri" maxlength="250" @input="(val) => (form.descri = form.descri.toUpperCase())" placeholder="Máximo 250 caracteres"></textarea>
-                    <small v-if="errors.descri" class="validation-alert">{{errors.descri}}</small>
-                </div>
-            </div>
-            <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-               <div>
-                    <jet-button type="button" class="tw-mx-auto" v-if="!editMode" @click="save(form)">Guardar</jet-button>
-               </div>
-               <div>
-                    <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
-               </div>
-                <div>
-                    <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
-                </div>
-            </div>
+            </form>
         </div>
         <!------------------------------------ Data table de carga ------------------------------------------------------->
         <div class="table-responsive">
@@ -70,19 +79,23 @@
                 <template v-slot:TableHeader>
                     <th class="columna tw-text-center">Orden</th>
                     <th class="columna tw-text-center">Clave de paro</th>
+                    <th class="columna tw-text-center">Maquina</th>
                     <th class="columna tw-text-center">Nombre de paro</th>
+                    <th class="columna tw-text-center">Descripción</th>
                     <th class="columna tw-text-center">Estatus</th>
                     <th class="columna tw-text-center">Inicio</th>
                     <th class="columna tw-text-center">Final</th>
                     <th class="columna tw-text-center">Tiempo cargado</th>
-                    <th class="columna tw-text-center">Maquina</th>
+                    <th class="columna tw-text-center">Plan de Acción</th>
                     <th></th>
                 </template>
                 <template v-slot:TableFooter >
                     <tr v-for="ca in cargas" :key="ca.id">
                         <td class="fila tw-text-center">{{ca.orden}}</td>
+                        <td class="fila tw-text-center">{{ca.maq_pro.maquinas.Nombre}}</td>
                         <td class="fila tw-text-center">{{ca.paros.clave}}</td>
                         <td class="fila tw-text-center">{{ca.paros.descri}}</td>
+                        <td class="fila tw-text-center">{{ca.descri}}</td>
                         <td class="fila tw-text-center">
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full" v-if="ca.estatus == 'Activo'">{{ca.estatus}}</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">{{ca.estatus}}</div>
@@ -91,10 +104,18 @@
                         <td class="fila tw-text-center">{{ca.iniFecha}}</td>
                         <td class="fila tw-text-center">{{ca.finFecha == null ? '' : ca.finFecha}}</td>
                         <td class="fila tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}} minutos</td>
-                        <td class="fila tw-text-center">{{ca.maq_pro.maquinas.Nombre}}</td>
+                        <td class="fila tw-text-center">{{ca.pla_acci}}</td>
                         <td class="fila tw-text-center">
                             <div class="columnaIconos">
-                                <div class="iconoDelete" @click="detener(1, ca)" v-if="ca.estatus == 'Activo'">
+                                <div class="iconoDelete" @click="detener(1, ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id != 13 & ca.paro_id != 14 & ca.paro_id != 16)">
+                                    <span tooltip="Detener" flow="left">
+                                        <svg class="h-8 w-8 text-red-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoDelete" @click="plan(ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id == 13 | ca.paro_id == 14 | ca.paro_id == 16)">
                                     <span tooltip="Detener" flow="left">
                                         <svg class="h-8 w-8 text-red-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -115,6 +136,35 @@
                 </template>
             </Table>
         </div>
+        <!-- Modal -->
+        <modal :show="showModal" @close="chageClose">
+            <form>
+                <!--------------------------- PROCESOS ------------------------------------>
+                <div class="tw-px-4 tw-py-4">
+                    <div class="tw-text-lg">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Plan de acción</h3>
+                        </div>
+                    </div>
+
+                    <div class="tw-mt-4">
+                        <div class="ModalForm">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 tw-w-full md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Plan de acción</jet-label>
+                                    <textarea class="InputSelect" v-model="planA.pla_acci"  @input="(val) => (planA.pla_acci = planA.pla_acci.toUpperCase())" placeholder="Máximo 250 caracteres"></textarea>
+                                    <small v-if="errors.pla_acci" class="validation-alert">{{errors.pla_acci}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ModalFooter">
+                    <jet-button type="button" @click="update(planA)">Guardar</jet-button>
+                    <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                </div>
+            </form>
+        </modal>
     </app-layout>
 </template>
 
@@ -170,7 +220,9 @@
                 opcMQ: '<option value="" disabled>SELECCIONA</option>',
                 opcPR: '',
                 proc_prin: '',
+                showModal: false,
                 editMode: false,
+                tOrden: 'N/A',
                 form: {
                     fecha: moment().format("YYYY-MM-DD HH:mm:ss"),
                     usu:  this.usuario.id,
@@ -181,7 +233,16 @@
                     estatus: 'Activo',
                     paro_id: '',
                     descri: '',
-                    orden: '',
+                    orden: ''
+                },
+                planA: {
+                    id: '',
+                    finFecha: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    usu:  this.usuario.id,
+                    pla_acci: '',
+                    estatus: '',
+                    paro_id: '',
+                    tiempo: null,
                 }
             }
         },
@@ -202,6 +263,7 @@
                     }else{
                         this.S_Area = 7;
                     }
+
                     this.depa.forEach(r => {
                         if (r.departamentos) {
                             this.opc += `<option value="${r.departamentos.id}"> ${r.departamentos.Nombre} </option>`;
@@ -217,7 +279,7 @@
             },
             //consulta para generar datos de la tabla
             verTabla(event){
-                /* $('#t_paros').DataTable().clear(); */
+                $('#t_paros').DataTable().clear();
             },
             //select para proceso principal, normas y personal
             selePP(){
@@ -241,13 +303,33 @@
                 var tfin = fin == null ? moment() : moment(fin);
                 return tfin.diff(tini, 'minutes');
             },
+            //plan de trabajo
+            plan(data){
+                this.showModal = !this.showModal
+                this.planA.id = data.id;
+                this.planA.pla_acci = '';
+                this.planA.paro_id = data.paro_id;
+                this.planA.estatus = 'En revisión';
+                this.planA.tiempo = this.tiempo(data.iniFecha, data.finFecha);
+
+            },
+            resetPlan(){
+                if (this.planA.pla_acci != '') {
+                    this.showModal = !this.showModal
+                }
+                this.planA.id = '';
+                this.planA.pla_acci = '';
+                this.planA.paro_id = '';
+                this.planA.estatus = '';
+                this.planA.tiempo = null;
+            },
             /****************************** datatables ********************************************************/
             //datatable de carga
             tabla() {
                 this.$nextTick(() => {
                     $('#t_paros').DataTable({
                         "language": this.español,
-                        "order": [[3, 'desc']],
+                        "order": [[5, 'desc']],
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
@@ -274,9 +356,13 @@
                 }else{
                     data.VerInv = 'Invierno';
                 }
+                if ( data.orden != '' & (data.paro_id == 13 | data.paro_id == 14 | data.paro_id == 16) ) {
+                    var er = data.orden;
+                    data.orden = this.tOrden+data.orden;
+                }
                 $('#t_paros').DataTable().destroy();
                 this.$inertia.post('/Produccion/Paros', data, {
-                    onSuccess: () => { this.tabla(), this.reset(), this.alertSucces()}, onError: () => {this.tabla()}, preserveState: true
+                    onSuccess: () => { this.tabla(), this.reset(), this.alertSucces()}, onError: () => {this.tabla(), data.orden = er}, preserveState: true
                 });
             },
             //actualiza el estatus y lo detiene
@@ -336,7 +422,7 @@
             update(data){
                 $('#t_paros').DataTable().destroy();
                 this.$inertia.put('/Produccion/Paros/' + data.id, data, {
-                    onSuccess: () => {this.tabla(), this.alertSucces()}, onError: () => {this.tabla()}
+                    onSuccess: () => {this.tabla(), this.alertSucces(), this.resetPlan()}, onError: () => {this.tabla()}
                 });
             }
         },
@@ -349,13 +435,18 @@
         },
         watch: {
             S_Area: function(b){
-                $('#t_paros').DataTable().clear();
+                /* $('#t_paros').DataTable().clear(); */
                 $('#t_paros').DataTable().destroy();
                 this.proc_prin = '';
                 this.$inertia.get('/Produccion/Paros',{ busca: b }, {
                     onSuccess: () => {
                          this.selePP(), this.tabla() }, onError: () => {this.tabla()}, preserveState: true
                 });
+                switch (b) {
+                    case 7:
+                        this.tOrden = 'AP-'
+                        break;
+                }
             },
             proc_prin: function(v) {
                 //select sub peocesos

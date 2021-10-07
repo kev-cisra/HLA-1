@@ -115,7 +115,7 @@ class ParosController extends Controller
                         $dep->select('id', 'Nombre');
                     }
                 ])
-                ->get(['id', 'fecha', 'iniFecha', 'orden', 'estatus', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'departamento_id']);
+                ->get(['id', 'fecha', 'iniFecha', 'orden', 'estatus', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'pla_acci', 'departamento_id']);
 
         }
 
@@ -136,6 +136,12 @@ class ParosController extends Controller
             'departamento_id' => ['required'],
             ])->validate();
 
+        if ($request->paro_id == 13 || $request->paro_id == 14 || $request->paro_id == 16) {
+            Validator::make($request->all(), [
+                'orden' => ['required'],
+                'descri' => ['required']
+            ])->validate();
+        }
         parosCarga::create([
             'fecha' => $request->fecha,
             'iniFecha' => $request->fecha,
@@ -157,8 +163,15 @@ class ParosController extends Controller
     public function update(Request $request)
     {
         //
+        if ($request->paro_id == 13 || $request->paro_id == 14 || $request->paro_id == 16) {
+            Validator::make($request->all(), [
+                'pla_acci' => ['required']
+            ])->validate();
+        }
         if ($request->has('id')) {
             parosCarga::find($request->input('id'))->update([
+                'pla_acci' => $request->pla_acci,
+                'perfil_fin_id' => $request->usu,
                 'finFecha' => $request->finFecha,
                 'estatus' => $request->estatus,
                 'tiempo' => $request->tiempo

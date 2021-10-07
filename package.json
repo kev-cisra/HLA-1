@@ -33,6 +33,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
+        "@ttskch/select2-bootstrap4-theme": "^1.5.2",
         "bootstrap-datepicker": "^1.9.0",
         "browser-sync": "^2.27.5",
         "chart.js": "^3.5.1",
@@ -44,6 +45,7 @@
         "jszip": "^3.7.1",
         "moment": "^2.29.1",
         "pdfmake": "^0.2.2",
+        "select2": "^4.1.0-rc.0",
         "sign-canvas": "^1.1.4",
         "signature_pad": "^3.0.0-beta.4",
         "vue-canvas-nest": "^2.0.0",

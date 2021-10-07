@@ -12,7 +12,7 @@
 
         <Accions>
             <template  v-slot:SelectB v-if="usuario.dep_pers.length != 1">
-                <select class="InputSelect sm:tw-w-full" v-model="S_Area">
+                <select class="InputSelect sm:tw-w-full" @change="verTabla" v-model="S_Area">
                     <option value="" disabled>Selecciona un departamento</option>
                     <option v-for="o in opc" :key="o.value" :value="o.value">{{o.text}}</option>
                 </select>
@@ -319,6 +319,10 @@
                     this.S_Area = 7;
                 }
             },
+            //reset table
+            verTabla(){
+                $('#t_pro').DataTable().clear();
+            },
             /************************** agrega inputs a formulas  ************************/
             addForRow: function () {
                 this.form.formulas.push({val: ""});
@@ -573,7 +577,6 @@
         },
         watch: {
             S_Area: function(b){
-                $('#t_pro').DataTable().clear();
                 $('#t_pro').DataTable().destroy();
                 this.$inertia.get('/Produccion/Procesos',{ busca: b }, {
                     onSuccess: () => { this.tabla() }, onError: () => {this.tabla()}, preserveState: true

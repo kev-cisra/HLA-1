@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Produccion\Calculos;
 
 use App\Http\Controllers\Controller;
+use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\procesos;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -27,12 +28,48 @@ class CalculosController extends Controller
 
         $calcula = procesos::where('departamento_id', '=', $request->depa)
                     ->where('tipo', '=', '3')
-                    ->whereBetween('fecha', )
-                    ->get();
+                    ->with([
+                        'formulas' => function($fo){
+                            $fo -> select('id', 'proc_rela', 'maq_pros_id', 'proceso_id');
+                        }
+                    ])
+                    ->get(['id', 'nompro', 'tipo', 'operacion']);
+        //muestra las operaciones
+        foreach ($calcula as $ope) {
+            //dependiendo del tipo de operacion
+            switch ($ope->operacion) {
+                case 'sm_d':
+                    $this->sm_d($ope->formulas);
+                    break;
 
-        return $hoy.' - '.$mañana;
+                default:
+                    # code...
+                    break;
+            }
+        }
+
+        return '$calcula';
 
         /* return redirect()->back()
             ->with('message', 'Post Created Successfully.'); */
+    }
+
+    //operacion suma del dia
+    public function sm_d($val){
+        $fs = 0;
+        $fc = 0;
+        foreach ($val as $value) {
+            # code...
+            $suma = carga::where('maq_pro_id', '=', $value->maq_pros_id)
+            ->sum('valor');
+            $cuenta = carga::where('maq_pro_id', '=', $value->maq_pros_id)
+            ->count('valor');
+            $fs += $suma;
+            $fc += $cuenta;
+            //print($fs.' | '.$cuenta.' / ');
+        }
+
+        echo $fs.' | '.$fc.' / ';
+        return $fs;
     }
 }

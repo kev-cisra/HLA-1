@@ -16,23 +16,23 @@
                 </select>
             </template>
             <template v-slot:calcula v-if="usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')">
-                <div class="lg:tw-flex lg:tw-flex-row tw-gap-2">
+                <!-- <div class="lg:tw-flex lg:tw-flex-row tw-gap-2">
                     <div class="sm:tw-w-full" tooltip="Inicio del primer turno" flow="right">
-                        <jet-input class="InputSelect" type="datetime-local" v-model="calcuIni" :max="form.fecha"></jet-input>
+                        <jet-input class="InputSelect" type="datetime-local" v-model="calcuIni" :max="hoy"></jet-input>
                     </div>
                     <div class="tw-flex tw-flex-row">
-                        <jet-input class="InputSelect sm:tw-w-10/12" type="datetime-local" v-model="calcuFin" tooltip="Fin de la carga" flow="right" :max="form.fecha"></jet-input>
+                        <jet-input class="InputSelect sm:tw-w-10/12" type="datetime-local" v-model="calcuFin" tooltip="Fin de la carga" flow="right" :max="hoy"></jet-input>
                         <button class="btn btn-outline-success sm:tw-w-2/12" type="button" id="button-addon2" :disabled="btnOff" @click="calcula()" tooltip="Calcular" flow="right">
                             <i class="fas fa-calculator" ></i>
                         </button>
                     </div>
-                </div>
-                <!-- <div class="input-group" >
+                </div> -->
+                <div class="input-group" >
                     <input type="date" class="form-control tw-rounded-lg" v-model="calcu" :max="hoy" aria-describedby="button-addon2">
                     <button class="btn btn-outline-success" type="button" id="button-addon2" :disabled="btnOff" @click="calcula()">
                         <i class="fas fa-calculator" ></i>
                     </button>
-                </div> -->
+                </div>
             </template>
             <template v-slot:BtnNuevo>
                 <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar datos</jet-button>
@@ -258,14 +258,14 @@
                 proc_prin: '',
                 btnOff: false,
                 v: [],
-                calcuIni: '',
-                calcuFin: '',
+                calcu: '',
+                /* calcuFin: moment().format("YYYY-MM-DD HH:mm:ss"), */
                 hoy: moment().format('YYYY-MM-DD'),
                 editMode: false,
                 nAnte: '',
                 form: {
                     id: null,
-                    fecha: moment().format("YYYY-MM-DD HH:mm:ss"),
+                    fecha: this.calcuFin,
                     semana: moment().format("GGGG-[W]WW"),
                     usu: this.usuario.id,
                     per_carga: this.usuario.id,
@@ -292,15 +292,15 @@
         methods: {
             //calcula
             calcula() {
-                if (this.calcuIni != '' & this.calcuFin != '' & this.S_Area != '') {
-                    console.log(this.calcuIni+' '+this.S_Area);
+                if (this.calcu != '' & this.S_Area != '') {
+                    console.log(this.calcu+' '+this.S_Area);
                     /* this.btnOff = true; */
                     const form = {fecha: this.calcu, depa: this.S_Area};
                     this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => { this.btnOff = false, this.alertSucces()}, onError: (e) => { this.btnOff = false }, preserveState: true
                     });
                 }else{
-                    this.calcuIni == '' | this.calcuFin ? Swal.fire('Por favor selecciona una fecha') : '';
+                    this.calcu == '' ? Swal.fire('Por favor selecciona una fecha') : '';
                     this.S_Area == '' ? Swal.fire('Por favor selecciona un departamento') : '';
                 }
 
