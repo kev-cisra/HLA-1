@@ -41,6 +41,11 @@
                                     <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Almacen
                                 </jet-nav-link>
                             </div>
+                            <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'Contabilidad.index'])">
+                                <jet-nav-link :href="route('Contabilidad')" :active="route().current('Supply')">
+                                    <i class="tw-mr-2 fas fa-balance-scale tw-text-gray-600"></i>Contabilidad
+                                </jet-nav-link>
+                            </div>
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
                                 <jet-nav-link :href="route('Supply')" :active="route().current('Supply')">
                                     <i class="tw-mr-2 fas fa-warehouse tw-text-gray-600"></i>Supply
@@ -142,6 +147,11 @@
                             <i class="tw-mr-2 fas fa-warehouse"></i> ALMACÉN
                         </jet-responsive-nav-link>
                     </div>
+                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Contabilidad.index'])">
+                        <jet-responsive-nav-link :href="route('Contabilidad')" :active="route().current('Contabilidad')">
+                            <i class="tw-mr-2 fas fa-balance-scale tw-text-gray-600"></i> Contabilidad
+                        </jet-responsive-nav-link>
+                    </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
                         <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
                             <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i> SUPPLY
@@ -152,7 +162,6 @@
                             <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i> PRODUCCIÓN
                         </jet-responsive-nav-link>
                     </div>
-
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Direccion.index', 'Direccion.index'])">
                         <jet-responsive-nav-link :href="route('Direccion')" :active="route().current('Direccion')">
                             <i class="tw-mr-2 fas fa-landmark tw-text-gray-600"></i> DIRECCION
