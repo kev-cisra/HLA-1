@@ -198,5 +198,15 @@ class ModulosSeeder extends Seeder
             'Ruta' => 'Produccion/Carga',
             'Area' => '7',
         ]);
+
+        ////////////// DIRECCION ///////////////////
+
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'CALCULADORA TORCIONES',
+            'Icono' => 'fas fa-calculator',
+            'Ruta' => 'Direccion/CalculadoraTorciones',
+            'Area' => '6',
+        ]);
     }
 }

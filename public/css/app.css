@@ -19490,6 +19490,10 @@ select {
 	margin-left: 14rem;
 	margin-right: 14rem;
 }
+.tw-mx-16 {
+	margin-left: 4rem;
+	margin-right: 4rem;
+}
 .tw-ml-2 {
 	margin-left: 0.5rem;
 }
@@ -19898,6 +19902,9 @@ select {
 .tw-rounded-3xl {
 	border-radius: 1.5rem;
 }
+.tw-rounded-sm {
+	border-radius: 0.125rem;
+}
 .tw-rounded-b {
 	border-bottom-right-radius: 0.25rem;
 	border-bottom-left-radius: 0.25rem;
@@ -20212,6 +20219,14 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(251, 146, 60, var(--tw-bg-opacity));
 }
+.tw-bg-blueGray-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(71, 85, 105, var(--tw-bg-opacity));
+}
+.tw-bg-blueGray-300 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(203, 213, 225, var(--tw-bg-opacity));
+}
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
 }
@@ -20512,6 +20527,10 @@ select {
 .tw-text-emerald-500 {
 	--tw-text-opacity: 1;
 	color: rgba(16, 185, 129, var(--tw-text-opacity));
+}
+.tw-text-blueGray-600 {
+	--tw-text-opacity: 1;
+	color: rgba(71, 85, 105, var(--tw-text-opacity));
 }
 .tw-underline {
 	text-decoration: underline;
@@ -22377,6 +22396,16 @@ select {
 	.md\:tw-mx-0 {
 		margin-left: 0px;
 		margin-right: 0px;
+	}
+
+	.md\:tw-mx-10 {
+		margin-left: 2.5rem;
+		margin-right: 2.5rem;
+	}
+
+	.md\:tw-mx-4 {
+		margin-left: 1rem;
+		margin-right: 1rem;
 	}
 
 	.md\:tw-mt-0 {
