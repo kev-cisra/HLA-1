@@ -52,15 +52,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/Admin.php'));
 
-/*             Route::middleware('web','auth')
-                ->prefix('Hilaturas')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/Hilaturas.php')); */
-
             Route::middleware('web','auth')
-                 ->prefix('Produccion')
-                 ->namespace($this->namespace)
-                 ->group(base_path('routes/Produccion.php'));
+                ->prefix('Produccion')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/Produccion.php'));
 
             Route::middleware('web','auth')
                 ->prefix('RecursosHumanos')
@@ -77,15 +72,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/Supply.php'));
 
-            // Route::middleware('web','auth')
-            //     ->prefix('Contabilidad')
-            //     ->namespace($this->namespace)
-            //     ->group(base_path('routes/Contabilidad.php'));
-
-            // Route::middleware('web','auth')
-            //     ->prefix('Produccion')
-            //     ->namespace($this->namespace)
-            //     ->group(base_path('routes/Produccion.php'));
+            Route::middleware('web','auth')
+                ->prefix('Contabilidad')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/Contabilidad.php'));
 
             Route::middleware('web','auth')
                 ->prefix('Almacen')
@@ -97,10 +87,10 @@ class RouteServiceProvider extends ServiceProvider
             //     ->namespace($this->namespace)
             //     ->group(base_path('routes/Sistemas.php'));
 
-            // Route::middleware('web','auth')
-            //     ->prefix('Direccion')
-            //     ->namespace($this->namespace)
-            //     ->group(base_path('routes/Direccion.php'));
+            Route::middleware('web','auth')
+                ->prefix('Direccion')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/Direccion.php'));
         });
     }
 
