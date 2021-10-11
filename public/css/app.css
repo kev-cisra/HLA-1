@@ -19486,13 +19486,13 @@ select {
 	margin-left: 6rem;
 	margin-right: 6rem;
 }
-.tw-mx-16 {
-	margin-left: 4rem;
-	margin-right: 4rem;
-}
 .tw-mx-56 {
 	margin-left: 14rem;
 	margin-right: 14rem;
+}
+.tw-mx-16 {
+	margin-left: 4rem;
+	margin-right: 4rem;
 }
 .tw-ml-2 {
 	margin-left: 0.5rem;
@@ -19697,6 +19697,18 @@ select {
 }
 .tw-w-80 {
 	width: 20rem;
+}
+.tw-w-4\/6 {
+	width: 66.666667%;
+}
+.tw-w-3\/6 {
+	width: 50%;
+}
+.tw-w-9\/12 {
+	width: 75%;
+}
+.tw-w-6\/12 {
+	width: 50%;
 }
 .tw-min-w-0 {
 	min-width: 0px;
@@ -20123,10 +20135,6 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
 }
-.tw-bg-blueGray-600 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(71, 85, 105, var(--tw-bg-opacity));
-}
 .tw-bg-cyan-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(6, 182, 212, var(--tw-bg-opacity));
@@ -20134,10 +20142,6 @@ select {
 .tw-bg-teal-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(20, 184, 166, var(--tw-bg-opacity));
-}
-.tw-bg-violet-600 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
 }
 .tw-bg-sky-500 {
 	--tw-bg-opacity: 1;
@@ -20203,9 +20207,9 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(156, 163, 175, var(--tw-bg-opacity));
 }
-.tw-bg-blueGray-300 {
+.tw-bg-violet-600 {
 	--tw-bg-opacity: 1;
-	background-color: rgba(203, 213, 225, var(--tw-bg-opacity));
+	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
 }
 .tw-bg-emerald-400 {
 	--tw-bg-opacity: 1;
@@ -20226,6 +20230,14 @@ select {
 .tw-bg-orange-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(251, 146, 60, var(--tw-bg-opacity));
+}
+.tw-bg-blueGray-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(71, 85, 105, var(--tw-bg-opacity));
+}
+.tw-bg-blueGray-300 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(203, 213, 225, var(--tw-bg-opacity));
 }
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
@@ -22259,6 +22271,10 @@ select {
 		width: 16.666667%;
 	}
 
+	.sm\:tw-w-9\/12 {
+		width: 75%;
+	}
+
 	.sm\:tw-max-w-md {
 		max-width: 28rem;
 	}
@@ -22322,6 +22338,10 @@ select {
 
 	.sm\:tw-justify-center {
 		justify-content: center;
+	}
+
+	.sm\:tw-gap-3 {
+		gap: 0.75rem;
 	}
 
 	.sm\:tw-rounded-lg {
@@ -22479,6 +22499,10 @@ select {
 		width: 50%;
 	}
 
+	.md\:tw-w-6\/12 {
+		width: 50%;
+	}
+
 	.md\:tw-grid-cols-3 {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
@@ -22571,6 +22595,10 @@ select {
 
 	.lg\:tw-w-1\/4 {
 		width: 25%;
+	}
+
+	.lg\:tw-w-6\/12 {
+		width: 50%;
 	}
 
 	.lg\:tw-flex-row {

@@ -473,7 +473,7 @@
             },
             //manda datos de la tabla al modal
             edit: function (data) {
-                console.log(data);
+                //console.log(data);
                 this.form.id = data.id;
                 this.form.departamento_id = data.departamento_id;
                 this.form.nompro = data.nompro;

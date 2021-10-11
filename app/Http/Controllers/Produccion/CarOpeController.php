@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Http\Controllers\Produccion;
+
+use App\Http\Controllers\Controller;
+use App\Models\Produccion\carOpe;
+use Illuminate\Http\Request;
+
+class CarOpeController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+        return $request;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Produccion\carOpe  $carOpe
+     * @return \Illuminate\Http\Response
+     */
+    public function show(carOpe $carOpe)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Produccion\carOpe  $carOpe
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(carOpe $carOpe)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Produccion\carOpe  $carOpe
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, carOpe $carOpe)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Produccion\carOpe  $carOpe
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(carOpe $carOpe)
+    {
+        //
+    }
+}

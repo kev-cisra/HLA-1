@@ -222,14 +222,14 @@
             </Table>
         </div>
         <!-- Carga de paquetes de operativos -->
-        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="pacOpe" aria-labelledby="pacOpeLabel">
+        <div class="offcanvas offcanvas-start sm:tw-w-9/12 lg:tw-w-6/12"  data-bs-scroll="true" tabindex="-1" id="pacOpe" aria-labelledby="pacOpeLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="pacOpeLabel">Paquetes de Operativos</h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
                  <!------------------------------------ Paquete de operadores ---------------------------------------->
-                <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
+                <div class="m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl">
                     <form>
                         <!-- Proceso proncipal, sub procesos, operador -->
                         <div class="tw-mb-6 lg:tw-flex">
@@ -264,7 +264,7 @@
                                 <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
                             </div>
                             <!-- select Maquinas -->
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                 <jet-label><span class="required">*</span>Maquinas</jet-label>
                                 <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
                                     <option value="" disabled>SELECCIONA</option>
@@ -278,7 +278,7 @@
                         <!-- Botones -->
                         <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
                             <div>
-                                <jet-button type="button" class="tw-mx-auto">Guardar</jet-button>
+                                <jet-button type="button" class="tw-mx-auto" @click="savePO(form)">Guardar</jet-button>
                             </div>
                             <!-- <div>
                                 <jet-button type="button" class="tw-mx-auto" @click="updateCA(form)">Actualizar</jet-button>
@@ -290,17 +290,19 @@
                 <div class="table-responsive">
                     <TableCyan id="t_op">
                         <template v-slot:TableHeader>
-                            <th>Proceso principal</th>
-                            <th>Sub procesos</th>
-                            <th>Nombre del operador</th>
-                            <th>Maquina</th>
+                            <th class="columna">Proceso principal</th>
+                            <th class="columna">Sub procesos</th>
+                            <th class="columna">Nombre del operador</th>
+                            <th class="columna">Maquina</th>
+                            <th class="columna"></th>
                         </template>
                         <template v-slot:TableFooter>
                             <tr>
-                                <td>Algo 1</td>
-                                <td>Algo 2</td>
-                                <td>Algo 3</td>
-                                <td>Algo 4</td>
+                                <td class="fila">Algo 1</td>
+                                <td class="fila">Algo 2</td>
+                                <td class="fila">Algo 3</td>
+                                <td class="fila">Algo 4</td>
+                                <td class="fila"></td>
                             </tr>
                         </template>
                     </TableCyan>
@@ -565,6 +567,15 @@
                 }
                 this.$inertia.put('/Produccion/Carga/' + data.id, data, {
                     onSuccess: () => {this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: () => {this.tabla()}
+                });
+            },
+            //***************************** Carga de paquetes de operativos **********************************/
+            savePO(form){
+                console.log(form)
+                $('#t_op').DataTable().clear();
+                $('#t_op').DataTable().destroy();
+                this.$inertia.post('/Produccion/CarOpe', form, {
+                    onSuccess: (v) => { this.tablaOpe(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tablaOpe()}, preserveState: true
                 });
             },
             /****************************** Carga de notas */
