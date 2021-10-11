@@ -640,26 +640,14 @@ import Pagination from "@/Components/pagination";
 import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
 //imports de datatables
-import datatable from 'datatables.net-bs5';
-import print from 'datatables.net-buttons/js/buttons.print';
-import jszip from 'jszip/dist/jszip';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
+import datatable from "datatables.net-bs5";
 import $ from "jquery";
 //Moment Js
 import moment from 'moment';
 import 'moment/locale/es';
 import throttle from 'lodash/throttle'
-
-require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
-require( 'datatables.net-buttons/js/buttons.html5' );
-require ( 'datatables.net-buttons/js/buttons.colVis' );
-
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-window.JSZip = jszip
-
-
 export default {
+
     data() {
         return {
             showModal2: false,
@@ -735,11 +723,9 @@ export default {
             this.chageClose2();
             this.editMode2 = false;
         },
-
         chageClose2() {
             this.showModal2 = !this.showModal2;
         },
-
         reset() {
             this.form = {
                 IdUser: this.Session.id,
@@ -761,7 +747,6 @@ export default {
                 Observaciones: null,
             };
         },
-
         loadMaquinas(event) {
             axios.get('/Compras/Maquinas',{
                 params: {
@@ -771,7 +756,6 @@ export default {
             .then(response => this.MaquinasDpto = response.data.Marcas)
             .catch(error => console.log(error))
         },
-
         loadMarcas(event) {
             axios.get('/Compras/Marcas',{
                 params: {
@@ -781,7 +765,6 @@ export default {
             .then(response => this.Marcas = response.data.Marcas)
             .catch(error => console.log(error))
         },
-
         Filtro(value){
             this.params.Estatus = value;
             $('#Articulos').DataTable().destroy(); //destruyo tabla
@@ -792,7 +775,6 @@ export default {
                     this.tabla() //regeneracion de tabla
                 }, preserveState: true})
         },
-
         FiltroMes(value){
             this.params.month = value;
 /*             $('#Articulos').DataTable().clear(); //limpio
@@ -802,56 +784,31 @@ export default {
                     this.tabla() //regeneracion de tabla
                 }, preserveState: true})
         },
-
         //datatable
         tabla() {
         this.$nextTick(() => {
             $("#Articulos").DataTable({
             language: this.español,
-            "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            buttons: [
-                {
-                    extend: 'excelHtml5',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'pdfHtml5',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                'colvis'
-            ]
             });
         });
         },
-
         //consulta para generar datos de la tabla
         verTabla(event) {
         $("#Articulos").DataTable().destroy();
             this.$inertia.get("/Compras/Requisiciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
         },
-
         show(id){
             this.detalles = id;
         },
-
         hidden(id){
             this.detalles = null;
         },
-
         addRow: function () {
             this.form.Partida.push({Part: ""});
         },
-
         removeRow: function (row) {
             this.form.Partida.splice(row,1);
         },
-
         save(data) {
             this.$inertia.post("/Compras/Requisiciones", data, {
                 onSuccess: () => {
@@ -861,7 +818,6 @@ export default {
                 },
             });
         },
-
         edit: function (data) {
             this.form.editId = data.id;
             this.form.NumReq = data.articulos_requisicion.NumReq;
@@ -880,7 +836,6 @@ export default {
             this.editMode2 = true;
             this.chageClose2();
         },
-
         update(data, metodo) {
             data.metodo = 1;
             console.log(data);
@@ -893,7 +848,6 @@ export default {
                 },
             });
         },
-
         ConfirmaReq(data, metodo){
             data.metodo = 2;
             data._method = "PUT";
@@ -903,10 +857,10 @@ export default {
                 },
             });
         },
-
         deleteRow: function (data) {
         },
     },
+
     watch: {
         params: {
         deep: true,
