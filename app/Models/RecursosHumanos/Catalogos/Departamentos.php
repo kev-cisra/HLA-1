@@ -3,6 +3,8 @@
 namespace App\Models\RecursosHumanos\Catalogos;
 
 use App\Models\Catalogos\Maquinas;
+use App\Models\Produccion\carNorm;
+use App\Models\Produccion\carOpe;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
 use App\Models\User;
@@ -42,6 +44,14 @@ class Departamentos extends Model
 
     public function parocargas(){
         return $this->hasMany(parosCarga::class);
+    }
+
+    public function carOpe() {
+        return $this->hasMany(carOpe::class);
+    }
+
+    public function carNorm() {
+        return $this->hasMany(carNorm::class);
     }
 
     // Relaciones recursiva
