@@ -22324,6 +22324,10 @@ select {
 		justify-content: center;
 	}
 
+	.sm\:tw-gap-3 {
+		gap: 0.75rem;
+	}
+
 	.sm\:tw-rounded-lg {
 		border-radius: 0.5rem;
 	}
@@ -22472,6 +22476,10 @@ select {
 	}
 
 	.md\:tw-w-2\/4 {
+		width: 50%;
+	}
+
+	.md\:tw-w-3\/6 {
 		width: 50%;
 	}
 

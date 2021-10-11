@@ -57,7 +57,7 @@ class CargaController extends Controller
             //muestran los departamentos
             $depa = $perf->dep_pers;
             //muestra de procesos dependiendo del puesto
-            $procesos = procesos::where('departamento_id', '=', $perf->Departamento_id)
+            /* $procesos = procesos::where('departamento_id', '=', $perf->Departamento_id)
                 ->where('tipo','!=', '3')
                 ->where('tipo', '!=', '4')
                 ->with([
@@ -71,9 +71,9 @@ class CargaController extends Controller
                         $maq->select('id', 'Nombre', 'maquinas_id');
                     },
                 ])
-                ->get();
+                ->get(); */
             //muestra el personal del departamento
-            $personal = dep_per::where('departamento_id', '=', $perf->Departamento_id)
+            /* $personal = dep_per::where('departamento_id', '=', $perf->Departamento_id)
                 ->with([
                     'perfiles' => function($perfi){
                         $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
@@ -85,9 +85,9 @@ class CargaController extends Controller
                         $tur -> select('id', 'nomtur');
                     }
                 ])
-                ->get(['id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id', 'equipo_id']);
+                ->get(['id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id', 'equipo_id']); */
             //materiales
-            $mate = dep_mat::where('departamento_id', '=', $perf->Departamento_id)
+            /* $mate = dep_mat::where('departamento_id', '=', $perf->Departamento_id)
                 ->with([
                     'materiales' => function($mat){
                         $mat->select('id','idmat', 'nommat');
@@ -96,9 +96,9 @@ class CargaController extends Controller
                         $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
                     }
                 ])
-                ->get();
+                ->get(); */
             //carga
-            $bus = $perf->Departamento_id;
+            /* $bus = $perf->Departamento_id;
             $carga = carga::whereBetween('fecha', [$dia, $mañana])
             ->orWhere(function($q) use ($dia){
                 $q->whereDate('fecha', '<=', $dia)
@@ -156,7 +156,7 @@ class CargaController extends Controller
                     -> select('id', 'fecha', 'nota', 'carga_id');
                 }
             ])
-            ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id']);
+            ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id']); */
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')

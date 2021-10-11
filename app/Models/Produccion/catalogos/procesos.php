@@ -3,6 +3,7 @@
 namespace App\Models\Produccion\catalogos;
 
 use App\Models\Produccion\carga;
+use App\Models\Produccion\carOpe;
 use App\Models\Produccion\formulas;
 use App\Models\Produccion\maq_pro;
 use App\Models\Produccion\parosCarga;
@@ -47,6 +48,10 @@ class procesos extends Model
 
     public function paroscargas(){
         return $this->hasMany(parosCarga::class, 'proceso_id');
+    }
+
+    public function carOpe(){
+        return $this->hasMany(carOpe::class, 'proceso_id');
     }
 
     //Relaciones 1 a muchos inversas

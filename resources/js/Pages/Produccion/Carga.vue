@@ -35,7 +35,20 @@
                 </div>
             </template>
             <template v-slot:BtnNuevo>
-                <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar datos</jet-button>
+                <!-- Paquete de personal -->
+                <div class="sm:tw-flex tw-gap-3">
+                    <div>
+                        <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe">Paquete de operativos</jet-button>
+                    </div>
+                    <div>
+                        <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacNorma" aria-controls="pacNorma">Paquete de Normas</jet-button>
+                    </div>
+                    <div>
+                        <jet-button class="BtnNuevo tw-w-full" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar</jet-button>
+                    </div>
+                </div>
+
+
             </template>
         </Accions>
 
@@ -208,6 +221,102 @@
                 </template>
             </Table>
         </div>
+        <!-- Carga de paquetes de operativos -->
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="pacOpe" aria-labelledby="pacOpeLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="pacOpeLabel">Paquetes de Operativos</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                 <!------------------------------------ Paquete de operadores ---------------------------------------->
+                <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
+                    <form>
+                        <!-- Proceso proncipal, sub procesos, operador -->
+                        <div class="tw-mb-6 lg:tw-flex">
+                            <!-- Select proceso principal -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
+                                <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
+                                    <option value="" disabled>SELECCIONA</option>
+                                    <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
+                                </select>
+                                <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
+                            </div>
+                            <!-- select Sub proceso -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Sub proceso </jet-label>
+                                <select class="InputSelect" v-model="form.proceso_id" :disabled="editMode">
+                                    <option value="" disabled>SELECCIONA</option>
+                                    <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
+                                </select>
+                                <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
+                            </div>
+                        </div>
+                        <!-- Maquinas, Normas, Claves, Partida, Kilogramos -->
+                        <div class="tw-mb-6 lg:tw-flex">
+                             <!-- select operador -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Operador</jet-label>
+                                <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" :disabled="editMode">
+                                    <option value="" disabled>SELECCIONA</option>
+                                    <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
+                                </select>
+                                <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
+                            </div>
+                            <!-- select Maquinas -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Maquinas</jet-label>
+                                <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
+                                    <option value="" disabled>SELECCIONA</option>
+                                    <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
+                                </select>
+                                <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                            </div>
+
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+                            <div>
+                                <jet-button type="button" class="tw-mx-auto">Guardar</jet-button>
+                            </div>
+                            <!-- <div>
+                                <jet-button type="button" class="tw-mx-auto" @click="updateCA(form)">Actualizar</jet-button>
+                            </div> -->
+                        </div>
+                    </form>
+                </div>
+                <!-- tabla para paquetes operador -->
+                <div class="table-responsive">
+                    <TableCyan id="t_op">
+                        <template v-slot:TableHeader>
+                            <th>Proceso principal</th>
+                            <th>Sub procesos</th>
+                            <th>Nombre del operador</th>
+                            <th>Maquina</th>
+                        </template>
+                        <template v-slot:TableFooter>
+                            <tr>
+                                <td>Algo 1</td>
+                                <td>Algo 2</td>
+                                <td>Algo 3</td>
+                                <td>Algo 4</td>
+                            </tr>
+                        </template>
+                    </TableCyan>
+                </div>
+            </div>
+        </div>
+        <!-- Carga de paquetes Norma, Claves y partida -->
+        <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="pacNormaLabel">Paquetes para Normas, Claves y Partidas</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <p>Try scrolling the rest of the page to see this option in action.</p>
+            </div>
+        </div>
     </app-layout>
 </template>
 
@@ -215,7 +324,8 @@
     import AppLayout from '@/Layouts/AppLayout.vue';
     import Header from '@/Components/Header'
     import Accions from '@/Components/Accions'
-    import Table from '@/Components/Table'
+    import Table from '@/Components/Table';
+    import TableCyan from '@/Components/TableCyan';
     import JetButton from '@/Components/Button';
     import JetCancelButton from '@/Components/CancelButton';
     import JetInput from '@/Components/Input';
@@ -240,6 +350,7 @@
         ],
         components: {
             JetBanner,
+            TableCyan,
             AppLayout,
             Header,
             Accions,
@@ -307,7 +418,8 @@
             },
             //consulta para generar datos de la tabla
             verTabla(event){
-                event.target.value == '' ? '' : $('#t_carg').DataTable().clear();
+                $('#t_op').DataTable().clear();
+                $('#t_carg').DataTable().clear();
             },
             /****************************** Globales **********************************************************/
             global(){
@@ -363,6 +475,17 @@
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
                     })
+                })
+            },
+            //datatable de paquetes operador
+            tablaOpe() {
+                this.$nextTick(() => {
+                    $('#t_op').DataTable( {
+                        "language": this.español,
+                        "scrollY":        "200px",
+                        "scrollCollapse": true,
+                        "paging":         false
+                    } );
                 })
             },
             /****************************** carga de carga de datos ******************************************/
@@ -605,11 +728,12 @@
         },
         watch: {
             S_Area: function(b){
+                $('#t_op').DataTable().destroy();
                 $('#t_carg').DataTable().destroy();
                 this.resetCA();
                 this.proc_prin = '';
                 this.$inertia.get('/Produccion/Carga',{ busca: b }, {
-                    onSuccess: () => { this.reCarga(), this.tabla()  }, onError: () => {this.tabla()}, preserveState: true
+                    onSuccess: () => { this.reCarga(), this.tabla(), this.tablaOpe() }, onError: () => {this.tabla(), this.tablaOpe()}, preserveState: true
                 });
             },
             proc_prin: function(v) {
