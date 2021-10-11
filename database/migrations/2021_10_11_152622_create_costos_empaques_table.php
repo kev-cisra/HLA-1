@@ -16,6 +16,7 @@ class CreateCostosEmpaquesTable extends Migration
         Schema::create('costos_empaques', function (Blueprint $table) {
             $table->id();
             $table->date('Fecha');
+            $table->date('Material');
             $table->string('Proveedor', 65);
             $table->string('Concepto',85);
             $table->string('Importe',10);
