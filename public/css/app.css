@@ -20123,6 +20123,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
 }
+.tw-bg-blueGray-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(71, 85, 105, var(--tw-bg-opacity));
+}
 .tw-bg-cyan-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(6, 182, 212, var(--tw-bg-opacity));
@@ -20130,6 +20134,10 @@ select {
 .tw-bg-teal-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(20, 184, 166, var(--tw-bg-opacity));
+}
+.tw-bg-violet-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
 }
 .tw-bg-sky-500 {
 	--tw-bg-opacity: 1;
@@ -20195,9 +20203,15 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(156, 163, 175, var(--tw-bg-opacity));
 }
+<<<<<<< HEAD
+.tw-bg-blueGray-300 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(203, 213, 225, var(--tw-bg-opacity));
+=======
 .tw-bg-violet-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
+>>>>>>> 72be2a18629aee0b8fcee9b0a3d44a5c13e6c4bf
 }
 .tw-bg-emerald-400 {
 	--tw-bg-opacity: 1;
@@ -20219,6 +20233,8 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(251, 146, 60, var(--tw-bg-opacity));
 }
+<<<<<<< HEAD
+=======
 .tw-bg-blueGray-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(71, 85, 105, var(--tw-bg-opacity));
@@ -20227,6 +20243,7 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(203, 213, 225, var(--tw-bg-opacity));
 }
+>>>>>>> 72be2a18629aee0b8fcee9b0a3d44a5c13e6c4bf
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
 }
