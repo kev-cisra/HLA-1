@@ -925,7 +925,7 @@ export default {
         save(data) {
             this.$inertia.post("/Compras/Cotizaciones", data, {
                 onSuccess: () => {
-                    // location.reload();
+                    location.reload();
                     this.reset(),
                     this.chageClose(),
                     this.alertSucces();

@@ -44,6 +44,9 @@ class ModulosSeeder extends Seeder
             'Area' => '7',
         ]);
 
+
+        ///////////// RECURSOS HUMANOS ////////////////////
+
         Modulos::create([
             'Iduser' => '1',
             'NombreModulo' => 'PERFILES',
@@ -197,6 +200,15 @@ class ModulosSeeder extends Seeder
             'Icono' => 'fas fa-clipboard-list',
             'Ruta' => 'Produccion/Carga',
             'Area' => '7',
+        ]);
+
+        ///////////// CONTABILIDAD ///////////////////
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'COSTOS EMPAQUES',
+            'Icono' => 'fas fa-boxes',
+            'Ruta' => 'Contabilidad/CostosEmpaques',
+            'Area' => '5',
         ]);
 
         ////////////// DIRECCION ///////////////////
