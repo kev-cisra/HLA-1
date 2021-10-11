@@ -133,6 +133,9 @@
                                     <select class="InputSelect" v-model="form.operacion">
                                         <option value="">Selecciona una operación</option>
                                         <option value="sm_d">SUMA DIARIA</option>
+                                        <option value="sm_dc">SUMA DIARIA POR CLAVE</option>
+                                        <option value="sm_t">SUMA TURNO</option>
+                                        <option value="sm_tc">SUMA TURNO POR CLAVE</option>
                                     </select>
                                     <small v-if="errors.operacion" class="validation-alert">{{errors.operacion}}</small>
                                 </div>
