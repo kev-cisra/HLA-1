@@ -36,4 +36,10 @@ class maq_pro extends Model
     public function maquinas() {
         return $this->belongsTo(Maquinas::class, 'maquina_id');
     }
+
+    public function carOpes(){
+        return $this->hasMany(carOpe::class, 'maq_pro_id');
+    }
+
+
 }
