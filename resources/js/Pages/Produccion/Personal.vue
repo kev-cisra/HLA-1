@@ -294,13 +294,30 @@
                 //$('#t_mat').DataTable();
             },
             deleteRow: function (data) {
-                if (!confirm('¿Estás  seguro de querer eliminar este Registro?')) return;
-                    this.areper.length == 1 ? $('#t_per').DataTable().clear() : '' ;
-                    $('#t_per').DataTable().destroy()
-                    data._method = 'DELETE';
-                    this.$inertia.post('/Produccion/Personal/' + data.id, data, {
-                        onSuccess: () => { this.tabla(), this.alertDelete() }, onError: () => {this.tabla()}, preserveState: true
-                });
+                Swal.fire({
+                    title: '¿Estás seguro de querer eliminar este Registro?',
+                    text: "¡Si se elimina no se podrá revertir!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                        'Eliminadó!',
+                        '¡El registro se eliminó correctamente!',
+                        'success'
+                        )
+                        this.areper.length == 1 ? $('#t_per').DataTable().clear() : '' ;
+                        $('#t_per').DataTable().destroy()
+                        data._method = 'DELETE';
+                        this.$inertia.post('/Produccion/Personal/' + data.id, data, {
+                            onSuccess: () => { this.tabla(), this.alertDelete() }, onError: () => {this.tabla()}, preserveState: true
+                        });
+                    }
+                })
+
             },
             updateUser(data) {
                 //console.log(data)

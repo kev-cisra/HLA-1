@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produccion\carga;
+use App\Models\Produccion\carNorm;
+use App\Models\Produccion\carOpe;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
 use App\Models\Produccion\dep_per;
@@ -48,6 +50,8 @@ class CargaController extends Controller
         $procesos = [];
         $personal = [];
         $mate = [];
+        $carOpe = [];
+        $carNor = [];
         $hoy = date('Y-m-d');
         $dia = date("Y-m-d",strtotime($hoy."- 1 days")).' 19:00:00';
         $mañana = date("Y-m-d",strtotime($hoy."+ 1 days")).' 07:00:00';
@@ -187,6 +191,7 @@ class CargaController extends Controller
                     },
                 ])
                 ->get();
+
             //muestra el personal del departamento
             $personal = dep_per::where('departamento_id', '=', $request->busca)
                 ->with([
@@ -201,6 +206,7 @@ class CargaController extends Controller
                     }
                 ])
                 ->get(['id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id', 'equipo_id']);
+
             //muestra materiales
             $mate = dep_mat::where('departamento_id', '=', $request->busca)
                     ->with([
@@ -212,6 +218,7 @@ class CargaController extends Controller
                         }
                     ])
                     ->get();
+
             //carga
             $bus = $request->busca;
             $carga = carga::whereBetween('fecha', [$dia, $mañana])
@@ -268,8 +275,55 @@ class CargaController extends Controller
             ])
             ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id']);
 
+            //Paquetes de operador
+            $carOpe = carOpe::where('departamento_id', '=', $request->busca)
+            ->with([
+                'proceso' => function($pro) {
+                    $pro -> select('id', 'nompro', 'proceso_id');
+                },
+                'proceso.proceso_sub' => function($pp) {
+                    $pp -> select('id', 'nompro', 'proceso_id');
+                },
+                'dep_per' => function($dp) {
+                    $dp -> select('id', 'perfiles_usuarios_id', 'equipo_id');
+                },
+                'dep_per.perfiles' => function($per) {
+                    $per -> select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'dep_per.equipo' => function($equ) {
+                    $equ -> select('id', 'nombre', 'turno_id');
+                },
+                'dep_per.equipo.turnos' => function($tur) {
+                    $tur -> select('id', 'nomtur');
+                },
+                'maq_pro' => function($mp) {
+                    $mp -> select('id', 'maquina_id');
+                },
+                'maq_pro.maquinas' => function($maq) {
+                    $maq -> select('id', 'Nombre');
+                },
+                'maq_pro.maquinas.marca'=> function($maq){
+                    $maq->select('id', 'Nombre', 'maquinas_id');
+                },
+            ])
+            ->get(['id', 'estatus', 'proceso_id', 'dep_perf_id', 'maq_pro_id', 'departamento_id']);
+
+            //Paquete Normas Claves y partida
+            $carNor = carNorm::where('departamento_id', '=', $request->busca)
+            ->with([
+                'dep_mat' => function($dm){
+                    $dm -> select('id', 'departamento_id', 'material_id');
+                },
+                'dep_mat.materiales' => function($mat){
+                    $mat->select('id','idmat', 'nommat');
+                },
+                'clave' => function($cla){
+                    $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
+                }
+            ])
+            ->get(['id', 'partida', 'estatus', 'norma', 'clave_id', 'departamento_id']);
         }
-        return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate]);
+        return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate, 'paqope' => $carOpe, 'paqnor' => $carNor]);
 
     }
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Menus\MenuProducccionController;
 use App\Http\Controllers\Produccion\Calculos\CalculosController;
 use App\Http\Controllers\Produccion\CargaController;
+use App\Http\Controllers\Produccion\CarNormController;
 use App\Http\Controllers\Produccion\CarOpeController;
 use App\Http\Controllers\Produccion\ClamatController;
 use App\Http\Controllers\Produccion\ClavesController;
@@ -69,4 +70,7 @@ Route::resource('Calcula', CalculosController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('CarOpe', CarOpeController::class)
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::resource('CarNor', CarNormController::class)
     ->middleware(['auth:sanctum', 'verified']);

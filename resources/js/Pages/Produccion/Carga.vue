@@ -37,10 +37,10 @@
             <template v-slot:BtnNuevo>
                 <!-- Paquete de personal -->
                 <div class="sm:tw-flex tw-gap-3">
-                    <div>
+                    <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
                         <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe">Paquete de operativos</jet-button>
                     </div>
-                    <div>
+                    <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
                         <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacNorma" aria-controls="pacNorma">Paquete de Normas</jet-button>
                     </div>
                     <div>
@@ -55,111 +55,145 @@
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
         <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <form>
-                <!-- Proceso proncipal, sub procesos, operador -->
-                <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
-                    <!-- Select proceso principal -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
-                        <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
-                        </select>
-                        <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
-                    </div>
-                    <!-- select Sub proceso -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="opcSP">
-                        <jet-label><span class="required">*</span>Sub proceso </jet-label>
-                        <select class="InputSelect" v-model="form.proceso_id" :disabled="editMode">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
-                        </select>
-                        <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
-                    </div>
-                    <!-- select operador -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="(noCor != 'cor' & noCor != 'ope') | editMode">
-                        <jet-label><span class="required">*</span>Operador</jet-label>
-                        <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" :disabled="editMode">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
-                        </select>
-                        <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
-                    </div>
-                </div>
-                <!-- Maquinas, Normas, Claves, Partida, Kilogramos -->
-                <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & form.proceso_id != '') | editMode">
-                    <!-- select Maquinas -->
+                <!-------------------------------------------- Paquetes ---------------------------------------------->
+                <div class="tw-mb-6 lg:tw-flex" v-if="noCor == 'lid' | noCor == 'ope'">
+                    <!-- select Paquetes de operadores -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Maquinas</jet-label>
-                        <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
+                        <jet-label><span class="required">*</span>Paquete de operadores</jet-label>
+                        <select class="InputSelect" v-model="paqOpera">
                             <option value="" disabled>SELECCIONA</option>
-                            <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
+                            <option v-for="po in opcPaOp" :key="po.value" :value="po.value">{{po.proceso}} - {{po.maquina}}</option>
                         </select>
-                        <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                     </div>
-                    <!-- Select Normas -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Norma</jet-label>
-                        <select class="InputSelect" v-model="form.norma" :disabled="editMode">
+                    <!-- select Paquetes de Normas partida y clave -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
+                        <select class="InputSelect" v-model="paqNorma">
                             <option value="" disabled>SELECCIONA</option>
-                            <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
+                            <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
                         </select>
-                        <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
-                    </div>
-                    <!-- select Clave -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Clave</jet-label>
-                        <jet-input class="InputSelect" list="cla" v-model="form.clave_id" @input="(val) => (form.partida = form.partida.toUpperCase())" :disabled="form.norma == ''"></jet-input>
-                        <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
-                        <datalist id="cla">
-                            <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
-                        </datalist>
-                        <!-- <select class="InputSelect" v-model="form.clave_id">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
-                        </select> -->
-                    </div>
-                    <!-- Inout partida -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0" v-if="noCor != 'cor' | editMode">
-                        <jet-label>Partida</jet-label>
-                        <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
-                        <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
                     </div>
                     <!-- Input kilogramos -->
-                    <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/5 lg:tw-mb-0">
+                    <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>KG</jet-label>
                         <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
                         <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
                     </div>
                 </div>
-                <!-- Notas -->
-                <div class="tw-mb-6 lg:tw-flex" v-if="form.notaPen == 2">
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
-                        <jet-label>Nota anterior</jet-label>
-                        <jet-label v-html="nAnte"></jet-label>
+                <!-------------------------------------------- Carga normal ------------------------------------------>
+                <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
+                    <!-- Proceso proncipal, sub procesos, operador -->
+                    <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
+                        <!-- Select proceso principal -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
+                            <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
+                            </select>
+                            <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
+                        </div>
+                        <!-- select Sub proceso -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="opcSP">
+                            <jet-label><span class="required">*</span>Sub proceso </jet-label>
+                            <select class="InputSelect" v-model="form.proceso_id" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
+                            </select>
+                            <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
+                        </div>
+                        <!-- select operador -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="(noCor != 'cor' & noCor != 'ope') | editMode">
+                            <jet-label><span class="required">*</span>Operador</jet-label>
+                            <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
+                            </select>
+                            <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
+                        </div>
                     </div>
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Nota</jet-label>
-                        <textarea class="InputSelect" v-model="form.nota" maxlength="250" @input="(val) => (form.nota = form.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
-                        <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
+                    <!-- Maquinas, Normas, Claves, Partida, Kilogramos -->
+                    <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & form.proceso_id != '') | editMode">
+                        <!-- select Maquinas -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Maquinas</jet-label>
+                            <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
+                            </select>
+                            <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                        </div>
+                        <!-- select Paquetes de Normas partida y clave -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
+                            <select class="InputSelect" v-model="paqNorma">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
+                            </select>
+                        </div>
+                        <!-- Select Normas -->
+                        <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Norma</jet-label>
+                            <select class="InputSelect" v-model="form.norma" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
+                            </select>
+                            <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
+                        </div> -->
+                        <!-- select Clave -->
+                        <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Clave</jet-label>
+                            <select class="InputSelect" v-model="form.clave_id">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
+                            </select>
+                            <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
+                        </div> -->
+                        <!-- Inout partida -->
+                        <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0" v-if="noCor != 'cor' | editMode">
+                            <jet-label>Partida</jet-label>
+                            <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
+                            <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                        </div> -->
+                        <!-- Input kilogramos -->
+                        <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>KG</jet-label>
+                            <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
+                            <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
+                        </div>
                     </div>
-                </div>
-                <!-- Botones -->
-                <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                <div>
-                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
-                </div>
-                <div>
-                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
-                </div>
-                <div>
-                    <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
-                </div>
+                    <!-- Notas -->
+                    <div class="tw-mb-6 lg:tw-flex" v-if="form.notaPen == 2">
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
+                            <jet-label>Nota anterior</jet-label>
+                            <jet-label v-html="nAnte"></jet-label>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Nota</jet-label>
+                            <textarea class="InputSelect" v-model="form.nota" maxlength="250" @input="(val) => (form.nota = form.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
+                            <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
+                        </div>
+                    </div>
+                    <!-- Botones -->
+                    <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
                     <div>
-                        <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
+                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
+                    </div>
+                    <div>
+                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
+                    </div>
+                    <div>
+                        <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+                    </div>
+                        <div>
+                            <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
+                        </div>
                     </div>
                 </div>
+
             </form>
         </div>
+
         <!------------------------------------ Data table de carga ------------------------------------------------------->
         <div class="table-responsive">
             <Table id="t_carg">
@@ -221,15 +255,17 @@
                 </template>
             </Table>
         </div>
-        <!-- Carga de paquetes de operativos -->
+
+        <!------------------------------------- Carga de paquetes de operativos ------------------------------------------>
         <div class="offcanvas offcanvas-start sm:tw-w-9/12 lg:tw-w-6/12"  data-bs-scroll="true" tabindex="-1" id="pacOpe" aria-labelledby="pacOpeLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="pacOpeLabel">Paquetes de Operativos</h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
+            <!-------------------------------- formularia y tabla ------------------------------------------------------->
             <div class="offcanvas-body">
                  <!------------------------------------ Paquete de operadores ---------------------------------------->
-                <div class="m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl">
+                <div class="m-5 tw-p-6 tw-bg-teal-600 tw-rounded-3xl tw-shadow-xl">
                     <form>
                         <!-- Proceso proncipal, sub procesos, operador -->
                         <div class="tw-mb-6 lg:tw-flex">
@@ -288,37 +324,131 @@
                 </div>
                 <!-- tabla para paquetes operador -->
                 <div class="table-responsive">
-                    <TableCyan id="t_op">
+                    <TableGreen id="t_op">
                         <template v-slot:TableHeader>
-                            <th class="columna">Proceso principal</th>
-                            <th class="columna">Sub procesos</th>
                             <th class="columna">Nombre del operador</th>
+                            <th class="columna">Sub procesos</th>
                             <th class="columna">Maquina</th>
+                            <th class="columna">Equipo</th>
+                            <th class="columna">Turno</th>
                             <th class="columna"></th>
                         </template>
                         <template v-slot:TableFooter>
-                            <tr>
-                                <td class="fila">Algo 1</td>
-                                <td class="fila">Algo 2</td>
-                                <td class="fila">Algo 3</td>
-                                <td class="fila">Algo 4</td>
-                                <td class="fila"></td>
+                            <tr v-for="pOpe in paqope" :key="pOpe">
+                                <td class="fila"> {{pOpe.dep_per.perfiles.Nombre}} {{pOpe.dep_per.perfiles.ApPat}} {{pOpe.dep_per.perfiles.ApMat}}</td>
+                                <td class="fila">{{pOpe.proceso == null ? 'N/A' : pOpe.proceso.nompro}}</td>
+                                <td class="fila"> {{pOpe.maq_pro.maquinas.Nombre}} {{pOpe.maq_pro.maquinas.marca.nombre}}</td>
+                                <td class="fila"> {{pOpe.dep_per.equipo == null ? 'N/A' : pOpe.dep_per.equipo.nombre}} </td>
+                                <td class="fila"> {{pOpe.dep_per.equipo == null ? 'N/A' : pOpe.dep_per.equipo.turnos.nomtur}} </td>
+                                <td class="fila">
+                                    <div class="columnaIconos">
+                                        <div class="iconoDelete" @click="deletePO(pOpe)">
+                                            <span tooltip="Eliminar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </TableGreen>
+                </div>
+            </div>
+        </div>
+
+        <!------------------------------------- Carga de paquetes Norma, Claves y partida -------------------------------->
+        <div class="offcanvas offcanvas-end sm:tw-w-9/12 lg:tw-w-6/12" data-bs-scroll="true" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="pacNormaLabel">Paquetes para Normas, Claves y Partidas</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <!-------------------------------- formularia y tabla ------------------------------------------------------->
+            <div class="offcanvas-body">
+                <!---------------------------- Formulario de paquete para normas, claves y partida ---------------------->
+                <div class="m-5 tw-p-6 tw-bg-cyan-600 tw-rounded-3xl tw-shadow-xl">
+                    <form>
+                        <!-- Proceso proncipal, sub procesos, operador -->
+                        <div class="tw-mb-6 lg:tw-flex">
+
+                            <!-- Select Normas -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Norma</jet-label>
+                                <select class="InputSelect" v-model="form.norma" :disabled="editMode">
+                                    <option value="" disabled>SELECCIONA</option>
+                                    <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
+                                </select>
+                                <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
+                            </div>
+                            <!-- select Clave -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Clave</jet-label>
+                                <select class="InputSelect" v-model="form.clave_id">
+                                    <option value="" disabled>SELECCIONA</option>
+                                    <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
+                                </select>
+                                <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
+                                <!-- <jet-input class="InputSelect" list="cla" v-model="form.clave_id" @input="(val) => (form.partida = form.partida.toUpperCase())" :disabled="form.norma == ''"></jet-input>
+                                <datalist id="cla">
+                                    <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
+                                </datalist> -->
+                            </div>
+                            <!-- Inout partida -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0" v-if="noCor != 'cor' | editMode">
+                                <jet-label>Partida</jet-label>
+                                <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
+                                <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+                            <div>
+                                <jet-button type="button" class="tw-mx-auto" @click="savePN(form)">Guardar</jet-button>
+                            </div>
+                            <!-- <div>
+                                <jet-button type="button" class="tw-mx-auto" @click="updateCA(form)">Actualizar</jet-button>
+                            </div> -->
+                        </div>
+                    </form>
+                </div>
+                <!---------------------------- Datatable de paquetes ---------------------------------------------------->
+                <div class="table-responsive">
+                    <TableCyan id="t_pn">
+                        <template v-slot:TableHeader>
+                            <th class="columna">Norma</th>
+                            <th class="columna">Clave</th>
+                            <th class="columna">Descripcion</th>
+                            <th class="columna">Partida</th>
+                            <th class="columna"></th>
+                        </template>
+                        <template v-slot:TableFooter>
+                            <tr v-for="pNor in paqnor" :key="pNor">
+                                <td class="fila"> {{pNor.dep_mat.materiales.nommat}}</td>
+                                <td class="fila">{{pNor.clave.CVE_ART}}</td>
+                                <td class="fila"> {{pNor.clave.DESCR}}</td>
+                                <td class="fila"> {{pNor.partida}} </td>
+                                <td class="fila">
+                                    <div class="columnaIconos">
+                                        <div class="iconoDelete" @click="deletePN(pNor)">
+                                            <span tooltip="Eliminar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </template>
                     </TableCyan>
                 </div>
             </div>
         </div>
-        <!-- Carga de paquetes Norma, Claves y partida -->
-        <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="pacNormaLabel">Paquetes para Normas, Claves y Partidas</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <p>Try scrolling the rest of the page to see this option in action.</p>
-            </div>
-        </div>
+        <pre>
+            {{paqope}}
+        </pre>
     </app-layout>
 </template>
 
@@ -328,6 +458,7 @@
     import Accions from '@/Components/Accions'
     import Table from '@/Components/Table';
     import TableCyan from '@/Components/TableCyan';
+    import TableGreen from '@/Components/TableTeal';
     import JetButton from '@/Components/Button';
     import JetCancelButton from '@/Components/CancelButton';
     import JetInput from '@/Components/Input';
@@ -343,6 +474,8 @@
     export default {
         props: [
             'usuario',
+            'paqope',
+            'paqnor',
             'depa',
             'cargas',
             'procesos',
@@ -353,6 +486,7 @@
         components: {
             JetBanner,
             TableCyan,
+            TableGreen,
             AppLayout,
             Header,
             Accions,
@@ -369,6 +503,8 @@
                 S_Area: '',
                 noCor: '',
                 proc_prin: '',
+                paqOpera: '',
+                paqNorma: '',
                 btnOff: false,
                 v: [],
                 calcu: '',
@@ -484,9 +620,19 @@
                 this.$nextTick(() => {
                     $('#t_op').DataTable( {
                         "language": this.español,
-                        "scrollY":        "200px",
-                        "scrollCollapse": true,
-                        "paging":         false
+                        scrollY:        '50vh',
+                        scrollCollapse: true,
+                        paging:         false
+                    } );
+                })
+            },
+            tablaNor() {
+                this.$nextTick(() => {
+                    $('#t_pn').DataTable( {
+                        "language": this.español,
+                        scrollY:        '50vh',
+                        scrollCollapse: true,
+                        paging:         false
                     } );
                 })
             },
@@ -520,19 +666,17 @@
                 this.form.usu = this.usuario.id;
 
                 if (this.usuario.dep_pers.length != 0) {
-                    /* if (this.noCor != 'ope' | this.noCor != 'cor') {
-                    } */
                     if(this.noCor == 'ope' | this.noCor == 'lid'){
                         this.form.dep_perf_id = this.usuario.dep_pers[0].id;
-                        this.form.equipo_id = this.usuario.dep_pers[0].equipo.id;
-                        this.form.turno_id = this.usuario.dep_pers[0].equipo.turno_id;
+                        this.form.equipo_id = this.usuario.dep_pers[0].equipo_id;
+                        this.form.turno_id = this.usuario.dep_pers[0].equipo != null ? this.usuario.dep_pers[0].equipo.turno_id : '';
                     }
                     else if(this.noCor == 'cor'){
                         this.form.dep_perf_id = this.usuario.dep_pers[0].id;
                     }else{
                         this.form.dep_perf_id = this.usuario.dep_pers[0] != null ? this.usuario.dep_pers[0].id : '';
-                        this.form.turno_id = this.usuario.dep_pers[0] != null ? this.usuario.dep_pers[0].equipo_id : '';
-                        this.form.equipo_id = this.usuario.dep_pers[0].equipo != null ? this.usuario.dep_pers[0].equipo.turno_id : '';
+                        this.form.turno_id = this.usuario.dep_pers[0].equipo != null ? this.usuario.dep_pers[0].equipo.turno_id : '';
+                        this.form.equipo_id = this.usuario.dep_pers[0] != null ? this.usuario.dep_pers[0].equipo_id : '';
                     }
                 }else{
                     this.form.dep_perf_id = '';
@@ -571,14 +715,75 @@
             },
             //***************************** Carga de paquetes de operativos **********************************/
             savePO(form){
-                console.log(form)
+                form.departamento_id = this.S_Area;
+                //console.log(form)
                 $('#t_op').DataTable().clear();
                 $('#t_op').DataTable().destroy();
                 this.$inertia.post('/Produccion/CarOpe', form, {
                     onSuccess: (v) => { this.tablaOpe(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tablaOpe()}, preserveState: true
                 });
             },
-            /****************************** Carga de notas */
+            deletePO(data) {
+                Swal.fire({
+                    title: '¿Estás seguro de querer eliminar este Registro?',
+                    text: "¡Si se elimina no se podrá revertir!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                        'Eliminadó!',
+                        '¡El registro se eliminó correctamente!',
+                        'success'
+                        )
+                        data._method = 'DELETE';
+                        $('#t_op').DataTable().clear();
+                        $('#t_op').DataTable().destroy()
+                        this.$inertia.post('/Produccion/CarOpe/' + data.id, data, {
+                            onSuccess: () => { this.tablaOpe(), this.alertDelete() }, onError: () => {this.tablaOpe()}, preserveState: true
+                        });
+                    }
+                })
+            },
+            /***************************** Carga de paquetes de norma, claves y partida *********************/
+            savePN(form){
+                console.log(form)
+                form.departamento_id = this.S_Area;
+                $('#t_pn').DataTable().clear();
+                $('#t_pn').DataTable().destroy();
+                this.$inertia.post('/Produccion/CarNor', form, {
+                    onSuccess: (v) => { this.tablaNor(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tablaNor()}, preserveState: true
+                });
+            },
+            deletePN(data){
+                Swal.fire({
+                    title: '¿Estás seguro de querer eliminar este Registro?',
+                    text: "¡Si se elimina no se podrá revertir!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                        'Eliminadó!',
+                        '¡El registro se eliminó correctamente!',
+                        'success'
+                        )
+                        data._method = 'DELETE';
+                        $('#t_pn').DataTable().clear();
+                        $('#t_pn').DataTable().destroy()
+                        this.$inertia.post('/Produccion/CarNor/' + data.id, data, {
+                            onSuccess: () => { this.tablaNor(), this.alertDelete() }, onError: () => {this.tablaNor()}, preserveState: true
+                        });
+                    }
+                })
+            },
+            /****************************** Carga de notas *************************************************/
             notaCA(form){
                 //console.log(form)
                 this.resetCA();
@@ -735,6 +940,32 @@
                     })
                 }
                 return scl;
+            },
+            //opciones Paquetes Operador
+            opcPaOp: function() {
+                const po = [];
+                if (this.usuario.dep_pers.length != 0) {
+                    this.paqope.forEach(op => {
+                        this.usuario.dep_pers.forEach(dep => {
+                            if (dep.departamento_id == this.S_Area) {
+                                if (op.dep_perf_id == dep.id) {
+                                    //console.log(op)
+                                    po.push({value: op.id, proceso: op.proceso.nompro, maquina: op.maq_pro.maquinas.Nombre+' '+op.maq_pro.maquinas.marca.Nombre})
+                                }
+                            }
+                        });
+                    })
+                }
+                return po;
+            },
+            opcPaNo: function() {
+                const no = [];
+                this.paqnor.forEach(pn => {
+                    if (pn.departamento_id == this.S_Area) {
+                        no.push({value: pn.id, text: pn.partida+' / '+pn.dep_mat.materiales.idmat+' / '+pn.clave.DESCR});
+                    }
+                })
+                return no;
             }
         },
         watch: {
@@ -744,7 +975,7 @@
                 this.resetCA();
                 this.proc_prin = '';
                 this.$inertia.get('/Produccion/Carga',{ busca: b }, {
-                    onSuccess: () => { this.reCarga(), this.tabla(), this.tablaOpe() }, onError: () => {this.tabla(), this.tablaOpe()}, preserveState: true
+                    onSuccess: () => { this.reCarga(), this.tabla(), this.tablaOpe(), this.tablaNor() }, onError: () => {this.tabla(), this.tablaOpe(), this.tablaNor()  }, preserveState: true
                 });
             },
             proc_prin: function(v) {
@@ -754,6 +985,41 @@
                     this.form.maq_pro_id = '';
                     this.form.clave_id = '';
                     this.form.norma = '';
+                }
+            },
+            paqNorma: function(paN) {
+                //console.log(paN)
+                if (paN == '') {
+                    this.form.partida = '';
+                    this.form.norma = '';
+                    this.form.clave_id = '';
+                }else{
+                    this.paqnor.forEach(pn => {
+                        if (pn.id == paN) {
+                            this.form.partida = pn.partida;
+                            this.form.norma = pn.norma;
+                            this.form.clave_id = pn.clave_id;
+                        }
+                    })
+                }
+                /* console.log(this.form) */
+            },
+            paqOpera: function(paO) {
+                //console.log(paO)
+                if (paO == '') {
+                    this.form.proceso_id = '';
+                    this.form.dep_perf_id = '';
+                    this.form.maq_pro_id = '';
+                }else{
+                    this.paqope.forEach(po => {
+                        if (po.id == paO) {
+                            /* console.log(po) */
+                            this.form.proceso_id = po.proceso_id;
+                            this.form.dep_perf_id = po.dep_perf_id;
+                            this.form.maq_pro_id = po.maq_pro_id;
+                        }
+
+                    })
                 }
             }
         }
