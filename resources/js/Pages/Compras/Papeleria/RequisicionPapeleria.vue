@@ -145,7 +145,7 @@
                         </div>
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label><span class="required">*</span>OBSERVACIONES</jet-label>
+                                <jet-label>OBSERVACIONES</jet-label>
                                 <textarea name="" id="" cols="2" v-model="form.Comentarios" @input="(val) => (form.Comentarios = form.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
                             </div>
                         </div>

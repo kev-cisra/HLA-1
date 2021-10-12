@@ -42,7 +42,7 @@
                                 </jet-nav-link>
                             </div>
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'Contabilidad.index'])">
-                                <jet-nav-link :href="route('Contabilidad')" :active="route().current('Supply')">
+                                <jet-nav-link :href="route('Contabilidad')" :active="route().current('Contabilidad')">
                                     <i class="tw-mr-2 fas fa-balance-scale tw-text-gray-600"></i>Contabilidad
                                 </jet-nav-link>
                             </div>

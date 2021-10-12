@@ -20227,10 +20227,13 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(251, 146, 60, var(--tw-bg-opacity));
 }
+<<<<<<< HEAD
 .tw-bg-cyan-300 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(103, 232, 249, var(--tw-bg-opacity));
 }
+=======
+>>>>>>> 6c5d2e264c1fb6336957fb450186bbe2c5fcae2a
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
 }

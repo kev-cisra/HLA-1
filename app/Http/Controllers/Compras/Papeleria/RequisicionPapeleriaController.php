@@ -23,11 +23,6 @@ class RequisicionPapeleriaController extends Controller{
         $Material = MaterialPapeleria::all();
         $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
 
-/*         $Papeleria = ArticulosPapeleriaRequisicion::with(['ArticulosPapeleria',
-        'ArticuloMaterial', 'ArticulosPapeleria.RequisicionPerfil',
-        'ArticulosPapeleria.RequisicionDepartamento'
-        ])->get(); */
-
         $Papeleria = ArticulosPapeleriaRequisicion::with([
             'ArticulosPapeleria' => function($Art) {
                 $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
