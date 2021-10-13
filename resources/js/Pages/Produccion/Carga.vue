@@ -56,28 +56,59 @@
         <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <form>
                 <!-------------------------------------------- Paquetes ---------------------------------------------->
-                <div class="tw-mb-6 lg:tw-flex" v-if="noCor == 'lid' | noCor == 'ope'">
-                    <!-- select Paquetes de operadores -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Paquete de operadores</jet-label>
-                        <select class="InputSelect" v-model="paqOpera">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="po in opcPaOp" :key="po.value" :value="po.value">{{po.proceso}} - {{po.maquina}}</option>
-                        </select>
+                <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full" v-if="noCor == 'lid' | noCor == 'ope'">
+                    <!-- formulario -->
+                    <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
+                        <!-- select Paquetes de operadores -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Paquete de operadores</jet-label>
+                            <select class="InputSelect" v-model="paqOpera">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="po in opcPaOp" :key="po.value" :value="po.value">{{po.proceso}} - {{po.maquina}}</option>
+                            </select>
+                        </div>
+                        <!-- select Paquetes de Normas partida y clave -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
+                            <select class="InputSelect" v-model="paqNorma">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
+                            </select>
+                        </div>
+                        <!-- Input kilogramos -->
+                        <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>KG</jet-label>
+                            <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
+                            <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
+                        </div>
                     </div>
-                    <!-- select Paquetes de Normas partida y clave -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
-                        <select class="InputSelect" v-model="paqNorma">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
-                        </select>
+
+                    <!-- Notas -->
+                    <div class="tw-mb-6 lg:tw-flex" v-if="form.notaPen == 2">
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
+                            <jet-label>Nota anterior</jet-label>
+                            <jet-label v-html="nAnte"></jet-label>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Nota</jet-label>
+                            <textarea class="InputSelect" v-model="form.nota" maxlength="250" @input="(val) => (form.nota = form.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
+                            <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
+                        </div>
                     </div>
-                    <!-- Input kilogramos -->
-                    <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>KG</jet-label>
-                        <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
-                        <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
+                    <!-- Botones -->
+                    <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+                        <div>
+                            <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
+                        </div>
+                        <div>
+                            <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
+                        </div>
+                        <div>
+                            <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+                        </div>
+                        <div>
+                            <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
+                        </div>
                     </div>
                 </div>
                 <!-------------------------------------------- Carga normal ------------------------------------------>
@@ -176,15 +207,15 @@
                     </div>
                     <!-- Botones -->
                     <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                    <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
-                    </div>
-                    <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
-                    </div>
-                    <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
-                    </div>
+                        <div>
+                            <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
+                        </div>
+                        <div>
+                            <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
+                        </div>
+                        <div>
+                            <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+                        </div>
                         <div>
                             <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
                         </div>
@@ -195,7 +226,7 @@
         </div>
 
         <!------------------------------------ Data table de carga ------------------------------------------------------->
-        <div class="table-responsive">
+        <div class="tw-overflow-x-auto tw-mx-2">
             <Table id="t_carg">
                 <template v-slot:TableHeader>
                     <th class="columna">Fecha</th>
@@ -233,7 +264,7 @@
                         <td class="fila">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
                         <td class="fila">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
                         <td class="fila">{{ca.valor}}</td>
-                        <td class="fila">
+                        <td class="">
                             <div class="columnaIconos">
                                 <div class="iconoDetails tw-cursor-pointer" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & (((noCor == 'cor' | noCor == 'enc') & ca.proceso.tipo == 2 & ca.notaPen == 1) | ((noCor == 'lid' | noCor == 'ope') & ca.equipo_id != null & ca.notaPen == 1))">
                                     <span tooltip="Agregar nota" flow="left">
@@ -257,7 +288,7 @@
         </div>
 
         <!------------------------------------- Carga de paquetes de operativos ------------------------------------------>
-        <div class="offcanvas offcanvas-start sm:tw-w-9/12 lg:tw-w-6/12"  data-bs-scroll="true" tabindex="-1" id="pacOpe" aria-labelledby="pacOpeLabel">
+        <div class="offcanvas offcanvas-start sm:tw-w-9/12 lg:tw-w-6/12" tabindex="-1" id="pacOpe" aria-labelledby="pacOpeLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="pacOpeLabel">Paquetes de Operativos</h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -359,7 +390,7 @@
         </div>
 
         <!------------------------------------- Carga de paquetes Norma, Claves y partida -------------------------------->
-        <div class="offcanvas offcanvas-end sm:tw-w-9/12 lg:tw-w-6/12" data-bs-scroll="true" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
+        <div class="offcanvas offcanvas-end sm:tw-w-9/12 lg:tw-w-6/12" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="pacNormaLabel">Paquetes para Normas, Claves y Partidas</h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -446,9 +477,6 @@
                 </div>
             </div>
         </div>
-        <pre>
-            {{paqope}}
-        </pre>
     </app-layout>
 </template>
 
@@ -473,6 +501,7 @@
 
     export default {
         props: [
+            'turnos',
             'usuario',
             'paqope',
             'paqnor',
@@ -508,13 +537,14 @@
                 btnOff: false,
                 v: [],
                 calcu: '',
-                /* calcuFin: moment().format("YYYY-MM-DD HH:mm:ss"), */
+                idDep: '',
+                limp: 1,
                 hoy: moment().format('YYYY-MM-DD'),
                 editMode: false,
                 nAnte: '',
                 form: {
                     id: null,
-                    fecha: this.calcuFin,
+                    fecha: this.hoy,
                     semana: moment().format("GGGG-[W]WW"),
                     usu: this.usuario.id,
                     per_carga: this.usuario.id,
@@ -529,7 +559,7 @@
                     turno_id: '',
                     notaPen: 1,
                     nota: '',
-                    agNot: 0
+                    agNot: 0,
                 }
             }
         },
@@ -566,8 +596,15 @@
                 }else{
                     //Asigna el primer departamento
                     this.S_Area = this.usuario.dep_pers[0].departamento_id;
-                    //asigna el puesto a una variable
-                    this.noCor = this.usuario.dep_pers[0].ope_puesto;
+                    this.usuario.dep_pers.forEach(v => {
+                        if (v.departamento_id = this.S_Area) {
+                            //asigna el puesto a una variable
+                            this.noCor = v.ope_puesto;
+                            //asigna
+                            this.idDep = v.id;
+                        }
+                    })
+
                 }
             },
             /****************************** Selects de muestra ************************************************/
@@ -626,6 +663,7 @@
                     } );
                 })
             },
+            //datatable de paquetes Norma, partida y clave
             tablaNor() {
                 this.$nextTick(() => {
                     $('#t_pn').DataTable( {
@@ -640,19 +678,91 @@
             saveCA(form){
                 this.form.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
                 this.form.semana = moment().format("GGGG-[W]WW");
+                //Asigna si es horario de verano o no
                 if (moment().isDST()) {
                     form.VerInv = 'Verano';
                 }else{
                     form.VerInv = 'Invierno';
                 }
-                $('#t_carg').DataTable().clear();
-                $('#t_carg').DataTable().destroy();
-                this.$inertia.post('/Produccion/Carga', form, {
-                    onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tabla()}, preserveState: true
-                });
+                //revisa si el usuario es lider o operador
+                if (this.noCor == 'lid' | this.noCor == 'ope') {
+                    //revisa si tienen equipo
+                    if (form.equipo_id == null) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'No tienes asignado ningún equipo, Por favor solicite que le agreguen un equipo',
+                        })
+                    }else{
+                        //revisa si el turno es vacio
+                        var vacio = '';
+                        this.turnos.forEach(t => {
+                            if (t.id == form.turno_id) {
+                                vacio = t.nomtur;
+                            }
+                        });
+                        if (vacio == 'Vacío') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Te encuentras en un turno vacío, Por favor solicite cambiar su turno',
+                            })
+                        }else{
+                            $('#t_carg').DataTable().clear();
+                            $('#t_carg').DataTable().destroy();
+                            this.$inertia.post('/Produccion/Carga', form, {
+                                onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tabla()}, preserveState: true
+                            });
+                        }
+                    }
+                }else{
+                    //si el carga el dato pasa de lo contraro verifica
+                    if (this.idDep == form.dep_perf_id) {
+                        $('#t_carg').DataTable().clear();
+                        $('#t_carg').DataTable().destroy();
+                        this.$inertia.post('/Produccion/Carga', form, {
+                            onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tabla()}, preserveState: true
+                        });
+                    }else{
+                        //revisa si tienen equipo
+                        if (form.equipo_id == null) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'No tienes asignado ningún equipo, Por favor solicite que le agreguen un equipo',
+                            })
+                        }else{
+                            //revisa si el turno es vacio
+                            var vacio = '';
+                            this.turnos.forEach(t => {
+                                if (t.id == form.turno_id) {
+                                    vacio = t.nomtur;
+                                }
+                            });
+                            if (vacio == 'Vacío') {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Te encuentras en un turno vacío, Por favor solicite cambiar su turno',
+                                })
+                            }else{
+                                $('#t_carg').DataTable().clear();
+                                $('#t_carg').DataTable().destroy();
+                                this.$inertia.post('/Produccion/Carga', form, {
+                                    onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tabla()}, preserveState: true
+                                });
+                            }
+                        }
+                    }
+
+                }
+
                 //console.log(form);
             },
             resetCA(){
+                this.limp = 1;
+                this.paqOpera = '';
+                this.paqNorma = '';
                 this.proc_prin = '';
                 this.editMode = false;
                 this.form.valor = '';
@@ -666,26 +776,26 @@
                 this.form.usu = this.usuario.id;
 
                 if (this.usuario.dep_pers.length != 0) {
-                    if(this.noCor == 'ope' | this.noCor == 'lid'){
-                        this.form.dep_perf_id = this.usuario.dep_pers[0].id;
-                        this.form.equipo_id = this.usuario.dep_pers[0].equipo_id;
-                        this.form.turno_id = this.usuario.dep_pers[0].equipo != null ? this.usuario.dep_pers[0].equipo.turno_id : '';
-                    }
-                    else if(this.noCor == 'cor'){
-                        this.form.dep_perf_id = this.usuario.dep_pers[0].id;
-                    }else{
-                        this.form.dep_perf_id = this.usuario.dep_pers[0] != null ? this.usuario.dep_pers[0].id : '';
-                        this.form.turno_id = this.usuario.dep_pers[0].equipo != null ? this.usuario.dep_pers[0].equipo.turno_id : '';
-                        this.form.equipo_id = this.usuario.dep_pers[0] != null ? this.usuario.dep_pers[0].equipo_id : '';
-                    }
+                    this.usuario.dep_pers.forEach(v => {
+                        if (v.departamento_id = this.S_Area) {
+                            this.form.dep_perf_id = v.id != null ? v.id : null;
+                            this.form.turno_id = v.equipo_id != null ? v.equipo.turno_id : null;
+                            this.form.equipo_id = v.equipo_id != null ? v.equipo_id : null;
+                            //asigna el puesto a una variable
+                            this.noCor = v.ope_puesto;
+                            //asigna
+                            this.idDep = v.id;
+                        }
+                    })
                 }else{
-                    this.form.dep_perf_id = '';
-                    this.form.turno_id = '';
-                    this.form.equipo_id = '';
+                    this.form.dep_perf_id = null;
+                    this.form.turno_id = null;
+                    this.form.equipo_id = null;
                 }
             },
             editCA(form){
                 //console.log(form)
+                this.limp = 2;
                 this.proc_prin = form.proceso.proceso_id;
                 this.form.dep_perf_id = form.dep_perf_id;
                 this.form.turno_id = form.turno_id;
@@ -693,9 +803,15 @@
                 this.form.proceso_id = form.proceso_id;
                 this.form.id = form.id;
                 this.form.valor = form.valor;
+                this.form.maq_pro_id = form.maq_pro_id;
+                this.paqnor.forEach(pn => {
+                    if (pn.partida == form.partida & pn.clave_id == form.clave_id) {
+                        this.paqNorma = pn.id;
+                    }
+                })
+
                 this.form.norma = form.norma;
                 this.form.partida = form.partida;
-                this.form.maq_pro_id = form.maq_pro_id;
                 this.form.clave_id = form.clave_id;
                 this.form.notaPen = 2;
                 this.form.nota = '';
@@ -750,7 +866,7 @@
             },
             /***************************** Carga de paquetes de norma, claves y partida *********************/
             savePN(form){
-                console.log(form)
+                //console.log(form)
                 form.departamento_id = this.S_Area;
                 $('#t_pn').DataTable().clear();
                 $('#t_pn').DataTable().destroy();
@@ -909,7 +1025,7 @@
             },
             //Opciones maquinas
             opcMQ: function() {
-                this.form.maq_pro_id = '';
+                this.limp == 1 ? this.form.maq_pro_id = '' : '';
                 const mq = [];
                 var mar = '';
                 if (this.form.proceso_id != '') {
@@ -928,7 +1044,7 @@
             //Opciones Claves
             opcCL: function() {
                 const scl = [];
-                this.form.clave_id = '';
+                /* this.form.clave_id = ''; */
                 if (this.form.norma != '') {
                     this.materiales.forEach(cl => {
                         if (this.form.norma == cl.id) {
@@ -1002,7 +1118,6 @@
                         }
                     })
                 }
-                /* console.log(this.form) */
             },
             paqOpera: function(paO) {
                 //console.log(paO)
@@ -1013,12 +1128,11 @@
                 }else{
                     this.paqope.forEach(po => {
                         if (po.id == paO) {
-                            /* console.log(po) */
+                            this.limp = 2;
                             this.form.proceso_id = po.proceso_id;
                             this.form.dep_perf_id = po.dep_perf_id;
                             this.form.maq_pro_id = po.maq_pro_id;
                         }
-
                     })
                 }
             }

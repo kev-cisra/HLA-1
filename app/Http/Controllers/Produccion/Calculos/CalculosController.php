@@ -69,7 +69,7 @@ class CalculosController extends Controller
             //print($fs.' | '.$cuenta.' / ');
         }
 
-        echo $fs.' | '.$fc.' / ';
-        return $fs;
+        echo $fs.' | '.$fc.'  FIN SUMA DIA ';
+        return '';
     }
 }
