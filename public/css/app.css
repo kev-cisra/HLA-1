@@ -19494,22 +19494,6 @@ select {
 	margin-left: 14rem;
 	margin-right: 14rem;
 }
-.tw--my-2 {
-	margin-top: -0.5rem;
-	margin-bottom: -0.5rem;
-}
-.tw-my-32 {
-	margin-top: 8rem;
-	margin-bottom: 8rem;
-}
-.tw-mx-5 {
-	margin-left: 1.25rem;
-	margin-right: 1.25rem;
-}
-.tw-mx-7 {
-	margin-left: 1.75rem;
-	margin-right: 1.75rem;
-}
 .tw-ml-2 {
 	margin-left: 0.5rem;
 }
@@ -20325,10 +20309,6 @@ select {
 .tw-px-5 {
 	padding-left: 1.25rem;
 	padding-right: 1.25rem;
-}
-.tw-px-2 {
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
 }
 .tw-pl-4 {
 	padding-left: 1rem;
