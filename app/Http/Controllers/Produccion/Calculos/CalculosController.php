@@ -39,16 +39,15 @@ class CalculosController extends Controller
             //dependiendo del tipo de operacion
             switch ($ope->operacion) {
                 case 'sm_d':
-                    $this->sm_d($ope->formulas);
+                    //$this->sm_d($ope->formulas);
                     break;
-
-                default:
-                    # code...
+                case 'sm_dc':
+                    $this->sm_dc($ope->formulas);
                     break;
             }
         }
 
-        return '$calcula';
+        return '';
 
         /* return redirect()->back()
             ->with('message', 'Post Created Successfully.'); */
@@ -69,7 +68,22 @@ class CalculosController extends Controller
             //print($fs.' | '.$cuenta.' / ');
         }
 
-        echo $fs.' | '.$fc.' / ';
-        return $fs;
+        echo $fs.' | '.$fc.'  fin suma dia ';
+        return '';
+    }
+
+    //operacion suma dia clave
+    public function sm_dc($val){
+        $fs = 0;
+        $fc = 0;
+        foreach ($val as $value) {
+            $claves = carga::where('maq_pro_id', '=', $value->maq_pros_id)
+            ->distinct()
+            ->get(['clave_id']);
+            print($claves);
+        }
+
+        return '';
+
     }
 }

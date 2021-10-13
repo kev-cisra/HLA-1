@@ -318,6 +318,7 @@ class MaquinasSeeder extends Seeder
         MAQUINAS::create(['IdUser' => '1', 'Nombre' => 'TRANSFORMADOR 1500 KVA','Departamento' => 'HILATURA 2','departamento_id'  => 5]);
         MAQUINAS::create(['IdUser' => '1', 'Nombre' => 'PULMON 1','Departamento' => 'HILATURA 2','departamento_id'  => 5]);
         MAQUINAS::create(['IdUser' => '1', 'Nombre' => 'PULMON 2','Departamento' => 'HILATURA 2','departamento_id'  => 5]);
+        MAQUINAS::create(['IdUser' => '1', 'Nombre' => 'BASCULA','Departamento' => 'APERTURA','departamento_id'  => 7]);
 
     }
 }

@@ -52,6 +52,7 @@ class CargaController extends Controller
         $mate = [];
         $carOpe = [];
         $carNor = [];
+        $turnos = [];
         $hoy = date('Y-m-d');
         $dia = date("Y-m-d",strtotime($hoy."- 1 days")).' 19:00:00';
         $mañana = date("Y-m-d",strtotime($hoy."+ 1 days")).' 07:00:00';
@@ -322,8 +323,12 @@ class CargaController extends Controller
                 }
             ])
             ->get(['id', 'partida', 'estatus', 'norma', 'clave_id', 'departamento_id']);
+
+            //Turnos
+            $turnos = turnos::where('departamento_id', '=', $request->busca)
+            ->get(['id', 'nomtur', 'departamento_id']);
         }
-        return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate, 'paqope' => $carOpe, 'paqnor' => $carNor]);
+        return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate, 'paqope' => $carOpe, 'paqnor' => $carNor, 'turnos' => $turnos]);
 
     }
 
@@ -353,6 +358,7 @@ class CargaController extends Controller
             'valor' => ['required'],
             'clave_id' => ['numeric'],
         ])->validate();
+
 
         if ($request->vacio == 'N/A' | $request->vacio != 'Vacío') {
             carga::create($request->all());
@@ -395,7 +401,7 @@ class CargaController extends Controller
     public function update(Request $request, carga $carga)
     {
         //
-
+        //return $request;
         Validator::make($request->all(), [
             'clave_id' => ['required'],
             'valor' => ['required'],
@@ -404,6 +410,7 @@ class CargaController extends Controller
         //carga de procesos
         carga::find($request->input('id'))
         ->update([
+            'norma' => $request->norma,
             'clave_id' => $request->clave_id,
             'partida' => $request->partida,
             'valor' => $request->valor,
