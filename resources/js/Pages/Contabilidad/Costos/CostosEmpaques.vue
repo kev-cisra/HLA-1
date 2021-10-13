@@ -21,14 +21,14 @@
                 </div>
                 <div v-if="form.Base == 'APERTURA'">
                     <jet-label class="tw-font-medium">Selecciona un Material</jet-label>
-                    <select v-model="form.Material"  class="InputSelect">
+                    <select v-model="form.Material"  class="InputSelect" @change="FiltroEmpaque">
                         <option value="RAFIA">RAFIA</option>
                         <option value="ETIQUETA TERMICA">ETIQUETA TERMICA</option>
                     </select>
                 </div>
                 <div v-else-if="form.Base == 'HILATURA'">
                     <jet-label class="tw-font-medium">Selecciona un Material</jet-label>
-                    <select v-model="form.Material"  class="InputSelect">
+                    <select v-model="form.Material"  class="InputSelect" @change="FiltroEmpaque">
                         <option value="ETIQUETA TERMICA">ETIQUETA TERMICA</option>
                         <option value="BOLSA POLIPAPEL">BOLSA POLIPAPEL</option>
                         <option value="LAMINA CARTON">LAMINA CARTON</option>
@@ -47,66 +47,131 @@
             </div>
 
             <div class="tw-overflow-x-auto tw-mx-2">
-                <Table id="CostosEmpaques">
-                    <template v-slot:TableHeader>
-                        <th class="columna">Fecha</th>
-                        <th class="columna">NumFactura</th>
-                        <th class="columna">Proveedor</th>
-                        <th class="columna">Concepto</th>
-                        <th class="columna">Moneda</th>
-                        <th class="columna">Importe</th>
-                        <th class="columna">TipoCambio</th>
-                        <th class="columna">Conversion</th>
-                        <th class="columna">ImporteKilo</th>
-                        <th class="columna">Costo100G</th>
-                        <th class="columna">KilosPorBorra</th>
-                        <th class="columna">CostoUnitario</th>
-                        <th class="columna">Acciones</th>
-                    </template>
+                {{ form.Material }}
+                <div v-if="form.Material == 'RAFIA'">
+                    <Table id="Rafia">
+                        <template v-slot:TableHeader>
+                            <th class="columna">Fecha</th>
+                            <th class="columna">NumFactura</th>
+                            <th class="columna">Proveedor</th>
+                            <th class="columna">Concepto</th>
+                            <th class="columna">Moneda</th>
+                            <th class="columna">Importe</th>
+                            <th class="columna">TipoCambio</th>
+                            <th class="columna">Conversion</th>
+                            <th class="columna">ImporteKilo</th>
+                            <th class="columna">Costo100G</th>
+                            <th class="columna">KilosPorBorra</th>
+                            <th class="columna">CostoUnitario</th>
+                            <th class="columna">Acciones</th>
+                        </template>
 
-                    <template v-slot:TableFooter>
-                        <tr class="fila" v-for="dato in Rafia" :key="dato.id">
-                            <td class="tw-p-2">{{ dato.Fecha }}</td>
-                            <td class="tw-p-2">{{ dato.NumFactura }}</td>
-                            <td class="tw-p-2">{{ dato.Proveedor }}</td>
-                            <td class="tw-p-2">{{ dato.Concepto }}</td>
-                            <td class="tw-p-2">{{ dato.Moneda }}</td>
-                            <td class="tw-p-2">{{ dato.Importe }}</td>
-                            <td class="tw-p-2">{{ dato.TipoCambio }}</td>
-                            <td class="tw-p-2">{{ dato.Conversion }}</td>
-                            <td class="tw-p-2">{{ dato.ImporteKilo }}</td>
-                            <td class="tw-p-2">{{ dato.Costo100G }}</td>
-                            <td class="tw-p-2">{{ dato.KilosPorBorra }}</td>
-                            <td class="tw-p-2">{{ dato.CostoUnitario }}</td>
-                            <td class="fila">
-                                <div class="columnaIconos">
-                                    <div class="iconoDetails" @click="show(dato)" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                        <span tooltip="Detalles" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </span>
+                        <template v-slot:TableFooter>
+                            <tr class="fila" v-for="dato in Rafia" :key="dato.id">
+                                <td class="tw-p-2">{{ dato.Fecha }}</td>
+                                <td class="tw-p-2">{{ dato.NumFactura }}</td>
+                                <td class="tw-p-2">{{ dato.Proveedor }}</td>
+                                <td class="tw-p-2">{{ dato.Concepto }}</td>
+                                <td class="tw-p-2">{{ dato.Moneda }}</td>
+                                <td class="tw-p-2">{{ dato.Importe }}</td>
+                                <td class="tw-p-2">{{ dato.TipoCambio }}</td>
+                                <td class="tw-p-2">{{ dato.Conversion }}</td>
+                                <td class="tw-p-2">{{ dato.ImporteKilo }}</td>
+                                <td class="tw-p-2">{{ dato.Costo100G }}</td>
+                                <td class="tw-p-2">{{ dato.KilosPorBorra }}</td>
+                                <td class="tw-p-2">{{ dato.CostoUnitario }}</td>
+                                <td class="fila">
+                                    <div class="columnaIconos">
+                                        <div class="iconoDetails" @click="show(dato)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                            <span tooltip="Detalles" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoEdit" @click="edit(dato)">
+                                            <span tooltip="Editar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoDelete" @click="deleteRow(dato)">
+                                            <span tooltip="Eliminar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                </svg>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="iconoEdit" @click="edit(dato)">
-                                        <span tooltip="Editar" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                            </svg>
-                                        </span>
+                                </td>
+                            </tr>
+                        </template>
+                    </Table>
+                </div>
+                <div v-else-if="form.Material == 'ETIQUETA TERMICA'">
+                    <Table id="CostosEmpaques">
+                        <template v-slot:TableHeader>
+                            <th class="columna">Fecha</th>
+                            <th class="columna">NumFactura</th>
+                            <th class="columna">Proveedor</th>
+                            <th class="columna">Concepto</th>
+                            <th class="columna">Moneda</th>
+                            <th class="columna">Importe</th>
+                            <th class="columna">TipoCambio</th>
+                            <th class="columna">Conversion</th>
+                            <th class="columna">Rollo</th>
+                            <th class="columna">CostoEtiqueta</th>
+                            <th class="columna">KilosPorEtiqueta</th>
+                            <th class="columna">CostoUnitario</th>
+                            <th class="columna">Acciones</th>
+                        </template>
+
+                        <template v-slot:TableFooter>
+                            <tr class="fila" v-for="dato in Rafia" :key="dato.id">
+                                <td class="tw-p-2">{{ dato.Fecha }}</td>
+                                <td class="tw-p-2">{{ dato.NumFactura }}</td>
+                                <td class="tw-p-2">{{ dato.Proveedor }}</td>
+                                <td class="tw-p-2">{{ dato.Concepto }}</td>
+                                <td class="tw-p-2">{{ dato.Moneda }}</td>
+                                <td class="tw-p-2">{{ dato.Importe }}</td>
+                                <td class="tw-p-2">{{ dato.TipoCambio }}</td>
+                                <td class="tw-p-2">{{ dato.Conversion }}</td>
+                                <td class="tw-p-2">{{ dato.Rollo }}</td>
+                                <td class="tw-p-2">{{ dato.CostoEtiqueta }}</td>
+                                <td class="tw-p-2">{{ dato.KilosPorEtiqueta }}</td>
+                                <td class="tw-p-2">{{ dato.CostoUnitario }}</td>
+                                <td class="fila">
+                                    <div class="columnaIconos">
+                                        <div class="iconoDetails" @click="show(dato)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                            <span tooltip="Detalles" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoEdit" @click="edit(dato)">
+                                            <span tooltip="Editar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoDelete" @click="deleteRow(dato)">
+                                            <span tooltip="Eliminar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                </svg>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="iconoDelete" @click="deleteRow(dato)">
-                                        <span tooltip="Eliminar" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </template>
-                </Table>
+                                </td>
+                            </tr>
+                        </template>
+                    </Table>
+                </div>
             </div>
         </div>
 
@@ -175,9 +240,9 @@
                                     <small v-if="errors.ImporteKilo" class="validation-alert">{{errors.ImporteKilo}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-else-if="form.Material == 'ETIQUETA TERMICA'">
-                                    <jet-label><span class="required">*</span>Etiqueta Térmica</jet-label>
-                                    <jet-input type="number" min="1" v-model="form.Etiqueta"></jet-input>
-                                    <small v-if="errors.Etiqueta" class="validation-alert">{{errors.Etiqueta}}</small>
+                                    <jet-label><span class="required">*</span>Rollo Etiquetas</jet-label>
+                                    <jet-input type="number" min="1" v-model="form.Rollo"></jet-input>
+                                    <small v-if="errors.Rollo" class="validation-alert">{{errors.Rollo}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-else-if="form.Material == 'BOLSA POLIPAPEL'">
                                     <jet-label><span class="required">*</span>Bolsa Polipapel</jet-label>
@@ -231,6 +296,7 @@ import 'moment/locale/es';
 export default {
     mounted() {
         this.tabla();
+        this.tablaCostosEmpaques();
     },
 
     data() {
@@ -252,7 +318,7 @@ export default {
                 TipoCambio: null,
                 Conversion: null,
                 ImporteKilo: null,
-                Etiqueta: null,
+                Rollo: null,
                 BolsaPolipapel: null,
                 LaminaCarton: null,
                 Cono: null,
@@ -278,6 +344,7 @@ export default {
         Session: Object,
         errors: Object,
         Rafia: Object,
+        CostosEmpaques: Object,
     },
 
     methods: {
@@ -293,6 +360,15 @@ export default {
 
         //datatable
         tabla() {
+            this.$nextTick(() => {
+                $("#Rafia").DataTable({
+                language: this.español,
+                });
+            });
+        },
+
+                //datatable
+        tablaCostosEmpaques() {
             this.$nextTick(() => {
                 $("#CostosEmpaques").DataTable({
                 language: this.español,
@@ -311,7 +387,7 @@ export default {
 
         Conversion(){
             var Conversion =  this.form.Importe * this.form.TipoCambio;
-            this.form.Convesion = parseFloat(Conversion).toFixed(2);
+            this.form.Conversion = parseFloat(Conversion).toFixed(2);
         },
 
         save(data) {
@@ -345,6 +421,11 @@ export default {
                     this.chageCloseEdit()
                 },
             });
+        },
+
+        FiltroEmpaque(value){
+            this.tabla();
+            console.log(this.form.material);
         },
     },
 };
