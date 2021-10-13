@@ -294,7 +294,7 @@ class MarcasMaquinasSeeder extends Seeder
         MarcasMaquinas::create([ 'IdUser' => '1',   'Nombre' => 'PROLEC','maquinas_id' =>194]);
         MarcasMaquinas::create([ 'IdUser' => '1',   'Nombre' => 'SATEÑA','maquinas_id' =>195]);
         MarcasMaquinas::create([ 'IdUser' => '1',   'Nombre' => 'SATEÑA','maquinas_id' =>196]);
-
+        MarcasMaquinas::create([ 'IdUser' => '1',   'Nombre' => 'SIN MARCA','maquinas_id' =>197]);
 
     }
 }
