@@ -17,7 +17,12 @@
         "\\.vscode",
         "\\.git",
         "\\.DS_Store",
-        "\\.env"
+        "\\.env",
+        "\\.svg",
+        "\\.eot",
+        "\\.woff",
+        "\\.eot2",
+        "\\public\fonts"
     ],
     "generatedFiles": {
         "extensionsToInclude": [

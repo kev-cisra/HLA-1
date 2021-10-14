@@ -11,10 +11,10 @@
         </Header>
 
         <div class="tw-flex tw-items-center tw-justify-center tw-mt-4">
-            <div class="tw-w-full tw-mx-auto tw-max-w-7xl sm:tw-px-8 lg:tw-px-10">
+            <div class="tw-w-full tw-mx-auto sm:tw-px-8 lg:tw-px-10">
                 <div class="tw-flex tw-flex-col tw-w-full tw-mb-2 tw-space-y-8 lg:tw-flex-row lg:tw-space-x-10 lg:tw-space-y-0 lg:tw-mb-4">
 
-                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4">
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5">
                         <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-indigo-500 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
                                 <div class="icon tw-w-14 tw-p-3.5 tw-bg-indigo-500 tw-text-white tw-rounded-full tw-mr-3">
@@ -30,7 +30,7 @@
                         </div>
                     </div>
 
-                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="Filtro(5)">
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5" @click="Filtro(5)">
                         <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-orange-500 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
                                 <div class="icon tw-w-14 tw-p-3.5 tw-bg-orange-400 tw-text-white tw-rounded-full tw-mr-3">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
 
-                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="Filtro(6)">
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5" @click="Filtro(6)">
                         <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-cyan-600 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
                                 <div class="icon tw-w-14 tw-p-3.5 tw-bg-cyan-600 tw-text-white tw-rounded-full tw-mr-3">
@@ -57,6 +57,38 @@
                                 <div class="tw-flex tw-flex-col tw-justify-center">
                                     <div class="tw-text-lg"> {{ Confirmar }} </div>
                                     <div class="tw-text-xs tw-text-gray-400">Pendientes por agregar Fecha Entrega</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5" @click="Filtro(5)">
+                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-orange-600 tw-rounded-lg tw-widget">
+                            <div class="tw-flex tw-items-center">
+                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-orange-600 tw-text-white tw-rounded-full tw-mr-3">
+                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div class="tw-flex tw-flex-col tw-justify-center">
+                                    <div class="tw-text-lg"> {{ PendientesMes }} </div>
+                                    <div class="tw-text-xs tw-text-gray-400">Pendientes por Autorizar de <strong>{{params.MesLetra}}</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5" @click="Filtro(6)">
+                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-indigo-600 tw-rounded-lg tw-widget">
+                            <div class="tw-flex tw-items-center">
+                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-indigo-600 tw-text-white tw-rounded-full tw-mr-3">
+                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div class="tw-flex tw-flex-col tw-justify-center">
+                                    <div class="tw-text-lg"> {{ CotizacionMes }} </div>
+                                    <div class="tw-text-xs tw-text-gray-400">Pendientes por Cotizar de <strong>{{params.MesLetra}}</strong> </div>
                                 </div>
                             </div>
                         </div>
@@ -474,6 +506,7 @@ export default {
                 month: null,
                 Estatus: null,
                 Proveedor: null,
+                MesLetra: null,
             },
         };
     },
@@ -506,6 +539,8 @@ export default {
         Cotizacion: Object,
         Pendientes: Object,
         Confirmar: Object,
+        PendientesMes: Object,
+        CotizacionMes: Object,
         mes: Object,
     },
 
@@ -576,6 +611,44 @@ export default {
 
         FiltroMes(value){
             this.params.month = value;
+            switch (this.params.month) {
+                case 1:
+                    this.params.MesLetra = 'Enero';
+                    break;
+                case 2:
+                    this.params.MesLetra = 'Febrero';
+                    break;
+                case 3:
+                    this.params.MesLetra = 'Marzo';
+                    break;
+                case 4:
+                    this.params.MesLetra = 'Abril';
+                    break;
+                case 5:
+                    this.params.MesLetra = 'Mayo';
+                    break;
+                case 6:
+                    this.params.MesLetra = 'Junio';
+                    break;
+                case 7:
+                    this.params.MesLetra = 'Julio';
+                    break;
+                case 8:
+                    this.params.MesLetra = 'Agosto';
+                    break;
+                case 9:
+                    this.params.MesLetra = 'Septiembre';
+                    break;
+                case 10:
+                    this.params.MesLetra = 'Octubre';
+                    break;
+                case 11:
+                    this.params.MesLetra = 'Noviembre';
+                    break;
+                case 12:
+                    this.params.MesLetra = 'Diciembre';
+                    break;
+            }
             this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
                     this.tabla() //regeneracion de tabla
