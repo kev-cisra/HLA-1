@@ -101,7 +101,12 @@ class SolicitudesPapeleriaController extends Controller{
                 ArticulosPapeleriaRequisicion::where('id', '=', $request->id)->update([
                     'Estatus' => 2,
                 ]);
-            break;
+                break;
+            case 3:
+                ArticulosPapeleriaRequisicion::where('id', '=', $request->id)->update([
+                    'Estatus' => 3,
+                ]);
+                break;
         }
 
         return redirect()->back();

@@ -47,12 +47,24 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-sky-500 tw-rounded-full">EN STOCK</span>
                                     </span>
                                 </div>
+                                <div v-if="dato.Estatus == 3">
+                                    <span tooltip="Entrega Material" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">ENTREGADO</span>
+                                    </span>
+                                </div>
                             </td>
                             <td class="fila">
                                 <div class="columnaIconos" v-if="dato.Estatus == 1">
                                     <div class="iconoTeal" @click="Confirma(dato, 2)">
                                         <span tooltip="Confirma Material" flow="left">
                                             <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-if="dato.Estatus == 2">
+                                    <div class="iconoTeal" @click="EntregaPapeleria(dato, 3)">
+                                        <span tooltip="Entrega Material" flow="left">
+                                            <i class="far fa-check-circle"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -379,6 +391,19 @@ export default {
         Confirma(data, metodo) {
             console.log(data);
             data.metodo = 2;
+            data._method = 'PUT';
+            this.$inertia.post('/Compras/Papeleria/' + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces(),
+                    this.reset(),
+                    this.chageCloseEdit()
+                },
+            });
+        },
+
+        EntregaPapeleria(data, metodo) {
+            console.log(data);
+            data.metodo = 3;
             data._method = 'PUT';
             this.$inertia.post('/Compras/Papeleria/' + data.id, data, {
                 onSuccess: () => {

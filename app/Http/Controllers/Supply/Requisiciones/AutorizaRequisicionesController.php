@@ -136,7 +136,11 @@ class AutorizaRequisicionesController extends Controller{
 
         $Pendientes = ArticulosRequisiciones::where('EstatusArt', '=', 5)->count();
 
+        $PendientesMes = ArticulosRequisiciones::where('EstatusArt', '=', 5)->whereMonth('Fecha', $mes)->count();
+
         $Confirmar = ArticulosRequisiciones::where('EstatusArt', '=', 6)->count();
+
+        $CotizacionMes = ArticulosRequisiciones::whereBetween('EstatusArt', [3, 4])->whereMonth('Fecha', $mes)->count();
 
         return Inertia::render('Supply/Requisiciones/Autoriza', compact(
             'Session',
@@ -146,7 +150,9 @@ class AutorizaRequisicionesController extends Controller{
             'Proveedores',
             'Cotizacion',
             'Pendientes',
+            'PendientesMes',
             'Confirmar',
+            'CotizacionMes',
             'mes'));
     }
 
