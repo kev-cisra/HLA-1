@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
         $this->call(paros::class);
         $this->call(TurnosSeeder::class);
         $this->call(ProcesosSeeder::class);
+        $this->call(DepMatSeeder::class);
+        $this->call(MaqProsSeeder::class);
 
     }
 }

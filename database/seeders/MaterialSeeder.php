@@ -51,5 +51,118 @@ class MaterialSeeder extends Seeder
             'idmat' => '7DPA',
             'nommat' => 'DESARROLLO PUREBAS ANILLO'
         ]);
+        materiales::create([
+            'idmat' => 'ACO',
+            'nommat' => 'ACO'
+        ]);
+        materiales::create([
+            'idmat' => 'ACO1',
+            'nommat' => 'ACO1'
+        ]);
+        materiales::create([
+            'idmat' => 'ACP',
+            'nommat' => 'ACP'
+        ]);
+        materiales::create([
+            'idmat' => 'ACU',
+            'nommat' => 'ACU'
+        ]);
+        materiales::create([
+            'idmat' => 'BLD',
+            'nommat' => 'BLD'
+        ]);
+        materiales::create([
+            'idmat' => 'CON',
+            'nommat' => 'CON'
+        ]);
+        materiales::create([
+            'idmat' => 'FLM',
+            'nommat' => 'FLM'
+        ]);
+        materiales::create([
+            'idmat' => 'HLAT',
+            'nommat' => 'HLAT'
+        ]);
+        materiales::create([
+            'idmat' => 'KCA',
+            'nommat' => 'KCA'
+        ]);
+        materiales::create([
+            'idmat' => 'KCC',
+            'nommat' => 'KCC'
+        ]);
+        materiales::create([
+            'idmat' => 'KCM',
+            'nommat' => 'KCM'
+        ]);
+        materiales::create([
+            'idmat' => 'KVRD',
+            'nommat' => 'KVRD'
+        ]);
+        materiales::create([
+            'idmat' => 'LAN',
+            'nommat' => 'LAN'
+        ]);
+        materiales::create([
+            'idmat' => 'MCT',
+            'nommat' => 'MCT'
+        ]);
+        materiales::create([
+            'idmat' => 'MEZ',
+            'nommat' => 'MEZ'
+        ]);
+        materiales::create([
+            'idmat' => 'MKA',
+            'nommat' => 'MKA'
+        ]);
+        materiales::create([
+            'idmat' => 'NYT',
+            'nommat' => 'NYT'
+        ]);
+        materiales::create([
+            'idmat' => 'PAR',
+            'nommat' => 'PAR'
+        ]);
+        materiales::create([
+            'idmat' => 'PEA',
+            'nommat' => 'PEA'
+        ]);
+        materiales::create([
+            'idmat' => 'PES',
+            'nommat' => 'PES'
+        ]);
+        materiales::create([
+            'idmat' => 'PRU',
+            'nommat' => 'PRU'
+        ]);
+        materiales::create([
+            'idmat' => 'ALP',
+            'nommat' => 'ALP'
+        ]);
+        materiales::create([
+            'idmat' => 'ALPVENTA',
+            'nommat' => 'ALPVENTA'
+        ]);
+        materiales::create([
+            'idmat' => 'BON',
+            'nommat' => 'BON'
+        ]);
+        materiales::create([
+            'idmat' => 'CAL',
+            'nommat' => 'CAL'
+        ]);
+        materiales::create([
+            'idmat' => 'GTE',
+            'nommat' => 'GTE'
+        ]);
+        materiales::create([
+            'idmat' => 'HLA',
+            'nommat' => 'HLA'
+        ]);
+        materiales::create([
+            'idmat' => 'HLAVENTA',
+            'nommat' => 'HLAVENTA'
+        ]);
+
     }
 }

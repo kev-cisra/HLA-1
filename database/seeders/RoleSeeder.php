@@ -42,7 +42,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'Produccion.index'])->syncRoles([$ONEPIECE, $ProduccionRole, $AdminRole]);
         Permission::create(['name' => 'Supply.index'])->syncRoles([$ONEPIECE, $SupplyRole]);
         //permisos modulos de produccion
-        Permission::create(['name' => 'Produccion.personal.index'])->syncRoles([$ONEPIECE, $coordinador, $SistemasRole]);
+        Permission::create(['name' => 'Produccion.personal.index'])->syncRoles([$ONEPIECE, $coordinador, $SistemasRole, $encargado]);
         Permission::create(['name' => 'Produccion.procesos.index'])->syncRoles([$ONEPIECE, $coordinador, $SistemasRole]);
         Permission::create(['name' => 'Produccion.maquinas.index'])->syncRoles([$ONEPIECE, $coordinador, $SistemasRole]);
         Permission::create(['name' => 'Produccion.turnos.index'])->syncRoles([$ONEPIECE, $coordinador, $SistemasRole, $encargado]);

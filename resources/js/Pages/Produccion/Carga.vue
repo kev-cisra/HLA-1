@@ -54,175 +54,173 @@
 
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
         <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
-            <form>
-                <!-------------------------------------------- Paquetes ---------------------------------------------->
-                <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full" v-if="noCor == 'lid' | noCor == 'ope'">
-                    <!-- formulario -->
-                    <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
-                        <!-- select Paquetes de operadores -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>Paquete de operadores</jet-label>
-                            <select class="InputSelect" v-model="paqOpera">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="po in opcPaOp" :key="po.value" :value="po.value">{{po.proceso}} - {{po.maquina}}</option>
-                            </select>
-                        </div>
-                        <!-- select Paquetes de Normas partida y clave -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
-                            <select class="InputSelect" v-model="paqNorma">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
-                            </select>
-                        </div>
-                        <!-- Input kilogramos -->
-                        <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>KG</jet-label>
-                            <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
-                            <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
-                        </div>
+            <!-------------------------------------------- Paquetes ---------------------------------------------->
+            <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full" v-if="noCor == 'lid' | noCor == 'ope'">
+                <!-- formulario -->
+                <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
+                    <!-- select Paquetes de operadores -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Paquete de operadores</jet-label>
+                        <select class="InputSelect" v-model="paqOpera">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="po in opcPaOp" :key="po.value" :value="po.value">{{po.proceso}} - {{po.maquina}}</option>
+                        </select>
                     </div>
-
-                    <!-- Notas -->
-                    <div class="tw-mb-6 lg:tw-flex" v-if="form.notaPen == 2">
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
-                            <jet-label>Nota anterior</jet-label>
-                            <jet-label v-html="nAnte"></jet-label>
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>Nota</jet-label>
-                            <textarea class="InputSelect" v-model="form.nota" maxlength="250" @input="(val) => (form.nota = form.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
-                            <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
-                        </div>
+                    <!-- select Paquetes de Normas partida y clave -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
+                        <select class="InputSelect" v-model="paqNorma">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
+                        </select>
                     </div>
-                    <!-- Botones -->
-                    <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                        <div>
-                            <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
-                        </div>
-                        <div>
-                            <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
-                        </div>
-                        <div>
-                            <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
-                        </div>
-                        <div>
-                            <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
-                        </div>
-                    </div>
-                </div>
-                <!-------------------------------------------- Carga normal ------------------------------------------>
-                <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
-                    <!-- Proceso proncipal, sub procesos, operador -->
-                    <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
-                        <!-- Select proceso principal -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
-                            <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
-                            </select>
-                            <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
-                        </div>
-                        <!-- select Sub proceso -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="opcSP">
-                            <jet-label><span class="required">*</span>Sub proceso </jet-label>
-                            <select class="InputSelect" v-model="form.proceso_id" :disabled="editMode">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
-                            </select>
-                            <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
-                        </div>
-                        <!-- select operador -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="(noCor != 'cor' & noCor != 'ope') | editMode">
-                            <jet-label><span class="required">*</span>Operador</jet-label>
-                            <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" :disabled="editMode">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
-                            </select>
-                            <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
-                        </div>
-                    </div>
-                    <!-- Maquinas, Normas, Claves, Partida, Kilogramos -->
-                    <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & form.proceso_id != '') | editMode">
-                        <!-- select Maquinas -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>Maquinas</jet-label>
-                            <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
-                            </select>
-                            <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
-                        </div>
-                        <!-- select Paquetes de Normas partida y clave -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
-                            <select class="InputSelect" v-model="paqNorma">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
-                            </select>
-                        </div>
-                        <!-- Select Normas -->
-                        <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>Norma</jet-label>
-                            <select class="InputSelect" v-model="form.norma" :disabled="editMode">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
-                            </select>
-                            <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
-                        </div> -->
-                        <!-- select Clave -->
-                        <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>Clave</jet-label>
-                            <select class="InputSelect" v-model="form.clave_id">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
-                            </select>
-                            <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
-                        </div> -->
-                        <!-- Inout partida -->
-                        <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0" v-if="noCor != 'cor' | editMode">
-                            <jet-label>Partida</jet-label>
-                            <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
-                            <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
-                        </div> -->
-                        <!-- Input kilogramos -->
-                        <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>KG</jet-label>
-                            <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
-                            <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
-                        </div>
-                    </div>
-                    <!-- Notas -->
-                    <div class="tw-mb-6 lg:tw-flex" v-if="form.notaPen == 2">
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
-                            <jet-label>Nota anterior</jet-label>
-                            <jet-label v-html="nAnte"></jet-label>
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>Nota</jet-label>
-                            <textarea class="InputSelect" v-model="form.nota" maxlength="250" @input="(val) => (form.nota = form.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
-                            <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
-                        </div>
-                    </div>
-                    <!-- Botones -->
-                    <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                        <div>
-                            <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
-                        </div>
-                        <div>
-                            <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
-                        </div>
-                        <div>
-                            <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
-                        </div>
-                        <div>
-                            <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
-                        </div>
+                    <!-- Input kilogramos -->
+                    <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>KG</jet-label>
+                        <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
+                        <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
                     </div>
                 </div>
 
-            </form>
+                <!-- Notas -->
+                <div class="tw-mb-6 lg:tw-flex" v-if="form.notaPen == 2">
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
+                        <jet-label>Nota anterior</jet-label>
+                        <jet-label v-html="nAnte"></jet-label>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Nota</jet-label>
+                        <textarea class="InputSelect" v-model="form.nota" maxlength="250" @input="(val) => (form.nota = form.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
+                        <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
+                    </div>
+                </div>
+                <!-- Botones -->
+                <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+                    <div>
+                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
+                    </div>
+                    <div>
+                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
+                    </div>
+                    <div>
+                        <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+                    </div>
+                    <div>
+                        <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
+                    </div>
+                </div>
+            </div>
+            <!-------------------------------------------- Carga normal ------------------------------------------>
+            <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
+                <!-- Proceso proncipal, sub procesos, operador -->
+                <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
+                    <!-- Select proceso principal -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
+                        <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
+                        </select>
+                        <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
+                    </div>
+                    <!-- select Sub proceso -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="opcSP">
+                        <jet-label><span class="required">*</span>Sub proceso </jet-label>
+                        <select class="InputSelect" v-model="form.proceso_id" :disabled="editMode">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
+                        </select>
+                        <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
+                    </div>
+                    <!-- select operador -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="(noCor != 'cor' & noCor != 'ope') | editMode">
+                        <jet-label><span class="required">*</span>Operador</jet-label>
+                        <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" :disabled="editMode">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
+                        </select>
+                        <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
+                    </div>
+                </div>
+                <!-- Maquinas, Normas, Claves, Partida, Kilogramos -->
+                <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & form.proceso_id != '') | editMode">
+                    <!-- select Maquinas -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Maquinas</jet-label>
+                        <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
+                        </select>
+                        <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                    </div>
+                    <!-- select Paquetes de Normas partida y clave -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
+                        <select class="InputSelect" v-model="paqNorma">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
+                        </select>
+                    </div>
+                    <!-- Select Normas -->
+                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Norma</jet-label>
+                        <select class="InputSelect" v-model="form.norma" :disabled="editMode">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
+                        </select>
+                        <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
+                    </div> -->
+                    <!-- select Clave -->
+                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Clave</jet-label>
+                        <select class="InputSelect" v-model="form.clave_id">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
+                        </select>
+                        <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
+                    </div> -->
+                    <!-- Inout partida -->
+                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0" v-if="noCor != 'cor' | editMode">
+                        <jet-label>Partida</jet-label>
+                        <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
+                        <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                    </div> -->
+                    <!-- Input kilogramos -->
+                    <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>KG</jet-label>
+                        <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
+                        <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
+                    </div>
+                </div>
+                <!-- Notas -->
+                <div class="tw-mb-6 lg:tw-flex" v-if="form.notaPen == 2">
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
+                        <jet-label>Nota anterior</jet-label>
+                        <jet-label v-html="nAnte"></jet-label>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Nota</jet-label>
+                        <textarea class="InputSelect" v-model="form.nota" maxlength="250" @input="(val) => (form.nota = form.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
+                        <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
+                    </div>
+                </div>
+                <!-- Botones -->
+                <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+                    <div>
+                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
+                    </div>
+                    <div>
+                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
+                    </div>
+                    <div>
+                        <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+                    </div>
+                    <div>
+                        <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!------------------------------------ Data table de carga ------------------------------------------------------->
@@ -297,61 +295,59 @@
             <div class="offcanvas-body">
                  <!------------------------------------ Paquete de operadores ---------------------------------------->
                 <div class="m-5 tw-p-6 tw-bg-teal-600 tw-rounded-3xl tw-shadow-xl">
-                    <form>
-                        <!-- Proceso proncipal, sub procesos, operador -->
-                        <div class="tw-mb-6 lg:tw-flex">
-                            <!-- Select proceso principal -->
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
-                                <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
-                                    <option value="" disabled>SELECCIONA</option>
-                                    <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
-                                </select>
-                                <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
-                            </div>
-                            <!-- select Sub proceso -->
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                <jet-label><span class="required">*</span>Sub proceso </jet-label>
-                                <select class="InputSelect" v-model="form.proceso_id" :disabled="editMode">
-                                    <option value="" disabled>SELECCIONA</option>
-                                    <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
-                                </select>
-                                <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
-                            </div>
+                    <!-- Proceso proncipal, sub procesos, operador -->
+                    <div class="tw-mb-6 lg:tw-flex">
+                        <!-- Select proceso principal -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
+                            <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
+                            </select>
+                            <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
                         </div>
-                        <!-- Maquinas, Normas, Claves, Partida, Kilogramos -->
-                        <div class="tw-mb-6 lg:tw-flex">
-                             <!-- select operador -->
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                <jet-label><span class="required">*</span>Operador</jet-label>
-                                <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" :disabled="editMode">
-                                    <option value="" disabled>SELECCIONA</option>
-                                    <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
-                                </select>
-                                <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
-                            </div>
-                            <!-- select Maquinas -->
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                <jet-label><span class="required">*</span>Maquinas</jet-label>
-                                <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
-                                    <option value="" disabled>SELECCIONA</option>
-                                    <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
-                                </select>
-                                <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
-                            </div>
-
+                        <!-- select Sub proceso -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Sub proceso </jet-label>
+                            <select class="InputSelect" v-model="form.proceso_id" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
+                            </select>
+                            <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
+                        </div>
+                    </div>
+                    <!-- Maquinas, Normas, Claves, Partida, Kilogramos -->
+                    <div class="tw-mb-6 lg:tw-flex">
+                            <!-- select operador -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Operador</jet-label>
+                            <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
+                            </select>
+                            <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
+                        </div>
+                        <!-- select Maquinas -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Maquinas</jet-label>
+                            <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
+                            </select>
+                            <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                         </div>
 
-                        <!-- Botones -->
-                        <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                            <div>
-                                <jet-button type="button" class="tw-mx-auto" @click="savePO(form)">Guardar</jet-button>
-                            </div>
-                            <!-- <div>
-                                <jet-button type="button" class="tw-mx-auto" @click="updateCA(form)">Actualizar</jet-button>
-                            </div> -->
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+                        <div>
+                            <jet-button type="button" class="tw-mx-auto" @click="savePO(form)">Guardar</jet-button>
                         </div>
-                    </form>
+                        <!-- <div>
+                            <jet-button type="button" class="tw-mx-auto" @click="updateCA(form)">Actualizar</jet-button>
+                        </div> -->
+                    </div>
                 </div>
                 <!-- tabla para paquetes operador -->
                 <div class="table-responsive">
@@ -399,50 +395,50 @@
             <div class="offcanvas-body">
                 <!---------------------------- Formulario de paquete para normas, claves y partida ---------------------->
                 <div class="m-5 tw-p-6 tw-bg-cyan-600 tw-rounded-3xl tw-shadow-xl">
-                    <form>
-                        <!-- Proceso proncipal, sub procesos, operador -->
-                        <div class="tw-mb-6 lg:tw-flex">
 
-                            <!-- Select Normas -->
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                                <jet-label><span class="required">*</span>Norma</jet-label>
-                                <select class="InputSelect" v-model="form.norma" :disabled="editMode">
-                                    <option value="" disabled>SELECCIONA</option>
-                                    <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
-                                </select>
-                                <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
-                            </div>
-                            <!-- select Clave -->
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                                <jet-label><span class="required">*</span>Clave</jet-label>
-                                <select class="InputSelect" v-model="form.clave_id">
-                                    <option value="" disabled>SELECCIONA</option>
-                                    <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
-                                </select>
-                                <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
-                                <!-- <jet-input class="InputSelect" list="cla" v-model="form.clave_id" @input="(val) => (form.partida = form.partida.toUpperCase())" :disabled="form.norma == ''"></jet-input>
-                                <datalist id="cla">
-                                    <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
-                                </datalist> -->
-                            </div>
-                            <!-- Inout partida -->
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0" v-if="noCor != 'cor' | editMode">
-                                <jet-label>Partida</jet-label>
-                                <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
-                                <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
-                            </div>
-                        </div>
+                    <!-- Proceso proncipal, sub procesos, operador -->
+                    <div class="tw-mb-6 lg:tw-flex">
 
-                        <!-- Botones -->
-                        <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                            <div>
-                                <jet-button type="button" class="tw-mx-auto" @click="savePN(form)">Guardar</jet-button>
-                            </div>
-                            <!-- <div>
-                                <jet-button type="button" class="tw-mx-auto" @click="updateCA(form)">Actualizar</jet-button>
-                            </div> -->
+                        <!-- Select Normas -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Norma</jet-label>
+                            <select class="InputSelect" v-model="form.norma" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
+                            </select>
+                            <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                         </div>
-                    </form>
+                        <!-- select Clave -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Clave</jet-label>
+                            <select class="InputSelect" v-model="form.clave_id">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
+                            </select>
+                            <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
+                            <!-- <jet-input class="InputSelect" list="cla" v-model="form.clave_id" @input="(val) => (form.partida = form.partida.toUpperCase())" :disabled="form.norma == ''"></jet-input>
+                            <datalist id="cla">
+                                <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
+                            </datalist> -->
+                        </div>
+                        <!-- Inout partida -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0" v-if="noCor != 'cor' | editMode">
+                            <jet-label>Partida</jet-label>
+                            <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
+                            <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                        </div>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+                        <div>
+                            <jet-button type="button" class="tw-mx-auto" @click="savePN(form)">Guardar</jet-button>
+                        </div>
+                        <!-- <div>
+                            <jet-button type="button" class="tw-mx-auto" @click="updateCA(form)">Actualizar</jet-button>
+                        </div> -->
+                    </div>
+
                 </div>
                 <!---------------------------- Datatable de paquetes ---------------------------------------------------->
                 <div class="table-responsive">
@@ -587,6 +583,7 @@
             //consulta para generar datos de la tabla
             verTabla(event){
                 $('#t_op').DataTable().clear();
+                $('#t_pn').DataTable().clear();
                 $('#t_carg').DataTable().clear();
             },
             /****************************** Globales **********************************************************/
