@@ -69,8 +69,8 @@
                     </div>
 
                     <div class="tw-mt-4">
-                        <div class="ModalForm">
-                            <div class="tw-mb-6 md:tw-flex">
+                        <div class="ModalForm tw-overflow-y-auto tw-h-96">
+<!--                             <div class="tw-mb-6 md:tw-flex">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Cantidad</jet-label>
                                     <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
@@ -82,6 +82,16 @@
                                         <option v-for="select in Insumos" :key="select.id" :value="select.id" >{{ select.Nombre }}</option>
                                     </select>
                                     <small v-if="errors.Nombre" class="validation-alert" >{{ errors.Nombre }}</small>
+                                </div>
+                            </div> -->
+                            <div class="tw-mb-6 md:tw-flex" v-for="select in Insumos" :key="select.id">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0" >
+                                        <jet-label>Material</jet-label>
+                                        <jet-input type="text"  v-model="form.Nombre" :value="select.Nombre"></jet-input>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0" >
+                                        <jet-label>Cantidad</jet-label>
+                                        <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
                                 </div>
                             </div>
                         </div>
