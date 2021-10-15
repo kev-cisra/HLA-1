@@ -507,7 +507,7 @@ export default {
             PreciosArt: {
             },
             params:{
-                month: moment().get('month'),
+                month: moment().format("MM"),
                 Estatus: null,
                 Proveedor: null,
                 MesLetra: null,
@@ -518,6 +518,7 @@ export default {
 
     mounted() {
         this.tabla();
+        this.MesALetra();
     },
 
     components: {
@@ -604,6 +605,47 @@ export default {
 
         chageClose() {
             this.showModal = !this.showModal;
+        },
+
+        MesALetra(){
+            switch (this.params.month) {
+                case '1':
+                    this.params.MesLetra = 'Enero';
+                    break;
+                case '2':
+                    this.params.MesLetra = 'Febrero';
+                    break;
+                case '3':
+                    this.params.MesLetra = 'Marzo';
+                    break;
+                case '4':
+                    this.params.MesLetra = 'Abril';
+                    break;
+                case '5':
+                    this.params.MesLetra = 'Mayo';
+                    break;
+                case '6':
+                    this.params.MesLetra = 'Junio';
+                    break;
+                case '7':
+                    this.params.MesLetra = 'Julio';
+                    break;
+                case '8':
+                    this.params.MesLetra = 'Agosto';
+                    break;
+                case '9':
+                    this.params.MesLetra = 'Septiembre';
+                    break;
+                case '10':
+                    this.params.MesLetra = 'Octubre';
+                    break;
+                case '11':
+                    this.params.MesLetra = 'Noviembre';
+                    break;
+                case '12':
+                    this.params.MesLetra = 'Diciembre';
+                    break;
+            }
         },
 
         FiltroPorMes(value){
