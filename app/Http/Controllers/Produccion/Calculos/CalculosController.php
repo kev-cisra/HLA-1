@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class CalculosController extends Controller
 {
-    //
+
     public function store(Request $request)
     {
         //pone la hora de inicio y fin para consultar
