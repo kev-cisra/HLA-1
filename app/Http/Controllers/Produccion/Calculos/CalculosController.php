@@ -8,10 +8,11 @@ use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\turnos;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use SebastianBergmann\Environment\Console;
 
 class CalculosController extends Controller
 {
-
+    //
     public function store(Request $request)
     {
         //pone la hora de inicio y fin para consultar
@@ -46,7 +47,7 @@ class CalculosController extends Controller
                     /* $this->sm_dc($ope->formulas); */
                     break;
                 case 'sm_t':
-                    $this->sm_t($ope->formulas, $request->depa);
+                    $this->sm_t($ope, $request->depa);
                     break;
             }
         }
@@ -113,7 +114,7 @@ class CalculosController extends Controller
         foreach ($turnos as $tur) {
             $fs = 0;
             $fc = 0;
-            /* foreach ($val as $value) {
+            foreach ($val->formulas as $value) {
                 $suma = carga::where('maq_pro_id', '=', $value->maq_pros_id)
                 ->where('turno_id', '=', $tur->id)
                 ->sum('valor');
@@ -122,11 +123,10 @@ class CalculosController extends Controller
                 ->count('valor');
                 $fs += $suma;
                 $fc += $cuenta;
-                //print($fs.' | '.$cuenta.' / ');
-            } */
+                print($fs.' | '.$fc.' / ');
+            }
             //echo $tur->nomtur.' | '.$fs.' | '.$fc.'  fin suma turnos || ';
         }
-        echo $val;
         return 'sm_t';
     }
 }
