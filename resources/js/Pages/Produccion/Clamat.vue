@@ -279,7 +279,8 @@
                         scrollCollapse: true,
                         paging:         false,
                         "dom": '<"row"<"col-sm-12 mt-3 col-md-9"B><"col-sm-12 col-md-3"f>>'+
-                                "<'row'<'col-sm-12'tr>>",
+                                "<'row'<'col-sm-12'tr>>" +
+                                "<'row'<'col-sm-12 col-md-5'i>>",
                         buttons: [
                             {
                                 extend: 'copyHtml5',
