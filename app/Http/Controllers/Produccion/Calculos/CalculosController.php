@@ -40,13 +40,13 @@ class CalculosController extends Controller
             //dependiendo del tipo de operacion
             switch ($ope->operacion) {
                 case 'sm_d':
-                    $this->sm_d($ope->formulas);
+                    /* $this->sm_d($ope->formulas); */
                     break;
                 case 'sm_dc':
-                    $this->sm_dc($ope->formulas);
+                    /* $this->sm_dc($ope->formulas); */
                     break;
                 case 'sm_t':
-                    /* $this->sm_t($ope->formulas, $request->depa); */
+                    $this->sm_t($ope->formulas, $request->depa);
                     break;
             }
         }
@@ -108,9 +108,8 @@ class CalculosController extends Controller
 
     //operacion suma turno clave
     public function sm_t($val, $dep){
-        $turnos = turnos::where('departamento_id', '=', $dep)
-        ->where('nomtur', '!=', 'Vacío')
-        ->get(['id', 'nomtur']);
+        $turnos = turnos::where('departamento_id', '=', 7)
+            ->get();
         foreach ($turnos as $tur) {
             $fs = 0;
             $fc = 0;
@@ -127,7 +126,7 @@ class CalculosController extends Controller
             } */
             //echo $tur->nomtur.' | '.$fs.' | '.$fc.'  fin suma turnos || ';
         }
-        echo $turnos;
+        echo $val;
         return 'sm_t';
     }
 }
