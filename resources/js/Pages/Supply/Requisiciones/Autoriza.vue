@@ -213,10 +213,6 @@
             </div>
         </div>
 
-        <pre>
-           {{ params }}
-        </pre>
-
         <div class="tw-mt-8">
             <div class="tw-flex tw-justify-between tw-px-4">
                 <div class="tw-flex tw-flex-wrap tw-content-center">
@@ -652,49 +648,6 @@ export default {
             $('#Articulos').DataTable().clear(); //limpio
             $('#Articulos').DataTable().destroy(); //destruyo tabla
             this.params.month = value;
-            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
-            onSuccess: () => {
-                this.tabla() //regeneracion de tabla
-            }, preserveState: true})
-        },
-
-        FiltroIndicadores(value){
-            $('#Articulos').DataTable().clear(); //limpio
-            $('#Articulos').DataTable().destroy(); //destruyo tabla
-            this.params.Estatus = value;
-            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
-            onSuccess: () => {
-                location.reload();
-                this.tabla() //regeneracion de tabla
-            }, preserveState: true})
-        },
-
-        FiltroIndicadorMensual(value){
-            $('#Articulos').DataTable().clear(); //limpio
-            $('#Articulos').DataTable().destroy(); //destruyo tabla
-            this.params.Estatus = value;
-            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
-            onSuccess: () => {
-                location.reload();
-                this.tabla() //regeneracion de tabla
-            }, preserveState: true})
-        },
-
-        Filtro(value){
-            $('#Articulos').DataTable().clear(); //limpio
-            $('#Articulos').DataTable().destroy(); //destruyo tabla
-            this.params.Estatus = value;
-            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
-                onSuccess: () => {
-                    location.reload();
-                    this.tabla() //regeneracion de tabla
-                }, preserveState: true})
-        },
-
-        FiltroMes(value){
-            $('#Articulos').DataTable().clear(); //limpio
-            $('#Articulos').DataTable().destroy(); //destruyo tabla
-            this.params.month = value;
             switch (this.params.month) {
                 case 1:
                     this.params.MesLetra = 'Enero';
@@ -734,14 +687,43 @@ export default {
                     break;
             }
             this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
-                onSuccess: () => {
-                    location.reload();
-                    this.tabla() //regeneracion de tabla
-                }, preserveState: true})
+            onSuccess: () => {
+                this.tabla() //regeneracion de tabla
+            }, preserveState: true})
+        },
+
+        FiltroIndicadores(value){
+            $('#Articulos').DataTable().clear(); //limpio
+            $('#Articulos').DataTable().destroy(); //destruyo tabla
+            this.params.Estatus = value;
+            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
+            onSuccess: () => {
+                location.reload();
+                this.tabla() //regeneracion de tabla
+            }, preserveState: true})
+        },
+
+        FiltroIndicadorMensual(value){
+            $('#Articulos').DataTable().clear(); //limpio
+            $('#Articulos').DataTable().destroy(); //destruyo tabla
+            this.params.Estatus = value;
+            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
+            onSuccess: () => {
+                location.reload();
+                this.tabla() //regeneracion de tabla
+            }, preserveState: true})
         },
 
         Precios(data){
             this.params.Cot = data.id;
+            var query  = window.location.search.substring(1);
+            var vars = query.split("&");
+                for (var i=0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == 'Estatus') {
+                        this.params.Estatus = pair[1];
+                    }
+            }
             this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
                     this.chageClose();
@@ -769,20 +751,5 @@ export default {
         },
 
     },
-
-/*     watch: {
-        params: {
-        deep: true,
-            handler: throttle(function() {
-                $('#Articulos').DataTable().clear(); //limpio
-                $('#Articulos').DataTable().destroy(); //destruyo tabla
-                this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , {
-                    onSuccess: () => {
-                        this.chageClose();
-                        this.tabla() //regeneracion de tabla
-                        }, preserveState: true})
-            }, 150),
-        },
-    }, */
 };
 </script>
