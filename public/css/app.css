@@ -20377,24 +20377,19 @@ select {
 	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 .tw-text-sm {
-	font-size: 0.875rem;
-	line-height: 1.25rem;
+	font-size: .875rem;
 }
 .tw-text-xs {
-	font-size: 0.75rem;
-	line-height: 1rem;
+	font-size: .75rem;
 }
 .tw-text-lg {
 	font-size: 1.125rem;
-	line-height: 1.75rem;
 }
 .tw-text-base {
 	font-size: 1rem;
-	line-height: 1.5rem;
 }
 .tw-text-xl {
 	font-size: 1.25rem;
-	line-height: 1.75rem;
 }
 .tw-text-9xl {
 	font-size: 8rem;
@@ -20402,7 +20397,9 @@ select {
 }
 .tw-text-4xl {
 	font-size: 2.25rem;
-	line-height: 2.5rem;
+}
+.tw-text-xxs {
+	font-size: .64rem;
 }
 .tw-font-semibold {
 	font-weight: 600;
@@ -20899,8 +20896,7 @@ select {
 	padding-right: 1rem;
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
-	font-size: 0.75rem;
-	line-height: 1rem;
+	font-size: .75rem;
 	font-weight: 600;
 	letter-spacing: 0.1em;
 	--tw-text-opacity: 1;
@@ -20936,8 +20932,7 @@ select {
 	padding-right: 1rem;
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
-	font-size: 0.75rem;
-	line-height: 1rem;
+	font-size: .75rem;
 	font-weight: 600;
 	text-transform: uppercase;
 	letter-spacing: 0.1em;
@@ -20987,8 +20982,7 @@ select {
 	padding-bottom: 0.5rem;
 	padding-left: 2rem;
 	padding-right: 1.5rem;
-	font-size: 0.875rem;
-	line-height: 1.25rem;
+	font-size: .875rem;
 	font-weight: 600;
 	--tw-text-opacity: 1;
 	color: rgba(55, 65, 81, var(--tw-text-opacity));
@@ -21050,8 +21044,7 @@ select {
 	color: rgba(219, 39, 119, var(--tw-text-opacity));
 }
 .validation-alert {
-	font-size: 0.75rem;
-	line-height: 1rem;
+	font-size: .75rem;
 	font-weight: 700;
 	--tw-text-opacity: 1;
 	color: rgba(185, 28, 28, var(--tw-text-opacity));
@@ -21095,8 +21088,7 @@ select {
 	padding-bottom: 0.5rem;
 	padding-left: 2.5rem;
 	padding-right: 2.5rem;
-	font-size: 0.875rem;
-	line-height: 1.25rem;
+	font-size: .875rem;
 	font-weight: 600;
 	--tw-text-opacity: 1;
 	color: rgba(55, 65, 81, var(--tw-text-opacity));
@@ -21126,7 +21118,6 @@ select {
 	background-color: rgba(75, 85, 99, var(--tw-bg-opacity));
 	text-align: center;
 	font-size: 1.125rem;
-	line-height: 1.75rem;
 	--tw-text-opacity: 1;
 	color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
@@ -21208,14 +21199,12 @@ select {
 }
 .titleDetails {
 	font-size: 1.125rem;
-	line-height: 1.75rem;
 	font-weight: 700;
 	--tw-text-opacity: 1;
 	color: rgba(107, 114, 128, var(--tw-text-opacity));
 }
 .info {
-	font-size: 0.875rem;
-	line-height: 1.25rem;
+	font-size: .875rem;
 	--tw-text-opacity: 1;
 	color: rgba(156, 163, 175, var(--tw-text-opacity));
 }
@@ -22480,6 +22469,10 @@ select {
 
 	.md\:tw-w-2\/12 {
 		width: 16.666667%;
+	}
+
+	.md\:tw-w-10\/12 {
+		width: 83.333333%;
 	}
 
 	.md\:tw-w-8\/12 {

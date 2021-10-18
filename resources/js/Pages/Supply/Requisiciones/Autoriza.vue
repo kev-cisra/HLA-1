@@ -249,17 +249,17 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in ArticuloRequisicion" :key="datos.id">
-                            <td class="tw-p-2">{{ datos.Fecha }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.NumReq }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Codigo }}</td>
-                            <td class="tw-p-2">{{ datos.Cantidad }}</td>
-                            <td class="tw-p-2">{{ datos.Unidad }}</td>
-                            <td class="tw-p-2">{{ datos.Descripcion }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.Fechallegada }}</td>
-                            <td class="tw-p-2">{{ datos.OrdenCompra }}</td>
-                            <td class="tw-p-2">
+                            <td class="">{{ datos.Fecha }}</td>
+                            <td class="">{{ datos.articulos_requisicion.NumReq }}</td>
+                            <td class="">{{ datos.articulos_requisicion.Codigo }}</td>
+                            <td class="">{{ datos.Cantidad }}</td>
+                            <td class="">{{ datos.Unidad }}</td>
+                            <td class="">{{ datos.Descripcion }}</td>
+                            <td class="">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                            <td class="">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="">{{ datos.Fechallegada }}</td>
+                            <td class="">{{ datos.OrdenCompra }}</td>
+                            <td class="">
                                 <div v-if="datos.EstatusArt == 3">
                                     <span tooltip="Articulo en espera de cotización" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">COTIZAR</span>
@@ -296,7 +296,7 @@
                                     </span>
                                 </div>
                             </td>
-                            <td class="fila">
+                            <td class="">
                                 <div class="columnaIconos" v-if="datos.EstatusArt >= 5 && datos.EstatusArt < 9">
                                     <div class="iconoPurple" @click="Precios(datos)">
                                         <span tooltip="Visualiza Cotizaciones" flow="left">
@@ -317,7 +317,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="tw-p-2">
+                            <td class="">
                                 <div class="tw-flex tw-justify-center">
                                     <div class="iconoDetails" v-if="detalles != datos.id" @click="show(datos.id)">
                                         <span tooltip="Detalles" flow="left">
