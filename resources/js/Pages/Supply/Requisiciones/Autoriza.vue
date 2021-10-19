@@ -213,10 +213,6 @@
             </div>
         </div>
 
-        <pre>
-           {{ params }}
-        </pre>
-
         <div class="tw-mt-8">
             <div class="tw-flex tw-justify-between tw-px-4">
                 <div class="tw-flex tw-flex-wrap tw-content-center">
@@ -253,17 +249,17 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in ArticuloRequisicion" :key="datos.id">
-                            <td class="tw-p-2">{{ datos.Fecha }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.NumReq }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Codigo }}</td>
-                            <td class="tw-p-2">{{ datos.Cantidad }}</td>
-                            <td class="tw-p-2">{{ datos.Unidad }}</td>
-                            <td class="tw-p-2">{{ datos.Descripcion }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.Fechallegada }}</td>
-                            <td class="tw-p-2">{{ datos.OrdenCompra }}</td>
-                            <td class="tw-p-2">
+                            <td class="">{{ datos.Fecha }}</td>
+                            <td class="">{{ datos.articulos_requisicion.NumReq }}</td>
+                            <td class="">{{ datos.articulos_requisicion.Codigo }}</td>
+                            <td class="">{{ datos.Cantidad }}</td>
+                            <td class="">{{ datos.Unidad }}</td>
+                            <td class="">{{ datos.Descripcion }}</td>
+                            <td class="">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                            <td class="">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="">{{ datos.Fechallegada }}</td>
+                            <td class="">{{ datos.OrdenCompra }}</td>
+                            <td class="">
                                 <div v-if="datos.EstatusArt == 3">
                                     <span tooltip="Articulo en espera de cotización" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">COTIZAR</span>
@@ -300,7 +296,7 @@
                                     </span>
                                 </div>
                             </td>
-                            <td class="fila">
+                            <td class="">
                                 <div class="columnaIconos" v-if="datos.EstatusArt >= 5 && datos.EstatusArt < 9">
                                     <div class="iconoPurple" @click="Precios(datos)">
                                         <span tooltip="Visualiza Cotizaciones" flow="left">
@@ -321,7 +317,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="tw-p-2">
+                            <td class="">
                                 <div class="tw-flex tw-justify-center">
                                     <div class="iconoDetails" v-if="detalles != datos.id" @click="show(datos.id)">
                                         <span tooltip="Detalles" flow="left">
@@ -507,7 +503,7 @@ export default {
             PreciosArt: {
             },
             params:{
-                month: moment().get('month'),
+                month: moment().format("MM"),
                 Estatus: null,
                 Proveedor: null,
                 MesLetra: null,
@@ -518,6 +514,7 @@ export default {
 
     mounted() {
         this.tabla();
+        this.MesALetra();
     },
 
     components: {
@@ -606,50 +603,48 @@ export default {
             this.showModal = !this.showModal;
         },
 
+        MesALetra(){
+            switch (this.params.month) {
+                case '1':
+                    this.params.MesLetra = 'Enero';
+                    break;
+                case '2':
+                    this.params.MesLetra = 'Febrero';
+                    break;
+                case '3':
+                    this.params.MesLetra = 'Marzo';
+                    break;
+                case '4':
+                    this.params.MesLetra = 'Abril';
+                    break;
+                case '5':
+                    this.params.MesLetra = 'Mayo';
+                    break;
+                case '6':
+                    this.params.MesLetra = 'Junio';
+                    break;
+                case '7':
+                    this.params.MesLetra = 'Julio';
+                    break;
+                case '8':
+                    this.params.MesLetra = 'Agosto';
+                    break;
+                case '9':
+                    this.params.MesLetra = 'Septiembre';
+                    break;
+                case '10':
+                    this.params.MesLetra = 'Octubre';
+                    break;
+                case '11':
+                    this.params.MesLetra = 'Noviembre';
+                    break;
+                case '12':
+                    this.params.MesLetra = 'Diciembre';
+                    break;
+            }
+        },
+
         FiltroPorMes(value){
-            $('#Articulos').DataTable().clear(); //limpio
-            $('#Articulos').DataTable().destroy(); //destruyo tabla
-            this.params.month = value;
-            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
-            onSuccess: () => {
-                this.tabla() //regeneracion de tabla
-            }, preserveState: true})
-        },
-
-        FiltroIndicadores(value){
-            $('#Articulos').DataTable().clear(); //limpio
-            $('#Articulos').DataTable().destroy(); //destruyo tabla
-            this.params.Estatus = value;
-            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
-            onSuccess: () => {
-                location.reload();
-                this.tabla() //regeneracion de tabla
-            }, preserveState: true})
-        },
-
-        FiltroIndicadorMensual(value){
-            $('#Articulos').DataTable().clear(); //limpio
-            $('#Articulos').DataTable().destroy(); //destruyo tabla
-            this.params.Estatus = value;
-            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
-            onSuccess: () => {
-                location.reload();
-                this.tabla() //regeneracion de tabla
-            }, preserveState: true})
-        },
-
-        Filtro(value){
-            $('#Articulos').DataTable().clear(); //limpio
-            $('#Articulos').DataTable().destroy(); //destruyo tabla
-            this.params.Estatus = value;
-            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
-                onSuccess: () => {
-                    location.reload();
-                    this.tabla() //regeneracion de tabla
-                }, preserveState: true})
-        },
-
-        FiltroMes(value){
             $('#Articulos').DataTable().clear(); //limpio
             $('#Articulos').DataTable().destroy(); //destruyo tabla
             this.params.month = value;
@@ -692,14 +687,43 @@ export default {
                     break;
             }
             this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
-                onSuccess: () => {
-                    location.reload();
-                    this.tabla() //regeneracion de tabla
-                }, preserveState: true})
+            onSuccess: () => {
+                this.tabla() //regeneracion de tabla
+            }, preserveState: true})
+        },
+
+        FiltroIndicadores(value){
+            $('#Articulos').DataTable().clear(); //limpio
+            $('#Articulos').DataTable().destroy(); //destruyo tabla
+            this.params.Estatus = value;
+            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
+            onSuccess: () => {
+                location.reload();
+                this.tabla() //regeneracion de tabla
+            }, preserveState: true})
+        },
+
+        FiltroIndicadorMensual(value){
+            $('#Articulos').DataTable().clear(); //limpio
+            $('#Articulos').DataTable().destroy(); //destruyo tabla
+            this.params.Estatus = value;
+            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
+            onSuccess: () => {
+                location.reload();
+                this.tabla() //regeneracion de tabla
+            }, preserveState: true})
         },
 
         Precios(data){
             this.params.Cot = data.id;
+            var query  = window.location.search.substring(1);
+            var vars = query.split("&");
+                for (var i=0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == 'Estatus') {
+                        this.params.Estatus = pair[1];
+                    }
+            }
             this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
                     this.chageClose();
@@ -727,20 +751,5 @@ export default {
         },
 
     },
-
-/*     watch: {
-        params: {
-        deep: true,
-            handler: throttle(function() {
-                $('#Articulos').DataTable().clear(); //limpio
-                $('#Articulos').DataTable().destroy(); //destruyo tabla
-                this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , {
-                    onSuccess: () => {
-                        this.chageClose();
-                        this.tabla() //regeneracion de tabla
-                        }, preserveState: true})
-            }, 150),
-        },
-    }, */
 };
 </script>

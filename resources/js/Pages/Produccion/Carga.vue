@@ -29,8 +29,12 @@
                 </div> -->
                 <div class="input-group" >
                     <input type="date" class="form-control tw-rounded-lg" v-model="calcu" :max="hoy" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-success" type="button" id="button-addon2" :disabled="btnOff" @click="calcula()">
+                    <button v-show="vCal" class="btn btn-outline-success" type="button" id="button-addon2" :disabled="btnOff" @click="calcula()">
                         <i class="fas fa-calculator" ></i>
+                    </button>
+                    <button v-show="!vCal" class="btn btn-success" type="button" disabled>
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        <span class="visually-hidden">Calculando...</span>
                     </button>
                 </div>
             </template>
@@ -527,6 +531,7 @@
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
                 noCor: '',
+                vCal: true,
                 proc_prin: '',
                 paqOpera: '',
                 paqNorma: '',
@@ -568,11 +573,12 @@
             //calcula
             calcula() {
                 if (this.calcu != '' & this.S_Area != '') {
-                    console.log(this.calcu+' '+this.S_Area);
-                    /* this.btnOff = true; */
+                    this.vCal = false;
+                    //console.log(this.calcu+' '+this.S_Area);
+                    this.btnOff = true;
                     const form = {fecha: this.calcu, depa: this.S_Area};
                     this.$inertia.post('/Produccion/Calcula', form, {
-                        onSuccess: (v) => { this.btnOff = false, this.alertSucces()}, onError: (e) => { this.btnOff = false }, preserveState: true
+                        onSuccess: (v) => { this.btnOff = false, this.alertSucces(), this.vCal = true}, onError: (e) => { this.btnOff = false, this.vCal = true }, preserveState: true
                     });
                 }else{
                     this.calcu == '' ? Swal.fire('Por favor selecciona una fecha') : '';
@@ -676,11 +682,12 @@
                 this.form.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
                 this.form.semana = moment().format("GGGG-[W]WW");
                 //Asigna si es horario de verano o no
-                if (moment().isDST()) {
+                form.VerInv = '1';
+                /*if (moment().isDST()) {
                     form.VerInv = 'Verano';
                 }else{
                     form.VerInv = 'Invierno';
-                }
+                }*/
                 //revisa si el usuario es lider o operador
                 if (this.noCor == 'lid' | this.noCor == 'ope') {
                     //revisa si tienen equipo
