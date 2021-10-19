@@ -144,7 +144,9 @@ class CalculosController extends Controller
             //print($fs.' | '.$cuenta.' / ');
         }
         //echo $data['proceso_id'].' | '.$data['suma'].' | '.$data['cantidad'].'  fin suma dia || ';
-        $this->gua_act($fechas, $data);
+        if ($fc != 0) {
+            $this->gua_act($fechas, $data);
+        }
 
         return 'sm_d';
     }
@@ -192,7 +194,9 @@ class CalculosController extends Controller
                 $fc += $cuenta;
                 //print($val->nompro.' | '.$cl->clave->CVE_ART.' | '.$suma.' | '.$cuenta.' - ');
                 $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'turno_id' => null, 'cantidad' => $cuenta, 'partida' => 'N/A', 'norma' => $cl->norma, 'clave_id' => $cl->clave_id, 'per_carga' => $usuario->id];
-                $this->gua_act($fechas, $data);
+                if ($fc != 0) {
+                    $this->gua_act($fechas, $data);
+                }
             }
         }
         //echo ' fin suma clave dia || ';
@@ -247,8 +251,9 @@ class CalculosController extends Controller
                 $fc += $cuenta;
                 //print( $val->nompro.' | '.$tur->nomtur.' | '.$fs.' | '.$fc.' / ');
                 $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'turno_id' => $tur->id, 'cantidad' => $cuenta, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id];
-                $this->gua_act($fechas, $data);
-
+                if ($fc != 0) {
+                    $this->gua_act($fechas, $data);
+                }
             }
             //echo $tur;
         }
@@ -316,11 +321,10 @@ class CalculosController extends Controller
                     $fs += $suma;
                     $fc += $cuenta;
                     $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'turno_id' => $tur->id, 'cantidad' => $cuenta, 'partida' => 'N/A', 'norma' => $cl->norma, 'clave_id' => $cl->clave_id, 'per_carga' => $usuario->id];
-                    $this->gua_act($fechas, $data);
-                    /* if ($fc != 0) {
-                        print($val->nompro.' | '.$tur->nomtur.' | '.$cl->clave->CVE_ART.' | '.$fs.' | '.$fc.' - ');
-
-                    } */
+                    if ($fc != 0) {
+                        //print($val->nompro.' | '.$tur->nomtur.' | '.$cl->clave->CVE_ART.' | '.$fs.' | '.$fc.' - ');
+                        $this->gua_act($fechas, $data);
+                    }
                 }
             }
         }
