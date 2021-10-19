@@ -15,6 +15,7 @@ use App\Http\Controllers\Produccion\notascargaController;
 use App\Http\Controllers\Produccion\ParosController;
 use App\Http\Controllers\Produccion\PersonalController;
 use App\Http\Controllers\Produccion\ProcesosController;
+use App\Http\Controllers\Produccion\RepoProController;
 use App\Http\Controllers\Produccion\TurnosController;
 use App\Models\Produccion\parosCarga;
 use Illuminate\Foundation\Application;
@@ -73,4 +74,7 @@ Route::resource('CarOpe', CarOpeController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('CarNor', CarNormController::class)
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::resource('ReportesPro', RepoProController::class)
     ->middleware(['auth:sanctum', 'verified']);

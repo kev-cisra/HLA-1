@@ -19590,6 +19590,12 @@ select {
 .tw-mb-0 {
 	margin-bottom: 0px;
 }
+.tw-ml-10 {
+	margin-left: 2.5rem;
+}
+.tw-mr-10 {
+	margin-right: 2.5rem;
+}
 .tw-block {
 	display: block;
 }
@@ -22305,6 +22311,10 @@ select {
 		margin-left: 1rem;
 	}
 
+	.sm\:tw-mt-3 {
+		margin-top: 0.75rem;
+	}
+
 	.sm\:tw-block {
 		display: block;
 	}
@@ -22571,6 +22581,10 @@ select {
 
 	.md\:tw-flex-row {
 		flex-direction: row;
+	}
+
+	.md\:tw-flex-col {
+		flex-direction: column;
 	}
 
 	.md\:tw-flex-wrap {
