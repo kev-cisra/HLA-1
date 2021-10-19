@@ -40,7 +40,7 @@
             </template>
             <template v-slot:BtnNuevo>
                 <!-- Paquete de personal -->
-                <div class="sm:tw-flex tw-gap-3">
+                <div class="md:tw-flex tw-gap-3 tw-mr-10">
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
                         <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe">Paquete de operativos</jet-button>
                     </div>
@@ -624,6 +624,7 @@
             },
             //reordana los datos para mostrar la información en el datatable
             reCarga(){
+                this.v = [];
                 this.cargas.forEach(ca => {
                     if (ca.dep_perf) {
                         if (this.usuario.dep_pers.length != 0) {
@@ -1091,6 +1092,7 @@
         watch: {
             S_Area: function(b){
                 $('#t_op').DataTable().destroy();
+                $('#t_pn').DataTable().destroy();
                 $('#t_carg').DataTable().destroy();
                 this.resetCA();
                 this.proc_prin = '';
