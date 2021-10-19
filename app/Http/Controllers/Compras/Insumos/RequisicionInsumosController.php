@@ -23,11 +23,11 @@ class RequisicionInsumosController extends Controller{
         }
 
         if($Rol == 'ONEPIECE' || $Rol == 'Administrador'){
-            $Insumos = Insumos::where('Departamento_id', '=', 8)->get(['id', 'IdUser', 'Nombre', 'Unidad', 'Departamento_id']);
-            $NumInsumos = Insumos::where('Departamento_id', '=', 8)->count();
+            $Insumos = Insumos::where('Departamento_id', '=', 7)->get(['id', 'IdUser', 'Nombre', 'Unidad', 'Departamento_id']);
+            $NumInsumos = Insumos::where('Departamento_id', '=', 7)->count();
         }else{
             $Insumos = Insumos::where('Departamento_id', '=', $Session->Departamento)->get(['id', 'IdUser', 'Nombre', 'Unidad', 'Departamento_id']);
-            $NumInsumos = Insumos::where('Departamento_id', '=', 8)->count();
+            $NumInsumos = Insumos::where('Departamento_id', '=', $Session->Departamento)->count();
         }
 
         return Inertia::render('Compras/Insumos/RequisicionInsumos', compact('Session', 'Insumos', 'NumInsumos'));
