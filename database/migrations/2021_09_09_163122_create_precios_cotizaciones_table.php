@@ -16,8 +16,10 @@ class CreatePreciosCotizacionesTable extends Migration
         Schema::create('precios_cotizaciones', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('IdUser'); //Id de Session
-            $table->string('Precio')->nullable();
-            $table->string('Total')->nullable();
+            $table->string('Precio',15)->nullable();
+            $table->string('Total',15)->nullable();
+            $table->string('Moneda',5)->default('MXN')->nullable();
+            $table->string('TipoCambio',13)->nullable();
             $table->string('Marca',45)->nullable();
             $table->string('Proveedor',65)->nullable();
             $table->string('Comentarios')->nullable();
