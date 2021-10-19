@@ -43,7 +43,7 @@ class CalculosController extends Controller
             //dependiendo del tipo de operacion
             switch ($ope->operacion) {
                 case 'sm_d':
-                    //$this->sm_d($ope, $fechas);
+                    $this->sm_d($ope, $fechas);
                     break;
                 case 'sm_dc':
                     //$this->sm_dc($ope, $fechas);
@@ -52,7 +52,7 @@ class CalculosController extends Controller
                     //$this->sm_t($ope, $request->depa, $fechas);
                     break;
                 case 'sm_tc':
-                    $this->sm_tc($ope, $request->depa, $fechas);
+                    //$this->sm_tc($ope, $request->depa, $fechas);
                     break;
             }
         }
@@ -63,9 +63,9 @@ class CalculosController extends Controller
             ->with('message', 'Post Created Successfully.'); */
     }
     /************************************** Guardado o Actualizado ************************************/
-    public function gua_act($data){
+    public function gua_act($fec, $datos, $suma, $canti){
         //consulta si existe el dato
-        //echo $data;
+        echo $fec.' '.$datos.' '.$suma.' '.$canti;
     }
 
     /************************************** Operaciones ***********************************************/
@@ -105,9 +105,11 @@ class CalculosController extends Controller
             $fc += $cuenta;
             //print($fs.' | '.$cuenta.' / ');
         }
+        if ($fc > 0) {
+            echo $val->nompro.' | '.$fs.' | '.$fc.'  fin suma dia || ';
+            $this->gua_act($fechas, $val, $fs, $fc);
+        }
 
-        echo $val->nompro.' | '.$fs.' | '.$fc.'  fin suma dia || ';
-        $this->gua_act($val);
         return 'sm_d';
     }
 
