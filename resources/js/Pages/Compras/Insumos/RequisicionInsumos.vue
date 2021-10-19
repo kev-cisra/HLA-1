@@ -190,6 +190,18 @@
                                     <jet-input type="text" min="1" value="BOLSA P/POLVO POLIPAPEL. 100 X 180 CAL. 250"></jet-input>
                                 </div>
                             </div>
+
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Cantidad</jet-label>
+                                    <jet-input type="number" min="1" v-model="form.Ins10"></jet-input>
+                                    <small v-if="errors.Ins10" class="validation-alert">{{errors.Ins10}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-10/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Material</jet-label>
+                                    <jet-input type="text" min="1" value="BOLSA P/POLVO POLIPAPEL. 100 X 180 CAL. 250"></jet-input>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
