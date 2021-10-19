@@ -573,9 +573,9 @@
             //calcula
             calcula() {
                 if (this.calcu != '' & this.S_Area != '') {
-                    //this.vCal = false;
+                    this.vCal = false;
                     //console.log(this.calcu+' '+this.S_Area);
-                    /* this.btnOff = true; */
+                    this.btnOff = true;
                     const form = {fecha: this.calcu, depa: this.S_Area};
                     this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => { this.btnOff = false, this.alertSucces(), this.vCal = true}, onError: (e) => { this.btnOff = false, this.vCal = true }, preserveState: true
@@ -682,11 +682,12 @@
                 this.form.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
                 this.form.semana = moment().format("GGGG-[W]WW");
                 //Asigna si es horario de verano o no
-                if (moment().isDST()) {
+                form.VerInv = '1';
+                /*if (moment().isDST()) {
                     form.VerInv = 'Verano';
                 }else{
                     form.VerInv = 'Invierno';
-                }
+                }*/
                 //revisa si el usuario es lider o operador
                 if (this.noCor == 'lid' | this.noCor == 'ope') {
                     //revisa si tienen equipo
