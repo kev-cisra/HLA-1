@@ -19,7 +19,7 @@ class CreatePreciosCotizacionesTable extends Migration
             $table->string('Precio',15)->nullable();
             $table->string('Total',15)->nullable();
             $table->string('Moneda',5)->default('MXN')->nullable();
-            $table->string('TipoCambio',13)->nullable();
+            $table->string('TipoCambio',13)->default(0)->nullable();
             $table->string('Marca',45)->nullable();
             $table->string('Proveedor',65)->nullable();
             $table->string('Comentarios')->nullable();
