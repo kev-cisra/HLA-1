@@ -61,7 +61,7 @@ class CotizacionesController extends Controller{
                     $perfil->select('id', 'name');
                 },
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
-                    $pre->select('id', 'Precio', 'Total', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio','Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                 },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
@@ -103,7 +103,7 @@ class CotizacionesController extends Controller{
                     $perfil->select('id', 'name');
                 },
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
-                    $pre->select('id', 'Precio', 'Total', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                 },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
@@ -186,6 +186,8 @@ class CotizacionesController extends Controller{
                 'IdUser' => $request->IdUser,
                 'Precio' => $request->Precio,
                 'Total' => $request->Total,
+                'Moneda' => $request->Moneda,
+                'TipoCambio' => $request->TipoCambio,
                 'Marca' => $request->Marca,
                 'Proveedor' => $request->Proveedor,
                 'Comentarios' => $request->Comentarios,
@@ -210,6 +212,40 @@ class CotizacionesController extends Controller{
 
 
         switch($request->metodo){
+            case 0:{
+                $Session = auth()->user();
+
+                if(isset($request->archivo)){
+
+                    Validator::make($request->all(), [
+                        'archivo' => 'required|mimes:jpg,png,jpeg,svg,pdf',
+                    ])->validate();
+
+                    $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
+
+                    //Guardado de Imagen en la carpeta Public/Storage.. (Uso del disco Public pora la restriccion de los archivos)
+                    $url = $request->archivo->storePubliclyAs('Archivos/Compras/Requisiciones/Cotizaciones',  $file, 'public');
+                }else{
+                    $url = 'Archivos/FileNotFound404.jpg';
+                }
+
+                PreciosCotizaciones::find($request->IdPre)->update([
+
+                    'IdUser' => $request->IdUser,
+                    'Precio' => $request->Precio,
+                    'Total' => $request->Total,
+                    'Moneda' => $request->Moneda,
+                    'TipoCambio' => $request->TipoCambio,
+                    'Marca' => $request->Marca,
+                    'Proveedor' => $request->Proveedor,
+                    'Comentarios' => $request->Comentarios,
+                    'Archivo ' => $url,
+                    'NombreProveedor' => $request->NombreProveedor
+                ]);
+
+                break;
+            }
+
             case 5:{
 
                 ArticulosRequisiciones::find($request->id)->update([

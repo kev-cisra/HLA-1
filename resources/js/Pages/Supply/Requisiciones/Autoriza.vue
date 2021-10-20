@@ -376,6 +376,8 @@
                             <th class="columna">UNIDAD</th>
                             <th class="columna">DESCRIPCIÓN</th>
                             <th class="columna">PRECIO UNITARIO</th>
+                            <th class="columna">MONEDA</th>
+                            <th class="columna">TIPO CAMBIO</th>
                             <th class="columna">TOTAL</th>
                             <th class="columna">MARCA</th>
                             <th class="columna">PROVEEDOR</th>
@@ -388,8 +390,10 @@
                                 <td class="tw-p-2">{{ datos.precios_articulo.Cantidad }}</td>
                                 <td class="tw-p-2">{{ datos.precios_articulo.Unidad }}</td>
                                 <td class="tw-p-2">{{ datos.precios_articulo.Descripcion }}</td>
-                                <td class="tw-p-2">$ {{ datos.Precio }}.00</td>
-                                <td class="tw-p-2">${{ datos.Total }}.00</td>
+                                <td class="tw-p-2">${{ datos.Precio }}</td>
+                                <td class="tw-p-2">{{ datos.Moneda }}</td>
+                                <td class="tw-p-2">${{  datos.TipoCambio  }}</td>
+                                <td class="tw-p-2">${{ datos.Total }}</td>
                                 <td class="tw-p-2">{{ datos.Marca }}</td>
                                 <td class="tw-p-2">{{ datos.Proveedor }}</td>
                                 <td class="tw-p-2">{{ datos.Comentarios }}</td>
