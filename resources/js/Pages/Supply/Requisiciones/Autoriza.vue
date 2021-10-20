@@ -233,7 +233,8 @@
                 <Table id="Articulos">
                     <template v-slot:TableHeader>
                         <th class="columna">FECHA</th>
-                        <th class="columna"># REQUISICIÓN</th>
+                        <th class="columna"># REQ</th>
+                        <th class="columna">DEPARTAMENTO</th>
                         <th class="columna">CÓDIGO</th>
                         <th class="columna">CANTIDAD</th>
                         <th class="columna">UNIDAD</th>
@@ -251,6 +252,7 @@
                         <tr class="fila" v-for="datos in ArticuloRequisicion" :key="datos.id">
                             <td class="">{{ datos.Fecha }}</td>
                             <td class="">{{ datos.articulos_requisicion.NumReq }}</td>
+                            <td class="">{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
                             <td class="">{{ datos.articulos_requisicion.Codigo }}</td>
                             <td class="">{{ datos.Cantidad }}</td>
                             <td class="">{{ datos.Unidad }}</td>

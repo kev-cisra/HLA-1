@@ -93,8 +93,8 @@
                 <div class="tw-w-1/3 tw-overflow-y-auto tw-p-2" style="height: 43rem;">
                     <ul class="tw-divide-y-2 tw-divide-black tw-divide-opacity-25 tw-text-sm" v-if="Session.roles[0].name == 'ONEPIECE' || Session.roles[0].name == 'Administrador'">
                         <li>Administrador</li>
-                        <li class="tw-p-2"><input type="number" min="1" v-model="form.Ins1" class="tw-w-20"> <span>8/1  BOBINA CILINDRICA ENG. AMARILLO</span></li>
-                        <li class="tw-p-2"><input type="number" min="1" v-model="form.Ins2" class="tw-w-20"> <span>12/1  BOBINA CILINDRICA ENG. NEGRO</span></li>
+                        <li class="tw-p-1"><input type="text" min="1" v-model="form.Ins1" class="tw-w-20 tw-h-8"><span class="tw-text-xs tw-font-bold">8/1  BOBINA CILINDRICA ENG. AMARILLO</span></li>
+                        <li class="tw-p-1"><input type="text" min="1" v-model="form.Ins2" class="tw-w-20 tw-h-8"><span class="tw-text-xs tw-font-bold">12/1  BOBINA CILINDRICA ENG. NEGRO</span></li>
                         <li class="tw-p-2"><input type="number" min="1" v-model="form.Ins3" class="tw-w-20"> <span>16/1  BOBINA CILINDRICA ENG. VERDE</span></li>
                         <li class="tw-p-2"><input type="number" min="1" v-model="form.Ins4" class="tw-w-20"> <span>20/1  BOBINA CILINDRICA ENG. AZUL</span></li>
                         <li class="tw-p-2"><input type="number" min="1" v-model="form.Ins5" class="tw-w-20"> <span>BOBINA CILINDRICA ENG. NATURAL NUEVA</span></li>
@@ -666,7 +666,10 @@ export default {
         },
 
         save(data) {
+
+            this.clean(data); //Funcion para limpiar nulos y vacios
             console.log(data);
+
             this.$inertia.post("/Compras/Insumos", data, {
                 onSuccess: () => {
                     this.reset(),
