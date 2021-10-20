@@ -135,10 +135,9 @@ class CalculosController extends Controller
             //variablesde operaciones
             $fs += $suma;
             $fc += $cuenta;
-
-            $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id];
             //print($fs.' | '.$cuenta.' / ');
         }
+        $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id];
         //echo $data['proceso_id'].' | '.$data['suma'].' | '.$data['cantidad'].'  fin suma dia || ';
         if ($fc != 0) {
             $this->gua_act($fechas, $data);
