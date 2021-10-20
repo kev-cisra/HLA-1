@@ -300,6 +300,13 @@
                                             <i class="fas fa-file-invoice-dollar"></i>
                                         </span>
                                     </div>
+                                    <div class="iconoEdit" @click="edit(datos, 9)">
+                                        <span tooltip="Editar Cotizacion" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                            </svg>
+                                        </span>
+                                    </div>
                                     <div class="iconoEdit" @click="ConfirmaCotizacion(datos, 5)">
                                         <span tooltip="Enviar Cotizacion a Autorización" flow="left">
                                             <i class="fas fa-check-circle"></i>
@@ -442,9 +449,27 @@
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>PRECIO UNITARIO</jet-label>
-                                <jet-input type="text" v-model="form.Precio"></jet-input>
+                                <jet-input type="text" v-model="form.Precio" @change="ConversionMoneda($event)"></jet-input>
                                 <!-- <small v-if="errors.Precio" class="validation-alert">{{errors.Precio}}</small> -->
                             </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>TIPO MONEDA</jet-label>
+                                  <select id="Jefe" v-model="form.Moneda"  class="InputSelect">
+                                    <option value="MXN" >MXN</option>
+                                    <option value="USD" >USD</option>
+                                    <option value="EUR" >EUR</option>
+                                    <option value="CNY" >CNY</option>
+                                </select>
+                            </div>
+
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR' || form.Moneda == 'CNY'">
+                                <jet-label>Tipo Cambio</jet-label>
+                                <jet-input type="text" v-model="form.TipoCambio"></jet-input>
+                                <!-- <small v-if="errors.Precio" class="validation-alert">{{errors.Precio}}</small> -->
+                            </div>
+                        </div>
+
+                        <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>MARCA</jet-label>
                                 <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
@@ -750,23 +775,19 @@ export default {
                 IdArt: null,
                 requisicion_id: null,
                 NumReq:  null,
-                Folio: null,
-                Area: null,
-                Observacioens: null,
                 Cantidad: null,
                 Unidad: null,
+                Precio: null,
+                PrecioInteger: null,
+                Total: null,
+                TotalInteger: null,
+                Moneda: null,
+                TipoCambio: null,
                 Descripcion: null,
+                archivo: null,
                 Comentarios: null,
                 Comentariollegada: null,
                 Fechallegada: null,
-
-                Precios: [{
-                    Precio: null,
-                    Total: null,
-                    Marca: null,
-                    Proveedor: null,
-                    archivo: null,
-                }],
             },
             params:{
                 month: null,
@@ -819,21 +840,19 @@ export default {
                 IdArt: null,
                 requisicion_id: null,
                 NumReq:  null,
-                Folio: null,
-                Area: null,
-                Observacioens: null,
                 Cantidad: null,
                 Unidad: null,
+                Precio: null,
+                PrecioInteger: null,
+                Total: null,
+                TotalInteger: null,
+                Moneda: null,
+                TipoCambio: null,
                 Descripcion: null,
+                archivo: null,
                 Comentarios: null,
-
-                Precios: [{
-                    Precio: null,
-                    Total: null,
-                    Marca: null,
-                    Proveedor: null,
-                    archivo: null,
-                }],
+                Comentariollegada: null,
+                Fechallegada: null,
             };
         },
 
@@ -850,6 +869,19 @@ export default {
         verTabla(event) {
             $("#Articulos").DataTable().destroy();
                 this.$inertia.get("/Compras/Requisiciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
+        },
+
+        formatoMexico (number){
+            const exp = /(\d)(?=(\d{3})+(?!\d))/g;
+            const rep = '$1,';
+            let arr = number.toString().split('.');
+            arr[0] = arr[0].replace(exp,rep);
+            return arr[1] ? arr.join('.'): arr[0];
+        },
+
+        ConversionMoneda(){
+            this.form.PrecioInteger = this.form.Precio; //Sin formatear para calculos
+            this.form.Precio = this.formatoMexico(this.form.Precio);
         },
 
         show(id){
@@ -923,12 +955,53 @@ export default {
         },
 
         save(data) {
+            if(this.form.Moneda == 'MXN'){
+                this.form.Total = this.form.Cantidad * this.form.PrecioInteger;
+            }else if(this.form.Moneda == 'USD'){
+                var Conversion = Math.round(this.form.TipoCambio * this.form.PrecioInteger, 2);
+                this.form.TotalInteger = Conversion * this.form.Cantidad;
+                this.form.Total = this.formatoMexico(this.form.TotalInteger);
+            }
             this.$inertia.post("/Compras/Cotizaciones", data, {
                 onSuccess: () => {
                     location.reload();
                     this.reset(),
                     this.chageClose(),
                     this.alertSucces();
+                },
+            });
+        },
+
+        edit: function (data) {
+            this.editMode = true;
+            this.form.IdArt = data.id;
+            this.form.requisicion_id = data.requisicion_id;
+            this.form.NumReq = data.articulos_requisicion.NumReq;
+            this.form.Folio = data.articulos_requisicion.Folio;
+            this.form.Area = data.articulos_requisicion.requisicion_departamento.Nombre;
+            this.form.Nombre = data.articulos_requisicion.requisiciones_perfil.Nombre + " " + data.articulos_requisicion.requisiciones_perfil.ApPat + " " + data.articulos_requisicion.requisiciones_perfil.ApMat;
+            this.form.Observaciones = data.articulos_requisicion.Observaciones;
+
+            this.form.Cantidad = data.Cantidad;
+            this.form.Unidad = data.Unidad;
+            this.form.Descripcion = data.Descripcion;
+
+            this.form.Precio = data.articulo_precios[0].Precio;
+            this.form.Total = data.articulo_precios[0].Total;
+            this.form.Moneda = data.articulo_precios[0].Moneda;
+            this.form.Marca = data.articulo_precios[0].Marca;
+            this.form.Proveedor = data.articulo_precios[0].Proveedor;
+            this.form.archivo = data.articulo_precios[0].Archivo;
+            this.form.Comentarios = data.articulo_precios[0].Comentarios;
+
+            this.chageClose();
+        },
+
+        update(data) {
+            data._method = "PUT";
+            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
+                onSuccess: () => {
+                this.reset(), this.chageClose(), this.alertSucces();
                 },
             });
         },

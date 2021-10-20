@@ -70,7 +70,8 @@ class CalculosController extends Controller
     /************************************** Guardado o Actualizado ************************************/
     public function gua_act($fec, $data){
         //consulta si existe el dato
-        $existe = carga::where('proceso_id', '=', $data['proceso_id'])
+        $existe = carga::whereBetween('fecha', [$fec['hoy'], $fec['mañana']])
+            ->where('proceso_id', '=', $data['proceso_id'])
             ->where('clave_id', '=', $data['clave_id'])
             ->where('turno_id', '=', $data['turno_id'])
             ->first();

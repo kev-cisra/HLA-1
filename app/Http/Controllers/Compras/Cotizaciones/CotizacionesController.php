@@ -185,7 +185,7 @@ class CotizacionesController extends Controller{
             PreciosCotizaciones::create([
                 'IdUser' => $request->IdUser,
                 'Precio' => $request->Precio,
-                'Total' => $request->Cantidad * $request->Precio,
+                'Total' => $request->Total,
                 'Marca' => $request->Marca,
                 'Proveedor' => $request->Proveedor,
                 'Comentarios' => $request->Comentarios,
