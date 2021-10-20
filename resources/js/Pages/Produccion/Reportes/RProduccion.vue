@@ -129,6 +129,9 @@
                 </div>
             </form>
         </modal>
+        <pre>
+            {{cargas}}
+        </pre>
     </app-layout>
 </template>
 
@@ -242,7 +245,6 @@
             },
             /****************************** Globales **********************************************************/
             global(){
-                this.fechaC = this.hoy;
                 if (this.usuario.dep_pers.length == 0) {
                     this.S_Area = 7;
                 }else{
@@ -372,13 +374,15 @@
                 });
             },
             fechaC: function(ver){
-                this.verTabla();
+                //this.verTabla();
                 $('#t_repo').DataTable().destroy();
                 this.limp != 1 ? this.tabla() : '';
                 this.limp != 1 ? this.recoTabla = [] : '';
                 this.cargas.forEach(v => {
                     if (v.fecha.includes(ver)) {
-                        this.recoTabla.push(v);
+                        if (v.dep_perf) {
+                            this.recoTabla.push(v);
+                        }
                     }
                 });
             }
