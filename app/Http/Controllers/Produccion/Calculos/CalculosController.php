@@ -163,27 +163,13 @@ class CalculosController extends Controller
                 //suma
                 $suma = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                     ->where('clave_id', '=', $cl->clave_id)
-                    ->where(function($qm) use ($maq_id){
-                        $qm ->whereNotNull('maq_pro_id')
-                            -> where('maq_pro_id', '=', $maq_id);
-                    })
-                    ->orWhere(function($q) use ($proce_id){
-                        $q -> whereNull('maq_pro_id')
-                            ->where('proceso_id', '=', $proce_id);
-                    })
+                    -> where('maq_pro_id', '=', $value->maq_pros_id)
                     ->sum('valor');
 
                 //catidad
                 $cuenta = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                     ->where('clave_id', '=', $cl->clave_id)
-                    ->where(function($qm) use ($maq_id){
-                        $qm ->whereNotNull('maq_pro_id')
-                            -> where('maq_pro_id', '=', $maq_id);
-                    })
-                    ->orWhere(function($q) use ($proce_id){
-                        $q -> whereNull('maq_pro_id')
-                            ->where('proceso_id', '=', $proce_id);
-                    })
+                    -> where('maq_pro_id', '=', $value->maq_pros_id)
                     ->count('valor');
                 //resultado
                 $fs += $suma;
@@ -219,27 +205,13 @@ class CalculosController extends Controller
                 //suma
                 $suma = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                 ->where('turno_id', '=', $tur->id)
-                ->where(function($qm) use ($maq_id){
-                    $qm ->whereNotNull('maq_pro_id')
-                        -> where('maq_pro_id', '=', $maq_id);
-                })
-                ->orWhere(function($q) use ($proce_id){
-                    $q -> whereNull('maq_pro_id')
-                        ->where('proceso_id', '=', $proce_id);
-                })
+                -> where('maq_pro_id', '=', $value->maq_pros_id)
                 ->sum('valor');
 
                 //catidad
                 $cuenta = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                 ->where('turno_id', '=', $tur->id)
-                ->where(function($qm) use ($maq_id){
-                    $qm ->whereNotNull('maq_pro_id')
-                        -> where('maq_pro_id', '=', $maq_id);
-                })
-                ->orWhere(function($q) use ($proce_id){
-                    $q -> whereNull('maq_pro_id')
-                        ->where('proceso_id', '=', $proce_id);
-                })
+                -> where('maq_pro_id', '=', $value->maq_pros_id)
                 ->count('valor');
 
                 //resultado
@@ -289,28 +261,14 @@ class CalculosController extends Controller
                     $suma = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                     ->where('clave_id', '=', $cl->clave_id)
                     ->where('turno_id', '=', $tur->id)
-                    ->where(function($qm) use ($maq_id){
-                        $qm ->whereNotNull('maq_pro_id')
-                            -> where('maq_pro_id', '=', $maq_id);
-                    })
-                    ->orWhere(function($q) use ($proce_id){
-                        $q -> whereNull('maq_pro_id')
-                            ->where('proceso_id', '=', $proce_id);
-                    })
+                    -> where('maq_pro_id', '=', $value->maq_pros_id)
                     ->sum('valor');
 
                     //catidad
                     $cuenta = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                     ->where('turno_id', '=', $tur->id)
                     ->where('clave_id', '=', $cl->clave_id)
-                    ->where(function($qm) use ($maq_id){
-                        $qm ->whereNotNull('maq_pro_id')
-                            -> where('maq_pro_id', '=', $maq_id);
-                    })
-                    ->orWhere(function($q) use ($proce_id){
-                        $q -> whereNull('maq_pro_id')
-                            ->where('proceso_id', '=', $proce_id);
-                    })
+                    -> where('maq_pro_id', '=', $value->maq_pros_id)
                     ->count('valor');
 
                     //resultado
