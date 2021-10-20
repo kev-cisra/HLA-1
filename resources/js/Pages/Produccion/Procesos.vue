@@ -571,7 +571,7 @@
             opcFP: function() {
                 const fp = [];
                 this.procesos.forEach(e => {
-                    if (e.tipo != 0 | e.tipo_carga == 'ent') {
+                    if ((e.tipo != 0 & e.tipo != 3) | e.tipo_carga == 'ent') {
                         fp.push({id: e.id, text: e.nompro})
                     }
                 })

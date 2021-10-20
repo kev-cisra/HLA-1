@@ -286,6 +286,22 @@
                         </td>
                     </tr>
                 </template>
+                <template v-slot:Foother>
+                    <th class="columna">Fecha</th>
+                    <th class="columna">Nombre</th>
+                    <th class="columna">Departamento</th>
+                    <th class="columna">Proceso</th>
+                    <th class="columna">Estatus</th>
+                    <th class="columna">Equipo</th>
+                    <th class="columna">Turno</th>
+                    <th class="columna">Partida</th>
+                    <th class="columna">Norma</th>
+                    <th class="columna">Clave</th>
+                    <th class="columna">Descripción de clave</th>
+                    <th class="columna">Maquina</th>
+                    <th class="columna">KG</th>
+                    <th></th>
+                </template>
             </Table>
         </div>
 
@@ -631,12 +647,55 @@
             //datatable de carga
             tabla() {
                 this.$nextTick(() => {
+                    // Setup - add a text input to each footer cell
+                    $('#t_carg tfoot th').each( function () {
+                        var title = $(this).text();
+                        $(this).html( '<input type="text" class="InputSelect tw-text-gray-900" placeholder="'+title+'" />' );
+                    } );
                     $('#t_carg').DataTable({
                         "language": this.español,
                         "order": [[4, 'asc'], [0, 'desc']],
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
-                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
+                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        scrollY:        '50vh',
+                        scrollCollapse: true,
+                        paging:         false,
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            'colvis'
+                        ],
+                        initComplete: function () {
+                            // Apply the search
+                            this.api().columns().every( function () {
+                                var that = this;
+
+                                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                                    if ( that.search() !== this.value ) {
+                                        that
+                                            .search( this.value )
+                                            .draw();
+                                    }
+                                } );
+                            } );
+                        },
                     })
                 })
             },
@@ -697,7 +756,7 @@
                                 text: 'Te encuentras en un turno vacío, Por favor solicite cambiar su turno',
                             })
                         }else{
-                            $('#t_carg').DataTable().clear();
+                            //$('#t_carg').DataTable().clear();
                             $('#t_carg').DataTable().destroy();
                             this.$inertia.post('/Produccion/Carga', form, {
                                 onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tabla()}, preserveState: true
@@ -707,7 +766,7 @@
                 }else{
                     //si el carga el dato pasa de lo contraro verifica
                     if (this.idDep == form.dep_perf_id) {
-                        $('#t_carg').DataTable().clear();
+                        //$('#t_carg').DataTable().clear();
                         $('#t_carg').DataTable().destroy();
                         this.$inertia.post('/Produccion/Carga', form, {
                             onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tabla()}, preserveState: true
@@ -735,7 +794,7 @@
                                     text: 'Te encuentras en un turno vacío, Por favor solicite cambiar su turno',
                                 })
                             }else{
-                                $('#t_carg').DataTable().clear();
+                                //$('#t_carg').DataTable().clear();
                                 $('#t_carg').DataTable().destroy();
                                 this.$inertia.post('/Produccion/Carga', form, {
                                     onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tabla()}, preserveState: true
@@ -822,7 +881,7 @@
             savePO(form){
                 form.departamento_id = this.S_Area;
                 //console.log(form)
-                $('#t_op').DataTable().clear();
+                //$('#t_op').DataTable().clear();
                 $('#t_op').DataTable().destroy();
                 this.$inertia.post('/Produccion/CarOpe', form, {
                     onSuccess: (v) => { this.tablaOpe(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tablaOpe()}, preserveState: true
@@ -857,7 +916,7 @@
             savePN(form){
                 //console.log(form)
                 form.departamento_id = this.S_Area;
-                $('#t_pn').DataTable().clear();
+                //$('#t_pn').DataTable().clear();
                 $('#t_pn').DataTable().destroy();
                 this.$inertia.post('/Produccion/CarNor', form, {
                     onSuccess: (v) => { this.tablaNor(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tablaNor()}, preserveState: true

@@ -30,7 +30,7 @@
             </template>
         </Accions>
         <!------------------------------------ Data table de carga ------------------------------------------------------->
-        <div class="tw-overflow-x-auto tw-mx-2">
+        <div class="table-responsive">
             <Table id="t_repo">
                 <template v-slot:TableHeader>
                     <th class="columna">Fecha</th>
@@ -63,6 +63,21 @@
                         <td class="fila">{{this.formatoMexico(ca.valor)}}</td>
                         <td class="fila"> {{ca.VerInv}} </td>
                     </tr>
+                </template>
+                <template v-slot:Foother>
+                    <th class="columna">Fecha</th>
+                    <th class="columna">Nombre</th>
+                    <th class="columna">Departamento</th>
+                    <th class="columna">Proceso</th>
+                    <th class="columna">Equipo</th>
+                    <th class="columna">Turno</th>
+                    <th class="columna">Partida</th>
+                    <th class="columna">Norma</th>
+                    <th class="columna">Clave</th>
+                    <th class="columna">Descripción de clave</th>
+                    <th class="columna">Maquina</th>
+                    <th class="columna">KG</th>
+                    <th class="columna">Numero de pacas</th>
                 </template>
             </Table>
         </div>
@@ -129,7 +144,19 @@
     import JetLabel from '@/Jetstream/Label';
     //datatable
     import datatable from 'datatables.net-bs5';
+    require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
+
+    require( 'datatables.net-buttons/js/buttons.html5' );
+    require ( 'datatables.net-buttons/js/buttons.colVis' );
+    import print from 'datatables.net-buttons/js/buttons.print';
+    import jszip from 'jszip/dist/jszip';
+    import pdfMake from 'pdfmake/build/pdfmake';
+    import pdfFonts from 'pdfmake/build/vfs_fonts';
     import $ from 'jquery';
+
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    window.JSZip = jszip;
 
     import moment from 'moment';
     import 'moment/locale/es';
@@ -215,7 +242,6 @@
             },
             /****************************** Globales **********************************************************/
             global(){
-                this.fechaC = this.hoy;
                 if (this.usuario.dep_pers.length == 0) {
                     this.S_Area = 7;
                 }else{
@@ -237,13 +263,65 @@
             //datatable de carga
             tabla() {
                 this.$nextTick(() => {
+                    // Setup - add a text input to each footer cell
+                    $('#t_repo tfoot th').each( function () {
+                        var title = $(this).text();
+                        $(this).html( '<input type="text" class="InputSelect tw-text-gray-900" placeholder="'+title+'" />' );
+                    } );
                     $('#t_repo').DataTable({
+                        "language": this.español,
+                        "order": [1, 'desc'],
+                        "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                                "<'row'<'col-sm-12'tr>>" +
+                                "<'row'<'col-sm-12 col-md-5'i>>",
+                        scrollY:        '50vh',
+                        scrollCollapse: true,
+                        paging:         false,
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            'colvis'
+                        ],
+                        initComplete: function () {
+                            // Apply the search
+                            this.api().columns().every( function () {
+                                var that = this;
+
+                                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                                    if ( that.search() !== this.value ) {
+                                        that
+                                            .search( this.value )
+                                            .draw();
+                                    }
+                                } );
+                            } );
+                        },
+                    })
+                    /*
+
                         "language": this.español,
                         "order": [[4, 'asc'], [0, 'desc']],
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
-                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
-                    })
+                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+
+                     */
                 })
             },
             /****************************** Modal y acciones *************************************************/
@@ -293,13 +371,15 @@
                 });
             },
             fechaC: function(ver){
-                this.verTabla();
+                //this.verTabla();
                 $('#t_repo').DataTable().destroy();
                 this.limp != 1 ? this.tabla() : '';
-                this.recoTabla = [];
+                this.limp != 1 ? this.recoTabla = [] : '';
                 this.cargas.forEach(v => {
                     if (v.fecha.includes(ver)) {
-                        this.recoTabla.push(v);
+                        if (v.dep_perf) {
+                            this.recoTabla.push(v);
+                        }
                     }
                 });
             }
