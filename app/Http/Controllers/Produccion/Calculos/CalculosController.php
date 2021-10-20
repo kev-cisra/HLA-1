@@ -10,6 +10,7 @@ use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use SebastianBergmann\Environment\Console;
 
 class CalculosController extends Controller
@@ -17,6 +18,13 @@ class CalculosController extends Controller
     //
     public function store(Request $request)
     {
+        Validator::make($request->all(), [
+            'fecha' => ['required'],
+            'hoy' => ['required'],
+            'mañana' => ['required'],
+            'depa' => ['required']
+        ])->validate();
+
         $usuario = Auth::id();
         $perf = PerfilesUsuarios::where('user_id','=',$usuario)
             ->first('id');
@@ -30,8 +38,8 @@ class CalculosController extends Controller
 
 
         //dias para consultar
-        $hoy = Carbon::create($request->fecha.$hIni)->format('Y-m-d H:i:s');
-        $mañana = Carbon::create($request->fecha.$hIni)->addDays(1)->format('Y-m-d H:i:s');
+        $hoy = $request->hoy;
+        $mañana = $request->mañana;
         $semana = date('Y',strtotime($request->fecha)).'-W'.date('W',strtotime($request->fecha));
         $fechas = ['fecha' => $request->fecha, 'hoy' => $hoy, 'mañana' => $mañana, 'semana' => $semana];
 

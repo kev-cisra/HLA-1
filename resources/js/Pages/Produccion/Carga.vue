@@ -15,8 +15,8 @@
                     <option v-for="o in opc" :key="o.value" :value="o.value">{{o.text}}</option>
                 </select>
             </template>
-            <template v-slot:calcula v-if="usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')">
-                <!-- <div class="lg:tw-flex lg:tw-flex-row tw-gap-2">
+            <!-- <template v-slot:calcula v-if="usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')">
+                <div class="lg:tw-flex lg:tw-flex-row tw-gap-2">
                     <div class="sm:tw-w-full" tooltip="Inicio del primer turno" flow="right">
                         <jet-input class="InputSelect" type="datetime-local" v-model="calcuIni" :max="hoy"></jet-input>
                     </div>
@@ -26,7 +26,7 @@
                             <i class="fas fa-calculator" ></i>
                         </button>
                     </div>
-                </div> -->
+                </div>
                 <div class="input-group" >
                     <input type="date" class="form-control tw-rounded-lg" v-model="calcu" :max="hoy" aria-describedby="button-addon2">
                     <button v-show="vCal" class="btn btn-outline-success" type="button" id="button-addon2" :disabled="btnOff" @click="calcula()">
@@ -37,7 +37,7 @@
                         <span class="visually-hidden">Calculando...</span>
                     </button>
                 </div>
-            </template>
+            </template> -->
             <template v-slot:BtnNuevo>
                 <!-- Paquete de personal -->
                 <div class="md:tw-flex tw-gap-3 tw-mr-10">
@@ -570,22 +570,6 @@
             this.reCarga();
         },
         methods: {
-            //calcula
-            calcula() {
-                if (this.calcu != '' & this.S_Area != '') {
-                    this.vCal = false;
-                    //console.log(this.calcu+' '+this.S_Area);
-                    this.btnOff = true;
-                    const form = {fecha: this.calcu, depa: this.S_Area};
-                    this.$inertia.post('/Produccion/Calcula', form, {
-                        onSuccess: (v) => { this.btnOff = false, this.alertSucces(), this.vCal = true}, onError: (e) => { this.btnOff = false, this.vCal = true }, preserveState: true
-                    });
-                }else{
-                    this.calcu == '' ? Swal.fire('Por favor selecciona una fecha') : '';
-                    this.S_Area == '' ? Swal.fire('Por favor selecciona un departamento') : '';
-                }
-
-            },
             //consulta para generar datos de la tabla
             verTabla(event){
                 $('#t_op').DataTable().clear();
