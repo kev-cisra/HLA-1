@@ -20,6 +20,14 @@
             <template v-slot:calcula>
                 <input type="date" class="form-control tw-rounded-lg" v-model="fechaC" :max="hoy">
             </template>
+            <template v-slot:BtnNuevo>
+                <!-- boton de calculos -->
+                <div class="md:tw-flex tw-gap-3 tw-mr-10">
+                    <div>
+                        <jet-button class="BtnNuevo tw-w-full" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="openModal">Calculos</jet-button>
+                    </div>
+                </div>
+            </template>
         </Accions>
         <!------------------------------------ Data table de carga ------------------------------------------------------->
         <div class="tw-overflow-x-auto tw-mx-2">
@@ -37,7 +45,7 @@
                     <th class="columna">Descripción de clave</th>
                     <th class="columna">Maquina</th>
                     <th class="columna">KG</th>
-                    <th></th>
+                    <th class="columna">Numero de pacas</th>
                 </template>
                 <template v-slot:TableFooter >
                     <tr v-for="ca in recoTabla" :key="ca.id">
@@ -53,28 +61,59 @@
                         <td class="fila">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
                         <td class="fila">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
                         <td class="fila">{{ca.valor}}</td>
-                        <td class="">
-                            <!-- <div class="columnaIconos">
-                                <div class="iconoDetails tw-cursor-pointer" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & (((noCor == 'cor' | noCor == 'enc') & ca.proceso.tipo == 2 & ca.notaPen == 1) | ((noCor == 'lid' | noCor == 'ope') & ca.equipo_id != null & ca.notaPen == 1))">
-                                    <span tooltip="Agregar nota" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="iconoEdit tw-cursor-pointer" @click="editCA(ca)" v-show="usuario.dep_pers.length == 0 | (ca.proceso.tipo != 2 & (noCor == 'cor' | noCor == 'enc'))">
-                                    <span tooltip="Editar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div> -->
-                        </td>
+                        <td class="fila"> {{ca.VerInv}} </td>
                     </tr>
                 </template>
             </Table>
         </div>
+        <!------------------------------------- Modal para carga de datos ------------------------------------------------>
+        <!------------------ Modal Turnos------------------------->
+        <modal :show="showModal" @close="chageClose">
+            <form>
+                <div class="tw-px-4 tw-py-4">
+                    <div class="tw-text-lg">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Calculos</h3>
+                        </div>
+                    </div>
+
+                    <div class="tw-mt-4">
+                        <div class="ModalForm">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Fecha a guardar</jet-label>
+                                    <jet-input type="date" v-model="form.fecha" class="" :max="hoy"></jet-input>
+                                    <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
+                                </div>
+                            </div>
+
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Fecha de inicio de carga</jet-label>
+                                    <jet-input type="datetime-local" v-model="form.hoy" class=""></jet-input>
+                                    <small v-if="errors.hoy" class="validation-alert">{{errors.hoy}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Fecha final de carga</jet-label>
+                                    <jet-input type="datetime-local" v-model="form.mañana" class=""></jet-input>
+                                    <small v-if="errors.mañana" class="validation-alert">{{errors.mañana}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ModalFooter">
+                    <button v-show="vCal" class="btn btn-outline-success" type="button" id="button-addon2" @click="calcula(form)">
+                        <i class="fas fa-calculator" ></i> Calcular
+                    </button>
+                    <button v-show="!vCal" class="btn btn-success" type="button" disabled>
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Calculando...
+                    </button>
+                    <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                </div>
+            </form>
+        </modal>
     </app-layout>
 </template>
 
@@ -83,6 +122,7 @@
     import Header from '@/Components/Header'
     import Accions from '@/Components/Accions'
     import Table from '@/Components/Table';
+    import Modal from '@/Jetstream/Modal';
     import JetButton from '@/Components/Button';
     import JetCancelButton from '@/Components/CancelButton';
     import JetInput from '@/Components/Input';
@@ -109,6 +149,7 @@
             JetButton,
             JetCancelButton,
             JetInput,
+            Modal,
             JetLabel
         },
         data() {
@@ -117,14 +158,54 @@
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
                 fechaC: '',
+                limp: 1,
                 hoy: moment().format('YYYY-MM-DD'),
-                recoTabla: []
+                recoTabla: [],
+                editMode: false,
+                showModal: false,
+                vCal: true,
+                form: {
+                    fecha: this.hoy,
+                    hoy: null,
+                    mañana: null,
+                    depa: this.S_Area
+                }
             }
         },
         mounted() {
             this.global();
         },
         methods: {
+            /***************************** Calculos ******************************************/
+            calcula(form) {
+                if (this.calcu != '' & this.S_Area != '') {
+                    this.verTabla();
+                    $('#t_repo').DataTable().destroy();
+                    this.vCal = false;
+                    //console.log(this.calcu+' '+this.S_Area);
+                    this.btnOff = true;
+                    this.$inertia.post('/Produccion/Calcula', form, {
+                        onSuccess: (v) => {
+                            this.btnOff = false,
+                            this.alertSucces(),
+                            this.vCal = true,
+                            this.reset(),
+                            this.chageClose(),
+                            this.tabla()
+                        },
+                        onError: (e) => {
+                            this.btnOff = false,
+                            this.vCal = true,
+                            this.tabla()
+                        },
+                        preserveState: true
+                    });
+                }else{
+                    this.calcu == '' ? Swal.fire('Por favor selecciona una fecha') : '';
+                    this.S_Area == '' ? Swal.fire('Por favor selecciona un departamento') : '';
+                }
+
+            },
             /****************************** Globales **********************************************************/
             global(){
                 this.fechaC = this.hoy;
@@ -158,6 +239,26 @@
                     })
                 })
             },
+            /****************************** Modal y acciones *************************************************/
+            //abrir y reset del modal procesos
+            openModal() {
+                this.chageClose();
+                this.reset();
+                this.editMode = false;
+            },
+            //abrir o cerrar modal procesos
+            chageClose(){
+                this.showModal = !this.showModal
+            },
+            //reset de imputs
+            reset() {
+                this.form = {
+                    fecha: this.hoy,
+                    hoy: null,
+                    mañana: null,
+                    depa: this.S_Area
+                }
+            }
         },
         computed: {
             //Opciones departamento
@@ -181,13 +282,13 @@
             S_Area: function(b){
                 $('#t_repo').DataTable().destroy();
                 this.$inertia.get('/Produccion/ReportesPro',{ busca: b }, {
-                    onSuccess: () => { this.tabla() }, onError: () => { this.tabla() }, preserveState: true
+                    onSuccess: () => { this.tabla(), this.limp = 2 }, onError: () => { this.tabla() }, preserveState: true
                 });
             },
             fechaC: function(ver){
                 this.verTabla();
                 $('#t_repo').DataTable().destroy();
-                this.tabla()
+                this.limp != 1 ? this.tabla() : '';
                 this.recoTabla = [];
                 this.cargas.forEach(v => {
                     if (v.fecha.includes(ver)) {
