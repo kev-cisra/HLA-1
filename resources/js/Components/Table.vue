@@ -18,6 +18,14 @@
 
             </slot>
         </tbody>
+        <tfoot >
+            <tr class="uppercase tw-divide-y tw-divide-gray-200 tw-text-xs">
+                <slot name="Foother">
+
+                </slot>
+            </tr>
+
+        </tfoot>
     </table>
 </template>
 
