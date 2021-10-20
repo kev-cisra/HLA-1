@@ -170,8 +170,8 @@
                      <!-- APERTURA -->
                     <ul class="tw-divide-y-2 tw-divide-black tw-divide-opacity-25 tw-text-sm" v-else-if="Session.Departamento == 7">
                         <li>APERTURA</li>
-                        <li class="tw-p-2"><input type="number" min="1" v-model="form.Ins1" class="tw-w-20"> <span>8/1  BOBINA CILINDRICA ENG. AMARILLO</span></li>
-                        <li class="tw-p-2"><input type="number" min="1" v-model="form.Ins2" class="tw-w-20"> <span>12/1  BOBINA CILINDRICA ENG. NEGRO</span></li>
+                        <li class="tw-p-1"><input type="text" min="1" v-model="form.Ins1" class="tw-w-20 tw-h-8"> <span class="tw-text-xs tw-font-bold">8/1  BOBINA CILINDRICA ENG. AMARILLO</span></li>
+                        <li class="tw-p-1"><input type="text" min="1" v-model="form.Ins2" class="tw-w-20 tw-h-8"> <span class="tw-text-xs tw-font-bold">12/1  BOBINA CILINDRICA ENG. NEGRO</span></li>
                         <li class="tw-p-2"><input type="number" min="1" v-model="form.Ins3" class="tw-w-20"> <span>16/1  BOBINA CILINDRICA ENG. VERDE</span></li>
                         <li class="tw-p-2"><input type="number" min="1" v-model="form.Ins4" class="tw-w-20"> <span>20/1  BOBINA CILINDRICA ENG. AZUL</span></li>
                         <li class="tw-p-2"><input type="number" min="1" v-model="form.Ins5" class="tw-w-20"> <span>BOBINA CILINDRICA ENG. NATURAL NUEVA</span></li>
@@ -667,13 +667,13 @@ export default {
 
         save(data) {
             console.log(data);
-/*             this.$inertia.post("/Compras/Insumos", data, {
+            this.$inertia.post("/Compras/Insumos", data, {
                 onSuccess: () => {
                     this.reset(),
                     this.chageClose(),
                     this.alertSucces();
                 },
-            }); */
+            });
         },
     },
 };

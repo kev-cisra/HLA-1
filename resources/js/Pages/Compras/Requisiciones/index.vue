@@ -469,6 +469,7 @@
                                     <option value="MT">METROS</option>
                                     <option value="SERVICIO">SERVICIO</option>
                                     <option value="CAJA">CAJA</option>
+                                    <option value="CUBETA">CUBETA</option>
                                     <option value="OTRO">OTRO</option>
                                 </select>
                                 <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
