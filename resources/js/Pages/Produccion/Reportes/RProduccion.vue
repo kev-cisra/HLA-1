@@ -60,7 +60,7 @@
                         <td class="fila">{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
                         <td class="fila">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
                         <td class="fila">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
-                        <td class="fila">{{ca.valor}}</td>
+                        <td class="fila">{{this.formatoMexico(ca.valor)}}</td>
                         <td class="fila"> {{ca.VerInv}} </td>
                     </tr>
                 </template>
@@ -165,7 +165,7 @@
                 showModal: false,
                 vCal: true,
                 form: {
-                    fecha: this.hoy,
+                    fecha: null,
                     hoy: null,
                     mañana: null,
                     depa: this.S_Area
@@ -181,9 +181,9 @@
                 if (this.calcu != '' & this.S_Area != '') {
                     this.verTabla();
                     $('#t_repo').DataTable().destroy();
-                    this.vCal = false;
+                    //this.vCal = false;
                     //console.log(this.calcu+' '+this.S_Area);
-                    this.btnOff = true;
+                    //this.btnOff = true;
                     this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {
                             this.btnOff = false,
@@ -205,6 +205,13 @@
                     this.S_Area == '' ? Swal.fire('Por favor selecciona un departamento') : '';
                 }
 
+            },
+            formatoMexico (number){
+                const exp = /(\d)(?=(\d{3})+(?!\d))/g;
+                const rep = '$1,';
+                let arr = number.toString().split('.');
+                arr[0] = arr[0].replace(exp,rep);
+                return arr[1] ? arr.join('.'): arr[0];
             },
             /****************************** Globales **********************************************************/
             global(){
@@ -253,7 +260,7 @@
             //reset de imputs
             reset() {
                 this.form = {
-                    fecha: this.hoy,
+                    fecha: null,
                     hoy: null,
                     mañana: null,
                     depa: this.S_Area
