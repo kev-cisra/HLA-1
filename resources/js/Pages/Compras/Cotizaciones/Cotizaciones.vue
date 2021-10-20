@@ -507,7 +507,8 @@
             </div>
 
             <div class="ModalFooter">
-                <jet-button type="button" @click="save(form)" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
+                <jet-button type="button" @click="save(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
+                <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button>
                 <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
             </div>
         </form>
@@ -772,6 +773,7 @@ export default {
             form: {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
+                IdPre: null,
                 IdArt: null,
                 requisicion_id: null,
                 NumReq:  null,
@@ -840,6 +842,7 @@ export default {
                 IdEmp: this.Session.IdEmp,
                 IdArt: null,
                 requisicion_id: null,
+                IdPre: null,
                 NumReq:  null,
                 Cantidad: null,
                 Unidad: null,
@@ -988,6 +991,7 @@ export default {
             this.form.Unidad = data.Unidad;
             this.form.Descripcion = data.Descripcion;
 
+            this.form.IdPre = data.articulo_precios[0].id;
             this.form.Precio = data.articulo_precios[0].Precio;
             this.form.Total = data.articulo_precios[0].Total;
             this.form.Moneda = data.articulo_precios[0].Moneda;
@@ -998,6 +1002,14 @@ export default {
             this.form.Comentarios = data.articulo_precios[0].Comentarios;
             this.form.ImagenServidor = data.articulo_precios[0].Archivo;
 
+            this.form.PrecioInteger = this.form.Precio.replace(/[,.]/g,'');
+            this.chageClose();
+        },
+
+        update(data) {
+            data.metodo = 0;
+            data._method = "PUT";
+
             if(this.form.Moneda == 'MXN'){
                 this.form.Total = this.form.Cantidad * this.form.PrecioInteger;
             }else if(this.form.Moneda == 'USD'){
@@ -1005,14 +1017,6 @@ export default {
                 this.form.TotalInteger = Conversion * this.form.Cantidad;
                 this.form.Total = this.formatoMexico(this.form.TotalInteger);
             }
-
-            console.log(data.articulo_precios[0]);
-
-            this.chageClose();
-        },
-
-        update(data) {
-            data._method = "PUT";
             this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
                 onSuccess: () => {
                 this.reset(), this.chageClose(), this.alertSucces();

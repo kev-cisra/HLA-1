@@ -33,10 +33,6 @@ class PerfilesUsuariosController extends Controller{
         return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session'));
     }
 
-    public function create(){
-
-    }
-
     public function store(Request $request){
 
         $Session = auth()->user();
@@ -93,14 +89,6 @@ class PerfilesUsuariosController extends Controller{
         ]);
 
             return redirect()->back();
-    }
-
-    public function show($id){
-
-    }
-
-    public function edit($id){
-
     }
 
     public function update(Request $request, $id){

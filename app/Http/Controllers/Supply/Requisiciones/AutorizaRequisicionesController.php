@@ -59,7 +59,7 @@ class AutorizaRequisicionesController extends Controller{
                         'Observaciones', 'Perfil_id');
                 },
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
-                    $pre->select('id', 'Precio', 'Total', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                 },
                 'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'name');
@@ -100,7 +100,7 @@ class AutorizaRequisicionesController extends Controller{
                         'Observaciones', 'Perfil_id');
                 },
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
-                    $pre->select('id', 'Precio', 'Total', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                 },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
@@ -139,7 +139,7 @@ class AutorizaRequisicionesController extends Controller{
                         'Observaciones', 'Perfil_id');
                 },
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
-                    $pre->select('id', 'Precio', 'Total', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                 },
                 'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
