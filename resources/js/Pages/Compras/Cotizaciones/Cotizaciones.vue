@@ -454,15 +454,13 @@
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>TIPO MONEDA</jet-label>
-                                  <select id="Jefe" v-model="form.Moneda"  class="InputSelect">
+                                <select id="Jefe" v-model="form.Moneda"  class="InputSelect">
                                     <option value="MXN" >MXN</option>
                                     <option value="USD" >USD</option>
-                                    <option value="EUR" >EUR</option>
-                                    <option value="CNY" >CNY</option>
                                 </select>
                             </div>
 
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR' || form.Moneda == 'CNY'">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
                                 <jet-label>Tipo Cambio</jet-label>
                                 <jet-input type="text" v-model="form.TipoCambio"></jet-input>
                                 <!-- <small v-if="errors.Precio" class="validation-alert">{{errors.Precio}}</small> -->
@@ -484,13 +482,15 @@
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label>ARCHIVO</jet-label>
-                                <label class="tw-flex tw-flex-col tw-items-center tw-w-48 tw-w-full tw-p-2 tw-font-bold tw-tracking-wide tw-text-center tw-text-gray-600 tw-uppercase tw-bg-gray-100 tw-border tw-rounded-lg tw-cursor-pointer">
-                                    <svg class="tw-w-4" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                                <label class="tw-flex tw-justify-center tw-gap-4 tw-w-52 tw-h-11 tw-w-full tw-p-2 tw-font-bold tw-tracking-wide tw-text-center tw-text-blueGray-600 tw-uppercase tw-bg-gray-200 tw-border tw-rounded-lg tw-cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="tw-w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                     </svg>
-                                    <span class="tw-mt-2 tw-text-xs">Selecciona un Archivo</span>
+                                    <span class="tw-mt-2 tw-text-xxs" v-if="form.archivo == null">Selecciona un Archivo</span>
+                                    <span class="tw-mt-2 tw-text-xxs tw-text-teal-500 tw-font-bold" v-if="form.archivo != null">{{  form.archivo.name }}</span>
                                     <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
                                 </label>
+                                <span v-if="form.ImagenServidor != null">{{form.archivo}}</span>
                                 <small v-if="errors.archivo" class="validation-alert">{{errors.archivo}}</small>
                             </div>
                         </div>
@@ -788,6 +788,7 @@ export default {
                 Comentarios: null,
                 Comentariollegada: null,
                 Fechallegada: null,
+                ImagenServidor: null,
             },
             params:{
                 month: null,
@@ -853,6 +854,7 @@ export default {
                 Comentarios: null,
                 Comentariollegada: null,
                 Fechallegada: null,
+                ImagenServidor: null,
             };
         },
 
@@ -989,10 +991,22 @@ export default {
             this.form.Precio = data.articulo_precios[0].Precio;
             this.form.Total = data.articulo_precios[0].Total;
             this.form.Moneda = data.articulo_precios[0].Moneda;
+            this.form.TipoCambio = data.articulo_precios[0].TipoCambio;
             this.form.Marca = data.articulo_precios[0].Marca;
             this.form.Proveedor = data.articulo_precios[0].Proveedor;
             this.form.archivo = data.articulo_precios[0].Archivo;
             this.form.Comentarios = data.articulo_precios[0].Comentarios;
+            this.form.ImagenServidor = data.articulo_precios[0].Archivo;
+
+            if(this.form.Moneda == 'MXN'){
+                this.form.Total = this.form.Cantidad * this.form.PrecioInteger;
+            }else if(this.form.Moneda == 'USD'){
+                var Conversion = Math.round(this.form.TipoCambio * this.form.PrecioInteger, 2);
+                this.form.TotalInteger = Conversion * this.form.Cantidad;
+                this.form.Total = this.formatoMexico(this.form.TotalInteger);
+            }
+
+            console.log(data.articulo_precios[0]);
 
             this.chageClose();
         },
