@@ -129,9 +129,6 @@
                 </div>
             </form>
         </modal>
-        <pre>
-            {{cargas}}
-        </pre>
     </app-layout>
 </template>
 
