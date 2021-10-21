@@ -241,7 +241,6 @@
                         <th class="columna">DESCRIPCIÓN</th>
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
-                        <th class="columna">F. LLEGADA</th>
                         <th class="columna">O.C</th>
                         <th class="columna">ESTATUS</th>
                         <th class="columna">ACCIONES</th>
@@ -259,7 +258,6 @@
                             <td class="">{{ datos.Descripcion }}</td>
                             <td class="">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
                             <td class="">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                            <td class="">{{ datos.Fechallegada }}</td>
                             <td class="">{{ datos.OrdenCompra }}</td>
                             <td class="">
                                 <div v-if="datos.EstatusArt == 3">
