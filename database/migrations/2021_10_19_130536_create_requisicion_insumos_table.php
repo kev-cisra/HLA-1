@@ -16,7 +16,19 @@ class CreateRequisicionInsumosTable extends Migration
         Schema::create('requisicion_insumos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('IdUser')->nullable(); //Id de Session
+
+            $table->foreign("IdUser")->references("id")->on("perfiles_usuarios")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
             $table->unsignedBigInteger('IdEmp'); //Numero control empleado
+
+            $table->unsignedBigInteger('Departamento_id')->Nullable();
+
+            $table->foreign("Departamento_id")->references("id")->on("departamentos")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
             $table->unsignedBigInteger('Insumo_id')->Nullable();
 
             $table->foreign("Insumo_id")->references("id")->on("insumos")
