@@ -35,11 +35,7 @@ class RequisicionInsumosController extends Controller{
             $ReqInsumos = RequisicionInsumos::with([
                 'RequisicionesInsumosMaterial' => function($req) { //Relacion 1 a 1 De puestos
                     $req->select(
-                        'id', 'IdUser',
-                        'IdEmp', 'Departamento_id',
-                        'Insumo_id',
-                        'Cantidad',
-                        'Estatus');
+                        'id', 'IdUser', 'Nombre','Unidad','Departamento_id');
                 },
                 'RequisicionesInsumosPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'IdUser', 'IdEmp','Nombre', 'ApPat', 'ApMat');

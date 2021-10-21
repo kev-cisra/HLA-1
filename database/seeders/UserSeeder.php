@@ -17,50 +17,50 @@ class UserSeeder extends Seeder
     // ************ USUARIOS PRUEBAS DEL SISTEMA *******************
         User::create([
             'IdEmp' => '5310',
-            'name' => 'DEVELOPER',
-            'Departamento' => 'ADMINISTRADOR',
+            'name' => 'OSIRIS ADMINISTRADOR',
+            'Departamento' => '1',
             //'email' => 'desarrollador@intranethlangeles.com',
             'password' => bcrypt('1234')
         ])->assignRole('ONEPIECE');
 
         User::create([
-            'IdEmp' => '10000',
-            'name' => 'DEVELOPER 2',
-            'Departamento' => 'ADMINISTRADOR',
+            'IdEmp' => '9999',
+            'name' => 'KEVIN ADMINISTRADOR',
+            'Departamento' => '1',
             //'email' => 'desarrollador2@intranethlangeles.com',
             'password' => bcrypt('1234')
         ])->assignRole('Administrador');
 
         User::create([
-            'IdEmp' => '10001',
+            'IdEmp' => '9998',
             'name' => 'TESTER',
-            'Departamento' => 'ADMINISTRADOR',
-            'password' => bcrypt('12345678')
+            'Departamento' => '1',
+            'password' => bcrypt('1234')
         ])->assignRole('Administrador');
 
         User::create([
-            'IdEmp' => '10002',
+            'IdEmp' => '9997',
             'name' => 'Recursos Humanos',
             'Departamento' => 'RECURSOS HUMANOS',
             'password' => bcrypt('12345678')
         ])->assignRole('RecursosHumanos');
 
         User::create([
-            'IdEmp' => '10003',
+            'IdEmp' => '9996',
             'name' => 'Almacen',
             'Departamento' => 'ALMACEN',
             'password' => bcrypt('12345678')
         ])->assignRole('Almacen');
 
         User::create([
-            'IdEmp' => '10004',
+            'IdEmp' => '9995',
             'name' => 'Compras',
             'Departamento' => 'COMPRAS',
             'password' => bcrypt('12345678')
         ])->assignRole('Compras');
 
         User::create([
-            'IdEmp' => '10005',
+            'IdEmp' => '9994',
             'name' => 'Sistemas',
             'Departamento' => 'SISTEMAS',
             //'email' => 'sistemas@intranet.com',
@@ -68,7 +68,7 @@ class UserSeeder extends Seeder
         ])->assignRole('Sistemas');
 
         User::create([
-            'IdEmp' => '10006',
+            'IdEmp' => '9993',
             'name' => 'Direccion',
             'Departamento' => 'Direccion',
             //'email' => 'Direccion@intranet.com',
@@ -76,7 +76,7 @@ class UserSeeder extends Seeder
         ])->assignRole('Direccion');
 
         User::create([
-            'IdEmp' => '10007',
+            'IdEmp' => '9992',
             'name' => 'Contabilidad',
             'Departamento' => 'Contabilidad',
             //'email' => 'Contabilidad@intranet.com',
@@ -84,15 +84,15 @@ class UserSeeder extends Seeder
         ])->assignRole('Contabilidad');
 
         User::create([
-            'IdEmp' => '10008',
-            'name' => 'Contabilidad',
-            'Departamento' => 'Contabilidad',
+            'IdEmp' => '9991',
+            'name' => 'Produccion',
+            'Departamento' => 'Produccion',
             //'email' => 'Produccion@intranet.com',
             'password' => bcrypt('12345678')
         ])->assignRole('Produccion');
 
         User::create([
-            'IdEmp' => '10009',
+            'IdEmp' => '9990',
             'name' => 'DEPARTAMENTO X',
             'Departamento' => 'DEPARTAMENTO X',
             //'email' => 'departamento@intranet.com',
