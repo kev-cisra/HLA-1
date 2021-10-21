@@ -68,9 +68,9 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="columnaIconos" v-else>
+                                <div class="columnaIconos" v-if="dato.Estatus > 3">
                                     <div class="iconoPurple">
-                                        <span tooltip="Material en espera de entrega" flow="left">
+                                        <span tooltip="Material Entregado" flow="left">
                                             <i class="fas fa-info-circle"></i>
                                         </span>
                                     </div>
