@@ -34,9 +34,9 @@
             <Table id="t_repo">
                 <template v-slot:TableHeader>
                     <th class="columna">Fecha</th>
+                    <th class="columna">Proceso</th>
                     <th class="columna">Nombre</th>
                     <th class="columna">Departamento</th>
-                    <th class="columna">Proceso</th>
                     <th class="columna">Equipo</th>
                     <th class="columna">Turno</th>
                     <th class="columna">Partida</th>
@@ -49,10 +49,10 @@
                 </template>
                 <template v-slot:TableFooter >
                     <tr v-for="ca in recoTabla" :key="ca.id">
+                        <td class="fila">{{ca.proceso.nompro}}</td>
                         <td class="fila">{{ca.fecha}}</td>
                         <td class="fila">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
                         <td class="fila">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
-                        <td class="fila">{{ca.proceso.nompro}}</td>
                         <td class="fila">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
                         <td class="fila">{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
                         <td class="fila">{{ca.partida == null ? 'N/A' : ca.partida}}</td>
@@ -273,7 +273,7 @@
                         "order": [1, 'desc'],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
-                                "<'row'<'col-sm-12 col-md-5'i>>",
+                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                         scrollY:        '50vh',
                         scrollCollapse: true,
                         paging:         false,
@@ -374,12 +374,10 @@
                 //this.verTabla();
                 $('#t_repo').DataTable().destroy();
                 this.limp != 1 ? this.tabla() : '';
-                this.limp != 1 ? this.recoTabla = [] : '';
+                this.recoTabla = [];
                 this.cargas.forEach(v => {
                     if (v.fecha.includes(ver)) {
-                        if (v.dep_perf) {
-                            this.recoTabla.push(v);
-                        }
+                        this.recoTabla.push(v);
                     }
                 });
             }

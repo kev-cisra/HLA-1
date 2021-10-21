@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Produccion\ExcelImport\CargarExcelController;
 use App\Http\Controllers\Menus\MenuProducccionController;
 use App\Http\Controllers\Produccion\Calculos\CalculosController;
 use App\Http\Controllers\Produccion\CargaController;
@@ -77,4 +78,7 @@ Route::resource('CarNor', CarNormController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('ReportesPro', RepoProController::class)
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::resource('CargaExcel', CargarExcelController::class)
     ->middleware(['auth:sanctum', 'verified']);

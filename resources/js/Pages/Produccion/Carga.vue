@@ -121,7 +121,7 @@
                     <!-- Select proceso principal -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
-                        <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
+                        <select class="InputSelect" v-model="proc_prin">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
                         </select>
@@ -130,7 +130,7 @@
                     <!-- select Sub proceso -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="opcSP">
                         <jet-label><span class="required">*</span>Sub proceso </jet-label>
-                        <select class="InputSelect" v-model="form.proceso_id" :disabled="editMode">
+                        <select class="InputSelect" v-model="form.proceso_id">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
                         </select>
@@ -139,7 +139,7 @@
                     <!-- select operador -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="(noCor != 'cor' & noCor != 'ope') | editMode">
                         <jet-label><span class="required">*</span>Operador</jet-label>
-                        <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" :disabled="editMode">
+                        <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
                         </select>
@@ -151,7 +151,7 @@
                     <!-- select Maquinas -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Maquinas</jet-label>
-                        <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
+                        <select class="InputSelect" v-model="form.maq_pro_id">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
                         </select>
@@ -515,6 +515,8 @@
     import moment from 'moment';
     import 'moment/locale/es';
 
+    //
+
     export default {
         props: [
             'turnos',
@@ -802,7 +804,6 @@
                             }
                         }
                     }
-
                 }
 
                 //console.log(form);
@@ -870,7 +871,7 @@
             updateCA(data){
                 //console.log(data)
                 if (data.nota != '' & data.clave_id != '' & data.valor != '') {
-                    $('#t_carg').DataTable().clear();
+                    //$('#t_carg').DataTable().clear();
                     $('#t_carg').DataTable().destroy();
                 }
                 this.$inertia.put('/Produccion/Carga/' + data.id, data, {
