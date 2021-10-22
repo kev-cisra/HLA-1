@@ -406,6 +406,13 @@
                                                 </svg>
                                             </span>
                                         </div>
+                                        <div class="iconoCyan" @click="Rechaza(datos, 4)">
+                                            <span tooltip="Cancela Cotizacion" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="columnaIconos" v-else-if="datos.Autorizado == 1">
                                         <span tooltip="Precio no Autorizado" flow="left">
@@ -741,6 +748,34 @@ export default {
                     this.alertSucces();
                 },
             });
+        },
+
+        Rechaza(data, resguardo){
+
+            Swal.fire({
+            title: '¿Estas seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí Cancelar',
+            cancelButtonText: 'No, Cancelar!',
+            }).then((result) => {
+            if (result.isConfirmed) {
+                data._method = "PUT";
+                data.resguardo = 4;
+                this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
+                    onSuccess: () => {
+                        Swal.fire(
+                        'COTIZACION CANCELADA',
+                        'Cotización cancelada con exito',
+                        'success'
+                        )
+                    },
+                });
+            }
+            })
         },
 
         HabilitaResguardo(data, resguardo){

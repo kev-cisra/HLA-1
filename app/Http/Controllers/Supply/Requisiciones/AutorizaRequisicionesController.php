@@ -194,10 +194,6 @@ class AutorizaRequisicionesController extends Controller{
             'mes'));
     }
 
-    public function store(Request $request){
-        //
-    }
-
     public function update(Request $request, $id){
 
         if($request->resguardo == ''){
@@ -226,9 +222,18 @@ class AutorizaRequisicionesController extends Controller{
                 'EstatusArt' => 6,
                 'OrdenCompra' => $OrdenCompra,
             ]);
-        }elseif ($request->resguardo != '') {
+        }elseif ($request->resguardo != 4 && $request->resguardo != '') {
             ArticulosRequisiciones::where('id', '=', $request->articulos_requisiciones_id)->update([
                 'Resguardo' => 1,
+            ]);
+        }elseif ($request->resguardo == 4) { //Rechaza Cotizaciones
+
+            PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->articulos_requisiciones_id)->update([
+                'Autorizado' => 1,
+            ]);
+
+            ArticulosRequisiciones::where('id', '=', $request->articulos_requisiciones_id)->update([
+                'EstatusArt' => 4,
             ]);
         }
 
