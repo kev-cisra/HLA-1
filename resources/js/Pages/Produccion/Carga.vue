@@ -629,18 +629,16 @@
             reCarga(){
                 this.v = [];
                 this.cargas.forEach(ca => {
-                    if (ca.dep_perf) {
-                        if (this.usuario.dep_pers.length != 0) {
-                            if (this.noCor != 'cor' & this.noCor != 'enc') {
-                                if (ca.proceso.tipo != 2) {
-                                    this.v.push(ca);
-                                }
-                            }else{
+                    if (this.usuario.dep_pers.length != 0) {
+                        if (this.noCor != 'cor' & this.noCor != 'enc') {
+                            if (ca.proceso.tipo != 2) {
                                 this.v.push(ca);
                             }
                         }else{
-                            this.v.push(ca)
+                            this.v.push(ca);
                         }
+                    }else{
+                        this.v.push(ca)
                     }
 
                 })
