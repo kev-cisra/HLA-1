@@ -118,6 +118,12 @@
             <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
                 <!-- Proceso proncipal, sub procesos, operador -->
                 <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
+                    <!-- Fecha -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Fecha</jet-label>
+                        <input type="date" class="InputSelect" v-model="form.fecha" :max="hoy">
+                        <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
+                    </div>
                     <!-- Select proceso principal -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
@@ -148,6 +154,24 @@
                 </div>
                 <!-- Maquinas, Normas, Claves, Partida, Kilogramos -->
                 <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & form.proceso_id != '') | editMode">
+                    <!-- select turno -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Turnos</jet-label>
+                        <select class="InputSelect" v-model="form.turno_id">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="tu in opcTur" :key="tu.value" :value="tu.value">{{tu.text}}</option>
+                        </select>
+                        <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                    </div>
+                    <!-- select equipo -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Equipo</jet-label>
+                        <select class="InputSelect" v-model="form.equipo_id">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="eq in opcEqu" :key="eq.value" :value="eq.value">{{eq.text}}</option>
+                        </select>
+                        <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                    </div>
                     <!-- select Maquinas -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Maquinas</jet-label>
@@ -165,30 +189,6 @@
                             <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
                         </select>
                     </div>
-                    <!-- Select Normas -->
-                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Norma</jet-label>
-                        <select class="InputSelect" v-model="form.norma" :disabled="editMode">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
-                        </select>
-                        <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
-                    </div> -->
-                    <!-- select Clave -->
-                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Clave</jet-label>
-                        <select class="InputSelect" v-model="form.clave_id">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
-                        </select>
-                        <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
-                    </div> -->
-                    <!-- Inout partida -->
-                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/5 lg:tw-mb-0" v-if="noCor != 'cor' | editMode">
-                        <jet-label>Partida</jet-label>
-                        <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
-                        <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
-                    </div> -->
                     <!-- Input kilogramos -->
                     <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>KG</jet-label>
@@ -563,7 +563,7 @@
                 nAnte: '',
                 form: {
                     id: null,
-                    fecha: this.hoy,
+                    fecha: null,
                     semana: moment().format("GGGG-[W]WW"),
                     usu: this.usuario.id,
                     per_carga: this.usuario.id,
@@ -596,6 +596,7 @@
             },
             /****************************** Globales **********************************************************/
             global(){
+                this.form.fecha = this.hoy;
                 if (this.usuario.dep_pers.length == 0) {
                     this.S_Area = 7;
                 }else{
@@ -618,9 +619,9 @@
                 this.personal.forEach(sp => {
                     if (sp.id == event.target.value) {
                         /* console.log(sp) */
-                        this.form.equipo_id = sp.equipo == null ? null : sp.equipo.id;
+                        this.form.equipo_id = sp.equipo == null ? '' : sp.equipo.id;
                         this.form.vacio = sp.equipo == null ? 'N/A' : sp.equipo.turnos.nomtur;
-                        this.form.turno_id = sp.equipo == null ? null : sp.equipo.turno_id;
+                        this.form.turno_id = sp.equipo == null ? '' : sp.equipo.turno_id;
                     }
                 })
             },
@@ -725,7 +726,7 @@
             },
             /****************************** carga de carga de datos ******************************************/
             saveCA(form){
-                this.form.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
+                form.fecha = form.fecha;
                 this.form.semana = moment().format("GGGG-[W]WW");
                 this.form.departamento_id = this.S_Area;
                 //Asigna si es horario de verano o no
@@ -829,8 +830,8 @@
                     this.usuario.dep_pers.forEach(v => {
                         if (v.departamento_id = this.S_Area) {
                             this.form.dep_perf_id = v.id != null ? v.id : null;
-                            this.form.turno_id = v.equipo_id != null ? v.equipo.turno_id : null;
-                            this.form.equipo_id = v.equipo_id != null ? v.equipo_id : null;
+                            this.form.turno_id = v.equipo_id != null ? v.equipo.turno_id : '';
+                            this.form.equipo_id = v.equipo_id != null ? v.equipo_id : '';
                             //asigna el puesto a una variable
                             this.noCor = v.ope_puesto;
                             //asigna
@@ -839,8 +840,8 @@
                     })
                 }else{
                     this.form.dep_perf_id = null;
-                    this.form.turno_id = null;
-                    this.form.equipo_id = null;
+                    this.form.turno_id = '';
+                    this.form.equipo_id = '';
                 }
             },
             editCA(form){
@@ -1132,6 +1133,26 @@
                     }
                 })
                 return no;
+            },
+            opcTur: function() {
+                const tur = [];
+                this.turnos.forEach(t => {
+                    if (t.nomtur != 'Vacío') {
+                        tur.push({value: t.id, text: t.nomtur});
+                    }
+                })
+                return tur;
+            },
+            opcEqu: function() {
+                const equ = [];
+                this.turnos.forEach(t => {
+                    if (t.nomtur != 'Vacío') {
+                        t.equipos.forEach(eq => {
+                            equ.push({value: eq.id, text: eq.nombre});
+                        })
+                    }
+                })
+                return equ;
             }
         },
         watch: {

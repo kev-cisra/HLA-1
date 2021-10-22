@@ -163,6 +163,10 @@ class MaterialSeeder extends Seeder
             'idmat' => 'HLAVENTA',
             'nommat' => 'HLAVENTA'
         ]);
+        materiales::create([
+            'idmat' => 'CONY',
+            'nommat' => 'CONY'
+        ]);
 
     }
 }

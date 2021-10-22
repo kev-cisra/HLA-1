@@ -222,15 +222,15 @@ class CargaController extends Controller
 
             //carga
             $bus = $request->busca;
-            $carga = carga::whereBetween('fecha', [$dia, $mañana])
+            $carga = carga::where('departamento_id', '=', $bus)
+            ->whereBetween('fecha', [$dia, $mañana])
             ->orWhere(function($q) use ($dia){
                 $q->whereDate('fecha', '<=', $dia)
                 ->where('notaPen', '=', '2');
             })
             ->with([
                 'dep_perf' => function($dp) use($bus) {
-                    $dp -> where('departamento_id', '=', $bus)
-                        ->withTrashed()
+                    $dp -> withTrashed()
                         ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
                 },
                 'dep_perf.perfiles' => function($perfi){
@@ -326,6 +326,11 @@ class CargaController extends Controller
 
             //Turnos
             $turnos = turnos::where('departamento_id', '=', $request->busca)
+            ->with([
+                'equipos' => function ($eq) {
+                    $eq -> select('id', 'nombre', 'turno_id');
+                }
+            ])
             ->get(['id', 'nomtur', 'departamento_id']);
         }
         return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate, 'paqope' => $carOpe, 'paqnor' => $carNor, 'turnos' => $turnos]);
@@ -359,9 +364,25 @@ class CargaController extends Controller
             'clave_id' => ['numeric'],
         ])->validate();
 
-
+        $nFecha = $request->fecha.' '.date('H:i:s');
         if ($request->vacio == 'N/A' | $request->vacio != 'Vacío') {
-            carga::create($request->all());
+            carga::create([
+                'fecha' => $nFecha,
+                'semana' => $request->semana,
+                'per_carga' => $request->per_carga,
+                'proceso_id' => $request->proceso_id,
+                'dep_perf_id' => $request->dep_perf_id,
+                'maq_pro_id' => $request->maq_pro_id,
+                'partida' => $request->partida,
+                'valor' => $request->valor,
+                'norma' => $request->norma,
+                'equipo_id' => $request->equipo_id,
+                'clave_id' => $request->clave_id,
+                'turno_id' => $request->turno_id,
+                'notaPen' => $request->notaPen,
+                'departamento_id' => $request->departamento_id,
+                'VerInv' => $request->VerInv
+            ]);
         }
 
 
