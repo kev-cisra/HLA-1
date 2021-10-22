@@ -57,7 +57,7 @@ class RepoProController extends Controller
         }
 
          /**************************** consulta si existe la busqueda  ****************************************************/
-         if (!empty($request->busca)) {
+        if (!empty($request->busca)) {
              //carga
             $bus = $request->busca;
             $carga = carga::where('departamento_id', '=', $bus)
@@ -108,7 +108,7 @@ class RepoProController extends Controller
                 }
             ])
             ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id','VerInv']);
-         }
+        }
 
         return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga]);
     }

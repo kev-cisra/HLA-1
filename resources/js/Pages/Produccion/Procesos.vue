@@ -44,7 +44,7 @@
                                 - {{f.proc_rela == null ? 'N/A' : f.proc_rela.nompro}} / {{f.maq_pros == null ? 'N/A' : f.maq_pros.maquinas.Nombre}} -
                             </tr>
                             <tr class="fila" v-for="mp in proceso.maq_pros" :key="mp.id">
-                               - {{mp.maquinas.Nombre}} -
+                                - {{mp.maquinas.Nombre}} -
                             </tr>
                         </td>
                         <td class="fila ">

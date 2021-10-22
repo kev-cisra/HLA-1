@@ -101,7 +101,7 @@
                                 <i class="fas fa-clipboard-list"></i>
                             </div>
                             <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">CARGA DE DATOS</h4>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">CARGA DE PRODUCCIÓN</h4>
                                 <span class="linea"></span>
                             </div>
                         </Link>
