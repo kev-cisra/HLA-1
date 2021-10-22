@@ -727,6 +727,7 @@
             saveCA(form){
                 this.form.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
                 this.form.semana = moment().format("GGGG-[W]WW");
+                this.form.departamento_id = this.S_Area;
                 //Asigna si es horario de verano o no
                 form.VerInv = '1';
                 /*if (moment().isDST()) {
