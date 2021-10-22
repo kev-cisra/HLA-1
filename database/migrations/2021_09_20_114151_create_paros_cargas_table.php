@@ -26,7 +26,6 @@ class CreateParosCargasTable extends Migration
             $table->string('tiempo')->nullable();
             $table->string('descri')->nullable();
             $table->text('nota')->nullable();
-            $table->string('VerInv');
 
             $table->unsignedBigInteger('paro_id');
             $table->unsignedBigInteger('perfil_ini_id');

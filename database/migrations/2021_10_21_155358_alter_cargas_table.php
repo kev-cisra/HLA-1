@@ -15,7 +15,8 @@ class AlterCargasTable extends Migration
     {
         Schema::table('cargas', function (Blueprint $table) {
             //
-            $table->unsignedBigInteger('departamento_id')->after('turno_id');
+            $table->string('VerInv');
+            $table->unsignedBigInteger('departamento_id')->nullable()->after('turno_id');
             $table->foreign("departamento_id")->references("id")->on("departamentos")->after('turno_id')
             ->onDelete("cascade")
             ->onUpdate("cascade");
@@ -31,6 +32,9 @@ class AlterCargasTable extends Migration
     {
         Schema::table('cargas', function (Blueprint $table) {
             //
+            $table->dropColumn('VerInv');
+            $table->dropColumn('departamento_id');
+            $table->dropForeign('cargas_departamento_id_foreign');
         });
     }
 }
