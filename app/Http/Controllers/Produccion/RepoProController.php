@@ -60,10 +60,10 @@ class RepoProController extends Controller
          if (!empty($request->busca)) {
              //carga
             $bus = $request->busca;
-            $carga = carga::with([
+            $carga = carga::where('departamento_id', '=', $bus)
+                ->with([
                 'dep_perf' => function($dp) use($bus) {
-                    $dp -> where('departamento_id', '=', $bus)
-                        ->withTrashed()
+                    $dp ->withTrashed()
                         ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
                 },
                 'dep_perf.perfiles' => function($perfi){
