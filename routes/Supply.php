@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Menus\MenuSupplyController;
+use App\Http\Controllers\Supply\Insumos\InsumosSolicitadosController;
 use App\Http\Controllers\Supply\Requisiciones\AutorizaRequisicionesController;
 use App\Http\Controllers\Supply\Requisiciones\GastosRequisiciones;
 use App\Http\Controllers\Supply\Requisiciones\PresupuestosRequisicionesController;
@@ -18,3 +19,6 @@ Route::resource('Presupuestos', PresupuestosRequisicionesController::class)
 
 Route::resource('GastosRequisiciones', GastosRequisiciones::class)
     ->middleware(['auth:sanctum', 'verified'])->names('GastosRequisiciones');
+
+Route::resource('InsumosSolicitados', InsumosSolicitadosController::class)
+    ->middleware(['auth:sanctum', 'verified'])->names('InsumosSolicitados');

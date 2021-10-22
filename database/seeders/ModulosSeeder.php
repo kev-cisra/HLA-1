@@ -167,6 +167,14 @@ class ModulosSeeder extends Seeder
             'Area' => '8',
         ]);
 
+        Modulos::create([
+            'Iduser' => '1',
+            'NombreModulo' => 'INSUMOS SOLICITADOS',
+            'Icono' => 'fas fa-clipboard-check',
+            'Ruta' => 'Supply/InsumosSolicitados',
+            'Area' => '8',
+        ]);
+
 
         ////////////// PRODUCCCION ///////////////////
 
