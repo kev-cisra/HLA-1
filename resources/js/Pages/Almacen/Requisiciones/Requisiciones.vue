@@ -266,7 +266,12 @@
                                     <span tooltip="Entregado" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
                                     </span>
-                                </div>
+                                    </div>
+                                    <div v-else-if="datos.EstatusArt == 10">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                    </span>
+                                    </div>
                                 </td>
                                 <td class="fila">
                                     <div class="columnaIconos" v-if="datos.EstatusArt == 2">
@@ -301,11 +306,11 @@
                                                 <i class="fas fa-fingerprint"></i>
                                             </span>
                                         </div>
-                                        <div class="iconoLime" @click="PrecioProveedor(datos)">
+<!--                                         <div class="iconoLime" @click="PrecioProveedor(datos)">
                                             <span tooltip="Entrega el Artículo" flow="left">
                                                 <i class="fas fa-truck"></i>
                                             </span>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="columnaIconos" v-else-if="datos.EstatusArt == 9">
                                         <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
@@ -315,7 +320,7 @@
                                         </div>
                                     </div>
                                     <div class="columnaIconos" v-else>
-                                        <div class="iconoWhite" @click="EntregaProducto(datos, 9)">
+                                        <div class="iconoWhite">
                                             <span tooltip="En proceso" flow="left">
                                                 <i class="fas fa-thumbs-up"></i>
                                             </span>

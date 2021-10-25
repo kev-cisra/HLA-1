@@ -280,9 +280,14 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
                                     </span>
                                 </div>
+                                <div v-else-if="datos.EstatusArt == 10">
+                                    <span tooltip="Realiza otra cotizacion" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                    </span>
+                                </div>
                             </td>
                             <td class="fila">
-                                <div class="columnaIconos" v-if="datos.EstatusArt == 3">
+                                <div class="columnaIconos" v-if="datos.EstatusArt == 3 || datos.EstatusArt == 10 ">
                                     <div class="iconoPurple" @click="Cotizar(datos, 4)">
                                         <span tooltip="Realizar Cotizacion" flow="left">
                                             <i class="fas fa-file-invoice-dollar"></i>

@@ -4,7 +4,7 @@
             <slot>
                 <h3 class="tw-p-2">
                     <i class="fas fa-clipboard-list"></i>
-                        Carga de datos
+                        Carga de Producción
                 </h3>
             </slot>
         </Header>
@@ -15,29 +15,6 @@
                     <option v-for="o in opc" :key="o.value" :value="o.value">{{o.text}}</option>
                 </select>
             </template>
-            <!-- <template v-slot:calcula v-if="usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')">
-                <div class="lg:tw-flex lg:tw-flex-row tw-gap-2">
-                    <div class="sm:tw-w-full" tooltip="Inicio del primer turno" flow="right">
-                        <jet-input class="InputSelect" type="datetime-local" v-model="calcuIni" :max="hoy"></jet-input>
-                    </div>
-                    <div class="tw-flex tw-flex-row">
-                        <jet-input class="InputSelect sm:tw-w-10/12" type="datetime-local" v-model="calcuFin" tooltip="Fin de la carga" flow="right" :max="hoy"></jet-input>
-                        <button class="btn btn-outline-success sm:tw-w-2/12" type="button" id="button-addon2" :disabled="btnOff" @click="calcula()" tooltip="Calcular" flow="right">
-                            <i class="fas fa-calculator" ></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="input-group" >
-                    <input type="date" class="form-control tw-rounded-lg" v-model="calcu" :max="hoy" aria-describedby="button-addon2">
-                    <button v-show="vCal" class="btn btn-outline-success" type="button" id="button-addon2" :disabled="btnOff" @click="calcula()">
-                        <i class="fas fa-calculator" ></i>
-                    </button>
-                    <button v-show="!vCal" class="btn btn-success" type="button" disabled>
-                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                        <span class="visually-hidden">Calculando...</span>
-                    </button>
-                </div>
-            </template> -->
             <template v-slot:BtnNuevo>
                 <!-- Paquete de personal -->
                 <div class="md:tw-flex tw-gap-3 tw-mr-10">

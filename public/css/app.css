@@ -19442,6 +19442,9 @@ select {
 .tw-m-3 {
 	margin: 0.75rem;
 }
+.tw-m-5 {
+	margin: 1.25rem;
+}
 .tw-my-8 {
 	margin-top: 2rem;
 	margin-bottom: 2rem;
@@ -20218,6 +20221,10 @@ select {
 .tw-bg-orange-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(234, 88, 12, var(--tw-bg-opacity));
+}
+.tw-bg-red-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(239, 68, 68, var(--tw-bg-opacity));
 }
 .tw-bg-red-400 {
 	--tw-bg-opacity: 1;
