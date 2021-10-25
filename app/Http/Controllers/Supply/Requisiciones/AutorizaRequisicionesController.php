@@ -198,11 +198,11 @@ class AutorizaRequisicionesController extends Controller{
 
         if($request->resguardo == ''){
             PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->articulos_requisiciones_id)->update([
-                'Autorizado' => 1,
+                'Autorizado' => 1, //Precios No Autorizados
             ]);
 
             PreciosCotizaciones::where('id', '=', $request->id)->update([
-                'Autorizado' => 2,
+                'Autorizado' => 2, //Precio Autorizado
             ]);
 
             TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->id)->update([
@@ -222,21 +222,26 @@ class AutorizaRequisicionesController extends Controller{
                 'EstatusArt' => 6,
                 'OrdenCompra' => $OrdenCompra,
             ]);
-        }elseif ($request->resguardo != 4 && $request->resguardo != '') {
+        }elseif ($request->resguardo != '') {
             ArticulosRequisiciones::where('id', '=', $request->articulos_requisiciones_id)->update([
                 'Resguardo' => 1,
             ]);
-        }elseif ($request->resguardo == 4) { //Rechaza Cotizaciones
-
-            PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->articulos_requisiciones_id)->update([
-                'Autorizado' => 1,
-            ]);
-
-            ArticulosRequisiciones::where('id', '=', $request->articulos_requisiciones_id)->update([
-                'EstatusArt' => 4,
-            ]);
         }
 
+        if(isset($request->rechazo)){
+
+            if ($request->rechazo == 10) { //Rechaza Cotizaciones
+
+                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->articulo_id)->update([
+                    'Autorizado' => 1,
+                ]);
+                //10 Cotizacion Rechazada
+                ArticulosRequisiciones::where('id', '=', $request->articulo_id)->update([
+                    'EstatusArt' => 10,
+                    'MotivoRechazo' => $request->ComentarioRechazo,
+                ]);
+            }
+        }
         return redirect()->back();
 
     }

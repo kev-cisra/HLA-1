@@ -295,9 +295,14 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
                                     </span>
                                 </div>
+                                <div v-else-if="datos.EstatusArt == 10">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                    </span>
+                                </div>
                             </td>
                             <td class="">
-                                <div class="columnaIconos" v-if="datos.EstatusArt >= 5 && datos.EstatusArt < 9">
+                                <div class="columnaIconos" v-if="datos.EstatusArt >= 5 && datos.EstatusArt <= 10">
                                     <div class="iconoPurple" @click="Precios(datos)">
                                         <span tooltip="Visualiza Cotizaciones" flow="left">
                                             <i class="fas fa-file-invoice-dollar"></i>
@@ -406,7 +411,7 @@
                                                 </svg>
                                             </span>
                                         </div>
-                                        <div class="iconoCyan" @click="Rechaza(datos, 4)">
+                                        <div class="iconoCyan" @click="ModalRechaza(datos)">
                                             <span tooltip="Cancela Cotizacion" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -453,6 +458,35 @@
         </form>
     </modal>
 
+    <modal :show="showRechazo" @close="chageCloseRechazo" :maxWidth="tam">
+        <form>
+            <div class="tw-px-4 tw-py-4">
+                <div class="tw-text-lg">
+                    <div class="ModalHeader">
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Rechazo de Cotizacion</h3>
+                    </div>
+                </div>
+
+                <div class="tw-mt-4">
+                    <div class="ModalForm">
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Motivo Rechazo</jet-label>
+                                <textarea name="" id="" cols="2" v-model="Rechazo.ComentarioRechazo" @input="(val) => (Rechazo.ComentarioRechazo = Rechazo.ComentarioRechazo.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                                <small v-if="errors.ComentarioRechazo" class="validation-alert">{{errors.ComentarioRechazo}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="Rechaza(datos, 10)">Guardar</jet-button>
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </form>
+    </modal>
+
     </app-layout>
 </template>
 
@@ -481,6 +515,7 @@ export default {
     data() {
         return {
             showDetalle: false,
+            showRechazo: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
             tam: "5xl",
@@ -507,6 +542,11 @@ export default {
                     Proveedor: null,
                     archivo: null,
                 }],
+            },
+            Rechazo: {
+                ComentarioRechazo: null,
+                rechazo: null,
+                articulo_id: null,
             },
             Cotizacion:{
                 Cot: null,
@@ -583,6 +623,11 @@ export default {
                 archivo: null,
                 }],
             };
+            this.Rechazo = {
+                ComentarioRechazo: null,
+                rechazo: null,
+                articulo_id: null,
+            };
         },
 
         //datatable
@@ -612,6 +657,10 @@ export default {
 
         chageClose() {
             this.showModal = !this.showModal;
+        },
+
+        chageCloseRechazo() {
+            this.showRechazo = !this.showRechazo;
         },
 
         MesALetra(){
@@ -750,8 +799,14 @@ export default {
             });
         },
 
-        Rechaza(data, resguardo){
+        ModalRechaza(data){
+            this.Rechazo.articulo_id = data.articulos_requisiciones_id;
+            this.chageCloseRechazo();
+        },
 
+        Rechaza(data, rechazo){
+            this.Rechazo.rechazo = 10;
+            data = this.Rechazo;
             Swal.fire({
             title: '¿Estas seguro?',
             text: "¡No podrás revertir esto!",
@@ -764,7 +819,7 @@ export default {
             }).then((result) => {
             if (result.isConfirmed) {
                 data._method = "PUT";
-                data.resguardo = 4;
+                console.log(data)
                 this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
                     onSuccess: () => {
                         Swal.fire(
@@ -772,6 +827,7 @@ export default {
                         'Cotización cancelada con exito',
                         'success'
                         )
+                    this.chageCloseRechazo();
                     },
                 });
             }
