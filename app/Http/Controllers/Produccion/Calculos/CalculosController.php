@@ -56,10 +56,10 @@ class CalculosController extends Controller
             //dependiendo del tipo de operacion
             switch ($ope->operacion) {
                 case 'sm_d':
-                    $this->sm_d($ope, $fechas, $perf);
+                    $this->sm_d($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_dc':
-                    $this->sm_dc($ope, $fechas, $perf);
+                    $this->sm_dc($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_t':
                     $this->sm_t($ope, $request->depa, $fechas, $perf);
@@ -91,6 +91,7 @@ class CalculosController extends Controller
                 'semana' => $fec['semana'],
                 'partida' => $data['partida'],
                 'valor' => $data['suma'],
+                'equipo_id' => $data['equipo_id'],
                 'notaPen' => '1',
                 'estatus' => '1',
                 'VerInv' => $data['cantidad'],
@@ -98,7 +99,8 @@ class CalculosController extends Controller
                 'proceso_id' => $data['proceso_id'],
                 'norma' => $data['norma'],
                 'clave_id' => $data['clave_id'],
-                'turno_id' => $data['turno_id']
+                'turno_id' => $data['turno_id'],
+                'departamento_id' => $data['departamento_id']
             ]);
         }else {
             carga::find($existe->id)->update([
@@ -116,19 +118,21 @@ class CalculosController extends Controller
 
     /************************************** Operaciones ***********************************************/
     //operacion suma del dia
-    public function sm_d($val, $fechas, $usuario){
+    public function sm_d($val, $dep, $fechas, $usuario){
         $fs = 0;
         $fc = 0;
         //recorrido de formulas
         foreach ($val->formulas as $value) {
             $proce_id = $value->proceso_id;
             //Consulta para la suma
-            $suma = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+            $suma = carga::where('departamento_id', '=', $dep)
+                ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                 ->where('maq_pro_id', '=', $value->maq_pros_id)
                 ->sum('valor');
 
             //Consulta de paquetes contados
-            $cuenta = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+            $cuenta = carga::where('departamento_id', '=', $dep)
+                ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                 -> where('maq_pro_id', '=', $value->maq_pros_id)
                 ->count('valor');
 
@@ -137,7 +141,7 @@ class CalculosController extends Controller
             $fc += $cuenta;
             //print($fs.' | '.$cuenta.' / ');
         }
-        $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id];
+        $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
         //echo $data['proceso_id'].' | '.$data['suma'].' | '.$data['cantidad'].'  fin suma dia || ';
         if ($fc != 0) {
             $this->gua_act($fechas, $data);
@@ -147,12 +151,13 @@ class CalculosController extends Controller
     }
 
     //operacion suma dia clave
-    public function sm_dc($val, $fechas, $usuario){
+    public function sm_dc($val, $dep, $fechas, $usuario){
         //recorrido de formulas
         foreach ($val->formulas as $value) {
             $proce_id = $value->proceso_id;
             $maq_id = $value->maq_pros_id;
-            $claves = carga::where('maq_pro_id', '=', $maq_id)
+            $claves = carga::where('departamento_id', '=', $dep)
+            ->where('maq_pro_id', '=', $maq_id)
             ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
             ->distinct()
             ->get(['norma','clave_id']);
@@ -160,13 +165,15 @@ class CalculosController extends Controller
             $fc = 0;
             foreach ($claves as $cl) {
                 //suma
-                $suma = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                $suma = carga::where('departamento_id', '=', $dep)
+                    ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                     ->where('clave_id', '=', $cl->clave_id)
                     -> where('maq_pro_id', '=', $value->maq_pros_id)
                     ->sum('valor');
 
                 //catidad
-                $cuenta = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                $cuenta = carga::where('departamento_id', '=', $dep)
+                    ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                     ->where('clave_id', '=', $cl->clave_id)
                     -> where('maq_pro_id', '=', $value->maq_pros_id)
                     ->count('valor');
@@ -174,7 +181,7 @@ class CalculosController extends Controller
                 $fs += $suma;
                 $fc += $cuenta;
                 //print($val->nompro.' | '.$cl->clave->CVE_ART.' | '.$suma.' | '.$cuenta.' - ');
-                $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => $cl->norma, 'clave_id' => $cl->clave_id, 'per_carga' => $usuario->id];
+                $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => $cl->norma, 'clave_id' => $cl->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
                 if ($fc != 0) {
                     $this->gua_act($fechas, $data);
                 }
@@ -189,6 +196,9 @@ class CalculosController extends Controller
     public function sm_t($val, $dep, $fechas, $usuario){
         //se consultan los turnos que existe menos el turno vacio
         $turnos = turnos::where('departamento_id', '=', $dep)
+            ->with([
+                'equipos'
+            ])
             ->where('nomtur', '!=', 'Vacío')
             ->get();
         //recorrido del turno
@@ -202,13 +212,15 @@ class CalculosController extends Controller
                 $maq_id = $value->maq_pros_id;
 
                 //suma
-                $suma = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                $suma = carga::where('departamento_id', '=', $dep)
+                ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                 ->where('turno_id', '=', $tur->id)
                 -> where('maq_pro_id', '=', $value->maq_pros_id)
                 ->sum('valor');
 
                 //catidad
-                $cuenta = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                $cuenta = carga::where('departamento_id', '=', $dep)
+                ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                 ->where('turno_id', '=', $tur->id)
                 -> where('maq_pro_id', '=', $value->maq_pros_id)
                 ->count('valor');
@@ -217,7 +229,7 @@ class CalculosController extends Controller
                 $fs += $suma;
                 $fc += $cuenta;
                 //print( $val->nompro.' | '.$tur->nomtur.' | '.$fs.' | '.$fc.' / ');
-                $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'turno_id' => $tur->id, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id];
+                $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => $tur->equipos[0]->id, 'turno_id' => $tur->id, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
                 if ($fc != 0) {
                     $this->gua_act($fechas, $data);
                 }
@@ -232,6 +244,9 @@ class CalculosController extends Controller
     public function sm_tc($val, $dep, $fechas, $usuario){
         //se consultan los turnos que existe menos el turno vacio
         $turnos = turnos::where('departamento_id', '=', $dep)
+            ->with([
+                'equipos'
+            ])
             ->where('nomtur', '!=', 'Vacío')
             ->get();
         //recorrido del turno
@@ -241,7 +256,8 @@ class CalculosController extends Controller
                 $proce_id = $value->proceso_id;
                 $maq_id = $value->maq_pros_id;
                 //consulta
-                $claves = carga::where('maq_pro_id', '=', $maq_id)
+                $claves = carga::where('departamento_id', '=', $dep)
+                    ->where('maq_pro_id', '=', $maq_id)
                     ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                     ->with([
                         'clave' => function($cla){
@@ -250,21 +266,23 @@ class CalculosController extends Controller
                         }
                     ])
                     ->distinct()
-                    ->get(['clave_id']);
+                    ->get(['clave_id', 'norma']);
                 //recorrido de claves
                 foreach ($claves as $cl) {
                     //variablesde operaciones
                     $fs = 0;
                     $fc = 0;
                     //suma
-                    $suma = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                    $suma = carga::where('departamento_id', '=', $dep)
+                    ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                     ->where('clave_id', '=', $cl->clave_id)
                     ->where('turno_id', '=', $tur->id)
                     -> where('maq_pro_id', '=', $value->maq_pros_id)
                     ->sum('valor');
 
                     //catidad
-                    $cuenta = carga::whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                    $cuenta = carga::where('departamento_id', '=', $dep)
+                    ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                     ->where('turno_id', '=', $tur->id)
                     ->where('clave_id', '=', $cl->clave_id)
                     -> where('maq_pro_id', '=', $value->maq_pros_id)
@@ -273,9 +291,9 @@ class CalculosController extends Controller
                     //resultado
                     $fs += $suma;
                     $fc += $cuenta;
-                    $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'turno_id' => $tur->id, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => $cl->norma, 'clave_id' => $cl->clave_id, 'per_carga' => $usuario->id];
+                    $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => $tur->equipos[0]->id, 'turno_id' => $tur->id, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => $cl->norma, 'clave_id' => $cl->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
                     if ($fc != 0) {
-                        //print($val->nompro.' | '.$tur->nomtur.' | '.$cl->clave->CVE_ART.' | '.$fs.' | '.$fc.' - ');
+                        //print_r($data);
                         $this->gua_act($fechas, $data);
                     }
                 }

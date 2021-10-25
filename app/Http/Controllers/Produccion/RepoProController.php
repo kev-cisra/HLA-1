@@ -59,8 +59,10 @@ class RepoProController extends Controller
          /**************************** consulta si existe la busqueda  ****************************************************/
         if (!empty($request->busca)) {
              //carga
+            $año = empty($request->ano) ? date('Y') : $request->ano;
             $bus = $request->busca;
             $carga = carga::where('departamento_id', '=', $bus)
+                ->where('semana', 'LIKE', '%'.$año.'%')
                 ->with([
                 'dep_perf' => function($dp) use($bus) {
                     $dp ->withTrashed()
