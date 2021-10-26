@@ -24,30 +24,36 @@
                         <jet-button class="BtnNuevo tw-w-full" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="openModal">Calculos</jet-button>
                     </div>
                     <div>
-                        <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#filtro" aria-expanded="false" aria-controls="filtro"><i class="fas fa-filter"></i> Filtros</jet-button>
+                        <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#filtro" aria-expanded="false" aria-controls="filtro"><i class="fas fa-filter"> </i> Filtros</jet-button>
                     </div>
                 </div>
             </template>
         </Accions>
+        <input type="file" @input="docu.file = $event.target.files[0]">
+        <button class="btn btn-primary" @click="carMasi">Guardar</button>
         <!------------------------------------ Muestra las opciones de filtros ------------------------------------------->
-        <div class="collapse tw-m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="filtro">
+        <div class="collapse md:tw-ml-10 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl tw-absolute tw-w-11/12 tw-z-50" id="filtro">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
                 <div class="tw-mb-6 lg:tw-flex">
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Año</jet-label>
-                        <jet-input type="number" class="form-select" v-model="ano" :max="estAño"></jet-input>
+                        <jet-input type="number" class="form-control" v-model="ano" :max="estAño"></jet-input>
                     </div>
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Mes</jet-label>
-                        <jet-input type="week" class="form-select" v-model="FoFiltro.semana"></jet-input>
+                        <jet-input type="month" class="form-control" @click="limInputs(3)" v-model="FoFiltro.mes"></jet-input>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Fecha de inicio</jet-label>
-                        <jet-input type="datetime-local" class="form-select" v-model="FoFiltro.iniDia" :max="FoFiltro.finDia"></jet-input>
+                        <jet-label><span class="required">*</span>Semana</jet-label>
+                        <jet-input type="week" class="form-control" @click="limInputs(2)" v-model="FoFiltro.semana"></jet-input>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Fecha final</jet-label>
-                        <jet-input type="datetime-local" class="form-select" v-model="FoFiltro.finDia" :min="FoFiltro.iniDia"></jet-input>
+                        <jet-label><span class="required">*</span>Fecha</jet-label>
+                        <!-- <input type="datetime-local" class="InputSelect" @click="limInputs(1.5)" v-model="FoFiltro.iniDia"> -->
+                        <div class="tw-flex">
+                            <jet-input type="date" class="form-control tw-w-2/3" @click="limInputs(1.5)" v-model="FoFiltro.iniDia" :max="FoFiltro.finDia"></jet-input>
+                            <!-- <jet-input type="time" class="form-control tw-w-1/3" @click="limInputs(.5)" v-model="horas"></jet-input> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,9 +110,6 @@
                 </template>
             </Table>
         </div>
-        <pre>
-            {{ recoTabla }}
-        </pre>
         <!------------------------------------- Modal para carga de datos ------------------------------------------------>
         <!------------------ Modal Turnos------------------------->
         <modal :show="showModal" @close="chageClose">
@@ -212,13 +215,18 @@
                 S_Area: '',
                 fechaC: '',
                 limp: 1,
+                docu: this.$inertia.form({
+                    'file': null
+                }),
                 hoy: moment().format('YYYY-MM-DD'),
                 editMode: false,
                 showModal: false,
                 vCal: true,
+                horas: '07:00',
                 estAño: moment().format('Y'),
                 ano: moment().format('Y'),
                 FoFiltro: {
+                    mes: null,
                     semana: null,
                     iniDia: null,
                     finDia: null,
@@ -235,6 +243,12 @@
             this.global();
         },
         methods: {
+            carMasi(){
+                const form = this.docu;
+                this.$inertia.post('/Produccion/CargaExcel', form, {
+                    onSuccess: (v) => { }, onError: (e) => { }, preserveState: true
+                });
+            },
             /***************************** Calculos ******************************************/
             calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
@@ -301,11 +315,11 @@
                     } );
                     var table = $('#t_repo').DataTable({
                         "language": this.español,
-                        "order": [1, 'desc'],
+                        "order": [1, 'asc'],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                        scrollY:        '50vh',
+                        scrollY:        '40vh',
                         scrollCollapse: true,
                         paging:         false,
                         buttons: [
@@ -370,18 +384,79 @@
             //Nuevo es arreglo
             NuArray() {
                 const rt = [];
-                if(this.FoFiltro.iniDia != null & this.FoFiltro.finDia != null){
-                    this.FoFiltro.semana = null;
+                var inicio = null;
+                var fin = null;
+                //consulta del dia
+                if(this.FoFiltro.iniDia != null){
+                    if (this.S_Area == 7){
+                        if (moment(this.FoFiltro.iniDia).isDST()) {
+                            inicio = this.FoFiltro.iniDia+' 09:00';
+                        }else{
+                            inicio = this.FoFiltro.iniDia+' 08:00';
+                        }
+                    }else{
+                        inicio = this.FoFiltro.iniDia+' 07:00'
+                    }
+
+                    //Asigna el dato para la fecha final
+                    fin = moment(inicio).add(24, 'hours');
+                    //Limpia el datatables
+                    $('#t_repo').DataTable().clear();
+                    $('#t_repo').DataTable().destroy();
+                    this.tabla();
+                    //hace el recorrido y asigna el Array
                     this.cargas.forEach(fec => {
                         //console.log(fec.fecha)
-                        if ( moment(fec.fecha).isAfter(this.FoFiltro.iniDia, 'minuts') & moment(fec.fecha).isBefore(this.FoFiltro.finDia, 'minuts') ) {
+                        if ( moment(fec.fecha).isAfter(inicio, 'minutes') & moment(fec.fecha).isBefore(fin, 'minutes') ) {
                             rt.push(fec);
                         }
                     });
-                    return rt;
                 }
+                //consulta de la semana
                 if(this.FoFiltro.semana != null){
-                    console.log('corre')
+                    //Limpia el datatables
+                    $('#t_repo').DataTable().clear();
+                    $('#t_repo').DataTable().destroy();
+                    this.tabla();
+                    //hace el recorrido y asigna el Array
+                    this.cargas.forEach(fec => {
+                        //console.log(fec.fecha)
+                        if ( this.FoFiltro.semana == fec.semana ) {
+                            rt.push(fec);
+                        }
+                    });
+                }
+                //Consulta del mes
+                if(this.FoFiltro.mes != null){
+                    //Limpia el datatables
+                    $('#t_repo').DataTable().clear();
+                    $('#t_repo').DataTable().destroy();
+                    this.tabla();
+                    //hace el recorrido y asigna el Array
+                    this.cargas.forEach(fec => {
+                        //console.log(fec.fecha)
+                        if ( fec.fecha.includes(this.FoFiltro.mes) ) {
+                            rt.push(fec);
+                        }
+                    });
+                }
+                return rt;
+            },
+            //Limpia los inputs de fechas
+            limInputs(val){
+                if(val == 1.5){
+                    this.FoFiltro.semana = null;
+                    this.FoFiltro.mes = null;
+                }else if(val == 2){
+                    this.FoFiltro.iniDia = null;
+                    this.FoFiltro.finDia = null;
+                    this.FoFiltro.mes = null;
+                    this.horas = '07:00';
+                }else if(val == 3){
+                    this.FoFiltro.iniDia = null;
+                    this.FoFiltro.finDia = null;
+                    this.FoFiltro.semana = null;
+                    this.horas = '07:00';
                 }
             }
         },

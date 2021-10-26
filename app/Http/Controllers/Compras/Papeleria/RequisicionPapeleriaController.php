@@ -48,6 +48,11 @@ class RequisicionPapeleriaController extends Controller{
 
         $Session = auth()->user();
 
+
+        Validator::make($request->all(), [
+            'Departamento_id' => ['required'],
+        ])->validate();
+
         $Perfil = PerfilesUsuarios::where('IdEmp', '=', $Session->IdEmp)->get();
 
         //Genracion de folio automatico
