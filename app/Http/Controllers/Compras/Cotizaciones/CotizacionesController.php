@@ -83,7 +83,7 @@ class CotizacionesController extends Controller{
             ->where('EstatusArt', '!=', 1)
             ->where('EstatusArt','!=', 2)
             ->whereMonth('Fecha', $mes)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'OrdenCompra', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo', 'Resguardo', 'OrdenCompra', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
         }else{
 
@@ -125,7 +125,7 @@ class CotizacionesController extends Controller{
             ->where('EstatusArt', '!=', 1)
             ->where('EstatusArt','!=', 2)
             ->where('EstatusArt', $request->Estatus)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada',  'OrdenCompra', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo', 'Resguardo', 'Fechallegada',  'OrdenCompra', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
         }
 
