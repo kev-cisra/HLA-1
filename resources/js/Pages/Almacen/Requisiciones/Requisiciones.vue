@@ -313,7 +313,12 @@
                                         </div> -->
                                     </div>
                                     <div class="columnaIconos" v-else-if="datos.EstatusArt == 9">
-                                        <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
+                                        <div class="iconoGreen" v-if="datos.articulos_requisicion.NumReq.endsWith('-S') != true" @click="SolicitaReposicion(datos)">
+                                            <span tooltip="Solicitar Reposicion" flow="left">
+                                                <i class="fas fa-dolly"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoGreen" v-else>
                                             <span tooltip="Articulo Adquirido" flow="left">
                                                 <i class="fas fa-check-square"></i>
                                             </span>
@@ -464,6 +469,50 @@
                 </form>
             </modal>
 
+            <modal :show="showRepo" @close="chageRepo" maxWidth="xl">
+                <form>
+                    <div class="tw-px-4 tw-py-4">
+                        <div class="tw-text-lg">
+                            <div class="ModalHeader">
+                                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Solicita Reposicion de Stock</h3>
+                            </div>
+                        </div>
+
+                        <div class="tw-mt-4">
+                            <div class="tw-container tw-max-w-screen-lg tw-mx-auto">
+                                <section class="tw-rounded-md">
+                                    <h2 class="tw-uppercase tw-tracking-wide tw-text-md tw-font-semibold tw-text-gray-500 tw-my-2 tw-text-center">Solicita la reposicion del material para stock</h2>
+                                    <fieldset class="tw-mb-3 tw-bg-white tw-flex tw-table-column tw-shadow-lg tw-rounded tw-text-gray-600">
+                                        <div class="tw-flex tw-border-b tw-border-gray-200 tw-h-12 tw-py-3 tw-items-center">
+                                            <div class="tw-w-1/3"><span class="tw-text-right tw-px-2">Número de requsición: </span></div>
+                                            <div class="tw-w-2/3 tw-font-bold">{{form.NumReq}}</div>
+                                        </div>
+                                        <div class="tw-flex tw-border-b tw-border-gray-200 tw-h-12 tw-py-3 tw-items-center">
+                                            <div class="tw-w-1/3"><span class="tw-text-right tw-px-2">Material: </span></div>
+                                            <div class="tw-w-2/3 tw-font-bold">{{ form.Cant }} {{ form.Uni }} {{ form.Desc }}</div>
+                                        </div>
+                                        <div class="tw-flex tw-border-b tw-border-gray-200 tw-h-12 tw-py-3 tw-items-center">
+                                            <div class="tw-w-1/3"><span class="tw-text-right tw-px-2">Núm Parte: </span></div>
+                                            <div class="tw-w-2/3 tw-font-bold" v-if="form.NumParte != null">{{ form.NumParte }}</div>
+                                            <div class="tw-w-2/3 tw-font-bold" v-else>N/A</div>
+                                        </div>
+                                        <div class="tw-flex border-b tw-border-gray-200 tw-h-12 tw-py-3 tw-items-center">
+                                            <div class="tw-w-1/3"><span class="tw-text-right tw-px-2">Observaciones:</span></div>
+                                            <div class="tw-w-2/3 tw-font-bold">{{ form.Obser }}</div>
+                                        </div>
+                                    </fieldset>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ModalFooter">
+                        <jet-button type="button" @click="GeneraReposicion(form)">Guardar</jet-button>
+                        <jet-CancelButton @click="chageRepo">Cerrar</jet-CancelButton>
+                    </div>
+                </form>
+            </modal>
+
             <modal :show="showProveedor" @close="chageProveedor" maxWidth="2xl">
                 <form>
                     <div class="tw-px-4 tw-py-4">
@@ -526,6 +575,7 @@ export default {
         return {
             showProveedor: false,
             showConfirm: false,
+            showRepo: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
             tam: "5xl",
@@ -544,6 +594,11 @@ export default {
                 User: null,
                 Pass: null,
                 NomProveedor: null,
+                Obser: null,
+                Codigo: null,
+                Maq: null,
+                Mar: null,
+                TipCompra: null,
             },
             params:{
                 month: null,
@@ -613,7 +668,14 @@ export default {
                 Cant: null,
                 Uni: null,
                 Desc: null,
+                User: null,
+                Pass: null,
                 NomProveedor: null,
+                Obser: null,
+                Codigo: null,
+                Maq: null,
+                Mar: null,
+                TipCompra: null,
             };
         },
 
@@ -645,11 +707,17 @@ export default {
         },
 
         chageConfirm() {
+            this.form.User = null,
+            this.form.Pass = null,
             this.showConfirm = !this.showConfirm;
         },
 
         chageProveedor(){
             this.showProveedor = !this.showProveedor;
+        },
+
+        chageRepo(){
+            this.showRepo = !this.showRepo;
         },
 
         Filtro(value){
@@ -723,6 +791,33 @@ export default {
             this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
                 onSuccess: () => {
                     this.chageConfirm();
+                    this.alertSucces();
+                },
+            });
+        },
+
+        SolicitaReposicion(data){
+            this.chageRepo();
+            this.form.NumReq = data.articulos_requisicion.NumReq;
+            this.form.Obser = data.articulos_requisicion.Observaciones;
+            this.form.Codigo = data.articulos_requisicion.Codigo;
+            this.form.Maq = data.articulos_requisicion.Maquina_id;
+            this.form.Mar = data.articulos_requisicion.Marca_id;
+            this.form.TipCompra = data.articulos_requisicion.TipCompra;
+            this.form.Cant = data.Cantidad;
+            this.form.Uni = data.Unidad;
+            this.form.Desc = data.Descripcion;
+            this.form.NumParte = data.NumParte;
+            this.form.Fecha = moment().format("YYYY-MM-DD");
+            this.form.Dpto = this.Session.Departamento;
+            this.form.IdEmp = this.Session.IdEmp;
+        },
+
+        GeneraReposicion(data){
+            this.$inertia.post("/Almacen/Requisiciones", data, {
+                onSuccess: () => {
+                    this.reset(),
+                    this.chageRepo(),
                     this.alertSucces();
                 },
             });

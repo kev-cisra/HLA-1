@@ -64,6 +64,10 @@
     @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-lime-500 hover:tw-scale-110;
 }
 
+.iconoGreen{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125;
+}
+
 .iconoWhite{
     @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-white hover:tw-scale-110;
 }

@@ -134,6 +134,77 @@ class RequisicionesSolicitadasController extends Controller {
         return Inertia::render('Almacen/Requisiciones/Requisiciones', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Departamentos', 'Maquinas', 'Almacen', 'Cotizacion', 'SinConfirmar', 'mes'));
     }
 
+    public function store(Request $request){
+
+        $hoy = Carbon::now();
+
+        $Session = auth()->user();
+        $SessionIdEmp = $Session->IdEmp;
+
+        //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
+        $ObtenJefe = JefesArea::where('IdEmp', '=', $Session->IdEmp)->first('id','IdEmp');
+        if(isset($ObtenJefe)){
+            $IdJefe = $ObtenJefe->id; //Obtengo el Id del Jefe logueado
+        }else{
+            $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $Session->IdEmp)->first(['id','jefes_areas_id']);
+            $IdJefe = $PerfilesUsuarios->jefes_areas_id; //Obtengo el Id de Jefe que corresponde a la session del empleado
+        }
+
+        //Genracion de folio automatico
+        $Numfolio = Requisiciones::all(['Folio']);
+
+        if($Numfolio->count()){
+            $Nfolio = $Numfolio->last(); //Obtengo el ultimo folio con el metodo last
+
+            foreach ($Nfolio as $item){
+                $serial = $Nfolio->Folio; //asigno el folio a la variable serial
+            }
+        }else{
+            $serial = 1000; //en caso de no haber registros asigno un folio
+        }
+        $serial += 1; //Incremento de folio
+
+        $Requisicion = Requisiciones::create([
+            'IdUser' => $Session->id,
+            'IdEmp' => $request->IdEmp,
+            'Folio' => $serial,
+            'NumReq' => $request->NumReq."-S",
+            'Departamento_id' => $request->Dpto,
+            'jefes_areas_id' => $IdJefe,
+            'Codigo' => $request->Codigo,
+            'Maquina_id' => $request->Maq,
+            'Marca_id' => $request->Mar,
+            'TipCompra' => $request->TipCompra,
+            'Observaciones' => "Reposicion de Stock",
+            'Perfil_id' => $Session->id,
+        ]);
+
+        $RequicisionId = $Requisicion->id;
+
+
+        $Articulos = ArticulosRequisiciones::create([
+            'IdEmp' => $Session->IdEmp,
+            'Fecha' => $request->Fecha,
+            'Cantidad' => $request->Cant,
+            'Unidad' => $request->Uni,
+            'NumParte' => $request->NumParte,
+            'Descripcion' => $request->Desc,
+            'EstatusArt' => 3,
+            'requisicion_id' => $RequicisionId,
+        ]);
+
+        $ArticulosId = $Articulos->id;
+
+        $TiempoReq = TiemposRequisiciones::create([
+            'IdUser' => $Session->id,
+            'IdEmp' => $Session->IdEmp,
+            'requisicion_id' => $RequicisionId,
+            'articulo_requisicion_id' => $ArticulosId,
+        ]);
+
+        return redirect()->back();
+    }
+
     public function update(Request $request, $id){
 
         if($request->metodo == 'Parcialidad'){
