@@ -12,7 +12,7 @@
                 </slot>
             </tr>
         </thead>
-        <tbody class="tw-divide-y tw-divide-gray-200">
+        <tbody class="tw-divide-y tw-divide-gray-200 tw-text-xs">
             <slot name="TableFooter">
 
             </slot>

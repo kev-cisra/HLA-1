@@ -19463,26 +19463,17 @@ select {
 .tw-top-0 {
 	top: 0px;
 }
-.tw-top-48 {
-	top: 12rem;
-}
 .tw-z-40 {
 	z-index: 40;
 }
 .tw-z-50 {
 	z-index: 50;
 }
-.tw-z-10 {
-	z-index: 10;
-}
 .tw-col-span-6 {
 	grid-column: span 6 / span 6;
 }
 .tw-m-3 {
 	margin: 0.75rem;
-}
-.tw-m-5 {
-	margin: 1.25rem;
 }
 .tw-my-8 {
 	margin-top: 2rem;
@@ -19623,17 +19614,14 @@ select {
 .tw-mr-10 {
 	margin-right: 2.5rem;
 }
+.tw-mb-3 {
+	margin-bottom: 0.75rem;
+}
 .tw-mb-8 {
 	margin-bottom: 2rem;
 }
 .tw--mt-4 {
 	margin-top: -1rem;
-}
-.tw-mb-3 {
-	margin-bottom: 0.75rem;
-}
-.tw-ml-10 {
-	margin-left: 2.5rem;
 }
 .tw-block {
 	display: block;
@@ -19755,20 +19743,11 @@ select {
 .tw-w-80 {
 	width: 20rem;
 }
-.tw-w-52 {
-	width: 13rem;
-}
 .tw-w-2\/3 {
 	width: 66.666667%;
 }
-.tw-w-1\/4 {
-	width: 25%;
-}
-.tw-w-1\/2 {
-	width: 50%;
-}
-.tw-w-10\/12 {
-	width: 83.333333%;
+.tw-w-52 {
+	width: 13rem;
 }
 .tw-w-11\/12 {
 	width: 91.666667%;
@@ -19900,9 +19879,6 @@ select {
 }
 .tw-gap-y-10 {
 	row-gap: 2.5rem;
-}
-.tw-gap-y-2 {
-	row-gap: 0.5rem;
 }
 .tw-space-x-8 > :not([hidden]) ~ :not([hidden]) {
 	--tw-space-x-reverse: 0;
@@ -20408,6 +20384,10 @@ select {
 	padding-top: 2.5rem;
 	padding-bottom: 2.5rem;
 }
+.tw-px-2 {
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+}
 .tw-px-1 {
 	padding-left: 0.25rem;
 	padding-right: 0.25rem;
@@ -20415,10 +20395,6 @@ select {
 .tw-px-5 {
 	padding-left: 1.25rem;
 	padding-right: 1.25rem;
-}
-.tw-px-2 {
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
 }
 .tw-pl-4 {
 	padding-left: 1rem;
@@ -22505,10 +22481,6 @@ select {
 		grid-column: span 1 / span 1;
 	}
 
-	.md\:tw-col-span-5 {
-		grid-column: span 5 / span 5;
-	}
-
 	.md\:tw-mx-0 {
 		margin-left: 0px;
 		margin-right: 0px;
@@ -22611,10 +22583,6 @@ select {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
-	.md\:tw-grid-cols-5 {
-		grid-template-columns: repeat(5, minmax(0, 1fr));
-	}
-
 	.md\:tw-flex-row {
 		flex-direction: row;
 	}
@@ -22637,20 +22605,12 @@ select {
 		margin-bottom: calc(0px * var(--tw-space-y-reverse));
 	}
 
-	.md\:tw-p-8 {
-		padding: 2rem;
-	}
-
 	.md\:tw-text-8xl {
 		font-size: 6rem;
 		line-height: 1;
 	}
 }
 @media (min-width: 1024px) {
-
-	.lg\:tw-col-span-2 {
-		grid-column: span 2 / span 2;
-	}
 
 	.lg\:tw--my-px {
 		margin-top: -1px;
@@ -22711,10 +22671,6 @@ select {
 
 	.lg\:tw-w-1\/5 {
 		width: 20%;
-	}
-
-	.lg\:tw-grid-cols-3 {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 
 	.lg\:tw-flex-row {

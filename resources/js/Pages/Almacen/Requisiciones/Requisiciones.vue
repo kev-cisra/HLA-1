@@ -220,18 +220,18 @@
 
                         <template v-slot:TableFooter>
                             <tr class="fila" v-for="datos in ArticuloRequisicion" :key="datos.id">
-                                <td class="tw-p-2">{{ datos.Fecha }}</td>
-                                <td class="tw-p-2">{{ datos.articulos_requisicion.NumReq }}</td>
-                                <td class="tw-p-2">{{ datos.articulos_requisicion.Codigo }}</td>
-                                <td class="tw-p-2">{{ datos.Cantidad }}</td>
-                                <td class="tw-p-2">{{ datos.Unidad }}</td>
-                                <td class="tw-p-2">{{ datos.Descripcion }}</td>
-                                <td class="tw-p-2">{{ datos.NumParte }}</td>
-                                <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                                <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                                <td class="tw-p-2">{{ datos.Fechallegada }}</td>
-                                <td class="tw-p-2">{{ datos.OrdenCompra }}</td>
-                                <td class="tw-p-2">
+                                <td>{{ datos.Fecha }}</td>
+                                <td>{{ datos.articulos_requisicion.NumReq }}</td>
+                                <td>{{ datos.articulos_requisicion.Codigo }}</td>
+                                <td>{{ datos.Cantidad }}</td>
+                                <td>{{ datos.Unidad }}</td>
+                                <td>{{ datos.Descripcion }}</td>
+                                <td>{{ datos.NumParte }}</td>
+                                <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                                <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                                <td>{{ datos.Fechallegada }}</td>
+                                <td>{{ datos.OrdenCompra }}</td>
+                                <td>
                                     <div v-if="datos.EstatusArt == 2">
                                         <span tooltip="Material Solicitado" flow="left">
                                             <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
@@ -332,7 +332,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="tw-p-2">
+                                <td>
                                     <div class="tw-flex tw-justify-center">
                                         <div class="iconoDetails" v-if="detalles != datos.id" @click="show(datos.id)">
                                             <span tooltip="Detalles" flow="left">
