@@ -1035,17 +1035,17 @@
                             ssp.push({id: sp.id, text: sp.nompro});
                         }
                         if (this.noCor == 'enc' & sp.proceso_id == this.proc_prin | this.editMode ) {
-                            ssp.push({id: sp.id, text: sp.nompro});
+                            ssp.push({id: sp.id, text: sp.id+' - '+sp.nompro});
                         }
                         if (this.noCor == 'cor' & (sp.tipo == 2 & sp.proceso_id == this.proc_prin) | this.editMode) {
-                            ssp.push({id: sp.id, text: sp.nompro});
+                            ssp.push({id: sp.id, text: sp.id+' - '+sp.nompro});
                         }
                     })
                 }else{
                     //recorre y muestra los procesos
                     this.procesos.forEach(sp =>{
                         if (sp.tipo != 3 & sp.proceso_id == this.proc_prin) {
-                            ssp.push({id: sp.id, text: sp.nompro});
+                            ssp.push({id: sp.id, text: sp.id+' - '+sp.nompro});
                         }
                     })
                 }
@@ -1062,7 +1062,7 @@
                             //console.log(pm.maq_pros.length)
                             pm.maq_pros.forEach(mp => {
                                 mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
-                                mq.push({value: mp.id, text:mp.maquinas.Nombre + ' ' + mar});
+                                mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
                             })
                         }
                     })

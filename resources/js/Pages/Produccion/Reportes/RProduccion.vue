@@ -21,7 +21,10 @@
                 <!-- boton de calculos -->
                 <div class="tw-flex tw-gap-3 tw-mr-10">
                     <div>
-                        <jet-button class="BtnNuevo tw-w-full" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="openModal">Calculos</jet-button>
+                        <jet-button class="BtnNuevo tw-w-full" @click="openModalC">Carga masiva</jet-button>
+                    </div>
+                    <div>
+                        <jet-button class="BtnNuevo tw-w-full" @click="openModal">Calculos</jet-button>
                     </div>
                     <div>
                         <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#filtro" aria-expanded="false" aria-controls="filtro"><i class="fas fa-filter"> </i> Filtros</jet-button>
@@ -29,10 +32,8 @@
                 </div>
             </template>
         </Accions>
-        <input type="file" @input="docu.file = $event.target.files[0]">
-        <button class="btn btn-primary" @click="carMasi">Guardar</button>
         <!------------------------------------ Muestra las opciones de filtros ------------------------------------------->
-        <div class="collapse md:tw-ml-10 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl tw-absolute tw-w-11/12 tw-z-50" id="filtro">
+        <div class="collapse md:tw-ml-10 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl tw-m-10" id="filtro">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
                 <div class="tw-mb-6 lg:tw-flex">
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
@@ -111,6 +112,35 @@
             </Table>
         </div>
         <!------------------------------------- Modal para carga de datos ------------------------------------------------>
+        <modal :show="showModalC" @close="chageCloseC">
+            <div class="tw-px-4 tw-py-4">
+                <div class="tw-text-lg">
+                    <div class="ModalHeader">
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Carga Masiva</h3>
+                    </div>
+                </div>
+
+                <div class="tw-mt-4">
+                    <div class="ModalForm">
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Descargar Formato</jet-label>
+                                <a target="_blank" :href="path+ 'Archivos/FormatosExcel/Carga_Masiva.xlsx'">Link de descarga</a>
+                            </div>
+                        </div>
+
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Fecha de inicio de carga</jet-label>
+                                <input type="file" @input="docu.file = $event.target.files[0]" ref="file" >
+                                <button class="btn btn-primary" @click="carMasi">Guardar</button>
+                                <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </modal>
         <!------------------ Modal Turnos------------------------->
         <modal :show="showModal" @close="chageClose">
             <form>
@@ -215,12 +245,14 @@
                 S_Area: '',
                 fechaC: '',
                 limp: 1,
-                docu: this.$inertia.form({
-                    'file': null
-                }),
+                docu: {
+                    file: null
+                },
                 hoy: moment().format('YYYY-MM-DD'),
                 editMode: false,
+                carMode: false,
                 showModal: false,
+                showModalC: false,
                 vCal: true,
                 horas: '07:00',
                 estAño: moment().format('Y'),
@@ -245,8 +277,9 @@
         methods: {
             carMasi(){
                 const form = this.docu;
+
                 this.$inertia.post('/Produccion/CargaExcel', form, {
-                    onSuccess: (v) => { }, onError: (e) => { }, preserveState: true
+                    onSuccess: (v) => { this.openModalC(), this.resetC(), this.alertSucces() }, onError: (e) => { }, preserveState: true
                 });
             },
             /***************************** Calculos ******************************************/
@@ -458,6 +491,20 @@
                     this.FoFiltro.semana = null;
                     this.horas = '07:00';
                 }
+            },
+            /***************************** Modal de carga masiva ********************************************/
+            //abrir modal carga masiva
+            openModalC(){
+                this.chageCloseC();
+            },
+            //abrir o cerrar modal procesos
+            chageCloseC(){
+                this.showModalC = !this.showModalC
+            },
+            //reset de file
+            resetC(){
+                this.$refs.file.type='text';
+                this.$refs.file.type='file';
             }
         },
         computed: {
