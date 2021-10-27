@@ -13,13 +13,13 @@
                 </slot>
             </tr>
         </thead>
-        <tbody class="uppercase tw-divide-y tw-divide-gray-200 tw-text-xs">
+        <tbody class="uppercase tw-divide-y tw-divide-gray-200 tw-text-xxs">
             <slot name="TableFooter">
 
             </slot>
         </tbody>
         <tfoot >
-            <tr class="uppercase tw-divide-y tw-divide-gray-200 tw-text-xs">
+            <tr class="uppercase tw-divide-y tw-divide-gray-200 tw-text-xxs">
                 <slot name="Foother">
 
                 </slot>

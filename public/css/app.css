@@ -19475,6 +19475,12 @@ select {
 .tw-m-3 {
 	margin: 0.75rem;
 }
+.tw-m-20 {
+	margin: 5rem;
+}
+.tw-m-10 {
+	margin: 2.5rem;
+}
 .tw-my-8 {
 	margin-top: 2rem;
 	margin-bottom: 2rem;
@@ -20459,6 +20465,9 @@ select {
 .tw-text-base {
 	font-size: 1rem;
 }
+.tw-text-xxs {
+	font-size: .65rem;
+}
 .tw-text-xl {
 	font-size: 1.25rem;
 }
@@ -20468,9 +20477,6 @@ select {
 }
 .tw-text-4xl {
 	font-size: 2.25rem;
-}
-.tw-text-xxs {
-	font-size: .7rem;
 }
 .tw-font-bold {
 	font-weight: 700;

@@ -78,7 +78,7 @@
                         </div>
                     </div>
 
-                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5" @click="FiltroIndicadorMensual(3)">
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5">
                         <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-indigo-600 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
                                 <div class="icon tw-w-14 tw-p-3.5 tw-bg-indigo-600 tw-text-white tw-rounded-full tw-mr-3">
@@ -334,18 +334,18 @@
                                     </div>
                                     <div v-if="detalles == datos.id" class="tw-w-80">
                                         <div class="border-b">
-                                            <h2 class="tw-text-sm tw-text-center">Requisición <strong>#{{datos.articulos_requisicion.NumReq}}</strong> </h2>
+                                            <h2 class="tw-text-xs tw-text-center">Requisición <strong>#{{datos.articulos_requisicion.NumReq}}</strong> </h2>
                                         </div>
                                         <div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                            <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">FOLIO: </p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.Folio}}</p>
                                             </div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                            <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">SOLICITANTE: </p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.requisiciones_perfil.Nombre}} {{datos.articulos_requisicion.requisiciones_perfil.ApPat}} {{datos.articulos_requisicion.requisiciones_perfil.ApMat}}</p>
                                             </div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                            <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">OBSERVACIONES</p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.Observaciones}}</p>
                                             </div>

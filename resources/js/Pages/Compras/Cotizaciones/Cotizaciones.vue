@@ -211,7 +211,7 @@
                     </select>
                 </div>
             </div>
-
+    {{ hoy }}
             <div class="tw-overflow-x-auto tw-mx-2">
                 <Table id="Articulos">
                     <template v-slot:TableHeader>
@@ -382,20 +382,24 @@
                                     </div>
                                     <div v-if="detalles == datos.id" class="tw-w-80">
                                         <div class="border-b">
-                                            <h2 class="tw-text-sm tw-text-center">Requisición <strong>#{{datos.articulos_requisicion.NumReq}}</strong> </h2>
+                                            <h2 class="tw-text-xs tw-text-center">Requisición <strong>#{{datos.articulos_requisicion.NumReq}}</strong> </h2>
                                         </div>
                                         <div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                            <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">FOLIO: </p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.Folio}}</p>
                                             </div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                            <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">SOLICITANTE: </p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.requisiciones_perfil.Nombre}} {{datos.articulos_requisicion.requisiciones_perfil.ApPat}} {{datos.articulos_requisicion.requisiciones_perfil.ApMat}}</p>
                                             </div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                            <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">OBSERVACIONES</p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.Observaciones}}</p>
+                                            </div>
+                                            <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                                <p class="tw-text-gray-600">MOTIVO RECHAZO</p>
+                                                <p class="tw-font-semibold">{{datos.articulos_requisicion.MotivoRechazo}}</p>
                                             </div>
                                             <div class="tw-flex tw-justify-center">
                                                 <div @click="hidden()" class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-red-500 hover:tw-scale-125">
@@ -765,6 +769,7 @@ export default {
             showDetalle: false,
             showPrecios: false,
             showFecha: false,
+            hoy: moment().format("YYYY-MM-DD"),
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
             tam: "5xl",

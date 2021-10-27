@@ -313,17 +313,16 @@
                                         </div> -->
                                     </div>
                                     <div class="columnaIconos" v-else-if="datos.EstatusArt == 9">
-                                        <!-- v-if="datos.articulos_requisicion.NumReq.endsWith('-S') != true" -->
-                                        <div class="iconoGreen"  @click="SolicitaReposicion(datos)">
+                                        <div class="iconoGreen" v-if="datos.articulos_requisicion.NumReq.endsWith('-S') != true" @click="SolicitaReposicion(datos)">
                                             <span tooltip="Solicitar Reposicion" flow="left">
                                                 <i class="fas fa-dolly"></i>
                                             </span>
                                         </div>
-<!--                                         <div class="iconoGreen" v-else>
+                                        <div class="iconoGreen" v-else>
                                             <span tooltip="Articulo Adquirido" flow="left">
                                                 <i class="fas fa-check-square"></i>
                                             </span>
-                                        </div> -->
+                                        </div>
                                     </div>
                                     <div class="columnaIconos" v-else>
                                         <div class="iconoWhite">

@@ -220,9 +220,9 @@
                 <Table id="Articulos">
                     <template v-slot:TableHeader>
                         <th class="columna">FECHA</th>
-                        <th class="columna"># REQUISICIÓN</th>
+                        <th class="columna"># REQ</th>
                         <th class="columna">CÓDIGO</th>
-                        <th class="columna">CANTIDAD</th>
+                        <th class="columna">CANT</th>
                         <th class="columna">UNIDAD</th>
                         <th class="columna">DESCRIPCIÓN</th>
                         <th class="columna"># PARTE</th>
@@ -237,18 +237,18 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in ArticuloRequisicion" :key="datos.id">
-                            <td class="tw-p-2">{{ datos.Fecha }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.NumReq }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Codigo }}</td>
-                            <td class="tw-p-2">{{ datos.Cantidad }}</td>
-                            <td class="tw-p-2">{{ datos.Unidad }}</td>
-                            <td class="tw-p-2">{{ datos.Descripcion }}</td>
-                            <td class="tw-p-2">{{ datos.NumParte }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.Fechallegada }}</td>
-                            <td class="tw-p-2">
+                            <td>{{ datos.Fecha }}</td>
+                            <td>{{ datos.articulos_requisicion.NumReq }}</td>
+                            <td>{{ datos.articulos_requisicion.Codigo }}</td>
+                            <td>{{ datos.Cantidad }}</td>
+                            <td>{{ datos.Unidad }}</td>
+                            <td>{{ datos.Descripcion }}</td>
+                            <td>{{ datos.NumParte }}</td>
+                            <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                            <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                            <td>{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }}</td>
+                            <td>{{ datos.Fechallegada }}</td>
+                            <td>
                                 <div v-if="datos.EstatusArt == 1">
                                     <span tooltip="SIN ENVIAR" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
@@ -296,7 +296,7 @@
                                     </span>
                                 </div>
                             </td>
-                            <td class="fila">
+                            <td>
                                 <div class="columnaIconos" v-if="datos.EstatusArt == 1">
                                     <div class="iconoPurple" @click="ConfirmaReq(datos, 2)">
                                         <span tooltip="Confirmar Requisición" flow="left">
@@ -326,7 +326,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="tw-p-2">
+                            <td>
                                 <div class="tw-flex tw-justify-center">
                                     <div class="iconoDetails" v-if="detalles != datos.id" @click="show(datos.id)">
                                         <span tooltip="Detalles" flow="left">
@@ -338,26 +338,26 @@
                                     </div>
                                     <div v-if="detalles == datos.id" class="tw-w-80">
                                         <div class="border-b">
-                                            <h2 class="tw-text-sm tw-text-center">Requisición <strong>#{{datos.articulos_requisicion.NumReq}}</strong> </h2>
+                                            <h2 class="tw-text-xs tw-text-center">Requisición <strong>#{{datos.articulos_requisicion.NumReq}}</strong> </h2>
                                         </div>
                                         <div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                            <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">FOLIO: </p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.Folio}}</p>
                                             </div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                            <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">SOLICITANTE: </p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.requisiciones_perfil.Nombre}} {{datos.articulos_requisicion.requisiciones_perfil.ApPat}} {{datos.articulos_requisicion.requisiciones_perfil.ApMat}}</p>
                                             </div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                            <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">OBSERVACIONES</p>
                                                 <p class="tw-font-semibold">{{datos.articulos_requisicion.Observaciones}}</p>
                                             </div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50" v-if="datos.articulo_user != null">
+                                            <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50" v-if="datos.articulo_user != null">
                                                 <p class="tw-text-gray-600">RECIBIÓ</p>
                                                 <p class="tw-font-semibold">{{datos.articulo_user.name}}</p>
                                             </div>
-                                            <div class="tw-text-xs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
+                                            <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
                                                 <p class="tw-text-gray-600">COMENTARIOS</p>
                                                 <p class="tw-font-semibold">{{datos.Comentariollegada}}</p>
                                             </div>
