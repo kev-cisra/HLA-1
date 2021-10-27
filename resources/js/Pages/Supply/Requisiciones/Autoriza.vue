@@ -78,7 +78,7 @@
                         </div>
                     </div>
 
-                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5" @click="FiltroIndicadorMensual(6)">
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5" @click="FiltroIndicadorMensual(3)">
                         <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-indigo-600 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
                                 <div class="icon tw-w-14 tw-p-3.5 tw-bg-indigo-600 tw-text-white tw-rounded-full tw-mr-3">
@@ -249,17 +249,17 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in ArticuloRequisicion" :key="datos.id">
-                            <td class="">{{ datos.Fecha }}</td>
-                            <td class="">{{ datos.articulos_requisicion.NumReq }}</td>
-                            <td class="">{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
-                            <td class="">{{ datos.articulos_requisicion.Codigo }}</td>
-                            <td class="">{{ datos.Cantidad }}</td>
-                            <td class="">{{ datos.Unidad }}</td>
-                            <td class="">{{ datos.Descripcion }}</td>
-                            <td class="">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                            <td class="">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                            <td class="">{{ datos.OrdenCompra }}</td>
-                            <td class="">
+                            <td>{{ datos.Fecha }}</td>
+                            <td>{{ datos.articulos_requisicion.NumReq }}</td>
+                            <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
+                            <td>{{ datos.articulos_requisicion.Codigo }}</td>
+                            <td>{{ datos.Cantidad }}</td>
+                            <td>{{ datos.Unidad }}</td>
+                            <td>{{ datos.Descripcion }}</td>
+                            <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                            <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                            <td>{{ datos.OrdenCompra }}</td>
+                            <td>
                                 <div v-if="datos.EstatusArt == 3">
                                     <span tooltip="Articulo en espera de cotización" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">COTIZAR</span>
@@ -301,7 +301,7 @@
                                     </span>
                                 </div>
                             </td>
-                            <td class="">
+                            <td>
                                 <div class="columnaIconos" v-if="datos.EstatusArt >= 5 && datos.EstatusArt <= 10">
                                     <div class="iconoPurple" @click="Precios(datos)">
                                         <span tooltip="Visualiza Cotizaciones" flow="left">
@@ -322,7 +322,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="">
+                            <td>
                                 <div class="tw-flex tw-justify-center">
                                     <div class="iconoDetails" v-if="detalles != datos.id" @click="show(datos.id)">
                                         <span tooltip="Detalles" flow="left">

@@ -273,7 +273,7 @@
                                     </span>
                                     </div>
                                 </td>
-                                <td class="fila">
+                                <td>
                                     <div class="columnaIconos" v-if="datos.EstatusArt == 2">
                                         <div class="iconoPurple" @click="EnviaCotizar(datos, 3)">
                                             <span tooltip="Envia a Cotización" flow="left">

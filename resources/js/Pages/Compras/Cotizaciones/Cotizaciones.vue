@@ -286,7 +286,7 @@
                                     </span>
                                 </div>
                             </td>
-                            <td class="fila">
+                            <td>
                                 <div class="columnaIconos" v-if="datos.EstatusArt == 3 || datos.EstatusArt == 10 ">
                                     <div class="iconoPurple" @click="Cotizar(datos, 4)">
                                         <span tooltip="Realizar Cotizacion" flow="left">
