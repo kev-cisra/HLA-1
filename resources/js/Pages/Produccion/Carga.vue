@@ -226,8 +226,8 @@
                 <template v-slot:TableFooter >
                     <tr v-for="ca in v" :key="ca.id">
                         <td class="fila">{{ca.fecha}}</td>
-                        <td class="fila">{{ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf.perfiles.ApMat}}</td>
-                        <td class="fila">{{ca.dep_perf.departamentos.Nombre}}</td>
+                        <td class="fila">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
+                        <td class="fila">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
                         <td class="fila">{{ca.proceso.nompro}}</td>
                         <td class="fila tw-w-40">
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-emerald-600 tw-rounded-full" v-if="ca.notaPen == 2 & ca.proceso.tipo == 2">NOTA COORDINADOR</div>
@@ -290,7 +290,7 @@
             </div>
             <!-------------------------------- formularia y tabla ------------------------------------------------------->
             <div class="offcanvas-body">
-                 <!------------------------------------ Paquete de operadores ---------------------------------------->
+                <!------------------------------------ Paquete de operadores ---------------------------------------->
                 <div class="m-5 tw-p-6 tw-bg-teal-600 tw-rounded-3xl tw-shadow-xl">
                     <!-- Proceso proncipal, sub procesos, operador -->
                     <div class="tw-mb-6 lg:tw-flex">
@@ -381,7 +381,6 @@
                 </div>
             </div>
         </div>
-
         <!------------------------------------- Carga de paquetes Norma, Claves y partida -------------------------------->
         <div class="offcanvas offcanvas-end sm:tw-w-9/12 lg:tw-w-6/12" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
             <div class="offcanvas-header">
@@ -606,17 +605,20 @@
             reCarga(){
                 this.v = [];
                 this.cargas.forEach(ca => {
-                    if (this.usuario.dep_pers.length != 0) {
-                        if (this.noCor != 'cor' & this.noCor != 'enc') {
-                            if (ca.proceso.tipo != 2) {
+                    if (ca.dep_perf != null){
+                        if (this.usuario.dep_pers.length != 0) {
+                            if (this.noCor != 'cor' & this.noCor != 'enc') {
+                                if (ca.proceso.tipo != 2) {
+                                    this.v.push(ca);
+                                }
+                            }else{
                                 this.v.push(ca);
                             }
                         }else{
-                            this.v.push(ca);
+                            this.v.push(ca)
                         }
-                    }else{
-                        this.v.push(ca)
                     }
+
 
                 })
                 //console.log(this.v)
