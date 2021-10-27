@@ -19,7 +19,7 @@ class CargarExcelController extends Controller
         /* $dp = dep_per::join('perfiles_usuarios', 'perfiles_usuarios.id', 'dep_pers.perfiles_usuarios_id')->where('perfiles_usuarios.IdEmp', '=', 500)->first('dep_pers.id', 'AS', 'id');
         return $dp->id; */
         $equi = equipos::where('nombre', 'like', '%'.'equipo 1'.'%')->first('id');
-        return $equi;
+        return equipos::where('nombre', 'like', '%'.'equipo 1'.'%')->first('id')->id;
         $impo = Excel::import(new CargasImport, $request->file("file"));
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
