@@ -28,15 +28,15 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="dato in Papeleria" :key="dato.id">
-                            <td class="tw-p-2">{{ dato.articulos_papeleria.Fecha }}</td>
-                            <td class="tw-p-2">{{ dato.articulos_papeleria.Folio }}</td>
-                            <td class="tw-p-2">{{ dato.articulos_papeleria.requisicion_departamento.Nombre }}</td>
-                            <td class="tw-p-2">{{ dato.articulos_papeleria.requisicion_perfil.Nombre }}</td>
-                            <td class="tw-p-2">{{ dato.Cantidad }}</td>
-                            <td class="tw-p-2">{{ dato.articulo_material.Unidad }}</td>
-                            <td class="tw-p-2">{{ dato.articulo_material.Nombre }}</td>
-                            <td class="tw-p-2">{{ dato.articulos_papeleria.Comentarios }}</td>
-                            <td class="tw-p-2">
+                            <td>{{ dato.articulos_papeleria.Fecha }}</td>
+                            <td>{{ dato.articulos_papeleria.Folio }}</td>
+                            <td>{{ dato.articulos_papeleria.requisicion_departamento.Nombre }}</td>
+                            <td>{{ dato.articulos_papeleria.requisicion_perfil.Nombre }}</td>
+                            <td>{{ dato.Cantidad }}</td>
+                            <td>{{ dato.articulo_material.Unidad }}</td>
+                            <td>{{ dato.articulo_material.Nombre }}</td>
+                            <td>{{ dato.articulos_papeleria.Comentarios }}</td>
+                            <td>
                                 <div v-if="dato.Estatus == 1">
                                     <span tooltip="Confirmar Solicitud de Papeleria" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-teal-500 tw-rounded-full">SOLICITADO</span>
@@ -53,7 +53,7 @@
                                     </span>
                                 </div>
                             </td>
-                            <td class="fila">
+                            <td>
                                 <div class="columnaIconos" v-if="dato.Estatus == 1">
                                     <div class="iconoTeal" @click="Confirma(dato, 2)">
                                         <span tooltip="Confirma Material" flow="left">
