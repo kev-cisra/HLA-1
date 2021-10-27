@@ -20619,14 +20619,6 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(16, 185, 129, var(--tw-text-opacity));
 }
-.tw-text-red-800 {
-	--tw-text-opacity: 1;
-	color: rgba(153, 27, 27, var(--tw-text-opacity));
-}
-.tw-text-blue-800 {
-	--tw-text-opacity: 1;
-	color: rgba(30, 64, 175, var(--tw-text-opacity));
-}
 .tw-underline {
 	text-decoration: underline;
 }
@@ -21352,7 +21344,7 @@ select {
 }
 .Enero {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21360,10 +21352,10 @@ select {
 	border-color: rgba(34, 197, 94, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21381,7 +21373,7 @@ select {
 }
 .EneroActivo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21389,10 +21381,10 @@ select {
 	border-color: rgba(34, 197, 94, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(74, 222, 128, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21410,7 +21402,7 @@ select {
 }
 .Febrero {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21418,10 +21410,10 @@ select {
 	border-color: rgba(6, 182, 212, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21439,7 +21431,7 @@ select {
 }
 .FebreroActivo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21447,10 +21439,10 @@ select {
 	border-color: rgba(6, 182, 212, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(34, 211, 238, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21468,7 +21460,7 @@ select {
 }
 .Marzo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21476,10 +21468,10 @@ select {
 	border-color: rgba(99, 102, 241, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21497,7 +21489,7 @@ select {
 }
 .MarzoActivo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21505,10 +21497,10 @@ select {
 	border-color: rgba(99, 102, 241, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(129, 140, 248, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21526,7 +21518,7 @@ select {
 }
 .Abril {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21534,10 +21526,10 @@ select {
 	border-color: rgba(217, 70, 239, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21555,7 +21547,7 @@ select {
 }
 .AbrilActivo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21563,10 +21555,10 @@ select {
 	border-color: rgba(217, 70, 239, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(232, 121, 249, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21584,7 +21576,7 @@ select {
 }
 .Mayo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21592,10 +21584,10 @@ select {
 	border-color: rgba(16, 185, 129, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21613,7 +21605,7 @@ select {
 }
 .MayoActivo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21621,10 +21613,10 @@ select {
 	border-color: rgba(16, 185, 129, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(52, 211, 153, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21642,7 +21634,7 @@ select {
 }
 .Junio {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21650,10 +21642,10 @@ select {
 	border-color: rgba(139, 92, 246, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21671,7 +21663,7 @@ select {
 }
 .JunioActivo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21679,10 +21671,10 @@ select {
 	border-color: rgba(139, 92, 246, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(167, 139, 250, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21700,7 +21692,7 @@ select {
 }
 .Julio {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21708,10 +21700,10 @@ select {
 	border-color: rgba(244, 63, 94, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21729,7 +21721,7 @@ select {
 }
 .JulioActivo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21737,10 +21729,10 @@ select {
 	border-color: rgba(244, 63, 94, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(251, 113, 133, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21758,7 +21750,7 @@ select {
 }
 .Agosto {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21766,10 +21758,10 @@ select {
 	border-color: rgba(34, 197, 94, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21787,7 +21779,7 @@ select {
 }
 .AgostoActivo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21795,10 +21787,10 @@ select {
 	border-color: rgba(34, 197, 94, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(74, 222, 128, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21816,7 +21808,7 @@ select {
 }
 .Septiembre {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21824,10 +21816,10 @@ select {
 	border-color: rgba(245, 158, 11, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21845,7 +21837,7 @@ select {
 }
 .SeptiembreActivo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21853,10 +21845,10 @@ select {
 	border-color: rgba(245, 158, 11, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(251, 191, 36, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21874,7 +21866,7 @@ select {
 }
 .Octubre {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21882,10 +21874,10 @@ select {
 	border-color: rgba(132, 204, 22, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21903,7 +21895,7 @@ select {
 }
 .OctubreActivo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21911,10 +21903,10 @@ select {
 	border-color: rgba(132, 204, 22, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(163, 230, 53, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21932,7 +21924,7 @@ select {
 }
 .Noviembre {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21940,10 +21932,10 @@ select {
 	border-color: rgba(14, 165, 233, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21961,7 +21953,7 @@ select {
 }
 .NoviembreActivo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21969,10 +21961,10 @@ select {
 	border-color: rgba(14, 165, 233, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(56, 189, 248, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -21990,7 +21982,7 @@ select {
 }
 .Diciembre {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -21998,10 +21990,10 @@ select {
 	border-color: rgba(239, 68, 68, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -22019,7 +22011,7 @@ select {
 }
 .DiciembreActivo {
 	display: inline-flex;
-	width: 8rem;
+	width: 7rem;
 	align-items: center;
 	border-radius: 0.25rem;
 	border-bottom-width: 2px;
@@ -22027,10 +22019,10 @@ select {
 	border-color: rgba(239, 68, 68, var(--tw-border-opacity));
 	--tw-bg-opacity: 1;
 	background-color: rgba(248, 113, 113, var(--tw-bg-opacity));
-	padding-left: 1.5rem;
-	padding-right: 1.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
 	font-weight: 700;
 	letter-spacing: 0.025em;
 	--tw-text-opacity: 1;
@@ -22420,6 +22412,10 @@ select {
 		align-items: flex-start;
 	}
 
+	.sm\:tw-justify-start {
+		justify-content: flex-start;
+	}
+
 	.sm\:tw-justify-center {
 		justify-content: center;
 	}
@@ -22597,6 +22593,10 @@ select {
 
 	.md\:tw-flex-wrap {
 		flex-wrap: wrap;
+	}
+
+	.md\:tw-justify-center {
+		justify-content: center;
 	}
 
 	.md\:tw-gap-4 {
