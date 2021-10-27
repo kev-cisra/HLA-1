@@ -211,14 +211,13 @@
                     </select>
                 </div>
             </div>
-    {{ hoy }}
             <div class="tw-overflow-x-auto tw-mx-2">
                 <Table id="Articulos">
                     <template v-slot:TableHeader>
                         <th class="columna">FECHA</th>
-                        <th class="columna"># REQUISICIÓN</th>
+                        <th class="columna"># REQ</th>
                         <th class="columna">CÓDIGO</th>
-                        <th class="columna">CANTIDAD</th>
+                        <th class="columna">CANT</th>
                         <th class="columna">UNIDAD</th>
                         <th class="columna">DESCRIPCIÓN</th>
                         <th class="columna"># PARTE</th>
@@ -233,7 +232,12 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in ArticuloRequisicion" :key="datos.id">
-                            <td>{{ datos.Fecha }}</td>
+                            <td v-if="CalculaRetraso(datos.Fecha) > 7 && datos.EstatusArt == 3">
+                                    <span tooltip="Urgente Cotizar" flow="right">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-px-1 tw-text-white tw-bg-red-600 tw-rounded-full">{{ datos.Fecha }}</span>
+                                    </span>
+                            </td>
+                            <td v-else>{{ datos.Fecha }}</td>
                             <td>{{ datos.articulos_requisicion.NumReq }}</td>
                             <td>{{ datos.articulos_requisicion.Codigo }}</td>
                             <td>{{ datos.Cantidad }}</td>
@@ -922,6 +926,13 @@ export default {
 
         chageFecha() {
             this.showFecha = !this.showFecha;
+        },
+
+        CalculaRetraso(Fecha){
+            var fecha1 = moment(Fecha);
+            var hoy  = moment();
+            var di = hoy.diff(fecha1, 'days');
+            return  di;
         },
 
         Filtro(value){
