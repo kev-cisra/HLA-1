@@ -31,7 +31,7 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         $equi = equipos::where('nombre', 'like', '%'.$row['equipo'].'%')->where('departamento_id', '=', $dp->iddepa)->first(['id', 'turno_id']);
 
         return new carga([
-            'fecha' => date('Y-m-d h:i:s', $fecha),
+            'fecha' => date('Y-m-d', $fecha).' 12:00:00',
             'semana' => date("Y", strtotime($row['fecha'])).'-W'.date("W", strtotime($row['fecha'])),
             'valor' => $row['peso'],
             'partida' => $row['partida'],

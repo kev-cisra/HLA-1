@@ -50,11 +50,7 @@
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Fecha</jet-label>
-                        <!-- <input type="datetime-local" class="InputSelect" @click="limInputs(1.5)" v-model="FoFiltro.iniDia"> -->
-                        <div class="tw-flex">
-                            <jet-input type="date" class="form-control tw-w-2/3" @click="limInputs(1.5)" v-model="FoFiltro.iniDia" :max="FoFiltro.finDia"></jet-input>
-                            <!-- <jet-input type="time" class="form-control tw-w-1/3" @click="limInputs(.5)" v-model="horas"></jet-input> -->
-                        </div>
+                        <jet-input type="date" class="form-control tw-w-2/3" @click="limInputs(1.5)" v-model="FoFiltro.iniDia" :max="hoy"></jet-input>
                     </div>
                 </div>
             </div>
@@ -124,8 +120,7 @@
                     <div class="ModalForm">
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Descargar Formato</jet-label>
-                                <a target="_blank" :href="path+ 'Archivos/FormatosExcel/Carga_Masiva.xlsx'">Link de descarga</a>
+                                <a target="_blank" :href="path+'Archivos\FormatosExcel\Carga_Masiva.csv'">Link de descarga</a>
                             </div>
                         </div>
 
@@ -275,6 +270,7 @@
             this.global();
         },
         methods: {
+            /***************************** Carga Masiva ************************************/
             carMasi(){
                 const form = this.docu;
 
@@ -285,8 +281,6 @@
             /***************************** Calculos ******************************************/
             calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
-                    this.verTabla();
-                    $('#t_repo').DataTable().destroy();
                     this.vCal = false;
                     //console.log(this.calcu+' '+this.S_Area);
                     this.btnOff = true;
@@ -297,7 +291,7 @@
                             this.vCal = true,
                             this.reset(),
                             this.chageClose(),
-                            this.tabla()
+                            this.limInputs('00')
                         },
                         onError: (e) => {
                             this.btnOff = false,
@@ -491,6 +485,12 @@
                     this.FoFiltro.semana = null;
                     this.horas = '07:00';
                 }
+                else{
+                    this.FoFiltro.iniDia = null;
+                    this.FoFiltro.finDia = null;
+                    this.FoFiltro.semana = null;
+                    this.FoFiltro.mes = null;
+                }
             },
             /***************************** Modal de carga masiva ********************************************/
             //abrir modal carga masiva
@@ -533,13 +533,12 @@
             S_Area: function(b){
                 $('#t_repo').DataTable().destroy();
                 this.$inertia.get('/Produccion/ReportesPro',{ busca: b, ano: this.ano }, {
-                    onSuccess: () => { this.tabla(), this.limp = 2 }, onError: () => { this.tabla() }, preserveState: true
+                    onSuccess: () => { }, onError: () => { }, preserveState: true
                 });
             },
             ano: function(a) {
-                $('#t_repo').DataTable().destroy();
                 this.$inertia.get('/Produccion/ReportesPro',{ busca: this.S_Area, ano: a }, {
-                    onSuccess: () => { this.tabla(), this.limp = 2 }, onError: () => { this.tabla() }, preserveState: true
+                    onSuccess: () => { }, onError: () => { }, preserveState: true
                 });
 
             },
