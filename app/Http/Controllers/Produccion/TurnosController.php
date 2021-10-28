@@ -15,6 +15,10 @@ use Inertia\Inertia;
 
 class TurnosController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Produccion.turnos.index']);
+    }
     /**
      * Display a listing of the resource.
      *

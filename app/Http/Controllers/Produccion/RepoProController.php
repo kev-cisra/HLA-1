@@ -12,6 +12,10 @@ use Inertia\Inertia;
 
 class RepoProController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Produccion.reporpro.index']);
+    }
     /**
      * Display a listing of the resource.
      *

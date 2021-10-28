@@ -17,6 +17,10 @@ use Inertia\Inertia;
 
 class MaquinasController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Produccion.maquinas.index']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -24,6 +28,7 @@ class MaquinasController extends Controller
      */
     public function index(Request $request)
     {
+
         //
         /***************** Información de la persona  *****************************/
         //Muestra el id de la persona que inicio sesion

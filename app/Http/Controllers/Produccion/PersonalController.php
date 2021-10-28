@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Validator;
 
 class PersonalController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Produccion.personal.index']);
+    }
     /**
      * Display a listing of the resource.
      *

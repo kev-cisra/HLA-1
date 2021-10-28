@@ -16,6 +16,10 @@ use Inertia\Inertia;
 
 class ClamatController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Produccion.clamat.index']);
+    }
     /**
      * Display a listing of the resource.
      *

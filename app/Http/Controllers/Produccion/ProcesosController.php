@@ -19,6 +19,10 @@ use PhpParser\Node\Stmt\Return_;
 
 class ProcesosController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Produccion.procesos.index']);
+    }
     /**
      * Display a listing of the resource.
      *

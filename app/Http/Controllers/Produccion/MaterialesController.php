@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Validator;
 
 class MaterialesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Produccion.materiales.index']);
+    }
     /**
      * Display a listing of the resource.
      *
