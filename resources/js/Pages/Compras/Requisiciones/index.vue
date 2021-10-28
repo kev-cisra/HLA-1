@@ -670,6 +670,23 @@
         </form>
     </modal>
 
+    <modal :show="showModal2" @close="chageClose2" :maxWidth="tam">
+        <form>
+            <div class="tw-px-4 tw-py-4">
+                <div class="tw-text-lg">
+                    <div class="ModalHeader">
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Partidas</h3>
+                    </div>
+                </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="save(form)" v-show="!editMode2">Guardar</jet-button>
+                <jet-button type="button" @click="update(form, 1)" v-show="editMode2">Actualizar</jet-button>
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </form>
+    </modal>
+
     </app-layout>
 </template>
 
