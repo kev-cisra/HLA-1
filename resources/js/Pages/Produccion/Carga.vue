@@ -359,11 +359,11 @@
                         </template>
                         <template v-slot:TableFooter>
                             <tr v-for="pOpe in paqope" :key="pOpe">
-                                <td class="fila"> {{pOpe.dep_per.perfiles.Nombre}} {{pOpe.dep_per.perfiles.ApPat}} {{pOpe.dep_per.perfiles.ApMat}}</td>
+                                <td class="fila"> {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.Nombre}} {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.ApPat}} {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.ApMat}}</td>
                                 <td class="fila">{{pOpe.proceso == null ? 'N/A' : pOpe.proceso.nompro}}</td>
-                                <td class="fila"> {{pOpe.maq_pro.maquinas.Nombre}} {{pOpe.maq_pro.maquinas.marca.nombre}}</td>
-                                <td class="fila"> {{pOpe.dep_per.equipo == null ? 'N/A' : pOpe.dep_per.equipo.nombre}} </td>
-                                <td class="fila"> {{pOpe.dep_per.equipo == null ? 'N/A' : pOpe.dep_per.equipo.turnos.nomtur}} </td>
+                                <td class="fila"> {{pOpe.maq_pro.maquinas.Nombre}} </td>
+                                <td class="fila"> {{pOpe.dep_per.equipo_id == null ? 'N/A' : pOpe.dep_per.equipo.nombre}} </td>
+                                <td class="fila"> {{pOpe.dep_per.equipo_id == null ? 'N/A' : pOpe.dep_per.equipo.turnos.nomtur}} </td>
                                 <td class="fila">
                                     <div class="columnaIconos">
                                         <div class="iconoDelete" @click="deletePO(pOpe)">
@@ -412,13 +412,9 @@
                                 <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
                             </select>
                             <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
-                            <!-- <jet-input class="InputSelect" list="cla" v-model="form.clave_id" @input="(val) => (form.partida = form.partida.toUpperCase())" :disabled="form.norma == ''"></jet-input>
-                            <datalist id="cla">
-                                <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
-                            </datalist> -->
                         </div>
                         <!-- Inout partida -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0" v-if="noCor != 'cor' | editMode">
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                             <jet-label>Partida</jet-label>
                             <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
                             <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
