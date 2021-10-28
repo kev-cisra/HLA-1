@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2b1c501b9f195806115262111babff4",
+    "content-hash": "1c7fd6517a3b1ec12b58131ce65ef625",
     "packages": [
         {
             "name": "askedio/laravel-soft-cascade",
@@ -323,62 +323,6 @@
                 "source": "https://github.com/Chartisan/PHP/tree/1.2.1"
             },
             "time": "2020-11-05T13:13:58+00:00"
-        },
-        {
-            "name": "clarkeash/doorman",
-            "version": "v6.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/clarkeash/doorman.git",
-                "reference": "e77575340fa716c504234703c282a49abd793061"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/clarkeash/doorman/zipball/e77575340fa716c504234703c282a49abd793061",
-                "reference": "e77575340fa716c504234703c282a49abd793061",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": "^8.0",
-                "php": "^7.3|^8.0",
-                "ramsey/uuid": "^4.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.4",
-                "orchestra/testbench": "^6.0",
-                "phpunit/phpunit": "^9.3"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Clarkeash\\Doorman\\Providers\\DoormanServiceProvider"
-                    ],
-                    "aliases": {
-                        "Doorman": "Clarkeash\\Doorman\\Facades\\Doorman"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Clarkeash\\Doorman\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ashley Clarke",
-                    "email": "me@ashleyclarke.me"
-                }
-            ],
-            "support": {
-                "issues": "https://github.com/clarkeash/doorman/issues",
-                "source": "https://github.com/clarkeash/doorman/tree/v6.1.0"
-            },
-            "time": "2020-12-16T20:16:26+00:00"
         },
         {
             "name": "consoletvs/charts",
