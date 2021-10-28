@@ -213,7 +213,7 @@
             </div>
         </div>
 
-        <div class="tw-overflow-x-auto tw-mx-2">
+<!--         <div class="tw-overflow-x-auto tw-mx-2">
             <Table id="Articulos">
                 <template v-slot:TableHeader>
                     <th class="columna">FECHA</th>
@@ -370,10 +370,10 @@
                     </tr>
                 </template>
             </Table>
-        </div>
+        </div> -->
 
         <div class="tw-overflow-x-auto tw-mx-2">
-            <Table>
+            <Table id="Articulos">
                 <template v-slot:TableHeader>
                     <th class="columna">Num</th>
                     <th class="columna">DEPARTAMENTO</th>
@@ -413,10 +413,6 @@
             </Table>
         </div>
     </div>
-
-    <pre>
-        {{ pru }}
-    </pre>
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
         <form>
@@ -670,7 +666,7 @@
         </form>
     </modal>
 
-    <modal :show="showModal2" @close="chageClose2" :maxWidth="tam">
+    <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
         <form>
             <div class="tw-px-4 tw-py-4">
                 <div class="tw-text-lg">
@@ -678,6 +674,13 @@
                         <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Partidas</h3>
                     </div>
                 </div>
+            </div>
+
+            <div>
+                <pre>
+                    {{ Art }}
+                </pre>
+            </div>
 
             <div class="ModalFooter">
                 <jet-button type="button" @click="save(form)" v-show="!editMode2">Guardar</jet-button>
@@ -686,6 +689,32 @@
             </div>
         </form>
     </modal>
+
+        <div class="tw-overflow-x-auto tw-mx-28 tw-mt-12">
+            <Table>
+                <template v-slot:TableHeader>
+                    <th class="columna">Fecha</th>
+                    <th class="columna">Cantidad</th>
+                    <th class="columna">Unidad</th>
+                    <th class="columna">Descripcion</th>
+                    <th class="columna">NumParte</th>
+                    <th class="columna">EstatusArt</th>
+                    <th class="columna">RecibidoPor</th>
+                </template>
+
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="datos in Art" :key="datos.id">
+                        <td class="tw-text-center">{{ datos.Fecha }}</td>
+                        <td class="tw-text-center">{{ datos.Cantidad }}</td>
+                        <td class="tw-text-center">{{ datos.Unidad }}</td>
+                        <td class="tw-text-center">{{ datos.Descripcion }}</td>
+                        <td class="tw-text-center">{{ datos.NumParte }}</td>
+                        <td class="tw-text-center">{{ datos.EstatusArt }}</td>
+                        <td class="tw-text-center">{{ datos.RecibidoPor }}</td>
+                    </tr>
+                </template>
+            </Table>
+        </div>
 
     </app-layout>
 </template>
@@ -713,6 +742,7 @@ export default {
 
     data() {
         return {
+            showPartidas: false,
             showModal2: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
@@ -743,6 +773,7 @@ export default {
             params:{
                 month: null,
                 Estatus: null,
+                Req: null,
             },
             MaquinasDpto:[],
             Marcas: [],
@@ -780,6 +811,7 @@ export default {
         Confirmado: Object,
         mes: Object,
         pru: Object,
+        Art: Object,
     },
 
     methods: {
@@ -790,6 +822,10 @@ export default {
 
         chageClose2() {
             this.showModal2 = !this.showModal2;
+        },
+
+        chagePartidas() {
+            this.showPartidas = !this.showPartidas;
         },
 
         reset() {
@@ -942,7 +978,14 @@ export default {
         },
 
         Partidas(Part){
-            console.log(Part);
+
+        console.log(Part);
+        this.params.Req = Part;
+        this.chagePartidas();
+        this.$inertia.get('/Compras/Requisiciones', this.params , { //envio de variables por url
+            onSuccess: () => {
+
+        }, preserveState: true })
         }
     },
 

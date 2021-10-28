@@ -230,6 +230,10 @@ class RequisicionesController extends Controller{
 
         $pru = Requisiciones::with(['RequisicionArticulos', 'RequisicionesPerfil', 'RequisicionDepartamento', 'RequisicionJefe', 'RequisicionMaquina', 'RequisicionMarca'])->get();
 
+        if($request->Req != ''){
+            $Art = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
+        }
+
         $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 8)->where('IdEmp', '=', $Session->IdEmp)->count();
 
         $Cotizacion = ArticulosRequisiciones::whereBetween('EstatusArt', [3, 4])->where('IdEmp', '=', $Session->IdEmp)->count();
@@ -249,7 +253,8 @@ class RequisicionesController extends Controller{
             'Autorizados',
             'Confirmado',
             'mes',
-            'pru'));
+            'pru',
+            'Art'));
     }
 
     public function store(RequisicionesRequest $request){
