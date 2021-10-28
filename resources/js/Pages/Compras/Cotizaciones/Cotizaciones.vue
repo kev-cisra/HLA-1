@@ -235,17 +235,17 @@
                                 </span>
                         </td>
                         <td v-else>{{ datos.Fecha }}</td>
-                        <td>{{ datos.articulos_requisicion.NumReq }}</td>
+                        <td class="tw-text-center">{{ datos.articulos_requisicion.NumReq }}</td>
                         <td>{{ datos.articulos_requisicion.Codigo }}</td>
-                        <td>{{ datos.Cantidad }}</td>
-                        <td>{{ datos.Unidad }}</td>
+                        <td class="tw-text-center">{{ datos.Cantidad }}</td>
+                        <td class="tw-text-center">{{ datos.Unidad }}</td>
                         <td>{{ datos.Descripcion }}</td>
                         <td>{{ datos.NumParte }}</td>
-                        <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                        <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                        <td>{{ datos.Fechallegada }}</td>
-                        <td>{{ datos.OrdenCompra }}</td>
-                        <td>
+                        <td class="tw-text-center">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.Fechallegada }}</td>
+                        <td class="tw-text-center">{{ datos.OrdenCompra }}</td>
+                        <td class="tw-text-center">
                             <div v-if="datos.EstatusArt == 3">
                                 <span tooltip="Articulo en espera de cotización" flow="left">
                                     <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">COTIZAR</span>
@@ -287,7 +287,7 @@
                                 </span>
                             </div>
                         </td>
-                        <td>
+                        <td class="tw-text-center">
                             <div class="columnaIconos" v-if="datos.EstatusArt == 3 || datos.EstatusArt == 10 ">
                                 <div class="iconoPurple" @click="Cotizar(datos, 4)">
                                     <span tooltip="Realizar Cotizacion" flow="left">

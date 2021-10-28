@@ -17,7 +17,7 @@
 }
 
 .columna{
-    @apply tw-p-2 tw-cursor-pointer hover:tw-text-gray-300;
+    @apply tw-p-1 tw-cursor-pointer hover:tw-text-gray-300;
 }
 
 .fila{

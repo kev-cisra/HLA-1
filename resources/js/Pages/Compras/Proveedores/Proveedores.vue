@@ -10,14 +10,14 @@
             </slot>
         </Header>
 
-        <div class="tw-mt-8">
+        <div class="tw-mt-8 tw-mx-16">
             <div class="tw-flex tw-justify-end">
                 <div>
                     <jet-button @click="openModal" class="BtnNuevo">Nueva Proveedor</jet-button>
                 </div>
             </div>
 
-            <div class="tw-overflow-x-auto tw-mx-2">
+            <div class="tw-overflow-x-auto">
                 <Table id="Proveedores">
                     <template v-slot:TableHeader>
                         <th class="columna">Nombre</th>
@@ -28,10 +28,10 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="dato in Proveedores" :key="dato.id">
-                            <td class="tw-p-2">{{ dato.Nombre }}</td>
-                            <td class="tw-p-2">{{ dato.proveedor_departamento.Nombre }}</td>
-                            <td class="tw-p-2">{{ dato.TipoPago }}</td>
-                            <td class="fila">
+                            <td>{{ dato.Nombre }}</td>
+                            <td>{{ dato.proveedor_departamento.Nombre }}</td>
+                            <td>{{ dato.TipoPago }}</td>
+                            <td>
                                 <div class="columnaIconos">
                                     <div class="iconoEdit" @click="edit(dato)">
                                         <span tooltip="Editar" flow="left">

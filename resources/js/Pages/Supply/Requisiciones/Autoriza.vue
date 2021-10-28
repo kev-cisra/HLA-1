@@ -15,9 +15,9 @@
                 <div class="tw-flex tw-flex-col tw-w-full tw-mb-2 tw-space-y-8 lg:tw-flex-row lg:tw-space-x-10 lg:tw-space-y-0 lg:tw-mb-4">
 
                     <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5">
-                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-indigo-500 tw-rounded-lg tw-widget">
+                        <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-indigo-500 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
-                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-indigo-500 tw-text-white tw-rounded-full tw-mr-3">
+                                <div class="icon tw-w-10 tw-p-2 tw-bg-indigo-500 tw-text-white tw-rounded-full tw-mr-3">
                                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
@@ -31,9 +31,9 @@
                     </div>
 
                     <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5" @click="FiltroIndicadores(5)">
-                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-orange-500 tw-rounded-lg tw-widget">
+                        <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-orange-500 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
-                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-orange-400 tw-text-white tw-rounded-full tw-mr-3">
+                                <div class="icon tw-w-10 tw-p-2 tw-bg-orange-400 tw-text-white tw-rounded-full tw-mr-3">
                                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
@@ -47,9 +47,9 @@
                     </div>
 
                     <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5" @click="FiltroIndicadores(6)">
-                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-cyan-600 tw-rounded-lg tw-widget">
+                        <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-cyan-600 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
-                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-cyan-600 tw-text-white tw-rounded-full tw-mr-3">
+                                <div class="icon tw-w-10 tw-p-2 tw-bg-cyan-600 tw-text-white tw-rounded-full tw-mr-3">
                                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
@@ -63,9 +63,9 @@
                     </div>
 
                     <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5" @click="FiltroIndicadorMensual(5)">
-                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-orange-600 tw-rounded-lg tw-widget">
+                        <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-orange-600 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
-                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-orange-600 tw-text-white tw-rounded-full tw-mr-3">
+                                <div class="icon tw-w-10 tw-p-2 tw-bg-orange-600 tw-text-white tw-rounded-full tw-mr-3">
                                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
@@ -79,9 +79,9 @@
                     </div>
 
                     <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5">
-                        <div class="tw-w-full tw-p-4 tw-bg-white tw-border-l-4 tw-border-indigo-600 tw-rounded-lg tw-widget">
+                        <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-indigo-600 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
-                                <div class="icon tw-w-14 tw-p-3.5 tw-bg-indigo-600 tw-text-white tw-rounded-full tw-mr-3">
+                                <div class="icon tw-w-10 tw-p-2 tw-bg-indigo-600 tw-text-white tw-rounded-full tw-mr-3">
                                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
@@ -98,118 +98,116 @@
             </div>
         </div>
 
-        <div class="tw-overflow-auto">
-            <div class="tw-shadow-full tw-row tw-justify-content-center">
-                <div class="tw-flex tw-items-center tw-mt-2 tw-text-center tw-text-white tw-border tw-shadow-xl">
-                    <div class="tw-m-3" @click="FiltroPorMes(1)">
-                        <button class="EneroActivo" v-if="mes == 1">
-                            <span class="mx-auto">Enero</span>
-                        </button>
-                        <button class="Enero" v-else>
-                            <span class="mx-auto">Enero</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroPorMes(2)">
-                        <button class="FebreroActivo" v-if="mes == 2">
-                            <span class="mx-auto">Febrero</span>
-                        </button>
-                        <button class="Febrero" v-else>
-                            <span class="mx-auto">Febrero</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroPorMes(3)">
-                        <button class="MarzoActivo" v-if="mes == 3">
-                            <span class="mx-auto">Marzo</span>
-                        </button>
-                        <button class="Marzo" v-else>
-                            <span class="mx-auto">Marzo</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroPorMes(4)">
-                        <button class="AbrilActivo" v-if="mes == 4">
-                            <span class="mx-auto">Abril</span>
-                        </button>
-                        <button class="Abril" v-else>
-                            <span class="mx-auto">Abril</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroPorMes(5)">
-                        <button class="MayoActivo" v-if="mes == 5">
-                            <span class="mx-auto">Mayo</span>
-                        </button>
-                        <button class="Mayo" v-else>
-                            <span class="mx-auto">Mayo</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroPorMes(6)">
-                        <button class="JunioActivo" v-if="mes == 6">
-                            <span class="mx-auto">Junio</span>
-                        </button>
-                        <button class="Junio" v-else>
-                            <span class="mx-auto">Junio</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroPorMes(7)">
-                        <button class="JulioActivo" v-if="mes == 7">
-                            <span class="mx-auto">Julio</span>
-                        </button>
-                        <button class="Julio" v-else>
-                            <span class="mx-auto">Julio</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroPorMes(8)">
-                        <button class="AgostoActivo" v-if="mes == 8">
-                            <span class="mx-auto">Agosto</span>
-                        </button>
-                        <button class="Agosto" v-else>
-                            <span class="mx-auto">Agosto</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroPorMes(9)">
-                        <button class="SeptiembreActivo" v-if="mes == 9">
-                            <span class="mx-auto">Septiembre</span>
-                        </button>
-                        <button class="Septiembre" v-else>
-                            <span class="mx-auto">Septiembre</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroPorMes(10)">
-                        <button class="OctubreActivo" v-if="mes == 10">
-                            <span class="mx-auto">Octubre</span>
-                        </button>
-                        <button class="Octubre" v-else>
-                            <span class="mx-auto">Octubre</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroPorMes(11)">
-                        <button class="NoviembreActivo" v-if="mes == 11">
-                            <span class="mx-auto">Noviembre</span>
-                        </button>
-                        <button class="Noviembre" v-else>
-                            <span class="mx-auto">Noviembre</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroPorMes(12)">
-                        <button class="DiciembreActivo" v-if="mes == 12">
-                            <span class="mx-auto">Diciembre</span>
-                        </button>
-                        <button class="Diciembre" v-else>
-                            <span class="mx-auto">Diciembre</span>
-                        </button>
-                    </div>
-
+        <div class="tw-overflow-auto md:tw-flex md:tw-justify-center">
+            <div class="tw-flex tw-items-center tw-mt-2 tw-text-center tw-text-white tw-border">
+                <div class="tw-m-3" @click="FiltroPorMes(1)">
+                    <button class="EneroActivo" v-if="mes == 1">
+                        <span class="mx-auto">Enero</span>
+                    </button>
+                    <button class="Enero" v-else>
+                        <span class="mx-auto">Enero</span>
+                    </button>
                 </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(2)">
+                    <button class="FebreroActivo" v-if="mes == 2">
+                        <span class="mx-auto">Febrero</span>
+                    </button>
+                    <button class="Febrero" v-else>
+                        <span class="mx-auto">Febrero</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(3)">
+                    <button class="MarzoActivo" v-if="mes == 3">
+                        <span class="mx-auto">Marzo</span>
+                    </button>
+                    <button class="Marzo" v-else>
+                        <span class="mx-auto">Marzo</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(4)">
+                    <button class="AbrilActivo" v-if="mes == 4">
+                        <span class="mx-auto">Abril</span>
+                    </button>
+                    <button class="Abril" v-else>
+                        <span class="mx-auto">Abril</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(5)">
+                    <button class="MayoActivo" v-if="mes == 5">
+                        <span class="mx-auto">Mayo</span>
+                    </button>
+                    <button class="Mayo" v-else>
+                        <span class="mx-auto">Mayo</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(6)">
+                    <button class="JunioActivo" v-if="mes == 6">
+                        <span class="mx-auto">Junio</span>
+                    </button>
+                    <button class="Junio" v-else>
+                        <span class="mx-auto">Junio</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(7)">
+                    <button class="JulioActivo" v-if="mes == 7">
+                        <span class="mx-auto">Julio</span>
+                    </button>
+                    <button class="Julio" v-else>
+                        <span class="mx-auto">Julio</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(8)">
+                    <button class="AgostoActivo" v-if="mes == 8">
+                        <span class="mx-auto">Agosto</span>
+                    </button>
+                    <button class="Agosto" v-else>
+                        <span class="mx-auto">Agosto</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(9)">
+                    <button class="SeptiembreActivo" v-if="mes == 9">
+                        <span class="mx-auto">Septiembre</span>
+                    </button>
+                    <button class="Septiembre" v-else>
+                        <span class="mx-auto">Septiembre</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(10)">
+                    <button class="OctubreActivo" v-if="mes == 10">
+                        <span class="mx-auto">Octubre</span>
+                    </button>
+                    <button class="Octubre" v-else>
+                        <span class="mx-auto">Octubre</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(11)">
+                    <button class="NoviembreActivo" v-if="mes == 11">
+                        <span class="mx-auto">Noviembre</span>
+                    </button>
+                    <button class="Noviembre" v-else>
+                        <span class="mx-auto">Noviembre</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(12)">
+                    <button class="DiciembreActivo" v-if="mes == 12">
+                        <span class="mx-auto">Diciembre</span>
+                    </button>
+                    <button class="Diciembre" v-else>
+                        <span class="mx-auto">Diciembre</span>
+                    </button>
+                </div>
+
             </div>
         </div>
 
@@ -236,7 +234,7 @@
                         <th class="columna"># REQ</th>
                         <th class="columna">DEPARTAMENTO</th>
                         <th class="columna">CÓDIGO</th>
-                        <th class="columna">CANTIDAD</th>
+                        <th class="columna">CANT</th>
                         <th class="columna">UNIDAD</th>
                         <th class="columna">DESCRIPCIÓN</th>
                         <th class="columna">MAQUINA</th>
@@ -249,16 +247,16 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in ArticuloRequisicion" :key="datos.id">
-                            <td>{{ datos.Fecha }}</td>
-                            <td>{{ datos.articulos_requisicion.NumReq }}</td>
-                            <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
-                            <td>{{ datos.articulos_requisicion.Codigo }}</td>
-                            <td>{{ datos.Cantidad }}</td>
-                            <td>{{ datos.Unidad }}</td>
+                            <td class="tw-text-center">{{ datos.Fecha }}</td>
+                            <td class="tw-text-center">{{ datos.articulos_requisicion.NumReq }}</td>
+                            <td class="tw-text-center">{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
+                            <td class="tw-text-center">{{ datos.articulos_requisicion.Codigo }}</td>
+                            <td class="tw-text-center">{{ datos.Cantidad }}</td>
+                            <td class="tw-text-center">{{ datos.Unidad }}</td>
                             <td>{{ datos.Descripcion }}</td>
-                            <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                            <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                            <td>{{ datos.OrdenCompra }}</td>
+                            <td class="tw-text-center">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                            <td class="tw-text-center">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="tw-text-center">{{ datos.OrdenCompra }}</td>
                             <td>
                                 <div v-if="datos.EstatusArt == 3">
                                     <span tooltip="Articulo en espera de cotización" flow="left">
