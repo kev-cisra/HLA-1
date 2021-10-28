@@ -24,7 +24,7 @@ class Requisiciones extends Model
 
     //relacion uno a muchos
     public function RequisicionArticulos() {
-        return $this->hasMany(ArticulosRequisiciones::class, 'requisiciones_id');
+        return $this->hasMany(ArticulosRequisiciones::class, 'requisicion_id');
     }
 
     // Relacion 1 a 1 con Departamento

@@ -371,7 +371,52 @@
                 </template>
             </Table>
         </div>
+
+        <div class="tw-overflow-x-auto tw-mx-2">
+            <Table>
+                <template v-slot:TableHeader>
+                    <th class="columna">Num</th>
+                    <th class="columna">DEPARTAMENTO</th>
+                    <th class="columna">JEFE AREA</th>
+                    <th class="columna">CODIGO</th>
+                    <th class="columna">MAQUINA</th>
+                    <th class="columna">MARCA</th>
+                    <th class="columna">TIPO COMPRA</th>
+                    <th class="columna">OBSERVACIONES</th>
+                    <th class="columna">SOLICITANTE</th>
+                    <th class="columna">PARTIDAS</th>
+                </template>
+
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="datos in pru" :key="datos.id">
+                        <td class="tw-text-center">{{ datos.NumReq }}</td>
+                        <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.requisicion_jefe.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.Codigo }}</td>
+                        <td class="tw-text-center">{{ datos.requisicion_maquina.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.requisicion_marca.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.TipCompra }}</td>
+                        <td>{{ datos.Observaciones }}</td>
+                        <td class="tw-text-center">{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                        <td>
+                            <div class="iconoDetails" @click="Partidas(datos.id)">
+                                <span tooltip="Detalles" flow="left">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+            </Table>
+        </div>
     </div>
+
+    <pre>
+        {{ pru }}
+    </pre>
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
         <form>
@@ -717,6 +762,7 @@ export default {
         Autorizados: Object,
         Confirmado: Object,
         mes: Object,
+        pru: Object,
     },
 
     methods: {
@@ -724,9 +770,11 @@ export default {
             this.chageClose2();
             this.editMode2 = false;
         },
+
         chageClose2() {
             this.showModal2 = !this.showModal2;
         },
+
         reset() {
             this.form = {
                 IdUser: this.Session.id,
@@ -748,6 +796,7 @@ export default {
                 Observaciones: null,
             };
         },
+
         loadMaquinas(event) {
             axios.get('/Compras/Maquinas',{
                 params: {
@@ -757,6 +806,7 @@ export default {
             .then(response => this.MaquinasDpto = response.data.Marcas)
             .catch(error => console.log(error))
         },
+
         loadMarcas(event) {
             axios.get('/Compras/Marcas',{
                 params: {
@@ -766,6 +816,7 @@ export default {
             .then(response => this.Marcas = response.data.Marcas)
             .catch(error => console.log(error))
         },
+
         Filtro(value){
             this.params.Estatus = value;
             $('#Articulos').DataTable().destroy(); //destruyo tabla
@@ -776,6 +827,7 @@ export default {
                     this.tabla() //regeneracion de tabla
                 }, preserveState: true})
         },
+
         FiltroMes(value){
             this.params.month = value;
 /*             $('#Articulos').DataTable().clear(); //limpio
@@ -785,6 +837,7 @@ export default {
                     this.tabla() //regeneracion de tabla
                 }, preserveState: true})
         },
+
         //datatable
         tabla() {
         this.$nextTick(() => {
@@ -793,23 +846,29 @@ export default {
             });
         });
         },
+
         //consulta para generar datos de la tabla
         verTabla(event) {
         $("#Articulos").DataTable().destroy();
             this.$inertia.get("/Compras/Requisiciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
         },
+
         show(id){
             this.detalles = id;
         },
+
         hidden(id){
             this.detalles = null;
         },
+
         addRow: function () {
             this.form.Partida.push({Part: ""});
         },
+
         removeRow: function (row) {
             this.form.Partida.splice(row,1);
         },
+
         save(data) {
             this.$inertia.post("/Compras/Requisiciones", data, {
                 onSuccess: () => {
@@ -819,6 +878,7 @@ export default {
                 },
             });
         },
+
         edit: function (data) {
             this.form.editId = data.id;
             this.form.NumReq = data.articulos_requisicion.NumReq;
@@ -837,6 +897,7 @@ export default {
             this.editMode2 = true;
             this.chageClose2();
         },
+
         update(data, metodo) {
             data.metodo = 1;
             console.log(data);
@@ -849,6 +910,7 @@ export default {
                 },
             });
         },
+
         ConfirmaReq(data, metodo){
             data.metodo = 2;
             data._method = "PUT";
@@ -858,8 +920,13 @@ export default {
                 },
             });
         },
+
         deleteRow: function (data) {
         },
+
+        Partidas(Part){
+            console.log(Part);
+        }
     },
 
     watch: {
