@@ -232,6 +232,8 @@ class RequisicionesController extends Controller{
 
         if($request->Req != ''){
             $Art = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
+        }else{
+            $Art = ArticulosRequisiciones::get();
         }
 
         $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 8)->where('IdEmp', '=', $Session->IdEmp)->count();

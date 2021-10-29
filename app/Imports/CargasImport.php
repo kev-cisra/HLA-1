@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use PhpOffice\PhpSpreadsheet\Calculation\TextData\Format;
+use \PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 {
@@ -22,7 +23,7 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
     */
     public function model(array $row)
     {
-        $fecha =strtotime($row['fecha']);
+        $fec = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha']));
         //consulta para mostrar el dep_perf
         $dp = dep_per::join('perfiles_usuarios', 'perfiles_usuarios.id', 'dep_pers.perfiles_usuarios_id')->where('perfiles_usuarios.IdEmp', '=', $row['operador'])->first(['dep_pers.id AS id', 'dep_pers.departamento_id AS iddepa']);
         //Consultas para mostrar la clave y la norma
@@ -31,8 +32,8 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         $equi = equipos::where('nombre', 'like', '%'.$row['equipo'].'%')->where('departamento_id', '=', $dp->iddepa)->first(['id', 'turno_id']);
 
         return new carga([
-            'fecha' => date('Y-m-d', $fecha).' 12:00:00',
-            'semana' => date("Y", strtotime($row['fecha'])).'-W'.date("W", strtotime($row['fecha'])),
+            'fecha' => $fec,
+            'semana' => date("Y", strtotime($fec)).'-W'.date("W", strtotime($fec)),
             'valor' => $row['peso'],
             'partida' => $row['partida'],
             'equipo_id' => $equi->id,
