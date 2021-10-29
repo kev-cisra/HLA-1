@@ -75,14 +75,14 @@ class RequisicionesController extends Controller{
                 $ArticuloRequisicion = ArticulosRequisiciones::with([
                     'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
                         $req->select(
-                            'id', 'IdUser',
+                            'id', 'IdUser', 'Fecha',
                             'IdEmp', 'Folio',
                             'NumReq',
                             'Departamento_id',
                             'jefes_areas_id',
                             'Codigo', 'Maquina_id',
                             'Marca_id', 'TipCompra',
-                            'Observaciones', 'Perfil_id');
+                            'Observaciones', 'Perfil_id', 'Estatus');
                     },
                     'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                         $perfil->select('id', 'name');
@@ -292,6 +292,7 @@ class RequisicionesController extends Controller{
         $Requisicion = Requisiciones::create([
             'IdUser' => $request->IdUser,
             'IdEmp' => $Session->IdEmp,
+            'Fecha' => $request->Fecha,
             'Folio' => $serial,
             'NumReq' => $request->NumReq,
             'Departamento_id' => $request->Departamento_id,
@@ -302,6 +303,7 @@ class RequisicionesController extends Controller{
             'TipCompra' => $request->Tipo,
             'Observaciones' => $request->Observaciones,
             'Perfil_id' => $request->Nombre,
+            'Estatus' => 1,
         ]);
 
         $RequicisionId = $Requisicion->id;
