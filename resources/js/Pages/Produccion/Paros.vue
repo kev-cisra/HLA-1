@@ -253,6 +253,26 @@
 
         },
         methods: {
+            claParo(){
+                console.log(this.S_Area)
+                switch (this.S_Area) {
+                    case '4':
+                        this.tOrden = '1-H1';
+                        break;
+                    case '5':
+                        this.tOrden = '1-H2';
+                        break;
+                    case '6':
+                        this.tOrden = '1-H3';
+                        break;
+                    case '7':
+                        this.tOrden = 'AP-';
+                        break;
+                    case '18':
+                        this.tOrden = '1-PREP';
+                        break;
+                }
+            },
             /****************************** opciones de selec del departamento *****************************/
             //información del select area
             mostSelect() {
@@ -338,6 +358,7 @@
             },
             /****************************** carga de carga de datos ******************************************/
             reset(){
+                this.claParo();
                 this.proc_prin = '';
                 this.form.proceso_id = '';
                 this.form.maq_pro_id = '';
@@ -440,13 +461,9 @@
                 this.proc_prin = '';
                 this.$inertia.get('/Produccion/Paros',{ busca: b }, {
                     onSuccess: () => {
-                         this.selePP(), this.tabla() }, onError: () => {this.tabla()}, preserveState: true
+                        this.selePP(), this.tabla() }, onError: () => {this.tabla()}, preserveState: true
                 });
-                switch (b) {
-                    case 7:
-                        this.tOrden = 'AP-'
-                        break;
-                }
+                this.claParo()
             },
             proc_prin: function(v) {
                 //select sub peocesos

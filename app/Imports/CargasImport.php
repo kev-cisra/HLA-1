@@ -23,8 +23,6 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
     */
     public function model(array $row)
     {
-        $fec = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['fecha']));
-        //consulta para mostrar el dep_perf
         $dp = dep_per::join('perfiles_usuarios', 'perfiles_usuarios.id', 'dep_pers.perfiles_usuarios_id')->where('perfiles_usuarios.IdEmp', '=', $row['operador'])->first(['dep_pers.id AS id', 'dep_pers.departamento_id AS iddepa']);
         //Consultas para mostrar la clave y la norma
         $cla = claves::join('dep_mats', 'dep_mats.id', '=', 'claves.dep_mat_id')->join('materiales', 'materiales.id', '=', 'dep_mats.material_id')->where('dep_mats.departamento_id', '=', $dp->iddepa)->where('CVE_ART', '=', $row['clave'])->first(['claves.id AS idcl', 'dep_mats.id AS iddm']);
@@ -32,8 +30,8 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         $equi = equipos::where('nombre', 'like', '%'.$row['equipo'].'%')->where('departamento_id', '=', $dp->iddepa)->first(['id', 'turno_id']);
 
         return new carga([
-            'fecha' => $fec,
-            'semana' => date("Y", strtotime($fec)).'-W'.date("W", strtotime($fec)),
+            'fecha' => $this->transformDateTime($row['fecha']),
+            'semana' => date("Y", strtotime($this->transformDateTime($row['fecha']))).'-W'.date("W", strtotime($this->transformDateTime($row['fecha']))),
             'valor' => $row['peso'],
             'partida' => $row['partida'],
             'equipo_id' => $equi->id,
@@ -48,6 +46,16 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'VerInv' => 1,
         ]);
     }
+
+    private function transformDateTime(string $value, string $format = 'Y-m-d H:i')
+    {
+        try {
+            return Carbon::instance(Date::excelToDateTimeObject($value))->format($format);
+        } catch (\ErrorException $e) {
+            return Carbon::createFromFormat($format, $value);
+        }
+    }
+
 
 
 }

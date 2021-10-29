@@ -107,7 +107,7 @@
                 </template>
             </Table>
         </div>
-        <!------------------------------------- Modal para carga de datos ------------------------------------------------>
+        <!------------------------------------- Modal para carga de datos masivas ------------------------------------------------>
         <modal :show="showModalC" @close="chageCloseC">
             <div class="tw-px-4 tw-py-4">
                 <div class="tw-text-lg">
@@ -120,15 +120,17 @@
                     <div class="ModalForm">
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <a target="_blank" :href="path+'Archivos\FormatosExcel\Carga_Masiva.csv'">Link de descarga</a>
+                                <a target="_blank" href="../public/Archivos/FileNotFound404.jpg" download="no.jpg">Link de descarga</a>
                             </div>
                         </div>
 
                         <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Fecha de inicio de carga</jet-label>
                                 <input type="file" @input="docu.file = $event.target.files[0]" ref="file" >
-                                <button class="btn btn-primary" @click="carMasi">Guardar</button>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                                <jet-button class="" @click="carMasi">Guardar</jet-button>
                                 <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
                             </div>
                         </div>
@@ -282,11 +284,8 @@
             calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
                     this.vCal = false;
-                    //console.log(this.calcu+' '+this.S_Area);
-                    this.btnOff = true;
                     this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {
-                            this.btnOff = false,
                             this.alertSucces(),
                             this.vCal = true,
                             this.reset(),
@@ -294,9 +293,7 @@
                             this.limInputs('00')
                         },
                         onError: (e) => {
-                            this.btnOff = false,
-                            this.vCal = true,
-                            this.tabla()
+                            this.vCal = true
                         },
                         preserveState: true
                     });

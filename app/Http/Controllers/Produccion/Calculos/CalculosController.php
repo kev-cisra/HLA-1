@@ -56,24 +56,27 @@ class CalculosController extends Controller
             //dependiendo del tipo de operacion
             switch ($ope->operacion) {
                 case 'sm_d':
-                    $this->sm_d($ope, $request->depa, $fechas, $perf);
+                    //$this->sm_d($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_dc':
-                    $this->sm_dc($ope, $request->depa, $fechas, $perf);
+                    //$this->sm_dc($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_t':
-                    $this->sm_t($ope, $request->depa, $fechas, $perf);
+                    //$this->sm_t($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_tc':
-                    $this->sm_tc($ope, $request->depa, $fechas, $perf);
+                    //$this->sm_tc($ope, $request->depa, $fechas, $perf);
+                    break;
+                case 'sem_sm':
+                    $this->sem_sm($ope, $request->depa, $fechas, $perf);
                     break;
             }
         }
 
-        //return 'Listo';
+        return 'Listo';
 
-        return redirect()->back()
-            ->with('message', 'Post Created Successfully.');
+        /* return redirect()->back()
+            ->with('message', 'Post Created Successfully.'); */
     }
     /************************************** Guardado o Actualizado ************************************/
     public function gua_act($fec, $data){
@@ -301,5 +304,32 @@ class CalculosController extends Controller
         }
         //echo 'fin de suma turno por clave';
         return 'sm_tc';
+    }
+
+    //operacion suma semanal
+    public function sem_sm($val, $dep, $fechas, $usuario){
+        $semana = date("Y", strtotime($fechas['fecha'])).'-W'.date("W", strtotime($fechas['fecha']));
+        $fs = 0;
+        $fc = 0;
+        //recorrido de formulas
+        foreach ($val->formulas as $value) {
+            $proce_id = $value->proceso_id;
+            //Consulta para la suma
+            $suma = carga::where('departamento_id', '=', $dep)
+                ->where('semana', '=', $semana)
+                ->where('maq_pro_id', '=', $value->maq_pros_id)
+                ->sum('valor');
+
+            //Consulta de paquetes contados
+            $cuenta = carga::where('departamento_id', '=', $dep)
+                ->where('semana', '=', $semana)
+                -> where('maq_pro_id', '=', $value->maq_pros_id)
+                ->count('valor');
+
+            //variablesde operaciones
+            $fs += $suma;
+            $fc += $cuenta;
+        }
+        print($fs.' | '.$fc.' / ');
     }
 }

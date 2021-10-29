@@ -230,9 +230,9 @@
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in ArticuloRequisicion" :key="datos.id">
                         <td v-if="CalculaRetraso(datos.Fecha) > 7 && datos.EstatusArt == 3">
-                                <span tooltip="Urgente Cotizar" flow="right">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-px-1 tw-text-white tw-bg-red-600 tw-rounded-full">{{ datos.Fecha }}</span>
-                                </span>
+                            <span tooltip="Urgente Cotizar" flow="right">
+                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-px-1 tw-text-white tw-bg-red-600 tw-rounded-full">{{ datos.Fecha }}</span>
+                            </span>
                         </td>
                         <td v-else>{{ datos.Fecha }}</td>
                         <td class="tw-text-center">{{ datos.articulos_requisicion.NumReq }}</td>
@@ -423,40 +423,14 @@
             <div class="tw-px-4 tw-py-4">
                 <div class="tw-text-lg">
                     <div class="ModalHeader">
-                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Realiza Cotización</h3>
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Realiza Cotización # {{form.NumReq}}</h3>
                     </div>
                 </div>
 
                 <div class="tw-mt-4">
-                    <div>
-                            <jet-label>Número de Requisición</jet-label>
-                            <input type="text" class="InfoData" v-model="form.NumReq" disabled/>
-
-                            <jet-label>Folio</jet-label>
-                            <input type="text" class="InfoData" v-model="form.Folio" disabled/>
-
-                            <jet-label>Departamento</jet-label>
-                            <input type="text" class="InfoData" v-model="form.Area" disabled/>
-
-                            <jet-label>Nombre Solicitante</jet-label>
-                            <input type="text" class="InfoData" v-model="form.Nombre" disabled/>
-
-                            <jet-label>Observaciones</jet-label>
-                            <input type="text" class="InfoData" v-model="form.Observaciones" disabled/>
-
-                            <jet-label>Cantidad</jet-label>
-                            <input type="text" class="InfoData" v-model="form.Cantidad" disabled/>
-
-                            <jet-label>Unidad</jet-label>
-                            <input type="text" class="InfoData" v-model="form.Unidad" disabled/>
-
-                            <jet-label>Descripción</jet-label>
-                            <input type="text" class="InfoData" v-model="form.Descripcion" disabled/>
-                    </div>
-
                     <div class="ModalForm">
                         <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/ md:tw-mb-0">
                                 <jet-label><span class="required">*</span>PRECIO UNITARIO</jet-label>
                                 <jet-input type="text" v-model="form.Precio" @change="ConversionMoneda($event)"></jet-input>
                                 <!-- <small v-if="errors.Precio" class="validation-alert">{{errors.Precio}}</small> -->
@@ -950,6 +924,7 @@ export default {
         },
 
         Cotizar(data, metodo){
+            console.log(data);
             this.chageClose();
             this.reset();
             this.editMode = false;
