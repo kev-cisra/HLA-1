@@ -338,12 +338,15 @@
 
                     <!-- Botones -->
                     <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                        <div>
+                        <div v-show="btnOff">
                             <jet-button type="button" class="tw-mx-auto" @click="savePO(form)">Guardar</jet-button>
                         </div>
-                        <!-- <div>
-                            <jet-button type="button" class="tw-mx-auto" @click="updateCA(form)">Actualizar</jet-button>
-                        </div> -->
+                        <div v-show="!btnOff">
+                            <jet-button type="button" class="tw-mx-auto" disabled>
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                Calculando...
+                            </jet-button>
+                        </div>
                     </div>
                 </div>
                 <!-- tabla para paquetes operador -->
@@ -423,12 +426,16 @@
 
                     <!-- Botones -->
                     <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                        <div>
-                            <jet-button type="button" class="tw-mx-auto" @click="savePN(form)">Guardar</jet-button>
+                        <div v-show="btnOff">
+                            <jet-button type="button" @click="savePN(form)">Guardar</jet-button>
                         </div>
-                        <!-- <div>
-                            <jet-button type="button" class="tw-mx-auto" @click="updateCA(form)">Actualizar</jet-button>
-                        </div> -->
+
+                        <div v-show="!btnOff">
+                            <jet-button type="button" class="tw-mx-auto" disabled>
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                Calculando...
+                            </jet-button>
+                        </div>
                     </div>
 
                 </div>
@@ -521,11 +528,10 @@
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
                 noCor: '',
-                vCal: true,
                 proc_prin: '',
                 paqOpera: '',
                 paqNorma: '',
-                btnOff: false,
+                btnOff: true,
                 v: [],
                 calcu: '',
                 idDep: '',
@@ -855,12 +861,13 @@
             },
             //***************************** Carga de paquetes de operativos **********************************/
             savePO(form){
+                this.btnOff = false;
                 form.departamento_id = this.S_Area;
                 //console.log(form)
                 //$('#t_op').DataTable().clear();
                 $('#t_op').DataTable().destroy();
                 this.$inertia.post('/Produccion/CarOpe', form, {
-                    onSuccess: (v) => { this.tablaOpe(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tablaOpe()}, preserveState: true
+                    onSuccess: (v) => { this.tablaOpe(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.tablaOpe(), this.btnOff = true}, preserveState: true
                 });
             },
             deletePO(data) {
@@ -890,12 +897,13 @@
             },
             /***************************** Carga de paquetes de norma, claves y partida *********************/
             savePN(form){
+                this.btnOff = false;
                 //console.log(form)
                 form.departamento_id = this.S_Area;
                 //$('#t_pn').DataTable().clear();
                 $('#t_pn').DataTable().destroy();
                 this.$inertia.post('/Produccion/CarNor', form, {
-                    onSuccess: (v) => { this.tablaNor(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tablaNor()}, preserveState: true
+                    onSuccess: (v) => { this.tablaNor(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.tablaNor(), this.btnOff = true}, preserveState: true
                 });
             },
             deletePN(data){
