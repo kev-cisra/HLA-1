@@ -222,7 +222,6 @@
                 proc_prin: '',
                 showModal: false,
                 editMode: false,
-                tOrden: 'N/A',
                 form: {
                     fecha: moment().format("YYYY-MM-DD HH:mm:ss"),
                     usu:  this.usuario.id,
@@ -253,7 +252,7 @@
 
         },
         methods: {
-            claParo(){
+            /* claParo(){
                 console.log(this.S_Area)
                 switch (this.S_Area) {
                     case '4':
@@ -272,7 +271,7 @@
                         this.tOrden = '1-PREP';
                         break;
                 }
-            },
+            }, */
             /****************************** opciones de selec del departamento *****************************/
             //información del select area
             mostSelect() {
@@ -358,7 +357,7 @@
             },
             /****************************** carga de carga de datos ******************************************/
             reset(){
-                this.claParo();
+                //this.claParo();
                 this.proc_prin = '';
                 this.form.proceso_id = '';
                 this.form.maq_pro_id = '';
@@ -452,6 +451,29 @@
                 if (this.usuario.dep_pers.length != 0) {
                     return this.usuario.dep_pers[0].ope_puesto;
                 }
+            },
+            tOrden: function() {
+                var depa = this.S_Area
+                switch (depa) {
+                    case 4:
+                        return '1-H1-';
+                        break;
+                    case 5:
+                        return '1-H2-';
+                        break;
+                    case 6:
+                        return '1-H3-';
+                        break;
+                    case 7:
+                        return 'AP-';
+                        break;
+                    case 18:
+                        return '1-PREP-';
+                        break;
+                    default:
+                        return 'N/A'
+                        break;
+                }
             }
         },
         watch: {
@@ -463,7 +485,7 @@
                     onSuccess: () => {
                         this.selePP(), this.tabla() }, onError: () => {this.tabla()}, preserveState: true
                 });
-                this.claParo()
+                //this.claParo()
             },
             proc_prin: function(v) {
                 //select sub peocesos
