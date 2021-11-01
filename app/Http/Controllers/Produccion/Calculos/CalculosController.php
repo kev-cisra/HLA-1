@@ -56,27 +56,30 @@ class CalculosController extends Controller
             //dependiendo del tipo de operacion
             switch ($ope->operacion) {
                 case 'sm_d':
-                    //$this->sm_d($ope, $request->depa, $fechas, $perf);
+                    $this->sm_d($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_dc':
-                    //$this->sm_dc($ope, $request->depa, $fechas, $perf);
+                    $this->sm_dc($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_t':
-                    //$this->sm_t($ope, $request->depa, $fechas, $perf);
+                    $this->sm_t($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_tc':
-                    //$this->sm_tc($ope, $request->depa, $fechas, $perf);
+                    $this->sm_tc($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sem_sm':
                     $this->sem_sm($ope, $request->depa, $fechas, $perf);
                     break;
+                case 'mes_sm':
+                    $this->mes_sm($ope, $request->depa, $fechas, $perf);
+                    break;
             }
         }
 
-        return 'Listo';
+        /* return 'Listo'; */
 
-        /* return redirect()->back()
-            ->with('message', 'Post Created Successfully.'); */
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
     }
     /************************************** Guardado o Actualizado ************************************/
     public function gua_act($fec, $data){
@@ -119,6 +122,83 @@ class CalculosController extends Controller
         }
     }
 
+    public function gua_act_sem($fec, $data){
+        //consulta si existe el dato
+        $inicio = date("Y", strtotime($fec['fecha'])).'-W'.date("W", strtotime($fec['fecha']));
+        $existe = carga::where('semana', '=', $inicio)
+            ->where('proceso_id', '=', $data['proceso_id'])
+            ->where('clave_id', '=', $data['clave_id'])
+            ->where('turno_id', '=', $data['turno_id'])
+            ->first();
+        if (empty($existe)) {
+            carga::create([
+                'fecha' => $fec['fecha'].' 13:00:00',
+                'semana' => $fec['semana'],
+                'partida' => $data['partida'],
+                'valor' => $data['suma'],
+                'equipo_id' => $data['equipo_id'],
+                'notaPen' => '1',
+                'estatus' => '1',
+                'VerInv' => $data['cantidad'],
+                'per_carga' => $data['per_carga'],
+                'proceso_id' => $data['proceso_id'],
+                'norma' => $data['norma'],
+                'clave_id' => $data['clave_id'],
+                'turno_id' => $data['turno_id'],
+                'departamento_id' => $data['departamento_id']
+            ]);
+        }else {
+            carga::find($existe->id)->update([
+                'partida' => $data['partida'],
+                'valor' => $data['suma'],
+                'VerInv' => $data['cantidad'],
+                'per_carga' => $data['per_carga'],
+                'proceso_id' => $data['proceso_id'],
+                'norma' => $data['norma'],
+                'clave_id' => $data['clave_id'],
+                'turno_id' => $data['turno_id']
+            ]);
+        }
+    }
+
+    public function gua_act_mes($fec, $data){
+        //consulta si existe el dato
+        $inicio = date("Y-m", strtotime($fec['fecha']));
+        $existe = carga::where('fecha', 'like', '%'.$inicio.'%')
+            ->where('proceso_id', '=', $data['proceso_id'])
+            ->where('clave_id', '=', $data['clave_id'])
+            ->where('turno_id', '=', $data['turno_id'])
+            ->first();
+        if (empty($existe)) {
+            carga::create([
+                'fecha' => $fec['fecha'].' 13:00:00',
+                'semana' => $fec['semana'],
+                'partida' => $data['partida'],
+                'valor' => $data['suma'],
+                'equipo_id' => $data['equipo_id'],
+                'notaPen' => '1',
+                'estatus' => '1',
+                'VerInv' => $data['cantidad'],
+                'per_carga' => $data['per_carga'],
+                'proceso_id' => $data['proceso_id'],
+                'norma' => $data['norma'],
+                'clave_id' => $data['clave_id'],
+                'turno_id' => $data['turno_id'],
+                'departamento_id' => $data['departamento_id']
+            ]);
+        }else {
+            carga::find($existe->id)->update([
+                'partida' => $data['partida'],
+                'valor' => $data['suma'],
+                'VerInv' => $data['cantidad'],
+                'per_carga' => $data['per_carga'],
+                'proceso_id' => $data['proceso_id'],
+                'norma' => $data['norma'],
+                'clave_id' => $data['clave_id'],
+                'turno_id' => $data['turno_id']
+            ]);
+        }
+    }
     /************************************** Operaciones ***********************************************/
     //operacion suma del dia
     public function sm_d($val, $dep, $fechas, $usuario){
@@ -330,6 +410,41 @@ class CalculosController extends Controller
             $fs += $suma;
             $fc += $cuenta;
         }
-        print($fs.' | '.$fc.' / ');
+        $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
+        if ($fc != 0) {
+            $this->gua_act_sem($fechas, $data);
+        }
+        //print($fs.' | '.$fc.' Fin de suma semana / ');
+        return 'sem_sm';
+    }
+
+    public function mes_sm($val, $dep, $fechas, $usuario){
+        $mes = date("Y-m", strtotime($fechas['fecha']));
+        $fs = 0;
+        $fc = 0;
+        foreach ($val->formulas as $value){
+            $proce_id = $value->proceso_id;
+            //Consulta para la suma
+            $suma = carga::where('departamento_id', '=', $dep)
+                ->where('fecha', 'like', '%'.$mes.'%')
+                ->where('maq_pro_id', '=', $value->maq_pros_id)
+                ->sum('valor');
+
+            //Consulta de paquetes contados
+            $cuenta = carga::where('departamento_id', '=', $dep)
+                ->where('fecha', 'like', '%'.$mes.'%')
+                -> where('maq_pro_id', '=', $value->maq_pros_id)
+                ->count('valor');
+
+            //variablesde operaciones
+            $fs += $suma;
+            $fc += $cuenta;
+        }
+        $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
+        if ($fc != 0) {
+            $this->gua_act_mes($fechas, $data);
+        }
+        //print($fs.' | '.$fc.' Fin de suma mes / ');
+        return 'mes_sm';
     }
 }

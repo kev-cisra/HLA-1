@@ -153,7 +153,7 @@
                             <div class="tw-mb-6 md:tw-flex">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Fecha a guardar</jet-label>
-                                    <jet-input type="date" v-model="form.fecha" class="" :max="hoy"></jet-input>
+                                    <jet-input type="date" v-model="form.fecha" @change="cambioFechas()" :max="hoy"></jet-input>
                                     <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
                                 </div>
                             </div>
@@ -161,12 +161,12 @@
                             <div class="tw-mb-6 md:tw-flex">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Fecha de inicio de carga</jet-label>
-                                    <jet-input type="datetime-local" v-model="form.hoy" :max="form.mañana" class=""></jet-input>
+                                    <jet-input type="datetime-local" v-model="form.hoy" :max="form.mañana" disabled></jet-input>
                                     <small v-if="errors.hoy" class="validation-alert">{{errors.hoy}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>Fecha final de carga</jet-label>
-                                    <jet-input type="datetime-local" v-model="form.mañana" :min="form.hoy" class=""></jet-input>
+                                    <jet-input type="datetime-local" v-model="form.mañana" :min="form.hoy" disabled></jet-input>
                                     <small v-if="errors.mañana" class="validation-alert">{{errors.mañana}}</small>
                                 </div>
                             </div>
@@ -283,7 +283,7 @@
             /***************************** Calculos ******************************************/
             calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
-                    this.vCal = false;
+                    //this.vCal = false;
                     this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {
                             this.alertSucces(),
@@ -300,6 +300,21 @@
                 }else{
                     this.calcu == '' ? Swal.fire('Por favor selecciona una fecha') : '';
                     this.S_Area == '' ? Swal.fire('Por favor selecciona un departamento') : '';
+                }
+
+            },
+            cambioFechas() {
+                if(this.S_Area == 7){
+                    if (moment(this.form.fecha).isDST()) {
+                        this.form.hoy = this.form.fecha+'T09:00';
+                        this.form.mañana = moment(this.form.hoy).add(1, 'days').format("YYYY-MM-DD[T]HH:mm")
+                    }else{
+                        this.form.hoy = this.form.fecha+'T08:00';
+                        this.form.mañana = moment(this.form.hoy).add(1, 'days').format("YYYY-MM-DD[T]HH:mm")
+                    }
+                }else{
+                    this.form.hoy = this.form.fecha+'T07:00';
+                    this.form.mañana = moment(this.form.hoy).add(1, 'days').format("YYYY-MM-DD[T]HH:mm")
                 }
 
             },
@@ -444,9 +459,11 @@
                     this.tabla();
                     //hace el recorrido y asigna el Array
                     this.cargas.forEach(fec => {
-                        //console.log(fec.fecha)
-                        if ( this.FoFiltro.semana == fec.semana ) {
-                            rt.push(fec);
+                        //console.log(fec.proceso.operacion)
+                        if ( this.FoFiltro.semana == fec.semana & fec.proceso.operacion != null) {
+                            if(fec.proceso.operacion.includes("sem_")){
+                                rt.push(fec);
+                            }
                         }
                     });
                 }
@@ -459,8 +476,10 @@
                     //hace el recorrido y asigna el Array
                     this.cargas.forEach(fec => {
                         //console.log(fec.fecha)
-                        if ( fec.fecha.includes(this.FoFiltro.mes) ) {
-                            rt.push(fec);
+                        if ( fec.fecha.includes(this.FoFiltro.mes) & fec.proceso.operacion != null ) {
+                            if(fec.proceso.operacion.includes("mes_")){
+                                rt.push(fec);
+                            }
                         }
                     });
                 }

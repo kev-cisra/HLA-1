@@ -542,7 +542,7 @@
                 form: {
                     id: null,
                     fecha: null,
-                    semana: moment().format("GGGG-[W]WW"),
+                    semana: null,
                     usu: this.usuario.id,
                     per_carga: this.usuario.id,
                     proceso_id: '',
@@ -705,16 +705,11 @@
             },
             /****************************** carga de carga de datos ******************************************/
             saveCA(form){
-                form.fecha = form.fecha;
-                this.form.semana = moment().format("GGGG-[W]WW");
+                //form.fecha = form.fecha;
+                form.semana = moment(form.fecha).format("GGGG-[W]WW");
                 this.form.departamento_id = this.S_Area;
                 //Asigna si es horario de verano o no
                 form.VerInv = '1';
-                /*if (moment().isDST()) {
-                    form.VerInv = 'Verano';
-                }else{
-                    form.VerInv = 'Invierno';
-                }*/
                 //revisa si el usuario es lider o operador
                 if (this.noCor == 'lid' | this.noCor == 'ope') {
                     //revisa si tienen equipo

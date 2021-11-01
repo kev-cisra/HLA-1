@@ -94,7 +94,7 @@ class RepoProController extends Controller
                     -> select('id', 'Nombre');
                 },
                 'proceso' => function($pr){
-                    $pr -> select('id', 'nompro', 'tipo', 'proceso_id');
+                    $pr -> select('id', 'nompro', 'tipo', 'operacion', 'proceso_id');
                 },
                 'dep_mat' => function($dp){
                     $dp ->withTrashed()
