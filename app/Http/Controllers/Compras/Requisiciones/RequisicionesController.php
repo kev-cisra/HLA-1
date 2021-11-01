@@ -405,6 +405,17 @@ class RequisicionesController extends Controller{
                 return redirect()->back();
 
                 break;
+            case 3:
+                    ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->update([
+                        'EstatusArt' => 2,
+                    ]);
+
+                    Requisiciones::where('id', '=', $request->id)->update([
+                        'Estatus' => 2,
+                    ]);
+
+                    return redirect()->back();
+                break;
         }
 
     }

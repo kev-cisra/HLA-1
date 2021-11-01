@@ -125,13 +125,15 @@ class RequisicionesSolicitadasController extends Controller {
 
         }
 
+        $pru = Requisiciones::with(['RequisicionArticulos', 'RequisicionesPerfil', 'RequisicionDepartamento', 'RequisicionJefe', 'RequisicionMaquina', 'RequisicionMarca'])->get();
+
         $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 8)->count();
 
         $Cotizacion = ArticulosRequisiciones::whereBetween('EstatusArt', [3, 4])->count();
 
         $SinConfirmar = ArticulosRequisiciones::where('EstatusArt', '=', 7)->count();
 
-        return Inertia::render('Almacen/Requisiciones/Requisiciones', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Departamentos', 'Maquinas', 'Almacen', 'Cotizacion', 'SinConfirmar', 'mes'));
+        return Inertia::render('Almacen/Requisiciones/Requisiciones', compact('Session', 'PerfilesUsuarios', 'ArticuloRequisicion', 'Departamentos', 'Maquinas', 'Almacen', 'Cotizacion', 'SinConfirmar', 'mes', 'pru'));
     }
 
     public function store(Request $request){
