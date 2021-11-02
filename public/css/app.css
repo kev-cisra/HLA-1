@@ -19514,6 +19514,10 @@ select {
 	margin-left: 2rem;
 	margin-right: 2rem;
 }
+.tw-mx-28 {
+	margin-left: 7rem;
+	margin-right: 7rem;
+}
 .tw-mx-10 {
 	margin-left: 2.5rem;
 	margin-right: 2.5rem;
@@ -19525,10 +19529,6 @@ select {
 .tw-mx-16 {
 	margin-left: 4rem;
 	margin-right: 4rem;
-}
-.tw-mx-28 {
-	margin-left: 7rem;
-	margin-right: 7rem;
 }
 .tw-mx-56 {
 	margin-left: 14rem;
@@ -19621,6 +19621,9 @@ select {
 .tw-mr-10 {
 	margin-right: 2.5rem;
 }
+.tw-mt-12 {
+	margin-top: 3rem;
+}
 .tw-mb-3 {
 	margin-bottom: 0.75rem;
 }
@@ -19629,9 +19632,6 @@ select {
 }
 .tw--mt-4 {
 	margin-top: -1rem;
-}
-.tw-mt-12 {
-	margin-top: 3rem;
 }
 .tw-block {
 	display: block;

@@ -408,7 +408,7 @@
                                 <td class="tw-text-center">{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
                                 <td class="tw-text-center">{{ datos.Estatus }}</td>
                                 <td>
-                                    <div class="columnaIconos">
+                                    <div class="columnaIconos" v-if="datos.Estatus == 2">
                                         <div class="iconoDetails" @click="Partidas(datos)">
                                             <span tooltip="Detalles" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
@@ -417,9 +417,86 @@
                                                 </svg>
                                             </span>
                                         </div>
-                                        <div class="iconoPurple" @click="ConfirmaRequicision(datos, 2)">
-                                            <span tooltip="Confirmar Requisición" flow="left">
+                                        <div class="iconoPurple" @click="EnviaCotizar(datos, 3)">
+                                            <span tooltip="Envia a Cotización" flow="left">
+                                                <i class="fas fa-money-bill-wave"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoEdit" @click="ProductoAlmacen(datos, 8)">
+                                            <span tooltip="Confirma existencia en Almacén" flow="left">
                                                 <i class="fas fa-check-circle"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoCyan" @click="Parcialidad(datos)">
+                                            <span tooltip="Confirma Parcialidad" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.Estatus == 7">
+                                        <div class="iconoDetails" @click="Partidas(datos)">
+                                            <span tooltip="Detalles" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoPurple" @click="ProductoAlmacen(datos, 8)">
+                                            <span tooltip="Confirma Producto en Almacén" flow="left">
+                                                <i class="ml-2 fas fa-box"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.Estatus == 8">
+                                        <div class="iconoDetails" @click="Partidas(datos)">
+                                            <span tooltip="Detalles" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoLime" @click="EntregaProducto(datos)">
+                                            <span tooltip="Entrega el Artículo" flow="left">
+                                                <i class="fas fa-fingerprint"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.Estatus == 9">
+                                        <div class="iconoDetails" @click="Partidas(datos)">
+                                            <span tooltip="Detalles" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoGreen" v-if="datos.articulos_requisicion.NumReq.endsWith('-S') != true" @click="SolicitaReposicion(datos)">
+                                            <span tooltip="Solicitar Reposicion" flow="left">
+                                                <i class="fas fa-dolly"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoGreen" v-else>
+                                            <span tooltip="Articulo Adquirido" flow="left">
+                                                <i class="fas fa-check-square"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else>
+                                        <div class="iconoDetails" @click="Partidas(datos)">
+                                            <span tooltip="Detalles" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoWhite">
+                                            <span tooltip="En proceso" flow="left">
+                                                <i class="fas fa-thumbs-up"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -452,12 +529,60 @@
                                 <td class="tw-text-center">{{ datos.EstatusArt }}</td>
                                 <td class="tw-text-center">{{ datos.RecibidoPor }}</td>
                                 <td>
-                                    <div class="columnaIconos" v-if="datos.EstatusArt == 1">
-                                        <div class="iconoEdit" @click="editPartida(datos)">
-                                            <span tooltip="Editar" flow="left">
+                                    <div class="columnaIconos" v-if="datos.EstatusArt == 2">
+                                        <div class="iconoPurple" @click="EnviaCotizar(datos, 3)">
+                                            <span tooltip="Envia a Cotización" flow="left">
+                                                <i class="fas fa-money-bill-wave"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoEdit" @click="ProductoAlmacen(datos, 8)">
+                                            <span tooltip="Confirma existencia en Almacén" flow="left">
+                                                <i class="fas fa-check-circle"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoCyan" @click="Parcialidad(datos)">
+                                            <span tooltip="Confirma Parcialidad" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                                                 </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.EstatusArt == 7">
+                                        <div class="iconoPurple" @click="ProductoAlmacen(datos, 8)">
+                                            <span tooltip="Confirma Producto en Almacén" flow="left">
+                                                <i class="ml-2 fas fa-box"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.EstatusArt == 8">
+                                        <div class="iconoLime" @click="EntregaProducto(datos)">
+                                            <span tooltip="Entrega el Artículo" flow="left">
+                                                <i class="fas fa-fingerprint"></i>
+                                            </span>
+                                        </div>
+<!--                                         <div class="iconoLime" @click="PrecioProveedor(datos)">
+                                            <span tooltip="Entrega el Artículo" flow="left">
+                                                <i class="fas fa-truck"></i>
+                                            </span>
+                                        </div> -->
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.EstatusArt == 9">
+                                        <div class="iconoGreen" v-if="datos.articulos_requisicion.NumReq.endsWith('-S') != true" @click="SolicitaReposicion(datos)">
+                                            <span tooltip="Solicitar Reposicion" flow="left">
+                                                <i class="fas fa-dolly"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoGreen" v-else>
+                                            <span tooltip="Articulo Adquirido" flow="left">
+                                                <i class="fas fa-check-square"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else>
+                                        <div class="iconoWhite">
+                                            <span tooltip="En proceso" flow="left">
+                                                <i class="fas fa-thumbs-up"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -740,6 +865,7 @@ export default {
         SinConfirmar: Object,
         mes: Object,
         pru: Object,
+        Art: Object,
     },
 
     methods: {
@@ -968,7 +1094,27 @@ export default {
         PrecioProveedor(data){
             this.chageProveedor();
             this.form.IdArt = data.id;
-        }
+        },
+
+        Partidas(data){
+            this.form.editId = data.id;
+            this.form.NumReq = data.NumReq;
+            this.form.Fecha = data.Fecha;
+            this.form.Departamento_id = data.Departamento_id;
+            this.form.Codigo = data.Codigo;
+            this.form.Maquina = data.Maquina_id;
+            this.form.Marca = data.Marca_id;
+            this.form.Tipo = data.TipCompra;
+            this.form.Nombre = data.Perfil_id;
+            this.form.Observaciones = data.Observaciones;
+            this.params.Req = data.id;
+
+            this.chagePartidas();
+            this.$inertia.get('/Compras/Requisiciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+
+            }, preserveState: true })
+        },
     },
     watch: {
         params: {
