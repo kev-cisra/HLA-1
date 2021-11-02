@@ -454,25 +454,18 @@
             },
             tOrden: function() {
                 var depa = this.S_Area
-                switch (depa) {
-                    case 4:
-                        return '1-H1-';
-                        break;
-                    case 5:
-                        return '1-H2-';
-                        break;
-                    case 6:
-                        return '1-H3-';
-                        break;
-                    case 7:
-                        return 'AP-';
-                        break;
-                    case 18:
-                        return '1-PREP-';
-                        break;
-                    default:
-                        return 'N/A'
-                        break;
+                if(depa == 4){
+                    return '1-H1-';
+                }else if(depa == 5){
+                    return '1-H2-';
+                }else if(depa == 6){
+                    return '1-H3-';
+                }else if(depa == 7){
+                    return 'AP-';
+                }else if(depa == 18){
+                    return '1-PREP-';
+                }else {
+                    return 'N/A'
                 }
             }
         },

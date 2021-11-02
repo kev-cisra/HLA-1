@@ -74,20 +74,20 @@
                     <th class="columna">Numero de pacas</th>
                 </template>
                 <template v-slot:TableFooter >
-                    <tr v-for="ca in recoTabla" :key="ca.id">
-                        <td class="fila">{{ca.proceso.nompro}}</td>
-                        <td class="fila">{{ca.fecha}}</td>
-                        <td class="fila">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
-                        <td class="fila">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
-                        <td class="fila">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
-                        <td class="fila">{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
-                        <td class="fila">{{ca.partida == null ? 'N/A' : ca.partida}}</td>
-                        <td class="fila">{{ca.dep_mat == null ? 'N/A' : ca.dep_mat.materiales.idmat+' - '+ca.dep_mat.materiales.nommat}}</td>
-                        <td class="fila">{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
-                        <td class="fila">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
-                        <td class="fila">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
-                        <td class="fila">{{this.formatoMexico(ca.valor)}}</td>
-                        <td class="fila"> {{ca.VerInv}} </td>
+                    <tr class="fila" v-for="ca in recoTabla" :key="ca.id">
+                        <td >{{ca.proceso.nompro}}</td>
+                        <td >{{ca.fecha}}</td>
+                        <td >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
+                        <td >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
+                        <td >{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
+                        <td >{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
+                        <td >{{ca.partida == null ? 'N/A' : ca.partida}}</td>
+                        <td >{{ca.dep_mat == null ? 'N/A' : ca.dep_mat.materiales.idmat+' - '+ca.dep_mat.materiales.nommat}}</td>
+                        <td >{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
+                        <td >{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
+                        <td >{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
+                        <td >{{this.formatoMexico(ca.valor)}}</td>
+                        <td > {{ca.VerInv}} </td>
                     </tr>
                 </template>
                 <template v-slot:Foother>
@@ -120,7 +120,7 @@
                     <div class="ModalForm">
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <a target="_blank" href="../public/Archivos/FileNotFound404.jpg" download="no.jpg">Link de descarga</a>
+                                <a target="_blank" href="../public/FormatosExcel/FileNotFound404.jpg" download="not.jpg">Link de descarga</a>
                             </div>
                         </div>
 
@@ -283,7 +283,7 @@
             /***************************** Calculos ******************************************/
             calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
-                    //this.vCal = false;
+                    this.vCal = false;
                     this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {
                             this.alertSucces(),
