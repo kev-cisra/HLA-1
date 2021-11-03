@@ -25,6 +25,7 @@
         <div class="table-responsive">
             <Table id="t_pro">
                 <template v-slot:TableHeader>
+                    <th class="columna tw-text-center">Id</th>
                     <th class="columna tw-text-center">Nombre</th>
                     <th class="columna tw-text-center">Tipo</th>
                     <th class="columna tw-text-center">Descripción</th>
@@ -34,21 +35,22 @@
                     <th></th>
                 </template>
                 <template v-slot:TableFooter>
-                    <tr v-for="proceso in procesos" :key="proceso.id">
-                        <td class="fila">{{ proceso.nompro }}</td>
-                        <td class="fila">{{ this.tipoProce(proceso.tipo) }}</td>
-                        <td class="fila">{{ proceso.descripcion }}</td>
-                        <td class="fila">{{ proceso.departamentos.Nombre }}</td>
-                        <td class="fila" >
-                            <tr class="fila" v-for="f in proceso.formulas" :key="f.id">
+                    <tr v-for="proceso in procesos" :key="proceso.id"  class="fila">
+                        <td>{{ proceso.id }}</td>
+                        <td >{{ proceso.nompro }}</td>
+                        <td >{{ this.tipoProce(proceso.tipo) }}</td>
+                        <td >{{ proceso.descripcion }}</td>
+                        <td >{{ proceso.departamentos.Nombre }}</td>
+                        <td class="">
+                            <tr  v-for="f in proceso.formulas" :key="f.id" class="hover:tw-text-lg">
                                 - {{f.proc_rela == null ? 'N/A' : f.proc_rela.nompro}} / {{f.maq_pros == null ? 'N/A' : f.maq_pros.maquinas.Nombre}} -
                             </tr>
-                            <tr class="fila" v-for="mp in proceso.maq_pros" :key="mp.id">
-                                - {{mp.maquinas.Nombre}} -
+                            <tr  v-for="mp in proceso.maq_pros" :key="mp.id" class="hover:tw-text-lg">
+                                - <strong class="tw-text-red-500">{{ mp.id }}</strong> - {{mp.maquinas.Nombre}} -
                             </tr>
                         </td>
-                        <td class="fila ">
-                            <tr class="fila" v-for="sub_proce in proceso.sub_proceso" :key="sub_proce">
+                        <td class="fila">
+                            <tr class="fila hover:tw-text-lg" v-for="sub_proce in proceso.sub_proceso" :key="sub_proce">
                                 - {{sub_proce.nompro}} -
                             </tr>
                         </td>
@@ -373,7 +375,7 @@
                 this.$nextTick(() => {
                     $('#t_pro').DataTable({
                         "language": this.español,
-                        "order": [1, 'desc'],
+                        "order": [2, 'desc'],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",

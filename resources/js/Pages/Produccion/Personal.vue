@@ -77,17 +77,10 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoAcept" v-if="ap.perfiles.user_id">
+                                <div class="iconoAcept" @click="updateUser(ap)" v-if="ap.ope_puesto == 'lid' | ap.ope_puesto == 'ope'">
                                     <span tooltip="Usuario activo" flow="left">
-                                        <svg class="tw-h-5 tw-w-5"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11l2 2l4 -4" />
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="iconoDetails" @click="updateUser(ap)" v-else-if="!ap.perfiles.user_id">
-                                    <span tooltip="Cargar nuevo usuario" flow="left">
-                                        <svg class="tw-h-5 tw-w-5" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11h6m-3 -3v6" />
+                                        <svg class="tw-h-5 tw-w-5"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z"/>  <rect x="3" y="3" width="6" height="6" rx="1" />  <rect x="15" y="15" width="6" height="6" rx="1" />  <path d="M21 11v-3a2 2 0 0 0 -2 -2h-6l3 3m0 -6l-3 3" />  <path d="M3 13v3a2 2 0 0 0 2 2h6l-3 -3m0 6l3 -3" />
                                         </svg>
                                     </span>
                                 </div>

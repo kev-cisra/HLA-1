@@ -224,25 +224,25 @@
                     <th></th>
                 </template>
                 <template v-slot:TableFooter >
-                    <tr v-for="ca in v" :key="ca.id">
-                        <td class="fila">{{ca.fecha}}</td>
-                        <td class="fila">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
-                        <td class="fila">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
-                        <td class="fila">{{ca.proceso.nompro}}</td>
-                        <td class="fila tw-w-40">
+                    <tr v-for="ca in v" :key="ca.id"  class="fila">
+                        <td>{{ca.fecha}}</td>
+                        <td class="">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
+                        <td class="">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
+                        <td class="">{{ca.proceso.nompro}}</td>
+                        <td class=" tw-w-40">
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-emerald-600 tw-rounded-full" v-if="ca.notaPen == 2 & ca.proceso.tipo == 2">NOTA COORDINADOR</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-else-if="ca.notaPen == 2 & (ca.dep_perf.ope_puesto == 'ope' | ca.dep_perf.ope_puesto == 'lid')">NOTA OPERADOR</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-coolGray-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length <= 1">SIN NOTA</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1">ACTUALIZADO</div>
                         </td>
-                        <td class="fila">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
-                        <td class="fila">{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
-                        <td class="fila">{{ca.partida == null ? 'N/A' : ca.partida}}</td>
-                        <td class="fila">{{ca.dep_mat == null ? 'N/A' : ca.dep_mat.materiales.idmat+' - '+ca.dep_mat.materiales.nommat}}</td>
-                        <td class="fila">{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
-                        <td class="fila">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
-                        <td class="fila">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
-                        <td class="fila">{{ca.valor}}</td>
+                        <td class="">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
+                        <td class="">{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
+                        <td class="">{{ca.partida == null ? 'N/A' : ca.partida}}</td>
+                        <td class="">{{ca.dep_mat == null ? 'N/A' : ca.dep_mat.materiales.idmat+' - '+ca.dep_mat.materiales.nommat}}</td>
+                        <td class="">{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
+                        <td class="">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
+                        <td class="">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
+                        <td class="">{{ca.valor}}</td>
                         <td class="">
                             <div class="columnaIconos">
                                 <div class="iconoDetails tw-cursor-pointer" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & (((noCor == 'cor' | noCor == 'enc') & ca.proceso.tipo == 2 & ca.notaPen == 1) | ((noCor == 'lid' | noCor == 'ope') & ca.equipo_id != null & ca.notaPen == 1))">
@@ -361,13 +361,13 @@
                             <th class="columna"></th>
                         </template>
                         <template v-slot:TableFooter>
-                            <tr v-for="pOpe in paqope" :key="pOpe">
-                                <td class="fila"> {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.Nombre}} {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.ApPat}} {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.ApMat}}</td>
-                                <td class="fila">{{pOpe.proceso == null ? 'N/A' : pOpe.proceso.nompro}}</td>
-                                <td class="fila"> {{pOpe.maq_pro.maquinas.Nombre}} </td>
-                                <td class="fila"> {{pOpe.dep_per.equipo_id == null ? 'N/A' : pOpe.dep_per.equipo.nombre}} </td>
-                                <td class="fila"> {{pOpe.dep_per.equipo_id == null ? 'N/A' : pOpe.dep_per.equipo.turnos.nomtur}} </td>
-                                <td class="fila">
+                            <tr v-for="pOpe in paqope" :key="pOpe" class="fila">
+                                <td> {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.Nombre}} {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.ApPat}} {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.ApMat}}</td>
+                                <td>{{pOpe.proceso == null ? 'N/A' : pOpe.proceso.nompro}}</td>
+                                <td> {{pOpe.maq_pro.maquinas.Nombre}} </td>
+                                <td> {{pOpe.dep_per.equipo_id == null ? 'N/A' : pOpe.dep_per.equipo.nombre}} </td>
+                                <td> {{pOpe.dep_per.equipo_id == null ? 'N/A' : pOpe.dep_per.equipo.turnos.nomtur}} </td>
+                                <td>
                                     <div class="columnaIconos">
                                         <div class="iconoDelete" @click="deletePO(pOpe)">
                                             <span tooltip="Eliminar" flow="left">
@@ -450,12 +450,12 @@
                             <th class="columna"></th>
                         </template>
                         <template v-slot:TableFooter>
-                            <tr v-for="pNor in paqnor" :key="pNor">
-                                <td class="fila"> {{pNor.dep_mat.materiales.nommat}}</td>
-                                <td class="fila">{{pNor.clave.CVE_ART}}</td>
-                                <td class="fila"> {{pNor.clave.DESCR}}</td>
-                                <td class="fila"> {{pNor.partida}} </td>
-                                <td class="fila">
+                            <tr v-for="pNor in paqnor" :key="pNor" class="fila">
+                                <td> {{pNor.dep_mat.materiales.nommat}}</td>
+                                <td >{{pNor.clave.CVE_ART}}</td>
+                                <td > {{pNor.clave.DESCR}}</td>
+                                <td > {{pNor.partida}} </td>
+                                <td >
                                     <div class="columnaIconos">
                                         <div class="iconoDelete" @click="deletePN(pNor)">
                                             <span tooltip="Eliminar" flow="left">

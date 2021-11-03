@@ -45,6 +45,7 @@
         <div class="table-responsive">
             <Table id="t_clamat">
                 <template v-slot:TableHeader>
+                    <th class="columna">id</th>
                     <th class="columna">Clave del material</th>
                     <th class="columna">Nombre</th>
                     <th class="columna">Descripción</th>
@@ -53,6 +54,7 @@
                 </template>
                 <template v-slot:TableFooter>
                     <tr v-for="cm in clamat" :key="cm">
+                        <td class="fila">{{ cm.id }}</td>
                         <td class="fila">{{ cm.materiales.idmat }}</td>
                         <td class="fila">{{ cm.materiales.nommat }}</td>
                         <td class="fila">{{ cm.materiales.descrip }}</td>

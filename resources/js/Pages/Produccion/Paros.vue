@@ -252,26 +252,6 @@
 
         },
         methods: {
-            /* claParo(){
-                console.log(this.S_Area)
-                switch (this.S_Area) {
-                    case '4':
-                        this.tOrden = '1-H1';
-                        break;
-                    case '5':
-                        this.tOrden = '1-H2';
-                        break;
-                    case '6':
-                        this.tOrden = '1-H3';
-                        break;
-                    case '7':
-                        this.tOrden = 'AP-';
-                        break;
-                    case '18':
-                        this.tOrden = '1-PREP';
-                        break;
-                }
-            }, */
             /****************************** opciones de selec del departamento *****************************/
             //información del select area
             mostSelect() {
