@@ -1,4 +1,10 @@
 <template>
+    <div class="alert alert-warning alert-dismissible fade show tw-absolute tw-z-10" role="alert">
+        <strong>Versión de pruebas!</strong> Esta pagina es de pruebas
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
     <div class="flex-container">
         <div class="flex-item-left fullHeight">
             <div id="carouselExampleDark" class="carousel carousel-dark slide carousel-fade fullHeight" data-bs-ride="carousel">
