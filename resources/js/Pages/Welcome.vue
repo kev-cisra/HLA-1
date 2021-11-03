@@ -1,12 +1,9 @@
 <template>
-    <div class="alert alert-warning alert-dismissible fade show tw-absolute tw-z-10" role="alert">
-        <strong>Versión de pruebas!</strong> Esta pagina es de pruebas
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
     <div class="flex-container">
         <div class="flex-item-left fullHeight">
+            <div class="alert tw-bg-red-700 fade show tw-absolute tw-z-10 tw-w-full tw-h-20 tw-text-2xl tw-text-blueGray-100" v-show="verAlert" role="alert">
+                <strong>Versión de pruebas!</strong> Esta pagina es una versión de pruebas
+            </div>
             <div id="carouselExampleDark" class="carousel carousel-dark slide carousel-fade fullHeight" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -85,6 +82,7 @@
     import JetCheckbox from '@/Jetstream/Checkbox'
     import JetLabel from '@/Jetstream/Label'
     import JetValidationErrors from '@/Jetstream/ValidationErrors'
+import { computed } from '@vue/reactivity'
 
     export default {
         components: {
@@ -126,6 +124,13 @@
                     .post(this.route('login'), {
                         onFinish: () => this.form.reset('password'),
                     })
+            }
+        },
+
+        computed: {
+            verAlert: function() {
+                var URLactual = window.location;
+                return URLactual.host == '192.168.11.3';
             }
         }
     }

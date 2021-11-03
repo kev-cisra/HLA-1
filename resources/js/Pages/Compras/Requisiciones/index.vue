@@ -213,96 +213,6 @@
             </div>
         </div>
 
-        <div class="tw-overflow-x-auto tw-mx-2">
-            <Table>
-                <template v-slot:TableHeader>
-                    <th class="columna">NUM</th>
-                    <th class="columna">FECHA</th>
-                    <th class="columna">DEPARTAMENTO</th>
-                    <th class="columna">JEFE AREA</th>
-                    <th class="columna">CODIGO</th>
-                    <th class="columna">MAQUINA</th>
-                    <th class="columna">MARCA</th>
-                    <th class="columna">TIPO COMPRA</th>
-                    <th class="columna">OBSERVACIONES</th>
-                    <th class="columna">SOLICITANTE</th>
-                    <th class="columna">ESTATUS</th>
-                    <th class="columna">PARTIDAS</th>
-                </template>
-
-                <template v-slot:TableFooter>
-                    <tr class="fila" v-for="datos in pru" :key="datos.id">
-                        <td class="tw-text-center">{{ datos.NumReq }}</td>
-                        <td class="tw-text-center">{{ datos.Fecha }}</td>
-                        <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
-                        <td class="tw-text-center">{{ datos.requisicion_jefe.Nombre }}</td>
-                        <td class="tw-text-center">{{ datos.Codigo }}</td>
-                        <td class="tw-text-center">{{ datos.requisicion_maquina.Nombre }}</td>
-                        <td class="tw-text-center">{{ datos.requisicion_marca.Nombre }}</td>
-                        <td class="tw-text-center">{{ datos.TipCompra }}</td>
-                        <td>{{ datos.Observaciones }}</td>
-                        <td class="tw-text-center">{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
-                        <td class="tw-text-center">{{ datos.Estatus }}</td>
-                        <td>
-                            <div class="columnaIconos">
-                                <div class="iconoDetails" @click="Partidas(datos)">
-                                    <span tooltip="Detalles" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="iconoPurple" @click="ConfirmaRequicision(datos, 2)">
-                                    <span tooltip="Confirmar Requisición" flow="left">
-                                        <i class="fas fa-check-circle"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </template>
-            </Table>
-        </div>
-
-        <div class="tw-overflow-x-auto tw-mx-28 tw-mt-12">
-            <Table>
-                <template v-slot:TableHeader>
-                    <th class="columna">Fecha</th>
-                    <th class="columna">Cantidad</th>
-                    <th class="columna">Unidad</th>
-                    <th class="columna">Descripcion</th>
-                    <th class="columna">NumParte</th>
-                    <th class="columna">EstatusArt</th>
-                    <th class="columna">RecibidoPor</th>
-                    <th class="columna">Acciones</th>
-                </template>
-
-                <template v-slot:TableFooter>
-                    <tr class="fila" v-for="datos in Art" :key="datos.id">
-                        <td class="tw-text-center">{{ datos.Fecha }}</td>
-                        <td class="tw-text-center">{{ datos.Cantidad }}</td>
-                        <td class="tw-text-center">{{ datos.Unidad }}</td>
-                        <td class="tw-text-center">{{ datos.Descripcion }}</td>
-                        <td class="tw-text-center">{{ datos.NumParte }}</td>
-                        <td class="tw-text-center">{{ datos.EstatusArt }}</td>
-                        <td class="tw-text-center">{{ datos.RecibidoPor }}</td>
-                        <td>
-                            <div class="columnaIconos" v-if="datos.EstatusArt == 1">
-                                <div class="iconoEdit" @click="editPartida(datos)">
-                                    <span tooltip="Editar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </template>
-            </Table>
-        </div>
-
         <div class="tw-mt-8">
             <div class="tw-overflow-x-auto tw-mx-2">
                 <Table id="Articulos">
@@ -462,6 +372,96 @@
                     </template>
                 </Table>
             </div>
+        </div>
+
+        <div class="tw-overflow-x-auto tw-mx-2">
+            <Table>
+                <template v-slot:TableHeader>
+                    <th class="columna">NUM</th>
+                    <th class="columna">FECHA</th>
+                    <th class="columna">DEPARTAMENTO</th>
+                    <th class="columna">JEFE AREA</th>
+                    <th class="columna">CODIGO</th>
+                    <th class="columna">MAQUINA</th>
+                    <th class="columna">MARCA</th>
+                    <th class="columna">TIPO COMPRA</th>
+                    <th class="columna">OBSERVACIONES</th>
+                    <th class="columna">SOLICITANTE</th>
+                    <th class="columna">ESTATUS</th>
+                    <th class="columna">PARTIDAS</th>
+                </template>
+
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="datos in pru" :key="datos.id">
+                        <td class="tw-text-center">{{ datos.NumReq }}</td>
+                        <td class="tw-text-center">{{ datos.Fecha }}</td>
+                        <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.requisicion_jefe.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.Codigo }}</td>
+                        <td class="tw-text-center">{{ datos.requisicion_maquina.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.requisicion_marca.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.TipCompra }}</td>
+                        <td>{{ datos.Observaciones }}</td>
+                        <td class="tw-text-center">{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                        <td class="tw-text-center">{{ datos.Estatus }}</td>
+                        <td>
+                            <div class="columnaIconos">
+                                <div class="iconoDetails" @click="Partidas(datos)">
+                                    <span tooltip="Detalles" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoPurple" @click="ConfirmaRequicision(datos, 2)">
+                                    <span tooltip="Confirmar Requisición" flow="left">
+                                        <i class="fas fa-check-circle"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+            </Table>
+        </div>
+
+        <div class="tw-overflow-x-auto tw-mx-28 tw-mt-12" v-if="Art != null">
+            <Table>
+                <template v-slot:TableHeader>
+                    <th class="columna">Fecha</th>
+                    <th class="columna">Cantidad</th>
+                    <th class="columna">Unidad</th>
+                    <th class="columna">Descripcion</th>
+                    <th class="columna">NumParte</th>
+                    <th class="columna">EstatusArt</th>
+                    <th class="columna">RecibidoPor</th>
+                    <th class="columna">Acciones</th>
+                </template>
+
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="datos in Art" :key="datos.id">
+                        <td class="tw-text-center">{{ datos.Fecha }}</td>
+                        <td class="tw-text-center">{{ datos.Cantidad }}</td>
+                        <td class="tw-text-center">{{ datos.Unidad }}</td>
+                        <td class="tw-text-center">{{ datos.Descripcion }}</td>
+                        <td class="tw-text-center">{{ datos.NumParte }}</td>
+                        <td class="tw-text-center">{{ datos.EstatusArt }}</td>
+                        <td class="tw-text-center">{{ datos.RecibidoPor }}</td>
+                        <td>
+                            <div class="columnaIconos" v-if="datos.EstatusArt == 1">
+                                <div class="iconoEdit" @click="editPartida(datos)">
+                                    <span tooltip="Editar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+            </Table>
         </div>
     </div>
 

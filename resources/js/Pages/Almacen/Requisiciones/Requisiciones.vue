@@ -410,34 +410,27 @@
                                 <td>
                                     <div class="columnaIconos" v-if="datos.Estatus == 2">
                                         <div class="iconoDetails" @click="Partidas(datos)">
-                                            <span tooltip="Detalles" flow="left">
+                                            <span tooltip="Visualiza Partidas" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                                 </svg>
                                             </span>
                                         </div>
-                                        <div class="iconoPurple" @click="EnviaCotizar(datos, 3)">
-                                            <span tooltip="Envia a Cotización" flow="left">
+                                        <div class="iconoPurple" @click="EnviarCotizarRequisicion(datos, 3)">
+                                            <span tooltip="Envia Requisicion a Cotización" flow="left">
                                                 <i class="fas fa-money-bill-wave"></i>
                                             </span>
                                         </div>
                                         <div class="iconoEdit" @click="ProductoAlmacen(datos, 8)">
-                                            <span tooltip="Confirma existencia en Almacén" flow="left">
+                                            <span tooltip="Confirma existencia toal en Almacén" flow="left">
                                                 <i class="fas fa-check-circle"></i>
-                                            </span>
-                                        </div>
-                                        <div class="iconoCyan" @click="Parcialidad(datos)">
-                                            <span tooltip="Confirma Parcialidad" flow="left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                                                </svg>
                                             </span>
                                         </div>
                                     </div>
                                     <div class="columnaIconos" v-else-if="datos.Estatus == 7">
                                         <div class="iconoDetails" @click="Partidas(datos)">
-                                            <span tooltip="Detalles" flow="left">
+                                            <span tooltip="Visualiza Partidas" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -452,7 +445,7 @@
                                     </div>
                                     <div class="columnaIconos" v-else-if="datos.Estatus == 8">
                                         <div class="iconoDetails" @click="Partidas(datos)">
-                                            <span tooltip="Detalles" flow="left">
+                                            <span tooltip="Visualiza Partidas" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -467,7 +460,7 @@
                                     </div>
                                     <div class="columnaIconos" v-else-if="datos.Estatus == 9">
                                         <div class="iconoDetails" @click="Partidas(datos)">
-                                            <span tooltip="Detalles" flow="left">
+                                            <span tooltip="Visualiza Partidas" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -487,7 +480,7 @@
                                     </div>
                                     <div class="columnaIconos" v-else>
                                         <div class="iconoDetails" @click="Partidas(datos)">
-                                            <span tooltip="Detalles" flow="left">
+                                            <span tooltip="Visualiza Partidas" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -506,7 +499,7 @@
                     </Table>
                 </div>
 
-                <div class="tw-overflow-x-auto tw-mx-28 tw-mt-12">
+                <div class="tw-overflow-x-auto tw-mx-28 tw-mt-12" v-if="Art != null">
                     <Table>
                         <template v-slot:TableHeader>
                             <th class="columna">Fecha</th>
@@ -1109,11 +1102,21 @@ export default {
             this.form.Observaciones = data.Observaciones;
             this.params.Req = data.id;
 
-            this.chagePartidas();
             this.$inertia.get('/Compras/Requisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
 
             }, preserveState: true })
+        },
+
+        EnviarCotizarRequisicion(data, metodo){
+            console.log(data);
+            data.metodo = 31;
+            data._method = "PUT";
+            this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
         },
     },
     watch: {

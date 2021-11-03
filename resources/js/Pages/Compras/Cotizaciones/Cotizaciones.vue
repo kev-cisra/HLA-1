@@ -414,6 +414,135 @@
                     </tr>
                 </template>
             </Table>
+
+            <div class="tw-overflow-x-auto tw-mx-2">
+                    <Table>
+                        <template v-slot:TableHeader>
+                            <th class="columna">NUM</th>
+                            <th class="columna">FECHA</th>
+                            <th class="columna">DEPARTAMENTO</th>
+                            <th class="columna">JEFE AREA</th>
+                            <th class="columna">CODIGO</th>
+                            <th class="columna">MAQUINA</th>
+                            <th class="columna">MARCA</th>
+                            <th class="columna">TIPO COMPRA</th>
+                            <th class="columna">OBSERVACIONES</th>
+                            <th class="columna">SOLICITANTE</th>
+                            <th class="columna">ESTATUS</th>
+                            <th class="columna">PARTIDAS</th>
+                        </template>
+
+                        <template v-slot:TableFooter>
+                            <tr class="fila" v-for="datos in pru" :key="datos.id">
+                                <td class="tw-text-center">{{ datos.NumReq }}</td>
+                                <td class="tw-text-center">{{ datos.Fecha }}</td>
+                                <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
+                                <td class="tw-text-center">{{ datos.requisicion_jefe.Nombre }}</td>
+                                <td class="tw-text-center">{{ datos.Codigo }}</td>
+                                <td class="tw-text-center">{{ datos.requisicion_maquina.Nombre }}</td>
+                                <td class="tw-text-center">{{ datos.requisicion_marca.Nombre }}</td>
+                                <td class="tw-text-center">{{ datos.TipCompra }}</td>
+                                <td>{{ datos.Observaciones }}</td>
+                                <td class="tw-text-center">{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                                <td class="tw-text-center">{{ datos.Estatus }}</td>
+                                <td>
+                                    <div class="columnaIconos" v-if="datos.Estatus == 3">
+                                        <div class="iconoDetails" @click="Partidas(datos)">
+                                            <span tooltip="Visualiza Partidas" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoPurple" @click="CotizarReq(datos, 4)">
+                                            <span tooltip="Realizar Cotizacion" flow="left">
+                                                <i class="fas fa-file-invoice-dollar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </Table>
+                </div>
+
+                <div class="tw-overflow-x-auto tw-mx-28 tw-mt-12" v-if="Art != null">
+                    <Table>
+                        <template v-slot:TableHeader>
+                            <th class="columna">Fecha</th>
+                            <th class="columna">Cantidad</th>
+                            <th class="columna">Unidad</th>
+                            <th class="columna">Descripcion</th>
+                            <th class="columna">NumParte</th>
+                            <th class="columna">EstatusArt</th>
+                            <th class="columna">RecibidoPor</th>
+                            <th class="columna">Acciones</th>
+                        </template>
+
+                        <template v-slot:TableFooter>
+                            <tr class="fila" v-for="datos in Art" :key="datos.id">
+                                <td class="tw-text-center">{{ datos.Fecha }}</td>
+                                <td class="tw-text-center">{{ datos.Cantidad }}</td>
+                                <td class="tw-text-center">{{ datos.Unidad }}</td>
+                                <td class="tw-text-center">{{ datos.Descripcion }}</td>
+                                <td class="tw-text-center">{{ datos.NumParte }}</td>
+                                <td class="tw-text-center">{{ datos.EstatusArt }}</td>
+                                <td class="tw-text-center">{{ datos.RecibidoPor }}</td>
+                                <td>
+                                    <div class="columnaIconos" v-if="datos.EstatusArt == 3">
+                                        <div class="iconoDetails" @click="Partidas(datos)">
+                                            <span tooltip="Visualiza Partidas" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoPurple" @click="Cotizar(datos, 4)">
+                                            <span tooltip="Realizar Cotizacion" flow="left">
+                                                <i class="fas fa-file-invoice-dollar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.EstatusArt == 7">
+                                        <div class="iconoPurple" @click="ProductoAlmacen(datos, 8)">
+                                            <span tooltip="Confirma Producto en Almacén" flow="left">
+                                                <i class="ml-2 fas fa-box"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.EstatusArt == 8">
+                                        <div class="iconoLime" @click="EntregaProducto(datos)">
+                                            <span tooltip="Entrega el Artículo" flow="left">
+                                                <i class="fas fa-fingerprint"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.EstatusArt == 9">
+                                        <div class="iconoGreen" v-if="datos.articulos_requisicion.NumReq.endsWith('-S') != true" @click="SolicitaReposicion(datos)">
+                                            <span tooltip="Solicitar Reposicion" flow="left">
+                                                <i class="fas fa-dolly"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoGreen" v-else>
+                                            <span tooltip="Articulo Adquirido" flow="left">
+                                                <i class="fas fa-check-square"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else>
+                                        <div class="iconoWhite">
+                                            <span tooltip="En proceso" flow="left">
+                                                <i class="fas fa-thumbs-up"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </Table>
+                </div>
         </div>
     </div>
 
@@ -713,6 +842,25 @@
         </form>
     </modal>
 
+    <modal :show="showCotizar" @close="chageCotizar" :maxWidth="tam">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Realiza Cotización # {{form.NumReq}}</h3>
+                </div>
+            </div>
+
+            <div class="tw-mt-4">
+            </div>
+        </div>
+
+        <div class="ModalFooter">
+            <jet-button type="button" @click="save(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
+            <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button>
+            <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+        </div>
+    </modal>
+
     </app-layout>
 </template>
 
@@ -742,6 +890,7 @@ export default {
         return {
             showDetalle: false,
             showPrecios: false,
+            showCotizar: false,
             showFecha: false,
             hoy: moment().format("YYYY-MM-DD"),
             min: moment().format("YYYY-MM-DD"),
@@ -816,6 +965,8 @@ export default {
         Autorizados: Object,
         mes: Object,
         PreciosCotizacion: Object,
+        pru: Object,
+        Art: Object,
     },
 
     methods: {
@@ -1066,6 +1217,50 @@ export default {
                     this.alertSucces();
                 },
             });
+        },
+
+        Partidas(data){
+            this.form.editId = data.id;
+            this.form.NumReq = data.NumReq;
+            this.form.Fecha = data.Fecha;
+            this.form.Departamento_id = data.Departamento_id;
+            this.form.Codigo = data.Codigo;
+            this.form.Maquina = data.Maquina_id;
+            this.form.Marca = data.Marca_id;
+            this.form.Tipo = data.TipCompra;
+            this.form.Nombre = data.Perfil_id;
+            this.form.Observaciones = data.Observaciones;
+            this.params.Req = data.id;
+
+            this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+
+            }, preserveState: true })
+        },
+
+        chageCotizar() {
+            this.showCotizar = !this.showCotizar;
+        },
+
+        CotizarReq(data){
+            this.form.editId = data.id;
+            this.form.NumReq = data.NumReq;
+            this.form.Fecha = data.Fecha;
+            this.form.Departamento_id = data.Departamento_id;
+            this.form.Codigo = data.Codigo;
+            this.form.Maquina = data.Maquina_id;
+            this.form.Marca = data.Marca_id;
+            this.form.Tipo = data.TipCompra;
+            this.form.Nombre = data.Perfil_id;
+            this.form.Observaciones = data.Observaciones;
+            this.params.Req = data.id;
+
+            this.chageCotizar();
+
+            this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+
+            }, preserveState: true })
         },
     },
 

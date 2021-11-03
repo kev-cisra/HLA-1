@@ -40,7 +40,6 @@ class CotizacionesController extends Controller{
 
         $Proveedores = Proveedores::get();
 
-
         $Perfiles = PerfilesUsuarios::where('jefes_areas_id', '=', $Session->id)->get();
 
         if($request->Estatus == ''){
@@ -135,6 +134,13 @@ class CotizacionesController extends Controller{
             $PreciosCotizacion = PreciosCotizaciones::with('PreciosArticulo')->get();
         }
 
+        $pru = Requisiciones::with(['RequisicionArticulos', 'RequisicionesPerfil', 'RequisicionDepartamento', 'RequisicionJefe', 'RequisicionMaquina', 'RequisicionMarca'])->get();
+
+        if($request->Req != ''){
+            $Art = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
+        }else{
+            $Art = null;
+        }
 
         $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 8)->count();
 
@@ -161,7 +167,8 @@ class CotizacionesController extends Controller{
             'SinConfirmar',
             'Confirmar',
             'Autorizados',
-            'mes'));
+            'mes',
+            'pru', 'Art'));
     }
 
     public function store(Request $request){

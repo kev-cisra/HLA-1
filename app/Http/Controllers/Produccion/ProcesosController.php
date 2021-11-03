@@ -161,7 +161,7 @@ class ProcesosController extends Controller
         //CARGA DEPENDIENDO DEL TIPO
         if ($request->tipo == 1 || $request->tipo == 2 || $request->tipo == 5) {
             foreach ($request->maquinas as $value) {
-                if ($value['value'] != null) {
+                if (!empty($value['value'])) {
                     maq_pro::create([
                         'proceso_id' => $proceso->id,
                         'maquina_id' => $value['value'],
@@ -170,39 +170,42 @@ class ProcesosController extends Controller
             }
         }elseif($request->tipo == 3){
             foreach ($request->formulas as $for) {
-                //echo $for['val'];
-                foreach ($request->for_maq as $check) {
-                    $ch = explode('-', $check);
-                    //si los procesos a cargar tienen maquinas
-                    if ($for['val'] == $ch[0]) {
-                        //echo $for['val'].' '.$check.' '.'maquinas - ';
-                        formulas::create([
-                            'proc_rela' => $for['val'],
-                            'maq_pros_id' => $ch[1],
-                            'proceso_id' => $proceso->id
-                        ]);
-                    }
-                    //en caso de que no cuente con maquinas
-                    else{
-                        /* consulta el tipo de proceso  */
-                        $tipo = procesos::where('id', '=', $for['val'])
-                            ->first();
-                        //en caso de que sea proceso principal o formula va a insertar
-                        if ($tipo->tipo == 0 | $tipo->tipo == 3) {
-                            //consulta si ese proceso ya existe de lo contrario lo omite
-                            $ver = formulas::where('proceso_id', '=', $proceso->id)
-                                ->where('proc_rela', '=', $for['val'])
-                                ->count();
-                            if ($ver == 0) {
-                                //echo 'T'.$tipo->tipo.' '.$for['val'].' '.$check.' '.'procesos - ';
-                                formulas::create([
-                                    'proc_rela' => $for['val'],
-                                    'proceso_id' => $proceso->id
-                                ]);
+                //Verifica si existe el proceso
+                if(!empty($for['val'])){
+                        foreach ($request->for_maq as $check) {
+                        $ch = explode('-', $check);
+                        //si los procesos a cargar tienen maquinas
+                        if ($for['val'] == $ch[0]) {
+                            //echo $for['val'].' '.$check.' '.'maquinas - ';
+                            formulas::create([
+                                'proc_rela' => $for['val'],
+                                'maq_pros_id' => $ch[1],
+                                'proceso_id' => $proceso->id
+                            ]);
+                        }
+                        //en caso de que no cuente con maquinas
+                        else{
+                            /* consulta el tipo de proceso  */
+                            $tipo = procesos::where('id', '=', $for['val'])
+                                ->first();
+                            //en caso de que sea proceso principal o formula va a insertar
+                            if ($tipo->tipo == 0 | $tipo->tipo == 3) {
+                                //consulta si ese proceso ya existe de lo contrario lo omite
+                                $ver = formulas::where('proceso_id', '=', $proceso->id)
+                                    ->where('proc_rela', '=', $for['val'])
+                                    ->count();
+                                if ($ver == 0) {
+                                    //echo 'T'.$tipo->tipo.' '.$for['val'].' '.$check.' '.'procesos - ';
+                                    formulas::create([
+                                        'proc_rela' => $for['val'],
+                                        'proceso_id' => $proceso->id
+                                    ]);
+                                }
                             }
                         }
                     }
                 }
+
             }
         }
 

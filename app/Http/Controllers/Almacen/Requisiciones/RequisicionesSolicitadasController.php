@@ -130,7 +130,7 @@ class RequisicionesSolicitadasController extends Controller {
         if($request->Req != ''){
             $Art = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
         }else{
-            $Art = ArticulosRequisiciones::get();
+            $Art = null;
         }
 
         $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 8)->count();
@@ -251,8 +251,28 @@ class RequisicionesSolicitadasController extends Controller {
                         'Revision' => Carbon::now(),
                     ]);
 
+                    $EstatusReq = ArticulosRequisiciones::where('EstatusArt', '=', 3)->where('id', '=', $request->id)->count();
+
+                    if($EstatusReq > 0){
+                        $ReqId = ArticulosRequisiciones::where('id', '=', $request->id)->first('requisicion_id');
+
+                        Requisiciones::find($ReqId->requisicion_id)->update([
+                            'Estatus' => 3,
+                        ]);
+                    }
+
                     break;
 
+                case 31:
+                    ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->update([
+                        'EstatusArt' => 3,
+                    ]);
+
+                    Requisiciones::find($request->id)->update([
+                        'Estatus' => 3,
+                    ]);
+
+                    break;
 
                 case 8:
                     ArticulosRequisiciones::find($request->id)->update([

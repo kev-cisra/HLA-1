@@ -82,11 +82,41 @@ class PersonalController extends Controller
                 'ope_puesto' => 'required',
                 'perfiles_usuarios_id' => ['required','numeric'],
         ])->validate();
+
+        switch ($request->ope_puesto) {
+            case 'cor':
+                $per = 'Cordinador';
+                break;
+            case 'enc':
+                $per = 'Encargado';
+                break;
+            case 'lid':
+                $per = 'Lider';
+                break;
+            case 'ope':
+                $per = 'Operador';
+                break;
+        }
+
+        $user = PerfilesUsuarios::where( 'id', '=', $request->perfiles_usuarios_id)
+            ->with([
+                'perfil_user'
+            ])
+            ->first(['id', 'user_id']);
+        if($user->perfil_user->hasRole('Produccion')) {
+            $user->perfil_user->removeRole([' Produccion ', 'Cordinador', 'Encargado', 'Lider', 'Operador']);
+        }
+
+        $user->perfil_user->assignRole(['Produccion', $per]);
+
+        //return $user->perfil_user->hasRole('Operador');
+
         //consulta si ya esta registrado ese usuario
         $cuenta = dep_per::where('perfiles_usuarios_id', '=', $request->perfiles_usuarios_id)
         ->withTrashed ()
         ->where('departamento_id', '=', $request->departamento_id)
         ->first();
+
         //revisa si la consulta anterior no es vacias
         if(!empty($cuenta)) {
             //revisa si el soft delete exite para restaurarlo
@@ -118,7 +148,19 @@ class PersonalController extends Controller
      */
     public function update(Request $request)
     {
-        switch ($request->ope_puesto) {
+        $user = User::find($request->perfiles['user_id']);
+        if($user->hasRole('Operador')){
+            dep_per::find($request->id)->update(['ope_puesto' => 'lid']);
+            $user->removeRole('Operador');
+            $user->assignRole('Lider');
+        }elseif ($user->hasRole('Lider')) {
+            dep_per::find($request->id)->update(['ope_puesto' => 'ope']);
+            $user->removeRole('Lider');
+            $user->assignRole('Operador');
+        }
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
+        /* switch ($request->ope_puesto) {
             case 'cor':
                 $per = 'Cordinador';
                 break;
@@ -131,18 +173,16 @@ class PersonalController extends Controller
             case 'ope':
                 $per = 'Operador';
                 break;
-        }
+        } */
         // crea un nuevo usuario para que ocupe la aplicación
-        $n_user = User::create([
+        /* $n_user = User::create([
             'IdEmp' => $request->perfiles['IdEmp'],
             'name' => $request->perfiles['Nombre'].' '.$request->perfiles['ApPat'].' '.$request->perfiles['ApMat'],
             'Departamento' => $request->departamentos['Nombre'],
             'password' => bcrypt($request->perfiles['IdEmp'])
-        ])->assignRole(['Produccion', $per]);
+        ])->assignRole(['Produccion', $per]); */
         //actualiza la informacion de perfiles para relacionar con el nuevo usuario
-        PerfilesUsuarios::find($request->perfiles['id'])->update(['user_id' => $n_user->id]);
-        return redirect()->back()
-            ->with('message', 'Post Created Successfully.');
+        /* PerfilesUsuarios::find($request->perfiles['id'])->update(['user_id' => $n_user->id]); */
     }
 
     /**
