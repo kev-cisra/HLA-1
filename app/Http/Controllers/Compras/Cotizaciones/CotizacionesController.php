@@ -29,6 +29,7 @@ class CotizacionesController extends Controller{
 
         //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
         $ObtenJefe = JefesArea::where('IdEmp', '=', $Session->IdEmp)->first(['id','IdEmp']);
+
         if(isset($ObtenJefe)){
             $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
 
@@ -139,6 +140,7 @@ class CotizacionesController extends Controller{
         if($request->Req != ''){
             $Art = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
             $CantidadArt = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->count();
+            $PreciosRequisicion = PreciosCotizaciones::where('requisiciones_id', '=', $request->Req)->get();
         }else{
             $Art = null;
             $CantidadArt = 0;
@@ -170,14 +172,14 @@ class CotizacionesController extends Controller{
             'Confirmar',
             'Autorizados',
             'mes',
-            'pru', 'Art', 'CantidadArt'));
+            'pru', 'Art', 'CantidadArt', 'PreciosRequisicion'));
     }
 
     public function store(Request $request){
-        return $request;
-        if(isset($request)){
 
-            if(isset($request->archivo)){
+        if(isset($request)){ //Verifico la existencia de datos
+
+            if(isset($request->archivo)){ //Valido envio de Archivo
 
                 Validator::make($request->all(), [
                     'archivo' => 'required|mimes:jpg,png,jpeg,svg,pdf',
@@ -190,24 +192,40 @@ class CotizacionesController extends Controller{
             }else{
                 $url = 'Archivos/FileNotFound404.jpg';
             }
+            // Ciclo de guardado de precios de la requisicion (hay duplicidad de datos por un cambio que pidieron
+            //con el sistema ya en produccion por lo cual se tuvo que dejar asi debido a como se trabajaba antiguamente el sistema)
+            foreach ($request->PrecioCotizacion as $value) {
 
-            PreciosCotizaciones::create([
-                'IdUser' => $request->IdUser,
-                'Precio' => $request->Precio,
-                'Total' => $request->Total,
-                'Moneda' => $request->Moneda,
-                'TipoCambio' => $request->TipoCambio,
-                'Marca' => $request->Marca,
-                'Proveedor' => $request->Proveedor,
-                'Comentarios' => $request->Comentarios,
-                'Archivo' => $url,
-                'articulos_requisiciones_id' => $request->IdArt,
-                'requisiciones_id' => $request->requisicion_id,
-            ]);
+                if($request->Moneda == 'MXN'){
+                    $Total = $value['PrecioUnitario'] * $value['Cantidad'];
+                }else{
+                    $Total1 = round($value['PrecioUnitario'] * $request->TipoCambio, 2);
+                    $Total = $Total1 * $value['Cantidad'];
+                }
 
-            ArticulosRequisiciones::where('id', '=', $request->IdArt)->update([
-                'EstatusArt' => 4,
-            ]);
+
+                PreciosCotizaciones::create([
+                    'IdUser' => $request->IdUser,
+                    'Precio' => $value['PrecioUnitario'],
+                    'Total' => $Total ,
+                    'Moneda' => $request->Moneda,
+                    'TipoCambio' => $request->TipoCambio,
+                    'Marca' => $request->Marca,
+                    'Proveedor' => $request->Proveedor,
+                    'Comentarios' => $request->Comentarios,
+                    'Archivo' => $url,
+                    'articulos_requisiciones_id' => $value['IdArt'],
+                    'requisiciones_id' => $value['requisicion_id'],
+                ]);
+
+                Requisiciones::where('id', '=', $value['requisicion_id'])->update([
+                    'Estatus' => 4,
+                ]);
+
+                ArticulosRequisiciones::where('id', '=', $value['IdArt'])->update([
+                    'EstatusArt' => 4,
+                ]);
+            }
 
             return redirect()->back();
 

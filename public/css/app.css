@@ -19696,6 +19696,15 @@ select {
 .tw-h-11 {
 	height: 2.75rem;
 }
+.tw-h-32 {
+	height: 8rem;
+}
+.tw-h-28 {
+	height: 7rem;
+}
+.tw-h-24 {
+	height: 6rem;
+}
 .tw-min-h-screen {
 	min-height: 100vh;
 }
@@ -19761,6 +19770,12 @@ select {
 }
 .tw-w-14 {
 	width: 3.5rem;
+}
+.tw-w-1\/4 {
+	width: 25%;
+}
+.tw-w-1\/2 {
+	width: 50%;
 }
 .tw-min-w-0 {
 	min-width: 0px;
@@ -20027,6 +20042,9 @@ select {
 }
 .tw-border-t-8 {
 	border-top-width: 8px;
+}
+.tw-border-dashed {
+	border-style: dashed;
 }
 .tw-border-violet-600 {
 	--tw-border-opacity: 1;
@@ -20439,6 +20457,15 @@ select {
 .tw-pb-2 {
 	padding-bottom: 0.5rem;
 }
+.tw-pt-7 {
+	padding-top: 1.75rem;
+}
+.tw-pt-1 {
+	padding-top: 0.25rem;
+}
+.tw-pt-2 {
+	padding-top: 0.5rem;
+}
 .tw-text-left {
 	text-align: left;
 }
@@ -20502,6 +20529,9 @@ select {
 }
 .tw-uppercase {
 	text-transform: uppercase;
+}
+.tw-lowercase {
+	text-transform: lowercase;
 }
 .tw-capitalize {
 	text-transform: capitalize;
@@ -20635,6 +20665,14 @@ select {
 .tw-text-emerald-500 {
 	--tw-text-opacity: 1;
 	color: rgba(16, 185, 129, var(--tw-text-opacity));
+}
+.tw-text-purple-400 {
+	--tw-text-opacity: 1;
+	color: rgba(192, 132, 252, var(--tw-text-opacity));
+}
+.tw-text-indigo-400 {
+	--tw-text-opacity: 1;
+	color: rgba(129, 140, 248, var(--tw-text-opacity));
 }
 .tw-underline {
 	text-decoration: underline;
@@ -22081,6 +22119,14 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(209, 213, 219, var(--tw-border-opacity));
 }
+.hover\:tw-border-purple-300:hover {
+	--tw-border-opacity: 1;
+	border-color: rgba(216, 180, 254, var(--tw-border-opacity));
+}
+.hover\:tw-border-indigo-300:hover {
+	--tw-border-opacity: 1;
+	border-color: rgba(165, 180, 252, var(--tw-border-opacity));
+}
 .hover\:tw-bg-sky-500:hover {
 	--tw-bg-opacity: 1;
 	background-color: rgba(14, 165, 233, var(--tw-bg-opacity));
@@ -22314,6 +22360,14 @@ select {
 .tw-group:hover .group-hover\:tw-text-indigo-400 {
 	--tw-text-opacity: 1;
 	color: rgba(129, 140, 248, var(--tw-text-opacity));
+}
+.tw-group:hover .group-hover\:tw-text-purple-600 {
+	--tw-text-opacity: 1;
+	color: rgba(147, 51, 234, var(--tw-text-opacity));
+}
+.tw-group:hover .group-hover\:tw-text-indigo-600 {
+	--tw-text-opacity: 1;
+	color: rgba(79, 70, 229, var(--tw-text-opacity));
 }
 @media (min-width: 640px) {
 
@@ -22593,10 +22647,6 @@ select {
 
 	.md\:tw-w-2\/4 {
 		width: 50%;
-	}
-
-	.md\:tw-w-4\/6 {
-		width: 66.666667%;
 	}
 
 	.md\:tw-grid-cols-3 {
