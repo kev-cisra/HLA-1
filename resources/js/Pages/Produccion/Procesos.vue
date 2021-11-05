@@ -126,6 +126,7 @@
                                         <!-- <option value="ent">Entregas</option> -->
                                         <option value="pro">Principales para Lider/Operador</option>
                                         <option value="pro-cor">Principales para Coordinador/Encargado</option>
+                                        <option value="entre">Entregas</option>
                                         <option value="for">Formulas</option>
                                     </select>
                                     <small v-if="errors.tipo_carga" class="validation-alert">{{errors.tipo_carga}}</small>
@@ -136,6 +137,7 @@
                                         <option value="">Selecciona una operación</option>
                                         <option value="sm_d">SUMA DIARIA</option>
                                         <option value="sm_dc">SUMA DIARIA POR CLAVE</option>
+                                        <option value="sm_dp">DUMA DIARIA POR PARTIDA</option>
                                         <option value="sm_t">SUMA TURNO</option>
                                         <option value="sm_tc">SUMA TURNO POR CLAVE</option>
                                         <option value="sem_sm">SUMA SEMANAL</option>

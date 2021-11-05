@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\ActualizaVacaciones::class
+        Commands\ActualizaVacaciones::class,
+        Commands\TurnosEquiposInviernoApertura::class,
+        Commands\TurnosEquiposVeranoApertura::class
     ];
 
     /**
@@ -28,6 +30,16 @@ class Kernel extends ConsoleKernel
         $schedule->command('test:task')
         ->timezone('America/Mexico_City')
         ->dailyAt('01:00');
+
+        //Invierno equipos apertura
+        $schedule->command('Invierno:Equipos')
+        ->timezone('America/Mexico_City')
+        ->dailyAt('08:00');
+
+        //verano equipos apertura
+        $schedule->command('Verano:Equipos')
+        ->timezone('America/Mexico_City')
+        ->everyMinute();
     }
 
     /**

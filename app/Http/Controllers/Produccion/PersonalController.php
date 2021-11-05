@@ -104,7 +104,8 @@ class PersonalController extends Controller
             ])
             ->first(['id', 'user_id']);
         if($user->perfil_user->hasRole('Produccion')) {
-            $user->perfil_user->removeRole([' Produccion ', 'Cordinador', 'Encargado', 'Lider', 'Operador']);
+            $user->perfil_user->removeRole('Produccion');
+            $user->perfil_user->removeRole($per);
         }
 
         $user->perfil_user->assignRole(['Produccion', $per]);
@@ -123,6 +124,7 @@ class PersonalController extends Controller
             if(!empty($cuenta->deleted_at))
             {
                 $cuenta->restore();
+                $cuenta->update(['ope_puesto' => $request->ope_puesto]);
             }//revisa si ya existe el usuario y el delete es nulo para mandar un aviso
             else{
                 Validator::make($request->all(), [
@@ -160,7 +162,20 @@ class PersonalController extends Controller
         }
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
-        /* switch ($request->ope_puesto) {
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Produccion\are_prof  $are_prof
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request)
+    {
+        //
+        $user = User::find($request->perfiles['user_id']);
+        //return $request;
+        switch ($request->ope_puesto) {
             case 'cor':
                 $per = 'Cordinador';
                 break;
@@ -173,27 +188,11 @@ class PersonalController extends Controller
             case 'ope':
                 $per = 'Operador';
                 break;
-        } */
-        // crea un nuevo usuario para que ocupe la aplicación
-        /* $n_user = User::create([
-            'IdEmp' => $request->perfiles['IdEmp'],
-            'name' => $request->perfiles['Nombre'].' '.$request->perfiles['ApPat'].' '.$request->perfiles['ApMat'],
-            'Departamento' => $request->departamentos['Nombre'],
-            'password' => bcrypt($request->perfiles['IdEmp'])
-        ])->assignRole(['Produccion', $per]); */
-        //actualiza la informacion de perfiles para relacionar con el nuevo usuario
-        /* PerfilesUsuarios::find($request->perfiles['id'])->update(['user_id' => $n_user->id]); */
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Produccion\are_prof  $are_prof
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request)
-    {
-        //
+        }
+        if($user->hasRole('Produccion')) {
+            $user->removeRole('Produccion');
+            $user->removeRole($per);
+        }
         if ($request->has('id')) {
             dep_per::find($request->input('id'))->delete();
             return redirect()->back()

@@ -23,13 +23,21 @@ class CarNormController extends Controller
             'norma' => ['required'],
             'clave_id' => ['required'],
         ])->validate();
+        $bus = carNorm::where('clave_id', '=', $request->clave_id)
+        ->where('partida', '=', $request->partida)
+        ->where('norma', '=', $request->norma)
+        ->where('departamento_id', '=', $request->departamento_id)
+        ->first();
 
-        carNorm::create([
-            'partida' => $request->partida,
-            'norma' => $request->norma,
-            'clave_id' => $request->clave_id,
-            'departamento_id' => $request->departamento_id
-        ]);
+        if (empty($bus->id)) {
+            carNorm::create([
+                'partida' => $request->partida,
+                'norma' => $request->norma,
+                'clave_id' => $request->clave_id,
+                'departamento_id' => $request->departamento_id
+            ]);
+        }
+
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');

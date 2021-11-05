@@ -127,7 +127,7 @@
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Fecha de inicio de carga</jet-label>
-                                <input type="file" @input="docu.file = $event.target.files[0]" ref="file" >
+                                <input type="file" @input="docu.file = $event.target.files[0]" ref="file" accept=".xlsx">
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
                                 <jet-button class="" @click="carMasi">Guardar</jet-button>

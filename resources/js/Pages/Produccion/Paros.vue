@@ -14,7 +14,7 @@
                 </select>
             </template>
             <template v-slot:BtnNuevo>
-                <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="reset()">Cargar datos</jet-button>
+                <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="reset()">Ingresar Paro</jet-button>
             </template>
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
@@ -328,7 +328,7 @@
                 this.$nextTick(() => {
                     $('#t_paros').DataTable({
                         "language": this.español,
-                        "order": [[5, 'desc']],
+                        "order": [[5, 'asc']],
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
