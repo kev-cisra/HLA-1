@@ -138,8 +138,10 @@ class CotizacionesController extends Controller{
 
         if($request->Req != ''){
             $Art = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
+            $CantidadArt = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->count();
         }else{
             $Art = null;
+            $CantidadArt = 0;
         }
 
         $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 8)->count();
@@ -168,11 +170,11 @@ class CotizacionesController extends Controller{
             'Confirmar',
             'Autorizados',
             'mes',
-            'pru', 'Art'));
+            'pru', 'Art', 'CantidadArt'));
     }
 
     public function store(Request $request){
-
+        return $request;
         if(isset($request)){
 
             if(isset($request->archivo)){

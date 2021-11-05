@@ -22595,6 +22595,10 @@ select {
 		width: 50%;
 	}
 
+	.md\:tw-w-4\/6 {
+		width: 66.666667%;
+	}
+
 	.md\:tw-grid-cols-3 {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}

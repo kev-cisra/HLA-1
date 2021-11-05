@@ -562,7 +562,7 @@
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/ md:tw-mb-0">
                                 <jet-label><span class="required">*</span>PRECIO UNITARIO</jet-label>
                                 <jet-input type="text" v-model="form.Precio" @change="ConversionMoneda($event)"></jet-input>
-                                <!-- <small v-if="errors.Precio" class="validation-alert">{{errors.Precio}}</small> -->
+                                <small v-if="errors.Precio" class="validation-alert">{{errors.Precio}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>TIPO MONEDA</jet-label>
@@ -575,7 +575,7 @@
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
                                 <jet-label>Tipo Cambio</jet-label>
                                 <jet-input type="text" v-model="form.TipoCambio"></jet-input>
-                                <!-- <small v-if="errors.Precio" class="validation-alert">{{errors.Precio}}</small> -->
+                                <small v-if="errors.TipoCambio" class="validation-alert">{{errors.TipoCambio}}</small>
                             </div>
                         </div>
 
@@ -619,7 +619,7 @@
             </div>
 
             <div class="ModalFooter">
-                <jet-button type="button" @click="save(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
+                <jet-button type="button" @click="RealizaCotizacion(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
                 <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button>
                 <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
             </div>
@@ -851,12 +851,84 @@
             </div>
 
             <div class="tw-mt-4">
+                <div class="ModalForm">
+                    {{ CantidadArt }}
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>MARCA</jet-label>
+                                <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
+                                <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
+                                <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
+                                    <option v-for="select in Proveedores" :key="select.id" :value="select.Nombre" >{{ select.Nombre }}</option>
+                                </select>
+                                <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>TIPO MONEDA</jet-label>
+                                <select id="Jefe" v-model="form.Moneda"  class="InputSelect">
+                                    <option value="MXN" >MXN</option>
+                                    <option value="USD" >USD</option>
+                                </select>
+                            </div>
+
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
+                                <jet-label>Tipo Cambio</jet-label>
+                                <jet-input type="text" v-model="form.TipoCambio"></jet-input>
+                                <small v-if="errors.TipoCambio" class="validation-alert">{{errors.TipoCambio}}</small>
+                            </div>
+                        </div>
+                        <div>
+                            <button @click="showScores" class="tw-p-2">Consola</button>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Cantidad</th>
+                                    <th>Descripcion</th>
+                                    <th>Resultado</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="match in form.PrecioCotizacion" :key="match">
+                                        <td>{{ match.Cantidad }}</td>
+                                        <td>{{ match.Descripcion }}</td>
+                                        <td><!-- <input v-model.number="PreUni[match.Descripcion].PreUni[0]" type="number" min="0" /> -->
+                                            <input type="number" v-model="match.val">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
+                                <textarea name="" id="" cols="2" v-model="form.Comentarios" @input="(val) => (form.Comentarios = form.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                            </div>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label>ARCHIVO</jet-label>
+                                <label class="tw-flex tw-justify-center tw-gap-4 tw-w-52 tw-h-11 tw-w-full tw-p-2 tw-font-bold tw-tracking-wide tw-text-center tw-text-blueGray-600 tw-uppercase tw-bg-gray-200 tw-border tw-rounded-lg tw-cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="tw-w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                    </svg>
+                                    <span class="tw-mt-2 tw-text-xxs" v-if="form.archivo == null">Selecciona un Archivo</span>
+                                    <span class="tw-mt-2 tw-text-xxs tw-text-teal-500 tw-font-bold" v-if="form.archivo != null">{{  form.archivo.name }}</span>
+                                    <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
+                                </label>
+                                <span v-if="form.ImagenServidor != null">{{form.archivo}}</span>
+                                <small v-if="errors.archivo" class="validation-alert">{{errors.archivo}}</small>
+                            </div>
+                        </div>
+                </div>
             </div>
         </div>
 
         <div class="ModalFooter">
-            <jet-button type="button" @click="save(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
-            <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button>
+            <jet-button type="button" @click="RealizaCotizacion(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
+            <!-- <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button> -->
             <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
         </div>
     </modal>
@@ -924,7 +996,9 @@ export default {
                 Comentariollegada: null,
                 Fechallegada: null,
                 ImagenServidor: null,
+                PrecioCotizacion: [],
             },
+            PreUni: [],
             params:{
                 month: null,
                 Estatus: null,
@@ -967,10 +1041,17 @@ export default {
         PreciosCotizacion: Object,
         pru: Object,
         Art: Object,
+        CantidadArt: Object,
     },
 
-    methods: {
+    created() {
 
+  },
+
+    methods: {
+        showScores() {
+            console.log(this.PreUni)
+        },
         reset() {
             this.form = {
                 IdUser: this.Session.id,
@@ -1243,25 +1324,37 @@ export default {
         },
 
         CotizarReq(data){
-            this.form.editId = data.id;
-            this.form.NumReq = data.NumReq;
-            this.form.Fecha = data.Fecha;
-            this.form.Departamento_id = data.Departamento_id;
-            this.form.Codigo = data.Codigo;
-            this.form.Maquina = data.Maquina_id;
-            this.form.Marca = data.Marca_id;
-            this.form.Tipo = data.TipCompra;
-            this.form.Nombre = data.Perfil_id;
-            this.form.Observaciones = data.Observaciones;
             this.params.Req = data.id;
-
+            this.reset();
+            this.PreUni = [];
+            this.form.PrecioCotizacion = [];
+            this.Art.forEach(Art => {
+                this.PreUni.push({Id: Art.id, Cantidad: Art.Cantidad, Descripcion: Art.Descripcion, val: 0})
+                /* this.PreUni[Art.Descripcion] = {
+                    Cantidad: Art.Cantidad,
+                    Descripcion: Art.Descripcion,
+                    PreUni: [null]
+                } */
+            })
+            this.form.PrecioCotizacion = this.PreUni;
+            console.log(this.form.PrecioCotizacion)
             this.chageCotizar();
 
             this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
                 onSuccess: () => {
-
             }, preserveState: true })
         },
+
+        RealizaCotizacion(data) {
+            console.log(this.PreUni);
+            console.log(data);
+
+            this.$inertia.post("/Compras/Cotizaciones", this.PreUni, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
+        }
     },
 
     watch: {
