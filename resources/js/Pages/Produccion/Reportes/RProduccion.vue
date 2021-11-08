@@ -72,6 +72,7 @@
                     <th class="columna">Maquina</th>
                     <th class="columna">KG</th>
                     <th class="columna">Numero de pacas</th>
+                    <th></th>
                 </template>
                 <template v-slot:TableFooter >
                     <tr class="fila" v-for="ca in recoTabla" :key="ca.id">
@@ -88,6 +89,24 @@
                         <td >{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
                         <td >{{this.formatoMexico(ca.valor)}}</td>
                         <td > {{ca.VerInv}} </td>
+                        <td>
+                            <div class="columnaIconos">
+                                <div class="iconoEdit" v-if="ca.proceso.tipo == 1" @click="editCar(ca)">
+                                    <span tooltip="Editar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoDelete" v-if="ca.proceso.tipo == 1" @click="deleteCar(ca)">
+                                    <span tooltip="Eliminar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 </template>
                 <template v-slot:Foother>
@@ -104,6 +123,7 @@
                     <th class="columna">Maquina</th>
                     <th class="columna">KG</th>
                     <th class="columna">Numero de pacas</th>
+                    <th></th>
                 </template>
             </Table>
         </div>
@@ -185,6 +205,85 @@
                 </div>
             </form>
         </modal>
+        <!------------------ Modal Editar Carga------------------------->
+        <modal :show="showModalCar" @close="changeCloseCar">
+            <div class="tw-px-4 tw-py-4">
+                <div class="tw-text-lg">
+                    <div class="ModalHeader">
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Editar datos cargados</h3>
+                    </div>
+                </div>
+
+                <div class="tw-mt-4">
+                    <div class="ModalForm">
+                        <!-- Información general -->
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
+                                <jet-label>Fecha de la carga</jet-label>
+                                <p>{{carga.fecha}}</p>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
+                                <jet-label>Nombre del operador</jet-label>
+                                <p>{{carga.nomOpe}}</p>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
+                                <jet-label>Turno</jet-label>
+                                <p>{{carga.turno}}</p>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
+                                <jet-label>Equipo</jet-label>
+                                <p>{{carga.equipo}}</p>
+                            </div>
+                        </div>
+                        <!-- datos para editar  -->
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Norma</jet-label>
+                                <select class="InputSelect" v-model="carga.norma">
+                                    <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
+                                </select>
+                                <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Clave</jet-label>
+                                <select class="InputSelect" v-model="carga.clave_id">
+                                    <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
+                                </select>
+                                <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Partida</jet-label>
+                                <jet-input class="InputSelect" v-model="carga.partida"></jet-input>
+                                <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Kg</jet-label>
+                                <jet-input class="InputSelect" v-model="carga.valor"></jet-input>
+                                <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
+                            </div>
+                        </div>
+                        <!-- notas -->
+                        <div class="tw-mb-6 lg:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg">
+                                <jet-label>Nota anterior</jet-label>
+                                <jet-label v-html="nAnte"></jet-label>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Nota</jet-label>
+                                <textarea class="InputSelect" v-model="carga.nota" maxlength="250" @input="(val) => (carga.nota = carga.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
+                                <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ModalFooter">
+                <button class="btn btn-outline-success" type="button" @click="updateCar(carga)">
+                    Actualizar
+                </button>
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
     </app-layout>
 </template>
 
@@ -222,8 +321,10 @@
             'usuario',
             'depa',
             'cargas',
+            'materiales',
             'errors'
         ],
+
         components: {
             AppLayout,
             Header,
@@ -235,6 +336,7 @@
             Modal,
             JetLabel
         },
+
         data() {
             return {
                 color: "tw-bg-blue-600",
@@ -245,11 +347,13 @@
                 docu: {
                     file: null
                 },
+                nAnte: null,
                 hoy: moment().format('YYYY-MM-DD'),
                 editMode: false,
                 carMode: false,
                 showModal: false,
                 showModalC: false,
+                showModalCar: false,
                 vCal: true,
                 horas: '07:00',
                 estAño: moment().format('Y'),
@@ -265,12 +369,28 @@
                     hoy: null,
                     mañana: null,
                     depa: this.S_Area
+                },
+                carga: {
+                    id: null,
+                    noFecha: moment().format('YYYY-MM-DD HH:mm:ss'),
+                    usu: this.usuario.id,
+                    nomOpe: null,
+                    fecha: null,
+                    turno: null,
+                    equipo: null,
+                    norma: null,
+                    clave_id: null,
+                    partida: null,
+                    valor: null,
+                    notas: null
                 }
             }
         },
+
         mounted() {
             this.global();
         },
+
         methods: {
             /***************************** Carga Masiva ************************************/
             carMasi(){
@@ -521,8 +641,73 @@
             resetC(){
                 this.$refs.file.type='text';
                 this.$refs.file.type='file';
+            },
+            /**************************** Acciones de la carga ***********************************************/
+            //eliminar carga
+            deleteCar(data){
+                //console.log(data)
+                Swal.fire({
+                    title: '¿Estás seguro de querer eliminar este Registro?',
+                    text: "¡Si se elimina no se podrá revertir!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                        'Eliminadó!',
+                        '¡El registro se eliminó correctamente!',
+                        'success'
+                        )
+                        data._method = 'DELETE';
+                        this.$inertia.post('/Produccion/Carga/' + data.id, data, {
+                            onSuccess: () => { this.alertDelete(), this.limInputs('00') }, onError: () => {}, preserveState: true
+                        });
+                    }
+                })
+            },
+            //abrir o cerrar modal para carga de datos
+            changeCloseCar(){
+                this.showModalCar = !this.showModalCar
+            },
+            //reset de carga
+            resetCar(){
+                this.carga = {
+                    id: null,
+                    nomOpe: null,
+                    fecha: null,
+                    turno: null,
+                    equipo: null,
+                    norma: null,
+                    clave_id: null,
+                    partida: null,
+                    valor: null,
+                    notas: null
+                }
+            },
+            //editar carga
+            editCar(data){
+                this.changeCloseCar();
+                this.carga.id = data.id;
+                this.carga.nomOpe = data.dep_perf.perfiles.Nombre+' '+data.dep_perf.perfiles.ApPat+' '+data.dep_perf.perfiles.ApMat;
+                this.carga.fecha = moment(data.fecha).format('YYYY-MM-DD');
+                this.carga.turno = data.turno.nomtur;
+                this.carga.equipo = data.equipo.nombre;
+                this.carga.norma = data.norma;
+                this.carga.clave_id = data.clave_id;
+                this.carga.partida = data.partida;
+                this.carga.valor = data.valor;
+                this.nAnte = data.notas.length == 0 ? '' : `<label class="tw-text-base tw-w-full tw-text-black">Fecha: ${data.notas[0].fecha}</label><label class="tw-text-base tw-w-full tw-text-black tw-capitalize"> ${data.notas[0].nota}</label>`;
+            },
+            updateCar(data){
+                this.$inertia.put('/Produccion/CarNor/' + data.id, data, {
+                    onSuccess: (v) => { this.resetCar(), this.alertSucces(), this.changeCloseCar(), this.limInputs('00') }, onError: (e) => { }, preserveState: true
+                });
             }
         },
+
         computed: {
             //Opciones departamento
             opc: function() {
@@ -540,11 +725,36 @@
                 })
                 return ar;
             },
+            //Opciones Normas
+            opcNM: function() {
+                const nm = [];
+                this.materiales.forEach(ma => {
+                    nm.push({value: ma.id, text: ma.materiales.idmat+' - '+ma.materiales.nommat});
+                })
+                return nm;
+            },
+            //Opciones Claves
+            opcCL: function() {
+                const scl = [];
+                /* this.form.clave_id = ''; */
+                if (this.carga.norma != '') {
+                    this.materiales.forEach(cl => {
+                        if (this.carga.norma == cl.id) {
+                            //console.log(cl.claves)
+                            cl.claves.forEach(c => {
+                                scl.push({value: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
+                            })
+                        }
+                    })
+                }
+                return scl;
+            },
             //recorrido para la tabla
             recoTabla: function() {
                 return this.NuArray();
             }
         },
+
         watch: {
             S_Area: function(b){
                 $('#t_repo').DataTable().destroy();
@@ -558,7 +768,6 @@
                 });
 
             },
-
         }
     }
 </script>

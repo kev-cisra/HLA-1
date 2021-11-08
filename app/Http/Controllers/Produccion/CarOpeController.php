@@ -24,13 +24,22 @@ class CarOpeController extends Controller
             'maq_pro_id' => ['required'],
         ])->validate();
 
-        //carga de operador
-        carOpe::create([
-            'proceso_id' => $request->proceso_id,
-            'dep_perf_id' => $request->dep_perf_id,
-            'maq_pro_id' => $request->maq_pro_id,
-            'departamento_id' => $request->departamento_id
-        ]);
+        $veri = carOpe::where('proceso_id', '=', $request->proceso_id)
+        ->where('dep_perf_id', '=', $request->dep_perf_id)
+        ->where('maq_pro_id', '=', $request->maq_pro_id)
+        ->where('departamento_id', '=', $request->departamento_id)
+        ->first();
+
+        if (empty($veri->id)) {
+            //carga de operador
+            carOpe::create([
+                'proceso_id' => $request->proceso_id,
+                'dep_perf_id' => $request->dep_perf_id,
+                'maq_pro_id' => $request->maq_pro_id,
+                'departamento_id' => $request->departamento_id
+            ]);
+        }
+
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
     }

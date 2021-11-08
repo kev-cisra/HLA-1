@@ -435,7 +435,6 @@ class CargaController extends Controller
             'clave_id' => $request->clave_id,
             'partida' => $request->partida,
             'valor' => $request->valor,
-            'nota' => $request->nota,
             'notaPen' => 1
         ]);
         //carga de notas
@@ -455,8 +454,13 @@ class CargaController extends Controller
      * @param  \App\Models\Produccion\carga  $carga
      * @return \Illuminate\Http\Response
      */
-    public function destroy(carga $carga)
+    public function destroy(Request $request)
     {
         //
+        if ($request->has('id')) {
+            carga::find($request->input('id'))->delete();
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 }

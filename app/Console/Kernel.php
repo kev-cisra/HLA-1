@@ -39,7 +39,7 @@ class Kernel extends ConsoleKernel
         //verano equipos apertura
         $schedule->command('Verano:Equipos')
         ->timezone('America/Mexico_City')
-        ->everyMinute();
+        ->dailyAt('09:00');
     }
 
     /**

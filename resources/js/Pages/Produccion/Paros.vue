@@ -45,7 +45,7 @@
                 <!-- inputs orden y descripcion -->
                 <div class="tw-mb-6 md:tw-flex">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 tw-text-center tw-mx-auto md:tw-mb-0">
-                        <jet-label>Orden</jet-label>
+                        <jet-label>Folio de orden de trabajo</jet-label>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon3" v-text="tOrden"></span>
                             <jet-input type="text" class="form-control" v-model="form.orden" @input="(val) => (form.orden = form.orden.toUpperCase())"></jet-input>
@@ -90,22 +90,22 @@
                     <th></th>
                 </template>
                 <template v-slot:TableFooter >
-                    <tr v-for="ca in cargas" :key="ca.id">
-                        <td class="fila tw-text-center">{{ca.orden}}</td>
-                        <td class="fila tw-text-center">{{ca.maq_pro.maquinas.Nombre}}</td>
-                        <td class="fila tw-text-center">{{ca.paros.clave}}</td>
-                        <td class="fila tw-text-center">{{ca.paros.descri}}</td>
-                        <td class="fila tw-text-center">{{ca.descri}}</td>
-                        <td class="fila tw-text-center">
+                    <tr class="fila" v-for="ca in cargas" :key="ca.id">
+                        <td class="tw-text-center">{{ca.orden}}</td>
+                        <td class="tw-text-center">{{ca.maq_pro.maquinas.Nombre}}</td>
+                        <td class="tw-text-center">{{ca.paros.clave}}</td>
+                        <td class="tw-text-center">{{ca.paros.descri}}</td>
+                        <td class="tw-text-center">{{ca.descri}}</td>
+                        <td class="tw-text-center">
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full" v-if="ca.estatus == 'Activo'">{{ca.estatus}}</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">{{ca.estatus}}</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
                         </td>
-                        <td class="fila tw-text-center">{{ca.iniFecha}}</td>
-                        <td class="fila tw-text-center">{{ca.finFecha == null ? '' : ca.finFecha}}</td>
-                        <td class="fila tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}} minutos</td>
-                        <td class="fila tw-text-center">{{ca.pla_acci}}</td>
-                        <td class="fila tw-text-center">
+                        <td class="tw-text-center">{{ca.iniFecha}}</td>
+                        <td class="tw-text-center">{{ca.finFecha == null ? '' : ca.finFecha}}</td>
+                        <td class="tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}} minutos</td>
+                        <td class="tw-text-center">{{ca.pla_acci}}</td>
+                        <td class="tw-text-center">
                             <div class="columnaIconos">
                                 <div class="iconoDelete" @click="detener(1, ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id != 13 & ca.paro_id != 14 & ca.paro_id != 16)">
                                     <span tooltip="Detener" flow="left">
@@ -338,6 +338,7 @@
             /****************************** carga de carga de datos ******************************************/
             reset(){
                 //this.claParo();
+                this.form.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
                 this.proc_prin = '';
                 this.form.proceso_id = '';
                 this.form.maq_pro_id = '';
@@ -367,12 +368,14 @@
             },
             //actualiza el estatus y lo detiene
             detener(det, data){
+                //primer stop cambia estatus a "En revisión"
                 if (det == 1) {
                     data.estatus = 'En revisión';
-                    data.finFecha = this.form.fecha;
+                    data.finFecha = moment().format("YYYY-MM-DD HH:mm:ss");
                     data.tiempo = this.tiempo(data.iniFecha, data.finFecha);
                     this.update(data);
                 }
+                //pregunta si ya se va a guardas el dato o se deniega cambia estatus a "Autorizado" o "Activo"
                 else if(det == 2){
 
                     const swalWithBootstrapButtons = Swal.mixin({
@@ -392,6 +395,7 @@
                         cancelButtonText: 'Denegar',
                         reverseButtons: true
                     }).then((result) => {
+                        //si se acepta el paro se guarda
                         if (result.isConfirmed) {
                             swalWithBootstrapButtons.fire(
                             '¡Autorizado!',
@@ -400,7 +404,8 @@
                             )
                             data.estatus = 'Autorizado';
                             this.update(data);
-                        } else if (
+                        }//en caso de que no reinicia y manda a nulo algunos datos
+                        else if (
                             /* Read more about handling dismissals below */
                             result.dismiss === Swal.DismissReason.cancel
                         ) {
@@ -419,6 +424,7 @@
                 }
 
             },
+            //actualiza los paros y sus estatus
             update(data){
                 $('#t_paros').DataTable().destroy();
                 this.$inertia.put('/Produccion/Paros/' + data.id, data, {

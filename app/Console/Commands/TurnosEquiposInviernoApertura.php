@@ -44,10 +44,9 @@ class TurnosEquiposInviernoApertura extends Command
         //Pone la fecha de hoy
         $hoy = Carbon::now();
 
-        $txt = 'si entro '.$hoy;
         //verifica si estamos en invierno
         if(!var_dump($hoy->isDST())){
-            $txt += ' entro a invierno';
+            $txt = ' entro a invierno '.$hoy;
             //se consulta turnos y los equipos
             $turnos = turnos::where('departamento_id', '=', 7)
             ->with([
@@ -97,9 +96,8 @@ class TurnosEquiposInviernoApertura extends Command
                     }
                 }
             }
-
         }
-        Storage::disk('local')->put('Equipo.txt', $txt);
+        Storage::disk('local')->put('EquipoInvierno.txt', $txt);
         return Command::SUCCESS;
     }
 }

@@ -62,7 +62,7 @@ class CalculosController extends Controller
                     //$this->sm_dc($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_dp':
-                    //$this->sm_dp($ope, $request->depa, $fechas, $perf);
+                    $this->sm_dp($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_t':
                     $this->sm_t($ope, $request->depa, $fechas, $perf);
@@ -239,7 +239,6 @@ class CalculosController extends Controller
 
     //operacion suma dia clave
     public function sm_dc($val, $dep, $fechas, $usuario){
-        print($val);
         //recorrido de formulas
         foreach ($val->formulas as $value) {
             $proce_id = $value->proceso_id;
@@ -271,7 +270,7 @@ class CalculosController extends Controller
                 //print($val->nompro.' | '.$cl->clave->CVE_ART.' | '.$suma.' | '.$cuenta.' - ');
                 $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => $cl->norma, 'clave_id' => $cl->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
                 if ($fc != 0) {
-                    $this->gua_act($fechas, $data);
+                    //$this->gua_act($fechas, $data);
                 }
             }
         }
@@ -281,42 +280,51 @@ class CalculosController extends Controller
     }
 
     public function sm_dp($val, $dep, $fechas, $usuario){
-        //print($val);
-        foreach ($val->formulas as $value){
-            $proce_id = $value->proceso_id;
-            $maq_id = $value->maq_pros_id;
-            $partida = carga::where('departamento_id', '=', $dep)
-            ->where('maq_pro_id', '=', $maq_id)
-            ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
-            ->distinct()
-            ->get(['partida','norma','clave_id']);
-            foreach ($partida as $pr) {
+        $partida = carga::where('departamento_id', '=', $dep)
+        ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+        ->distinct()
+        ->get(['partida','norma','clave_id']);
+        foreach ($partida as $pr) {
+            //print_r($pr['partida'].' /');
+            if ($pr['partida'] != 'N/A') {
+                # code...
                 $fs = 0;
                 $fc = 0;
-                //suma
-                $suma = carga::where('departamento_id', '=', $dep)
+                foreach ($val->formulas as $value){
+                    $proce_id = $value->proceso_id;
+                    $maq_id = $value->maq_pros_id;
+                    $partida = carga::where('departamento_id', '=', $dep)
+                    ->where('maq_pro_id', '=', $maq_id)
                     ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
-                    ->where('partida', '=', $pr->partida)
-                    ->where('clave_id', '=', $pr->clave_id)
-                    -> where('maq_pro_id', '=', $value->maq_pros_id)
-                    ->sum('valor');
+                    ->distinct()
+                    ->get(['partida','norma','clave_id']);
 
-                //catidad
-                $cuenta = carga::where('departamento_id', '=', $dep)
-                    ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
-                    ->where('partida', '=', $pr->partida)
-                    ->where('clave_id', '=', $pr->clave_id)
-                    -> where('maq_pro_id', '=', $value->maq_pros_id)
-                    ->count('valor');
-                //resultado
-                $fs += $suma;
-                $fc += $cuenta;
-                $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => $pr->partida, 'norma' => $pr->norma, 'clave_id' => $pr->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
-                //print_r($proce_id.' -/ '.$fc.' \- '.$pr->partida.' || ');
-                if ($fc != 0) {
-                    //$this->gua_act($fechas, $data);
+                    //suma
+                    $suma = carga::where('departamento_id', '=', $dep)
+                        ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                        ->where('partida', '=', $pr->partida)
+                        ->where('clave_id', '=', $pr->clave_id)
+                        -> where('maq_pro_id', '=', $value->maq_pros_id)
+                        ->sum('valor');
+
+                    //catidad
+                    $cuenta = carga::where('departamento_id', '=', $dep)
+                        ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                        ->where('partida', '=', $pr->partida)
+                        ->where('clave_id', '=', $pr->clave_id)
+                        -> where('maq_pro_id', '=', $value->maq_pros_id)
+                        ->count('valor');
+                    //resultado
+                    $fs += $suma;
+                    $fc += $cuenta;
+                    $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => $pr->partida, 'norma' => $pr->norma, 'clave_id' => $pr->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
+                    if ($fc != 0) {
+                        //print_r($proce_id.' -/ '.$fc.' \- '.$pr->partida.' || ');
+                        $this->gua_act($fechas, $data);
+                    }
                 }
             }
+
         }
     }
 

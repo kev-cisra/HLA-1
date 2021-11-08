@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
+use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
+use App\Models\Produccion\notasCarga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -54,6 +56,31 @@ class CarNormController extends Controller
     public function update(Request $request, carNorm $carNorm)
     {
         //
+        Validator::make($request->all(), [
+            'norma' => ['required'],
+            'clave_id' => ['required'],
+            'partida' => ['required'],
+            'valor' => ['required'],
+            'nota' => ['required']
+        ])->validate();
+        //carga de procesos
+        carga::find($request->input('id'))
+        ->update([
+            'norma' => $request->norma,
+            'clave_id' => $request->clave_id,
+            'partida' => $request->partida,
+            'valor' => $request->valor,
+            'notaPen' => 1
+        ]);
+        //carga de notas
+        notasCarga::create([
+            'fecha' => $request->noFecha,
+            'nota' => $request->nota,
+            'perfil_id' => $request->usu,
+            'carga_id' => $request->id
+        ]);
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
     }
 
     /**

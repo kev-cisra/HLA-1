@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produccion\carga;
+use App\Models\Produccion\dep_mat;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
@@ -45,6 +46,7 @@ class RepoProController extends Controller
         //Variables
         $depa = [];
         $carga = [];
+        $mate = [];
 
         //Condicional
         if (count($perf->dep_pers) != 0) {
@@ -114,9 +116,21 @@ class RepoProController extends Controller
                 }
             ])
             ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id','VerInv']);
+
+            //muestra materiales
+            $mate = dep_mat::where('departamento_id', '=', $request->busca)
+                    ->with([
+                        'materiales' => function($mat){
+                            $mat->select('id','idmat', 'nommat');
+                        },
+                        'claves' => function($cla){
+                            $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
+                        }
+                    ])
+                    ->get();
         }
 
-        return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga]);
+        return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'materiales' => $mate,]);
     }
 
     /**

@@ -384,6 +384,7 @@
                 </div>
             </div>
         </div>
+
         <!------------------------------------- Carga de paquetes Norma, Claves y partida -------------------------------->
         <div class="offcanvas offcanvas-end sm:tw-w-9/12 lg:tw-w-6/12" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
             <div class="offcanvas-header">
