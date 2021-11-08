@@ -22178,6 +22178,9 @@ select {
 .hover\:tw-text-lg:hover {
 	font-size: 1.125rem;
 }
+.hover\:tw-text-3xl:hover {
+	font-size: 1.875rem;
+}
 .hover\:tw-text-white:hover {
 	--tw-text-opacity: 1;
 	color: rgba(255, 255, 255, var(--tw-text-opacity));

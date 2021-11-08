@@ -462,9 +462,22 @@
                                     </div>
                                 </div>
                                 <div class="columnaIconos" v-if="datos.Estatus == 4">
+                                    <div class="iconoDetails" @click="Partidas(datos)">
+                                        <span tooltip="Visualiza Partidas" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </span>
+                                    </div>
                                     <div class="iconoEdit" @click="ConfirmaRequisicionCotizada(datos, 5)">
                                         <span tooltip="Enviar Cotizacion para Autorización" flow="left">
                                             <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </div>
+                                    <div class="iconoPurple" @click="CotizarReq(datos, 4)">
+                                        <span tooltip="Realizar Otra Cotizacion" flow="left">
+                                            <i class="fas fa-file-invoice-dollar"></i>
                                         </span>
                                     </div>
                                     <div class="iconoEdit" @click="EditaCotizacion(datos, 9)">
@@ -504,18 +517,12 @@
                                 <td class="tw-text-center">{{ datos.EstatusArt }}</td>
                                 <td class="tw-text-center">{{ datos.RecibidoPor }}</td>
                                 <td>
-                                    <div class="columnaIconos" v-if="datos.EstatusArt == 3">
-                                        <div class="iconoDetails" @click="Partidas(datos)">
-                                            <span tooltip="Visualiza Partidas" flow="left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    <div class="columnaIconos" v-if="datos.EstatusArt == 4">
+                                        <div class="iconoEdit" @click="EditaPrecio(datos)">
+                                            <span tooltip="Editar Precio" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                                                 </svg>
-                                            </span>
-                                        </div>
-                                        <div class="iconoPurple" @click="Cotizar(datos, 4)">
-                                            <span tooltip="Realizar Cotizacion" flow="left">
-                                                <i class="fas fa-file-invoice-dollar"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -559,6 +566,7 @@
                 </div>
         </div>
     </div>
+
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
 
@@ -949,6 +957,99 @@
         </div>
     </modal>
 
+    <modal :show="showEditarPre" @close="chageEditarPre" :maxWidth="tam">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Edita Precio Cotización # {{form.NumReq}}</h3>
+                </div>
+            </div>
+
+            <div class="tw-mt-4">
+                <div class="ModalForm">
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>MARCA</jet-label>
+                                <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
+                                <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
+                                <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
+                                    <option v-for="select in Proveedores" :key="select.id" :value="select.Nombre" >{{ select.Nombre }}</option>
+                                </select>
+                                <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>TIPO MONEDA</jet-label>
+                                <select id="Jefe" v-model="form.Moneda"  class="InputSelect">
+                                    <option value="MXN" >MXN</option>
+                                    <option value="USD" >USD</option>
+                                </select>
+                            </div>
+
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
+                                <jet-label>Tipo Cambio</jet-label>
+                                <jet-input type="text" v-model="form.TipoCambio"></jet-input>
+                                <small v-if="errors.TipoCambio" class="validation-alert">{{errors.TipoCambio}}</small>
+                            </div>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                            <h3 class="tw-text-center tw-font-extrabold">Articulos</h3>
+                            <TableSky>
+                                <template v-slot:TableHeader>
+                                    <th>CANTIDAD</th>
+                                    <th>UNIDAD</th>
+                                    <th>DESCRIPCION</th>
+                                    <th>PRECIO UNITARIO</th>
+                                </template>
+
+                                <template v-slot:TableFooter>
+                                    <tr v-for="match in form.PrecioCotizacion" :key="match">
+                                        <td class="tw-text-center">{{ match.Cantidad }}</td>
+                                        <td class="tw-text-center">{{ match.Unidad }}</td>
+                                        <td>{{ match.Descripcion }}</td>
+                                        <td class="tw-flex tw-justify-center">
+                                            <input type="number" v-model="match.PrecioUnitario" @change="ConversionMoneda($event)" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-block tw-w-1/2 tw-appearance-none tw-shadow-sm">
+                                        </td>
+                                    </tr>
+                                </template>
+                            </TableSky>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
+                                <textarea name="" id="" cols="2" v-model="form.Comentarios" @input="(val) => (form.Comentarios = form.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                            </div>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label>ARCHIVO</jet-label>
+                                <div class='tw-flex tw-items-center tw-justify-center tw-w-full'>
+                                    <label class='tw-flex tw-flex-col tw-border-4 tw-border-dashed tw-w-full tw-h-24 hover:tw-bg-gray-100 hover:tw-border-indigo-300 tw-group'>
+                                        <div class='tw-flex tw-flex-col tw-items-center tw-justify-center tw-pt-4'>
+                                            <svg class="tw-w-8 tw-h-8 tw-text-indigo-400 group-hover:tw-text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                            <p class='tw-lowercase tw-text-sm tw-text-gray-400 group-hover:tw-text-indigo-600 tw-mt-2 tw-tracking-wider' v-if="form.archivo == null">Seleccion un Archivo</p>
+                                            <span class="tw-mt-2 tw-text-xxs tw-text-teal-500 tw-font-bold" v-if="form.archivo != null">{{  form.archivo.name }}</span>
+                                        </div>
+                                    <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
+                                    </label>
+                                </div>
+                                <span v-if="form.ImagenServidor != null">{{form.archivo}}</span>
+                                <small v-if="errors.archivo" class="validation-alert">{{errors.archivo}}</small>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ModalFooter">
+            <jet-button type="button" @click="RealizaCotizacion(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
+            <!-- <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button> -->
+            <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+        </div>
+    </modal>
+
     </app-layout>
 </template>
 
@@ -981,6 +1082,7 @@ export default {
             showPrecios: false,
             showCotizar: false,
             showFecha: false,
+            showEditarPre: false,
             hoy: moment().format("YYYY-MM-DD"),
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
@@ -1021,6 +1123,7 @@ export default {
                 Estatus: null,
                 Proveedor: null,
                 Req: null,
+                Art: null,
             },
         };
     },
@@ -1060,12 +1163,12 @@ export default {
         PreciosCotizacion: Object,
         pru: Object,
         Art: Object,
+        Req: Object,
         CantidadArt: Object,
         PreciosRequisicion:Object,
     },
 
     created() {
-
     },
 
     methods: {
@@ -1149,6 +1252,10 @@ export default {
 
         chageFecha() {
             this.showFecha = !this.showFecha;
+        },
+
+        chageEditarPre(){
+            this.showEditarPre = !this.showEditarPre;
         },
 
         CalculaRetraso(Fecha){
@@ -1375,8 +1482,27 @@ export default {
         },
 
         EditaCotizacion(data){
-            console.log(this.params.Req);
+            console.log(data);
             this.params.Req = data.id;
+            this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+            }, preserveState: true })
+        },
+
+        EditaPrecio(data){
+            var query  = window.location.search.substring(1);
+            var vars = query.split("&");
+                for (var i=0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == 'Req') {
+                        this.params.Req = pair[1];
+                    }
+            }
+
+            this.params.Art = data.id;
+            this.form.NumReq = this.Req[0].NumReq;
+            console.log(this.form);
+            this.chageEditarPre();
             this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
                 onSuccess: () => {
             }, preserveState: true })

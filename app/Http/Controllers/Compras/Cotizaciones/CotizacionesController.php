@@ -135,15 +135,21 @@ class CotizacionesController extends Controller{
             $PreciosCotizacion = PreciosCotizaciones::with('PreciosArticulo')->get();
         }
 
-        $pru = Requisiciones::with(['RequisicionArticulos', 'RequisicionesPerfil', 'RequisicionDepartamento', 'RequisicionJefe', 'RequisicionMaquina', 'RequisicionMarca'])->get();
+        $pru = Requisiciones::with(['RequisicionArticulos', 'RequisicionesPerfil', 'RequisicionDepartamento', 'RequisicionJefe', 'RequisicionMaquina', 'RequisicionMarca', 'ArticuloPrecios'])->get();
 
         if($request->Req != ''){
             $Art = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
             $CantidadArt = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->count();
             $PreciosRequisicion = PreciosCotizaciones::where('requisiciones_id', '=', $request->Req)->get();
+            $Req = Requisiciones::where('id', '=', $request->Req)->get();
+            if($request->Art != ''){
+                $PreciosRequisicion = PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->Art)->get();
+            }
         }else{
             $Art = null;
             $CantidadArt = 0;
+            $PreciosRequisicion  = null;
+            $Req = null;
         }
 
         $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 8)->count();
@@ -172,6 +178,7 @@ class CotizacionesController extends Controller{
             'Confirmar',
             'Autorizados',
             'mes',
+            'Req',
             'pru', 'Art', 'CantidadArt', 'PreciosRequisicion'));
     }
 

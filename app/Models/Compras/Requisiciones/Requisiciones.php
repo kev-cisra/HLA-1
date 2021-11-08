@@ -44,4 +44,9 @@ class Requisiciones extends Model
         return $this->hasOne(MarcasMaquinas::class, 'id', 'Marca_id');
     }
 
+    //relacion muchos a uno
+    public function ArticuloPrecios() {
+        return $this->hasMany(PreciosCotizaciones::class, 'articulos_requisiciones_id');
+    }
+
 }
