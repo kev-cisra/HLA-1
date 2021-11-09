@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
 
+use function PHPUnit\Framework\isNull;
+
 class CotizacionesController extends Controller{
 
     public function index(Request $request){
@@ -142,6 +144,8 @@ class CotizacionesController extends Controller{
             $CantidadArt = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->count();
             $PreciosRequisicion = PreciosCotizaciones::where('requisiciones_id', '=', $request->Req)->get();
             $Req = Requisiciones::where('id', '=', $request->Req)->get();
+            $Pre = ArticulosRequisiciones::with('ArticuloPrecios')->where('id', '=', $request->Art)->get();
+            $PreCount = PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->Art)->count();
             if($request->Art != ''){
                 $PreciosRequisicion = PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->Art)->get();
             }
@@ -150,6 +154,8 @@ class CotizacionesController extends Controller{
             $CantidadArt = 0;
             $PreciosRequisicion  = null;
             $Req = null;
+            $PreCount = 0;
+            $Pre = PreciosCotizaciones::with('PreciosArticulo')->get();
         }
 
         $Almacen = ArticulosRequisiciones::where('EstatusArt', '=', 8)->count();
@@ -177,8 +183,10 @@ class CotizacionesController extends Controller{
             'SinConfirmar',
             'Confirmar',
             'Autorizados',
+            'PreCount',
             'mes',
             'Req',
+            'Pre',
             'pru', 'Art', 'CantidadArt', 'PreciosRequisicion'));
     }
 
@@ -306,6 +314,67 @@ class CotizacionesController extends Controller{
                 ]);
 
                 break;
+            }
+
+            case 8: {
+                $Session = auth()->user();
+
+                if($request->Moneda == 'MXN'){
+                    $Total = $request->Precio * $request->Cantidad;
+                }else{
+                    $Total1 = round($request->Precio * $request->TipoCambio, 2);
+                    $Total = $Total1 * $request->Cantidad;
+                }
+
+                if(isset($request->archivo)){
+
+                    Validator::make($request->all(), [
+                        'archivo' => 'required|mimes:jpg,png,jpeg,svg,pdf',
+                    ])->validate();
+
+                    $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
+
+                    //Guardado de Imagen en la carpeta Public/Storage.. (Uso del disco Public pora la restriccion de los archivos)
+                    $url = $request->archivo->storePubliclyAs('Archivos/Compras/Requisiciones/Cotizaciones',  $file, 'public');
+                }else{
+                    $Precio = PreciosCotizaciones::find($request->IdPre)->first();
+                    $url = $Precio->Archivo;
+                }
+
+                PreciosCotizaciones::find($request->IdPre)->update([
+                    'IdUser' => $request->IdUser,
+                    'Precio' => $request->Precio,
+                    'Total' => $Total,
+                    'Moneda' => $request->Moneda,
+                    'TipoCambio' => $request->TipoCambio,
+                    'Marca' => $request->Marca,
+                    'Proveedor' => $request->Proveedor,
+                    'Comentarios' => $request->Comentarios,
+                    'Archivo ' => $url,
+                ]);
+
+                if(isset($request->IdPre2) != ''){
+
+                    if($request->Moneda == 'MXN'){
+                        $Total2 = $request->Precio2 * $request->Cantidad;
+                    }else{
+                        $Total1 = round($request->Precio2 * $request->TipoCambio, 2);
+                        $Total2 = $Total1 * $request->Cantidad;
+                    }
+
+                    PreciosCotizaciones::find($request->IdPre2)->update([
+                        'IdUser' => $request->IdUser,
+                        'Precio' => $request->Precio2,
+                        'Total' => $Total2,
+                        'Moneda' => $request->Moneda,
+                        'TipoCambio' => $request->TipoCambio,
+                        'Marca' => $request->Marca,
+                        'Proveedor' => $request->Proveedor,
+                        'Comentarios' => $request->Comentarios,
+                        'Archivo ' => $url,
+                    ]);
+                }
+
             }
         }
 

@@ -874,78 +874,78 @@
 
             <div class="tw-mt-4">
                 <div class="ModalForm">
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>MARCA</jet-label>
-                                <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
-                                <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
-                                <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
-                                    <option v-for="select in Proveedores" :key="select.id" :value="select.Nombre" >{{ select.Nombre }}</option>
-                                </select>
-                                <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>TIPO MONEDA</jet-label>
-                                <select id="Jefe" v-model="form.Moneda"  class="InputSelect">
-                                    <option value="MXN" >MXN</option>
-                                    <option value="USD" >USD</option>
-                                </select>
-                            </div>
-
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
-                                <jet-label>Tipo Cambio</jet-label>
-                                <jet-input type="text" v-model="form.TipoCambio"></jet-input>
-                                <small v-if="errors.TipoCambio" class="validation-alert">{{errors.TipoCambio}}</small>
-                            </div>
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>MARCA</jet-label>
+                            <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
+                            <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
                         </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
+                            <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
+                                <option v-for="select in Proveedores" :key="select.id" :value="select.Nombre" >{{ select.Nombre }}</option>
+                            </select>
+                            <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>TIPO MONEDA</jet-label>
+                            <select id="Jefe" v-model="form.Moneda"  class="InputSelect">
+                                <option value="MXN" >MXN</option>
+                                <option value="USD" >USD</option>
+                            </select>
+                        </div>
+
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
+                            <jet-label>Tipo Cambio</jet-label>
+                            <jet-input type="text" v-model="form.TipoCambio"></jet-input>
+                            <small v-if="errors.TipoCambio" class="validation-alert">{{errors.TipoCambio}}</small>
+                        </div>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <h3 class="tw-text-center tw-font-extrabold">Articulos</h3>
+                        <TableSky>
+                            <template v-slot:TableHeader>
+                                <th>CANTIDAD</th>
+                                <th>UNIDAD</th>
+                                <th>DESCRIPCION</th>
+                                <th>PRECIO UNITARIO</th>
+                            </template>
+
+                            <template v-slot:TableFooter>
+                                <tr v-for="match in form.PrecioCotizacion" :key="match">
+                                    <td class="tw-text-center">{{ match.Cantidad }}</td>
+                                    <td class="tw-text-center">{{ match.Unidad }}</td>
+                                    <td>{{ match.Descripcion }}</td>
+                                    <td class="tw-flex tw-justify-center">
+                                        <input type="number" v-model="match.PrecioUnitario" @change="ConversionMoneda($event)" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-block tw-w-1/2 tw-appearance-none tw-shadow-sm">
+                                    </td>
+                                </tr>
+                            </template>
+                        </TableSky>
+                    </div>
+                    <div class="tw-mb-6 md:tw-flex">
                         <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                            <h3 class="tw-text-center tw-font-extrabold">Articulos</h3>
-                            <TableSky>
-                                <template v-slot:TableHeader>
-                                    <th>CANTIDAD</th>
-                                    <th>UNIDAD</th>
-                                    <th>DESCRIPCION</th>
-                                    <th>PRECIO UNITARIO</th>
-                                </template>
-
-                                <template v-slot:TableFooter>
-                                    <tr v-for="match in form.PrecioCotizacion" :key="match">
-                                        <td class="tw-text-center">{{ match.Cantidad }}</td>
-                                        <td class="tw-text-center">{{ match.Unidad }}</td>
-                                        <td>{{ match.Descripcion }}</td>
-                                        <td class="tw-flex tw-justify-center">
-                                            <input type="number" v-model="match.PrecioUnitario" @change="ConversionMoneda($event)" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-block tw-w-1/2 tw-appearance-none tw-shadow-sm">
-                                        </td>
-                                    </tr>
-                                </template>
-                            </TableSky>
+                            <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
+                            <textarea name="" id="" cols="2" v-model="form.Comentarios" @input="(val) => (form.Comentarios = form.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
                         </div>
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
-                                <textarea name="" id="" cols="2" v-model="form.Comentarios" @input="(val) => (form.Comentarios = form.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                    </div>
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                            <jet-label>ARCHIVO</jet-label>
+                            <div class='tw-flex tw-items-center tw-justify-center tw-w-full'>
+                                <label class='tw-flex tw-flex-col tw-border-4 tw-border-dashed tw-w-full tw-h-24 hover:tw-bg-gray-100 hover:tw-border-indigo-300 tw-group'>
+                                    <div class='tw-flex tw-flex-col tw-items-center tw-justify-center tw-pt-4'>
+                                        <svg class="tw-w-8 tw-h-8 tw-text-indigo-400 group-hover:tw-text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                        <p class='tw-lowercase tw-text-sm tw-text-gray-400 group-hover:tw-text-indigo-600 tw-mt-2 tw-tracking-wider' v-if="form.archivo == null">Seleccion un Archivo</p>
+                                        <span class="tw-mt-2 tw-text-xxs tw-text-teal-500 tw-font-bold" v-if="form.archivo != null">{{  form.archivo.name }}</span>
+                                    </div>
+                                <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
+                                </label>
                             </div>
+                            <span v-if="form.ImagenServidor != null">{{form.archivo}}</span>
+                            <small v-if="errors.archivo" class="validation-alert">{{errors.archivo}}</small>
                         </div>
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label>ARCHIVO</jet-label>
-                                <div class='tw-flex tw-items-center tw-justify-center tw-w-full'>
-                                    <label class='tw-flex tw-flex-col tw-border-4 tw-border-dashed tw-w-full tw-h-24 hover:tw-bg-gray-100 hover:tw-border-indigo-300 tw-group'>
-                                        <div class='tw-flex tw-flex-col tw-items-center tw-justify-center tw-pt-4'>
-                                            <svg class="tw-w-8 tw-h-8 tw-text-indigo-400 group-hover:tw-text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                            <p class='tw-lowercase tw-text-sm tw-text-gray-400 group-hover:tw-text-indigo-600 tw-mt-2 tw-tracking-wider' v-if="form.archivo == null">Seleccion un Archivo</p>
-                                            <span class="tw-mt-2 tw-text-xxs tw-text-teal-500 tw-font-bold" v-if="form.archivo != null">{{  form.archivo.name }}</span>
-                                        </div>
-                                    <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
-                                    </label>
-                                </div>
-                                <span v-if="form.ImagenServidor != null">{{form.archivo}}</span>
-                                <small v-if="errors.archivo" class="validation-alert">{{errors.archivo}}</small>
-                            </div>
-                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -967,35 +967,53 @@
 
             <div class="tw-mt-4">
                 <div class="ModalForm">
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>MARCA</jet-label>
-                                <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
-                                <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
-                                <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
-                                    <option v-for="select in Proveedores" :key="select.id" :value="select.Nombre" >{{ select.Nombre }}</option>
-                                </select>
-                                <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>TIPO MONEDA</jet-label>
-                                <select id="Jefe" v-model="form.Moneda"  class="InputSelect">
-                                    <option value="MXN" >MXN</option>
-                                    <option value="USD" >USD</option>
-                                </select>
-                            </div>
-
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
-                                <jet-label>Tipo Cambio</jet-label>
-                                <jet-input type="text" v-model="form.TipoCambio"></jet-input>
-                                <small v-if="errors.TipoCambio" class="validation-alert">{{errors.TipoCambio}}</small>
-                            </div>
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>MARCA</jet-label>
+                            <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
+                            <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
                         </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                            <h3 class="tw-text-center tw-font-extrabold">Articulos</h3>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
+                            <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
+                                <option v-for="select in Proveedores" :key="select.id" :value="select.Nombre" >{{ select.Nombre }}</option>
+                            </select>
+                            <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>TIPO MONEDA</jet-label>
+                            <select id="Jefe" v-model="form.Moneda"  class="InputSelect">
+                                <option value="MXN" >MXN</option>
+                                <option value="USD" >USD</option>
+                            </select>
+                        </div>
+
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
+                            <jet-label>Tipo Cambio</jet-label>
+                            <jet-input type="text" v-model="form.TipoCambio"></jet-input>
+                            <small v-if="errors.TipoCambio" class="validation-alert">{{errors.TipoCambio}}</small>
+                        </div>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <h3 class="tw-text-center tw-font-extrabold">Articulos</h3>
+                        <TableSky>
+                            <template v-slot:TableHeader>
+                                <th>CANTIDAD</th>
+                                <th>UNIDAD</th>
+                                <th>DESCRIPCION</th>
+                                <th>PRECIO UNITARIO</th>
+                            </template>
+
+                            <template v-slot:TableFooter>
+                                <tr v-for="match in Pre" :key="match">
+                                    <td class="tw-text-center">{{ match.Cantidad }}</td>
+                                    <td class="tw-text-center">{{ match.Unidad }}</td>
+                                    <td>{{ match.Descripcion }}</td>
+                                    <td><input type="text" v-model="form.Precio"></td>
+                                </tr>
+                            </template>
+                        </TableSky>
+                        <div v-if="PreCount > 1">
                             <TableSky>
                                 <template v-slot:TableHeader>
                                     <th>CANTIDAD</th>
@@ -1005,48 +1023,48 @@
                                 </template>
 
                                 <template v-slot:TableFooter>
-                                    <tr v-for="match in form.PrecioCotizacion" :key="match">
+                                    <tr v-for="match in Pre" :key="match">
                                         <td class="tw-text-center">{{ match.Cantidad }}</td>
                                         <td class="tw-text-center">{{ match.Unidad }}</td>
                                         <td>{{ match.Descripcion }}</td>
-                                        <td class="tw-flex tw-justify-center">
-                                            <input type="number" v-model="match.PrecioUnitario" @change="ConversionMoneda($event)" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-block tw-w-1/2 tw-appearance-none tw-shadow-sm">
-                                        </td>
+                                        <td><input type="text" v-model="form.Precio2"></td>
                                     </tr>
                                 </template>
                             </TableSky>
                         </div>
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
-                                <textarea name="" id="" cols="2" v-model="form.Comentarios" @input="(val) => (form.Comentarios = form.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
-                            </div>
+                    </div>
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                            <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
+                            <textarea name="" id="" cols="2" v-model="form.Comentarios" @input="(val) => (form.Comentarios = form.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
                         </div>
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label>ARCHIVO</jet-label>
-                                <div class='tw-flex tw-items-center tw-justify-center tw-w-full'>
-                                    <label class='tw-flex tw-flex-col tw-border-4 tw-border-dashed tw-w-full tw-h-24 hover:tw-bg-gray-100 hover:tw-border-indigo-300 tw-group'>
-                                        <div class='tw-flex tw-flex-col tw-items-center tw-justify-center tw-pt-4'>
-                                            <svg class="tw-w-8 tw-h-8 tw-text-indigo-400 group-hover:tw-text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                            <p class='tw-lowercase tw-text-sm tw-text-gray-400 group-hover:tw-text-indigo-600 tw-mt-2 tw-tracking-wider' v-if="form.archivo == null">Seleccion un Archivo</p>
-                                            <span class="tw-mt-2 tw-text-xxs tw-text-teal-500 tw-font-bold" v-if="form.archivo != null">{{  form.archivo.name }}</span>
-                                        </div>
-                                    <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
-                                    </label>
-                                </div>
-                                <span v-if="form.ImagenServidor != null">{{form.archivo}}</span>
-                                <small v-if="errors.archivo" class="validation-alert">{{errors.archivo}}</small>
+                    </div>
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                            <jet-label>ARCHIVO</jet-label>
+                            <a >{{ form.Archivo }}</a>
+                            <div class='tw-flex tw-items-center tw-justify-center tw-w-full'>
+                                <label class='tw-flex tw-flex-col tw-border-4 tw-border-dashed tw-w-full tw-h-24 hover:tw-bg-gray-100 hover:tw-border-indigo-300 tw-group'>
+                                    <div class='tw-flex tw-flex-col tw-items-center tw-justify-center tw-pt-4'>
+                                        <svg class="tw-w-8 tw-h-8 tw-text-indigo-400 group-hover:tw-text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                        <p class='tw-lowercase tw-text-sm tw-text-gray-400 group-hover:tw-text-indigo-600 tw-mt-2 tw-tracking-wider' v-if="form.archivo == null">Seleccion un Archivo</p>
+                                        <span class="tw-mt-2 tw-text-xxs tw-text-teal-500 tw-font-bold" v-if="form.archivo != null">{{  form.archivo.name }}</span>
+                                    </div>
+                                <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
+                                </label>
                             </div>
+                            <span v-if="form.ImagenServidor != null">{{form.archivo}}</span>
+                            <small v-if="errors.archivo" class="validation-alert">{{errors.archivo}}</small>
                         </div>
+                    </div>
                 </div>
             </div>
+
         </div>
 
         <div class="ModalFooter">
-            <jet-button type="button" @click="RealizaCotizacion(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
-            <!-- <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button> -->
-            <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            <jet-button type="button" @click="ActualizaCotizacion(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualiza</jet-button>
+            <jet-CancelButton @click="chageEditarPre">Cerrar</jet-CancelButton>
         </div>
     </modal>
 
@@ -1083,6 +1101,7 @@ export default {
             showCotizar: false,
             showFecha: false,
             showEditarPre: false,
+            SegundoPrecio: 0,
             hoy: moment().format("YYYY-MM-DD"),
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
@@ -1099,11 +1118,14 @@ export default {
                 IdEmp: this.Session.IdEmp,
                 IdPre: null,
                 IdArt: null,
+                IdPre: null,
+                IdPre2: null,
                 requisicion_id: null,
                 NumReq:  null,
                 Cantidad: null,
                 Unidad: null,
                 Precio: null,
+                Precio2: null,
                 PrecioInteger: null,
                 Total: null,
                 TotalInteger: null,
@@ -1160,10 +1182,12 @@ export default {
         Confirmar: Object,
         Autorizados: Object,
         mes: Object,
+        PreCount: Object,
         PreciosCotizacion: Object,
         pru: Object,
         Art: Object,
         Req: Object,
+        Pre: Object,
         CantidadArt: Object,
         PreciosRequisicion:Object,
     },
@@ -1284,7 +1308,6 @@ export default {
         },
 
         Cotizar(data, metodo){
-            console.log(data);
             this.chageClose();
             this.reset();
             this.editMode = false;
@@ -1428,7 +1451,16 @@ export default {
             });
         },
 
+        PrimerCotizacion(){
+            this.SegundoPrecio = 0;
+        },
+
+        SegundaCotizacion(){
+            this.SegundoPrecio = 1;
+        },
+
         Partidas(data){
+            this.reset();
             this.form.editId = data.id;
             this.form.NumReq = data.NumReq;
             this.form.Fecha = data.Fecha;
@@ -1440,6 +1472,7 @@ export default {
             this.form.Nombre = data.Perfil_id;
             this.form.Observaciones = data.Observaciones;
             this.params.Req = data.id;
+            this.form.Precio = null;
 
             this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
                 onSuccess: () => {
@@ -1482,7 +1515,6 @@ export default {
         },
 
         EditaCotizacion(data){
-            console.log(data);
             this.params.Req = data.id;
             this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
                 onSuccess: () => {
@@ -1498,14 +1530,39 @@ export default {
                         this.params.Req = pair[1];
                     }
             }
-
             this.params.Art = data.id;
+            this.form.IdPre = this.PreciosRequisicion[0].id;
+
+            this.form.Marca = this.PreciosRequisicion[0].Marca;
+            this.form.Proveedor = this.PreciosRequisicion[0].Proveedor;
+            this.form.Precio = this.PreciosRequisicion[0].Precio;
+
+            this.form.Moneda = this.PreciosRequisicion[0].Moneda;
+            this.form.TipoCambio = this.PreciosRequisicion[0].TipoCambio;
+            this.form.Comentarios = this.PreciosRequisicion[0].Comentarios;
+            this.form.Archivo = this.PreciosRequisicion[0].Archivo;
+
+            if(this.PreCount > 1){
+                this.form.IdPre2 = this.PreciosRequisicion[1].id;
+                this.form.Precio2 = this.PreciosRequisicion[1].Precio;
+            }
+
+            this.form.Cantidad = this.Art[0].Cantidad;
             this.form.NumReq = this.Req[0].NumReq;
-            console.log(this.form);
             this.chageEditarPre();
-            this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
+        },
+
+        ActualizaCotizacion(data){
+            data.metodo = 8;
+            data._method = "PUT";
+
+            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
                 onSuccess: () => {
-            }, preserveState: true })
+                    this.reset(),
+                    this.chageEditarPre(),
+                    this.alertSucces();
+                },
+            });
         },
 
         ConfirmaRequisicionCotizada(data, metodo){

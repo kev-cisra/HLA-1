@@ -224,6 +224,7 @@
                         <th class="columna">UNIDAD</th>
                         <th class="columna">DESCRIPCIÓN</th>
                         <th class="columna"># PARTE</th>
+                        <th class="columna">DEPARTAMENTO</th>
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
                         <th class="columna">NOMBRE</th>
@@ -242,6 +243,7 @@
                             <td>{{ datos.Unidad }}</td>
                             <td>{{ datos.Descripcion }}</td>
                             <td>{{ datos.NumParte }}</td>
+                            <td>{{datos.articulos_requisicion.requisicion_departamento.Nombre}}</td>
                             <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
                             <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
                             <td>{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
