@@ -40,13 +40,14 @@
 
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>Personal </jet-label>
-                        <jet-input type="text" list="per" v-model="form.perfiles_usuarios_id"></jet-input>
+                        <Select2 v-model="form.perfiles_usuarios_id" :class="'InputSelect tw-w-full'" :options="optionPer" @select="mySelectEvent($event)" />
+                        <small v-if="errors.perfiles_usuarios_id" class="validation-alert">{{errors.perfiles_usuarios_id}}</small>
+                        <!-- <jet-input type="text" list="per" v-model="form.perfiles_usuarios_id"></jet-input>
                         <small v-if="errors.perfiles_usuarios_id" class="validation-alert">{{errors.perfiles_usuarios_id}}</small>
                         <datalist id="per">
                             <option v-for="persona in personal" :key="persona" :value="persona.id">{{ persona.IdEmp }} {{ persona.Nombre }} {{ persona.ApPat }} {{ persona.ApMat }}</option>
-                        </datalist>
+                        </datalist> -->
                     </div>
-
                 </div>
                 <div class="w-100 tw-mx-auto" align="center">
                     <jet-button type="button" class="tw-mx-auto" @click="save(form)">Guardar</jet-button>
@@ -104,6 +105,7 @@
     import JetSelect from '@/Components/Select';
     import Modal from '@/Jetstream/Modal';
     import JetLabel from '@/Jetstream/Label';
+    import Select2 from 'vue3-select2-component';
     //datatable
     import datatable from 'datatables.net-bs5';
     require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
@@ -128,6 +130,7 @@
             errors: Object
         },
         components: {
+            Select2,
             AppLayout,
             Header,
             Accions,
@@ -156,6 +159,12 @@
             this.tabla();
         },
         methods: {
+            myChangeEvent(val){
+                console.log(val);
+            },
+            mySelectEvent({id, text}){
+                console.log({id, text})
+            },
             alertSucces(){
                 const Toast = Swal.mixin({
                     toast: true,
@@ -320,6 +329,15 @@
                 });
             }
 
+        },
+        computed: {
+            optionPer: function() {
+                const per = [];
+                this.personal.forEach(p => {
+                    per.push({id: p.id, text: p.IdEmp + ' - ' + p.Nombre + ' ' + p.ApPat + ' ' + p.ApMat})
+                })
+                return per;
+            }
         }
     }
 </script>

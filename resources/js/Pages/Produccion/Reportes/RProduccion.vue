@@ -75,7 +75,7 @@
                     <th></th>
                 </template>
                 <template v-slot:TableFooter >
-                    <tr class="fila" v-for="ca in recoTabla" :key="ca.id">
+                    <tr class="fila hover:tw-text-base" v-for="ca in recoTabla" :key="ca.id">
                         <td >{{ca.proceso.nompro}}</td>
                         <td >{{ca.fecha}}</td>
                         <td >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
@@ -148,10 +148,15 @@
                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Fecha de inicio de carga</jet-label>
                                 <input type="file" @input="docu.file = $event.target.files[0]" ref="file" accept=".xlsx">
+                                <br>
+                                <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
-                                <jet-button class="" @click="carMasi">Guardar</jet-button>
-                                <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
+                                <jet-button class="" v-show="vMasi" @click="carMasi">Guardar</jet-button>
+                                <jet-button v-show="!vMasi" disabled>
+                                    <span class="spinner-grow spinner-grow-sm" v-show="!vMasi" role="status" aria-hidden="true"></span>
+                                    Guardando...
+                                </jet-button>
                             </div>
                         </div>
                     </div>
@@ -354,6 +359,7 @@
                 showModal: false,
                 showModalC: false,
                 showModalCar: false,
+                vMasi: true,
                 vCal: true,
                 horas: '07:00',
                 estAño: moment().format('Y'),
@@ -395,9 +401,9 @@
             /***************************** Carga Masiva ************************************/
             carMasi(){
                 const form = this.docu;
-
+                this.vMasi = false;
                 this.$inertia.post('/Produccion/CargaExcel', form, {
-                    onSuccess: (v) => { this.openModalC(), this.resetC(), this.alertSucces() }, onError: (e) => { }, preserveState: true
+                    onSuccess: (v) => { this.openModalC(), this.resetC(), this.alertSucces(), this.vMasi = true }, onError: (e) => { this.vMasi = true }, preserveState: true
                 });
             },
             /***************************** Calculos ******************************************/

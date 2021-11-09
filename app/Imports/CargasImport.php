@@ -6,6 +6,7 @@ use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\claves;
 use App\Models\Produccion\dep_per;
 use App\Models\Produccion\equipos;
+use App\Models\Produccion\turnos;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Carbon\Carbon;
@@ -29,7 +30,8 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         $idnor = !isset($cla->iddm) ? null : $cla->iddm;
         $idcla = !isset($cla->idcl) ? null : $cla->idcl;
         //consulta para mostrar el equipo y el turno
-        $equi = equipos::where('nombre', 'like', '%'.$row['equipo'].'%')->where('departamento_id', '=', $dp->iddepa)->first(['id', 'turno_id']);
+        $equi = equipos::where('nombre', 'like', '%'.$row['equipo'].'%')->where('departamento_id', '=', $dp->iddepa)->first(['id']);
+        $tur = turnos::where('nomtur', 'like', '%'.$row['turno'].'%')->where('departamento_id', '=', $dp->iddepa)->first(['id']);
 
         return new carga([
             'fecha' => $this->transformDateTime($row['fecha']),
@@ -42,7 +44,7 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'proceso_id' => $row['proceso'],
             'maq_pro_id' => $row['maquina'],
             'clave_id' => $idcla,
-            'turno_id' => $equi->turno_id,
+            'turno_id' => $tur->id,
             'departamento_id' => $dp->iddepa,
             'per_carga' => Auth::id(),
             'VerInv' => 1,

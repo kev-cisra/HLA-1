@@ -55,6 +55,7 @@
         "vue-signature-canvas": "^1.0.1",
         "vue-signature-pad": "^3.0.1",
         "vue2-datepicker": "^3.10.2",
+        "vue3-select2-component": "^0.1.7",
         "vuejs-datepicker": "^1.6.2"
     }
 }

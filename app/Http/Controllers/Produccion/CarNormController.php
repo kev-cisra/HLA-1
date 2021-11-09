@@ -25,6 +25,7 @@ class CarNormController extends Controller
             'norma' => ['required'],
             'clave_id' => ['required'],
         ])->validate();
+
         $bus = carNorm::where('clave_id', '=', $request->clave_id)
         ->where('partida', '=', $request->partida)
         ->where('norma', '=', $request->norma)
