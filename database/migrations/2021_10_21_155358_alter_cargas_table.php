@@ -33,8 +33,8 @@ class AlterCargasTable extends Migration
         Schema::table('cargas', function (Blueprint $table) {
             //
             $table->dropColumn('VerInv');
-            $table->dropColumn('departamento_id');
             $table->dropForeign('cargas_departamento_id_foreign');
+            $table->dropColumn('departamento_id');
         });
     }
 }

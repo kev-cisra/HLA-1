@@ -18,6 +18,10 @@ class CreateObjeCordisTable extends Migration
 
             $table->enum('estatus', [1, 2, 3, 4])->default(1)->nullable();
 
+            $table->unsignedBigInteger('proceso_id');
+            $table->foreign('proceso_id')->references("id")->on("procesos")
+            ->onUpdate("cascade");
+
             $table->unsignedBigInteger('maq_pro_id')->nullable();
             $table->foreign('maq_pro_id')->references("id")->on("maq_pros")
             ->onUpdate("cascade");
