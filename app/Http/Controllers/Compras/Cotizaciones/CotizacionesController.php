@@ -290,8 +290,12 @@ class CotizacionesController extends Controller{
 
             case 5:{
 
-                ArticulosRequisiciones::find($request->id)->update([
+                ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->update([
                     'EstatusArt' => 5,
+                ]);
+
+                Requisiciones::find($request->id)->update([
+                    'Estatus' => 5,
                 ]);
 
                 TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->id)->update([

@@ -169,6 +169,82 @@ class AutorizaRequisicionesController extends Controller{
             $PreciosCotizacion = PreciosCotizaciones::with('PreciosArticulo')->get();
         }
 
+        $Requisiciones = Requisiciones::with([
+            'RequisicionesPerfil' => function($perfil) {
+                $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+            },
+            'RequisicionDepartamento' => function($departamento) {
+                $departamento->select('id', 'Nombre');
+            },
+            'RequisicionJefe' => function($jefe) {
+                $jefe->select('id', 'Nombre');
+            },
+            'RequisicionMaquina' => function($maquina) {
+                $maquina->select('id', 'Nombre');
+            },
+            'RequisicionMarca' => function($marca) {
+                $marca->select('id', 'Nombre');
+            },
+            'RequisicionArticulos' => function($Req) {
+                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+            },
+            'RequisicionArticulos.ArticuloPrecios' => function($pre) {
+                $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+            },
+            ])
+            ->where('Estatus', '>=', 5)
+            ->get();
+
+
+        if($request->Req != ''){
+
+            $Articulos = ArticulosRequisiciones::with([
+                'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
+                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                },
+            ])
+            ->where('requisicion_id', '=', $request->Req)
+            ->get();
+
+            $ArtCount = ArticulosRequisiciones::where('requisicion_id', '=', $request->Req)->count();
+            $PreCount = PreciosCotizaciones::where('requisiciones_id', '=', $request->Req)->count();
+
+            $NumCotizaciones = $PreCount/$ArtCount;
+
+            $PreciosRequisicion = Requisiciones::with([
+                'RequisicionesPerfil' => function($perfil) {
+                    $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                },
+                'RequisicionDepartamento' => function($departamento) {
+                    $departamento->select('id', 'Nombre');
+                },
+                'RequisicionJefe' => function($jefe) {
+                    $jefe->select('id', 'Nombre');
+                },
+                'RequisicionMaquina' => function($maquina) {
+                    $maquina->select('id', 'Nombre');
+                },
+                'RequisicionMarca' => function($marca) {
+                    $marca->select('id', 'Nombre');
+                },
+                'RequisicionArticulos' => function($Req) {
+                    $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                },
+                'RequisicionArticulos.ArticuloPrecios' => function($pre) {
+                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                },
+                ])
+                ->where('Estatus', '>=', 5)
+                ->where('id', '=', $request->Req)
+                ->get();
+
+        }else{
+            $Articulos = null;
+            $PreciosRequisicion = null;
+            $PreCount = null;
+            $NumCotizaciones = null;
+        }
+
 
         $Cotizacion = ArticulosRequisiciones::whereBetween('EstatusArt', [3, 4])->count();
 
@@ -191,58 +267,63 @@ class AutorizaRequisicionesController extends Controller{
             'PendientesMes',
             'Confirmar',
             'CotizacionMes',
-            'mes'));
+            'mes',
+            'Requisiciones',
+            'Articulos',
+            'PreciosRequisicion',
+            'NumCotizaciones',
+            ));
     }
 
     public function update(Request $request, $id){
 
-        if($request->resguardo == ''){
-            PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->articulos_requisiciones_id)->update([
-                'Autorizado' => 1, //Precios No Autorizados
-            ]);
+        switch ($request->action){
+            case 1:
+                Requisiciones::where('id', '=', $request->requisicion_id)->update([
+                    'Estatus' => 6,
+                ]);
 
-            PreciosCotizaciones::where('id', '=', $request->id)->update([
-                'Autorizado' => 2, //Precio Autorizado
-            ]);
+                ArticulosRequisiciones::where('requisicion_id', '=', $request->requisicion_id)->update([
+                    'EstatusArt' => 6,
+                ]);
 
-            TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->id)->update([
-                'Autorizado' => Carbon::now(),
-            ]);
+                PreciosCotizaciones::where('requisiciones_id', '=', $request->requisicion_id)->update([
+                    'Autorizado' => 2,
+                ]);
 
-            //Genracion de Orden de Compra
-            $MaxOrdenCompra = ArticulosRequisiciones::max('OrdenCompra');
+                TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->id)->update([
+                    'Autorizado' => Carbon::now(),
+                ]);
 
-            if($MaxOrdenCompra >= 1000){
-                $OrdenCompra = $MaxOrdenCompra + 1;
-            }else{
-                $OrdenCompra = 1000;
-            }
+                break;
 
-            ArticulosRequisiciones::where('id', '=', $request->articulos_requisiciones_id)->update([
-                'EstatusArt' => 6,
-                'OrdenCompra' => $OrdenCompra,
-            ]);
-        }elseif ($request->resguardo != '') {
-            ArticulosRequisiciones::where('id', '=', $request->articulos_requisiciones_id)->update([
-                'Resguardo' => 1,
-            ]);
-        }
+            case 2:
 
-        if(isset($request->rechazo)){
+                Requisiciones::where('id', '=', $request->requisicion_id)->update([
+                    'Estatus' => 6,
+                ]);
 
-            if ($request->rechazo == 10) { //Rechaza Cotizaciones
+                ArticulosRequisiciones::where('requisicion_id', '=', $request->requisicion_id)->update([
+                    'EstatusArt' => 6,
+                ]);
 
-                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->articulo_id)->update([
+                PreciosCotizaciones::where('requisiciones_id', '=', $request->requisicion_id)->where('NumCotizacion', '=', $request->action)
+                ->update([
+                    'Autorizado' => 2,
+                ]);
+
+                PreciosCotizaciones::where('requisiciones_id', '=', $request->requisicion_id)->where('NumCotizacion', '=', 1)
+                ->update([
                     'Autorizado' => 1,
                 ]);
-                //10 Cotizacion Rechazada
-                ArticulosRequisiciones::where('id', '=', $request->articulo_id)->update([
-                    'EstatusArt' => 10,
-                    'MotivoRechazo' => $request->ComentarioRechazo,
-                ]);
-            }
-        }
-        return redirect()->back();
 
+                TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->id)->update([
+                    'Autorizado' => Carbon::now(),
+                ]);
+
+                break;
+        }
+
+        return redirect()->back();
     }
 }
