@@ -76,7 +76,7 @@
                 </template>
                 <template v-slot:TableFooter >
                     <tr class="fila hover:tw-text-base" v-for="ca in recoTabla" :key="ca.id">
-                        <td >{{ca.proceso.nompro}}</td>
+                        <td >{{ca.proceso == null ? 'N/A' : ca.proceso.nompro}}</td>
                         <td >{{ca.fecha}}</td>
                         <td >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
                         <td >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>

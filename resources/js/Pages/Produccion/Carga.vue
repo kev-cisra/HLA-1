@@ -34,7 +34,7 @@
         </Accions>
 
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
-        <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
+        <div class="m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <!-------------------------------------------- Paquetes ---------------------------------------------->
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full" v-if="noCor == 'lid' | noCor == 'ope'">
                 <!-- formulario -->
@@ -42,18 +42,20 @@
                     <!-- select Paquetes de operadores -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Paquete de operadores</jet-label>
-                        <select class="InputSelect" v-model="paqOpera">
+                        <Select2 v-model="paqOpera" class="InputSelect" :options="opcPaOp" />
+                        <!-- <select class="InputSelect" v-model="paqOpera">
                             <option value="" disabled>SELECCIONA</option>
-                            <option v-for="po in opcPaOp" :key="po.value" :value="po.value">{{po.proceso}} - {{po.maquina}}</option>
-                        </select>
+                            <option v-for="po in opcPaOp" :key="po.value" :value="po.value">{{po.text}} - {{po.maquina}}</option>
+                        </select> -->
                     </div>
                     <!-- select Paquetes de Normas partida y clave -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
-                        <select class="InputSelect" v-model="paqNorma">
+                        <Select2 v-model="paqNorma" class="InputSelect" :options="opcPaNo" />
+                        <!-- <select class="InputSelect" v-model="paqNorma">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
-                        </select>
+                        </select> -->
                     </div>
                     <!-- Input kilogramos -->
                     <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
@@ -161,10 +163,11 @@
                     <!-- select Paquetes de Normas partida y clave -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
-                        <select class="InputSelect" v-model="paqNorma">
+                        <Select2 v-model="paqNorma" class="InputSelect" :options="opcPaNo" />
+                        <!-- <select class="InputSelect" v-model="paqNorma">
                             <option value="" disabled>SELECCIONA</option>
-                            <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
-                        </select>
+                            <option v-for="no in opcPaNo" :key="no.id" :value="no.value">{{no.text}}</option>
+                        </select> -->
                     </div>
                     <!-- Input kilogramos -->
                     <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
@@ -411,9 +414,10 @@
                         <!-- select Clave -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                             <jet-label><span class="required">*</span>Clave</jet-label>
+                            <!-- <Select2 v-model="form.clave_id" class="InputSelect tw-w-full" :options="opcCL" /> -->
                             <select class="InputSelect" v-model="form.clave_id">
                                 <option value="" disabled>SELECCIONA</option>
-                                <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
+                                <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
                             </select>
                             <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
                         </div>
@@ -488,6 +492,7 @@
     import JetInput from '@/Components/Input';
     import JetBanner from '@/Components/Banner';
     import JetLabel from '@/Jetstream/Label';
+    import Select2 from 'vue3-select2-component';
     //datatable
     import datatable from 'datatables.net-bs5';
     import $ from 'jquery';
@@ -511,6 +516,7 @@
             'errors'
         ],
         components: {
+            Select2,
             JetBanner,
             TableCyan,
             TableGreen,
@@ -1078,7 +1084,7 @@
                         if (this.form.norma == cl.id) {
                             //console.log(cl.claves)
                             cl.claves.forEach(c => {
-                                scl.push({value: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
+                                scl.push({id: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
                             })
                         }
                     })
@@ -1094,7 +1100,7 @@
                             if (dep.departamento_id == this.S_Area) {
                                 if (op.dep_perf_id == dep.id) {
                                     //console.log(op)
-                                    po.push({value: op.id, proceso: op.proceso.nompro, maquina: op.maq_pro.maquinas.Nombre+' '+op.maq_pro.maquinas.marca.Nombre})
+                                    po.push({id: op.id, text: op.proceso.nompro+' - '+op.maq_pro.maquinas.Nombre+' '+op.maq_pro.maquinas.marca.Nombre})
                                 }
                             }
                         });
@@ -1106,7 +1112,7 @@
                 const no = [];
                 this.paqnor.forEach(pn => {
                     if (pn.departamento_id == this.S_Area) {
-                        no.push({value: pn.id, text: pn.partida+' / '+pn.dep_mat.materiales.idmat+' / '+pn.clave.DESCR});
+                        no.push({id: pn.id, text: pn.partida+' / '+pn.dep_mat.materiales.idmat+' / '+pn.clave.DESCR});
                     }
                 })
                 return no;

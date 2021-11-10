@@ -18,7 +18,7 @@
             </template>
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
-        <div class="collapse m-5 tw-p-6 tw-bg-green-600 tw-rounded-3xl tw-shadow-xl" id="agPer">
+        <div class="m-5 tw-p-6 tw-bg-green-600 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <form>
                 <!-- inputs principales -->
                 <div class="tw-mb-6 md:tw-flex">
@@ -38,7 +38,8 @@
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
                         <jet-label><span class="required">*</span>Tipo de paro</jet-label>
-                        <select class="InputSelect" v-model="form.paro_id" v-html="opcPR" :disabled="editMode"></select>
+                        <Select2 v-model="form.paro_id" :disabled="editMode" class="InputSelect" :options="opcPR" />
+                        <!-- <select  v-model="form.paro_id" v-html="opcPR" ></select> -->
                         <small v-if="errors.paro_id" class="validation-alert">{{errors.paro_id}}</small>
                     </div>
                 </div>
@@ -78,8 +79,8 @@
             <Table id="t_paros">
                 <template v-slot:TableHeader>
                     <th class="columna tw-text-center">Orden</th>
-                    <th class="columna tw-text-center">Clave de paro</th>
                     <th class="columna tw-text-center">Maquina</th>
+                    <th class="columna tw-text-center">Clave de paro</th>
                     <th class="columna tw-text-center">Nombre de paro</th>
                     <th class="columna tw-text-center">Descripción</th>
                     <th class="columna tw-text-center">Estatus</th>
@@ -179,7 +180,7 @@
     import JetSelect from '@/Components/Select';
     import Modal from '@/Jetstream/Modal';
     import JetLabel from '@/Jetstream/Label';
-    import Select from '../../Components/Select.vue';
+    import Select2 from 'vue3-select2-component';
     //datatable
     import datatable from 'datatables.net-bs5';
     import $ from 'jquery';
@@ -198,6 +199,7 @@
             'errors'
         ],
         components: {
+            Select2,
             AppLayout,
             Header,
             Accions,
@@ -218,7 +220,7 @@
                 opcPP: '',
                 opcSP: '<option value="" disabled>SELECCIONA</option>',
                 opcMQ: '<option value="" disabled>SELECCIONA</option>',
-                opcPR: '',
+                /* opcPR: '', */
                 proc_prin: '',
                 showModal: false,
                 editMode: false,
@@ -290,11 +292,7 @@
                             this.opcPP += `<option value="${pp.id}">${pp.nompro}</option>`
                         }
                     })
-                    //select paros
-                    this.opcPR = '<option value="" disabled>SELECCIONA</option>';
-                    this.paros.forEach(pa => {
-                        this.opcPR += `<option value="${pa.id}">${pa.clave} - ${pa.descri}</option>`;
-                    })
+
                 })
             },
             tiempo(ini, fin){
@@ -338,7 +336,7 @@
             /****************************** carga de carga de datos ******************************************/
             reset(){
                 //this.claParo();
-                this.form.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
+                //this.form.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
                 this.proc_prin = '';
                 this.form.proceso_id = '';
                 this.form.maq_pro_id = '';
@@ -351,6 +349,7 @@
                 this.editMode = false;
             },
             save(data){
+                data.form = moment().format("YYYY-MM-DD HH:mm:ss");
                 //$('#t_paros').DataTable().clear();
                 if (moment().isDST()) {
                     data.VerInv = 'Verano';
@@ -453,6 +452,14 @@
                 }else {
                     return 'N/A'
                 }
+            },
+            opcPR: function() {
+                //select paros
+                var pr = []
+                this.paros.forEach(pa => {
+                    pr.push({id: pa.id, text: pa.clave+' - '+pa.descri });
+                })
+                return pr;
             }
         },
         watch: {

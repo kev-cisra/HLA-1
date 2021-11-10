@@ -79,13 +79,16 @@ class RepoProController extends Controller
                     ->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
                 },
                 'dep_perf.departamentos' => function($dp_de){
-                    $dp_de -> select('id', 'Nombre', 'departamento_id');
+                    $dp_de ->withTrashed()
+                    -> select('id', 'Nombre', 'departamento_id');
                 },
                 'equipo' => function($eq){
-                    $eq -> select('id', 'nombre');
+                    $eq ->withTrashed()
+                    -> select('id', 'nombre');
                 },
                 'turno' => function($tu){
-                    $tu ->select('id', 'nomtur');
+                    $tu ->withTrashed()
+                    ->select('id', 'nomtur');
                 },
                 'maq_pro' => function($mp){
                     $mp ->withTrashed()
@@ -96,7 +99,8 @@ class RepoProController extends Controller
                     -> select('id', 'Nombre');
                 },
                 'proceso' => function($pr){
-                    $pr -> select('id', 'nompro', 'tipo', 'operacion', 'proceso_id');
+                    $pr ->withTrashed()
+                    -> select('id', 'nompro', 'tipo', 'operacion', 'proceso_id');
                 },
                 'dep_mat' => function($dp){
                     $dp ->withTrashed()
@@ -111,7 +115,8 @@ class RepoProController extends Controller
                     -> select('id', 'CVE_ART', 'DESCR');
                 },
                 'notas' => function($not){
-                    $not -> latest()
+                    $not ->withTrashed()
+                    -> latest()
                     -> select('id', 'fecha', 'nota', 'carga_id');
                 }
             ])
