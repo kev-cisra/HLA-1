@@ -84,7 +84,7 @@ class CierreParoInvierno extends Command
                         'paros_carga_id' => $paro->paros_carga_id,
                         'departamento_id' => $parUp['departamento_id']
                     ]);
-                    parosCarga::find($paro->id)->update(['finFecha' => $hoy, 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 2]);
+                    parosCarga::find($parUp->id)->update(['finFecha' => $hoy, 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 2]);
                 }
             }
 
