@@ -67,6 +67,9 @@ class CarNormController extends Controller
         //carga de procesos
         carga::find($request->input('id'))
         ->update([
+            'fecha' => $request->fecha,
+            'proceso_id' => $request->proceso_id,
+            'maq_pro_id' => $request->maq_pro_id,
             'norma' => $request->norma,
             'clave_id' => $request->clave_id,
             'partida' => $request->partida,

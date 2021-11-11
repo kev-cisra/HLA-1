@@ -97,7 +97,7 @@ class TurnosEquiposInviernoApertura extends Command
                 }
             }
         }
-        Storage::disk('local')->put('EquipoInvierno.txt', $txt);
+        //Storage::disk('local')->put('EquipoInvierno.txt', $txt);
         return Command::SUCCESS;
     }
 }

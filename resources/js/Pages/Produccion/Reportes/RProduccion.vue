@@ -70,8 +70,8 @@
                     <th class="columna">Clave</th>
                     <th class="columna">Descripción de clave</th>
                     <th class="columna">Maquina</th>
-                    <th class="columna">KG</th>
-                    <th class="columna">Numero de pacas</th>
+                    <th class="columna">Producción</th>
+                    <th class="columna">Cantidad producida</th>
                     <th></th>
                 </template>
                 <template v-slot:TableFooter >
@@ -121,8 +121,8 @@
                     <th class="columna">Clave</th>
                     <th class="columna">Descripción de clave</th>
                     <th class="columna">Maquina</th>
-                    <th class="columna">KG</th>
-                    <th class="columna">Numero de pacas</th>
+                    <th class="columna">Producción</th>
+                    <th class="columna">Cantidad producida</th>
                     <th></th>
                 </template>
             </Table>
@@ -224,8 +224,8 @@
                         <!-- Información general -->
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
-                                <jet-label>Fecha de la carga</jet-label>
-                                <p>{{carga.fecha}}</p>
+                                <jet-label>Numero de empleado</jet-label>
+                                <p>{{carga.idemp}}</p>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
                                 <jet-label>Nombre del operador</jet-label>
@@ -240,8 +240,44 @@
                                 <p>{{carga.equipo}}</p>
                             </div>
                         </div>
-                        <!-- datos para editar  -->
+                        <!-- datos para editar Fecha, proceso, subproceso, maquinas -->
+                        <div class="tw-md-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
+                                <jet-label>Fecha de la carga</jet-label>
+                                <input type="datetime-local" v-model="carga.fecha" class="InputSelect">
+                                <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
+                            </div>
+                            <!-- Select proceso principal -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
+                                <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
+                                    <option value="" disabled>SELECCIONA</option>
+                                    <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
+                                </select>
+                                <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
+                            </div>
+                            <!-- select Sub proceso -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Sub proceso </jet-label>
+                                <select class="InputSelect" v-model="carga.proceso_id" :disabled="editMode">
+                                    <option value="" disabled>SELECCIONA</option>
+                                    <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
+                                </select>
+                                <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
+                            </div>
+                            <!-- select Maquinas -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Maquinas</jet-label>
+                                <select class="InputSelect" v-model="carga.maq_pro_id" :disabled="editMode">
+                                    <option value="" disabled>SELECCIONA</option>
+                                    <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
+                                </select>
+                                <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                            </div>
+                        </div>
+                        <!-- datos para editar Norma, clave, partida, KG -->
                         <div class="tw-mb-6 md:tw-flex">
+                            <!-- select norma -->
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Norma</jet-label>
                                 <select class="InputSelect" v-model="carga.norma">
@@ -249,18 +285,23 @@
                                 </select>
                                 <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                             </div>
+                            <!-- select clave -->
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Clave</jet-label>
-                                <select class="InputSelect" v-model="carga.clave_id">
-                                    <option v-for="cl in opcCL" :key="cl" :value="cl.value">{{cl.text}}</option>
-                                </select>
+                                <Select2 v-model="carga.clave_id" :class="'InputSelect'" :options="opcCL" />
+                                <!-- <Select2  v-model="carga.clave_id" class="InputSelect" :options="opcCL" /> -->
+                                <!-- <select class="InputSelect" v-model="carga.clave_id">
+                                    <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
+                                </select> -->
                                 <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
                             </div>
+                            <!-- select partida -->
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Partida</jet-label>
                                 <jet-input class="InputSelect" v-model="carga.partida"></jet-input>
                                 <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
                             </div>
+                            <!-- select value -->
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Kg</jet-label>
                                 <jet-input class="InputSelect" v-model="carga.valor"></jet-input>
@@ -302,6 +343,7 @@
     import JetCancelButton from '@/Components/CancelButton';
     import JetInput from '@/Components/Input';
     import JetLabel from '@/Jetstream/Label';
+    import Select2 from 'vue3-select2-component';
     //datatable
     import datatable from 'datatables.net-bs5';
     require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
@@ -327,6 +369,7 @@
             'depa',
             'cargas',
             'materiales',
+            'procesos',
             'errors'
         ],
 
@@ -339,6 +382,7 @@
             JetCancelButton,
             JetInput,
             Modal,
+            Select2,
             JetLabel
         },
 
@@ -359,6 +403,7 @@
                 showModal: false,
                 showModalC: false,
                 showModalCar: false,
+                proc_prin: '',
                 vMasi: true,
                 vCal: true,
                 horas: '07:00',
@@ -378,10 +423,13 @@
                 },
                 carga: {
                     id: null,
+                    idemp: null,
                     noFecha: moment().format('YYYY-MM-DD HH:mm:ss'),
                     usu: this.usuario.id,
                     nomOpe: null,
                     fecha: null,
+                    proceso_id: null,
+                    maq_pro_id: null,
                     turno: null,
                     equipo: null,
                     norma: null,
@@ -480,7 +528,7 @@
                     } );
                     var table = $('#t_repo').DataTable({
                         "language": this.español,
-                        "order": [1, 'asc'],
+                        "order": [[0, 'desc'],[1, 'asc']],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -682,6 +730,7 @@
             resetCar(){
                 this.carga = {
                     id: null,
+                    idemp: null,
                     nomOpe: null,
                     fecha: null,
                     turno: null,
@@ -696,15 +745,19 @@
             //editar carga
             editCar(data){
                 this.changeCloseCar();
+                this.proc_prin = data.proceso.proceso_id;
                 this.carga.id = data.id;
+                this.carga.idemp = data.dep_perf.perfiles.IdEmp;
                 this.carga.nomOpe = data.dep_perf.perfiles.Nombre+' '+data.dep_perf.perfiles.ApPat+' '+data.dep_perf.perfiles.ApMat;
-                this.carga.fecha = moment(data.fecha).format('YYYY-MM-DD');
+                this.carga.fecha = moment(data.fecha).format('YYYY-MM-DD[T]HH:mm:ss');
                 this.carga.turno = data.turno.nomtur;
                 this.carga.equipo = data.equipo.nombre;
                 this.carga.norma = data.norma;
                 this.carga.clave_id = data.clave_id;
                 this.carga.partida = data.partida;
                 this.carga.valor = data.valor;
+                this.carga.proceso_id = data.proceso_id;
+                this.carga.maq_pro_id = data.maq_pro_id;
                 this.nAnte = data.notas.length == 0 ? '' : `<label class="tw-text-base tw-w-full tw-text-black">Fecha: ${data.notas[0].fecha}</label><label class="tw-text-base tw-w-full tw-text-black tw-capitalize"> ${data.notas[0].nota}</label>`;
             },
             updateCar(data){
@@ -748,12 +801,50 @@
                         if (this.carga.norma == cl.id) {
                             //console.log(cl.claves)
                             cl.claves.forEach(c => {
-                                scl.push({value: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
+                                scl.push({id: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
                             })
                         }
                     })
                 }
                 return scl;
+            },
+            //Opciones procesos principales
+            opcPP: function() {
+                const ppi = [];
+                this.procesos.forEach(pp =>{
+                    if (pp.tipo == 0 & pp.tipo_carga == 'pro') {
+                        ppi.push({text: pp.nompro, value: pp.id})
+                    }
+                });
+                return ppi;
+            },
+            //Opciones subprocesos
+            opcSP: function() {
+                const ssp = [];
+                //recorre y muestra los procesos
+                this.procesos.forEach(sp =>{
+                    if (sp.proceso_id == this.proc_prin) {
+                        ssp.push({id: sp.id, text: sp.id+' - '+sp.nompro});
+                    }
+                })
+                return ssp;
+            },
+            //Opciones maquinas
+            opcMQ: function() {
+                const mq = [];
+                var mar = '';
+                if (this.carga.proceso_id != '') {
+                    this.procesos.forEach(pm => {
+                        if (this.carga.proceso_id == pm.id) {
+                            //console.log(pm.maq_pros.length)
+                            pm.maq_pros.forEach(mp => {
+                                mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
+                                mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
+                            })
+                        }
+                    })
+                }
+                return mq;
             },
             //recorrido para la tabla
             recoTabla: function() {

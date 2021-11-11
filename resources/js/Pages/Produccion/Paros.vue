@@ -10,7 +10,9 @@
         </Header>
         <Accions>
             <template  v-slot:SelectB v-if="usuario.dep_pers.length != 1">
-                <select class="InputSelect" @change="verTabla" v-model="S_Area" v-html="opc">
+                <select class="InputSelect sm:tw-w-full" @change="verTabla()" v-model="S_Area">
+                    <option value="" disabled>Selecciona un departamento</option>
+                    <option v-for="o in opc" :key="o.value" :value="o.value">{{o.text}}</option>
                 </select>
             </template>
             <template v-slot:BtnNuevo>
@@ -24,21 +26,30 @@
                 <div class="tw-mb-6 md:tw-flex">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
-                        <select class="InputSelect" v-model="proc_prin" v-html="opcPP" :disabled="editMode"></select>
+                        <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
+                        </select>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="opcSP">
                         <jet-label><span class="required">*</span>Sub proceso </jet-label>
-                        <select class="InputSelect" v-model="form.proceso_id" v-html="opcSP" :disabled="editMode"></select>
+                        <select class="InputSelect" v-model="form.proceso_id" :disabled="editMode">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
+                        </select>
                         <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
                         <jet-label><span class="required">*</span>Maquinas</jet-label>
-                        <select class="InputSelect" v-model="form.maq_pro_id" v-html="opcMQ" :disabled="editMode"></select>
+                        <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
+                        </select>
                         <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
                         <jet-label><span class="required">*</span>Tipo de paro</jet-label>
-                        <Select2 v-model="form.paro_id" :disabled="editMode" class="InputSelect" :options="opcPR" />
+                        <Select2 v-model="form.paro_id"  class="InputSelect" :options="opcPR" />
                         <!-- <select  v-model="form.paro_id" v-html="opcPR" ></select> -->
                         <small v-if="errors.paro_id" class="validation-alert">{{errors.paro_id}}</small>
                     </div>
@@ -216,11 +227,6 @@
                 color: "tw-bg-blue-600",
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
-                opc: '<option value="" disabled>SELECCIONA</option>',
-                opcPP: '',
-                opcSP: '<option value="" disabled>SELECCIONA</option>',
-                opcMQ: '<option value="" disabled>SELECCIONA</option>',
-                /* opcPR: '', */
                 proc_prin: '',
                 showModal: false,
                 editMode: false,
@@ -249,7 +255,6 @@
         },
         mounted() {
             this.mostSelect();
-            this.selePP();
             this.tabla();
 
         },
@@ -264,36 +269,11 @@
                     }else{
                         this.S_Area = 7;
                     }
-
-                    this.depa.forEach(r => {
-                        if (r.departamentos) {
-                            this.opc += `<option value="${r.departamentos.id}"> ${r.departamentos.Nombre} </option>`;
-                        }else{
-                            this.opc += `<option value="${r.id}"> ${r.Nombre} </option>`;
-                            r.sub__departamentos.forEach(rr => {
-                                this.opc += `<option value="${rr.id}"> ${rr.Nombre} </option>`;
-                                //console.log(rr.Nombre);
-                            })
-                        }
-                    })
                 });
             },
             //consulta para generar datos de la tabla
             verTabla(event){
                 $('#t_paros').DataTable().clear();
-            },
-            //select para proceso principal, normas y personal
-            selePP(){
-                this.$nextTick(() => {
-                    //select de procesos principales
-                    this.opcPP= '<option value="" disabled>SELECCIONA</option>'
-                    this.procesos.forEach(pp =>{
-                        if (pp.tipo == 0 & pp.tipo_carga == 'pro') {
-                            this.opcPP += `<option value="${pp.id}">${pp.nompro}</option>`
-                        }
-                    })
-
-                })
             },
             tiempo(ini, fin){
                 var tini = moment(ini);
@@ -349,7 +329,8 @@
                 this.editMode = false;
             },
             save(data){
-                data.form = moment().format("YYYY-MM-DD HH:mm:ss");
+                data.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
+                data.departamento_id = this.S_Area;
                 //$('#t_paros').DataTable().clear();
                 if (moment().isDST()) {
                     data.VerInv = 'Verano';
@@ -370,6 +351,7 @@
                 //primer stop cambia estatus a "En revisión"
                 if (det == 1) {
                     data.estatus = 'En revisión';
+                    data.usu = this.usuario.id;
                     data.finFecha = moment().format("YYYY-MM-DD HH:mm:ss");
                     data.tiempo = this.tiempo(data.iniFecha, data.finFecha);
                     this.update(data);
@@ -453,6 +435,59 @@
                     return 'N/A'
                 }
             },
+            //Opciones departamento
+            opc: function() {
+                const ar = [];
+                this.depa.forEach(r => {
+                    if (r.departamentos) {
+                        ar.push({text: r.departamentos.Nombre, value: r.departamentos.id});
+                    }else{
+                        ar.push({text: r.Nombre, value: r.id});
+                        r.sub__departamentos.forEach(rr => {
+                            ar.push({text: rr.Nombre, value: rr.id});
+                            //console.log(rr.Nombre);
+                        })
+                    }
+                })
+                return ar;
+            },
+            //Opciones procesos principales
+            opcPP: function() {
+                const ppi = [];
+                this.procesos.forEach(pp =>{
+                    if (pp.tipo == 0 & pp.tipo_carga == 'pro') {
+                        ppi.push({text: pp.nompro, value: pp.id})
+                    }
+                });
+                return ppi;
+            },
+            //Opciones subprocesos
+            opcSP: function() {
+                const ssp = [];
+                //recorre y muestra los procesos
+                this.procesos.forEach(sp =>{
+                    if ((sp.tipo == 1 & sp.proceso_id == this.proc_prin) | this.editMode ) {
+                        ssp.push({id: sp.id, text: sp.id+' - '+sp.nompro});
+                    }
+                })
+                return ssp;
+            },
+            //Opciones maquinas
+            opcMQ: function() {
+                const mq = [];
+                var mar = '';
+                if (this.form.proceso_id != '') {
+                    this.procesos.forEach(pm => {
+                        if (this.form.proceso_id == pm.id) {
+                            pm.maq_pros.forEach(mp => {
+                                mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
+                                mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
+                            })
+                        }
+                    })
+                }
+                return mq;
+            },
             opcPR: function() {
                 //select paros
                 var pr = []
@@ -469,51 +504,14 @@
                 this.proc_prin = '';
                 this.$inertia.get('/Produccion/Paros',{ busca: b }, {
                     onSuccess: () => {
-                        this.selePP(), this.tabla() }, onError: () => {this.tabla()}, preserveState: true
+                        this.tabla() }, onError: () => {this.tabla()}, preserveState: true
                 });
                 //this.claParo()
             },
             proc_prin: function(v) {
-                //select sub peocesos
-                this.opcSP= '<option value="" >SELECCIONA</option>';
-                //recorre y muestra los procesos
-                this.procesos.forEach(sp =>{
-                    if ((sp.tipo == 1 & sp.proceso_id == v) | this.editMode ) {
-                        this.opcSP += `<option value="${sp.id}">${sp.nompro}</option>`;
-                    }
-                })
                 this.form.proceso_id = '';
                 this.form.maq_pro_id = '';
                 this.form.paro_id = '';
-            },
-            form: {
-                deep: true,
-                handler: function(f) {
-                    //select de maquinas
-                    if (f.proceso_id != '') {
-                        this.opcMQ = '<option value="" >SELECCIONA</option>';
-                        this.procesos.forEach(pm => {
-                            if (f.proceso_id == pm.id) {
-                                //console.log(pm.maq_pros.length)
-                                pm.maq_pros.forEach(mp => {
-                                    this.opcMQ += `<option value="${mp.id}" >${mp.maquinas.Nombre} - ${mp.maquinas.marca.Nombre}</option>`;
-                                })
-                            }
-                        })
-                    }
-                    //select para claves
-                    if (f.norma != '') {
-                        this.opcCL = '<option value="">SELECCIONA</option>';
-                        this.materiales.forEach(cl => {
-                            if (f.norma == cl.id) {
-                                //console.log(cl.claves)
-                                cl.claves.forEach(c => {
-                                    this.opcCL += `<option value="${c.id}">${c.CVE_ART} - ${c.DESCR}</option>`;
-                                })
-                            }
-                        })
-                    }
-                }
             }
         }
     }

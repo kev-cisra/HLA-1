@@ -45,46 +45,47 @@ class CierreParoVerano extends Command
         //$hoy->toDateTimeString();
 
         if (var_dump($hoy->isDST())) {
-            $txt = '';
+            $txt = 'entro a paro '.$hoy;
             $paros = parosCarga::where('departamento_id', '=', 7)
             ->where('estatus', '=', 'Activo')
             ->get();
             foreach ($paros as $paro) {
                 $tiempo = $hoy->diffInMinutes($paro->iniFecha);
                 if (empty($paro->paros_carga_id)) {
-                    $txt.='entro normal || ';
+                    $txt.='entro normal '.$hoy.' || ';
                     parosCarga::create([
-                        'fecha' => $paro['fecha'],
-                        'iniFecha' => $hoy,
-                        'paro_id' => $paro['paro_id'],
-                        'estatus' => $paro['estatus'],
-                        'perfil_ini_id' => $paro['usu'],
-                        'maq_pro_id' => $paro['maq_pro_id'],
-                        'proceso_id' => $paro['proceso_id'],
-                        'orden' => $paro['orden'],
-                        'VerInv' => $paro['VerInv'],
-                        'descri' => $paro['descri'],
-                        'departamento_id' => $paro['departamento_id']
+                        'fecha' => $paro->fecha,
+                        'iniFecha' => $hoy->toDateTimeString(),
+                        'paro_id' => $paro->paro_id,
+                        'estatus' => 'Activo',
+                        'perfil_ini_id' => $paro->perfil_ini_id,
+                        'maq_pro_id' => $paro->maq_pro_id,
+                        'proceso_id' => $paro->proceso_id,
+                        'orden' => $paro->orden,
+                        'VerInv' => $paro->VerInv,
+                        'descri' => $paro->descri,
+                        'paros_carga_id' => $paro->id,
+                        'departamento_id' => $paro->departamento_id
                     ]);
-                    parosCarga::find($paro->id)->update(['finFecha' => $hoy, 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 2]);
+                    parosCarga::find($paro->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 2]);
                 }else{
-                    $txt.='entro sub paro || ';
-                    $parUp = parosCarga::find($paro->paros_carga_id);
+                    $txt.='entro sub paro '.$hoy.' || ';
+                    $parUp = parosCarga::where('paros_carga_id', '=', $paro->paros_carga_id)->orderBy('id', 'desc')->first();
                     parosCarga::create([
-                        'fecha' => $parUp['fecha'],
-                        'iniFecha' => $hoy,
-                        'paro_id' => $parUp['paro_id'],
-                        'estatus' => $parUp['estatus'],
-                        'perfil_ini_id' => $parUp['usu'],
-                        'maq_pro_id' => $parUp['maq_pro_id'],
-                        'proceso_id' => $parUp['proceso_id'],
-                        'orden' => $parUp['orden'],
-                        'VerInv' => $parUp['VerInv'],
-                        'descri' => $parUp['descri'],
+                        'fecha' => $parUp->fecha,
+                        'iniFecha' => $hoy->toDateTimeString(),
+                        'paro_id' => $parUp->paro_id,
+                        'estatus' => $parUp->estatus,
+                        'perfil_ini_id' => $parUp->perfil_ini_id,
+                        'maq_pro_id' => $parUp->maq_pro_id,
+                        'proceso_id' => $parUp->proceso_id,
+                        'orden' => $parUp->orden,
+                        'VerInv' => $parUp->VerInv,
+                        'descri' => $parUp->descri,
                         'paros_carga_id' => $paro->paros_carga_id,
-                        'departamento_id' => $parUp['departamento_id']
+                        'departamento_id' => $parUp->departamento_id
                     ]);
-                    parosCarga::find($parUp->id)->update(['finFecha' => $hoy, 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 2]);
+                    parosCarga::find($parUp->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 2]);
                 }
             }
 

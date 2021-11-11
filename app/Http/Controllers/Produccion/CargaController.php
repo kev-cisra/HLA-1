@@ -178,47 +178,47 @@ class CargaController extends Controller
         if (!empty($request->busca)) {
             //muestran los departamentos
             $procesos = procesos::where('departamento_id', '=', $request->busca)
-                ->where('tipo', '!=', '3')
-                ->where('tipo', '!=', '4')
-                ->with([
-                    'maq_pros' => function($mp){
-                        $mp->select('id', 'proceso_id', 'maquina_id');
-                    },
-                    'maq_pros.maquinas' => function($ma){
-                        $ma->select('id', 'Nombre', 'departamento_id');
-                    },
-                    'maq_pros.maquinas.marca'=> function($maq){
-                        $maq->select('id', 'Nombre', 'maquinas_id');
-                    },
-                ])
-                ->get();
+            ->where('tipo', '!=', '3')
+            ->where('tipo', '!=', '4')
+            ->with([
+                'maq_pros' => function($mp){
+                    $mp->select('id', 'proceso_id', 'maquina_id');
+                },
+                'maq_pros.maquinas' => function($ma){
+                    $ma->select('id', 'Nombre', 'departamento_id');
+                },
+                'maq_pros.maquinas.marca'=> function($maq){
+                    $maq->select('id', 'Nombre', 'maquinas_id');
+                },
+            ])
+            ->get();
 
             //muestra el personal del departamento
             $personal = dep_per::where('departamento_id', '=', $request->busca)
-                ->with([
-                    'perfiles' => function($perfi){
-                        $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
-                    },
-                    'equipo' => function($eq){
-                        $eq -> select('id', 'nombre', 'turno_id');
-                    },
-                    'equipo.turnos' => function($tur){
-                        $tur -> select('id', 'nomtur');
-                    }
-                ])
-                ->get(['id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id', 'equipo_id']);
+            ->with([
+                'perfiles' => function($perfi){
+                    $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'equipo' => function($eq){
+                    $eq -> select('id', 'nombre', 'turno_id');
+                },
+                'equipo.turnos' => function($tur){
+                    $tur -> select('id', 'nomtur');
+                }
+            ])
+            ->get(['id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id', 'equipo_id']);
 
             //muestra materiales
             $mate = dep_mat::where('departamento_id', '=', $request->busca)
-                    ->with([
-                        'materiales' => function($mat){
-                            $mat->select('id','idmat', 'nommat');
-                        },
-                        'claves' => function($cla){
-                            $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
-                        }
-                    ])
-                    ->get();
+            ->with([
+                'materiales' => function($mat){
+                    $mat->select('id','idmat', 'nommat');
+                },
+                'claves' => function($cla){
+                    $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
+                }
+            ])
+            ->get();
 
             //carga
             $bus = $request->busca;
@@ -364,10 +364,10 @@ class CargaController extends Controller
             'clave_id' => ['numeric'],
         ])->validate();
 
-        $nFecha = $request->fecha.' '.date('H:i:s');
+        //$nFecha = $request->fecha.' '.date('H:i:s');
         if ($request->vacio == 'N/A' | $request->vacio != 'Vacío') {
             carga::create([
-                'fecha' => $nFecha,
+                'fecha' => $request->fecha,
                 'semana' => $request->semana,
                 'per_carga' => $request->per_carga,
                 'proceso_id' => $request->proceso_id,

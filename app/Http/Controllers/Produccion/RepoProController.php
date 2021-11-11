@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produccion\carga;
+use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
@@ -47,6 +48,7 @@ class RepoProController extends Controller
         $depa = [];
         $carga = [];
         $mate = [];
+        $procesos = [];
 
         //Condicional
         if (count($perf->dep_pers) != 0) {
@@ -124,18 +126,35 @@ class RepoProController extends Controller
 
             //muestra materiales
             $mate = dep_mat::where('departamento_id', '=', $request->busca)
-                    ->with([
-                        'materiales' => function($mat){
-                            $mat->select('id','idmat', 'nommat');
-                        },
-                        'claves' => function($cla){
-                            $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
-                        }
-                    ])
-                    ->get();
+            ->with([
+                'materiales' => function($mat){
+                    $mat->select('id','idmat', 'nommat');
+                },
+                'claves' => function($cla){
+                    $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
+                }
+            ])
+            ->get();
+
+            //procesos
+            $procesos = procesos::where('departamento_id', '=', $request->busca)
+            ->where('tipo', '!=', '3')
+            ->where('tipo', '!=', '4')
+            ->with([
+                'maq_pros' => function($mp){
+                    $mp->select('id', 'proceso_id', 'maquina_id');
+                },
+                'maq_pros.maquinas' => function($ma){
+                    $ma->select('id', 'Nombre', 'departamento_id');
+                },
+                'maq_pros.maquinas.marca'=> function($maq){
+                    $maq->select('id', 'Nombre', 'maquinas_id');
+                },
+            ])
+            ->get();
         }
 
-        return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'materiales' => $mate,]);
+        return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'materiales' => $mate, 'procesos' => $procesos]);
     }
 
     /**

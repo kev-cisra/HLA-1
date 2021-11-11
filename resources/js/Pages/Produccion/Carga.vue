@@ -19,10 +19,10 @@
                 <!-- Paquete de personal -->
                 <div class="md:tw-flex tw-gap-3 tw-mr-10">
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
-                        <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe">Paquete de operativos</jet-button>
+                        <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe" @click="resetCA()">Paquete de operativos</jet-button>
                     </div>
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
-                        <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacNorma" aria-controls="pacNorma">Paquete de Normas</jet-button>
+                        <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacNorma" aria-controls="pacNorma" @click="resetCA()">Paquete de Normas</jet-button>
                     </div>
                     <div>
                         <jet-button class="BtnNuevo tw-w-full" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar</jet-button>
@@ -59,7 +59,7 @@
                     </div>
                     <!-- Input kilogramos -->
                     <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>KG</jet-label>
+                        <jet-label><span class="required">*</span> {{ uni_me }} </jet-label>
                         <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
                         <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
                     </div>
@@ -100,7 +100,7 @@
                     <!-- Fecha -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Fecha</jet-label>
-                        <input type="date" class="InputSelect" v-model="form.fecha" :max="hoy">
+                        <input type="datetime-local" class="InputSelect" v-model="form.fecha" :max="hoy">
                         <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
                     </div>
                     <!-- Select proceso principal -->
@@ -171,7 +171,7 @@
                     </div>
                     <!-- Input kilogramos -->
                     <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>KG</jet-label>
+                        <jet-label><span class="required">*</span>{{ uni_me }}</jet-label>
                         <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
                         <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
                     </div>
@@ -206,7 +206,6 @@
             </div>
 
         </div>
-
         <!------------------------------------ Data table de carga ------------------------------------------------------->
         <div class="tw-overflow-x-auto tw-mx-2">
             <Table id="t_carg">
@@ -255,13 +254,13 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoEdit tw-cursor-pointer" @click="editCA(ca)" v-show="usuario.dep_pers.length == 0 | (ca.proceso.tipo != 2 & (noCor == 'cor' | noCor == 'enc'))">
+                                <!-- <div class="iconoEdit tw-cursor-pointer" @click="editCA(ca)" v-show="usuario.dep_pers.length == 0 | (ca.proceso.tipo != 2 & (noCor == 'cor' | noCor == 'enc'))">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                         </svg>
                                     </span>
-                                </div>
+                                </div> -->
                             </div>
                         </td>
                     </tr>
@@ -387,7 +386,6 @@
                 </div>
             </div>
         </div>
-
         <!------------------------------------- Carga de paquetes Norma, Claves y partida -------------------------------->
         <div class="offcanvas offcanvas-end sm:tw-w-9/12 lg:tw-w-6/12" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
             <div class="offcanvas-header">
@@ -543,7 +541,7 @@
                 calcu: '',
                 idDep: '',
                 limp: 1,
-                hoy: moment().format('YYYY-MM-DD'),
+                hoy: moment().format('YYYY-MM-DD[T]HH:mm:ss'),
                 editMode: false,
                 nAnte: '',
                 form: {
@@ -797,6 +795,7 @@
                 this.paqNorma = '';
                 this.proc_prin = '';
                 this.editMode = false;
+                this.form.fecha = this.hoy;
                 this.form.valor = '';
                 this.form.norma = '';
                 this.form.partida = '';
@@ -973,27 +972,8 @@
             opcPP: function() {
                 const ppi = [];
                 this.procesos.forEach(pp =>{
-                    switch (this.noCor) {
-                        case 'cor':
-                            if (pp.tipo == 0 & pp.tipo_carga == 'pro-cor') {
-                                ppi.push({text: pp.nompro, value: pp.id})
-                            }
-                            break;
-                        case 'enc':
-                            if (pp.tipo == 0 & (pp.tipo_carga == 'pro-cor' | pp.tipo_carga == 'pro')) {
-                                ppi.push({text: pp.nompro, value: pp.id})
-                            }
-                            break;
-                        case '':
-                            if (pp.tipo == 0 & (pp.tipo_carga == 'pro-cor' | pp.tipo_carga == 'pro')) {
-                                ppi.push({text: pp.nompro, value: pp.id})
-                            }
-                            break;
-                        default:
-                            if (pp.tipo == 0 & pp.tipo_carga == 'pro') {
-                                ppi.push({text: pp.nompro, value: pp.id})
-                            }
-                            break;
+                    if (pp.tipo == 0 & pp.tipo_carga == 'pro') {
+                        ppi.push({text: pp.nompro, value: pp.id})
                     }
                 });
                 return ppi;
@@ -1034,27 +1014,12 @@
             //Opciones subprocesos
             opcSP: function() {
                 const ssp = [];
-                if (this.usuario.dep_pers.length != 0) {
-                    //recorre y muestra los procesos
-                    this.procesos.forEach(sp =>{
-                        if ((this.noCor == 'lid' | this.noCor == 'ope') & (sp.tipo == 1 & sp.proceso_id == this.proc_prin) | this.editMode ) {
-                            ssp.push({id: sp.id, text: sp.nompro});
-                        }
-                        if (this.noCor == 'enc' & sp.proceso_id == this.proc_prin | this.editMode ) {
-                            ssp.push({id: sp.id, text: sp.id+' - '+sp.nompro});
-                        }
-                        if (this.noCor == 'cor' & (sp.tipo == 2 & sp.proceso_id == this.proc_prin) | this.editMode) {
-                            ssp.push({id: sp.id, text: sp.id+' - '+sp.nompro});
-                        }
-                    })
-                }else{
-                    //recorre y muestra los procesos
-                    this.procesos.forEach(sp =>{
-                        if (sp.tipo != 3 & sp.proceso_id == this.proc_prin) {
-                            ssp.push({id: sp.id, text: sp.id+' - '+sp.nompro});
-                        }
-                    })
-                }
+                //recorre y muestra los procesos
+                this.procesos.forEach(sp =>{
+                    if (sp.proceso_id == this.proc_prin) {
+                        ssp.push({id: sp.id, text: sp.id+' - '+sp.nompro});
+                    }
+                })
                 return ssp;
             },
             //Opciones maquinas
@@ -1117,6 +1082,7 @@
                 })
                 return no;
             },
+            //opciones de turnos
             opcTur: function() {
                 const tur = [];
                 this.turnos.forEach(t => {
@@ -1126,6 +1092,7 @@
                 })
                 return tur;
             },
+            //opciones de equipo
             opcEqu: function() {
                 const equ = [];
                 this.turnos.forEach(t => {
@@ -1136,6 +1103,20 @@
                     }
                 })
                 return equ;
+            },
+            //unidad de medida de las claves
+            uni_me: function() {
+                var uni = '--';
+                if (this.form.clave_id != '') {
+                    this.materiales.forEach(cl => {
+                        if (this.form.norma == cl.id) {
+                            cl.claves.forEach(c => {
+                                uni = c.UNI_MED;
+                            })
+                        }
+                    })
+                }
+                return uni;
             }
         },
         watch: {
