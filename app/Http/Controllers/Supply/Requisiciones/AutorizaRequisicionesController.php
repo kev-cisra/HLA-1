@@ -39,7 +39,6 @@ class AutorizaRequisicionesController extends Controller{
             $PerfilesUsuarios = PerfilesUsuarios::get();
         }
 
-
         $Proveedores = Proveedores::get();
 
         $Perfiles = PerfilesUsuarios::where('jefes_areas_id', '=', $Session->id)->get();
@@ -195,8 +194,7 @@ class AutorizaRequisicionesController extends Controller{
             ->where('Estatus', '>=', 5)
             ->get();
 
-
-        if($request->Req != ''){
+            if($request->Req != ''){
 
             $Articulos = ArticulosRequisiciones::with([
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
