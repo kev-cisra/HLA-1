@@ -19908,6 +19908,9 @@ select {
 .tw-gap-8 {
 	gap: 2rem;
 }
+.tw-gap-5 {
+	gap: 1.25rem;
+}
 .tw-gap-y-10 {
 	row-gap: 2.5rem;
 }

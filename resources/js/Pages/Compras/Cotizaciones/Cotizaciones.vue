@@ -14,7 +14,7 @@
             <div class="tw-w-full tw-mx-auto tw-max-w-7xl sm:tw-px-8 lg:tw-px-10">
                 <div class="tw-flex tw-flex-col tw-w-full tw-mb-2 tw-space-y-8 lg:tw-flex-row lg:tw-space-x-10 lg:tw-space-y-0 lg:tw-mb-4">
 
-                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="Filtro(8)">
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="FiltroIndicadores(8)">
                         <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-green-600 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
                                 <div class="icon tw-w-10 tw-p-2 tw-bg-green-600 tw-text-white tw-rounded-full tw-mr-3">
@@ -30,7 +30,7 @@
                         </div>
                     </div>
 
-                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="Filtro(3)">
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="FiltroIndicadores(3)">
                         <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-indigo-500 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
                                 <div class="icon tw-w-10 tw-p-2 tw-bg-indigo-500 tw-text-white tw-rounded-full tw-mr-3">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
 
-                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="Filtro(4)">
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="FiltroIndicadores(4)">
                         <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-emerald-600 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
                                 <div class="icon tw-w-10 tw-p-2 tw-bg-emerald-600 tw-text-white tw-rounded-full tw-mr-3">
@@ -62,7 +62,7 @@
                         </div>
                     </div>
 
-                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="Filtro(6)">
+                    <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="FiltroIndicadores(6)">
                         <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-cyan-600 tw-rounded-lg tw-widget">
                             <div class="tw-flex tw-items-center">
                                 <div class="icon tw-w-10 tw-p-2 tw-bg-cyan-600 tw-text-white tw-rounded-full tw-mr-3">
@@ -209,214 +209,8 @@
         </div>
 
         <div class="tw-overflow-x-auto tw-mx-2">
-            <Table id="Articulos">
-                <template v-slot:TableHeader>
-                    <th class="columna">FECHA</th>
-                    <th class="columna"># REQ</th>
-                    <th class="columna">CÓDIGO</th>
-                    <th class="columna">CANT</th>
-                    <th class="columna">UNIDAD</th>
-                    <th class="columna">DESCRIPCIÓN</th>
-                    <th class="columna"># PARTE</th>
-                    <th class="columna">MAQUINA</th>
-                    <th class="columna">MARCA</th>
-                    <th class="columna">F. LLEGADA</th>
-                    <th class="columna">O.C</th>
-                    <th class="columna">ESTATUS</th>
-                    <th class="columna">ACCIONES</th>
-                    <th class="columna">DETALLES</th>
-                </template>
-
-                <template v-slot:TableFooter>
-                    <tr class="fila" v-for="datos in ArticuloRequisicion" :key="datos.id">
-                        <td v-if="CalculaRetraso(datos.Fecha) > 7 && datos.EstatusArt == 3">
-                            <span tooltip="Urgente Cotizar" flow="right">
-                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-px-1 tw-text-white tw-bg-red-600 tw-rounded-full">{{ datos.Fecha }}</span>
-                            </span>
-                        </td>
-                        <td v-else>{{ datos.Fecha }}</td>
-                        <td class="tw-text-center">{{ datos.articulos_requisicion.NumReq }}</td>
-                        <td>{{ datos.articulos_requisicion.Codigo }}</td>
-                        <td class="tw-text-center">{{ datos.Cantidad }}</td>
-                        <td class="tw-text-center">{{ datos.Unidad }}</td>
-                        <td>{{ datos.Descripcion }}</td>
-                        <td>{{ datos.NumParte }}</td>
-                        <td class="tw-text-center">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                        <td class="tw-text-center">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                        <td class="tw-text-center">{{ datos.Fechallegada }}</td>
-                        <td class="tw-text-center">{{ datos.OrdenCompra }}</td>
-                        <td class="tw-text-center">
-                            <div v-if="datos.EstatusArt == 3">
-                                <span tooltip="Articulo en espera de cotización" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">COTIZAR</span>
-                                </span>
-                            </div>
-                            <div v-else-if="datos.EstatusArt == 4">
-                                <span tooltip="Confirma Cotización" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-600 tw-rounded-full">COTIZADO</span>
-                                </span>
-                            </div>
-                            <div v-else-if="datos.EstatusArt == 5">
-                                <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
-                                </span>
-                            </div>
-                            <div v-else-if="datos.EstatusArt == 6">
-                                <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
-                                </span>
-                            </div>
-                            <div v-else-if="datos.EstatusArt == 7">
-                                <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
-                                </span>
-                            </div>
-                            <div v-else-if="datos.EstatusArt == 8">
-                                <span tooltip="Articulo en almacén" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
-                                </span>
-                            </div>
-                            <div v-else-if="datos.EstatusArt == 9">
-                                <span tooltip="Entregado" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
-                                </span>
-                            </div>
-                            <div v-else-if="datos.EstatusArt == 10">
-                                <span tooltip="Realiza otra cotizacion" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
-                                </span>
-                            </div>
-                        </td>
-                        <td class="tw-text-center">
-                            <div class="columnaIconos" v-if="datos.EstatusArt == 3 || datos.EstatusArt == 10 ">
-                                <div class="iconoPurple" @click="Cotizar(datos, 4)">
-                                    <span tooltip="Realizar Cotizacion" flow="left">
-                                        <i class="fas fa-file-invoice-dollar"></i>
-                                    </span>
-                                </div>
-                                <div class="iconoPurple" @click="Cancelacion(datos)">
-                                    <span tooltip="Solicitar Cancelacion" flow="left">
-                                        <i class="fas fa-ban"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="columnaIconos" v-if="datos.EstatusArt == 4">
-                                <div class="iconoPurple" @click="Cotizar(datos, 4)">
-                                    <span tooltip="Añadir otra Cotizacion" flow="left">
-                                        <i class="fas fa-file-invoice-dollar"></i>
-                                    </span>
-                                </div>
-                                <div class="iconoEdit" @click="edit(datos, 9)">
-                                    <span tooltip="Editar Cotizacion" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="iconoEdit" @click="ConfirmaCotizacion(datos, 5)">
-                                    <span tooltip="Enviar Cotizacion a Autorización" flow="left">
-                                        <i class="fas fa-check-circle"></i>
-                                    </span>
-                                </div>
-                                <div class="iconoDetails" @click="Detalle(datos)">
-                                    <span tooltip="Información de la cotización" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="columnaIconos" v-if="datos.EstatusArt == 5">
-                                <div class="iconoDetails" @click="Detalle(datos)">
-                                    <span tooltip="Información de la cotización" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="columnaIconos" v-if="datos.EstatusArt == 6">
-                                <div class="iconoPurple" @click="CapturaFecha(datos)">
-                                    <span tooltip="Confirma Fecha de Entrega" flow="left">
-                                        <i class="fas fa-shipping-fast"></i>
-                                    </span>
-                                </div>
-                                <div class="iconoPurple" @click="Precios(datos)">
-                                    <span tooltip="Visualiza Cotizaciones" flow="left">
-                                        <i class="fas fa-comment-dollar"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="columnaIconos" v-if="datos.EstatusArt == 7">
-                                <div class="iconoPurple" @click="Precios(datos)">
-                                    <span tooltip="Visualiza Cotizaciones" flow="left">
-                                        <i class="fas fa-comment-dollar"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="columnaIconos" v-else-if="datos.EstatusArt == 8">
-                                <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
-                                    <span tooltip="Articulo en Almacén" flow="left">
-                                        <i class="fas fa-thumbs-up"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="columnaIconos" v-else-if="datos.EstatusArt == 9">
-                                <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
-                                    <span tooltip="Articulo Adquirido" flow="left">
-                                        <i class="fas fa-check-square"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tw-flex tw-justify-center">
-                                <div class="iconoDetails" v-if="detalles != datos.id" @click="show(datos.id)">
-                                    <span tooltip="Detalles" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div v-if="detalles == datos.id" class="tw-w-80">
-                                    <div class="border-b">
-                                        <h2 class="tw-text-xs tw-text-center">Requisición <strong>#{{datos.articulos_requisicion.NumReq}}</strong> </h2>
-                                    </div>
-                                    <div>
-                                        <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
-                                            <p class="tw-text-gray-600">FOLIO: </p>
-                                            <p class="tw-font-semibold">{{datos.articulos_requisicion.Folio}}</p>
-                                        </div>
-                                        <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
-                                            <p class="tw-text-gray-600">SOLICITANTE: </p>
-                                            <p class="tw-font-semibold">{{datos.articulos_requisicion.requisiciones_perfil.Nombre}} {{datos.articulos_requisicion.requisiciones_perfil.ApPat}} {{datos.articulos_requisicion.requisiciones_perfil.ApMat}}</p>
-                                        </div>
-                                        <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
-                                            <p class="tw-text-gray-600">OBSERVACIONES</p>
-                                            <p class="tw-font-semibold">{{datos.articulos_requisicion.Observaciones}}</p>
-                                        </div>
-                                        <div class="tw-text-xxs tw-border-b md:tw-grid md:tw-grid-cols-2 hover:tw-bg-gray-50">
-                                            <p class="tw-text-gray-600">MOTIVO RECHAZO</p>
-                                            <p class="tw-font-semibold">{{datos.articulos_requisicion.MotivoRechazo}}</p>
-                                        </div>
-                                        <div class="tw-flex tw-justify-center">
-                                            <div @click="hidden()" class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-red-500 hover:tw-scale-125">
-                                                <i class="fas fa-window-close"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </template>
-            </Table>
-
             <div class="tw-overflow-x-auto tw-mx-2">
-                <Table>
+                <Table id="Requisiciones">
                     <template v-slot:TableHeader>
                         <th class="columna">NUM</th>
                         <th class="columna">FECHA</th>
@@ -429,11 +223,11 @@
                         <th class="columna">OBSERVACIONES</th>
                         <th class="columna">SOLICITANTE</th>
                         <th class="columna">ESTATUS</th>
-                        <th class="columna">PARTIDAS</th>
+                        <th class="columna">ACCIONES</th>
                     </template>
 
                     <template v-slot:TableFooter>
-                        <tr class="fila" v-for="datos in pru" :key="datos.id">
+                        <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                             <td class="tw-text-center">{{ datos.NumReq }}</td>
                             <td class="tw-text-center">{{ datos.Fecha }}</td>
                             <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
@@ -444,7 +238,48 @@
                             <td class="tw-text-center">{{ datos.TipCompra }}</td>
                             <td>{{ datos.Observaciones }}</td>
                             <td class="tw-text-center">{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
-                            <td class="tw-text-center">{{ datos.Estatus }}</td>
+                            <td>
+                                <div v-if="datos.Estatus == 2">
+                                    <span tooltip="REQUSICIÓN SOLICITADA" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 3 || datos.Estatus == 4">
+                                    <span tooltip="REQUSICIÓN EN ESPERA DE COTIZACIÓN" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">EN COTIZACION</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 5">
+                                    <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 6">
+                                    <span tooltip="REQUISICIÓN AUTORIZADA" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 7">
+                                    <span tooltip="REQUISICIÓN AUTORIZADA" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 8">
+                                    <span tooltip="REQUISICIÓN EN ALMACÉN" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 9">
+                                    <span tooltip="REQUSICIÓN ENTREGADA" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 10">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                    </span>
+                                </div>
+                            </td>
                             <td>
                                 <div class="columnaIconos" v-if="datos.Estatus == 3">
                                     <div class="iconoDetails" @click="Partidas(datos)">
@@ -486,80 +321,93 @@
                     </template>
                 </Table>
             </div>
-
-            <div class="tw-overflow-x-auto tw-mx-28 tw-mt-12" v-if="Art != null">
-                <Table>
-                    <template v-slot:TableHeader>
-                        <th class="columna">Fecha</th>
-                        <th class="columna">Cantidad</th>
-                        <th class="columna">Unidad</th>
-                        <th class="columna">Descripcion</th>
-                        <th class="columna">NumParte</th>
-                        <th class="columna">EstatusArt</th>
-                        <th class="columna">RecibidoPor</th>
-                        <th class="columna">Acciones</th>
-                    </template>
-
-                    <template v-slot:TableFooter>
-                        <tr class="fila" v-for="datos in Art" :key="datos.id">
-                            <td class="tw-text-center">{{ datos.Fecha }}</td>
-                            <td class="tw-text-center">{{ datos.Cantidad }}</td>
-                            <td class="tw-text-center">{{ datos.Unidad }}</td>
-                            <td class="tw-text-center">{{ datos.Descripcion }}</td>
-                            <td class="tw-text-center">{{ datos.NumParte }}</td>
-                            <td class="tw-text-center">{{ datos.EstatusArt }}</td>
-                            <td class="tw-text-center">{{ datos.RecibidoPor }}</td>
-                            <td>
-                                <div class="columnaIconos" v-if="datos.EstatusArt == 4">
-                                    <div class="iconoEdit" @click="EditaPrecio(datos)">
-                                        <span tooltip="Editar Precio" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="columnaIconos" v-else-if="datos.EstatusArt == 7">
-                                    <div class="iconoPurple" @click="ProductoAlmacen(datos, 8)">
-                                        <span tooltip="Confirma Producto en Almacén" flow="left">
-                                            <i class="ml-2 fas fa-box"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="columnaIconos" v-else-if="datos.EstatusArt == 8">
-                                    <div class="iconoLime" @click="EntregaProducto(datos)">
-                                        <span tooltip="Entrega el Artículo" flow="left">
-                                            <i class="fas fa-fingerprint"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="columnaIconos" v-else-if="datos.EstatusArt == 9">
-                                    <div class="iconoGreen" v-if="datos.articulos_requisicion.NumReq.endsWith('-S') != true" @click="SolicitaReposicion(datos)">
-                                        <span tooltip="Solicitar Reposicion" flow="left">
-                                            <i class="fas fa-dolly"></i>
-                                        </span>
-                                    </div>
-                                    <div class="iconoGreen" v-else>
-                                        <span tooltip="Articulo Adquirido" flow="left">
-                                            <i class="fas fa-check-square"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="columnaIconos" v-else>
-                                    <div class="iconoWhite">
-                                        <span tooltip="En proceso" flow="left">
-                                            <i class="fas fa-thumbs-up"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </template>
-                </Table>
-            </div>
         </div>
     </div>
 
+
+    <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="tw-mx-4">
+            <Table>
+                <template v-slot:TableHeader>
+                    <th class="columna">CANTIDAD</th>
+                    <th class="columna">UNIDAD</th>
+                    <th class="columna">DESCRIPCION</th>
+                    <th class="columna">NUM PARTE</th>
+                    <th class="columna">RECIBIDO</th>
+                    <th class="columna">ESTATUS</th>
+                    <th class="columna">ACCIONES</th>
+                </template>
+
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="art in ArticulosRequisiciones" :key="art.id">
+                        <td class="tw-text-center">{{ art.Cantidad }}</td>
+                        <td class="tw-text-center">{{ art.Unidad }}</td>
+                        <td class="tw-text-center">{{ art.Descripcion }}</td>
+                        <td class="tw-text-center">{{ art.NumParte }}</td>
+                        <td class="tw-text-center">{{ art.RecibidoPor }}</td>
+                        <td class="tw-text-center">{{ art.EstatusArt }}</td>
+                        <td>
+                            <div class="columnaIconos" v-if="art.EstatusArt == 4">
+                                <div class="iconoEdit" @click="EditaPrecio(art)">
+                                    <span tooltip="Editar Precio" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else-if="art.EstatusArt == 7">
+                                <div class="iconoPurple" @click="ProductoAlmacen(art, 8)">
+                                    <span tooltip="Confirma Producto en Almacén" flow="left">
+                                        <i class="ml-2 fas fa-box"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else-if="art.EstatusArt == 8">
+                                <div class="iconoLime" @click="EntregaProducto(art)">
+                                    <span tooltip="Entrega el Artículo" flow="left">
+                                        <i class="fas fa-fingerprint"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else-if="art.EstatusArt == 9">
+                                <div class="iconoGreen" v-if="art.articulos_requisicion.NumReq.endsWith('-S') != true" @click="SolicitaReposicion(art)">
+                                    <span tooltip="Solicitar Reposicion" flow="left">
+                                        <i class="fas fa-dolly"></i>
+                                    </span>
+                                </div>
+                                <div class="iconoGreen" v-else>
+                                    <span tooltip="Articulo Adquirido" flow="left">
+                                        <i class="fas fa-check-square"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else>
+                                <div class="iconoWhite">
+                                    <span tooltip="En proceso" flow="left">
+                                        <i class="fas fa-thumbs-up"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+            </Table>
+        </div>
+
+        <div class="ModalFooter">
+            <jet-button type="button" @click="save(form)" v-show="!editMode2">Confirmar Requisición</jet-button>
+            <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+        </div>
+    </modal>
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
 
@@ -1089,6 +937,7 @@ import { Inertia } from '@inertiajs/inertia';
 export default {
     data() {
         return {
+            showPartidas: false,
             showDetalle: false,
             showPrecios: false,
             showCotizar: false,
@@ -1165,7 +1014,10 @@ export default {
     props: {
         Session: Object,
         errors: Object,
-        ArticuloRequisicion: Object,
+        Requisiciones: Object,
+        ArticulosRequisiciones: Object,
+        PreciosCotizacion: Object,
+        PreciosRequisicion: Object,
         Precios: Object,
         Proveedores: Object,
         PerfilesUsuarios: Object,
@@ -1175,14 +1027,6 @@ export default {
         Confirmar: Object,
         Autorizados: Object,
         mes: Object,
-        PreCount: Object,
-        PreciosCotizacion: Object,
-        pru: Object,
-        Art: Object,
-        Req: Object,
-        Pre: Object,
-        CantidadArt: Object,
-        PreciosRequisicion:Object,
     },
 
     created() {
@@ -1221,7 +1065,7 @@ export default {
         //datatable
         tabla() {
             this.$nextTick(() => {
-                $("#Articulos").DataTable({
+                $("#Requisiciones").DataTable({
                 language: this.español,
                 });
             });
@@ -1229,8 +1073,12 @@ export default {
 
         //consulta para generar datos de la tabla
         verTabla(event) {
-            $("#Articulos").DataTable().destroy();
+            $("#Requisiciones").DataTable().destroy();
                 this.$inertia.get("/Compras/Requisiciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
+        },
+
+        chagePartidas() {
+            this.showPartidas = !this.showPartidas;
         },
 
         formatoMexico (number){
@@ -1244,15 +1092,6 @@ export default {
         ConversionMoneda(){
             this.form.PrecioInteger = this.form.Precio; //Sin formatear para calculos
             this.form.Precio = this.formatoMexico(this.form.Precio);
-        },
-
-        show(id){
-            console.log("entre");
-            this.detalles = id;
-        },
-
-        hidden(id){
-            this.detalles = null;
         },
 
         chageClose() {
@@ -1282,18 +1121,25 @@ export default {
             return  di;
         },
 
-        Filtro(value){
-            $('#Articulos').DataTable().clear(); //limpio
-            $('#Articulos').DataTable().destroy(); //destruyo tabla
+        FiltroIndicadores(value){
+            //Filtro para consultar solo por el estatus
             this.params.Estatus = value;
+            this.params.month = '';
+            $('#Requisiciones').DataTable().clear(); //limpio
+            $('#Requisiciones').DataTable().destroy(); //destruyo tabla
             this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
                 onSuccess: () => {
+                    location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
                     this.tabla() //regeneracion de tabla
                 }, preserveState: true})
         },
 
         FiltroMes(value){
+            //Filtro para consultar por mes
             this.params.month = value;
+            this.params.Estatus = ''; //limpio el estatus para consultar solo por Mes
+            $('#Requisiciones').DataTable().clear(); //limpio
+            $('#Requisiciones').DataTable().destroy(); //destruyo tabla
             this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
                 onSuccess: () => {
                     this.tabla() //regeneracion de tabla
@@ -1466,10 +1312,8 @@ export default {
             this.form.Observaciones = data.Observaciones;
             this.params.Req = data.id;
             this.form.Precio = null;
-
-            this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
-                onSuccess: () => {
-            }, preserveState: true })
+            this.chagePartidas();
+            this.$inertia.get('/Compras/Cotizaciones', this.params , { preserveState: true })
         },
 
         chageCotizar() {
@@ -1478,21 +1322,26 @@ export default {
 
         CotizarReq(data){
             this.params.Req = data.id;
+            this.$inertia.get('/Compras/Cotizaciones', this.params , { preserveState: true })
             this.reset();
-            this.PreUni = [];
-            this.form.PrecioCotizacion = [];
-            this.Art.forEach(Art => {
-                this.PreUni.push({
-                    IdArt: Art.id,
-                    requisicion_id: Art.requisicion_id,
-                    Cantidad: Art.Cantidad,
-                    Unidad: Art.Unidad,
-                    Descripcion: Art.Descripcion,
-                    PrecioUnitario: null
-                    })
-            })
-            this.form.PrecioCotizacion = this.PreUni;
-            this.chageCotizar();
+
+            if(this.ArticulosRequisiciones != null){
+                this.PreUni = [];
+                this.form.PrecioCotizacion = [];
+
+                this.ArticulosRequisiciones.forEach(Art => {
+                    this.PreUni.push({
+                        IdArt: Art.id,
+                        requisicion_id: Art.requisicion_id,
+                        Cantidad: Art.Cantidad,
+                        Unidad: Art.Unidad,
+                        Descripcion: Art.Descripcion,
+                        PrecioUnitario: null
+                        })
+                })
+                this.form.PrecioCotizacion = this.PreUni;
+                this.chageCotizar();
+            }
         },
 
         RealizaCotizacion(data) {
@@ -1540,7 +1389,7 @@ export default {
                 this.form.Precio2 = this.PreciosRequisicion[1].Precio;
             }
 
-            this.form.Cantidad = this.Art[0].Cantidad;
+            this.form.Cantidad = this.ArticulosRequisiciones[0].Cantidad;
             this.form.NumReq = this.Req[0].NumReq;
             this.chageEditarPre();
         },
@@ -1566,20 +1415,6 @@ export default {
                     this.alertSucces();
                 },
             });
-        },
-    },
-
-    watch: {
-        params: {
-        deep: true,
-            handler: throttle(function() {
-                $('#Articulos').DataTable().clear(); //limpio
-                $('#Articulos').DataTable().destroy(); //destruyo tabla
-                this.$inertia.get('/Compras/Cotizaciones', this.params , {
-                    onSuccess: () => {
-                        this.tabla() //regeneracion de tabla
-                        }, preserveState: true})
-            }, 150),
         },
     },
 };
