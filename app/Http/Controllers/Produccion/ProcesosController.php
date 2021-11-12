@@ -49,37 +49,6 @@ class ProcesosController extends Controller
                         $dep->select('id', 'Nombre', 'departamento_id');
                     }])
                 ->get(['id','perfiles_usuarios_id', 'departamento_id']);
-            /************************* Información de maquinas para coordinador, encargado y lider *************************/
-            //se consulta el primer departamento que tiene la persona asignada
-            /* $prime = dep_per::where('perfiles_usuarios_id','=',$perf->id)
-                ->with([
-                    'departamentos' => function($dep){
-                        $dep->select('id');
-                    }])
-                ->first(['id', 'departamento_id']);
-            //se consultan las maquinas que estan en ese departamento
-            $proce = procesos::where('departamento_id', '=', $prime->departamentos->id)
-            ->with([
-                'departamentos' => function($dep){
-                    $dep->select('id', 'Nombre', 'departamento_id');
-                },
-                'sub_proceso',
-                'formulas.maq_pros.maquinas',
-                'formulas.proc_rela',
-                'maq_pros' => function($mp){
-                    $mp->select('id', 'proceso_id', 'maquina_id')
-                    ->with('maquinas');
-                }
-                ])
-            ->get(); */
-            /**************************** Consulta si existe maquinas *****************************************************/
-            /* $maq = Maquinas::where('departamento_id', '=', $prime->departamentos->id)
-                ->with([
-                    'marca'=> function($maq){
-                        $maq->select('id', 'Nombre', 'maquinas_id');
-                    }
-                ])
-                ->get(['id', 'Nombre', 'departamento_id']); */
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')

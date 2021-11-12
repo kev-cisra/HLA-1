@@ -32,22 +32,43 @@
                 </div>
             </template>
         </Accions>
+
         <!------------------------------------ Muestra las opciones de filtros ------------------------------------------->
         <div class="collapse md:tw-ml-10 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl tw-m-10" id="filtro">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
                 <div class="tw-mb-6 lg:tw-flex">
+                    <!-- Año -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Año</jet-label>
                         <jet-input type="number" class="form-control" v-model="ano" :max="estAño"></jet-input>
                     </div>
+                    <!-- Tipo de reporte -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Tipo de reporte</jet-label>
+                        <div class="tw-flex tw-gap-5">
+                            <div>
+                                <input type="radio" id="uno" value="1" v-model="FoFiltro.TipRepo">
+                                <label for="uno"> Produccion</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="dos" value="2" v-model="FoFiltro.TipRepo">
+                                <label for="dos"> Paros</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tw-mb-6 lg:tw-flex">
+                    <!-- mes -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-show="FoFiltro.TipRepo == 1">
                         <jet-label><span class="required">*</span>Mes</jet-label>
                         <jet-input type="month" class="form-control" @click="limInputs(3)" v-model="FoFiltro.mes"></jet-input>
                     </div>
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                    <!-- semana -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-show="FoFiltro.TipRepo == 1">
                         <jet-label><span class="required">*</span>Semana</jet-label>
                         <jet-input type="week" class="form-control" @click="limInputs(2)" v-model="FoFiltro.semana"></jet-input>
                     </div>
+                    <!-- dia -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Fecha</jet-label>
                         <jet-input type="date" class="form-control tw-w-2/3" @click="limInputs(1.5)" v-model="FoFiltro.iniDia" :max="hoy"></jet-input>
@@ -55,8 +76,9 @@
                 </div>
             </div>
         </div>
-        <!------------------------------------ Data table de carga ------------------------------------------------------->
-        <div class="table-responsive">
+
+        <!------------------------------------ Data table de carga de produccion ------------------------------------------------------->
+        <div class="table-responsive" v-show="FoFiltro.TipRepo == 1">
             <Table id="t_repo">
                 <template v-slot:TableHeader>
                     <th class="columna">Proceso</th>
@@ -127,6 +149,87 @@
                 </template>
             </Table>
         </div>
+
+        <!------------------------------------- Data table de paros ------------------------------------------------------------------>
+        <div class="table-responsive" v-show="FoFiltro.TipRepo == 2">
+            <TableBlue id="t_repoPar">
+                <template v-slot:TableHeader>
+                    <th class="columna tw-text-center">Fecha</th>
+                    <th class="columna tw-text-center">Orden</th>
+                    <th class="columna tw-text-center">Maquina</th>
+                    <th class="columna tw-text-center">Clave de paro</th>
+                    <th class="columna tw-text-center">Nombre de paro</th>
+                    <th class="columna tw-text-center">Descripción</th>
+                    <th class="columna tw-text-center">Estatus</th>
+                    <th class="columna tw-text-center">Inicio</th>
+                    <th class="columna tw-text-center">Final</th>
+                    <th class="columna tw-text-center">Tiempo cargado</th>
+                    <th class="columna tw-text-center">Plan de Acción</th>
+                    <th></th>
+                </template>
+                <template v-slot:TableFooter>
+                    <tr class="fila hover:tw-text-base" v-for="ca in recoTablaParo" :key="ca.id">
+                        <td class="tw-text-center">{{ca.fecha}}</td>
+                        <td class="tw-text-center">{{ca.orden}}</td>
+                        <td class="tw-text-center">{{ca.maq_pro.maquinas.Nombre}}</td>
+                        <td class="tw-text-center">{{ca.paros.clave}}</td>
+                        <td class="tw-text-center">{{ca.paros.descri}}</td>
+                        <td class="tw-text-center">{{ca.descri}}</td>
+                        <td class="tw-text-center">
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full" v-if="ca.estatus == 'Activo'">{{ca.estatus}}</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">{{ca.estatus}}</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
+                        </td>
+                        <td class="tw-text-center">{{ca.iniFecha}}</td>
+                        <td class="tw-text-center">{{nuFin(ca.finFecha) == null ? '' : ca.finFecha}}</td>
+                        <td class="tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}}</td>
+                        <td class="tw-text-center">{{ca.pla_acci}}</td>
+                        <td class="tw-text-center">
+                            <div class="columnaIconos">
+                                <!-- <div class="iconoDelete" @click="detener(1, ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id != 13 & ca.paro_id != 14 & ca.paro_id != 16)">
+                                    <span tooltip="Detener" flow="left">
+                                        <svg class="h-8 w-8 text-red-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoDelete" @click="plan(ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id == 13 | ca.paro_id == 14 | ca.paro_id == 16)">
+                                    <span tooltip="Detener" flow="left">
+                                        <svg class="h-8 w-8 text-red-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoDetails" @click="detener(2, ca)" v-if="(usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')) & ca.estatus == 'En revisión'">
+                                    <span  tooltip="Autorizar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </span>
+                                </div> -->
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+                <template v-slot:Foother>
+                    <th class="columna tw-text-center">Fecha</th>
+                    <th class="columna tw-text-center">Orden</th>
+                    <th class="columna tw-text-center">Maquina</th>
+                    <th class="columna tw-text-center">Clave de paro</th>
+                    <th class="columna tw-text-center">Nombre de paro</th>
+                    <th class="columna tw-text-center">Descripción</th>
+                    <th class="columna tw-text-center">Estatus</th>
+                    <th class="columna tw-text-center">Inicio</th>
+                    <th class="columna tw-text-center">Final</th>
+                    <th class="columna tw-text-center">Tiempo cargado</th>
+                    <th class="columna tw-text-center">Plan de Acción</th>
+                    <th></th>
+                </template>
+            </TableBlue>
+        </div>
+
         <!------------------------------------- Modal para carga de datos masivas ------------------------------------------------>
         <modal :show="showModalC" @close="chageCloseC">
             <div class="tw-px-4 tw-py-4">
@@ -163,6 +266,7 @@
                 </div>
             </div>
         </modal>
+
         <!------------------ Modal Turnos------------------------->
         <modal :show="showModal" @close="chageClose">
             <form>
@@ -210,6 +314,7 @@
                 </div>
             </form>
         </modal>
+
         <!------------------ Modal Editar Carga------------------------->
         <modal :show="showModalCar" @close="changeCloseCar">
             <div class="tw-px-4 tw-py-4">
@@ -285,16 +390,7 @@
                                 </select>
                                 <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                             </div>
-                            <!-- select clave -->
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Clave</jet-label>
-                                <Select2 v-model="carga.clave_id" :class="'InputSelect'" :options="opcCL" />
-                                <!-- <Select2  v-model="carga.clave_id" class="InputSelect" :options="opcCL" /> -->
-                                <!-- <select class="InputSelect" v-model="carga.clave_id">
-                                    <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
-                                </select> -->
-                                <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
-                            </div>
+
                             <!-- select partida -->
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Partida</jet-label>
@@ -306,6 +402,18 @@
                                 <jet-label><span class="required">*</span>Kg</jet-label>
                                 <jet-input class="InputSelect" v-model="carga.valor"></jet-input>
                                 <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
+                            </div>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <!-- select clave -->
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Clave</jet-label>
+                                <Select2 v-model="carga.clave_id" :class="'InputSelect'" :options="opcCL" />
+                                <!-- <Select2  v-model="carga.clave_id" class="InputSelect" :options="opcCL" /> -->
+                                <!-- <select class="InputSelect" v-model="carga.clave_id">
+                                    <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
+                                </select> -->
+                                <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
                             </div>
                         </div>
                         <!-- notas -->
@@ -338,6 +446,7 @@
     import Header from '@/Components/Header'
     import Accions from '@/Components/Accions'
     import Table from '@/Components/Table';
+    import TableBlue from '@/Components/TableBlue';
     import Modal from '@/Jetstream/Modal';
     import JetButton from '@/Components/Button';
     import JetCancelButton from '@/Components/CancelButton';
@@ -367,6 +476,7 @@
         props: [
             'usuario',
             'depa',
+            'paros',
             'cargas',
             'materiales',
             'procesos',
@@ -378,6 +488,7 @@
             Header,
             Accions,
             Table,
+            TableBlue,
             JetButton,
             JetCancelButton,
             JetInput,
@@ -410,6 +521,7 @@
                 estAño: moment().format('Y'),
                 ano: moment().format('Y'),
                 FoFiltro: {
+                    TipRepo: 1,
                     mes: null,
                     semana: null,
                     iniDia: null,
@@ -518,8 +630,21 @@
             verTabla() {
                 $('#t_repo').DataTable().clear();
             },
+            nuFin(idsub, sub_paro, fecha){
+                //
+                if (idsub || sub_paro.length != 0) {
+                    //
+                }else{
+                    return fecha;
+                }
+            },
+            tiempo(ini, fin){
+                var tini = moment(ini);
+                var tfin = fin == null ? moment() : moment(fin);
+                return tfin.from(tini, true);
+            },
             /****************************** datatables ********************************************************/
-            //datatable de carga
+            //datatable de carga de produccion
             tabla() {
                 this.$nextTick(() => {
                     $('#t_repo tfoot th').each( function () {
@@ -527,6 +652,61 @@
                         $(this).html( '<input type="text" class="InputSelect tw-text-gray-900" placeholder="'+title+'" />' );
                     } );
                     var table = $('#t_repo').DataTable({
+                        "language": this.español,
+                        "order": [[0, 'desc'],[1, 'asc']],
+                        "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                                "<'row'<'col-sm-12'tr>>" +
+                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        scrollY:        '40vh',
+                        scrollCollapse: true,
+                        paging:         false,
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            'colvis'
+                        ],
+                        initComplete: function () {
+                            // Apply the search
+                            this.api().columns().every( function () {
+                                var that = this;
+
+                                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                                    if ( that.search() !== this.value ) {
+                                        that
+                                            .search( this.value )
+                                            .draw();
+                                    }
+                                } );
+                            } );
+                        }
+                    })
+
+                })
+            },
+            //datatable de paros
+            tablaParo() {
+                this.$nextTick(() => {
+                    $('#t_repoPar tfoot th').each( function () {
+                        var title = $(this).text();
+                        $(this).html( '<input type="text" class="InputSelect tw-text-gray-900" placeholder="'+title+'" />' );
+                    } );
+                    var table = $('#t_repoPar').DataTable({
                         "language": this.español,
                         "order": [[0, 'desc'],[1, 'asc']],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
@@ -594,8 +774,9 @@
                     depa: this.S_Area
                 }
             },
-            //Nuevo es arreglo
-            NuArray() {
+            /***************************** Crea nuevos arreglos dependiendo de el tipo de reporte ******************/
+            //Nuevo arreglo Parar mostrar la produccion
+            NuArrayPro() {
                 const rt = [];
                 var inicio = null;
                 var fin = null;
@@ -603,12 +784,12 @@
                 if(this.FoFiltro.iniDia != null){
                     if (this.S_Area == 7){
                         if (moment(this.FoFiltro.iniDia).isDST()) {
-                            inicio = this.FoFiltro.iniDia+' 09:00';
+                            inicio = this.FoFiltro.iniDia+' 09:00:00';
                         }else{
-                            inicio = this.FoFiltro.iniDia+' 08:00';
+                            inicio = this.FoFiltro.iniDia+' 08:00:00';
                         }
                     }else{
-                        inicio = this.FoFiltro.iniDia+' 07:00'
+                        inicio = this.FoFiltro.iniDia+' 07:00:00'
                     }
 
                     //Asigna el dato para la fecha final
@@ -620,7 +801,7 @@
                     //hace el recorrido y asigna el Array
                     this.cargas.forEach(fec => {
                         //console.log(fec.fecha)
-                        if ( moment(fec.fecha).isAfter(inicio, 'minutes') & moment(fec.fecha).isBefore(fin, 'minutes') ) {
+                        if ( moment(fec.fecha).isSameOrAfter(inicio, 'minutes') & moment(fec.fecha).isBefore(fin, 'minutes') ) {
                             rt.push(fec);
                         }
                     });
@@ -658,6 +839,38 @@
                     });
                 }
                 return rt;
+            },
+            //Nuevo arrego para los paros
+            NuArrayParo() {
+                const rtP = [];
+                var inicio = null;
+                var fin = null;
+                //consulta del dia
+                if(this.FoFiltro.iniDia != null){
+                    if (this.S_Area == 7){
+                        if (moment(this.FoFiltro.iniDia).isDST()) {
+                            inicio = this.FoFiltro.iniDia+' 09:00';
+                        }else{
+                            inicio = this.FoFiltro.iniDia+' 08:00';
+                        }
+                    }else{
+                        inicio = this.FoFiltro.iniDia+' 7:00'
+                    }
+
+                    //Asigna el dato para la fecha final
+                    fin = moment(inicio).add(24, 'hours');
+                    //Limpia el datatables
+                    $('#t_repoPar').DataTable().clear();
+                    $('#t_repoPar').DataTable().destroy();
+                    this.tablaParo();
+                    //hace el recorrido y asigna el Array
+                    this.paros.forEach(fec => {
+                        if ( moment(fec.fecha).isSameOrAfter(inicio, 'minutes') & moment(fec.fecha).isBefore(fin, 'minutes') ) {
+                            rtP.push(fec);
+                        }
+                    });
+                }
+                return rtP;
             },
             //Limpia los inputs de fechas
             limInputs(val){
@@ -784,6 +997,7 @@
                 })
                 return ar;
             },
+
             //Opciones Normas
             opcNM: function() {
                 const nm = [];
@@ -792,6 +1006,7 @@
                 })
                 return nm;
             },
+
             //Opciones Claves
             opcCL: function() {
                 const scl = [];
@@ -808,6 +1023,7 @@
                 }
                 return scl;
             },
+
             //Opciones procesos principales
             opcPP: function() {
                 const ppi = [];
@@ -818,6 +1034,7 @@
                 });
                 return ppi;
             },
+
             //Opciones subprocesos
             opcSP: function() {
                 const ssp = [];
@@ -829,6 +1046,7 @@
                 })
                 return ssp;
             },
+
             //Opciones maquinas
             opcMQ: function() {
                 const mq = [];
@@ -846,9 +1064,21 @@
                 }
                 return mq;
             },
-            //recorrido para la tabla
+
+            //recorrido para la tabla de produccion
             recoTabla: function() {
-                return this.NuArray();
+                if (this.FoFiltro.TipRepo == 1) {
+                    //console.log('entro a produccion')
+                    return this.NuArrayPro();
+                }
+            },
+
+            //recorrido para la tabla de paros
+            recoTablaParo: function() {
+                if (this.FoFiltro.TipRepo == 2) {
+                    //console.log('entro a paro')
+                    return this.NuArrayParo();
+                }
             }
         },
 

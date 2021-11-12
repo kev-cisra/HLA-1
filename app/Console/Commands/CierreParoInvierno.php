@@ -54,8 +54,8 @@ class CierreParoInvierno extends Command
                 if (empty($paro->paros_carga_id)) {
                     $txt.='entro normal '.$hoy.' || ';
                     parosCarga::create([
-                        'fecha' => $paro->fecha,
-                        'iniFecha' => $hoy->toDateTimeString(),
+                        'fecha' => $hoy->toDateTimeString(),
+                        'iniFecha' => $paro->iniFecha,
                         'paro_id' => $paro->paro_id,
                         'estatus' => 'Activo',
                         'perfil_ini_id' => $paro->perfil_ini_id,
@@ -72,8 +72,8 @@ class CierreParoInvierno extends Command
                     $txt.='entro sub paro '.$hoy.' || ';
                     $parUp = parosCarga::where('paros_carga_id', '=', $paro->paros_carga_id)->orderBy('id', 'desc')->first();
                     parosCarga::create([
-                        'fecha' => $parUp->fecha,
-                        'iniFecha' => $hoy->toDateTimeString(),
+                        'fecha' => $hoy->toDateTimeString(),
+                        'iniFecha' => $parUp->iniFecha,
                         'paro_id' => $parUp->paro_id,
                         'estatus' => $parUp->estatus,
                         'perfil_ini_id' => $parUp->perfil_ini_id,

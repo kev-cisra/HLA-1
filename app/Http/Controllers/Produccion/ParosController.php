@@ -11,6 +11,7 @@ use App\Models\Produccion\paros;
 use App\Models\Produccion\parosCarga;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -142,9 +143,10 @@ class ParosController extends Controller
                 'descri' => ['required']
             ])->validate();
         }
+        $hoy = Carbon::now();
         parosCarga::create([
-            'fecha' => $request->fecha,
-            'iniFecha' => $request->fecha,
+            'fecha' => $hoy->toDateTimeString(),
+            'iniFecha' => $hoy->toDateTimeString(),
             'paro_id' => $request->paro_id,
             'estatus' => $request->estatus,
             'perfil_ini_id' => $request->usu,
@@ -168,13 +170,23 @@ class ParosController extends Controller
                 'pla_acci' => ['required']
             ])->validate();
         }
+        //return $request->tiempo;
+        $hoy = Carbon::now();
+        if ($request->estatus == 'Autorizado') {
+            $fecha = $request->finFecha;
+            $tiempo = $request->tiempo;
+        }else{
+            $fecha = empty($request->finFecha) ? $request->finFecha : $hoy->toDateTimeString();
+            $tiempo = empty($request->tiempo) ? $request->tiempo : $hoy->diffInMinutes($request->iniFecha);
+        }
+
         if ($request->has('id')) {
             parosCarga::find($request->input('id'))->update([
                 'pla_acci' => $request->pla_acci,
                 'perfil_fin_id' => $request->usu,
-                'finFecha' => $request->finFecha,
+                'finFecha' => $fecha,
                 'estatus' => $request->estatus,
-                'tiempo' => $request->tiempo
+                'tiempo' => $tiempo
             ]);
         }
 

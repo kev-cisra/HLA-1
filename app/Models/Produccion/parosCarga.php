@@ -21,6 +21,15 @@ class parosCarga extends Model
         return $this->belongsTo(paros::class, 'paro_id');
     }
 
+    //Relaciones recursivas
+    public function paros_sub() {
+        return $this->hasMany(parosCarga::class, 'paros_carga_id');
+    }
+
+    public function sub_paro() {
+        return $this->hasMany(parosCarga::class, 'paros_carga_id')->with('paros_sub');
+    }
+
     public function perfil_ini(){
         return $this->belongsTo(PerfilesUsuarios::class, 'perfil_ini_id');
     }

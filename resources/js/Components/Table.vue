@@ -24,7 +24,6 @@
 
                 </slot>
             </tr>
-
         </tfoot>
     </table>
 </template>

@@ -115,7 +115,7 @@
                         </td>
                         <td class="tw-text-center">{{ca.iniFecha}}</td>
                         <td class="tw-text-center">{{ca.finFecha == null ? '' : ca.finFecha}}</td>
-                        <td class="tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}} minutos</td>
+                        <td class="tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}}</td>
                         <td class="tw-text-center">{{ca.pla_acci}}</td>
                         <td class="tw-text-center">
                             <div class="columnaIconos">
@@ -278,7 +278,7 @@
             tiempo(ini, fin){
                 var tini = moment(ini);
                 var tfin = fin == null ? moment() : moment(fin);
-                return tfin.diff(tini, 'minutes');
+                return tfin.from(tini, true);
             },
             //plan de trabajo
             plan(data){
