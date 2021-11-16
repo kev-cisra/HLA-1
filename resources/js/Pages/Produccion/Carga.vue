@@ -21,6 +21,9 @@
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
                         <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe" @click="resetCA()">Paquete de operativos</jet-button>
                     </div>
+                    <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
+                        <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Paquetes para coordinador</jet-button>
+                    </div>
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
                         <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacNorma" aria-controls="pacNorma" @click="resetCA()">Paquete de Normas</jet-button>
                     </div>
@@ -34,7 +37,7 @@
         </Accions>
 
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
-        <div class="m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
+        <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <!-------------------------------------------- Paquetes ---------------------------------------------->
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full" v-if="noCor == 'lid' | noCor == 'ope'">
                 <!-- formulario -->
@@ -42,7 +45,7 @@
                     <!-- select Paquetes de operadores -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Paquete de operadores</jet-label>
-                        <Select2 v-model="paqOpera" class="InputSelect" :options="opcPaOp" />
+                        <Select2 v-model="paqOpera" class="InputSelect" :settings="{width: '100%'}" :options="opcPaOp" />
                         <!-- <select class="InputSelect" v-model="paqOpera">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="po in opcPaOp" :key="po.value" :value="po.value">{{po.text}} - {{po.maquina}}</option>
@@ -51,7 +54,7 @@
                     <!-- select Paquetes de Normas partida y clave -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
-                        <Select2 v-model="paqNorma" class="InputSelect" :options="opcPaNo" />
+                        <Select2 v-model="paqNorma" class="InputSelect" :settings="{width: '100%'}" :options="opcPaNo" />
                         <!-- <select class="InputSelect" v-model="paqNorma">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
@@ -163,7 +166,7 @@
                     <!-- select Paquetes de Normas partida y clave -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
-                        <Select2 v-model="paqNorma" class="InputSelect" :options="opcPaNo" />
+                        <Select2 v-model="paqNorma" class="InputSelect" :options="opcPaNo"  :settings="{width: '100%'}"/>
                         <!-- <select class="InputSelect" v-model="paqNorma">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="no in opcPaNo" :key="no.id" :value="no.value">{{no.text}}</option>
@@ -206,6 +209,7 @@
             </div>
 
         </div>
+
         <!------------------------------------ Data table de carga ------------------------------------------------------->
         <div class="tw-overflow-x-auto tw-mx-2">
             <Table id="t_carg">
@@ -254,13 +258,6 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <!-- <div class="iconoEdit tw-cursor-pointer" @click="editCA(ca)" v-show="usuario.dep_pers.length == 0 | (ca.proceso.tipo != 2 & (noCor == 'cor' | noCor == 'enc'))">
-                                    <span tooltip="Editar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                        </svg>
-                                    </span>
-                                </div> -->
                             </div>
                         </td>
                     </tr>
@@ -386,6 +383,7 @@
                 </div>
             </div>
         </div>
+
         <!------------------------------------- Carga de paquetes Norma, Claves y partida -------------------------------->
         <div class="offcanvas offcanvas-end sm:tw-w-9/12 lg:tw-w-6/12" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
             <div class="offcanvas-header">
@@ -473,6 +471,17 @@
                         </template>
                     </TableCyan>
                 </div>
+            </div>
+        </div>
+
+        <!------------------------------------- Carga de paquetes para el coordinador -------------------------------->
+        <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body small">
+                ...
             </div>
         </div>
     </app-layout>

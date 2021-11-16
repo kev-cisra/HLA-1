@@ -20,7 +20,7 @@
             </template>
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
-        <div class="m-5 tw-p-6 tw-bg-green-600 tw-rounded-3xl tw-shadow-xl" id="agPer">
+        <div class="collapse m-5 tw-p-6 tw-bg-green-600 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <form>
                 <!-- inputs principales -->
                 <div class="tw-mb-6 md:tw-flex">
@@ -49,7 +49,7 @@
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
                         <jet-label><span class="required">*</span>Tipo de paro</jet-label>
-                        <Select2 v-model="form.paro_id"  class="InputSelect" :options="opcPR" />
+                        <Select2 v-model="form.paro_id"  class="InputSelect" :options="opcPR"  :settings="{width: '100%'}"/>
                         <!-- <select  v-model="form.paro_id" v-html="opcPR" ></select> -->
                         <small v-if="errors.paro_id" class="validation-alert">{{errors.paro_id}}</small>
                     </div>
@@ -246,6 +246,7 @@
                     id: '',
                     finFecha: moment().format("YYYY-MM-DD HH:mm:ss"),
                     usu:  this.usuario.id,
+                    iniFecha: '',
                     pla_acci: '',
                     estatus: '',
                     paro_id: '',
@@ -284,10 +285,11 @@
             plan(data){
                 this.showModal = !this.showModal
                 this.planA.id = data.id;
+                this.planA.iniFecha = data.iniFecha
                 this.planA.pla_acci = '';
                 this.planA.paro_id = data.paro_id;
                 this.planA.estatus = 'En revisión';
-                this.planA.tiempo = this.tiempo(data.iniFecha, data.finFecha);
+                this.planA.tiempo =  this.tiempo(data.iniFecha, data.finFecha);
 
             },
             resetPlan(){
@@ -295,6 +297,7 @@
                     this.showModal = !this.showModal
                 }
                 this.planA.id = '';
+                this.planA.iniFecha = '';
                 this.planA.pla_acci = '';
                 this.planA.paro_id = '';
                 this.planA.estatus = '';

@@ -55,6 +55,8 @@ class RoleSeeder extends Seeder
 
         Permission::create(['name' => 'Produccion.reporpro.index'])->syncRoles([$ONEPIECE, $coordinador, $SistemasRole, $encargado]);
 
+        Permission::create(['name' => 'Produccion.entregas.index'])->syncRoles([$ONEPIECE, $coordinador, $SistemasRole, $encargado]);
+
 
         //Permisos especificos en cada menu
     }

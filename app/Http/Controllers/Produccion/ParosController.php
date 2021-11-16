@@ -179,7 +179,6 @@ class ParosController extends Controller
             $fecha = empty($request->finFecha) ? $request->finFecha : $hoy->toDateTimeString();
             $tiempo = empty($request->tiempo) ? $request->tiempo : $hoy->diffInMinutes($request->iniFecha);
         }
-
         if ($request->has('id')) {
             parosCarga::find($request->input('id'))->update([
                 'pla_acci' => $request->pla_acci,

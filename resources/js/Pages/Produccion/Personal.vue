@@ -18,7 +18,7 @@
             </template>
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ------------------------------------>
-        <div class="m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl" id="agPer">
+        <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl" id="agPer">
                 <div class="tw-mb-6 md:tw-flex">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>Departamento </jet-label>
@@ -40,7 +40,7 @@
 
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>Personal </jet-label>
-                        <Select2 v-model="form.perfiles_usuarios_id" :class="'InputSelect tw-w-full'" :options="optionPer" @select="mySelectEvent($event)" />
+                        <Select2 v-model="form.perfiles_usuarios_id" class="InputSelect" :options="optionPer"  :settings="{width: '100%'}" />
                         <small v-if="errors.perfiles_usuarios_id" class="validation-alert">{{errors.perfiles_usuarios_id}}</small>
                         <!-- <jet-input type="text" list="per" v-model="form.perfiles_usuarios_id"></jet-input>
                         <small v-if="errors.perfiles_usuarios_id" class="validation-alert">{{errors.perfiles_usuarios_id}}</small>
@@ -159,12 +159,6 @@
             this.tabla();
         },
         methods: {
-            myChangeEvent(val){
-                console.log(val);
-            },
-            mySelectEvent({id, text}){
-                console.log({id, text})
-            },
             alertSucces(){
                 const Toast = Swal.mixin({
                     toast: true,

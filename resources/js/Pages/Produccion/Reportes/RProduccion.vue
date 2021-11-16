@@ -85,6 +85,7 @@
                     <th class="columna">Fecha</th>
                     <th class="columna">Nombre</th>
                     <th class="columna">Departamento</th>
+                    <th class="columna">Estatus</th>
                     <th class="columna">Equipo</th>
                     <th class="columna">Turno</th>
                     <th class="columna">Partida</th>
@@ -102,6 +103,13 @@
                         <td >{{ca.fecha}}</td>
                         <td >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
                         <td >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
+                        <td class=" tw-w-40">
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-if="ca.notaPen == 2">NOTA PENDIENTE</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-if="ca.proceso.tipo == 3">CALCULOS</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-indigo-600 tw-rounded-full" v-else-if="ca.proceso.tipo == 1 & ca.notaPen == 1">CARGA OPERADORES</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-orange-600 tw-rounded-full" v-else-if="ca.proceso.tipo == 2 & ca.notaPen == 1">CARGA COORDINADOR</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-teal-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1">ACTUALIZADO</div>
+                        </td>
                         <td >{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
                         <td >{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
                         <td >{{ca.partida == null ? 'N/A' : ca.partida}}</td>
@@ -136,6 +144,7 @@
                     <th class="columna">Fecha</th>
                     <th class="columna">Nombre</th>
                     <th class="columna">Departamento</th>
+                    <th class="columna">Estatus</th>
                     <th class="columna">Equipo</th>
                     <th class="columna">Turno</th>
                     <th class="columna">Partida</th>
@@ -181,7 +190,7 @@
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
                         </td>
                         <td class="tw-text-center">{{ca.iniFecha}}</td>
-                        <td class="tw-text-center">{{nuFin(ca.finFecha) == null ? '' : ca.finFecha}}</td>
+                        <td class="tw-text-center">{{ nuFin(ca) }}</td>
                         <td class="tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}}</td>
                         <td class="tw-text-center">{{ca.pla_acci}}</td>
                         <td class="tw-text-center">
@@ -408,7 +417,7 @@
                             <!-- select clave -->
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Clave</jet-label>
-                                <Select2 v-model="carga.clave_id" :class="'InputSelect'" :options="opcCL" />
+                                <Select2 v-model="carga.clave_id"  :class="'InputSelect'" :options="opcCL"  :settings="{width: '100%'}" />
                                 <!-- <Select2  v-model="carga.clave_id" class="InputSelect" :options="opcCL" /> -->
                                 <!-- <select class="InputSelect" v-model="carga.clave_id">
                                     <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
@@ -452,7 +461,6 @@
     import JetCancelButton from '@/Components/CancelButton';
     import JetInput from '@/Components/Input';
     import JetLabel from '@/Jetstream/Label';
-    import Select2 from 'vue3-select2-component';
     //datatable
     import datatable from 'datatables.net-bs5';
     require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
@@ -464,6 +472,7 @@
     import pdfMake from 'pdfmake/build/pdfmake';
     import pdfFonts from 'pdfmake/build/vfs_fonts';
     import $ from 'jquery';
+    import Select2 from 'vue3-select2-component';
 
 
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -630,14 +639,28 @@
             verTabla() {
                 $('#t_repo').DataTable().clear();
             },
-            nuFin(idsub, sub_paro, fecha){
-                //
-                if (idsub || sub_paro.length != 0) {
-                    //
-                }else{
+            //muestra la utima fecha del paro
+            nuFin(ar){
+                //si es un sub paro
+                if (ar.paros_carga_id != null) {
+                    //busca el id del paro princial
+                    var busca = this.paros.find(e => e.id == ar.paros_carga_id);
+                    //en caso de que no este el dato entonces pone la fecha generada
+                    var data = busca == null ? ar.finFecha : busca.sub_paro[0].finFecha;
+                    //consulta en caso de que aun no cierre el paro
+                    var fecha = data == null ? moment().format("YYYY-MM-DD HH:mm:ss") : data;
                     return fecha;
                 }
+                //si es uno  principal
+                if (ar.sub_paro.length != 0) {
+                    return ar.sub_paro[0].finFecha == null ? moment().format("YYYY-MM-DD HH:mm:ss") : ar.sub_paro[0].finFecha;
+                }
+                //en caso de que no sea ni subparo o principal
+                if(ar.paros_carga_id == null || ar.sub_paro.length == 0){
+                    return ar.finFecha == null ? moment().format("YYYY-MM-DD HH:mm:ss") : ar.finFecha;
+                }
             },
+            //calcula el tiempo
             tiempo(ini, fin){
                 var tini = moment(ini);
                 var tfin = fin == null ? moment() : moment(fin);
@@ -966,7 +989,7 @@
                 this.carga.turno = data.turno.nomtur;
                 this.carga.equipo = data.equipo.nombre;
                 this.carga.norma = data.norma;
-                this.carga.clave_id = data.clave_id;
+                this.carga.clave_id = `${data.clave_id}`;
                 this.carga.partida = data.partida;
                 this.carga.valor = data.valor;
                 this.carga.proceso_id = data.proceso_id;
