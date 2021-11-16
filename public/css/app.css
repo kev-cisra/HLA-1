@@ -20356,6 +20356,18 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(209, 213, 219, var(--tw-bg-opacity));
 }
+.tw-bg-yellow-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(250, 204, 21, var(--tw-bg-opacity));
+}
+.tw-bg-yellow-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(202, 138, 4, var(--tw-bg-opacity));
+}
+.tw-bg-lime-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(101, 163, 13, var(--tw-bg-opacity));
+}
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
 }
