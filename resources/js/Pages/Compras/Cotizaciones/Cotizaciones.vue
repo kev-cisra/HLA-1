@@ -290,7 +290,7 @@
                                             </svg>
                                         </span>
                                     </div>
-                                    <div class="iconoPurple" @click="CotizarReq(datos, 4)">
+                                    <div class="iconoPurple" @click="CotizarReq(datos)">
                                         <span tooltip="Realizar Cotizacion" flow="left">
                                             <i class="fas fa-file-invoice-dollar"></i>
                                         </span>
@@ -1018,6 +1018,8 @@ export default {
         ArticulosRequisiciones: Object,
         PreciosCotizacion: Object,
         PreciosRequisicion: Object,
+        NumCot: Object,
+        Req: Object,
         Precios: Object,
         Proveedores: Object,
         PerfilesUsuarios: Object,
@@ -1033,10 +1035,6 @@ export default {
     },
 
     methods: {
-        showScores() {
-            console.log(this.PreUni)
-        },
-
         reset() {
             this.form = {
                 IdUser: this.Session.id,
@@ -1322,26 +1320,30 @@ export default {
 
         CotizarReq(data){
             this.params.Req = data.id;
-            this.$inertia.get('/Compras/Cotizaciones', this.params , { preserveState: true })
-            this.reset();
+            this.$inertia.get('/Compras/Cotizaciones', this.params , {
+                onSuccess: () => {
 
-            if(this.ArticulosRequisiciones != null){
-                this.PreUni = [];
-                this.form.PrecioCotizacion = [];
+                    this.reset();
 
-                this.ArticulosRequisiciones.forEach(Art => {
-                    this.PreUni.push({
-                        IdArt: Art.id,
-                        requisicion_id: Art.requisicion_id,
-                        Cantidad: Art.Cantidad,
-                        Unidad: Art.Unidad,
-                        Descripcion: Art.Descripcion,
-                        PrecioUnitario: null
+                    if(this.ArticulosRequisiciones != null){
+                        this.PreUni = [];
+                        this.form.PrecioCotizacion = [];
+
+                        this.ArticulosRequisiciones.forEach(Art => {
+                            this.PreUni.push({
+                                IdArt: Art.id,
+                                requisicion_id: Art.requisicion_id,
+                                Cantidad: Art.Cantidad,
+                                Unidad: Art.Unidad,
+                                Descripcion: Art.Descripcion,
+                                PrecioUnitario: null
+                                })
                         })
-                })
-                this.form.PrecioCotizacion = this.PreUni;
-                this.chageCotizar();
-            }
+                        this.form.PrecioCotizacion = this.PreUni;
+                        this.chageCotizar();
+                    }
+
+                },preserveState: true })
         },
 
         RealizaCotizacion(data) {
@@ -1373,6 +1375,7 @@ export default {
                     }
             }
             this.params.Art = data.id;
+
             this.form.IdPre = this.PreciosRequisicion[0].id;
 
             this.form.Marca = this.PreciosRequisicion[0].Marca;
@@ -1384,7 +1387,7 @@ export default {
             this.form.Comentarios = this.PreciosRequisicion[0].Comentarios;
             this.form.Archivo = this.PreciosRequisicion[0].Archivo;
 
-            if(this.PreCount > 1){
+            if(this.NumCot >= 1){
                 this.form.IdPre2 = this.PreciosRequisicion[1].id;
                 this.form.Precio2 = this.PreciosRequisicion[1].Precio;
             }
@@ -1395,9 +1398,9 @@ export default {
         },
 
         ActualizaCotizacion(data){
-            data.metodo = 8;
+            data.metodo = 1;
             data._method = "PUT";
-
+            console.log(data);
             this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
                 onSuccess: () => {
                     this.reset(),
@@ -1408,7 +1411,7 @@ export default {
         },
 
         ConfirmaRequisicionCotizada(data, metodo){
-            data.metodo = 5;
+            data.metodo = 2;
             data._method = "PUT";
             this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
                 onSuccess: () => {

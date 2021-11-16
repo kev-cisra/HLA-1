@@ -109,11 +109,16 @@ class CotizacionesController extends Controller{
         }
 
         if($request->Req != ''){
+            $Req = Requisiciones::where('id', '=', $request->Req)->get();
             $ArticulosRequisiciones = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
             $PreciosRequisicion = PreciosCotizaciones::where('requisiciones_id', '=', $request->Req)->get();
+            //Obtengo el numero de cotizaciones realizadas para la requisicion
+            $NumCot = PreciosCotizaciones::where('NumCotizacion', '=', 2)->where('requisiciones_id', '=', $request->Req)->count();
         }else{
+            $Req = null;
             $ArticulosRequisiciones = null;
             $PreciosRequisicion = null;
+            $NumCot = 0;
         }
 
         if($request->Cot != ''){
@@ -143,6 +148,8 @@ class CotizacionesController extends Controller{
             'ArticulosRequisiciones',
             'PreciosCotizacion',
             'PreciosRequisicion',
+            'Req',
+            'NumCot',
             'Precios',
             'Proveedores',
             'Almacen',
@@ -229,84 +236,20 @@ class CotizacionesController extends Controller{
 
 
         switch($request->metodo){
-            case 0:{
+            //Actualizacion del precio del articulo de la requisicion
+            case 1: {
+
                 $Session = auth()->user();
 
-                if(isset($request->archivo)){
-
-                    Validator::make($request->all(), [
-                        'archivo' => 'required|mimes:jpg,png,jpeg,svg,pdf',
-                    ])->validate();
-
-                    $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
-
-                    //Guardado de Imagen en la carpeta Public/Storage.. (Uso del disco Public pora la restriccion de los archivos)
-                    $url = $request->archivo->storePubliclyAs('Archivos/Compras/Requisiciones/Cotizaciones',  $file, 'public');
-                }else{
-                    $url = 'Archivos/FileNotFound404.jpg';
-                }
-
-                PreciosCotizaciones::find($request->IdPre)->update([
-
-                    'IdUser' => $request->IdUser,
-                    'Precio' => $request->Precio,
-                    'Total' => $request->Total,
-                    'Moneda' => $request->Moneda,
-                    'TipoCambio' => $request->TipoCambio,
-                    'Marca' => $request->Marca,
-                    'Proveedor' => $request->Proveedor,
-                    'Comentarios' => $request->Comentarios,
-                    'Archivo ' => $url,
-                    'NombreProveedor' => $request->NombreProveedor
-                ]);
-
-                break;
-            }
-
-            case 5:{
-
-                ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->update([
-                    'EstatusArt' => 5,
-                ]);
-
-                Requisiciones::find($request->id)->update([
-                    'Estatus' => 5,
-                ]);
-
-                TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->id)->update([
-                    'Cotizado' => Carbon::now(),
-                ]);
-
-                break;
-            }
-
-            case 7:{
-
-                ArticulosRequisiciones::find($request->IdArt)->update([
-                    'Fechallegada' => $request->Fechallegada,
-                    'Comentariollegada' => $request->Comentariollegada,
-                    'EstatusArt' => 7,
-                ]);
-
-                TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->IdArt)->update([
-                    'Confirmado' => Carbon::now(),
-                ]);
-
-                break;
-            }
-
-            case 8: {
-                $Session = auth()->user();
-
-                if($request->Moneda == 'MXN'){
+                if($request->Moneda == 'MXN'){ //Verifico el tipo de moneda
                     $Total = $request->Precio * $request->Cantidad;
                 }else{
                     $Total1 = round($request->Precio * $request->TipoCambio, 2);
-                    $Total = $Total1 * $request->Cantidad;
+                    $Total = $Total1 * $request->Cantidad; //Calculo el total de acuerdo el tipo de cambio
                 }
 
                 if(isset($request->archivo)){
-
+                    //Verifico la existencia de un archivo subido
                     Validator::make($request->all(), [
                         'archivo' => 'required|mimes:jpg,png,jpeg,svg,pdf',
                     ])->validate();
@@ -315,11 +258,14 @@ class CotizacionesController extends Controller{
 
                     //Guardado de Imagen en la carpeta Public/Storage.. (Uso del disco Public pora la restriccion de los archivos)
                     $url = $request->archivo->storePubliclyAs('Archivos/Compras/Requisiciones/Cotizaciones',  $file, 'public');
+
                 }else{
+                    //Busco la url del archivo adjuntado anteriormente
                     $Precio = PreciosCotizaciones::find($request->IdPre)->first();
-                    $url = $Precio->Archivo;
+                    $url = $Precio->archivo;
                 }
 
+                //Actualizacion de datos
                 PreciosCotizaciones::find($request->IdPre)->update([
                     'IdUser' => $request->IdUser,
                     'Precio' => $request->Precio,
@@ -329,9 +275,10 @@ class CotizacionesController extends Controller{
                     'Marca' => $request->Marca,
                     'Proveedor' => $request->Proveedor,
                     'Comentarios' => $request->Comentarios,
-                    'Archivo ' => $url,
+                    'Archivo' => $url,
                 ]);
 
+                //Caluclo de segundo precio cotizado
                 if(isset($request->IdPre2) != ''){
 
                     if($request->Moneda == 'MXN'){
@@ -350,10 +297,42 @@ class CotizacionesController extends Controller{
                         'Marca' => $request->Marca,
                         'Proveedor' => $request->Proveedor,
                         'Comentarios' => $request->Comentarios,
-                        'Archivo ' => $url,
+                        'Archivo' => $url,
                     ]);
                 }
+                break;
+            }
 
+            //Envio de cotizacion a autorizacion
+            case 2:{
+                ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->update([
+                    'EstatusArt' => 5,
+                ]);
+
+                Requisiciones::find($request->id)->update([
+                    'Estatus' => 5,
+                ]);
+
+                TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->id)->update([
+                    'Cotizado' => Carbon::now(),
+                ]);
+
+                break;
+            }
+
+            //Agregar comentario de fecha de llegada
+            case 3:{
+                ArticulosRequisiciones::find($request->IdArt)->update([
+                    'Fechallegada' => $request->Fechallegada,
+                    'Comentariollegada' => $request->Comentariollegada,
+                    'EstatusArt' => 7,
+                ]);
+
+                TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->IdArt)->update([
+                    'Confirmado' => Carbon::now(),
+                ]);
+
+                break;
             }
         }
 
