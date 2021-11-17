@@ -805,7 +805,6 @@
                     <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Edita Precio Cotización # {{form.NumReq}}</h3>
                 </div>
             </div>
-
             <div class="tw-mt-4">
                 <div class="ModalForm">
                     <div class="tw-mb-6 md:tw-flex">
@@ -846,7 +845,7 @@
                             </template>
 
                             <template v-slot:TableFooter>
-                                <tr v-for="match in Pre" :key="match">
+                                <tr v-for="match in Precio" :key="match">
                                     <td class="tw-text-center">{{ match.Cantidad }}</td>
                                     <td class="tw-text-center">{{ match.Unidad }}</td>
                                     <td>{{ match.Descripcion }}</td>
@@ -854,7 +853,8 @@
                                 </tr>
                             </template>
                         </TableSky>
-                        <div v-if="PreCount > 1">
+
+                        <div v-if="NumCot > 0">
                             <TableSky>
                                 <template v-slot:TableHeader>
                                     <th>CANTIDAD</th>
@@ -864,7 +864,7 @@
                                 </template>
 
                                 <template v-slot:TableFooter>
-                                    <tr v-for="match in Pre" :key="match">
+                                    <tr v-for="match in Precio" :key="match">
                                         <td class="tw-text-center">{{ match.Cantidad }}</td>
                                         <td class="tw-text-center">{{ match.Unidad }}</td>
                                         <td>{{ match.Descripcion }}</td>
@@ -953,7 +953,7 @@ export default {
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             detalles: null,
             Cotizacion:{
-                Cot: null,
+                Cot: '',
             },
             form: {
                 IdUser: this.Session.id,
@@ -983,11 +983,11 @@ export default {
             },
             PreUni: [],
             params:{
-                month: null,
-                Estatus: null,
-                Proveedor: null,
-                Req: null,
-                Art: null,
+                month: '',
+                Estatus: '',
+                Proveedor: '',
+                Req: '',
+                Art: '',
             },
         };
     },
@@ -1020,7 +1020,8 @@ export default {
         PreciosRequisicion: Object,
         NumCot: Object,
         Req: Object,
-        Precios: Object,
+        Precio: Object,
+        PreCount: Number,
         Proveedores: Object,
         PerfilesUsuarios: Object,
         Almacen: Object,
@@ -1144,148 +1145,9 @@ export default {
                 }, preserveState: true})
         },
 
-        Cotizar(data, metodo){
-            this.chageClose();
-            this.reset();
-            this.editMode = false;
-            this.form.IdArt = data.id;
-            this.form.requisicion_id = data.requisicion_id;
-            this.form.NumReq = data.articulos_requisicion.NumReq;
-            this.form.Folio = data.articulos_requisicion.Folio;
-            this.form.Area = data.articulos_requisicion.requisicion_departamento.Nombre;
-            this.form.Nombre = data.articulos_requisicion.requisiciones_perfil.Nombre + " " + data.articulos_requisicion.requisiciones_perfil.ApPat + " " + data.articulos_requisicion.requisiciones_perfil.ApMat;
-            this.form.Observaciones = data.articulos_requisicion.Observaciones;
-
-            this.form.Cantidad = data.Cantidad;
-            this.form.Unidad = data.Unidad;
-            this.form.Descripcion = data.Descripcion;
-        },
-
-        ConfirmaCotizacion(data, metodo){
-            data.metodo = 5;
-            data._method = "PUT";
-            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
-                onSuccess: () => {
-                    this.alertSucces();
-                },
-            });
-        },
-
-        save(data) {
-            if(this.form.Moneda == 'MXN'){
-                this.form.Total = this.form.Cantidad * this.form.PrecioInteger;
-            }else if(this.form.Moneda == 'USD'){
-                var Conversion = Math.round(this.form.TipoCambio * this.form.PrecioInteger, 2);
-                this.form.TotalInteger = Conversion * this.form.Cantidad;
-                this.form.Total = this.formatoMexico(this.form.TotalInteger);
-            }
-            this.$inertia.post("/Compras/Cotizaciones", data, {
-                onSuccess: () => {
-                    location.reload();
-                    this.reset(),
-                    this.chageClose(),
-                    this.alertSucces();
-                },
-            });
-        },
-
-        edit: function (data) {
-            this.editMode = true;
-            this.form.IdArt = data.id;
-            this.form.requisicion_id = data.requisicion_id;
-            this.form.NumReq = data.articulos_requisicion.NumReq;
-            this.form.Folio = data.articulos_requisicion.Folio;
-            this.form.Area = data.articulos_requisicion.requisicion_departamento.Nombre;
-            this.form.Nombre = data.articulos_requisicion.requisiciones_perfil.Nombre + " " + data.articulos_requisicion.requisiciones_perfil.ApPat + " " + data.articulos_requisicion.requisiciones_perfil.ApMat;
-            this.form.Observaciones = data.articulos_requisicion.Observaciones;
-
-            this.form.Cantidad = data.Cantidad;
-            this.form.Unidad = data.Unidad;
-            this.form.Descripcion = data.Descripcion;
-
-            this.form.IdPre = data.articulo_precios[0].id;
-            this.form.Precio = data.articulo_precios[0].Precio;
-            this.form.Total = data.articulo_precios[0].Total;
-            this.form.Moneda = data.articulo_precios[0].Moneda;
-            this.form.TipoCambio = data.articulo_precios[0].TipoCambio;
-            this.form.Marca = data.articulo_precios[0].Marca;
-            this.form.Proveedor = data.articulo_precios[0].Proveedor;
-            this.form.archivo = data.articulo_precios[0].Archivo;
-            this.form.Comentarios = data.articulo_precios[0].Comentarios;
-            this.form.ImagenServidor = data.articulo_precios[0].Archivo;
-
-            this.form.PrecioInteger = this.form.Precio.replace(/[,.]/g,'');
-            this.chageClose();
-        },
-
-        update(data) {
-            data.metodo = 0;
-            data._method = "PUT";
-
-            if(this.form.Moneda == 'MXN'){
-                this.form.Total = this.form.Cantidad * this.form.PrecioInteger;
-            }else if(this.form.Moneda == 'USD'){
-                var Conversion = Math.round(this.form.TipoCambio * this.form.PrecioInteger, 2);
-                this.form.TotalInteger = Conversion * this.form.Cantidad;
-                this.form.Total = this.formatoMexico(this.form.TotalInteger);
-            }
-            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
-                onSuccess: () => {
-                this.reset(), this.chageClose(), this.alertSucces();
-                },
-            });
-        },
-
-        Detalle(data){
-            console.log(data);
-            this.chageDetalle();
-            this.reset();
-            this.editMode = false;
-            this.form.requisicion_id = data.requisicion_id;
-            this.form.IdArt = data.articulos_requisicion.id;
-            this.form.NumReq = data.articulos_requisicion.NumReq;
-            this.form.Folio = data.articulos_requisicion.Folio;
-            this.form.Area = data.articulos_requisicion.requisicion_departamento.Nombre;
-            this.form.Nombre = data.articulos_requisicion.requisiciones_perfil.Nombre + " " + data.articulos_requisicion.requisiciones_perfil.ApPat + " " + data.articulos_requisicion.requisiciones_perfil.ApMat;
-            this.form.Observaciones = data.articulos_requisicion.Observaciones;
-
-            this.form.Cantidad = data.Cantidad;
-            this.form.Unidad = data.Unidad;
-            this.form.Descripcion = data.Descripcion;
-
-            this.form.Precio = data.articulo_precios[0].Precio;
-            this.form.Total = data.articulo_precios[0].Total;
-            this.form.Marca = data.articulo_precios[0].Marca;
-            this.form.Proveedor = data.articulo_precios[0].Proveedor;
-            this.form.archivo = data.articulo_precios[0].Archivo;
-            this.form.Comentarios = data.articulo_precios[0].Comentarios;
-
-        },
-
-        Precios(data){
-            this.Cotizacion.Cot = data.id;
-            this.$inertia.get('/Compras/Cotizaciones', this.Cotizacion , { //envio de variables por url
-                onSuccess: () => {
-                    this.chagePrecios();
-            }, preserveState: true })
-        },
-
         CapturaFecha(data){
             this.chageFecha();
             this.form.IdArt = data.id;
-        },
-
-        Confirma(data, metodo){
-            data.metodo = 7;
-            data._method = "PUT";
-            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
-                onSuccess: () => {
-                    this.form.Fechallegada = null,
-                    this.form.Comentariollegada = null;
-                    this.chageFecha();
-                    this.alertSucces();
-                },
-            });
         },
 
         PrimerCotizacion(){
@@ -1358,14 +1220,10 @@ export default {
             });
         },
 
-        EditaCotizacion(data){
-            this.params.Req = data.id;
-            this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
-                onSuccess: () => {
-            }, preserveState: true })
-        },
-
         EditaPrecio(data){
+
+            this.params.Art = data.id;
+
             var query  = window.location.search.substring(1);
             var vars = query.split("&");
                 for (var i=0; i < vars.length; i++) {
@@ -1374,27 +1232,31 @@ export default {
                         this.params.Req = pair[1];
                     }
             }
-            this.params.Art = data.id;
 
-            this.form.IdPre = this.PreciosRequisicion[0].id;
+            this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
+                onSuccess: () => {
 
-            this.form.Marca = this.PreciosRequisicion[0].Marca;
-            this.form.Proveedor = this.PreciosRequisicion[0].Proveedor;
-            this.form.Precio = this.PreciosRequisicion[0].Precio;
+                    this.form.IdPre = this.PreciosRequisicion[0].id;
 
-            this.form.Moneda = this.PreciosRequisicion[0].Moneda;
-            this.form.TipoCambio = this.PreciosRequisicion[0].TipoCambio;
-            this.form.Comentarios = this.PreciosRequisicion[0].Comentarios;
-            this.form.Archivo = this.PreciosRequisicion[0].Archivo;
+                    this.form.Marca = this.PreciosRequisicion[0].Marca;
+                    this.form.Proveedor = this.PreciosRequisicion[0].Proveedor;
+                    this.form.Precio = this.Precio[0].articulo_precios[0].Precio;
 
-            if(this.NumCot >= 1){
-                this.form.IdPre2 = this.PreciosRequisicion[1].id;
-                this.form.Precio2 = this.PreciosRequisicion[1].Precio;
-            }
+                    this.form.Moneda = this.PreciosRequisicion[0].Moneda;
+                    this.form.TipoCambio = this.PreciosRequisicion[0].TipoCambio;
+                    this.form.Comentarios = this.PreciosRequisicion[0].Comentarios;
+                    this.form.Archivo = this.PreciosRequisicion[0].Archivo;
 
-            this.form.Cantidad = this.ArticulosRequisiciones[0].Cantidad;
-            this.form.NumReq = this.Req[0].NumReq;
-            this.chageEditarPre();
+                    if(this.NumCot >= 1){
+                        this.form.IdPre2 = this.PreciosRequisicion[1].id;
+                        this.form.Precio2 = this.Precio[0].articulo_precios[1].Precio;
+                    }
+
+                    this.form.Cantidad = this.ArticulosRequisiciones[0].Cantidad;
+                    this.form.NumReq = this.Req[0].NumReq;
+                    this.chageEditarPre();
+
+            }, preserveState: true })
         },
 
         ActualizaCotizacion(data){
