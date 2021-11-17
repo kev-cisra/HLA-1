@@ -3,10 +3,12 @@
 namespace App\Models\Produccion;
 
 use App\Models\Catalogos\Maquinas;
+use App\Models\obje_cordi;
 use App\Models\Produccion\catalogos\procesos;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
+use PhpParser\Builder\Function_;
 
 class maq_pro extends Model
 {
@@ -28,6 +30,14 @@ class maq_pro extends Model
         return $this->hasMany(parosCarga::class, 'maq_pro_id');
     }
 
+    public function carOpes(){
+        return $this->hasMany(carOpe::class, 'maq_pro_id');
+    }
+
+    public function obje_cordi(){
+        return $this->hasMany(obje_cordi::class, 'maq_pro_id');
+    }
+
     //relacion 1 a muchos inversas
     public function procesos() {
         return $this->belongsTo(procesos::class, 'proceso_id');
@@ -35,10 +45,6 @@ class maq_pro extends Model
 
     public function maquinas() {
         return $this->belongsTo(Maquinas::class, 'maquina_id');
-    }
-
-    public function carOpes(){
-        return $this->hasMany(carOpe::class, 'maq_pro_id');
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion;
 
+use App\Models\obje_cordi;
 use App\Models\Produccion\catalogos\claves;
 use App\Models\Produccion\catalogos\materiales;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
@@ -29,6 +30,10 @@ class dep_mat extends Model
 
     public function carNorm() {
         return $this->hasMany(carNorm::class, 'norma');
+    }
+
+    public function obje_cordi(){
+        return $this->hasMany(obje_cordi::class, 'norma');
     }
 
     // Relaciones inversas 1 a muchos

@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion\catalogos;
 
+use App\Models\obje_cordi;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
 use App\Models\Produccion\dep_mat;
@@ -23,6 +24,10 @@ class claves extends Model
 
     public function carNorms(){
         return $this->hasMany(carNorm::class, 'clave_id');
+    }
+
+    public function obje_cordi(){
+        return $this->hasMany(obje_cordi::class, 'clave_id');
     }
 
     //relacion 1 a muchos inversa

@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion\catalogos;
 
+use App\Models\obje_cordi;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carOpe;
 use App\Models\Produccion\formulas;
@@ -52,6 +53,10 @@ class procesos extends Model
 
     public function carOpes(){
         return $this->hasMany(carOpe::class, 'proceso_id');
+    }
+
+    public function obje_cordi() {
+        return $this->hasMany(obje_cordi::class, 'proceso_id');
     }
 
     //Relaciones 1 a muchos inversas

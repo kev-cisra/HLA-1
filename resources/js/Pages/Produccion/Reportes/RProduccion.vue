@@ -444,7 +444,7 @@
                 <button class="btn btn-outline-success" type="button" @click="updateCar(carga)">
                     Actualizar
                 </button>
-                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                <jet-CancelButton @click="changeCloseCar">Cerrar</jet-CancelButton>
             </div>
         </modal>
     </app-layout>

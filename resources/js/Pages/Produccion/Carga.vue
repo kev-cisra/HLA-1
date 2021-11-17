@@ -16,35 +16,52 @@
                 </select>
             </template>
             <template v-slot:BtnNuevo>
-                <!-- Paquete de personal -->
                 <div class="md:tw-flex tw-gap-3 tw-mr-10">
+                    <!-- BTN Paquete de Operador -->
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
-                        <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe" @click="resetCA()">Paquete de operativos</jet-button>
+                        <button class="btn tw-bg-teal-600 hover:tw-bg-teal-700 tw-text-white hover:tw-text-white tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe" @click="resetCA()">Paquete de operativos</button>
+                        <!-- <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe" @click="resetCA()">Paquete de operativos</jet-button> -->
                     </div>
+                    <!-- BTN Paquetes de Coordiandor -->
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
-                        <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Paquetes para coordinador</jet-button>
+                        <button class="btn btn-primary tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetCA()">Paquetes para coordinador</button>
+                        <!-- <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetCA()">Paquetes para coordinador</jet-button> -->
                     </div>
+                    <!-- BTN Paquetes de normas -->
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
-                        <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacNorma" aria-controls="pacNorma" @click="resetCA()">Paquete de Normas</jet-button>
+                        <button class="btn tw-bg-cyan-600 hover:tw-bg-cyan-700 tw-w-full tw-text-white hover:tw-text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacNorma" aria-controls="pacNorma" @click="resetCA()">Paquete de Normas</button>
+                        <!-- <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacNorma" aria-controls="pacNorma" @click="resetCA()">Paquete de Normas</jet-button> -->
                     </div>
+                    <!-- BTN Carga Objetivos -->
+                    <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
+                        <button class="btn btn-warning tw-w-full" data-bs-toggle="collapse" data-bs-target="#agObjec" aria-expanded="false" aria-controls="agObjec" @click="resetCA()">Carga de Objetivos</button>
+                        <!-- <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetCA()">Paquetes para coordinador</jet-button> -->
+                    </div>
+                    <!-- BTN Carga de produccion -->
                     <div>
-                        <jet-button class="BtnNuevo tw-w-full" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Cargar</jet-button>
+                        <button class="btn btn-success tw-w-full" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Carga de Produccion</button>
+                        <!-- <jet-button class="BtnNuevo tw-bg-green-600 tw-w-full" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Carga de Produccion</jet-button> -->
                     </div>
                 </div>
-
-
             </template>
         </Accions>
 
-        <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
-        <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl" id="agPer">
+        <!------------------------------------ Carga de objetivos -------------------------------------------------->
+        <div class="collapse m-5 tw-p-6 tw-bg-yellow-500 tw-rounded-3xl tw-shadow-xl" id="agObjec">
+            <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
+                a
+            </div>
+        </div>
+
+        <!------------------------------------ carga de datos de produccion ---------------------------------------->
+        <div class="collapse m-5 tw-p-6 tw-bg-green-700 tw-rounded-3xl tw-shadow-xl" id="agPer">
             <!-------------------------------------------- Paquetes ---------------------------------------------->
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full" v-if="noCor == 'lid' | noCor == 'ope'">
                 <!-- formulario -->
                 <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
                     <!-- select Paquetes de operadores -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Paquete de operadores</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Paquete de operadores</jet-label>
                         <Select2 v-model="paqOpera" class="InputSelect" :settings="{width: '100%'}" :options="opcPaOp" />
                         <!-- <select class="InputSelect" v-model="paqOpera">
                             <option value="" disabled>SELECCIONA</option>
@@ -53,7 +70,7 @@
                     </div>
                     <!-- select Paquetes de Normas partida y clave -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
                         <Select2 v-model="paqNorma" class="InputSelect" :settings="{width: '100%'}" :options="opcPaNo" />
                         <!-- <select class="InputSelect" v-model="paqNorma">
                             <option value="" disabled>SELECCIONA</option>
@@ -62,7 +79,7 @@
                     </div>
                     <!-- Input kilogramos -->
                     <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span> {{ uni_me }} </jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span> {{ uni_me }} </jet-label>
                         <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
                         <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
                     </div>
@@ -71,11 +88,11 @@
                 <!-- Notas -->
                 <div class="tw-mb-6 lg:tw-flex" v-if="form.notaPen == 2">
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
-                        <jet-label>Nota anterior</jet-label>
+                        <jet-label class="tw-text-white">Nota anterior</jet-label>
                         <jet-label v-html="nAnte"></jet-label>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Nota</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Nota</jet-label>
                         <textarea class="InputSelect" v-model="form.nota" maxlength="250" @input="(val) => (form.nota = form.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
                         <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
                     </div>
@@ -102,13 +119,13 @@
                 <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
                     <!-- Fecha -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Fecha</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Fecha</jet-label>
                         <input type="datetime-local" class="InputSelect" v-model="form.fecha" :max="hoy">
                         <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
                     </div>
                     <!-- Select proceso principal -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Proceso proncipal</jet-label>
                         <select class="InputSelect" v-model="proc_prin">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
@@ -117,7 +134,7 @@
                     </div>
                     <!-- select Sub proceso -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="opcSP">
-                        <jet-label><span class="required">*</span>Sub proceso </jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Sub proceso </jet-label>
                         <select class="InputSelect" v-model="form.proceso_id">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
@@ -126,7 +143,7 @@
                     </div>
                     <!-- select operador -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="(noCor != 'cor' & noCor != 'ope') | editMode">
-                        <jet-label><span class="required">*</span>Operador</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Operador</jet-label>
                         <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
@@ -138,7 +155,7 @@
                 <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & form.proceso_id != '') | editMode">
                     <!-- select turno -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Turnos</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Turnos</jet-label>
                         <select class="InputSelect" v-model="form.turno_id">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="tu in opcTur" :key="tu.value" :value="tu.value">{{tu.text}}</option>
@@ -147,7 +164,7 @@
                     </div>
                     <!-- select equipo -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Equipo</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Equipo</jet-label>
                         <select class="InputSelect" v-model="form.equipo_id">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="eq in opcEqu" :key="eq.value" :value="eq.value">{{eq.text}}</option>
@@ -156,7 +173,7 @@
                     </div>
                     <!-- select Maquinas -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Maquinas</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
                         <select class="InputSelect" v-model="form.maq_pro_id">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
@@ -165,7 +182,7 @@
                     </div>
                     <!-- select Paquetes de Normas partida y clave -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
                         <Select2 v-model="paqNorma" class="InputSelect" :options="opcPaNo"  :settings="{width: '100%'}"/>
                         <!-- <select class="InputSelect" v-model="paqNorma">
                             <option value="" disabled>SELECCIONA</option>
@@ -174,7 +191,7 @@
                     </div>
                     <!-- Input kilogramos -->
                     <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>{{ uni_me }}</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>{{ uni_me }}</jet-label>
                         <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor"></jet-input>
                         <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
                     </div>
@@ -182,11 +199,11 @@
                 <!-- Notas -->
                 <div class="tw-mb-6 lg:tw-flex" v-if="form.notaPen == 2">
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
-                        <jet-label>Nota anterior</jet-label>
+                        <jet-label class="tw-text-white">Nota anterior</jet-label>
                         <jet-label v-html="nAnte"></jet-label>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Nota</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Nota</jet-label>
                         <textarea class="InputSelect" v-model="form.nota" maxlength="250" @input="(val) => (form.nota = form.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
                         <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
                     </div>
@@ -211,7 +228,7 @@
         </div>
 
         <!------------------------------------ Data table de carga ------------------------------------------------------->
-        <div class="tw-overflow-x-auto tw-mx-2">
+        <div class="table-responsive" >
             <Table id="t_carg">
                 <template v-slot:TableHeader>
                     <th class="columna">Fecha</th>
@@ -283,8 +300,8 @@
 
         <!------------------------------------- Carga de paquetes de operativos ------------------------------------------>
         <div class="offcanvas offcanvas-start sm:tw-w-9/12 lg:tw-w-6/12" tabindex="-1" id="pacOpe" aria-labelledby="pacOpeLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="pacOpeLabel">Paquetes de Operativos</h5>
+            <div class="offcanvas-header tw-bg-teal-700">
+                <h3 class="offcanvas-title tw-text-xl tw-text-blueGray-50" id="pacOpeLabel">Paquetes de Operativos</h3>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <!-------------------------------- formularia y tabla ------------------------------------------------------->
@@ -386,18 +403,16 @@
 
         <!------------------------------------- Carga de paquetes Norma, Claves y partida -------------------------------->
         <div class="offcanvas offcanvas-end sm:tw-w-9/12 lg:tw-w-6/12" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="pacNormaLabel">Paquetes para Normas, Claves y Partidas</h5>
+            <div class="offcanvas-header tw-bg-cyan-700">
+                <h3 class="offcanvas-title tw-text-xl tw-text-blueGray-50" id="pacNormaLabel">Paquetes para Normas, Claves y Partidas</h3>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <!-------------------------------- formularia y tabla ------------------------------------------------------->
             <div class="offcanvas-body">
                 <!---------------------------- Formulario de paquete para normas, claves y partida ---------------------->
                 <div class="m-5 tw-p-6 tw-bg-cyan-600 tw-rounded-3xl tw-shadow-xl">
-
                     <!-- Proceso proncipal, sub procesos, operador -->
                     <div class="tw-mb-6 lg:tw-flex">
-
                         <!-- Select Normas -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                             <jet-label><span class="required">*</span>Norma</jet-label>
@@ -475,13 +490,83 @@
         </div>
 
         <!------------------------------------- Carga de paquetes para el coordinador -------------------------------->
-        <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
+        <div class="offcanvas offcanvas-bottom tw-h-3/4" tabindex="-1" id="paqCor" aria-labelledby="paqCorLabel">
+            <div class="offcanvas-header tw-bg-blue-700">
+                <h3 class="offcanvas-title tw-text-xl tw-text-blueGray-50" id="offcanvasBottomLabel">Paquetes para coordinador</h3>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body small">
-                ...
+                <!----------------------------- Formulario para coordinador ------------------------------------------->
+                <div class="m-5 tw-p-6 tw-bg-blue-600 tw-rounded-3xl tw-shadow-xl">
+                    <div class="tw-mb-6 lg:tw-flex">
+                        <!-- Select proceso principal -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Proceso proncipal</jet-label>
+                            <select class="InputSelect" v-model="proc_prin">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
+                            </select>
+                            <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
+                        </div>
+                        <!-- select Sub proceso -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0" v-if="opcSP">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Sub proceso </jet-label>
+                            <select class="InputSelect" v-model="form.proceso_id">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
+                            </select>
+                            <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
+                        </div>
+                        <!-- select Maquinas -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
+                            <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
+                            </select>
+                            <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                        </div>
+                        <!-- Select Normas -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Norma</jet-label>
+                            <select class="InputSelect" v-model="form.norma" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
+                            </select>
+                            <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
+                        </div>
+                        <!-- select Clave -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Clave</jet-label>
+                            <!-- <Select2 v-model="form.clave_id" class="InputSelect" :options="opcCL"  :settings="{width: '100%'}"/> -->
+                            <select class="InputSelect" v-model="form.clave_id">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
+                            </select>
+                            <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
+                        </div>
+                        <!-- input produccion -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Produccion por hora</jet-label>
+                            <jet-input type="number" v-model="form.pro_hora"></jet-input>
+                            <small v-if="errors.pro_hora" class="validation-alert">{{errors.pro_hora}}</small>
+                        </div>
+                    </div>
+                    <!-- Botones -->
+                    <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+                        <div v-show="btnOff">
+                            <button type="button" class="btn btn-success" @click="savePObje(form)">Guardar</button>
+                            <!-- <jet-button type="button" @click="savePObje(form)">Guardar</jet-button> -->
+                        </div>
+
+                        <div v-show="!btnOff">
+                            <button type="button" class="btn btn-success tw-mx-auto" disabled>
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                Calculando...
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </app-layout>
@@ -557,6 +642,7 @@
                     id: null,
                     fecha: null,
                     semana: null,
+                    departamento_id: this.S_Area,
                     usu: this.usuario.id,
                     per_carga: this.usuario.id,
                     proceso_id: '',
@@ -571,6 +657,7 @@
                     notaPen: 1,
                     nota: '',
                     agNot: 0,
+                    pro_hora: null
                 }
             }
         },
@@ -814,6 +901,7 @@
                 this.form.notaPen = 1;
                 this.form.nota = '';
                 this.form.usu = this.usuario.id;
+                this.form.pro_hora = null;
 
                 if (this.usuario.dep_pers.length != 0) {
                     this.usuario.dep_pers.forEach(v => {
@@ -957,6 +1045,13 @@
                 $('#t_carg').DataTable().destroy();
                 this.$inertia.put('/Produccion/Nota/' + data.id, data, {
                     onSuccess: () => {this.reCarga(), this.resetCA(), this.tabla(), this.alertSucces()}, onError: () => {this.tabla()},
+                });
+            },
+            /****************************** Carga de paquetes para objetivos *******************************/
+            savePObje(form){
+                //this.btnOff = false;
+                this.$inertia.post('/Produccion/ObjeCordi', form, {
+                    onSuccess: (v) => { this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.btnOff = true}, preserveState: true
                 });
             }
         },
