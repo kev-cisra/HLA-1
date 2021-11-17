@@ -13,6 +13,7 @@ use App\Http\Controllers\Produccion\EquiposController;
 use App\Http\Controllers\Produccion\MaquinasController;
 use App\Http\Controllers\Produccion\MaterialesController;
 use App\Http\Controllers\Produccion\notascargaController;
+use App\Http\Controllers\Produccion\ObjeCordiController;
 use App\Http\Controllers\Produccion\ParosController;
 use App\Http\Controllers\Produccion\PersonalController;
 use App\Http\Controllers\Produccion\ProcesosController;
@@ -81,4 +82,7 @@ Route::resource('ReportesPro', RepoProController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('CargaExcel', CargarExcelController::class)
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::resource('ObjeCordi', ObjeCordiController::class)
     ->middleware(['auth:sanctum', 'verified']);

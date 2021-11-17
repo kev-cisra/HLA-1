@@ -10,6 +10,119 @@
             </slot>
         </Header>
 
+        <div class="tw-overflow-auto md:tw-flex md:tw-justify-center">
+            <div class="tw-flex tw-items-center tw-mt-2 tw-text-center tw-text-white tw-border">
+                <div class="tw-m-3" @click="FiltroPorMes(1)">
+                    <button class="EneroActivo" v-if="mes == 1">
+                        <span class="mx-auto">Enero</span>
+                    </button>
+                    <button class="Enero" v-else>
+                        <span class="mx-auto">Enero</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(2)">
+                    <button class="FebreroActivo" v-if="mes == 2">
+                        <span class="mx-auto">Febrero</span>
+                    </button>
+                    <button class="Febrero" v-else>
+                        <span class="mx-auto">Febrero</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(3)">
+                    <button class="MarzoActivo" v-if="mes == 3">
+                        <span class="mx-auto">Marzo</span>
+                    </button>
+                    <button class="Marzo" v-else>
+                        <span class="mx-auto">Marzo</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(4)">
+                    <button class="AbrilActivo" v-if="mes == 4">
+                        <span class="mx-auto">Abril</span>
+                    </button>
+                    <button class="Abril" v-else>
+                        <span class="mx-auto">Abril</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(5)">
+                    <button class="MayoActivo" v-if="mes == 5">
+                        <span class="mx-auto">Mayo</span>
+                    </button>
+                    <button class="Mayo" v-else>
+                        <span class="mx-auto">Mayo</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(6)">
+                    <button class="JunioActivo" v-if="mes == 6">
+                        <span class="mx-auto">Junio</span>
+                    </button>
+                    <button class="Junio" v-else>
+                        <span class="mx-auto">Junio</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(7)">
+                    <button class="JulioActivo" v-if="mes == 7">
+                        <span class="mx-auto">Julio</span>
+                    </button>
+                    <button class="Julio" v-else>
+                        <span class="mx-auto">Julio</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(8)">
+                    <button class="AgostoActivo" v-if="mes == 8">
+                        <span class="mx-auto">Agosto</span>
+                    </button>
+                    <button class="Agosto" v-else>
+                        <span class="mx-auto">Agosto</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(9)">
+                    <button class="SeptiembreActivo" v-if="mes == 9">
+                        <span class="mx-auto">Septiembre</span>
+                    </button>
+                    <button class="Septiembre" v-else>
+                        <span class="mx-auto">Septiembre</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(10)">
+                    <button class="OctubreActivo" v-if="mes == 10">
+                        <span class="mx-auto">Octubre</span>
+                    </button>
+                    <button class="Octubre" v-else>
+                        <span class="mx-auto">Octubre</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(11)">
+                    <button class="NoviembreActivo" v-if="mes == 11">
+                        <span class="mx-auto">Noviembre</span>
+                    </button>
+                    <button class="Noviembre" v-else>
+                        <span class="mx-auto">Noviembre</span>
+                    </button>
+                </div>
+
+                <div class="tw-m-3" @click="FiltroPorMes(12)">
+                    <button class="DiciembreActivo" v-if="mes == 12">
+                        <span class="mx-auto">Diciembre</span>
+                    </button>
+                    <button class="Diciembre" v-else>
+                        <span class="mx-auto">Diciembre</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
         <div class="tw-mt-8">
             <div class="tw-overflow-x-auto tw-mx-2">
                 <Table id="Papeleria">
@@ -86,7 +199,6 @@
             <h4 class="tw-bg-teal-500 tw-p-2 tw-rounded-full tw-mx-48 tw-text-center tw-shadow tw-text-white tw-font-extrabold">Concentrado de Papeleria del mes</h4>
         </div>
 
-
         <div class="tw-p-4 tw-mt-8 tw-mx-24">
             <Table id="Concentrado">
                 <template v-slot:TableHeader>
@@ -156,6 +268,9 @@ export default {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
             },
+            params:{
+                month: '',
+            },
         };
     },
 
@@ -180,6 +295,7 @@ export default {
         Material: Object,
         Papeleria: Object,
         Solicitud: Object,
+        mes: String,
     },
 
     methods: {
@@ -386,6 +502,17 @@ export default {
         verTablaReporte(event) {
             $("#Concentrado").DataTable().destroy();
                 this.$inertia.get("/Compras/Papeleria", { busca: event.target.value },{ onSuccess: () => { this.tablaReporte(); },});
+        },
+
+        FiltroPorMes(value){
+            //Filtro para consultar por mes
+            this.params.month = value;
+            $('#Papeleria').DataTable().clear(); //limpio
+            $('#Papeleria').DataTable().destroy(); //destruyo tabla
+            this.$inertia.get('/Compras/Papeleria', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    this.tabla() //regeneracion de tabla
+                }, preserveState: true})
         },
 
         Confirma(data, metodo) {

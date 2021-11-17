@@ -17,11 +17,12 @@ use Illuminate\Support\Facades\DB;
 
 class SolicitudesPapeleriaController extends Controller{
 
-    public function index(){
+    public function index(Request $request){
 
         $hoy = Carbon::now();
 
-        $mes = $hoy->format('n');
+        $request->month == '' ? $mes = $hoy->format('n') : $mes = $request->month;
+        $anio = 2021;
 
         $Session = auth()->user();
 
@@ -42,9 +43,10 @@ class SolicitudesPapeleriaController extends Controller{
                 $Art->select('id', 'IdUser', 'Nombre');
             },
         ])
+        ->whereMonth('created_at', $mes)
         ->where('Estatus', '>', 0)
         ->orderBy('id', 'desc')
-        ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
+        ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus', 'created_at']);
 
         $Solicitud = (DB::select("
         SELECT M.Unidad, M.Nombre, SUM(A.Cantidad) AS Total FROM articulos_papeleria_requisicions AS A
@@ -55,7 +57,7 @@ class SolicitudesPapeleriaController extends Controller{
         GROUP BY M.Unidad, M.Nombre"));
 
 
-        return Inertia::render('Compras/Papeleria/SolicitudPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria', 'Solicitud'));
+        return Inertia::render('Compras/Papeleria/SolicitudPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria', 'Solicitud', 'mes'));
     }
 
     public function store(Request $request){
