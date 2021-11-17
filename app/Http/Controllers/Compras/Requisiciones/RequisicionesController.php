@@ -51,7 +51,7 @@ class RequisicionesController extends Controller{
             $Rol = "SINROLASIGNADO";
         }
 
-        if($Rol != 'ONEPIECE' && $Rol != 'Administrador'){ //Vista de requisiciones por IdeMP
+        if($Rol != 'ONEPIECE' && $Rol != 'Administrador'){ //Vista de requisiciones por IdEmp
             //Consulta para obtener el id de Jefe de acuerdo al numero de empleado del trabajador
             $ObtenJefe = JefesArea::where('IdEmp', '=', $SessionIdEmp)->first('id','IdEmp');
 
@@ -97,6 +97,8 @@ class RequisicionesController extends Controller{
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                     },
                     ])
+                    ->groupBy('Estatus')
+                    // ->orderBy('id', 'desc')
                     ->whereYear('Fecha', $anio)
                     ->where('IdEmp', '=', $Session->IdEmp)
                     ->whereMonth('Fecha', $mes)
@@ -164,6 +166,8 @@ class RequisicionesController extends Controller{
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                     },
                     ])
+                    // ->groupBy('Estatus')
+                    ->orderBy('NumReq', 'desc')
                     ->whereYear('Fecha', $anio)
                     ->whereMonth('Fecha', $mes)
                     ->get();
@@ -194,6 +198,8 @@ class RequisicionesController extends Controller{
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                     },
                     ])
+                    // ->groupBy('Estatus')
+                    // ->orderBy('NumReq', 'desc')
                     ->whereYear('Fecha', $anio)
                     ->where('Estatus', $request->Estatus)
                     ->get();

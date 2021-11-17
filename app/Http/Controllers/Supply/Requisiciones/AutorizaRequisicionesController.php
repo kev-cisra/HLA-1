@@ -165,8 +165,19 @@ class AutorizaRequisicionesController extends Controller{
         switch ($request->action){
             //Caso de autorizacion de precios de cotizacion 1
             case 1:
+
+                //Genracion de Orden de Compra
+                $MaxOrdenCompra = Requisiciones::max('OrdenCompra');
+
+                if($MaxOrdenCompra >= 1000){
+                    $OrdenCompra = $MaxOrdenCompra + 1;
+                }else{
+                    $OrdenCompra = 1000;
+                }
+
                 Requisiciones::where('id', '=', $request->requisicion_id)->update([
                     'Estatus' => 6,
+                    'OrdenCompra' => $OrdenCompra,
                 ]);
 
                 ArticulosRequisiciones::where('requisicion_id', '=', $request->requisicion_id)->update([
@@ -191,9 +202,19 @@ class AutorizaRequisicionesController extends Controller{
                 break;
             // Caso de mas de una cotizacion, Se autoriza la segunda cotizacion
             case 2:
+                //Genracion de Orden de Compra
+                $MaxOrdenCompra = Requisiciones::max('OrdenCompra');
+
+                if($MaxOrdenCompra >= 1000){
+                    $OrdenCompra = $MaxOrdenCompra + 1;
+                }else{
+                    $OrdenCompra = 1000;
+                }
+
                 //Actulizaciones de Estatus
                 Requisiciones::where('id', '=', $request->requisicion_id)->update([
                     'Estatus' => 6,
+                    'OrdenCompra' => $OrdenCompra,
                 ]);
 
                 ArticulosRequisiciones::where('requisicion_id', '=', $request->requisicion_id)->update([

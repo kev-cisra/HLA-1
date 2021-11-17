@@ -222,6 +222,7 @@
                         <th class="columna">TIPO COMPRA</th>
                         <th class="columna">OBSERVACIONES</th>
                         <th class="columna">SOLICITANTE</th>
+                        <th class="columna">O.C</th>
                         <th class="columna">ESTATUS</th>
                         <th class="columna">ACCIONES</th>
                     </template>
@@ -238,6 +239,7 @@
                             <td class="tw-text-center">{{ datos.TipCompra }}</td>
                             <td>{{ datos.Observaciones }}</td>
                             <td class="tw-text-center">{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                            <td>{{ datos.OrdenCompra }}</td>
                             <td>
                                 <div v-if="datos.Estatus == 2">
                                     <span tooltip="REQUSICIÓN SOLICITADA" flow="left">
@@ -281,7 +283,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="columnaIconos" v-if="datos.Estatus == 3">
+                                <div class="columnaIconos">
                                     <div class="iconoDetails" @click="Partidas(datos)">
                                         <span tooltip="Visualiza Partidas" flow="left">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
@@ -290,29 +292,14 @@
                                             </svg>
                                         </span>
                                     </div>
-                                    <div class="iconoPurple" @click="CotizarReq(datos)">
+                                    <div class="iconoPurple" @click="CotizarReq(datos)" v-if="datos.Estatus == 3 || datos.Estatus == 4">
                                         <span tooltip="Realizar Cotizacion" flow="left">
                                             <i class="fas fa-file-invoice-dollar"></i>
                                         </span>
                                     </div>
-                                </div>
-                                <div class="columnaIconos" v-if="datos.Estatus == 4">
-                                    <div class="iconoDetails" @click="Partidas(datos)">
-                                        <span tooltip="Visualiza Partidas" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                    <div class="iconoEdit" @click="ConfirmaRequisicionCotizada(datos, 5)">
+                                    <div class="iconoEdit" @click="ConfirmaRequisicionCotizada(datos, 5)" v-if="datos.Estatus == 4">
                                         <span tooltip="Enviar Cotizacion para Autorización" flow="left">
                                             <i class="fas fa-check-circle"></i>
-                                        </span>
-                                    </div>
-                                    <div class="iconoPurple" @click="CotizarReq(datos, 4)">
-                                        <span tooltip="Realizar Otra Cotizacion" flow="left">
-                                            <i class="fas fa-file-invoice-dollar"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -1066,6 +1053,7 @@ export default {
             this.$nextTick(() => {
                 $("#Requisiciones").DataTable({
                 language: this.español,
+                pageLength: 25,
                 });
             });
         },

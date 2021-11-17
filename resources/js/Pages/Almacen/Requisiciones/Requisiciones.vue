@@ -211,8 +211,9 @@
                         <th class="columna">TIPO COMPRA</th>
                         <th class="columna">OBSERVACIONES</th>
                         <th class="columna">SOLICITANTE</th>
+                        <th class="columna">O.C</th>
                         <th class="columna">ESTATUS</th>
-                        <th class="columna">PARTIDAS</th>
+                        <th class="columna">ACCIONES</th>
                     </template>
 
                     <template v-slot:TableFooter>
@@ -227,13 +228,14 @@
                             <td class="tw-text-center">{{ datos.TipCompra }}</td>
                             <td>{{ datos.Observaciones }}</td>
                             <td class="tw-text-center">{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                            <td class="tw-text-center">{{ datos.OrdenCompra }}</td>
                             <td>
                                 <div v-if="datos.Estatus == 2">
                                     <span tooltip="REQUSICIÓN SOLICITADA" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
                                     </span>
                                 </div>
-                                <div v-else-if="datos.Estatus == 3 || datos.EstaEstatustusArt == 4">
+                                <div v-else-if="datos.Estatus == 3 || datos.Estatus == 4">
                                     <span tooltip="REQUSICIÓN EN ESPERA DE COTIZACIÓN" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">EN COTIZACION</span>
                                     </span>

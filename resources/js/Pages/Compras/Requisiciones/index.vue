@@ -300,7 +300,7 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoPurple" @click="ConfirmaRequicision(datos, 2)">
+                                <div class="iconoPurple" @click="ConfirmaRequicision(datos, 2)" v-if="datos.Estatus == 1">
                                     <span tooltip="Confirmar Requisición" flow="left">
                                         <i class="fas fa-check-circle"></i>
                                     </span>
@@ -398,7 +398,7 @@
                         <div class="tw-mb-6 md:tw-flex" v-for="(form) in form.Partida" :key="form.id">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>CANTIDAD</jet-label>
-                                <jet-input type="number" v-model="form.Cantidad"></jet-input>
+                                <jet-input type="number" min="0" v-model="form.Cantidad"></jet-input>
                                 <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
@@ -627,7 +627,7 @@
 
             <div class="ModalFooter">
                 <jet-button type="button" @click="save(form)" v-show="!editMode2">Confirmar Requisición</jet-button>
-                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                <jet-CancelButton @click="chagePartidas">Cerrar</jet-CancelButton>
             </div>
         </form>
     </modal>
@@ -830,6 +830,7 @@ export default {
         this.$nextTick(() => {
             $("#Requisicion").DataTable({
                         "language": this.español,
+                        pageLength: 25,
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",

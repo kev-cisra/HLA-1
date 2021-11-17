@@ -229,7 +229,7 @@
             <div class="tw-overflow-x-auto tw-mx-2">
                 <Table id="Requisiciones">
                     <template v-slot:TableHeader>
-                        <th class="columna">NUM</th>
+                        <th class="columna"># REQ</th>
                         <th class="columna">FECHA</th>
                         <th class="columna">DEPARTAMENTO</th>
                         <th class="columna">JEFE AREA</th>
@@ -239,8 +239,9 @@
                         <th class="columna">TIPO COMPRA</th>
                         <th class="columna">OBSERVACIONES</th>
                         <th class="columna">SOLICITANTE</th>
+                        <th class="columna">O.C</th>
                         <th class="columna">ESTATUS</th>
-                        <th class="columna">PARTIDAS</th>
+                        <th class="columna">ACCIONES</th>
                     </template>
 
                     <template v-slot:TableFooter>
@@ -255,6 +256,7 @@
                             <td class="tw-text-center">{{ datos.TipCompra }}</td>
                             <td>{{ datos.Observaciones }}</td>
                             <td class="tw-text-center">{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                            <td>{{ datos.OrdenCompra }}</td>
                             <td>
                                 <div v-if="datos.Estatus == 2">
                                     <span tooltip="REQUSICIÓN SOLICITADA" flow="left">
@@ -636,9 +638,19 @@ import Modal from "@/Jetstream/Modal";
 import Pagination from "@/Components/pagination";
 import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
-//imports de datatables
-import datatable from "datatables.net-bs5";
-import $ from "jquery";
+ //datatable
+import datatable from 'datatables.net-bs5';
+require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
+require( 'datatables.net-buttons/js/buttons.html5' );
+require ( 'datatables.net-buttons/js/buttons.colVis' );
+import print from 'datatables.net-buttons/js/buttons.print';
+import jszip from 'jszip/dist/jszip';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import $ from 'jquery';
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+window.JSZip = jszip
 //Moment Js
 import moment from 'moment';
 import 'moment/locale/es';
@@ -760,9 +772,27 @@ export default {
         tabla() {
             this.$nextTick(() => {
                 $("#Requisiciones").DataTable({
-                language: this.español,
-                pageLength: 50,
-                bLengthChange: false,
+                    "language": this.español,
+                    pageLength: 50,
+                    bLengthChange: false,
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
                 });
             });
         },
