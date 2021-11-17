@@ -298,15 +298,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="columnaIconos" v-if="datos.Estatus == 5">
-                                    <div class="iconoDetails" @click="Partidas(datos)">
-                                        <span tooltip="Visualiza Partidas" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </span>
-                                    </div>
+                                <div class="columnaIconos" v-if="datos.Estatus > 4">
                                     <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
                                         <span tooltip="Visualiza Cotizacion" flow="left">
                                             <i class="fas fa-file-invoice-dollar"></i>
@@ -548,6 +540,7 @@
                         <th class="columna">TIPO MONEDA</th>
                         <th class="columna">TIPO CAMBIO</th>
                         <th class="columna">TOTAL</th>
+                        <th class="columna">ESTATUS</th>
                         <th class="columna">ARCHIVO</th>
                     </template>
 
@@ -592,6 +585,20 @@
                                 </tr>
                             </td>
                             <td>
+                                <tr class="tw-text-center" v-for="Pre in datos.articulo_precios" :key="Pre">
+                                    <div class="columnaIconos" v-if="Pre.Autorizado == 1">
+                                        <span tooltip="Precio no Autorizado" flow="left">
+                                            <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-text-white tw-bg-red-400 tw-rounded-full">No Autorizado</span>
+                                        </span>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="Pre.Autorizado == 2">
+                                        <span tooltip="Precio Autorizado" flow="left">
+                                            <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-text-white tw-bg-green-400 tw-rounded-full">Autorizado</span>
+                                        </span>
+                                    </div>
+                                </tr>
+                            </td>
+                            <td>
                                 <tr class="tw-p-1" v-for="Pre in datos.articulo_precios" :key="Pre">
                                     <a target="_blank" :href="path + Pre.Archivo" style="color:black;">
                                         <i class="far fa-file-image"></i>
@@ -604,9 +611,12 @@
             </div>
         </div>
 
-        <div class="ModalFooter">
-            <jet-button type="button" @click="AutorizaCotizacion(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza Cotizacion</jet-button>
-            <jet-button type="button" @click="AutorizaCotizacion2(form)" v-if="NumCotizaciones == 2" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 2° Cotizacion</jet-button>
+        <div class="ModalFooter" v-if="ArticulosPrecios[0].EstatusArt < 6">
+            <jet-button type="button" @click="AutorizaCotizacion(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 1° Cotizacion</jet-button>
+            <jet-button type="button" @click="AutorizaCotizacion2(form)" v-if="NumCot > 0" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 2° Cotizacion</jet-button>
+            <jet-CancelButton @click="chagePreciosRequisicion">Cerrar</jet-CancelButton>
+        </div>
+        <div class="ModalFooter" v-else>
             <jet-CancelButton @click="chagePreciosRequisicion">Cerrar</jet-CancelButton>
         </div>
     </modal>
@@ -709,6 +719,7 @@ export default {
         Confirmar: Object,
         PendientesMes: Object,
         CotizacionMes: Object,
+        NumCot: Number,
         mes: Object,
     },
 
@@ -1000,6 +1011,7 @@ export default {
             this.form.action = 1;
             this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
                 onSuccess: () => {
+                    this.chagePreciosRequisicion();
                     this.alertSucces();
                 },
             });
@@ -1010,11 +1022,11 @@ export default {
             this.form.action = 2;
             this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
                 onSuccess: () => {
+                    this.chagePreciosRequisicion();
                     this.alertSucces();
                 },
             });
         },
-
     },
 };
 </script>

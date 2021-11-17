@@ -181,13 +181,23 @@ class CotizacionesController extends Controller{
             //con el sistema ya en produccion por lo cual se tuvo que dejar asi debido a como se trabajaba antiguamente el sistema)
             foreach ($request->PrecioCotizacion as $value) {
 
-                if($request->Moneda == 'MXN'){
-                    $Total = $value['PrecioUnitario'] * $value['Cantidad'];
+                if($request->Moneda == 'MXN'){ //Obtengo el tipo de moneda
+                    $Total = $value['PrecioUnitario'] * $value['Cantidad']; //Calculo el total
                 }else{
-                    $Total1 = round($value['PrecioUnitario'] * $request->TipoCambio, 2);
-                    $Total = $Total1 * $value['Cantidad'];
+                    $Total1 = round($value['PrecioUnitario'] * $request->TipoCambio, 2); //Calculo el total del Precio Unitario
+                    $Total = $Total1 * $value['Cantidad']; //Calculo el otal del la cotizacion
                 }
 
+                //Obtengo el numero de cotizaciones guardadas para esa requisicion
+                $NumCotizaciones = PreciosCotizaciones::where('articulos_requisiciones_id', '=', $value['IdArt'])
+                    ->where('NumCotizacion', '=', 1)
+                    ->count();
+
+                if($NumCotizaciones == 0){ //Asigno el numero de cotizacion correspondiente
+                    $NumCot = 1;
+                }else{
+                    $NumCot = 2;
+                }
 
                 $Cotizacion = PreciosCotizaciones::create([
                     'IdUser' => $request->IdUser,
@@ -201,26 +211,15 @@ class CotizacionesController extends Controller{
                     'Archivo' => $url,
                     'articulos_requisiciones_id' => $value['IdArt'],
                     'requisiciones_id' => $value['requisicion_id'],
+                    'NumCotizacion' => $NumCot,
                 ]);
-
+                //Actualizo el estatus de la requisicion
                 Requisiciones::where('id', '=', $value['requisicion_id'])->update([
                     'Estatus' => 4,
                 ]);
-
+                //Actuyalizo el estatus de los articulos de la requisicion
                 ArticulosRequisiciones::where('id', '=', $value['IdArt'])->update([
                     'EstatusArt' => 4,
-                ]);
-            }
-
-            $NumCotizaciones = PreciosCotizaciones::where('requisiciones_id', '=', $value['requisicion_id'])->count();
-
-            if($NumCotizaciones == 1){
-                PreciosCotizaciones::find($Cotizacion->id)->update([
-                    'NumCotizacion' => 1,
-                ]);
-            }else{
-                PreciosCotizaciones::find($Cotizacion->id)->update([
-                    'NumCotizacion' => $NumCotizaciones,
                 ]);
             }
 

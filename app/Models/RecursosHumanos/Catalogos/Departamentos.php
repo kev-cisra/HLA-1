@@ -3,6 +3,7 @@
 namespace App\Models\RecursosHumanos\Catalogos;
 
 use App\Models\Catalogos\Maquinas;
+use App\Models\obje_cordi;
 use App\Models\Produccion\carNorm;
 use App\Models\Produccion\carOpe;
 use App\Models\Produccion\catalogos\procesos;
@@ -52,6 +53,10 @@ class Departamentos extends Model
 
     public function carNorm() {
         return $this->hasMany(carNorm::class);
+    }
+
+    public function obje_cordi(){
+        return $this->hasMany(obje_cordi::class);
     }
 
     // Relaciones recursiva

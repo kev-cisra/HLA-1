@@ -12,10 +12,15 @@ use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class RequisicionPapeleriaController extends Controller{
 
-    public function index(){
+    public function index(Request $request){
+
+        $hoy = Carbon::now();
+        $request->month == '' ? $mes = $hoy->format('n') : $mes = $request->month;
+        $anio = 2021;
 
         $Session = auth()->user();
         $IdEmp = $Session->id;
@@ -38,10 +43,11 @@ class RequisicionPapeleriaController extends Controller{
             },
         ])
         ->where('IdEmp', '=', $Session->IdEmp)
+        ->whereMonth('created_at', $mes)
         ->orderBy('id', 'desc')
         ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
 
-        return Inertia::render('Compras/Papeleria/RequisicionPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria'));
+        return Inertia::render('Compras/Papeleria/RequisicionPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria', 'mes'));
     }
 
     public function store(Request $request){
