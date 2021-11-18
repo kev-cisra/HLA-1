@@ -140,6 +140,9 @@ class RepoProController extends Controller
                 'perfil_ini' => function($pini){
                     $pini->select('id', 'Nombre', 'ApPat', 'ApMat');
                 },
+                'perfil_fin' => function($pfin){
+                    $pfin->select('id', 'Nombre', 'ApPat', 'ApMat');
+                },
                 'maq_pro' => function($mp){
                     $mp->select('id', 'maquina_id', 'proceso_id');
                 },

@@ -67,7 +67,7 @@ class CierreParoInvierno extends Command
                         'paros_carga_id' => $paro->id,
                         'departamento_id' => $paro->departamento_id
                     ]);
-                    parosCarga::find($paro->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 2]);
+                    parosCarga::find($paro->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 7]);
                 }else{
                     $txt.='entro sub paro '.$hoy.' || ';
                     $parUp = parosCarga::where('paros_carga_id', '=', $paro->paros_carga_id)->orderBy('id', 'desc')->first();
@@ -85,7 +85,7 @@ class CierreParoInvierno extends Command
                         'paros_carga_id' => $paro->paros_carga_id,
                         'departamento_id' => $parUp->departamento_id
                     ]);
-                    parosCarga::find($parUp->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 2]);
+                    parosCarga::find($parUp->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 7]);
                 }
             }
 

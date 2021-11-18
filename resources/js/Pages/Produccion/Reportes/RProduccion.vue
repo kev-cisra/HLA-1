@@ -121,6 +121,13 @@
                         <td > {{ca.VerInv}} </td>
                         <td>
                             <div class="columnaIconos">
+                                <div class="iconoEdit" v-if="ca.proceso.tipo == 2" @click="editCar(ca)">
+                                    <span tooltip="Editar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                        </svg>
+                                    </span>
+                                </div>
                                 <div class="iconoEdit" v-if="ca.proceso.tipo == 1" @click="editCar(ca)">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -170,11 +177,12 @@
                     <th class="columna tw-text-center">Nombre de paro</th>
                     <th class="columna tw-text-center">Descripción</th>
                     <th class="columna tw-text-center">Estatus</th>
+                    <th class="columna tw-text-center">Abierto por</th>
+                    <th class="columna tw-text-center">Cerrado por</th>
                     <th class="columna tw-text-center">Inicio</th>
                     <th class="columna tw-text-center">Final</th>
                     <th class="columna tw-text-center">Tiempo cargado</th>
                     <th class="columna tw-text-center">Plan de Acción</th>
-                    <th></th>
                 </template>
                 <template v-slot:TableFooter>
                     <tr class="fila hover:tw-text-base" v-for="ca in recoTablaParo" :key="ca.id">
@@ -189,37 +197,12 @@
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">{{ca.estatus}}</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
                         </td>
+                        <td class="tw-text-center">{{ca.perfil_ini.Nombre}} {{ca.perfil_ini.ApPat}} {{ ca.perfil_ini.ApMat }} </td>
+                        <td class="tw-text-center">{{ca.perfil_fin_id == null ? '' : ca.perfil_fin.Nombre+' '+ca.perfil_fin.ApPat+' '+ca.perfil_fin.ApMat}}</td>
                         <td class="tw-text-center">{{ca.iniFecha}}</td>
                         <td class="tw-text-center">{{ nuFin(ca) }}</td>
                         <td class="tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}}</td>
                         <td class="tw-text-center">{{ca.pla_acci}}</td>
-                        <td class="tw-text-center">
-                            <div class="columnaIconos">
-                                <!-- <div class="iconoDelete" @click="detener(1, ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id != 13 & ca.paro_id != 14 & ca.paro_id != 16)">
-                                    <span tooltip="Detener" flow="left">
-                                        <svg class="h-8 w-8 text-red-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="iconoDelete" @click="plan(ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id == 13 | ca.paro_id == 14 | ca.paro_id == 16)">
-                                    <span tooltip="Detener" flow="left">
-                                        <svg class="h-8 w-8 text-red-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="iconoDetails" @click="detener(2, ca)" v-if="(usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')) & ca.estatus == 'En revisión'">
-                                    <span  tooltip="Autorizar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                        </svg>
-                                    </span>
-                                </div> -->
-                            </div>
-                        </td>
                     </tr>
                 </template>
                 <template v-slot:Foother>
@@ -230,15 +213,15 @@
                     <th class="columna tw-text-center">Nombre de paro</th>
                     <th class="columna tw-text-center">Descripción</th>
                     <th class="columna tw-text-center">Estatus</th>
+                    <th class="columna tw-text-center">Abierto por</th>
+                    <th class="columna tw-text-center">Cerrado por</th>
                     <th class="columna tw-text-center">Inicio</th>
                     <th class="columna tw-text-center">Final</th>
                     <th class="columna tw-text-center">Tiempo cargado</th>
                     <th class="columna tw-text-center">Plan de Acción</th>
-                    <th></th>
                 </template>
             </TableBlue>
         </div>
-
         <!------------------------------------- Modal para carga de datos masivas ------------------------------------------------>
         <modal :show="showModalC" @close="chageCloseC">
             <div class="tw-px-4 tw-py-4">
@@ -922,6 +905,7 @@
             //abrir modal carga masiva
             openModalC(){
                 this.chageCloseC();
+                this.resetC();
             },
             //abrir o cerrar modal procesos
             chageCloseC(){
@@ -933,6 +917,11 @@
                 this.$refs.file.type='file';
             },
             /**************************** Acciones de la carga ***********************************************/
+            //Abrir modal
+            openModalCar(){
+                this.changeCloseCar();
+                this.resetCar();
+            },
             //eliminar carga
             deleteCar(data){
                 //console.log(data)
@@ -964,23 +953,21 @@
             },
             //reset de carga
             resetCar(){
-                this.carga = {
-                    id: null,
-                    idemp: null,
-                    nomOpe: null,
-                    fecha: null,
-                    turno: null,
-                    equipo: null,
-                    norma: null,
-                    clave_id: null,
-                    partida: null,
-                    valor: null,
-                    notas: null
-                }
+                this.carga.id = null,
+                this.carga.idemp = null,
+                this.carga.nomOpe = null,
+                this.carga.fecha = null,
+                this.carga.turno = null,
+                this.carga.equipo = null,
+                this.carga.norma = null,
+                this.carga.clave_id = null,
+                this.carga.partida = null,
+                this.carga.valor = null,
+                this.carga.notas = null
             },
             //editar carga
             editCar(data){
-                this.changeCloseCar();
+                this.openModalCar();
                 this.proc_prin = data.proceso.proceso_id;
                 this.carga.id = data.id;
                 this.carga.idemp = data.dep_perf.perfiles.IdEmp;
@@ -1051,7 +1038,7 @@
             opcPP: function() {
                 const ppi = [];
                 this.procesos.forEach(pp =>{
-                    if (pp.tipo == 0 & pp.tipo_carga == 'pro') {
+                    if (pp.tipo == 0) {
                         ppi.push({text: pp.nompro, value: pp.id})
                     }
                 });

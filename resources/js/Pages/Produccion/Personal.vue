@@ -319,7 +319,7 @@
                 //console.log(data)
                 data._method = 'PUT';
                 this.$inertia.post('/Produccion/Personal/' + data.id, data, {
-                    onSuccess: () => {this.reset(), this.chageClose(),this.alertSucces()},
+                    onSuccess: () => {this.reset(), this.alertSucces()},
                 });
             }
 

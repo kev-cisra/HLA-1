@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
+use App\Models\obje_cordi;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
 use App\Models\Produccion\carOpe;
@@ -53,6 +54,7 @@ class CargaController extends Controller
         $carOpe = [];
         $carNor = [];
         $turnos = [];
+        $objetivos = [];
         $hoy = date('Y-m-d');
         $dia = date("Y-m-d",strtotime($hoy."- 1 days")).' 19:00:00';
         $mañana = date("Y-m-d",strtotime($hoy."+ 1 days")).' 07:00:00';
@@ -324,6 +326,36 @@ class CargaController extends Controller
             ])
             ->get(['id', 'partida', 'estatus', 'norma', 'clave_id', 'departamento_id']);
 
+            //Paquetes Objetivos
+            $objetivos = obje_cordi::where('departamento_id', '=', $request->busca)
+            ->with([
+                'proceso' => function($pro) {
+                    $pro -> select('id', 'nompro', 'proceso_id');
+                },
+                'proceso.proceso_sub' => function($pp) {
+                    $pp -> select('id', 'nompro', 'proceso_id');
+                },
+                'maq_pro' => function($mp) {
+                    $mp -> select('id', 'maquina_id');
+                },
+                'maq_pro.maquinas' => function($maq) {
+                    $maq -> select('id', 'Nombre');
+                },
+                'maq_pro.maquinas.marca'=> function($maq){
+                    $maq->select('id', 'Nombre', 'maquinas_id');
+                },
+                'dep_mat' => function($dm){
+                    $dm -> select('id', 'departamento_id', 'material_id');
+                },
+                'dep_mat.materiales' => function($mat){
+                    $mat->select('id','idmat', 'nommat');
+                },
+                'clave' => function($cla){
+                    $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
+                }
+            ])
+            ->get(['id', 'estatus', 'pro_hora', 'proceso_id', 'maq_pro_id', 'norma', 'clave_id', 'departamento_id']);
+
             //Turnos
             $turnos = turnos::where('departamento_id', '=', $request->busca)
             ->with([
@@ -333,7 +365,7 @@ class CargaController extends Controller
             ])
             ->get(['id', 'nomtur', 'departamento_id']);
         }
-        return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate, 'paqope' => $carOpe, 'paqnor' => $carNor, 'turnos' => $turnos]);
+        return Inertia::render('Produccion/Carga', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'procesos' => $procesos, 'personal' => $personal, 'materiales' => $mate, 'paqope' => $carOpe, 'paqnor' => $carNor, 'turnos' => $turnos, 'objetivos' => $objetivos]);
 
     }
 
@@ -360,8 +392,7 @@ class CargaController extends Controller
         Validator::make($request->all(), [
             'proceso_id' => ['required'],
             'dep_perf_id' => ['required'],
-            'valor' => ['required'],
-            'clave_id' => ['numeric'],
+            'valor' => ['required']
         ])->validate();
 
         //$nFecha = $request->fecha.' '.date('H:i:s');

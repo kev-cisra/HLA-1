@@ -20,25 +20,6 @@ class ObjeCordiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-        //
-        return $request;
-        Validator::make($request->all(), [
-            'proceso_id' => ['required'],
-            'maq_pro_id' => ['required'],
-            'paro_id' => ['required'],
-            'departamento_id' => ['required'],
-        ])->validate();
-
-
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -47,28 +28,26 @@ class ObjeCordiController extends Controller
     public function store(Request $request)
     {
         //
-    }
+        //return $request;
+        Validator::make($request->all(), [
+            'proceso_id' => ['required'],
+            'maq_pro_id' => ['required'],
+            'norma' => ['required'],
+            'departamento_id' => ['required'],
+            'pro_hora' => ['required']
+        ])->validate();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\obje_cordi  $obje_cordi
-     * @return \Illuminate\Http\Response
-     */
-    public function show(obje_cordi $obje_cordi)
-    {
-        //
-    }
+        obje_cordi::create([
+            'proceso_id' => $request->proceso_id,
+            'maq_pro_id' => $request->maq_pro_id,
+            'clave_id' => $request->clave_id,
+            'norma' => $request->norma,
+            'departamento_id' => $request->departamento_id,
+            'pro_hora' => $request->pro_hora
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\obje_cordi  $obje_cordi
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(obje_cordi $obje_cordi)
-    {
-        //
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
     }
 
     /**

@@ -24,7 +24,7 @@
                     </div>
                     <!-- BTN Paquetes de Coordiandor -->
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
-                        <button class="btn btn-primary tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetCA()">Paquetes para coordinador</button>
+                        <button class="btn btn-primary tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetOB()">Paquetes para coordinador</button>
                         <!-- <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetCA()">Paquetes para coordinador</jet-button> -->
                     </div>
                     <!-- BTN Paquetes de normas -->
@@ -48,8 +48,90 @@
 
         <!------------------------------------ Carga de objetivos -------------------------------------------------->
         <div class="collapse m-5 tw-p-6 tw-bg-yellow-500 tw-rounded-3xl tw-shadow-xl" id="agObjec">
-            <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
-                a
+            <!-- Formulas -->
+            <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
+                <!-- Fecha -->
+                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                    <jet-label class="tw-text-white"><span class="required">*</span>Fecha</jet-label>
+                    <input type="datetime-local" class="InputSelect" v-model="form.fecha" :min="hoy" :max="treDia">
+                    <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
+                </div>
+                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                    <jet-label class="tw-text-white"><span class="required">*</span>Paquete Objetivos</jet-label>
+                    <Select2 v-model="paqObjetivo" class="InputSelect" :settings="{width: '100%'}" :options="opcPaOb"/>
+                </div>
+                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                    <jet-label class="tw-text-white"><span class="required">*</span>Horas a trabajar</jet-label>
+                    <jet-input v-model="calcuObje" type="number" min="0" max="12" step=".5"></jet-input>
+                </div>
+                <!-- select operador -->
+                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="usuario.dep_pers.length == 0">
+                    <jet-label class="tw-text-white"><span class="required">*</span>Operador</jet-label>
+                    <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id">
+                        <option value="" disabled>SELECCIONA</option>
+                        <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
+                    </select>
+                    <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
+                </div>
+                <!-- select turno -->
+                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" >
+                    <jet-label class="tw-text-white"><span class="required">*</span>Turnos</jet-label>
+                    <select class="InputSelect" v-model="form.turno_id">
+                        <option value="" disabled>SELECCIONA</option>
+                        <option v-for="tu in opcTur" :key="tu.value" :value="tu.value">{{tu.text}}</option>
+                    </select>
+                    <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                </div>
+            </div>
+            <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
+                <!-- select equipo -->
+                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                    <jet-label class="tw-text-white"><span class="required">*</span>Equipo</jet-label>
+                    <select class="InputSelect" v-model="form.equipo_id">
+                        <option value="" disabled>SELECCIONA</option>
+                        <option v-for="eq in opcEqu" :key="eq.value" :value="eq.value">{{eq.text}}</option>
+                    </select>
+                    <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                </div>
+                <!-- Inout partida -->
+                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                    <jet-label class="tw-text-white">Partida</jet-label>
+                    <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
+                    <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                </div>
+                <!-- Input kilogramos -->
+                <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
+                    <jet-label class="tw-text-white"><span class="required">*</span>{{ uni_me }}</jet-label>
+                    <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor" disabled></jet-input>
+                    <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
+                </div>
+            </div>
+            <!-- Notas -->
+            <div class="tw-mb-6 lg:tw-flex" v-if="form.notaPen == 2">
+                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
+                    <jet-label class="tw-text-white">Nota anterior</jet-label>
+                    <jet-label v-html="nAnte"></jet-label>
+                </div>
+                <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
+                    <jet-label class="tw-text-white"><span class="required">*</span>Nota</jet-label>
+                    <textarea class="InputSelect" v-model="form.nota" maxlength="250" @input="(val) => (form.nota = form.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
+                    <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
+                </div>
+            </div>
+            <!-- Botones -->
+            <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+                <div>
+                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
+                </div>
+                <div>
+                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
+                </div>
+                <!-- <div>
+                    <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+                </div> -->
+                <div>
+                    <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agObjec" aria-expanded="false" aria-controls="agObjec" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
+                </div>
             </div>
         </div>
 
@@ -268,7 +350,16 @@
                         <td class="">{{ca.valor}}</td>
                         <td class="">
                             <div class="columnaIconos">
-                                <div class="iconoDetails tw-cursor-pointer" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & (((noCor == 'cor' | noCor == 'enc') & ca.proceso.tipo == 2 & ca.notaPen == 1) | ((noCor == 'lid' | noCor == 'ope') & ca.equipo_id != null & ca.notaPen == 1))">
+                                <!-- nota operador -->
+                                <div class="iconoDetails tw-cursor-pointer" @click="notaCA(ca)" v-show="usuario.dep_pers.length != 0 & ((noCor == 'lid' | noCor == 'ope') & ca.equipo_id != null & ca.notaPen == 1)">
+                                    <span tooltip="Agregar nota" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <!-- nota objetivos -->
+                                <div class="iconoDetails tw-cursor-pointer" @click="notaOB(ca)" v-show="usuario.dep_pers.length != 0 & ((noCor == 'cor' | noCor == 'enc') & ca.proceso.tipo == 2 & ca.notaPen == 1)">
                                     <span tooltip="Agregar nota" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -495,6 +586,7 @@
                 <h3 class="offcanvas-title tw-text-xl tw-text-blueGray-50" id="offcanvasBottomLabel">Paquetes para coordinador</h3>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
+            <!-- Body -->
             <div class="offcanvas-body small">
                 <!----------------------------- Formulario para coordinador ------------------------------------------->
                 <div class="m-5 tw-p-6 tw-bg-blue-600 tw-rounded-3xl tw-shadow-xl">
@@ -504,14 +596,14 @@
                             <jet-label class="tw-text-white"><span class="required">*</span>Proceso proncipal</jet-label>
                             <select class="InputSelect" v-model="proc_prin">
                                 <option value="" disabled>SELECCIONA</option>
-                                <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
+                                <option v-for="pp in opcPPO" :key="pp" :value="pp.value" >{{pp.text}}</option>
                             </select>
                             <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
                         </div>
                         <!-- select Sub proceso -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0" v-if="opcSP">
                             <jet-label class="tw-text-white"><span class="required">*</span>Sub proceso </jet-label>
-                            <select class="InputSelect" v-model="form.proceso_id">
+                            <select class="InputSelect" v-model="formObje.proceso_id">
                                 <option value="" disabled>SELECCIONA</option>
                                 <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
                             </select>
@@ -520,16 +612,16 @@
                         <!-- select Maquinas -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
                             <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
-                            <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
+                            <select class="InputSelect" v-model="formObje.maq_pro_id" :disabled="editMode">
                                 <option value="" disabled>SELECCIONA</option>
-                                <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
+                                <option v-for="mq in opcMQO" :key="mq.value" :value="mq.value">{{mq.text}}</option>
                             </select>
                             <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                         </div>
                         <!-- Select Normas -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
                             <jet-label class="tw-text-white"><span class="required">*</span>Norma</jet-label>
-                            <select class="InputSelect" v-model="form.norma" :disabled="editMode">
+                            <select class="InputSelect" v-model="formObje.norma" :disabled="editMode">
                                 <option value="" disabled>SELECCIONA</option>
                                 <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
                             </select>
@@ -539,23 +631,23 @@
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
                             <jet-label class="tw-text-white"><span class="required">*</span>Clave</jet-label>
                             <!-- <Select2 v-model="form.clave_id" class="InputSelect" :options="opcCL"  :settings="{width: '100%'}"/> -->
-                            <select class="InputSelect" v-model="form.clave_id">
+                            <select class="InputSelect" v-model="formObje.clave_id">
                                 <option value="" disabled>SELECCIONA</option>
-                                <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
+                                <option v-for="cl in opcCLO" :key="cl" :value="cl.id">{{cl.text}}</option>
                             </select>
                             <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
                         </div>
                         <!-- input produccion -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
                             <jet-label class="tw-text-white"><span class="required">*</span>Produccion por hora</jet-label>
-                            <jet-input type="number" v-model="form.pro_hora"></jet-input>
+                            <jet-input type="number" v-model="formObje.pro_hora"></jet-input>
                             <small v-if="errors.pro_hora" class="validation-alert">{{errors.pro_hora}}</small>
                         </div>
                     </div>
                     <!-- Botones -->
                     <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
                         <div v-show="btnOff">
-                            <button type="button" class="btn btn-success" @click="savePObje(form)">Guardar</button>
+                            <button type="button" class="btn btn-success" @click="savePObje(formObje)">Guardar</button>
                             <!-- <jet-button type="button" @click="savePObje(form)">Guardar</jet-button> -->
                         </div>
 
@@ -566,6 +658,29 @@
                             </button>
                         </div>
                     </div>
+                </div>
+                <!----------------------------- Data Table ------------------------------------------------------------>
+                <div class="table-responsive">
+                    <TableBlue id="t_ob">
+                        <template v-slot:TableHeader>
+                            <th class="columna tw-text-center">Proceso</th>
+                            <th class="columna tw-text-center">Maquina</th>
+                            <th class="columna tw-text-center">Norma</th>
+                            <th class="columna tw-text-center">Clave</th>
+                            <th class="columna tw-text-center">Producción/Hora</th>
+                            <th class="columna tw-text-center"></th>
+                        </template>
+                        <template v-slot:TableFooter>
+                            <tr class="fila" v-for="obje in objetivos" :key="obje.id">
+                                <td class="tw-text-center"> {{ obje.proceso.nompro }} </td>
+                                <td class="tw-text-center"> {{ obje.maq_pro.maquinas.Nombre }} {{ obje.maq_pro.maquinas.marca.Nombre }} </td>
+                                <td class="tw-text-center"> {{ obje.dep_mat.materiales.idmat }} - {{ obje.dep_mat.materiales.nommat }} </td>
+                                <td class="tw-text-center"> {{ obje.clave_id == null ? '' : obje.clave.CVE_ART }} - {{ obje.clave_id == null ? '' : obje.clave.DESCR }} </td>
+                                <td class="tw-text-center"> {{ obje.pro_hora }} </td>
+                                <td class="tw-text-center"></td>
+                            </tr>
+                        </template>
+                    </TableBlue>
                 </div>
             </div>
         </div>
@@ -579,6 +694,7 @@
     import Table from '@/Components/Table';
     import TableCyan from '@/Components/TableCyan';
     import TableGreen from '@/Components/TableTeal';
+    import TableBlue from '@/Components/TableBlue';
     import JetButton from '@/Components/Button';
     import JetCancelButton from '@/Components/CancelButton';
     import JetInput from '@/Components/Input';
@@ -600,6 +716,7 @@
             'usuario',
             'paqope',
             'paqnor',
+            'objetivos',
             'depa',
             'cargas',
             'procesos',
@@ -612,6 +729,7 @@
             JetBanner,
             TableCyan,
             TableGreen,
+            TableBlue,
             AppLayout,
             Header,
             Accions,
@@ -627,17 +745,28 @@
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
                 noCor: '',
+                calcuObje: '',
                 proc_prin: '',
                 paqOpera: '',
                 paqNorma: '',
+                paqObjetivo: '',
                 btnOff: true,
                 v: [],
                 calcu: '',
                 idDep: '',
                 limp: 1,
                 hoy: moment().format('YYYY-MM-DD[T]HH:mm:ss'),
+                treDia: moment().add(3, 'days').format('YYYY-MM-DD[T]HH:mm:ss'),
                 editMode: false,
                 nAnte: '',
+                formObje:{
+                    departamento_id: this.S_Area,
+                    proceso_id: '',
+                    maq_pro_id: '',
+                    norma: '',
+                    clave_id: '',
+                    pro_hora: null
+                },
                 form: {
                     id: null,
                     fecha: null,
@@ -657,7 +786,6 @@
                     notaPen: 1,
                     nota: '',
                     agNot: 0,
-                    pro_hora: null
                 }
             }
         },
@@ -804,6 +932,17 @@
                     } );
                 })
             },
+            //Datattable de objetivos para coordinador
+            tablaObje() {
+                this.$nextTick(() => {
+                    $('#t_ob').DataTable( {
+                        "language": this.español,
+                        scrollY:        '50vh',
+                        scrollCollapse: true,
+                        paging:         false
+                    } );
+                })
+            },
             /****************************** carga de carga de datos ******************************************/
             saveCA(form){
                 //form.fecha = form.fecha;
@@ -887,6 +1026,8 @@
             },
             resetCA(){
                 this.limp = 1;
+                this.calcuObje = '';
+                this.paqObjetivo = '';
                 this.paqOpera = '';
                 this.paqNorma = '';
                 this.proc_prin = '';
@@ -901,7 +1042,6 @@
                 this.form.notaPen = 1;
                 this.form.nota = '';
                 this.form.usu = this.usuario.id;
-                this.form.pro_hora = null;
 
                 if (this.usuario.dep_pers.length != 0) {
                     this.usuario.dep_pers.forEach(v => {
@@ -1040,6 +1180,14 @@
                 $('#agPer').addClass('show')
 
             },
+            notaOB(form){
+                this.resetCA();
+                this.form.id = form.id;
+                this.form.agNot = 1;
+                this.form.notaPen = 2;
+                this.form.nota = '';
+                $('#agObjec').addClass('show')
+            },
             saveNot(data){
                 $('#t_carg').DataTable().clear();
                 $('#t_carg').DataTable().destroy();
@@ -1049,10 +1197,18 @@
             },
             /****************************** Carga de paquetes para objetivos *******************************/
             savePObje(form){
-                //this.btnOff = false;
+                this.btnOff = false;
                 this.$inertia.post('/Produccion/ObjeCordi', form, {
-                    onSuccess: (v) => { this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.btnOff = true}, preserveState: true
+                    onSuccess: (v) => { this.resetOB(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.btnOff = true}, preserveState: true
                 });
+            },
+            resetOB(){
+                this.formObje.departamento_id = this.S_Area;
+                this.formObje.proceso_id = '';
+                this.formObje.maq_pro_id = '';
+                this.formObje.norma = '';
+                this.formObje.clave_id = '';
+                this.formObje.pro_hora = null;
             }
         },
         computed: {
@@ -1077,6 +1233,16 @@
                 const ppi = [];
                 this.procesos.forEach(pp =>{
                     if (pp.tipo == 0 & pp.tipo_carga == 'pro') {
+                        ppi.push({text: pp.nompro, value: pp.id})
+                    }
+                });
+                return ppi;
+            },
+            //Opciones procesos principales
+            opcPPO: function() {
+                const ppi = [];
+                this.procesos.forEach(pp =>{
+                    if (pp.tipo == 0 & pp.tipo_carga == 'pro-cor') {
                         ppi.push({text: pp.nompro, value: pp.id})
                     }
                 });
@@ -1144,6 +1310,24 @@
                 }
                 return mq;
             },
+            //Opciones maquinas Objetivos
+            opcMQO: function() {
+                this.limp == 1 ? this.formObje.maq_pro_id = '' : '';
+                const mq = [];
+                var mar = '';
+                if (this.formObje.proceso_id != '') {
+                    this.procesos.forEach(pm => {
+                        if (this.formObje.proceso_id == pm.id) {
+                            //console.log(pm.maq_pros.length)
+                            pm.maq_pros.forEach(mp => {
+                                mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
+                                mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
+                            })
+                        }
+                    })
+                }
+                return mq;
+            },
             //Opciones Claves
             opcCL: function() {
                 const scl = [];
@@ -1151,6 +1335,22 @@
                 if (this.form.norma != '') {
                     this.materiales.forEach(cl => {
                         if (this.form.norma == cl.id) {
+                            //console.log(cl.claves)
+                            cl.claves.forEach(c => {
+                                scl.push({id: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
+                            })
+                        }
+                    })
+                }
+                return scl;
+            },
+            //Opciones Claves Objetivos
+            opcCLO: function() {
+                const scl = [];
+                /* this.form.clave_id = ''; */
+                if (this.formObje.norma != '') {
+                    this.materiales.forEach(cl => {
+                        if (this.formObje.norma == cl.id) {
                             //console.log(cl.claves)
                             cl.claves.forEach(c => {
                                 scl.push({id: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
@@ -1177,6 +1377,7 @@
                 }
                 return po;
             },
+            //opciones Paquetes Norma
             opcPaNo: function() {
                 const no = [];
                 this.paqnor.forEach(pn => {
@@ -1185,6 +1386,18 @@
                     }
                 })
                 return no;
+            },
+            //opciones Paquetes Objetivos
+            opcPaOb: function() {
+                const ob = [];
+                var clave = '';
+                this.objetivos.forEach(po => {
+                    if (po.departamento_id == this.S_Area) {
+                        clave = po.clave_id == null ? 'N/A' : po.clave.CVE_ART
+                        ob.push({id: po.id, text: po.proceso.nompro+' || '+po.maq_pro.maquinas.Nombre+' '+po.maq_pro.maquinas.marca.Nombre+' || '+po.dep_mat.materiales.idmat+' || '+clave})
+                    }
+                })
+                return ob;
             },
             //opciones de turnos
             opcTur: function() {
@@ -1228,10 +1441,12 @@
                 $('#t_op').DataTable().destroy();
                 $('#t_pn').DataTable().destroy();
                 $('#t_carg').DataTable().destroy();
+                $('#t_ob').DataTable().destroy();
                 this.resetCA();
+                this.resetOB();
                 this.proc_prin = '';
                 this.$inertia.get('/Produccion/Carga',{ busca: b }, {
-                    onSuccess: () => { this.reCarga(), this.tabla(), this.tablaOpe(), this.tablaNor() }, onError: () => {this.tabla(), this.tablaOpe(), this.tablaNor()  }, preserveState: true
+                    onSuccess: () => { this.reCarga(), this.tabla(), this.tablaOpe(), this.tablaNor(), this.tablaObje() }, onError: () => {this.tabla(), this.tablaOpe(), this.tablaNor(), this.tablaObje()  }, preserveState: true
                 });
             },
             proc_prin: function(v) {
@@ -1274,6 +1489,35 @@
                             this.form.maq_pro_id = po.maq_pro_id;
                         }
                     })
+                }
+            },
+            paqObjetivo: function(paOb){
+                if (paOb == '') {
+                    this.form.proceso_id = '';
+                    this.form.maq_pro_id = '';
+                    this.form.norma = '';
+                    this.form.clave_id = '';
+                }else{
+                    this.calcuObje = 0;
+                    this.form.valor = '';
+                    const resu = this.objetivos.find(obje => obje.id == paOb);
+                    this.limp = 2;
+                    this.form.departamento_id = this.S_Area;
+                    this.form.proceso_id = resu.proceso_id;
+                    this.form.maq_pro_id = resu.maq_pro_id;
+                    this.form.norma = resu.norma;
+                    this.form.clave_id = resu.clave_id;
+                }
+            },
+            calcuObje: function(calObj) {
+                if (calObj <= 0 || calObj > 12) {
+                    this.form.valor = '';
+                    this.calcuObje = '';
+                }
+                if (this.paqObjetivo != '' & calObj != '') {
+                    const resu = this.objetivos.find(obje => obje.id == this.paqObjetivo);
+                    this.form.valor = resu.pro_hora * calObj;
+                    //console.log(this.form.valor)
                 }
             }
         }
