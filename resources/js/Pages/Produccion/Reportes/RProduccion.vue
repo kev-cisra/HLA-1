@@ -71,7 +71,7 @@
                     <!-- dia -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Fecha</jet-label>
-                        <jet-input type="date" class="form-control tw-w-2/3" @click="limInputs(1.5)" v-model="FoFiltro.iniDia" :max="hoy"></jet-input>
+                        <jet-input type="date" class="form-control tw-w-2/3" @click="limInputs(1.5)" v-model="FoFiltro.iniDia" :max="treDia"></jet-input>
                     </div>
                 </div>
             </div>
@@ -501,6 +501,7 @@
                 },
                 nAnte: null,
                 hoy: moment().format('YYYY-MM-DD'),
+                treDia: moment().add(3, 'days').format('YYYY-MM-DD'),
                 editMode: false,
                 carMode: false,
                 showModal: false,
