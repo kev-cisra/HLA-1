@@ -284,7 +284,7 @@
                             </td>
                             <td>
                                 <div class="columnaIconos">
-                                    <div class="iconoDetails" @click="Partidas(datos)">
+                                    <div class="iconoDetails" @click="Partidas(datos)" v-if="datos.Estatus <= 3">
                                         <span tooltip="Visualiza Partidas" flow="left">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -300,6 +300,14 @@
                                     <div class="iconoEdit" @click="ConfirmaRequisicionCotizada(datos, 5)" v-if="datos.Estatus == 4">
                                         <span tooltip="Enviar Cotizacion para Autorización" flow="left">
                                             <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </div>
+                                    <div class="iconoDetails" @click="Requisicion(datos)" v-if="datos.Estatus >= 6">
+                                        <span tooltip="Visualiza Requisicion" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
                                         </span>
                                     </div>
                                 </div>
@@ -592,59 +600,78 @@
                         <template v-slot:TableHeader>
                             <th class="columna">CANTIDAD</th>
                             <th class="columna">UNIDAD</th>
-                            <th class="columna">DESCRIPCIÓN</th>
-                            <th class="columna">PRECIO UNITARIO</th>
-                            <th class="columna">TOTAL</th>
+                            <th class="columna">DESCRIPCION</th>
                             <th class="columna">MARCA</th>
+                            <th class="columna">PROVEEDOR</th>
                             <th class="columna">COMENTARIOS</th>
+                            <th class="columna">PRECIO UNITARIO</th>
+                            <th class="columna">TIPO MONEDA</th>
+                            <th class="columna">TIPO CAMBIO</th>
+                            <th class="columna">TOTAL</th>
                             <th class="columna">ESTATUS</th>
-                            <th class="columna">ACCIONES</th>
+                            <th class="columna">ARCHIVO</th>
                         </template>
+
                         <template v-slot:TableFooter>
-                            <tr class="fila" v-for="datos in PreciosCotizacion" :key="datos">
-                                <td class="tw-p-2">{{ datos.precios_articulo.Cantidad }}</td>
-                                <td class="tw-p-2">{{ datos.precios_articulo.Unidad }}</td>
-                                <td class="tw-p-2">{{ datos.precios_articulo.Descripcion }}</td>
-                                <td class="tw-p-2">{{ datos.Precio }}</td>
-                                <td class="tw-p-2">{{ datos.Total }}</td>
-                                <td class="tw-p-2">{{ datos.Autorizado }}</td>
-                                <td class="tw-p-2">{{ datos.Autorizado }}</td>
-                                <td class="fila">
-                                    <div class="columnaIconos" v-if="datos.Autorizado == 0">
-                                        <div class="iconoCyan" @click="Autoriza(datos)">
-                                            <span tooltip="Autoriza" flow="left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="columnaIconos" v-else-if="datos.Autorizado == 1">
-                                        <span tooltip="Precio no Autorizado" flow="left">
-                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-400 tw-rounded-full">No Autorizado</span>
-                                        </span>
-                                    </div>
-                                    <div class="columnaIconos" v-else-if="datos.Autorizado == 2">
-                                        <span tooltip="Precio Autorizado" flow="left">
-                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-400 tw-rounded-full">Autorizado</span>
-                                        </span>
-                                    </div>
+                            <tr class="fila tw-bg-gray-200" v-for="datos in ArticulosPrecios" :key="datos.id">
+                                <td class="tw-text-center">{{datos.Cantidad}}</td>
+                                <td class="tw-text-center">{{datos.Unidad}}</td>
+                                <td class="tw-text-center">{{datos.Descripcion}}</td>
+                                <td>
+                                    <tr class="tw-text-center" v-for="Pre in datos.articulo_precios" :key="Pre">
+                                        {{Pre.Marca}}
+                                    </tr>
                                 </td>
-                                <td class="fila">
-                                    <div class="columnaIconos">
-                                        <div class="iconoCyan">
-                                            <span tooltip="Visualiza Archivo Adjunto" flow="left">
-                                                <a target="_blank" :href="path + datos.Archivo" style="color:black;">
-                                                    <i class="far fa-file-image"></i>
-                                                </a>
+                                <td>
+                                    <tr class="tw-text-center" v-for="Pre in datos.articulo_precios" :key="Pre">
+                                        {{Pre.Proveedor}}
+                                    </tr>
+                                </td>
+                                <td>
+                                    <tr class="tw-text-center" v-for="Pre in datos.articulo_precios" :key="Pre">
+                                        {{  Pre.Comentarios }}
+                                    </tr>
+                                </td>
+                                <td>
+                                    <tr class="tw-text-center" v-for="Pre in datos.articulo_precios" :key="Pre">
+                                        $ {{Pre.Precio}}
+                                    </tr>
+                                </td>
+                                <td>
+                                    <tr v-for="Pre in datos.articulo_precios" :key="Pre">
+                                        {{Pre.Moneda}}
+                                    </tr>
+                                </td>
+                                <td>
+                                    <tr v-for="Pre in datos.articulo_precios" :key="Pre">
+                                        $ {{Pre.TipoCambio}}
+                                    </tr>
+                                </td>
+                                <td>
+                                    <tr v-for="Pre in datos.articulo_precios" :key="Pre">
+                                        $ {{Pre.Total}}
+                                    </tr>
+                                </td>
+                                <td>
+                                    <tr class="tw-text-center" v-for="Pre in datos.articulo_precios" :key="Pre">
+                                        <div class="columnaIconos" v-if="Pre.Autorizado == 1">
+                                            <span tooltip="Precio no Autorizado" flow="left">
+                                                <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-text-white tw-bg-red-400 tw-rounded-full">No Autorizado</span>
                                             </span>
                                         </div>
-                                        <div class="iconoCyan" @click="HabilitaResguardo(datos)">
-                                            <span tooltip="Habilita Resguardo" flow="left">
-                                                <i class="fas fa-user-shield"></i>
+                                        <div class="columnaIconos" v-else-if="Pre.Autorizado == 2">
+                                            <span tooltip="Precio Autorizado" flow="left">
+                                                <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-text-white tw-bg-green-400 tw-rounded-full">Autorizado</span>
                                             </span>
                                         </div>
-                                    </div>
+                                    </tr>
+                                </td>
+                                <td>
+                                    <tr class="tw-p-1" v-for="Pre in datos.articulo_precios" :key="Pre">
+                                        <a target="_blank" :href="path + Pre.Archivo" style="color:black;">
+                                            <i class="far fa-file-image"></i>
+                                        </a>
+                                    </tr>
                                 </td>
                             </tr>
                         </template>
@@ -945,27 +972,27 @@ export default {
             form: {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
-                IdPre: null,
-                IdArt: null,
-                IdPre: null,
-                IdPre2: null,
-                requisicion_id: null,
-                NumReq:  null,
-                Cantidad: null,
-                Unidad: null,
-                Precio: null,
-                Precio2: null,
-                PrecioInteger: null,
-                Total: null,
-                TotalInteger: null,
-                Moneda: null,
-                TipoCambio: null,
-                Descripcion: null,
-                archivo: null,
-                Comentarios: null,
-                Comentariollegada: null,
-                Fechallegada: null,
-                ImagenServidor: null,
+                IdPre: '',
+                IdArt: '',
+                IdPre: '',
+                IdPre2: '',
+                requisicion_id: '',
+                NumReq:  '',
+                Cantidad: '',
+                Unidad: '',
+                Precio: '',
+                Precio2: '',
+                PrecioInteger: '',
+                Total: '',
+                TotalInteger: '',
+                Moneda: '',
+                TipoCambio: '',
+                Descripcion: '',
+                archivo: '',
+                Comentarios: '',
+                Comentariollegada: '',
+                Fechallegada: '',
+                ImagenServidor: '',
                 PrecioCotizacion: [],
             },
             PreUni: [],
@@ -1005,6 +1032,7 @@ export default {
         ArticulosRequisiciones: Object,
         PreciosCotizacion: Object,
         PreciosRequisicion: Object,
+        ArticulosPrecios: Object,
         NumCot: Object,
         Req: Object,
         Precio: Object,
@@ -1138,14 +1166,6 @@ export default {
             this.form.IdArt = data.id;
         },
 
-        PrimerCotizacion(){
-            this.SegundoPrecio = 0;
-        },
-
-        SegundaCotizacion(){
-            this.SegundoPrecio = 1;
-        },
-
         Partidas(data){
             this.reset();
             this.form.editId = data.id;
@@ -1268,6 +1288,15 @@ export default {
                     this.alertSucces();
                 },
             });
+        },
+
+        Requisicion(data){
+            console.log(data);
+            this.params.Req = data.id;
+            this.$inertia.get('/Compras/Cotizaciones', this.params , {
+                onSuccess: () => {
+                    this.chagePrecios();
+                },preserveState: true })
         },
     },
 };
