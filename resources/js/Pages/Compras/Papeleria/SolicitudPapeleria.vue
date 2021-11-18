@@ -150,19 +150,19 @@
                             <td>{{ dato.articulo_material.Nombre }}</td>
                             <td>{{ dato.articulos_papeleria.Comentarios }}</td>
                             <td>
-                                <div v-if="dato.Estatus == 1">
+                                <div v-if="dato.Estatus >= 1 && dato.Estatus < 3">
                                     <span tooltip="Confirmar Solicitud de Papeleria" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-teal-500 tw-rounded-full">SOLICITADO</span>
-                                    </span>
-                                </div>
-                                <div v-if="dato.Estatus == 2">
-                                    <span tooltip="Material en posesión" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-sky-500 tw-rounded-full">EN STOCK</span>
                                     </span>
                                 </div>
                                 <div v-if="dato.Estatus == 3">
                                     <span tooltip="Entrega Material" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">ENTREGADO</span>
+                                    </span>
+                                </div>
+                                <div v-if="dato.Estatus == 4">
+                                    <span tooltip="Entrega Material" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-500 tw-rounded-full">RECHAZADO</span>
                                     </span>
                                 </div>
                             </td>
@@ -173,9 +173,14 @@
                                             <i class="fas fa-check-circle"></i>
                                         </span>
                                     </div>
+                                    <div class="iconoTeal" @click="Rechaza(dato)">
+                                        <span tooltip="Rechaza Material" flow="left">
+                                            <i class="fas fa-ban"></i>
+                                        </span>
+                                    </div>
                                 </div>
                                 <div class="columnaIconos" v-if="dato.Estatus == 2">
-                                    <div class="iconoTeal" @click="EntregaPapeleria(dato, 3)">
+                                    <div class="iconoTeal" @click="EntregaPapeleria(dato)">
                                         <span tooltip="Entrega Material" flow="left">
                                             <i class="far fa-check-circle"></i>
                                         </span>
@@ -217,6 +222,65 @@
             </Table>
         </div>
     </div>
+
+    <modal :show="showConfirm" @close="chageConfirm" maxWidth="2xl">
+        <form>
+            <div class="tw-px-4 tw-py-4">
+                <div class="tw-text-lg">
+                    <div class="ModalHeader">
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Acepta entrega del Producto</h3>
+                    </div>
+                </div>
+
+                <div class="tw-mt-4">
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                            <jet-label><span class="required">*</span>Número Empleado</jet-label>
+                            <jet-input type="text" :min="min" v-model="form.User"></jet-input>
+                            <small v-if="errors.User" class="validation-alert">{{errors.User}}</small>
+                        </div>
+
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                            <jet-label><span class="required">*</span>Contraseña</jet-label>
+                            <jet-input type="password" v-model="form.Pass"></jet-input>
+                            <small v-if="errors.Pass" class="validation-alert">{{errors.Pass}}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="AceptaProducto(form, 9)">Guardar</jet-button>
+                <jet-CancelButton @click="chageConfirm">Cerrar</jet-CancelButton>
+            </div>
+        </form>
+    </modal>
+
+    <modal :show="showRechazo" @close="chageRechazo" maxWidth="2xl">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Motivo del Rechazo</h3>
+                </div>
+            </div>
+
+
+            <div class="tw-mt-4">
+                <div class="tw-mb-6 md:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>Motivo del Rechazo</jet-label>
+                        <textarea name="" id="" v-model="form.MotivoRechazo"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ModalFooter">
+            <jet-button type="button" @click="RechazaSolicitud(form)">Rechaza</jet-button>
+            <jet-CancelButton @click="chageConfirm">Cerrar</jet-CancelButton>
+        </div>
+    </modal>
+
 
   </app-layout>
 </template>
@@ -261,12 +325,18 @@ export default {
     data() {
         return {
             showEdit: false,
+            showConfirm: false,
+            showRechazo: false,
             tam: "3xl",
             color: "tw-bg-teal-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             form: {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
+                IdSolicitud: '',
+                User: '',
+                Pass: '',
+                MotivoRechazo: '',
             },
             params:{
                 month: '',
@@ -303,6 +373,10 @@ export default {
             this.form = {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
+                IdSolicitud: '',
+                User: '',
+                Pass: '',
+                MotivoRechazo: '',
             };
         },
 
@@ -504,6 +578,16 @@ export default {
                 this.$inertia.get("/Compras/Papeleria", { busca: event.target.value },{ onSuccess: () => { this.tablaReporte(); },});
         },
 
+        chageConfirm() {
+            this.form.User = '',
+            this.form.Pass = '',
+            this.showConfirm = !this.showConfirm;
+        },
+
+        chageRechazo() {
+            this.showRechazo = !this.showRechazo;
+        },
+
         FiltroPorMes(value){
             //Filtro para consultar por mes
             this.params.month = value;
@@ -515,8 +599,8 @@ export default {
                 }, preserveState: true})
         },
 
-        Confirma(data, metodo) {
-            console.log(data);
+        Confirma(data) {
+            data.id = data.articulos_papeleria.id; //Obtengo el id de la la solicitud de papeleria
             data.metodo = 2;
             data._method = 'PUT';
             this.$inertia.post('/Compras/Papeleria/' + data.id, data, {
@@ -528,15 +612,41 @@ export default {
             });
         },
 
-        EntregaPapeleria(data, metodo) {
-            console.log(data);
+        EntregaPapeleria(data) {
+            this.form.IdSolicitud = data.articulos_papeleria.id;
+            this.chageConfirm();
             data.metodo = 3;
-            data._method = 'PUT';
-            this.$inertia.post('/Compras/Papeleria/' + data.id, data, {
+        },
+
+        AceptaProducto(data, metodo){
+            data.metodo = 3;
+            data._method = "PUT";
+            this.$inertia.post("/Compras/Papeleria/" + data.id, data, {
+                preserveScroll : true ,
+                resetOnSuccess : false ,
                 onSuccess: () => {
-                    this.alertSucces(),
-                    this.reset(),
-                    this.chageCloseEdit()
+                    this.chageConfirm();
+                    this.alertSucces();
+                    this.reset();
+                },
+            });
+        },
+
+        Rechaza(data){
+            this.form.IdSolicitud = data.articulos_papeleria.id;
+            this.chageRechazo();
+        },
+
+        RechazaSolicitud(data){
+            data.metodo = 4;
+            data._method = "PUT";
+            this.$inertia.post("/Compras/Papeleria/" + data.id, data, {
+                preserveScroll : true ,
+                resetOnSuccess : false ,
+                onSuccess: () => {
+                    this.chageRechazo();
+                    this.alertSucces();
+                    this.reset();
                 },
             });
         },
@@ -548,7 +658,6 @@ export default {
         Reporte(){
             this.chageCloseEdit();
         }
-
     },
 };
 </script>

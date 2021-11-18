@@ -9,11 +9,13 @@ use App\Models\Compras\Papeleria\PapeleriaRequisicion;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class SolicitudesPapeleriaController extends Controller{
 
@@ -100,18 +102,51 @@ class SolicitudesPapeleriaController extends Controller{
 
         switch ($request->metodo){
             case 2:
-                ArticulosPapeleriaRequisicion::where('id', '=', $request->id)->update([
+                ArticulosPapeleriaRequisicion::where('papeleria_id', '=', $request->id)->update([
                     'Estatus' => 2,
                 ]);
+                return redirect()->back();
                 break;
             case 3:
-                ArticulosPapeleriaRequisicion::where('id', '=', $request->id)->update([
-                    'Estatus' => 3,
-                ]);
-                break;
-        }
+                $User = User::where('IdEmp', '=', $request->User)->first(['id', 'IdEmp', 'password']);
 
-        return redirect()->back();
+                if(!empty($User->IdEmp)){
+                    $User->IdEmp;
+                    $User->password;
+                    $User->id;
+
+                    if($request->User == $User->IdEmp){
+                        if (Hash::check($request->Pass, $User->password)){
+                            //Contraseña y Uusario correctos
+                            ArticulosPapeleriaRequisicion::where('papeleria_id', '=', $request->IdSolicitud)->update([
+                                'Estatus' => 3,
+                            ]);
+
+                            PapeleriaRequisicion::where('id', '=', $request->IdSolicitud)->update([
+                                'RecibidoPor' => $User->id,
+                            ]);
+
+                            return redirect()->back();
+                            break;
+                        }else{
+                            return "Datos Incorrectos";
+                        }
+                    }else{
+                        return "Datos Incorrectos";
+                    }
+                }
+                break;
+            case 4:
+                ArticulosPapeleriaRequisicion::where('papeleria_id', '=', $request->IdSolicitud)->update([
+                    'Estatus' => 4,
+                ]);
+
+                PapeleriaRequisicion::where('id', '=', $request->IdSolicitud)->update([
+                    'MotivoRechazo' => $request->MotivoRechazo,
+                ]);
+                return redirect()->back();
+            break;
+        }
     }
 
     public function destroy($id){

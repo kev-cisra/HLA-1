@@ -117,10 +117,19 @@ class CotizacionesController extends Controller{
             $PreCount = PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->Art)->count();
             //Obtengo el numero de cotizaciones realizadas para la requisicion
             $NumCot = PreciosCotizaciones::where('NumCotizacion', '=', 2)->where('requisiciones_id', '=', $request->Req)->count();
+            //Obtengo el detalle completo de los Precios requisicion seleccionada
+            $ArticulosPrecios = ArticulosRequisiciones::with([
+                'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
+                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                },
+            ])
+            ->where('requisicion_id', '=', $request->Req)
+            ->get();
         }else{
             $Req = null;
             $ArticulosRequisiciones = null;
             $PreciosRequisicion = null;
+            $ArticulosPrecios = null;
             $Precio = null;
             $PreCount = null;
             $NumCot = 0;
@@ -153,6 +162,7 @@ class CotizacionesController extends Controller{
             'ArticulosRequisiciones',
             'PreciosCotizacion',
             'PreciosRequisicion',
+            'ArticulosPrecios',
             'Req',
             'NumCot',
             'Precio',

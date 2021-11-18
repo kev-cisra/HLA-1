@@ -166,14 +166,14 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">SIN CONFIRMAR</span>
                                     </span>
                                 </div>
-                                <div v-else-if="dato.Estatus == 1">
+                                <div v-else-if="dato.Estatus >= 1 && dato.Estatus < 4">
                                     <span tooltip="Confirmar Solicitud de Papeleria" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-teal-500 tw-rounded-full">SOLICITADO</span>
                                     </span>
                                 </div>
-                                <div v-else-if="dato.Estatus == 2">
-                                    <span tooltip="Pasar a recoger material" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-sky-500 tw-rounded-full">EN STOCK</span>
+                                <div v-if="dato.Estatus == 4">
+                                    <span tooltip="Entrega Material" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-500 tw-rounded-full">RECHAZADO</span>
                                     </span>
                                 </div>
                             </td>

@@ -14,7 +14,7 @@ class AddOrdenCompraToRequisiciones extends Migration
     public function up()
     {
         Schema::table('requisiciones', function (Blueprint $table) {
-            $table->integer('OrdenCompra')->default(0)->nullable()->after('NumReq');;
+            $table->integer('OrdenCompra')->default(0)->nullable()->after('NumReq');
         });
     }
 
