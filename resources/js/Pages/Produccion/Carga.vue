@@ -24,7 +24,7 @@
                     </div>
                     <!-- BTN Paquetes de Coordiandor -->
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
-                        <button class="btn btn-primary tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetOB()">Paquetes para coordinador</button>
+                        <button class="btn btn-primary tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetOB()">Paquetes Objetivos</button>
                         <!-- <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetCA()">Paquetes para coordinador</jet-button> -->
                     </div>
                     <!-- BTN Paquetes de normas -->
@@ -94,13 +94,13 @@
                     <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
                 <!-- Inout partida -->
-                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                     <jet-label class="tw-text-white">Partida</jet-label>
                     <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
                     <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
                 </div>
                 <!-- Input kilogramos -->
-                <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
+                <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/2 lg:tw-mb-0">
                     <jet-label class="tw-text-white"><span class="required">*</span>{{ uni_me }}</jet-label>
                     <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor" disabled></jet-input>
                     <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
@@ -1413,11 +1413,9 @@
             opcEqu: function() {
                 const equ = [];
                 this.turnos.forEach(t => {
-                    if (t.nomtur != 'Vacío') {
-                        t.equipos.forEach(eq => {
-                            equ.push({value: eq.id, text: eq.nombre});
-                        })
-                    }
+                    t.equipos.forEach(eq => {
+                        equ.push({value: eq.id, text: eq.nombre});
+                    })
                 })
                 return equ;
             },

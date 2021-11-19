@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
+use App\Models\Produccion\paros;
 use App\Models\Produccion\parosCarga;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
@@ -51,6 +52,7 @@ class RepoProController extends Controller
         $mate = [];
         $procesos = [];
         $paros = [];
+        $claParo = [];
 
         //Condicional
         if (count($perf->dep_pers) != 0) {
@@ -170,6 +172,8 @@ class RepoProController extends Controller
             ])
             ->get();
 
+            $claParo = paros::get();
+
             //procesos
             $procesos = procesos::where('departamento_id', '=', $request->busca)
             ->where('tipo', '!=', '3')
@@ -188,7 +192,7 @@ class RepoProController extends Controller
             ->get();
         }
 
-        return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'materiales' => $mate, 'procesos' => $procesos, 'paros' => $paros]);
+        return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'materiales' => $mate, 'procesos' => $procesos, 'paros' => $paros, 'claParo' => $claParo]);
     }
 
     /**

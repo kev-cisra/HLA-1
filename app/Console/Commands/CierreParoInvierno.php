@@ -50,7 +50,7 @@ class CierreParoInvierno extends Command
             ->where('estatus', '=', 'Activo')
             ->get();
             foreach ($paros as $paro) {
-                $tiempo = $hoy->diffInMinutes($paro->iniFecha);
+                $tiempo = $hoy->diffInMinutes($paro->fecha);
                 if (empty($paro->paros_carga_id)) {
                     $txt.='entro normal '.$hoy.' || ';
                     parosCarga::create([

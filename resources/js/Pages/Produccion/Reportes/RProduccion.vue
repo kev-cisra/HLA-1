@@ -59,19 +59,19 @@
                 </div>
                 <div class="tw-mb-6 lg:tw-flex">
                     <!-- mes -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-show="FoFiltro.TipRepo == 1">
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Mes</jet-label>
                         <jet-input type="month" class="form-control" @click="limInputs(3)" v-model="FoFiltro.mes"></jet-input>
                     </div>
                     <!-- semana -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-show="FoFiltro.TipRepo == 1">
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Semana</jet-label>
                         <jet-input type="week" class="form-control" @click="limInputs(2)" v-model="FoFiltro.semana"></jet-input>
                     </div>
                     <!-- dia -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Fecha</jet-label>
-                        <jet-input type="date" class="form-control tw-w-2/3" @click="limInputs(1.5)" v-model="FoFiltro.iniDia" :max="treDia"></jet-input>
+                        <jet-input type="date" class="form-control" @click="limInputs(1.5)" v-model="FoFiltro.iniDia" :max="treDia"></jet-input>
                     </div>
                 </div>
             </div>
@@ -120,8 +120,8 @@
                         <td >{{this.formatoMexico(ca.valor)}}</td>
                         <td > {{ca.VerInv}} </td>
                         <td>
-                            <div class="columnaIconos">
-                                <div class="iconoEdit" v-if="ca.proceso.tipo == 2" @click="editCar(ca)">
+                            <div class="columnaIconos" v-if="limiteFecha()">
+                                <div class="iconoEdit" v-if="ca.proceso.tipo == 2 & usuario.dep_pers.length == 0" @click="editCar(ca)">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -185,10 +185,10 @@
                     <th class="columna tw-text-center">Plan de Acción</th>
                 </template>
                 <template v-slot:TableFooter>
-                    <tr class="fila hover:tw-text-base" v-for="ca in recoTablaParo" :key="ca.id">
+                    <tr class="fila hover:tw-text-base" v-for="ca in recoTablaParo" :key="ca">
                         <td class="tw-text-center">{{ca.fecha}}</td>
                         <td class="tw-text-center">{{ca.orden}}</td>
-                        <td class="tw-text-center">{{ca.maq_pro.maquinas.Nombre}}</td>
+                        <td class="tw-text-center">{{ ca.maq_pro == 'N/A' ? ca.maq_pro : ca.maq_pro.maquinas.Nombre}}</td>
                         <td class="tw-text-center">{{ca.paros.clave}}</td>
                         <td class="tw-text-center">{{ca.paros.descri}}</td>
                         <td class="tw-text-center">{{ca.descri}}</td>
@@ -197,11 +197,11 @@
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">{{ca.estatus}}</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
                         </td>
-                        <td class="tw-text-center">{{ca.perfil_ini.Nombre}} {{ca.perfil_ini.ApPat}} {{ ca.perfil_ini.ApMat }} </td>
+                        <td class="tw-text-center">{{ca.perfil_ini == 'N/A' ? ca.perfil_ini : ca.perfil_ini.Nombre + ' ' + ca.perfil_ini.ApPat + ' ' + ca.perfil_ini.ApMat }} </td>
                         <td class="tw-text-center">{{ca.perfil_fin_id == null ? '' : ca.perfil_fin.Nombre+' '+ca.perfil_fin.ApPat+' '+ca.perfil_fin.ApMat}}</td>
                         <td class="tw-text-center">{{ca.iniFecha}}</td>
                         <td class="tw-text-center">{{ nuFin(ca) }}</td>
-                        <td class="tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}}</td>
+                        <td class="tw-text-center">{{tiempo(ca)}}</td>
                         <td class="tw-text-center">{{ca.pla_acci}}</td>
                     </tr>
                 </template>
@@ -472,6 +472,7 @@
             'cargas',
             'materiales',
             'procesos',
+            'claParo',
             'errors'
         ],
 
@@ -551,6 +552,12 @@
         },
 
         methods: {
+            limiteFecha(){
+                var inpDia = moment(this.FoFiltro.iniDia);
+                var Dhoy = moment()
+                var dife = Dhoy.diff(inpDia, 'days');
+                return dife <= 3;
+            },
             /***************************** Carga Masiva ************************************/
             carMasi(){
                 const form = this.docu;
@@ -625,6 +632,10 @@
             },
             //muestra la utima fecha del paro
             nuFin(ar){
+                //Si es es mes o semana
+                if (ar.iniFecha == 'N/A') {
+                    return 'N/A'
+                }
                 //si es un sub paro
                 if (ar.paros_carga_id != null) {
                     //busca el id del paro princial
@@ -645,10 +656,17 @@
                 }
             },
             //calcula el tiempo
-            tiempo(ini, fin){
-                var tini = moment(ini);
-                var tfin = fin == null ? moment() : moment(fin);
-                return tfin.from(tini, true);
+            tiempo(fec){
+                if (fec.iniFecha == 'N/A') {
+                    var tini = moment();
+                    var tfin = moment().add(fec.tiempo, 'minutes');
+                    return fec.tiempo+' minutos' //tfin.from(tini, true);
+                }else{
+                    var tini = moment(fec.iniFecha);
+                    var tfin = fec.finFecha == null ? moment() : moment(fec.finFecha);
+                    return tfin.from(tini, true);
+                }
+
             },
             /****************************** datatables ********************************************************/
             //datatable de carga de produccion
@@ -877,6 +895,58 @@
                         }
                     });
                 }
+                if (this.FoFiltro.semana != null) {
+                    //console.log(this.FoFiltro.semana)
+                    //Limpia el datatables
+                    $('#t_repoPar').DataTable().clear();
+                    $('#t_repoPar').DataTable().destroy();
+                    this.tablaParo();
+                    //variables
+                    var semana = '';
+                    var suma = 0;
+                    //se recorren las claves que existen de los paros
+                    this.claParo.forEach(cla => {
+                        suma = 0;
+                        //hace el recorrido y asigna el Array
+                        this.paros.forEach(fec => {
+                            if (moment(fec.fecha).format('YYYY-[W]WW') == this.FoFiltro.semana & fec.paro_id == cla.id & fec.tiempo != null) {
+                                semana = moment(fec.fecha).format('YYYY-[W]WW')
+                                suma += parseInt(fec.tiempo, 10);
+                                //console.log(fec.paros.clave + ' - ' + fec.tiempo + ' - ' + suma + ' || ')
+                            }
+                        });
+                        //si la suma es diferente de 0 entonces crea el nuevo array
+                        if (suma > 0) {
+                            rtP.push({fecha: semana, orden: 'N/A', maq_pro: 'N/A', paros: {clave: cla.clave, descri: cla.descri}, estatus: 'Activo', perfil_ini: 'N/A', iniFecha: 'N/A', finFecha: 'N/A', pla_acci: 'N/A', perfil_fin_id: null, tiempo: suma})
+                            //console.log(cla.clave + ' - ' + suma);
+                        }
+                    })
+                }
+                if (this.FoFiltro.mes != null) {
+                    //Limpia el datatables
+                    $('#t_repoPar').DataTable().clear();
+                    $('#t_repoPar').DataTable().destroy();
+                    this.tablaParo();
+                    //variables
+                    var mes = moment(this.FoFiltro.mes).format('MMMM');
+                    var suma = 0;
+                    this.claParo.forEach(cla => {
+                        suma = 0;
+                        //hace el recorrido y asigna el Array
+                        this.paros.forEach(fec => {
+                            if (fec.fecha.includes(this.FoFiltro.mes) & fec.paro_id == cla.id & fec.tiempo != null) {
+                                suma += parseInt(fec.tiempo, 10);
+                                //console.log(fec.paros)
+                            }
+                        })
+                        //si la suma es diferente de 0 entonces crea el nuevo array
+                        if (suma > 0) {
+                            rtP.push({fecha: mes, orden: 'N/A', maq_pro: 'N/A', paros: {clave: cla.clave, descri: cla.descri}, estatus: 'Activo', perfil_ini: 'N/A', iniFecha: 'N/A', finFecha: 'N/A', pla_acci: 'N/A', perfil_fin_id: null, tiempo: suma})
+                            //console.log(cla.clave + ' - ' + suma);
+                        }
+                    })
+                }
+                //console.log(rtP)
                 return rtP;
             },
             //Limpia los inputs de fechas
