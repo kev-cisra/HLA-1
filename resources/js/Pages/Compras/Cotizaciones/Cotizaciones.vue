@@ -302,12 +302,17 @@
                                             <i class="fas fa-check-circle"></i>
                                         </span>
                                     </div>
-                                    <div class="iconoDetails" @click="Requisicion(datos)" v-if="datos.Estatus >= 6">
+                                    <div class="iconoDetails" @click="Requisicion(datos)" v-if="datos.Estatus >= 5">
                                         <span tooltip="Visualiza Requisicion" flow="left">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                             </svg>
+                                        </span>
+                                    </div>
+                                    <div class="iconoPurple" @click="CapturaFecha(datos)" v-if="datos.Estatus == 6">
+                                        <span tooltip="Confirma Fecha de Entrega" flow="left">
+                                            <i class="fas fa-shipping-fast"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -1161,11 +1166,6 @@ export default {
                 }, preserveState: true})
         },
 
-        CapturaFecha(data){
-            this.chageFecha();
-            this.form.IdArt = data.id;
-        },
-
         Partidas(data){
             this.reset();
             this.form.editId = data.id;
@@ -1280,7 +1280,7 @@ export default {
             });
         },
 
-        ConfirmaRequisicionCotizada(data, metodo){
+        ConfirmaRequisicionCotizada(data, metodo){ //Metodo para enviar cotizacion a Autorizacion
             data.metodo = 2;
             data._method = "PUT";
             this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
@@ -1291,12 +1291,30 @@ export default {
         },
 
         Requisicion(data){
-            console.log(data);
             this.params.Req = data.id;
             this.$inertia.get('/Compras/Cotizaciones', this.params , {
                 onSuccess: () => {
                     this.chagePrecios();
                 },preserveState: true })
+        },
+
+        CapturaFecha(data){ //Abre modal para capturar la fecha de llegada aproximada
+        console.log(data);
+            this.chageFecha();
+            this.form.IdArt = data.id;
+        },
+
+        Confirma(data, metodo){ //Metodo para actualizar el comentario de llegada y el estatus de confirmacion (7)
+            data.metodo = 3;
+            data._method = "PUT";
+            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.form.Fechallegada = '',
+                    this.form.Comentariollegada = '';
+                    this.chageFecha();
+                    this.alertSucces();
+                },
+            });
         },
     },
 };

@@ -529,7 +529,7 @@
                 </div>
             </div>
 
-            <div class="tw-my-4">
+            <div class="tw-my-4" v-if="ArticulosPrecios != null">
                 <Table>
                     <template v-slot:TableHeader>
                         <th class="columna">CANTIDAD</th>
@@ -1032,8 +1032,10 @@ export default {
         VisualizaCotizacion(data){
             this.params.Req = data.id;
             this.form.requisicion_id = data.id;
-            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , {preserveState: true })
-            this.chagePreciosRequisicion();
+                        this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    this.chagePreciosRequisicion();
+            }, preserveState: true })
         },
 
         AutorizaCotizacion(data){
