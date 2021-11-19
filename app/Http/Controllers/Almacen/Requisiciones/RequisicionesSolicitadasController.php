@@ -17,6 +17,7 @@ use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use PhpParser\Node\Stmt\Return_;
 
 class RequisicionesSolicitadasController extends Controller {
 
@@ -246,6 +247,7 @@ class RequisicionesSolicitadasController extends Controller {
                         'Revision' => Carbon::now(),
                     ]);
 
+                    return redirect()->back();
                     break;
 
                 //CASO DE CONFIRMAR EXISTENCIA DE REQUISICION EN ALMACEN
@@ -262,21 +264,39 @@ class RequisicionesSolicitadasController extends Controller {
                     TiemposRequisiciones::where('requisicion_id', '=', $request->id)->update([
                         'Almacen' => Carbon::now(),
                     ]);
-                    break;
 
-                case 9:
+                    return redirect()->back();
+
+                    break;
+                //VERIFICA CONTRASEÑA Y USUARIO CORRECTOS
+                case 3:
+
                     $User = User::where('IdEmp', '=', $request->User)->first(['id', 'IdEmp', 'password']);
 
                     if(!empty($User->IdEmp)){
+
                         $User->IdEmp;
                         $User->password;
 
                         if($request->User == $User->IdEmp){
 
                             if (Hash::check($request->Pass, $User->password)){
-                                return back()->with([
-                                    'flash' => 0,
+
+                                Requisiciones::where('id', '=', $request->IdArt)->update([
+                                    'Estatus' => 9,
                                 ]);
+
+                                ArticulosRequisiciones::where('requisicion_id', '=', $request->IdArt)->update([
+                                    'EstatusArt' => 9,
+                                    'RecibidoPor' => $User->id,
+                                ]);
+
+                                TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->IdArt)->update([
+                                    'Entregado' => Carbon::now(),
+                                ]);
+
+                                return redirect()->back();
+
                             }else{
                                 return back()->with([
                                     'flash' => 3,
@@ -293,28 +313,9 @@ class RequisicionesSolicitadasController extends Controller {
                         ]);
                     }
                     break;
-                case 10:
-
-                    $User = User::where('IdEmp', '=', $request->User)->first(['id', 'IdEmp', 'password']);
-
-                    ArticulosRequisiciones::where('id', '=', $request->IdArt)->update([
-                        'RecibidoPor' => $User->id,
-                    ]);
-
-                    ArticulosRequisiciones::find($request->IdArt)->update([
-                        'EstatusArt' => 9,
-                    ]);
-
-                    TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->IdArt)->update([
-                        'Entregado' => Carbon::now(),
-                    ]);
-
-                    break;
             }
 
         }
-
-        return redirect()->back();
     }
 
 }

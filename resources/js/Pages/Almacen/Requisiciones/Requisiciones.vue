@@ -301,7 +301,7 @@
                                             </svg>
                                         </span>
                                     </div>
-                                    <div class="iconoPurple" @click="ProductoAlmacen(datos, 8)">
+                                    <div class="iconoPurple" @click="RequisicionAlmacen(datos)">
                                         <span tooltip="Confirma Producto en Almacén" flow="left">
                                             <i class="ml-2 fas fa-box"></i>
                                         </span>
@@ -322,7 +322,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="columnaIconos" v-else-if="datos.Estatus == 9">
+<!--                                 <div class="columnaIconos" v-else-if="datos.Estatus == 9">
                                     <div class="iconoDetails" @click="Partidas(datos)">
                                         <span tooltip="Visualiza Partidas" flow="left">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
@@ -341,7 +341,7 @@
                                             <i class="fas fa-check-square"></i>
                                         </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="columnaIconos" v-else>
                                     <div class="iconoDetails" @click="Partidas(datos)">
                                         <span tooltip="Visualiza Partidas" flow="left">
@@ -417,39 +417,6 @@
                     <div class="ModalFooter">
                         <jet-button type="button" @click="update(form, 3.1)">Guardar</jet-button>
                         <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
-                    </div>
-                </form>
-            </modal>
-
-            <modal :show="showConfirm" @close="chageConfirm" maxWidth="2xl">
-                <form>
-                    <div class="tw-px-4 tw-py-4">
-                        <div class="tw-text-lg">
-                            <div class="ModalHeader">
-                                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Acepta entrega del Producto</h3>
-                            </div>
-                        </div>
-
-                        <div class="tw-mt-4">
-                            <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Número Empleado</jet-label>
-                                    <jet-input type="text" :min="min" v-model="form.User"></jet-input>
-                                    <small v-if="errors.User" class="validation-alert">{{errors.User}}</small>
-                                </div>
-
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Contraseña</jet-label>
-                                    <jet-input type="password" v-model="form.Pass"></jet-input>
-                                    <small v-if="errors.Pass" class="validation-alert">{{errors.Pass}}</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="ModalFooter">
-                        <jet-button type="button" @click="AceptaProducto(form, 9)">Guardar</jet-button>
-                        <jet-CancelButton @click="chageConfirm">Cerrar</jet-CancelButton>
                     </div>
                 </form>
             </modal>
@@ -539,7 +506,7 @@
                     </div>
                 </div>
 
-                <div class="tw-mx-4">
+                <div class="tw-mx-4" v-if="ArticulosRequisiciones != null">
                     <Table>
                         <template v-slot:TableHeader>
                             <th class="columna">CANTIDAD</th>
@@ -593,6 +560,39 @@
                     <jet-button type="button" @click="save(form)" v-show="!editMode2">Confirmar Requisición</jet-button>
                     <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
                 </div>
+            </modal>
+
+            <modal :show="showConfirm" @close="chageConfirm" maxWidth="2xl">
+                <form>
+                    <div class="tw-px-4 tw-py-4">
+                        <div class="tw-text-lg">
+                            <div class="ModalHeader">
+                                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Acepta entrega del Producto</h3>
+                            </div>
+                        </div>
+
+                        <div class="tw-mt-4">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Número Empleado</jet-label>
+                                    <jet-input type="text" :min="min" v-model="form.User"></jet-input>
+                                    <small v-if="errors.User" class="validation-alert">{{errors.User}}</small>
+                                </div>
+
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>Contraseña</jet-label>
+                                    <jet-input type="password" v-model="form.Pass"></jet-input>
+                                    <small v-if="errors.Pass" class="validation-alert">{{errors.Pass}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ModalFooter">
+                        <jet-button type="button" @click="AceptaProducto(form, 9)">Guardar</jet-button>
+                        <jet-CancelButton @click="chageConfirm">Cerrar</jet-CancelButton>
+                    </div>
+                </form>
             </modal>
 
         </div>
@@ -794,6 +794,17 @@ export default {
             this.showRepo = !this.showRepo;
         },
 
+        Parcialidad(data){
+            this.form.IdArt = data.id;
+            this.form.NumReq = data.articulos_requisicion.NumReq;
+            this.form.Fecha = data.Fecha;
+            this.form.Cant = data.Cantidad;
+            this.form.Uni = data.Unidad;
+            this.form.Desc = data.Descripcion;
+            this.chageClose();
+            this.editMode = false;
+        },
+
         FiltroIndicadores(value){
             //Filtro para consultar solo por el estatus
             this.params.Estatus = value;
@@ -819,27 +830,6 @@ export default {
                 }, preserveState: true})
         },
 
-        EnviaCotizar(data, metodo){
-            data.metodo = 3;
-            data._method = "PUT";
-            this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
-                onSuccess: () => {
-                    this.alertSucces();
-                },
-            });
-        },
-
-        Parcialidad(data){
-            this.form.IdArt = data.id;
-            this.form.NumReq = data.articulos_requisicion.NumReq;
-            this.form.Fecha = data.Fecha;
-            this.form.Cant = data.Cantidad;
-            this.form.Uni = data.Unidad;
-            this.form.Desc = data.Descripcion;
-            this.chageClose();
-            this.editMode = false;
-        },
-
         update(data, metodo) {
             data.metodo = "Parcialidad";
             data._method = "PUT";
@@ -850,21 +840,6 @@ export default {
                         this.alertSucces();
                     },
                 });
-        },
-
-        EntregaProducto(data){
-            this.chageConfirm();
-            this.form.IdArt = data.id;
-        },
-
-        AsignaArticulo(data){
-            data.metodo = 10;
-            this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
-                onSuccess: () => {
-                    this.chageConfirm();
-                    this.alertSucces();
-                },
-            });
         },
 
         SolicitaReposicion(data){
@@ -894,35 +869,12 @@ export default {
             });
         },
 
-        AceptaProducto(data, metodo){
-            data.metodo = 9;
-            data._method = "PUT";
-            this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
-                preserveScroll : true ,
-                resetOnSuccess : false ,
-                onSuccess: () => {
-                    switch (this.flash) {
-                        case 0:
-                            this.AsignaArticulo(data);
-                            break;
-                        case 1:
-                            Swal.fire(
-                            'Datos Inválidos',
-                            'Confirma tu Número de Empleado o Contraseña',
-                            'error'
-                            )
-                        break;
-                    }
-                },
-            });
-        },
-
         PrecioProveedor(data){
             this.chageProveedor();
             this.form.IdArt = data.id;
         },
 
-        Partidas(data){
+        Partidas(data){ //Visualizacion de partidas
             this.form.editId = data.id;
             this.form.NumReq = data.NumReq;
             this.form.Fecha = data.Fecha;
@@ -938,7 +890,7 @@ export default {
             this.$inertia.get('/Almacen/Requisiciones', this.params , {preserveState: true })
         },
 
-        EnviarCotizarRequisicion(data){
+        EnviarCotizarRequisicion(data){ //Enviar requisicion a cotizacion
             data.metodo = 1;
             data._method = "PUT";
             this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
@@ -948,7 +900,7 @@ export default {
             });
         },
 
-        RequisicionAlmacen(data){
+        RequisicionAlmacen(data){ //Confirmar requisicion en Almacen
             data.metodo = 2;
             data._method = "PUT";
             this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
@@ -958,6 +910,24 @@ export default {
             });
         },
 
+        EntregaProducto(data){ //Abre Modal para contraseña y Contraseña
+            this.chageConfirm();
+            this.form.IdArt = data.id;
+            this.$inertia.get('/Almacen/Requisiciones', this.params , {preserveState: true })
+        },
+
+        AceptaProducto(data, metodo){ //Envia User y pass para su verificacion
+            data.metodo = 3;
+            data._method = "PUT";
+            this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
+                preserveScroll : true ,
+                resetOnSuccess : false ,
+                onSuccess: () => {
+                    this.alertSucces();
+                    this.chageConfirm();
+                },
+            });
+        },
     },
 
 };
