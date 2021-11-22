@@ -109,6 +109,7 @@ class CotizacionesController extends Controller{
         }
 
         if($request->Req != ''){
+
             $Req = Requisiciones::where('id', '=', $request->Req)->get();
             $ArticulosRequisiciones = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
             $PreciosRequisicion = PreciosCotizaciones::where('requisiciones_id', '=', $request->Req)->get();

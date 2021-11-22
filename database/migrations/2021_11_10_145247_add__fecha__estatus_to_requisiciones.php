@@ -14,7 +14,7 @@ class AddFechaEstatusToRequisiciones extends Migration
     public function up()
     {
         Schema::table('requisiciones', function (Blueprint $table) {
-            $table->unsignedBigInteger('IdEmp')->after('IdUser');; //Numero control empleado
+            // $table->unsignedBigInteger('IdEmp')->after('IdUser'); //Numero control empleado
             $table->date('Fecha')->nullable()->after('IdEmp');
             $table->integer('Estatus')->nullable()->after('Perfil_id');
             $table->integer('OrdenCompra')->nullable()->after('NumReq')->default(0);
