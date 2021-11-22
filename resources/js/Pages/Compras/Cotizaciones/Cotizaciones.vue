@@ -248,7 +248,7 @@
                                 </div>
                                 <div v-else-if="datos.Estatus == 3 || datos.Estatus == 4">
                                     <span tooltip="REQUSICIÓN EN ESPERA DE COTIZACIÓN" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">EN COTIZACION</span>
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">COTIZAR</span>
                                     </span>
                                 </div>
                                 <div v-else-if="datos.Estatus == 5">
@@ -341,7 +341,6 @@
                     <th class="columna">UNIDAD</th>
                     <th class="columna">DESCRIPCION</th>
                     <th class="columna">NUM PARTE</th>
-                    <th class="columna">RECIBIDO</th>
                     <th class="columna">ESTATUS</th>
                     <th class="columna">ACCIONES</th>
                 </template>
@@ -352,46 +351,73 @@
                         <td class="tw-text-center">{{ art.Unidad }}</td>
                         <td class="tw-text-center">{{ art.Descripcion }}</td>
                         <td class="tw-text-center">{{ art.NumParte }}</td>
-                        <td class="tw-text-center">{{ art.RecibidoPor }}</td>
-                        <td class="tw-text-center">{{ art.EstatusArt }}</td>
+                        <td class="tw-text-center">
+                            <div v-if="art.EstatusArt == 1">
+                                <span tooltip="SIN ENVIAR" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
+                                        SIN ENVIAR</span>
+                                </span>
+                            </div>
+                            <div v-else-if="art.EstatusArt == 2">
+                                <span tooltip="Solicitada" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="art.EstatusArt == 3 || art.EstatusArt == 4">
+                                <span tooltip="En Espera de Cotización" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
+                                </span>
+                            </div>
+                            <div v-else-if="art.EstatusArt == 5">
+                                <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
+                                </span>
+                            </div>
+                            <div v-else-if="art.EstatusArt == 6">
+                                <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="art.EstatusArt == 7">
+                                <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="art.EstatusArt == 8">
+                                <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                </span>
+                            </div>
+                            <div v-else-if="art.EstatusArt == 9">
+                                <span tooltip="Entregado" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="art.EstatusArt == 10">
+                                <span tooltip="Cotizacion Rechazada" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                </span>
+                            </div>
+                        </td>
                         <td>
-                            <div class="columnaIconos" v-if="art.EstatusArt == 4">
-                                <div class="iconoEdit" @click="EditaPrecio(art)">
-                                    <span tooltip="Editar Precio" flow="left">
+                            <div class="columnaIconos" v-if="art.EstatusArt == 1">
+                                <div class="iconoEdit" @click="edit(art)">
+                                    <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                                         </svg>
                                     </span>
                                 </div>
                             </div>
-                            <div class="columnaIconos" v-else-if="art.EstatusArt == 7">
-                                <div class="iconoPurple" @click="ProductoAlmacen(art, 8)">
-                                    <span tooltip="Confirma Producto en Almacén" flow="left">
-                                        <i class="ml-2 fas fa-box"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="columnaIconos" v-else-if="art.EstatusArt == 8">
-                                <div class="iconoLime" @click="EntregaProducto(art)">
-                                    <span tooltip="Entrega el Artículo" flow="left">
-                                        <i class="fas fa-fingerprint"></i>
-                                    </span>
-                                </div>
-                            </div>
                             <div class="columnaIconos" v-else-if="art.EstatusArt == 9">
-                                <div class="iconoGreen" v-if="art.articulos_requisicion.NumReq.endsWith('-S') != true" @click="SolicitaReposicion(art)">
-                                    <span tooltip="Solicitar Reposicion" flow="left">
-                                        <i class="fas fa-dolly"></i>
-                                    </span>
-                                </div>
-                                <div class="iconoGreen" v-else>
+                                <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
                                     <span tooltip="Articulo Adquirido" flow="left">
                                         <i class="fas fa-check-square"></i>
                                     </span>
                                 </div>
                             </div>
                             <div class="columnaIconos" v-else>
-                                <div class="iconoWhite">
+                                <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
                                     <span tooltip="En proceso" flow="left">
                                         <i class="fas fa-thumbs-up"></i>
                                     </span>
@@ -404,8 +430,7 @@
         </div>
 
         <div class="ModalFooter">
-            <jet-button type="button" @click="save(form)" v-show="!editMode2">Confirmar Requisición</jet-button>
-            <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            <jet-CancelButton @click="chagePartidas">Cerrar</jet-CancelButton>
         </div>
     </modal>
 
