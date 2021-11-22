@@ -244,6 +244,7 @@
                 },
                 planA: {
                     id: '',
+                    fecha: '',
                     finFecha: moment().format("YYYY-MM-DD HH:mm:ss"),
                     usu:  this.usuario.id,
                     iniFecha: '',
@@ -285,6 +286,7 @@
             plan(data){
                 this.showModal = !this.showModal
                 this.planA.id = data.id;
+                this.planA.fecha = data.fecha;
                 this.planA.iniFecha = data.iniFecha
                 this.planA.pla_acci = '';
                 this.planA.paro_id = data.paro_id;
@@ -297,6 +299,7 @@
                     this.showModal = !this.showModal
                 }
                 this.planA.id = '';
+                this.planA.fecha = '';
                 this.planA.iniFecha = '';
                 this.planA.pla_acci = '';
                 this.planA.paro_id = '';

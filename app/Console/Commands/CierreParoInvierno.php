@@ -42,17 +42,18 @@ class CierreParoInvierno extends Command
     {
         //Pone la fecha de hoy
         $hoy = Carbon::now();
+        $up = '';
+        $txt = '';
         //$hoy->toDateTimeString();
 
         if (!var_dump($hoy->isDST())) {
-            $txt = 'entro a paro '.$hoy;
+            $txt .= 'entro a paro '.$hoy.' -> ';
             $paros = parosCarga::where('departamento_id', '=', 7)
             ->where('estatus', '=', 'Activo')
             ->get();
             foreach ($paros as $paro) {
                 $tiempo = $hoy->diffInMinutes($paro->fecha);
                 if (empty($paro->paros_carga_id)) {
-                    $txt.='entro normal '.$hoy.' || ';
                     parosCarga::create([
                         'fecha' => $hoy->toDateTimeString(),
                         'iniFecha' => $paro->iniFecha,
@@ -67,9 +68,9 @@ class CierreParoInvierno extends Command
                         'paros_carga_id' => $paro->id,
                         'departamento_id' => $paro->departamento_id
                     ]);
-                    parosCarga::find($paro->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 7]);
+                    $up .= parosCarga::find($paro->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 7]);
                 }else{
-                    $txt.='entro sub paro '.$hoy.' || ';
+                    //$txt.='entro sub paro '.$hoy.' || ';
                     $parUp = parosCarga::where('paros_carga_id', '=', $paro->paros_carga_id)->orderBy('id', 'desc')->first();
                     parosCarga::create([
                         'fecha' => $hoy->toDateTimeString(),
@@ -85,13 +86,13 @@ class CierreParoInvierno extends Command
                         'paros_carga_id' => $paro->paros_carga_id,
                         'departamento_id' => $parUp->departamento_id
                     ]);
-                    parosCarga::find($parUp->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 7]);
+                    $up = parosCarga::find($parUp->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 7]);
                 }
+                $txt.= 'entro normal '.$up.' || ';
             }
-
         }
 
-        //Storage::disk('local')->put('paroInvierno.txt', $txt);
+        Storage::disk('local')->put('paroInvierno.txt', $txt);
         return Command::SUCCESS;
     }
 }

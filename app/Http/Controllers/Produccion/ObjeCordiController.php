@@ -59,7 +59,27 @@ class ObjeCordiController extends Controller
      */
     public function update(Request $request, obje_cordi $obje_cordi)
     {
-        //
+        //return $request;
+
+        Validator::make($request->all(), [
+            'proceso_id' => ['required'],
+            'maq_pro_id' => ['required'],
+            'norma' => ['required'],
+            'departamento_id' => ['required'],
+            'pro_hora' => ['required']
+        ])->validate();
+
+        obje_cordi::find($request->input('id'))
+        ->update([
+            'proceso_id' => $request->proceso_id,
+            'maq_pro_id' => $request->maq_pro_id,
+            'clave_id' => $request->clave_id,
+            'norma' => $request->norma,
+            'pro_hora' => $request->pro_hora
+        ]);
+
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
     }
 
     /**
@@ -68,8 +88,13 @@ class ObjeCordiController extends Controller
      * @param  \App\Models\obje_cordi  $obje_cordi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(obje_cordi $obje_cordi)
+    public function destroy(Request $request)
     {
         //
+        if ($request->has('id')) {
+            obje_cordi::find($request->input('id'))->delete();
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 }

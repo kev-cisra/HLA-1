@@ -2,7 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Produccion\equipos;
+use App\Models\Produccion\turnos;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 
 class TurnosEquipos extends Command
 {
@@ -11,14 +15,14 @@ class TurnosEquipos extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'CTurnos:General';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Cambio de turnos en general';
 
     /**
      * Create a new command instance.
@@ -37,6 +41,64 @@ class TurnosEquipos extends Command
      */
     public function handle()
     {
+        //Pone la fecha de hoy
+        $hoy = Carbon::now();
+        $txt = '';
+
+        //se consulta turnos y los equipos
+        $turnos = turnos::where('departamento_id', '!=', 7)
+        ->with([
+            'equipos' => function($eq){
+                $eq->select('id', 'nombre', 'turno_id', 'cue_dia', 'max_dia', 'departamento_id');
+            }
+        ])
+        ->get(['id', 'nomtur', 'departamento_id']);
+
+        //se hace el recorrido de los turnos
+        foreach ($turnos as $tur) {
+            //si existe algun dato en el equipo
+            if(count($tur->equipos) != 0){
+                foreach ($tur->equipos as $equi) {
+                    //$txt .= $equi.' || ';
+
+                    if(!empty($equi->max_dia)){
+                        if($tur->nomtur == 'Turno 1'){
+                            $cuenta = $equi->cue_dia+1;
+                            if($cuenta <= $equi->max_dia){
+                                equipos::find($equi->id)->update(['cue_dia' => $cuenta]);
+                            }else{
+                                $idtur = turnos::where('departamento_id', '=', $equi->departamento_id)->where('nomtur', '=', 'Vacío')->first();
+                                equipos::find($equi->id)->update(['cue_dia' => 1, 'max_dia' => 2, 'turno_id' => $idtur->id]);
+                            }
+                        }elseif($tur->nomtur == 'Turno 2'){
+                            $cuenta = $equi->cue_dia+1;
+                            if($cuenta <= $equi->max_dia){
+                                equipos::find($equi->id)->update(['cue_dia' => $cuenta]);
+                            }else{
+                                $idtur = turnos::where('departamento_id', '=', $equi->departamento_id)->where('nomtur', '=', 'Vacío')->first();
+                                equipos::find($equi->id)->update(['cue_dia' => 1, 'max_dia' => 3, 'turno_id' => $idtur->id]);
+                            }
+                        }else{
+                            $cuenta = $equi->cue_dia+1;
+                            if($cuenta <= $equi->max_dia){
+                                equipos::find($equi->id)->update(['cue_dia' => $cuenta]);
+                            }else{
+                                if ($equi->max_dia == 2) {
+                                    $nomtur = 'Turno 2';
+                                }else{
+                                    $nomtur = 'Turno 1';
+                                }
+                                $idtur = turnos::where('departamento_id', '=', $equi->departamento_id)->where('nomtur', '=', $nomtur)->first();
+                                equipos::find($equi->id)->update(['cue_dia' => 1, 'max_dia' => 5, 'turno_id' => $idtur->id]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        //Storage::disk('local')->put('EquipoGeneral.txt', $txt);
         return Command::SUCCESS;
     }
 }

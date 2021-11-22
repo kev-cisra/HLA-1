@@ -54,6 +54,20 @@ class CarOpeController extends Controller
     public function update(Request $request, carOpe $carOpe)
     {
         //
+        Validator::make($request->all(), [
+            'proceso_id' => ['required'],
+            'dep_perf_id' => ['required'],
+            'maq_pro_id' => ['required'],
+        ])->validate();
+
+        carOpe::find($request->input('id'))
+        ->update([
+            'proceso_id' => $request->proceso_id,
+            'dep_perf_id' => $request->dep_perf_id,
+            'maq_pro_id' => $request->maq_pro_id,
+        ]);
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
     }
 
     /**

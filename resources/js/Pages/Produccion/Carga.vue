@@ -19,7 +19,7 @@
                 <div class="md:tw-flex tw-gap-3 tw-mr-10">
                     <!-- BTN Paquete de Operador -->
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
-                        <button class="btn tw-bg-teal-600 hover:tw-bg-teal-700 tw-text-white hover:tw-text-white tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe" @click="resetCA()">Paquete de operativos</button>
+                        <button class="btn tw-bg-teal-600 hover:tw-bg-teal-700 tw-text-white hover:tw-text-white tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe" @click="resetPO()">Paquete de operativos</button>
                         <!-- <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe" @click="resetCA()">Paquete de operativos</jet-button> -->
                     </div>
                     <!-- BTN Paquetes de Coordiandor -->
@@ -202,7 +202,7 @@
                     <!-- Fecha -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                         <jet-label class="tw-text-white"><span class="required">*</span>Fecha</jet-label>
-                        <input type="datetime-local" class="InputSelect" v-model="form.fecha" :max="hoy">
+                        <input type="datetime-local" class="InputSelect" v-model="form.fecha" :min="twoF" :max="hoy">
                         <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
                     </div>
                     <!-- Select proceso principal -->
@@ -413,7 +413,7 @@
                         <!-- select Sub proceso -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                             <jet-label><span class="required">*</span>Sub proceso </jet-label>
-                            <select class="InputSelect" v-model="form.proceso_id" :disabled="editMode">
+                            <select class="InputSelect" v-model="formPacOpe.proceso_id" :disabled="editMode">
                                 <option value="" disabled>SELECCIONA</option>
                                 <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
                             </select>
@@ -422,10 +422,10 @@
                     </div>
                     <!-- Maquinas, Normas, Claves, Partida, Kilogramos -->
                     <div class="tw-mb-6 lg:tw-flex">
-                            <!-- select operador -->
+                        <!-- select operador -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                             <jet-label><span class="required">*</span>Operador</jet-label>
-                            <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id" :disabled="editMode">
+                            <select class="InputSelect" @change="eq_tu" v-model="formPacOpe.dep_perf_id" :disabled="editMode">
                                 <option value="" disabled>SELECCIONA</option>
                                 <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
                             </select>
@@ -434,7 +434,7 @@
                         <!-- select Maquinas -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                             <jet-label><span class="required">*</span>Maquinas</jet-label>
-                            <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
+                            <select class="InputSelect" v-model="formPacOpe.maq_pro_id" :disabled="editMode">
                                 <option value="" disabled>SELECCIONA</option>
                                 <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
                             </select>
@@ -445,13 +445,16 @@
 
                     <!-- Botones -->
                     <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                        <div v-show="btnOff">
-                            <jet-button type="button" class="tw-mx-auto" @click="savePO(form)">Guardar</jet-button>
+                        <div v-if="btnOff & !editModePo">
+                            <jet-button type="button" class="tw-mx-auto" @click="savePO(formPacOpe)">Guardar</jet-button>
+                        </div>
+                        <div v-if="btnOff & editModePo">
+                            <jet-button type="button" class="tw-mx-auto" @click="updatePO(formPacOpe)">Actualizar</jet-button>
                         </div>
                         <div v-show="!btnOff">
                             <jet-button type="button" class="tw-mx-auto" disabled>
                                 <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                Calculando...
+                                Guardando...
                             </jet-button>
                         </div>
                     </div>
@@ -476,6 +479,14 @@
                                 <td> {{pOpe.dep_per.equipo_id == null ? 'N/A' : pOpe.dep_per.equipo.turnos.nomtur}} </td>
                                 <td>
                                     <div class="columnaIconos">
+                                        <!-- editar objetivos -->
+                                        <div class="iconoEdit" @click="editPO(pOpe)">
+                                            <span tooltip="Editar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                </svg>
+                                            </span>
+                                        </div>
                                         <div class="iconoDelete" @click="deletePO(pOpe)">
                                             <span tooltip="Eliminar" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -540,7 +551,7 @@
                         <div v-show="!btnOff">
                             <jet-button type="button" class="tw-mx-auto" disabled>
                                 <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                Calculando...
+                                Guardando...
                             </jet-button>
                         </div>
                     </div>
@@ -580,7 +591,7 @@
             </div>
         </div>
 
-        <!------------------------------------- Carga de paquetes para el coordinador -------------------------------->
+        <!------------------------------------- Carga de paquetes Objetivos -------------------------------->
         <div class="offcanvas offcanvas-bottom tw-h-3/4" tabindex="-1" id="paqCor" aria-labelledby="paqCorLabel">
             <div class="offcanvas-header tw-bg-blue-700">
                 <h3 class="offcanvas-title tw-text-xl tw-text-blueGray-50" id="offcanvasBottomLabel">Paquetes para coordinador</h3>
@@ -646,15 +657,18 @@
                     </div>
                     <!-- Botones -->
                     <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                        <div v-show="btnOff">
+                        <div v-if="btnOff & !editModeOB">
                             <button type="button" class="btn btn-success" @click="savePObje(formObje)">Guardar</button>
                             <!-- <jet-button type="button" @click="savePObje(form)">Guardar</jet-button> -->
                         </div>
-
+                        <div v-if="btnOff & editModeOB">
+                            <button type="button" class="btn btn-success" @click="updateOB(formObje)">Actualizar</button>
+                            <!-- <jet-button type="button" @click="savePObje(form)">Guardar</jet-button> -->
+                        </div>
                         <div v-show="!btnOff">
                             <button type="button" class="btn btn-success tw-mx-auto" disabled>
                                 <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                Calculando...
+                                Guardando...
                             </button>
                         </div>
                     </div>
@@ -677,13 +691,32 @@
                                 <td class="tw-text-center"> {{ obje.dep_mat.materiales.idmat }} - {{ obje.dep_mat.materiales.nommat }} </td>
                                 <td class="tw-text-center"> {{ obje.clave_id == null ? '' : obje.clave.CVE_ART }} - {{ obje.clave_id == null ? '' : obje.clave.DESCR }} </td>
                                 <td class="tw-text-center"> {{ obje.pro_hora }} </td>
-                                <td class="tw-text-center"></td>
+                                <td class="tw-text-center">
+                                    <div class="columnaIconos">
+                                        <!-- editar objetivos -->
+                                        <div class="iconoEdit" @click="editOB(obje)" href="#Fobje">
+                                            <span tooltip="Editar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoDelete" @click="deleteOB(obje)">
+                                            <span tooltip="Eliminar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </template>
                     </TableBlue>
                 </div>
             </div>
         </div>
+
     </app-layout>
 </template>
 
@@ -757,9 +790,20 @@
                 limp: 1,
                 hoy: moment().format('YYYY-MM-DD[T]HH:mm:ss'),
                 treDia: moment().add(3, 'days').format('YYYY-MM-DD[T]HH:mm:ss'),
+                twoF: moment().subtract(2, 'days').format('YYYY-MM-DD[T]HH:mm:ss'),
                 editMode: false,
+                editModePo: false,
+                editModeOB: false,
                 nAnte: '',
+                formPacOpe:{
+                    id: null,
+                    proceso_id: '',
+                    dep_perf_id: '',
+                    maq_pro_id: '',
+                    departamento_id: this.S_Area
+                },
                 formObje:{
+                    id: null,
                     departamento_id: this.S_Area,
                     proceso_id: '',
                     maq_pro_id: '',
@@ -1042,6 +1086,7 @@
                 this.form.notaPen = 1;
                 this.form.nota = '';
                 this.form.usu = this.usuario.id;
+                this.form.departamento_id = this.S_Area;
 
                 if (this.usuario.dep_pers.length != 0) {
                     this.usuario.dep_pers.forEach(v => {
@@ -1100,13 +1145,22 @@
             //***************************** Carga de paquetes de operativos **********************************/
             savePO(form){
                 this.btnOff = false;
-                form.departamento_id = this.S_Area;
+                //formPacOpe.departamento_id = this.S_Area;
                 //console.log(form)
                 //$('#t_op').DataTable().clear();
                 $('#t_op').DataTable().destroy();
                 this.$inertia.post('/Produccion/CarOpe', form, {
-                    onSuccess: (v) => { this.tablaOpe(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.tablaOpe(), this.btnOff = true}, preserveState: true
+                    onSuccess: (v) => { this.tablaOpe(), this.resetPO(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.tablaOpe(), this.btnOff = true}, preserveState: true
                 });
+            },
+            resetPO(){
+                this.limp = 1;
+                this.editModePo = false;
+                this.formPacOpe.id = null;
+                this.formPacOpe.proceso_id = '';
+                this.formPacOpe.dep_perf_id = '';
+                this.formPacOpe.maq_pro_id = '';
+                this.formPacOpe.departamento_id = this.S_Area;
             },
             deletePO(data) {
                 Swal.fire({
@@ -1132,6 +1186,23 @@
                         });
                     }
                 })
+            },
+            editPO(form){
+                this.limp = 2;
+                this.editModePo = true;
+                this.proc_prin = form.proceso.proceso_id;
+                this.formPacOpe.id = form.id;
+                this.formPacOpe.proceso_id = form.proceso_id;
+                this.formPacOpe.dep_perf_id = form.dep_perf_id;
+                this.formPacOpe.maq_pro_id = form.maq_pro_id;
+            },
+            updatePO(data){
+                this.btnOff = false;
+                //console.log(data)
+                $('#t_op').DataTable().destroy();
+                this.$inertia.put('/Produccion/CarOpe/' + data.id, data, {
+                    onSuccess: () => {this.reCarga(), this.tablaOpe(), this.resetPO(), this.alertSucces(), this.btnOff = true}, onError: () => {this.tablaOpe(), this.btnOff = true}
+                });
             },
             /***************************** Carga de paquetes de norma, claves y partida *********************/
             savePN(form){
@@ -1198,17 +1269,52 @@
             /****************************** Carga de paquetes para objetivos *******************************/
             savePObje(form){
                 this.btnOff = false;
+                $('#t_ob').DataTable().destroy();
                 this.$inertia.post('/Produccion/ObjeCordi', form, {
-                    onSuccess: (v) => { this.resetOB(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.btnOff = true}, preserveState: true
+                    onSuccess: (v) => { this.resetOB(), this.alertSucces(), this.btnOff = true, this.tablaObje()},
+                    onError: (e) => { this.btnOff = true, this.tablaObje()},
+                    preserveState: true
                 });
             },
             resetOB(){
+                this.limp = 1;
+                this.editModeOB = false;
+                this.formObje.id = null;
                 this.formObje.departamento_id = this.S_Area;
                 this.formObje.proceso_id = '';
                 this.formObje.maq_pro_id = '';
                 this.formObje.norma = '';
                 this.formObje.clave_id = '';
                 this.formObje.pro_hora = null;
+            },
+            editOB(form){
+                this.limp = 2;
+                this.editModeOB = true;
+                this.formObje.id = form.id;
+                this.proc_prin = form.proceso.proceso_id;
+                this.formObje.proceso_id = form.proceso_id;
+                this.formObje.maq_pro_id = form.maq_pro_id;
+                this.formObje.norma = form.norma;
+                this.formObje.clave_id = form.clave_id;
+                this.formObje.pro_hora = form.pro_hora;
+            },
+            updateOB(data){
+                console.log(data)
+                $('#t_ob').DataTable().destroy();
+                this.btnOff = false;
+                this.$inertia.put('/Produccion/ObjeCordi/' + data.id, data, {
+                    onSuccess: (v) => { this.resetOB(), this.alertSucces(), this.tablaObje(), this.btnOff = true},
+                    onError: (e) => { this.tablaObje(), this.btnOff = true},
+                    preserveState: true
+                });
+            },
+            deleteOB(data){
+                //console.log(data)
+                $('#t_ob').DataTable().destroy();
+                data._method = 'DELETE';
+                this.$inertia.post('/Produccion/ObjeCordi/' + data.id, data, {
+                    onSuccess: () => { this.tablaObje(), this.alertDelete() }, onError: () => {this.tablaObje()}, preserveState: true
+                });
             }
         },
         computed: {
@@ -1294,13 +1400,15 @@
             },
             //Opciones maquinas
             opcMQ: function() {
-                this.limp == 1 ? this.form.maq_pro_id = '' : '';
+                if (this.limp == 1) {
+                    this.form.maq_pro_id = ''
+                    this.formPacOpe.maq_pro_id = ''
+                }
                 const mq = [];
                 var mar = '';
-                if (this.form.proceso_id != '') {
+                if (this.form.proceso_id != '' | this.formPacOpe.proceso_id != '') {
                     this.procesos.forEach(pm => {
-                        if (this.form.proceso_id == pm.id) {
-                            //console.log(pm.maq_pros.length)
+                        if (this.form.proceso_id == pm.id | this.formPacOpe.proceso_id ==  pm.id ) {
                             pm.maq_pros.forEach(mp => {
                                 mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
                                 mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
@@ -1475,16 +1583,17 @@
             paqOpera: function(paO) {
                 //console.log(paO)
                 if (paO == '') {
-                    this.form.proceso_id = '';
-                    this.form.dep_perf_id = '';
-                    this.form.maq_pro_id = '';
+                    this.formPacOpe.id = null;
+                    this.formPacOpe.proceso_id = '';
+                    this.formPacOpe.dep_perf_id = '';
+                    this.formPacOpe.maq_pro_id = '';
                 }else{
                     this.paqope.forEach(po => {
                         if (po.id == paO) {
                             this.limp = 2;
-                            this.form.proceso_id = po.proceso_id;
-                            this.form.dep_perf_id = po.dep_perf_id;
-                            this.form.maq_pro_id = po.maq_pro_id;
+                            this.formPacOpe.proceso_id = po.proceso_id;
+                            this.formPacOpe.dep_perf_id = po.dep_perf_id;
+                            this.formPacOpe.maq_pro_id = po.maq_pro_id;
                         }
                     })
                 }

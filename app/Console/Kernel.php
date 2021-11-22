@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\ActualizaVacaciones::class,
+        Commands\TurnosEquipos::class,
         Commands\TurnosEquiposInviernoApertura::class,
         Commands\TurnosEquiposVeranoApertura::class,
         commands\CierreParoInvierno::class,
@@ -36,6 +37,11 @@ class Kernel extends ConsoleKernel
         ->dailyAt('01:00');
 
         //Invierno equipos apertura
+        $schedule->command('CTurnos:General')
+        ->timezone('America/Mexico_City')
+        ->dailyAt('07:00');
+
+        //Invierno equipos apertura
         $schedule->command('Invierno:Equipos')
         ->timezone('America/Mexico_City')
         ->dailyAt('08:00');
@@ -44,6 +50,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('cierre:paroInvierno')
         ->timezone('America/Mexico_City')
         ->twiceDaily(8, 20);
+        //->everyMinute();
 
         //verano equipos apertura
         $schedule->command('Verano:Equipos')

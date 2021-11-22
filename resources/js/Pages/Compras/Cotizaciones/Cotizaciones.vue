@@ -246,9 +246,14 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
                                     </span>
                                 </div>
-                                <div v-else-if="datos.Estatus == 3 || datos.Estatus == 4">
+                                <div v-else-if="datos.Estatus == 3">
                                     <span tooltip="REQUSICIÓN EN ESPERA DE COTIZACIÓN" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">COTIZAR</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 4">
+                                    <span tooltip="AÑADIR OTRA COTIZACION" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blue-500 tw-rounded-full">COTIZADO</span>
                                     </span>
                                 </div>
                                 <div v-else-if="datos.Estatus == 5">

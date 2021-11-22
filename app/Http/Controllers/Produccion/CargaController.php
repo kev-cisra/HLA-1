@@ -396,7 +396,7 @@ class CargaController extends Controller
         ])->validate();
 
         //$nFecha = $request->fecha.' '.date('H:i:s');
-        if ($request->vacio == 'N/A' | $request->vacio != 'Vacío') {
+        //if ($request->vacio == 'N/A' | $request->vacio != 'Vacío') {
             carga::create([
                 'fecha' => $request->fecha,
                 'semana' => $request->semana,
@@ -414,7 +414,7 @@ class CargaController extends Controller
                 'departamento_id' => $request->departamento_id,
                 'VerInv' => $request->VerInv
             ]);
-        }
+        //}
 
 
         return redirect()->back()
