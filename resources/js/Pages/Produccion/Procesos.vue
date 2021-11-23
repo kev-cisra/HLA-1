@@ -142,6 +142,8 @@
                                         <option value="sm_tc">SUMA TURNO POR CLAVE</option>
                                         <option value="sem_sm">SUMA SEMANAL</option>
                                         <option value="mes_sm">SUMA MENSUAL</option>
+                                        <option value="efi_dia">EFICIENCIA DIARIA</option>
+                                        <option value="efi_tur">EFICIENCIA DEL TURNO</option>
                                         <!-- <option value="ano_sm">SUMA ANUAL</option> -->
                                     </select>
                                     <small v-if="errors.operacion" class="validation-alert">{{errors.operacion}}</small>

@@ -5,13 +5,13 @@
                 <h3 class="tw-p-2"><i class="fas fa-house-user tw-ml-3 tw-mr-3"></i>Menu Produccion</h3>
             </div>
         </template>
-        <section id="menu" class="tw-flex tw-justify-center tw-mt-8 tw-min-w-screen">
+        <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
 
             <div class="container-fluid">
                 <div class="row">
                     <!-- Modulo personal -->
                     <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.personal.index'])">
-                        <Link href="Produccion/Personal" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
+                        <Link href="Produccion/Personal" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-users"></i>
                             </div>
@@ -23,7 +23,7 @@
                     </div>
                     <!-- modulo procesos -->
                     <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.procesos.index'])">
-                        <Link href="Produccion/Procesos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
+                        <Link href="Produccion/Procesos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-cogs"></i>
                             </div>
@@ -35,7 +35,7 @@
                     </div>
                     <!-- Modulo maquinas -->
                     <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.maquinas.index'])">
-                        <Link href="Produccion/Maquinas" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
+                        <Link href="Produccion/Maquinas" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-digital-tachograph"></i>
                             </div>
@@ -47,7 +47,7 @@
                     </div>
                     <!-- Modulos turnos -->
                     <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.turnos.index'])">
-                        <Link href="Produccion/Turnos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
+                        <Link href="Produccion/Turnos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-user-clock"></i>
                             </div>
@@ -59,7 +59,7 @@
                     </div>
                     <!-- Modulo materiales -->
                     <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.materiales.index'])">
-                        <Link href="Produccion/Materiales" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
+                        <Link href="Produccion/Materiales" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-boxes"></i>
                             </div>
@@ -71,7 +71,7 @@
                     </div>
                     <!-- Modulo claves -->
                     <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.clamat.index'])">
-                        <Link href="Produccion/Clamat" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
+                        <Link href="Produccion/Clamat" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-barcode"></i>
                             </div>
@@ -83,7 +83,7 @@
                     </div>
                     <!-- modulo cargas -->
                     <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.carga.index'])">
-                        <Link href="Produccion/Carga" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
+                        <Link href="Produccion/Carga" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-pallet"></i>
                             </div>
@@ -95,7 +95,7 @@
                     </div>
                     <!-- modulo Paros -->
                     <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.paros.index'])">
-                        <Link href="Produccion/Paros" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
+                        <Link href="Produccion/Paros" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-business-time"></i>
                             </div>
@@ -107,7 +107,7 @@
                     </div>
                     <!-- modulo Reportes Produccion -->
                     <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index'])">
-                        <Link href="Produccion/ReportesPro" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
+                        <Link href="Produccion/ReportesPro" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-folder-open"></i>
                             </div>
@@ -120,7 +120,7 @@
 
                     <!-- Modulo Insumos -->
                     <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.paros.index'])">
-                        <Link href="Compras/Insumos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl xl:tw-text-9xl">
+                        <Link href="Compras/Insumos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-store"></i>
                             </div>

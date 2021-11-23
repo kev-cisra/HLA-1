@@ -1583,17 +1583,17 @@
             paqOpera: function(paO) {
                 //console.log(paO)
                 if (paO == '') {
-                    this.formPacOpe.id = null;
-                    this.formPacOpe.proceso_id = '';
-                    this.formPacOpe.dep_perf_id = '';
-                    this.formPacOpe.maq_pro_id = '';
+                    this.form.id = null;
+                    this.form.proceso_id = '';
+                    this.form.dep_perf_id = '';
+                    this.form.maq_pro_id = '';
                 }else{
                     this.paqope.forEach(po => {
                         if (po.id == paO) {
                             this.limp = 2;
-                            this.formPacOpe.proceso_id = po.proceso_id;
-                            this.formPacOpe.dep_perf_id = po.dep_perf_id;
-                            this.formPacOpe.maq_pro_id = po.maq_pro_id;
+                            this.form.proceso_id = po.proceso_id;
+                            this.form.dep_perf_id = po.dep_perf_id;
+                            this.form.maq_pro_id = po.maq_pro_id;
                         }
                     })
                 }

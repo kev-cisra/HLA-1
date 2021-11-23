@@ -387,8 +387,8 @@ class CargaController extends Controller
      */
     public function store(Request $request)
     {
-        //
         //return $request;
+
         Validator::make($request->all(), [
             'proceso_id' => ['required'],
             'dep_perf_id' => ['required'],

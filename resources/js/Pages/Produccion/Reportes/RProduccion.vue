@@ -83,26 +83,26 @@
                 <template v-slot:TableHeader>
                     <th class="columna">Proceso</th>
                     <th class="columna">Fecha</th>
-                    <th class="columna">Nombre</th>
-                    <th class="columna">Departamento</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Nombre</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Departamento</th>
                     <th class="columna">Estatus</th>
-                    <th class="columna">Equipo</th>
-                    <th class="columna">Turno</th>
-                    <th class="columna">Partida</th>
-                    <th class="columna">Norma</th>
-                    <th class="columna">Clave</th>
-                    <th class="columna">Descripción de clave</th>
-                    <th class="columna">Maquina</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Equipo</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Turno</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Partida</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Norma</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Clave</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Descripción de clave</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Maquina</th>
                     <th class="columna">Producción</th>
-                    <th class="columna">Cantidad producida</th>
-                    <th></th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Cantidad producida</th>
+                    <th v-show="FoFiltro.iniDia"></th>
                 </template>
                 <template v-slot:TableFooter >
-                    <tr class="fila hover:tw-text-base" v-for="ca in recoTabla" :key="ca.id">
+                    <tr class="fila" v-for="ca in recoTabla" :key="ca.id">
                         <td >{{ca.proceso == null ? 'N/A' : ca.proceso.nompro}}</td>
                         <td >{{ca.fecha}}</td>
-                        <td >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
-                        <td >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
+                        <td v-show="FoFiltro.iniDia" >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
+                        <td v-show="FoFiltro.iniDia" >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
                         <td class=" tw-w-40">
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-if="ca.notaPen == 2">NOTA PENDIENTE</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-if="ca.proceso.tipo == 3">CALCULOS</div>
@@ -111,16 +111,16 @@
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-orange-600 tw-rounded-full" v-else-if="ca.proceso.tipo == 2 & ca.notaPen == 1">OBJETIVOS COORDINADOR</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-teal-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1">ACTUALIZADO</div>
                         </td>
-                        <td >{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
-                        <td >{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
-                        <td >{{ca.partida == null ? 'N/A' : ca.partida}}</td>
-                        <td >{{ca.dep_mat == null ? 'N/A' : ca.dep_mat.materiales.idmat+' - '+ca.dep_mat.materiales.nommat}}</td>
-                        <td >{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
-                        <td >{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
-                        <td >{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
+                        <td  v-show="FoFiltro.iniDia">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
+                        <td  v-show="FoFiltro.iniDia">{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
+                        <td  v-show="FoFiltro.iniDia">{{ca.partida == null ? 'N/A' : ca.partida}}</td>
+                        <td  v-show="FoFiltro.iniDia">{{ca.dep_mat == null ? 'N/A' : ca.dep_mat.materiales.idmat+' - '+ca.dep_mat.materiales.nommat}}</td>
+                        <td  v-show="FoFiltro.iniDia">{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
+                        <td  v-show="FoFiltro.iniDia">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
+                        <td  v-show="FoFiltro.iniDia">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
                         <td >{{this.formatoMexico(ca.valor)}}</td>
-                        <td > {{ca.VerInv}} </td>
-                        <td>
+                        <td  v-show="FoFiltro.iniDia"> {{ca.VerInv}} </td>
+                        <td v-show="FoFiltro.iniDia">
                             <div class="columnaIconos" v-if="limiteFecha()">
                                 <!-- editar objetivos -->
                                 <div class="iconoEdit" v-if="ca.proceso.tipo == 2 & usuario.dep_pers.length == 0" @click="editCar(ca)">
@@ -152,19 +152,19 @@
                 <template v-slot:Foother>
                     <th class="columna">Proceso</th>
                     <th class="columna">Fecha</th>
-                    <th class="columna">Nombre</th>
-                    <th class="columna">Departamento</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Nombre</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Departamento</th>
                     <th class="columna">Estatus</th>
-                    <th class="columna">Equipo</th>
-                    <th class="columna">Turno</th>
-                    <th class="columna">Partida</th>
-                    <th class="columna">Norma</th>
-                    <th class="columna">Clave</th>
-                    <th class="columna">Descripción de clave</th>
-                    <th class="columna">Maquina</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Equipo</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Turno</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Partida</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Norma</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Clave</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Descripción de clave</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Maquina</th>
                     <th class="columna">Producción</th>
-                    <th class="columna">Cantidad producida</th>
-                    <th></th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Cantidad producida</th>
+                    <th v-show="FoFiltro.iniDia"></th>
                 </template>
             </Table>
         </div>
@@ -174,54 +174,54 @@
             <TableBlue id="t_repoPar">
                 <template v-slot:TableHeader>
                     <th class="columna tw-text-center">Fecha</th>
-                    <th class="columna tw-text-center">Orden</th>
-                    <th class="columna tw-text-center">Maquina</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Orden</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Maquina</th>
                     <th class="columna tw-text-center">Clave de paro</th>
                     <th class="columna tw-text-center">Nombre de paro</th>
-                    <th class="columna tw-text-center">Descripción</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Descripción</th>
                     <th class="columna tw-text-center">Estatus</th>
-                    <th class="columna tw-text-center">Abierto por</th>
-                    <th class="columna tw-text-center">Cerrado por</th>
-                    <th class="columna tw-text-center">Inicio</th>
-                    <th class="columna tw-text-center">Final</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Abierto por</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Cerrado por</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Inicio</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Final</th>
                     <th class="columna tw-text-center">Tiempo cargado</th>
-                    <th class="columna tw-text-center">Plan de Acción</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Plan de Acción</th>
                 </template>
                 <template v-slot:TableFooter>
-                    <tr class="fila hover:tw-text-base" v-for="ca in recoTablaParo" :key="ca">
+                    <tr class="fila" v-for="ca in recoTablaParo" :key="ca">
                         <td class="tw-text-center">{{ca.fecha}}</td>
-                        <td class="tw-text-center">{{ca.orden}}</td>
-                        <td class="tw-text-center">{{ ca.maq_pro == 'N/A' ? ca.maq_pro : ca.maq_pro.maquinas.Nombre}}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.orden}}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ ca.maq_pro == 'N/A' ? ca.maq_pro : ca.maq_pro.maquinas.Nombre}}</td>
                         <td class="tw-text-center">{{ca.paros.clave}}</td>
                         <td class="tw-text-center">{{ca.paros.descri}}</td>
-                        <td class="tw-text-center">{{ca.descri}}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.descri}}</td>
                         <td class="tw-text-center">
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full" v-if="ca.estatus == 'Activo'">{{ca.estatus}}</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">{{ca.estatus}}</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
                         </td>
-                        <td class="tw-text-center">{{ca.perfil_ini == 'N/A' ? ca.perfil_ini : ca.perfil_ini.Nombre + ' ' + ca.perfil_ini.ApPat + ' ' + ca.perfil_ini.ApMat }} </td>
-                        <td class="tw-text-center">{{ca.perfil_fin_id == null ? '' : ca.perfil_fin.Nombre+' '+ca.perfil_fin.ApPat+' '+ca.perfil_fin.ApMat}}</td>
-                        <td class="tw-text-center">{{ca.iniFecha}}</td>
-                        <td class="tw-text-center">{{ nuFin(ca) }}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.perfil_ini == 'N/A' ? ca.perfil_ini : ca.perfil_ini.Nombre + ' ' + ca.perfil_ini.ApPat + ' ' + ca.perfil_ini.ApMat }} </td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.perfil_fin_id == null ? '' : ca.perfil_fin.Nombre+' '+ca.perfil_fin.ApPat+' '+ca.perfil_fin.ApMat}}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.iniFecha}}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ nuFin(ca) }}</td>
                         <td class="tw-text-center">{{tiempo(ca)}}</td>
-                        <td class="tw-text-center">{{ca.pla_acci}}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.pla_acci}}</td>
                     </tr>
                 </template>
                 <template v-slot:Foother>
                     <th class="columna tw-text-center">Fecha</th>
-                    <th class="columna tw-text-center">Orden</th>
-                    <th class="columna tw-text-center">Maquina</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Orden</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Maquina</th>
                     <th class="columna tw-text-center">Clave de paro</th>
                     <th class="columna tw-text-center">Nombre de paro</th>
-                    <th class="columna tw-text-center">Descripción</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Descripción</th>
                     <th class="columna tw-text-center">Estatus</th>
-                    <th class="columna tw-text-center">Abierto por</th>
-                    <th class="columna tw-text-center">Cerrado por</th>
-                    <th class="columna tw-text-center">Inicio</th>
-                    <th class="columna tw-text-center">Final</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Abierto por</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Cerrado por</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Inicio</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Final</th>
                     <th class="columna tw-text-center">Tiempo cargado</th>
-                    <th class="columna tw-text-center">Plan de Acción</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Plan de Acción</th>
                 </template>
             </TableBlue>
         </div>
@@ -262,7 +262,7 @@
             </div>
         </modal>
 
-        <!------------------ Modal Turnos------------------------->
+        <!------------------ Modal Calculos------------------------->
         <modal :show="showModal" @close="chageClose">
             <form>
                 <div class="tw-px-4 tw-py-4">
@@ -572,7 +572,7 @@
             /***************************** Calculos ******************************************/
             calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
-                    this.vCal = false;
+                    //this.vCal = false;
                     this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {
                             this.alertSucces(),
@@ -660,15 +660,20 @@
             },
             //calcula el tiempo
             tiempo(fec){
+
+                var tini = '';
+                var tfin = '';
                 if (fec.iniFecha == 'N/A') {
-                    var tini = moment();
-                    var tfin = moment().add(fec.tiempo, 'minutes');
-                    return fec.tiempo+' minutos' //tfin.from(tini, true);
+                    tini = moment();
+                    tfin = moment().add(fec.tiempo, 'minutes');
+                    //return tfin.from(tini, true) + ' || ' + fec.tiempo+' minutos';
                 }else{
-                    var tini = moment(fec.iniFecha);
-                    var tfin = fec.finFecha == null ? moment() : moment(fec.finFecha);
-                    return tfin.from(tini, true);
+                    tini = moment(fec.iniFecha);
+                    tfin = fec.finFecha == null ? moment() : moment(fec.finFecha);
+                    //return tfin.from(tini, true) + ' || ' +tfin.diff(tini, 'minutes')+' minutos' ;
                 }
+
+                return tfin.from(tini, true) + ' || ' +tfin.diff(tini, 'minutes')+' minutos' ;
 
             },
             /****************************** datatables ********************************************************/

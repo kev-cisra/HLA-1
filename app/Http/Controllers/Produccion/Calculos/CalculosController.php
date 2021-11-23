@@ -59,7 +59,7 @@ class CalculosController extends Controller
                     $this->sm_d($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_dc':
-                    //$this->sm_dc($ope, $request->depa, $fechas, $perf);
+                    $this->sm_dc($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_dp':
                     $this->sm_dp($ope, $request->depa, $fechas, $perf);
@@ -79,7 +79,7 @@ class CalculosController extends Controller
             }
         }
 
-        //return 'Listo';
+        return 'Listo';
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
@@ -239,40 +239,45 @@ class CalculosController extends Controller
 
     //operacion suma dia clave
     public function sm_dc($val, $dep, $fechas, $usuario){
-        //recorrido de formulas
-        foreach ($val->formulas as $value) {
-            $proce_id = $value->proceso_id;
-            $maq_id = $value->maq_pros_id;
-            $claves = carga::where('departamento_id', '=', $dep)
-            ->where('maq_pro_id', '=', $maq_id)
-            ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
-            ->distinct()
-            ->get(['norma','clave_id']);
-            $fs = 0;
-            $fc = 0;
-            foreach ($claves as $cl) {
-                //suma
-                $suma = carga::where('departamento_id', '=', $dep)
-                    ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
-                    ->where('clave_id', '=', $cl->clave_id)
-                    -> where('maq_pro_id', '=', $value->maq_pros_id)
-                    ->sum('valor');
+        $claves = carga::where('departamento_id', '=', $dep)
+        ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+        ->distinct()
+        ->get(['norma','clave_id']);
+        foreach ($claves as $cl) {
+            if (!empty($cl->clave_id)) {
+                //print($cl);
 
-                //catidad
-                $cuenta = carga::where('departamento_id', '=', $dep)
-                    ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
-                    ->where('clave_id', '=', $cl->clave_id)
-                    -> where('maq_pro_id', '=', $value->maq_pros_id)
-                    ->count('valor');
-                //resultado
-                $fs += $suma;
-                $fc += $cuenta;
-                //print($val->nompro.' | '.$cl->clave->CVE_ART.' | '.$suma.' | '.$cuenta.' - ');
+                $fs = 0;
+                $fc = 0;
+                //recorrido de formulas
+                foreach ($val->formulas as $value) {
+                    $proce_id = $value->proceso_id;
+                    $maq_id = $value->maq_pros_id;
+
+                    //suma
+                    $suma = carga::where('departamento_id', '=', $dep)
+                        ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                        ->where('clave_id', '=', $cl->clave_id)
+                        -> where('maq_pro_id', '=', $value->maq_pros_id)
+                        ->sum('valor');
+
+                    //catidad
+                    $cuenta = carga::where('departamento_id', '=', $dep)
+                        ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                        ->where('clave_id', '=', $cl->clave_id)
+                        -> where('maq_pro_id', '=', $value->maq_pros_id)
+                        ->count('valor');
+                    //resultado
+                    $fs += $suma;
+                    $fc += $cuenta;
+                }
                 $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => $cl->norma, 'clave_id' => $cl->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
                 if ($fc != 0) {
-                    //$this->gua_act($fechas, $data);
+                    //print($val->nompro.' | '.$cl->clave->CVE_ART.' | '.$fs.' | '.$fc.' - ');
+                    $this->gua_act($fechas, $data);
                 }
             }
+
         }
         //echo ' fin suma clave dia || ';
         return 'sm_dc';
@@ -293,11 +298,11 @@ class CalculosController extends Controller
                 foreach ($val->formulas as $value){
                     $proce_id = $value->proceso_id;
                     $maq_id = $value->maq_pros_id;
-                    $partida = carga::where('departamento_id', '=', $dep)
+                    /* $partida = carga::where('departamento_id', '=', $dep)
                     ->where('maq_pro_id', '=', $maq_id)
                     ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                     ->distinct()
-                    ->get(['partida','norma','clave_id']);
+                    ->get(['partida','norma','clave_id']); */
 
                     //suma
                     $suma = carga::where('departamento_id', '=', $dep)
@@ -317,11 +322,11 @@ class CalculosController extends Controller
                     //resultado
                     $fs += $suma;
                     $fc += $cuenta;
-                    $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => $pr->partida, 'norma' => $pr->norma, 'clave_id' => $pr->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
-                    if ($fc != 0) {
-                        //print_r($proce_id.' -/ '.$fc.' \- '.$pr->partida.' || ');
-                        $this->gua_act($fechas, $data);
-                    }
+                }
+                $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => $pr->partida, 'norma' => $pr->norma, 'clave_id' => $pr->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
+                if ($fc != 0) {
+                    print_r($proce_id.' -/ '.$fc.' \- '.$pr->partida.' || ');
+                    //$this->gua_act($fechas, $data);
                 }
             }
 

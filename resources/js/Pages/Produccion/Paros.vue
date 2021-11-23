@@ -102,7 +102,7 @@
                     <th></th>
                 </template>
                 <template v-slot:TableFooter >
-                    <tr class="fila hover:tw-text-base" v-for="ca in cargas" :key="ca.id">
+                    <tr class="fila" v-for="ca in cargas" :key="ca.id">
                         <td class="tw-text-center">{{ca.orden}}</td>
                         <td class="tw-text-center">{{ca.maq_pro.maquinas.Nombre}}</td>
                         <td class="tw-text-center">{{ca.paros.clave}}</td>
