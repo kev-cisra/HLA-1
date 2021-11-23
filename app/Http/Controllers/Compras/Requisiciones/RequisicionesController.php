@@ -415,6 +415,7 @@ class RequisicionesController extends Controller{
 
                 return redirect()->back();
                 break;
+
         }
 
     }

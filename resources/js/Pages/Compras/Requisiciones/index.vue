@@ -219,13 +219,13 @@
                     <th class="columna">NUM</th>
                     <th class="columna">FECHA</th>
                     <th class="columna">DEPARTAMENTO</th>
-                    <th class="columna">JEFE AREA</th>
                     <th class="columna">CODIGO</th>
                     <th class="columna">MAQUINA</th>
                     <th class="columna">MARCA</th>
                     <th class="columna">TIPO COMPRA</th>
                     <th class="columna">OBSERVACIONES</th>
                     <th class="columna">SOLICITANTE</th>
+                    <th>FEC LLEGADA</th>
                     <th class="columna">ESTATUS</th>
                     <th class="columna">ACCIONES</th>
                 </template>
@@ -235,13 +235,13 @@
                         <td class="tw-text-center">{{ datos.NumReq }}</td>
                         <td class="tw-text-center">{{ datos.Fecha }}</td>
                         <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
-                        <td class="tw-text-center">{{ datos.requisicion_jefe.Nombre }}</td>
                         <td class="tw-text-center">{{ datos.Codigo }}</td>
                         <td class="tw-text-center">{{ datos.requisicion_maquina.Nombre }}</td>
                         <td class="tw-text-center">{{ datos.requisicion_marca.Nombre }}</td>
                         <td class="tw-text-center">{{ datos.TipCompra }}</td>
                         <td>{{ datos.Observaciones }}</td>
-                        <td class="tw-text-center">{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                        <td>{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                        <td class="tw-text-center">{{ datos.requisicion_articulos.Fechallegada }}</td>
                         <td class="tw-text-center">
                             <div v-if="datos.Estatus == 1">
                                 <span tooltip="SIN ENVIAR" flow="left">

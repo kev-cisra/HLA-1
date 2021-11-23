@@ -229,10 +229,9 @@
             <div class="tw-overflow-x-auto tw-mx-2">
                 <Table id="Requisiciones">
                     <template v-slot:TableHeader>
-                        <th class="columna"># REQ</th>
+                        <th class="columna">REQ</th>
                         <th class="columna">FECHA</th>
                         <th class="columna">DEPARTAMENTO</th>
-                        <th class="columna">JEFE AREA</th>
                         <th class="columna">CODIGO</th>
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
@@ -249,7 +248,6 @@
                             <td class="tw-text-center">{{ datos.NumReq }}</td>
                             <td class="tw-text-center">{{ datos.Fecha }}</td>
                             <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
-                            <td class="tw-text-center">{{ datos.requisicion_jefe.Nombre }}</td>
                             <td class="tw-text-center">{{ datos.Codigo }}</td>
                             <td class="tw-text-center">{{ datos.requisicion_maquina.Nombre }}</td>
                             <td class="tw-text-center">{{ datos.requisicion_marca.Nombre }}</td>
@@ -666,7 +664,7 @@ export default {
             showPreciosRequisicion: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
-            tam: "5xl",
+            tam: "7xl",
             color: "tw-bg-sky-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             detalles: null,
@@ -773,6 +771,7 @@ export default {
             this.$nextTick(() => {
                 $("#Requisiciones").DataTable({
                     "language": this.español,
+                    "order": [10, 'asc'],
                     pageLength: 50,
                     bLengthChange: false,
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+

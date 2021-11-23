@@ -40,6 +40,8 @@ class AutorizaRequisicionesController extends Controller{
             $PerfilesUsuarios = PerfilesUsuarios::get();
         }
 
+        // 13844 13843 ->02  16668 4,2
+
         $Proveedores = Proveedores::get();
 
         $Perfiles = PerfilesUsuarios::where('jefes_areas_id', '=', $Session->id)->get();
@@ -69,10 +71,11 @@ class AutorizaRequisicionesController extends Controller{
                     $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                 },
                 ])
+                ->orderBy('id', 'desc')
                 ->where('Estatus', '>', 4)
                 ->whereYear('Fecha', $anio)
                 ->whereMonth('Fecha', $mes)
-                ->get();
+                ->get(['id', 'IdUser', 'IdEmp','Fecha', 'Folio', 'NumReq', 'OrdenCompra', 'Departamento_id', 'jefes_areas_id', 'Codigo', 'Maquina_id', 'Marca_id', 'TipCompra', 'Observaciones', 'Perfil_id', 'Estatus']);
         }
 
         if ($request->Estatus != '') {
@@ -107,6 +110,7 @@ class AutorizaRequisicionesController extends Controller{
         }
 
         if($request->Req != ''){
+
             $Req = Requisiciones::where('id', '=', $request->Req)->get();
             $ArticulosRequisiciones = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
             $PreciosRequisicion = PreciosCotizaciones::where('requisiciones_id', '=', $request->Req)->get();

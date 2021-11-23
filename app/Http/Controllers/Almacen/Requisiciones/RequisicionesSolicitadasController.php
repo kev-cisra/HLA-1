@@ -348,7 +348,22 @@ class RequisicionesSolicitadasController extends Controller {
                         ]);
                     }
                     break;
-            }
+
+                //CASO DE MANDAR A COTIZAR SOLO UN ARTICULO
+                case 4:
+                    ArticulosRequisiciones::where('id', '=', $request->id)->update([
+                        'EstatusArt' => 3,
+                    ]);
+                    return redirect()->back();
+                    break;
+                // CASO DE EXITENCIA DE UN SOLO PRODUCTO EN ALMACEN
+                case 5:
+                    ArticulosRequisiciones::where('id', '=', $request->id)->update([
+                        'EstatusArt' => 8,
+                    ]);
+                    return redirect()->back();
+                    break;
+                }
 
         }
     }

@@ -22796,6 +22796,31 @@ select {
 		padding-left: 2.5rem;
 		padding-right: 2.5rem;
 	}
+
+	.lg\:tw-text-base {
+		font-size: 1rem;
+	}
+
+	.lg\:tw-text-lg {
+		font-size: 1.125rem;
+	}
+
+	.lg\:tw-text-2xl {
+		font-size: 1.5rem;
+	}
+
+	.lg\:tw-text-5xl {
+		font-size: 3rem;
+	}
+
+	.lg\:tw-text-7xl {
+		font-size: 5rem;
+	}
+
+	.lg\:tw-text-8xl {
+		font-size: 6rem;
+		line-height: 1;
+	}
 }
 @media (min-width: 1280px) {
 

@@ -201,6 +201,7 @@
             <div class="tw-overflow-x-auto tw-mx-2">
                 <Table id="Requisiciones">
                     <template v-slot:TableHeader>
+                        <th class="columna">Id</th>
                         <th class="columna">NUM</th>
                         <th class="columna">FECHA</th>
                         <th class="columna">DEPARTAMENTO</th>
@@ -218,6 +219,7 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
+                            <td class="tw-text-center">{{ datos.id }}</td>
                             <td class="tw-text-center">{{ datos.NumReq }}</td>
                             <td class="tw-text-center">{{ datos.Fecha }}</td>
                             <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
@@ -344,48 +346,46 @@
             </div>
 
             <modal :show="showModal" @close="chageClose" :maxWidth="tam">
-                <form>
-                    <div class="tw-px-4 tw-py-4">
-                        <div class="tw-text-lg">
-                            <div class="ModalHeader">
-                                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Crea Parcialidad</h3>
-                            </div>
+                <div class="tw-px-4 tw-py-4">
+                    <div class="tw-text-lg">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Crea Parcialidad</h3>
                         </div>
+                    </div>
 
-                        <div class="tw-mt-4">
-                            <div class="ModalForm">
-                                <div class="tw-flex tw-items-center tw-justify-center tw-uppercase">
-                                    <div class="tw-w-full tw-bg-white tw-rounded-lg tw-shadow-xl">
-                                        <div class="tw-p-2 tw-ml-4 tw-space-y-1 tw-border-b md:tw-grid md:tw-grid-cols-3 tw-justify-items-stretch hover:tw-bg-gray-50 md:tw-space-y-0">
-                                            <div class="tw-justify-self-start">
-                                                <p class="tw-text-gray-600">Número de requisición</p>
-                                                <input type="text" class="InfoData" v-model="form.NumReq" disabled/>
-                                            </div>
-                                            <div class="tw-justify-self-start">
-                                                <p class="tw-text-gray-600">Fecha</p>
-                                                <input type="text" class="InfoData" v-model="form.Fecha" disabled/>
-                                            </div>
+                    <div class="tw-mt-4">
+                        <div class="ModalForm">
+                            <div class="tw-flex tw-items-center tw-justify-center tw-uppercase">
+                                <div class="tw-w-full tw-bg-white tw-rounded-lg tw-shadow-xl">
+                                    <div class="tw-p-2 tw-ml-4 tw-space-y-1 tw-border-b md:tw-grid md:tw-grid-cols-3 tw-justify-items-stretch hover:tw-bg-gray-50 md:tw-space-y-0">
+                                        <div class="tw-justify-self-start">
+                                            <p class="tw-text-gray-600">Número de requisición</p>
+                                            <input type="text" class="InfoData" v-model="form.NumReq" disabled/>
                                         </div>
-                                        <div class="tw-p-2 tw-ml-4 tw-space-y-1 tw-border-b md:tw-grid md:tw-grid-cols-3 tw-justify-items-stretch hover:tw-bg-gray-50 md:tw-space-y-0">
-                                            <div class="tw-justify-self-start">
-                                                <p class="tw-text-gray-600">Cantidad</p>
-                                                <input type="text" class="InfoData" v-model="form.Cant" disabled/>
-                                            </div>
-                                            <div class="tw-justify-self-start">
-                                                <p class="tw-text-gray-600">Unidad</p>
-                                                <input type="text" class="InfoData" v-model="form.Uni" disabled/>
-                                            </div>
-                                            <div class="tw-justify-self-start">
-                                                <p class="tw-text-gray-600">descripción</p>
-                                                <input type="text" class="InfoData" v-model="form.Desc" disabled/>
-                                            </div>
+                                        <div class="tw-justify-self-start">
+                                            <p class="tw-text-gray-600">Fecha</p>
+                                            <input type="text" class="InfoData" v-model="form.Fecha" disabled/>
                                         </div>
-                                        <div class="tw-flex tw-flex-col tw-justify-center tw-text-center tw-uppercase tw-rounded">
-                                            <div class="tw-p-4">
-                                                <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                                    <jet-label><span class="required">*</span>Confirma Parcialidad</jet-label>
-                                                    <jet-input type="number" v-model="form.Parcialidad"></jet-input>
-                                                </div>
+                                    </div>
+                                    <div class="tw-p-2 tw-ml-4 tw-space-y-1 tw-border-b md:tw-grid md:tw-grid-cols-3 tw-justify-items-stretch hover:tw-bg-gray-50 md:tw-space-y-0">
+                                        <div class="tw-justify-self-start">
+                                            <p class="tw-text-gray-600">Cantidad</p>
+                                            <input type="text" class="InfoData" v-model="form.Cant" disabled/>
+                                        </div>
+                                        <div class="tw-justify-self-start">
+                                            <p class="tw-text-gray-600">Unidad</p>
+                                            <input type="text" class="InfoData" v-model="form.Uni" disabled/>
+                                        </div>
+                                        <div class="tw-justify-self-start">
+                                            <p class="tw-text-gray-600">descripción</p>
+                                            <input type="text" class="InfoData" v-model="form.Desc" disabled/>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex tw-flex-col tw-justify-center tw-text-center tw-uppercase tw-rounded">
+                                        <div class="tw-p-4">
+                                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                                <jet-label><span class="required">*</span>Confirma Parcialidad</jet-label>
+                                                <jet-input type="number" v-model="form.Parcialidad"></jet-input>
                                             </div>
                                         </div>
                                     </div>
@@ -393,12 +393,12 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="ModalFooter">
-                        <jet-button type="button" @click="update(form, 3.1)">Guardar</jet-button>
-                        <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
-                    </div>
-                </form>
+                <div class="ModalFooter">
+                    <jet-button type="button" @click="update(form, 3.1)">Guardar</jet-button>
+                    <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                </div>
             </modal>
 
             <modal :show="showRepo" @close="chageRepo" maxWidth="xl">
@@ -487,7 +487,7 @@
                 </div>
 
                 <div class="tw-mx-4" v-if="ArticulosRequisiciones != null">
-                    <div v-if=" ArticulosRequisiciones[0].articulo_user != null ">
+                    <div v-if=" ArticulosRequisiciones[0].articulo_user != null">
                         <Table>
                             <template v-slot:TableHeader>
                                 <th class="columna">CANTIDAD</th>
@@ -555,26 +555,15 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="columnaIconos" v-if="art.EstatusArt == 1">
-                                            <div class="iconoEdit" @click="edit(art)">
-                                                <span tooltip="Editar" flow="left">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                                    </svg>
+                                        <div class="columnaIconos">
+                                            <div class="iconoEdit" @click="ArticuloAlmacen(art)">
+                                                <span tooltip="Confirma Partida en Almacén" flow="left">
+                                                    <i class="ml-2 fas fa-check-circle"></i>
                                                 </span>
                                             </div>
-                                        </div>
-                                        <div class="columnaIconos" v-else-if="art.EstatusArt == 9">
-                                            <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
-                                                <span tooltip="Articulo Adquirido" flow="left">
-                                                    <i class="fas fa-check-square"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="columnaIconos" v-else>
-                                            <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
-                                                <span tooltip="En proceso" flow="left">
-                                                    <i class="fas fa-thumbs-up"></i>
+                                            <div class="iconoEdit" @click="ArticuloCotizacion(art)">
+                                                <span tooltip="Envia Partida a Cotizacion" flow="left">
+                                                    <i class="fas fa-money-bill-wave"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -649,26 +638,15 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="columnaIconos" v-if="art.EstatusArt == 1">
-                                            <div class="iconoEdit" @click="edit(art)">
-                                                <span tooltip="Editar" flow="left">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                                    </svg>
+                                        <div class="columnaIconos">
+                                            <div class="iconoEdit" @click="ArticuloAlmacen(art)">
+                                                <span tooltip="Confirma Partida en Almacén" flow="left">
+                                                    <i class="ml-2 fas fa-check-circle"></i>
                                                 </span>
                                             </div>
-                                        </div>
-                                        <div class="columnaIconos" v-else-if="art.EstatusArt == 9">
-                                            <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
-                                                <span tooltip="Articulo Adquirido" flow="left">
-                                                    <i class="fas fa-check-square"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="columnaIconos" v-else>
-                                            <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
-                                                <span tooltip="En proceso" flow="left">
-                                                    <i class="fas fa-thumbs-up"></i>
+                                            <div class="iconoEdit" @click="ArticuloCotizacion(art)">
+                                                <span tooltip="Envia Partida a Cotizacion" flow="left">
+                                                    <i class="fas fa-money-bill-wave"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -677,6 +655,9 @@
                             </template>
                         </Table>
                     </div>
+                </div>
+                <div v-else>
+                    <p>No hay Articulos Asignados a esta requisición</p>
                 </div>
 
                 <div class="ModalFooter">
@@ -866,6 +847,14 @@ export default {
             this.$nextTick(() => {
                 $("#Requisiciones").DataTable({
                     "language": this.español,
+                    "columnDefs": [
+                        {
+                            "targets": [ 0 ],
+                            "visible": false,
+                            "searchable": false
+                        },
+                    ],
+                    "order": [0, 'desc'],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -1008,8 +997,13 @@ export default {
             this.form.Nombre = data.Perfil_id;
             this.form.Observaciones = data.Observaciones;
             this.params.Req = data.id;
-            this.chagePartidas();
-            this.$inertia.get('/Almacen/Requisiciones', this.params , {preserveState: true })
+
+            this.$inertia.get('/Almacen/Requisiciones', this.params , {
+                preserveState: true,
+                    onSuccess: () => {
+                        this.chagePartidas();
+                    },
+                })
         },
 
         EnviarCotizarRequisicion(data){ //Enviar requisicion a cotizacion
@@ -1022,8 +1016,28 @@ export default {
             });
         },
 
+        ArticuloCotizacion(data){
+            data.metodo = 4;
+            data._method = "PUT";
+            this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
+        },
+
         RequisicionAlmacen(data){ //Confirmar requisicion en Almacen
             data.metodo = 2;
+            data._method = "PUT";
+            this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
+        },
+
+        ArticuloAlmacen(data){
+            data.metodo = 5;
             data._method = "PUT";
             this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
                 onSuccess: () => {
