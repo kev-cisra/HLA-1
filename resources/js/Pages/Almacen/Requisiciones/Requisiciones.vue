@@ -345,6 +345,188 @@
                 </Table>
             </div>
 
+            <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
+                <div class="tw-px-4 tw-py-4">
+                    <div class="tw-text-lg">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición </h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tw-mx-4" v-if="ArticulosRequisicion != null">
+                    <div v-if=" ArticulosRequisicion[0].articulo_user != null">
+                        <Table>
+                            <template v-slot:TableHeader>
+                                <th class="columna">CANTIDAD</th>
+                                <th class="columna">UNIDAD</th>
+                                <th class="columna">DESCRIPCION</th>
+                                <th class="columna">NUM PARTE</th>
+                                <th class="columna">RECIBIDO</th>
+                                <th class="columna">ESTATUS</th>
+                                <th class="columna">ACCIONES</th>
+                            </template>
+
+                            <template v-slot:TableFooter>
+                                <tr class="fila" v-for="art in ArticulosRequisicion" :key="art.id">
+                                    <td class="tw-text-center">{{ art.Cantidad }}</td>
+                                    <td class="tw-text-center">{{ art.Unidad }}</td>
+                                    <td class="tw-text-center">{{ art.Descripcion }}</td>
+                                    <td class="tw-text-center">{{ art.NumParte }}</td>
+                                    <td class="tw-text-center" >{{ art.articulo_user.name }}</td>
+                                    <td class="tw-text-center">
+                                        <div v-if="art.EstatusArt == 2">
+                                            <span tooltip="Solicitada" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 3 || art.EstatusArt == 4">
+                                            <span tooltip="En Espera de Cotización" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 5">
+                                            <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 6">
+                                            <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 7">
+                                            <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 8">
+                                            <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 9">
+                                            <span tooltip="Entregado" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 10">
+                                            <span tooltip="Cotizacion Rechazada" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="columnaIconos">
+                                            <div class="iconoEdit" @click="ArticuloAlmacen(art)" v-if="art.EstatusArt == 2">
+                                                <span tooltip="Confirma Partida en Almacén" flow="left">
+                                                    <i class="ml-2 fas fa-check-circle"></i>
+                                                </span>
+                                            </div>
+                                            <div class="iconoEdit" @click="ArticuloCotizacion(art)" v-if="art.EstatusArt == 2">
+                                                <span tooltip="Envia Partida a Cotizacion" flow="left">
+                                                    <i class="fas fa-money-bill-wave"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </Table>
+                    </div>
+                    <div v-else>
+                        <Table>
+                            <template v-slot:TableHeader>
+                                <th class="columna">CANTIDAD</th>
+                                <th class="columna">UNIDAD</th>
+                                <th class="columna">DESCRIPCION</th>
+                                <th class="columna">NUM PARTE</th>
+                                <th class="columna">ESTATUS</th>
+                                <th class="columna">ACCIONES</th>
+                            </template>
+
+                            <template v-slot:TableFooter>
+                                <tr class="fila" v-for="art in ArticulosRequisicion" :key="art.id">
+                                    <td class="tw-text-center">{{ art.Cantidad }}</td>
+                                    <td class="tw-text-center">{{ art.Unidad }}</td>
+                                    <td class="tw-text-center">{{ art.Descripcion }}</td>
+                                    <td class="tw-text-center">{{ art.NumParte }}</td>
+                                    <td class="tw-text-center">
+                                        <div v-if="art.EstatusArt == 1">
+                                            <span tooltip="SIN ENVIAR" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
+                                                    SIN ENVIAR</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 2">
+                                            <span tooltip="Solicitada" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 3 || art.EstatusArt == 4">
+                                            <span tooltip="En Espera de Cotización" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 5">
+                                            <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 6">
+                                            <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 7">
+                                            <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 8">
+                                            <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 9">
+                                            <span tooltip="Entregado" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                            </span>
+                                        </div>
+                                        <div v-else-if="art.EstatusArt == 10">
+                                            <span tooltip="Cotizacion Rechazada" flow="left">
+                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="columnaIconos">
+                                            <div class="iconoEdit" @click="ArticuloAlmacen(art)" v-if="art.EstatusArt == 2">
+                                                <span tooltip="Confirma Partida en Almacén" flow="left">
+                                                    <i class="ml-2 fas fa-check-circle"></i>
+                                                </span>
+                                            </div>
+                                            <div class="iconoEdit" @click="ArticuloCotizacion(art)" v-if="art.EstatusArt == 2">
+                                                <span tooltip="Envia Partida a Cotizacion" flow="left">
+                                                    <i class="fas fa-money-bill-wave"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </Table>
+                    </div>
+                </div>
+                <div v-else>
+                    <p>No hay Articulos Asignados a esta requisición</p>
+                </div>
+
+                <div class="ModalFooter">
+                    <jet-CancelButton @click="chagePartidas">Cerrar</jet-CancelButton>
+                </div>
+            </modal>
+
             <modal :show="showModal" @close="chageClose" :maxWidth="tam">
                 <div class="tw-px-4 tw-py-4">
                     <div class="tw-text-lg">
@@ -475,194 +657,6 @@
                         <jet-CancelButton @click="chageProveedor">Cerrar</jet-CancelButton>
                     </div>
                 </form>
-            </modal>
-
-            <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
-                <div class="tw-px-4 tw-py-4">
-                    <div class="tw-text-lg">
-                        <div class="ModalHeader">
-                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición </h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tw-mx-4" v-if="ArticulosRequisiciones != null">
-                    <div v-if=" ArticulosRequisiciones[0].articulo_user != null">
-                        <Table>
-                            <template v-slot:TableHeader>
-                                <th class="columna">CANTIDAD</th>
-                                <th class="columna">UNIDAD</th>
-                                <th class="columna">DESCRIPCION</th>
-                                <th class="columna">NUM PARTE</th>
-                                <th class="columna">RECIBIDO</th>
-                                <th class="columna">ESTATUS</th>
-                                <th class="columna">ACCIONES</th>
-                            </template>
-
-                            <template v-slot:TableFooter>
-                                <tr class="fila" v-for="art in ArticulosRequisiciones" :key="art.id">
-                                    <td class="tw-text-center">{{ art.Cantidad }}</td>
-                                    <td class="tw-text-center">{{ art.Unidad }}</td>
-                                    <td class="tw-text-center">{{ art.Descripcion }}</td>
-                                    <td class="tw-text-center">{{ art.NumParte }}</td>
-                                    <td class="tw-text-center" >{{ art.articulo_user.name }}</td>
-                                    <td class="tw-text-center">
-                                        <div v-if="art.EstatusArt == 1">
-                                            <span tooltip="SIN ENVIAR" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
-                                                    SIN ENVIAR</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 2">
-                                            <span tooltip="Solicitada" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 3 || art.EstatusArt == 4">
-                                            <span tooltip="En Espera de Cotización" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 5">
-                                            <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 6">
-                                            <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 7">
-                                            <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 8">
-                                            <span tooltip="Pasa por el articulo a almacén" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 9">
-                                            <span tooltip="Entregado" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 10">
-                                            <span tooltip="Cotizacion Rechazada" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="columnaIconos">
-                                            <div class="iconoEdit" @click="ArticuloAlmacen(art)">
-                                                <span tooltip="Confirma Partida en Almacén" flow="left">
-                                                    <i class="ml-2 fas fa-check-circle"></i>
-                                                </span>
-                                            </div>
-                                            <div class="iconoEdit" @click="ArticuloCotizacion(art)">
-                                                <span tooltip="Envia Partida a Cotizacion" flow="left">
-                                                    <i class="fas fa-money-bill-wave"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </Table>
-                    </div>
-                    <div v-else>
-                        <Table>
-                            <template v-slot:TableHeader>
-                                <th class="columna">CANTIDAD</th>
-                                <th class="columna">UNIDAD</th>
-                                <th class="columna">DESCRIPCION</th>
-                                <th class="columna">NUM PARTE</th>
-                                <th class="columna">ESTATUS</th>
-                                <th class="columna">ACCIONES</th>
-                            </template>
-
-                            <template v-slot:TableFooter>
-                                <tr class="fila" v-for="art in ArticulosRequisiciones" :key="art.id">
-                                    <td class="tw-text-center">{{ art.Cantidad }}</td>
-                                    <td class="tw-text-center">{{ art.Unidad }}</td>
-                                    <td class="tw-text-center">{{ art.Descripcion }}</td>
-                                    <td class="tw-text-center">{{ art.NumParte }}</td>
-                                    <td class="tw-text-center">
-                                        <div v-if="art.EstatusArt == 1">
-                                            <span tooltip="SIN ENVIAR" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
-                                                    SIN ENVIAR</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 2">
-                                            <span tooltip="Solicitada" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 3 || art.EstatusArt == 4">
-                                            <span tooltip="En Espera de Cotización" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 5">
-                                            <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 6">
-                                            <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 7">
-                                            <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 8">
-                                            <span tooltip="Pasa por el articulo a almacén" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 9">
-                                            <span tooltip="Entregado" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 10">
-                                            <span tooltip="Cotizacion Rechazada" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="columnaIconos">
-                                            <div class="iconoEdit" @click="ArticuloAlmacen(art)">
-                                                <span tooltip="Confirma Partida en Almacén" flow="left">
-                                                    <i class="ml-2 fas fa-check-circle"></i>
-                                                </span>
-                                            </div>
-                                            <div class="iconoEdit" @click="ArticuloCotizacion(art)">
-                                                <span tooltip="Envia Partida a Cotizacion" flow="left">
-                                                    <i class="fas fa-money-bill-wave"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </Table>
-                    </div>
-                </div>
-                <div v-else>
-                    <p>No hay Articulos Asignados a esta requisición</p>
-                </div>
-
-                <div class="ModalFooter">
-                    <jet-CancelButton @click="chagePartidas">Cerrar</jet-CancelButton>
-                </div>
             </modal>
 
             <modal :show="showConfirm" @close="chageConfirm" maxWidth="2xl">
@@ -797,9 +791,7 @@ export default {
         flash: Object,
         Requisiciones: Object,
         ArticulosRequisiciones: Object,
-        Departamentos: Object,
-        Maquinas: Object,
-        PerfilesUsuarios: Object,
+        ArticulosRequisicion: Object,
         Almacen: Object,
         Cotizacion: Object,
         SinConfirmar: Object,
