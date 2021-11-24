@@ -19,7 +19,7 @@
             </template>
             <template v-slot:BtnNuevo>
                 <!-- boton de calculos -->
-                <div class="tw-flex tw-gap-3 tw-mr-10">
+                <div class="md:tw-flex tw-gap-3 tw-mr-10">
                     <div>
                         <jet-button class="BtnNuevo tw-w-full" @click="openModalC">Carga masiva</jet-button>
                     </div>
@@ -27,7 +27,7 @@
                         <jet-button class="BtnNuevo tw-w-full" @click="openModal">Calculos</jet-button>
                     </div>
                     <div>
-                        <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#filtro" aria-expanded="false" aria-controls="filtro"><i class="fas fa-filter"> </i> Filtros</jet-button>
+                        <jet-button class="BtnNuevo tw-w-full" data-bs-toggle="collapse" data-bs-target="#filtro" aria-expanded="false" aria-controls="filtro"><i class="fas fa-filter"> </i> Filtros</jet-button>
                     </div>
                 </div>
             </template>
@@ -81,10 +81,10 @@
         <div class="table-responsive" v-show="FoFiltro.TipRepo == 1">
             <Table id="t_repo">
                 <template v-slot:TableHeader>
-                    <th class="columna">Proceso</th>
                     <th class="columna">Fecha</th>
+                    <th class="columna">Proceso</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Maquina</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Nombre</th>
-                    <th class="columna" v-show="FoFiltro.iniDia">Departamento</th>
                     <th class="columna">Estatus</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Equipo</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Turno</th>
@@ -92,34 +92,47 @@
                     <th class="columna" v-show="FoFiltro.iniDia">Norma</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Clave</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Descripción de clave</th>
-                    <th class="columna" v-show="FoFiltro.iniDia">Maquina</th>
                     <th class="columna">Producción</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Cantidad producida</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Departamento</th>
                     <th v-show="FoFiltro.iniDia"></th>
                 </template>
                 <template v-slot:TableFooter >
                     <tr class="fila" v-for="ca in recoTabla" :key="ca.id">
-                        <td >{{ca.proceso == null ? 'N/A' : ca.proceso.nompro}}</td>
                         <td >{{ca.fecha}}</td>
+                        <td class="">{{ca.proceso == null ? 'N/A' : ca.proceso.nompro}}</td>
+                        <td  v-show="FoFiltro.iniDia">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
                         <td v-show="FoFiltro.iniDia" >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
-                        <td v-show="FoFiltro.iniDia" >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
-                        <td class=" tw-w-40">
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-if="ca.notaPen == 2">NOTA PENDIENTE</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-if="ca.proceso.tipo == 3">CALCULOS</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-indigo-600 tw-rounded-full" v-else-if="ca.proceso.tipo == 1 & ca.notaPen == 1">PRODUCCION</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-yellow-600 tw-rounded-full" v-else-if="ca.proceso.tipo == 5 & ca.notaPen == 1">MERMA PRODUCCION</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-orange-600 tw-rounded-full" v-else-if="ca.proceso.tipo == 2 & ca.notaPen == 1">OBJETIVOS COORDINADOR</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-teal-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1">ACTUALIZADO</div>
+
+
+                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-w-full table-info tw-rounded-full" v-if="ca.notaPen == 2">
+                            NOTA PENDIENTE
                         </td>
+                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-w-full table-dark tw-rounded-full" v-if="ca.proceso.tipo == 3">
+                            CALCULOS
+                        </td>
+                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-w-full table-primary tw-rounded-full" v-else-if="ca.proceso.tipo == 1 & ca.notaPen == 1">
+                            PRODUCCION
+                        </td>
+                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-w-full table-danger tw-rounded-full" v-else-if="ca.proceso.tipo == 5 & ca.notaPen == 1">
+                            MERMA
+                        </td>
+                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-w-full table-warning tw-rounded-full" v-else-if="ca.proceso.tipo == 2 & ca.notaPen == 1">
+                            OBJETIVOS COORDINADOR
+                        </td>
+                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-h-full tw-w-full table-success tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1">
+                            ACTUALIZADO
+                        </td>
+
                         <td  v-show="FoFiltro.iniDia">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
                         <td  v-show="FoFiltro.iniDia">{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
                         <td  v-show="FoFiltro.iniDia">{{ca.partida == null ? 'N/A' : ca.partida}}</td>
                         <td  v-show="FoFiltro.iniDia">{{ca.dep_mat == null ? 'N/A' : ca.dep_mat.materiales.idmat+' - '+ca.dep_mat.materiales.nommat}}</td>
                         <td  v-show="FoFiltro.iniDia">{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
                         <td  v-show="FoFiltro.iniDia">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
-                        <td  v-show="FoFiltro.iniDia">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
                         <td >{{this.formatoMexico(ca.valor)}}</td>
                         <td  v-show="FoFiltro.iniDia"> {{ca.VerInv}} </td>
+                        <td v-show="FoFiltro.iniDia" >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
                         <td v-show="FoFiltro.iniDia">
                             <div class="columnaIconos" v-if="limiteFecha()">
                                 <!-- editar objetivos -->
@@ -150,10 +163,10 @@
                     </tr>
                 </template>
                 <template v-slot:Foother>
-                    <th class="columna">Proceso</th>
                     <th class="columna">Fecha</th>
+                    <th class="columna">Proceso</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Maquina</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Nombre</th>
-                    <th class="columna" v-show="FoFiltro.iniDia">Departamento</th>
                     <th class="columna">Estatus</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Equipo</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Turno</th>
@@ -161,9 +174,9 @@
                     <th class="columna" v-show="FoFiltro.iniDia">Norma</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Clave</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Descripción de clave</th>
-                    <th class="columna" v-show="FoFiltro.iniDia">Maquina</th>
                     <th class="columna">Producción</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Cantidad producida</th>
+                    <th class="columna" v-show="FoFiltro.iniDia">Departamento</th>
                     <th v-show="FoFiltro.iniDia"></th>
                 </template>
             </Table>
@@ -175,7 +188,7 @@
                 <template v-slot:TableHeader>
                     <th class="columna tw-text-center">Fecha</th>
                     <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Orden</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Maquina</th>
+                    <th class="columna tw-text-center">Maquina</th>
                     <th class="columna tw-text-center">Clave de paro</th>
                     <th class="columna tw-text-center">Nombre de paro</th>
                     <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Descripción</th>
@@ -191,15 +204,21 @@
                     <tr class="fila" v-for="ca in recoTablaParo" :key="ca">
                         <td class="tw-text-center">{{ca.fecha}}</td>
                         <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.orden}}</td>
-                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ ca.maq_pro == 'N/A' ? ca.maq_pro : ca.maq_pro.maquinas.Nombre}}</td>
+                        <td class="tw-text-center">{{ ca.maq_pro.length ? ca.maq_pro : ca.maq_pro.maquinas.Nombre}}</td>
                         <td class="tw-text-center">{{ca.paros.clave}}</td>
                         <td class="tw-text-center">{{ca.paros.descri}}</td>
                         <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.descri}}</td>
-                        <td class="tw-text-center">
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full" v-if="ca.estatus == 'Activo'">{{ca.estatus}}</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">{{ca.estatus}}</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
+
+                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-w-full table-danger tw-rounded-full" v-if="ca.estatus == 'Activo'">
+                            {{ca.estatus}}
                         </td>
+                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-w-full table-info tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">
+                            {{ca.estatus}}
+                        </td>
+                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-w-full table-success tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">
+                            {{ca.estatus}}
+                        </td>
+
                         <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.perfil_ini == 'N/A' ? ca.perfil_ini : ca.perfil_ini.Nombre + ' ' + ca.perfil_ini.ApPat + ' ' + ca.perfil_ini.ApMat }} </td>
                         <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.perfil_fin_id == null ? '' : ca.perfil_fin.Nombre+' '+ca.perfil_fin.ApPat+' '+ca.perfil_fin.ApMat}}</td>
                         <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.iniFecha}}</td>
@@ -211,7 +230,7 @@
                 <template v-slot:Foother>
                     <th class="columna tw-text-center">Fecha</th>
                     <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Orden</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Maquina</th>
+                    <th class="columna tw-text-center">Maquina</th>
                     <th class="columna tw-text-center">Clave de paro</th>
                     <th class="columna tw-text-center">Nombre de paro</th>
                     <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Descripción</th>
@@ -225,6 +244,7 @@
                 </template>
             </TableBlue>
         </div>
+
         <!------------------------------------- Modal para carga de datos masivas ------------------------------------------------>
         <modal :show="showModalC" @close="chageCloseC">
             <div class="tw-px-4 tw-py-4">
@@ -474,6 +494,7 @@
             'paros',
             'cargas',
             'materiales',
+            'maquinas',
             'procesos',
             'claParo',
             'errors'
@@ -500,10 +521,10 @@
                 S_Area: '',
                 fechaC: '',
                 limp: 1,
-                docu: {
-                    file: null
-                },
                 nAnte: null,
+                horas: '07:00',
+                estAño: moment().format('Y'),
+                ano: moment().format('Y'),
                 hoy: moment().format('YYYY-MM-DD'),
                 treDia: moment().add(3, 'days').format('YYYY-MM-DD'),
                 editMode: false,
@@ -514,9 +535,9 @@
                 proc_prin: '',
                 vMasi: true,
                 vCal: true,
-                horas: '07:00',
-                estAño: moment().format('Y'),
-                ano: moment().format('Y'),
+                docu: {
+                    file: null
+                },
                 FoFiltro: {
                     TipRepo: 1,
                     mes: null,
@@ -561,6 +582,7 @@
                 var dife = Dhoy.diff(inpDia, 'days');
                 return dife <= 3;
             },
+
             /***************************** Carga Masiva ************************************/
             carMasi(){
                 const form = this.docu;
@@ -569,6 +591,7 @@
                     onSuccess: (v) => { this.openModalC(), this.resetC(), this.alertSucces(), this.vMasi = true }, onError: (e) => { this.vMasi = true }, preserveState: true
                 });
             },
+
             /***************************** Calculos ******************************************/
             calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
@@ -614,6 +637,7 @@
                 arr[0] = arr[0].replace(exp,rep);
                 return arr[1] ? arr.join('.'): arr[0];
             },
+
             /****************************** Globales **********************************************************/
             global(){
                 if (this.usuario.dep_pers.length == 0) {
@@ -676,20 +700,23 @@
                 return tfin.from(tini, true) + ' || ' +tfin.diff(tini, 'minutes')+' minutos' ;
 
             },
+
             /****************************** datatables ********************************************************/
             //datatable de carga de produccion
             tabla() {
                 this.$nextTick(() => {
-                    $('#t_repo tfoot th').each( function () {
-                        var title = $(this).text();
-                        $(this).html( '<input type="text" class="InputSelect tw-text-gray-900" placeholder="'+title+'" />' );
-                    } );
                     var table = $('#t_repo').DataTable({
                         "language": this.español,
-                        "order": [[0, 'desc'],[1, 'asc']],
+                        "order": [[1, 'desc'],[0, 'asc']],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        "columnDefs": [
+                            { "width": "10%", "targets": [0,1,2,3,4,10] },
+                            { "width": "7%", "targets": [5,6,7,8,9,13] },
+                            { "width": "5%", "targets": [11,12] }
+                        ],
+                        stateSave: true,
                         scrollY:        '40vh',
                         scrollCollapse: true,
                         paging:         false,
@@ -715,16 +742,27 @@
                             'colvis'
                         ],
                         initComplete: function () {
-                            // Apply the search
                             this.api().columns().every( function () {
-                                var that = this;
+                                var column = this;
+                                var select = $('<select class="InputSelect tw-text-gray-900"><option value=""></option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
 
-                                $( 'input', this.footer() ).on( 'keyup change clear', function () {
-                                    if ( that.search() !== this.value ) {
-                                        that
-                                            .search( this.value )
+                                        column
+                                            .search( val ? '^'+val+'$' : '', true, false )
                                             .draw();
+                                    } );
+
+                                column.cells('', column[0]).render('display').sort().unique().each( function ( d, j ) {
+                                    if(column.search() === '^'+d+'$'){
+                                        select.append( '<option value="'+d+'" selected="selected">'+d+'</option>' )
+                                    } else {
+                                        select.append( '<option value="'+d+'">'+d+'</option>' )
                                     }
+                                    //select.append( '<option value="'+d+'">'+d+'</option>' )
                                 } );
                             } );
                         }
@@ -735,16 +773,32 @@
             //datatable de paros
             tablaParo() {
                 this.$nextTick(() => {
-                    $('#t_repoPar tfoot th').each( function () {
+                    /* $('#t_repoPar tfoot th').each( function () {
                         var title = $(this).text();
                         $(this).html( '<input type="text" class="InputSelect tw-text-gray-900" placeholder="'+title+'" />' );
                     } );
+                    initComplete: function () {
+                        // Apply the search
+                        this.api().columns().every( function () {
+                            var that = this;
+
+                            $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                                if ( that.search() !== this.value ) {
+                                    that
+                                        .search( this.value )
+                                        .draw();
+                                }
+                            } );
+                        } );
+                    } */
+
                     var table = $('#t_repoPar').DataTable({
                         "language": this.español,
                         "order": [[0, 'desc'],[1, 'asc']],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        stateSave: true,
                         scrollY:        '40vh',
                         scrollCollapse: true,
                         paging:         false,
@@ -770,16 +824,27 @@
                             'colvis'
                         ],
                         initComplete: function () {
-                            // Apply the search
                             this.api().columns().every( function () {
-                                var that = this;
+                                var column = this;
+                                var select = $('<select class="InputSelect tw-text-gray-900"><option value=""></option></select>')
+                                    .appendTo( $(column.footer()).empty() )
+                                    .on( 'change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
 
-                                $( 'input', this.footer() ).on( 'keyup change clear', function () {
-                                    if ( that.search() !== this.value ) {
-                                        that
-                                            .search( this.value )
+                                        column
+                                            .search( val ? '^'+val+'$' : '', true, false )
                                             .draw();
+                                    } );
+
+                                column.cells('', column[0]).render('display').sort().unique().each( function ( d, j ) {
+                                    if(column.search() === '^'+d+'$'){
+                                        select.append( '<option value="'+d+'" selected="selected">'+d+'</option>' )
+                                    } else {
+                                        select.append( '<option value="'+d+'">'+d+'</option>' )
                                     }
+                                    //select.append( '<option value="'+d+'">'+d+'</option>' )
                                 } );
                             } );
                         }
@@ -815,14 +880,13 @@
                 var fin = null;
                 //consulta del dia
                 if(this.FoFiltro.iniDia != null){
+                    inicio = this.FoFiltro.iniDia+' 07:00:00'
                     if (this.S_Area == 7){
                         if (moment(this.FoFiltro.iniDia).isDST()) {
                             inicio = this.FoFiltro.iniDia+' 09:00:00';
                         }else{
                             inicio = this.FoFiltro.iniDia+' 08:00:00';
                         }
-                    }else{
-                        inicio = this.FoFiltro.iniDia+' 07:00:00'
                     }
 
                     //Asigna el dato para la fecha final
@@ -903,6 +967,7 @@
                         }
                     });
                 }
+                //consulta semanal
                 if (this.FoFiltro.semana != null) {
                     //console.log(this.FoFiltro.semana)
                     //Limpia el datatables
@@ -910,26 +975,39 @@
                     $('#t_repoPar').DataTable().destroy();
                     this.tablaParo();
                     //variables
-                    var semana = '';
+                    var semana = 'Semana '+moment(this.FoFiltro.semana).format('WW');
+                    var maquina = '';
                     var suma = 0;
-                    //se recorren las claves que existen de los paros
-                    this.claParo.forEach(cla => {
-                        suma = 0;
-                        //hace el recorrido y asigna el Array
-                        this.paros.forEach(fec => {
-                            if (moment(fec.fecha).format('YYYY-[W]WW') == this.FoFiltro.semana & fec.paro_id == cla.id & fec.tiempo != null) {
-                                semana = moment(fec.fecha).format('YYYY-[W]WW')
-                                suma += parseInt(fec.tiempo, 10);
-                                //console.log(fec.paros.clave + ' - ' + fec.tiempo + ' - ' + suma + ' || ')
-                            }
-                        });
-                        //si la suma es diferente de 0 entonces crea el nuevo array
-                        if (suma > 0) {
-                            rtP.push({fecha: semana, orden: 'N/A', maq_pro: 'N/A', paros: {clave: cla.clave, descri: cla.descri}, estatus: 'Activo', perfil_ini: 'N/A', iniFecha: 'N/A', finFecha: 'N/A', pla_acci: 'N/A', perfil_fin_id: null, tiempo: suma})
-                            //console.log(cla.clave + ' - ' + suma);
+                    const paroNu = []
+                    this.paros.forEach(nue => {
+                        if(moment(nue.fecha).format('YYYY-[W]WW') == this.FoFiltro.semana){
+                            paroNu.push(nue);
                         }
                     })
+
+                    //console.log(paroNu);
+                    //se recorren las claves que existen de los paros
+                    this.claParo.forEach(cla => {
+                        //hace el recorrido y asigna el Array
+                        this.maquinas.forEach(maq => {
+                            suma = 0;
+                            maquina = maq.Nombre+' '+maq.marca.Nombre;
+
+                            paroNu.forEach(fec => {
+                                if (fec.paro_id == cla.id & fec.tiempo != null & maq.id == fec.maq_pro.maquina_id) {
+                                    suma += parseInt(fec.tiempo, 10);
+                                    //console.log(maquina+' - '+fec.paros.clave + ' - ' + fec.tiempo + ' - ' + suma + ' || ')
+                                }
+                            })
+                            //si la suma es diferente de 0 entonces crea el nuevo array
+                            if (suma > 0) {
+                                rtP.push({fecha: semana, orden: 'N/A', maq_pro: maquina, paros: {clave: cla.clave, descri: cla.descri}, estatus: 'Autorizado', perfil_ini: 'N/A', iniFecha: 'N/A', finFecha: 'N/A', pla_acci: 'N/A', perfil_fin_id: null, tiempo: suma})
+                                //console.log(cla.clave + ' - ' + suma);
+                            }
+                        });
+                    })
                 }
+                //consulta mensual
                 if (this.FoFiltro.mes != null) {
                     //Limpia el datatables
                     $('#t_repoPar').DataTable().clear();
@@ -938,20 +1016,31 @@
                     //variables
                     var mes = moment(this.FoFiltro.mes).format('MMMM');
                     var suma = 0;
+                    var maquina = '';
+                    const paroNu = []
+                    this.paros.forEach(nue => {
+                        if(nue.fecha.includes(this.FoFiltro.mes)){
+                            paroNu.push(nue);
+                        }
+                    })
+
                     this.claParo.forEach(cla => {
-                        suma = 0;
-                        //hace el recorrido y asigna el Array
-                        this.paros.forEach(fec => {
-                            if (fec.fecha.includes(this.FoFiltro.mes) & fec.paro_id == cla.id & fec.tiempo != null) {
-                                suma += parseInt(fec.tiempo, 10);
-                                //console.log(fec.paros)
+                        this.maquinas.forEach(maq => {
+                            suma = 0;
+                            maquina = maq.Nombre+' '+maq.marca.Nombre;
+                            //hace el recorrido y asigna el Array
+                            paroNu.forEach(fec => {
+                                if (fec.paro_id == cla.id & fec.tiempo != null & maq.id == fec.maq_pro.maquina_id) {
+                                    suma += parseInt(fec.tiempo, 10);
+                                    //console.log(fec.paros)
+                                }
+                            })
+                            //si la suma es diferente de 0 entonces crea el nuevo array
+                            if (suma > 0) {
+                                rtP.push({fecha: mes, orden: 'N/A', maq_pro: maquina, paros: {clave: cla.clave, descri: cla.descri}, estatus: 'Autorizado', perfil_ini: 'N/A', iniFecha: 'N/A', finFecha: 'N/A', pla_acci: 'N/A', perfil_fin_id: null, tiempo: suma})
+                                //console.log(cla.clave + ' - ' + suma);
                             }
                         })
-                        //si la suma es diferente de 0 entonces crea el nuevo array
-                        if (suma > 0) {
-                            rtP.push({fecha: mes, orden: 'N/A', maq_pro: 'N/A', paros: {clave: cla.clave, descri: cla.descri}, estatus: 'Activo', perfil_ini: 'N/A', iniFecha: 'N/A', finFecha: 'N/A', pla_acci: 'N/A', perfil_fin_id: null, tiempo: suma})
-                            //console.log(cla.clave + ' - ' + suma);
-                        }
                     })
                 }
                 //console.log(rtP)
@@ -992,8 +1081,9 @@
             },
             //reset de file
             resetC(){
-                this.$refs.file.type='text';
-                this.$refs.file.type='file';
+                this.docu.file = null
+                //this.$refs.file.type='text';
+                //this.$refs.file.type='file';
             },
             /**************************** Acciones de la carga ***********************************************/
             //Abrir modal
@@ -1178,6 +1268,7 @@
                     onSuccess: () => { }, onError: () => { }, preserveState: true
                 });
             },
+
             ano: function(a) {
                 this.$inertia.get('/Produccion/ReportesPro',{ busca: this.S_Area, ano: a }, {
                     onSuccess: () => { }, onError: () => { }, preserveState: true

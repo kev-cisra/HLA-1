@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
+use App\Models\Catalogos\Maquinas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
@@ -79,15 +80,15 @@ class ParosController extends Controller
                 ->get();
             //muestra materiales
             $mate = dep_mat::where('departamento_id', '=', $request->busca)
-                    ->with([
-                        'materiales' => function($mat){
-                            $mat->select('id','idmat', 'nommat');
-                        },
-                        'claves' => function($cla){
-                            $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
-                        }
-                    ])
-                    ->get();
+                ->with([
+                    'materiales' => function($mat){
+                        $mat->select('id','idmat', 'nommat');
+                    },
+                    'claves' => function($cla){
+                        $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
+                    }
+                ])
+                ->get();
             //carga
             $carga = parosCarga::where('departamento_id', '=', $request->busca)
                 ->whereBetween('fecha', [$dia, $mañana])

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
+use App\Models\Catalogos\Maquinas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
@@ -53,6 +54,7 @@ class RepoProController extends Controller
         $procesos = [];
         $paros = [];
         $claParo = [];
+        $Maqui = [];
 
         //Condicional
         if (count($perf->dep_pers) != 0) {
@@ -190,9 +192,19 @@ class RepoProController extends Controller
                 },
             ])
             ->get();
+
+            //Maquinas
+            $Maqui = Maquinas::where('departamento_id', '=', $request->busca)
+            ->with([
+                'marca' => function($mar) {
+                    $mar -> select('id', 'Nombre', 'maquinas_id');
+                }
+            ])
+            ->get(['id', 'Nombre', 'departamento_id']);
+
         }
 
-        return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'materiales' => $mate, 'procesos' => $procesos, 'paros' => $paros, 'claParo' => $claParo]);
+        return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'materiales' => $mate, 'procesos' => $procesos, 'paros' => $paros, 'claParo' => $claParo, 'maquinas' => $Maqui]);
     }
 
     /**

@@ -79,7 +79,7 @@ class CalculosController extends Controller
             }
         }
 
-        return 'Listo';
+        //return 'Listo';
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
@@ -298,11 +298,6 @@ class CalculosController extends Controller
                 foreach ($val->formulas as $value){
                     $proce_id = $value->proceso_id;
                     $maq_id = $value->maq_pros_id;
-                    /* $partida = carga::where('departamento_id', '=', $dep)
-                    ->where('maq_pro_id', '=', $maq_id)
-                    ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
-                    ->distinct()
-                    ->get(['partida','norma','clave_id']); */
 
                     //suma
                     $suma = carga::where('departamento_id', '=', $dep)
@@ -325,8 +320,8 @@ class CalculosController extends Controller
                 }
                 $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => $pr->partida, 'norma' => $pr->norma, 'clave_id' => $pr->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
                 if ($fc != 0) {
-                    print_r($proce_id.' -/ '.$fc.' \- '.$pr->partida.' || ');
-                    //$this->gua_act($fechas, $data);
+                    //print_r($proce_id.' -/ '.$fc.' \- '.$pr->partida.' || ');
+                    $this->gua_act($fechas, $data);
                 }
             }
 
