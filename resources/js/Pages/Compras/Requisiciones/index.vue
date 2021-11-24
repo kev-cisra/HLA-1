@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="tw-flex tw-flex-col tw-justify-center">
                                     <div class="tw-text-lg"> {{ Cotizacion }} </div>
-                                    <div class="tw-text-xs tw-text-gray-400">En espera de Cotización</div>
+                                    <div class="tw-text-xs tw-text-gray-400">Requisiciones en Cotización</div>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="tw-flex tw-flex-col tw-justify-center">
                                     <div class="tw-text-lg"> {{ Autorizados }} </div>
-                                    <div class="tw-text-xs tw-text-gray-400">Articulos Autorizados</div>
+                                    <div class="tw-text-xs tw-text-gray-400">Requisiciones Autorizados</div>
                                 </div>
                             </div>
                         </div>
@@ -208,16 +208,133 @@
                         <option value="9">ENTREGADO</option>
                 </select>
             </div>
+            <div class="tw-flex tw-flex-wrap tw-content-center tw-text-center tw-text-gray-400">
+                <div class="tw-flex tw-flex-col">
+                    <div class="tw-text-center">
+                        <p>Cambiar Visualización</p>
+                    </div>
+                    <div>
+                        <label class="switch">
+                            <input type="checkbox" @click="Visualizacion">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
             <div>
                 <jet-button @click="openModal" class="BtnNuevo">Nueva Requisición</jet-button>
             </div>
         </div>
 
-        <div class="tw-overflow-x-auto tw-mx-2">
+        <div class="tw-overflow-x-auto tw-mx-2" v-if="params.Partidas == true">
+            <Table id="Articulos">
+                <template v-slot:TableHeader>
+                    <th class="columna">FECHA</th>
+                    <th class="columna"># REQ</th>
+                    <th class="columna">DEPARTAMENTO</th>
+                    <th class="columna">CÓDIGO</th>
+                    <th class="columna">CANTIDAD</th>
+                    <th class="columna">UNIDAD</th>
+                    <th class="columna">DESCRIPCIÓN</th>
+                    <th class="columna">MAQUINA</th>
+                    <th class="columna">MARCA</th>
+                    <th class="columna">TIPO COMPRA</th>
+                    <th class="columna">OBSERVACIONES</th>
+                    <th class="columna">SOLICITANTE</th>
+                    <th class="columna">FECHA LLEGADA</th>
+                    <th class="columna">ESTATUS</th>
+                    <th class="columna">ACCIONES</th>
+                </template>
+
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="datos in ArticulosRequisiciones" :key="datos.id">
+                        <td class="tw-p-2">{{ datos.Fecha }}</td>
+                        <td class="tw-p-2">{{ datos.articulos_requisicion.NumReq }}</td>
+                        <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
+                        <td class="tw-p-2">{{ datos.articulos_requisicion.Codigo }}</td>
+                        <td class="tw-p-2">{{ datos.Cantidad }}</td>
+                        <td class="tw-p-2">{{ datos.Unidad }}</td>
+                        <td class="tw-p-2">{{ datos.Descripcion }}</td>
+                        <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                        <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                        <td class="tw-p-2">{{ datos.articulos_requisicion.TipCompra }}</td>
+                        <td class="tw-p-2">{{ datos.articulos_requisicion.Observaciones }}</td>
+                        <td class="tw-p-2">{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
+                        <td class="tw-p-2">{{ datos.articulos_requisicion.Fechallegada }}</td>
+                        <td class="tw-p-2">
+                            <div v-if="datos.EstatusArt == 1">
+                                <span tooltip="SIN ENVIAR" flow="left">
+                                    <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
+                                        SIN ENVIAR</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 2">
+                                <span tooltip="Solicitada" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 3 || datos.Estatus == 4">
+                                <span tooltip="En Espera de Cotización" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">COTIZACIÓN</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 5">
+                                <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZACION</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 6">
+                                <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 7">
+                                <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 8">
+                                <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">ALMACEN</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 9">
+                                <span tooltip="Entregado" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 10">
+                                <span tooltip="Cotizacion Rechazada" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                </span>
+                            </div>
+                        </td>
+                        <td class="fila">
+                            <div class="columnaIconos" v-if="datos.EstatusArt == 1">
+                                <div class="iconoPurple" @click="ConfirmaReq(datos)">
+                                    <span tooltip="Confirmar Requisición" flow="left">
+                                        <i class="fas fa-check-circle"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else>
+                                <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
+                                    <span tooltip="En proceso" flow="left">
+                                        <i class="fas fa-thumbs-up"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+            </Table>
+        </div>
+
+        <div class="tw-overflow-x-auto tw-mx-2" v-else>
             <Table id="Requisicion">
                 <template v-slot:TableHeader>
-                    <th class="columna">NUM</th>
                     <th class="columna">FECHA</th>
+                    <th class="columna"># REQ</th>
                     <th class="columna">DEPARTAMENTO</th>
                     <th class="columna">CODIGO</th>
                     <th class="columna">MAQUINA</th>
@@ -232,8 +349,8 @@
 
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
-                        <td class="tw-text-center">{{ datos.NumReq }}</td>
                         <td class="tw-text-center">{{ datos.Fecha }}</td>
+                        <td class="tw-text-center">{{ datos.NumReq }}</td>
                         <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
                         <td class="tw-text-center">{{ datos.Codigo }}</td>
                         <td class="tw-text-center">{{ datos.requisicion_maquina.Nombre }}</td>
@@ -574,8 +691,8 @@
             </div>
         </div>
 
-        <div class="tw-mx-4" v-if="ArticulosRequisiciones != null">
-            <div v-if=" ArticulosRequisiciones[0].articulo_user != null ">
+        <div class="tw-mx-4" v-if="ArticulosRequisicion != null">
+            <div v-if=" ArticulosRequisicion[0].articulo_user != null ">
                 <Table>
                     <template v-slot:TableHeader>
                         <th class="columna">CANTIDAD</th>
@@ -588,7 +705,7 @@
                     </template>
 
                     <template v-slot:TableFooter>
-                        <tr class="fila" v-for="art in ArticulosRequisiciones" :key="art.id">
+                        <tr class="fila" v-for="art in ArticulosRequisicion" :key="art.id">
                             <td class="tw-text-center">{{ art.Cantidad }}</td>
                             <td class="tw-text-center">{{ art.Unidad }}</td>
                             <td class="tw-text-center">{{ art.Descripcion }}</td>
@@ -683,7 +800,7 @@
                     </template>
 
                     <template v-slot:TableFooter>
-                        <tr class="fila" v-for="art in ArticulosRequisiciones" :key="art.id">
+                        <tr class="fila" v-for="art in ArticulosRequisicion" :key="art.id">
                             <td class="tw-text-center">{{ art.Cantidad }}</td>
                             <td class="tw-text-center">{{ art.Unidad }}</td>
                             <td class="tw-text-center">{{ art.Descripcion }}</td>
@@ -766,6 +883,9 @@
                 </Table>
             </div>
         </div>
+        <div v-else>
+            <p>Esta requisición no tiene partidas asignadas</p>
+        </div>
 
         <div class="ModalFooter">
             <jet-CancelButton @click="chagePartidas">Cerrar</jet-CancelButton>
@@ -808,6 +928,7 @@ export default {
 
     data() {
         return {
+            Vista: true,
             showPartidas: false,
             showModal2: false,
             min: moment().format("YYYY-MM-DD"),
@@ -841,6 +962,7 @@ export default {
                 month: '',
                 Estatus: '',
                 Req: '',
+                Partidas: true,
             },
             MaquinasDpto:[],
             Marcas: [],
@@ -848,7 +970,7 @@ export default {
     },
 
     mounted() {
-        this.tabla();
+        this.tablaArticulos();
     },
 
     components: {
@@ -869,8 +991,8 @@ export default {
         Session: Object,
         errors: Object,
         Requisiciones: Object,
-        ArticulosRequsicion: Object,
         ArticulosRequisiciones: Object,
+        ArticulosRequisicion: Object,
         Departamentos: Object,
         Maquinas: Object,
         PerfilesUsuarios: Object,
@@ -882,6 +1004,97 @@ export default {
     },
 
     methods: {
+
+        Visualizacion(){ //Cambio de visualizacion por partidas o articulos
+            this.params.Partidas  = !this.params.Partidas;
+
+            if (this.params.Partidas == true){
+                $('#Articulos').DataTable().clear(); //limpio
+                $('#Articulos').DataTable().destroy(); //destruyo tabla
+                this.$inertia.get('/Compras/Requisiciones', this.params , { //envio de variables por url
+                    onSuccess: () => {
+                        this.tablaArticulos()
+                    }, preserveState: true})
+            }else{
+                $('#Requisicion').DataTable().clear(); //limpio
+                $('#Requisicion').DataTable().destroy(); //destruyo tabla
+                this.$inertia.get('/Compras/Requisiciones', this.params , { //envio de variables por url
+                    onSuccess: () => {
+                        this.tabla() //regeneracion de tabla
+                    }, preserveState: true})
+            }
+        },
+
+        //Generacion de Tabla con Datatables
+        tabla(){
+            this.$nextTick(() => {
+                $("#Requisicion").DataTable({
+                    "language": this.español,
+                    pageLength: 25,
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
+                });
+            });
+        },
+
+        //Consulta para generar datos de la tabla
+        verTabla(event) {
+            $("#Requisicion").DataTable().destroy();
+                this.$inertia.get("/Compras/Requisiciones", { busca: event.target.value },{
+                    onSuccess: () => {
+                        this.tabla();
+                    },
+                });
+        },
+
+        //Generacion de Tabla con Datatables
+        tablaArticulos(){
+            this.$nextTick(() => {
+                $("#Articulos").DataTable({
+                    "language": this.español,
+                    pageLength: 25,
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
+                });
+            });
+        },
+
+        //Consulta para generar datos de la tabla
+        verTablaArticulos(event) {
+            $("#Articulos").DataTable().destroy();
+                this.$inertia.get("/Compras/Requisiciones", { busca: event.target.value },{
+                    onSuccess: () => {
+                        this.tablaArticulos();
+                    },
+                });
+        },
+
         openModal2() {
             this.chageClose2();
             this.editMode2 = false;
@@ -965,40 +1178,6 @@ export default {
                 }, preserveState: true})
         },
 
-        //datatable
-        tabla() {
-        this.$nextTick(() => {
-            $("#Requisicion").DataTable({
-                        "language": this.español,
-                        pageLength: 25,
-                        "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
-                                "<'row'<'col-sm-12'tr>>" +
-                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                        buttons: [
-                            {
-                                extend: 'excelHtml5',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'pdfHtml5',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            'colvis'
-                        ]
-            });
-        });
-        },
-
-        //consulta para generar datos de la tabla
-        verTabla(event) {
-        $("#Requisicion").DataTable().destroy();
-            this.$inertia.get("/Compras/Requisiciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
-        },
-
         addRow: function () {
             //Funcion para añadir inputs dinamicos
             this.form.Partida.push({Part: ""});
@@ -1029,8 +1208,11 @@ export default {
             })
             .then(response => this.Marcas = response.data.Marcas)
             .catch(error => console.log(error))
-            this.chagePartidas();
-            this.$inertia.get('/Compras/Requisiciones', this.params , {preserveState: true})
+
+            this.$inertia.get('/Compras/Requisiciones', this.params , {
+                onSuccess: () => {
+                    this.chagePartidas();
+                },preserveState: true})
         },
 
         save(data) {
@@ -1064,7 +1246,7 @@ export default {
             });
         },
 
-        ConfirmaRequicision(data, metodo){
+        ConfirmaRequicision(data, metodo){ //Confirma Requisicion total
             data.metodo = 2;
             data._method = "PUT";
             this.$inertia.post("/Compras/Requisiciones/" + data.id, data, {
@@ -1073,6 +1255,16 @@ export default {
                 },
             });
         },
+
+        ConfirmaReq(data){ //Confirma Requisicion completa por Partida
+            data.metodo = 3;
+            data._method = "PUT";
+            this.$inertia.post("/Compras/Requisiciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
+        }
 
     },
 
