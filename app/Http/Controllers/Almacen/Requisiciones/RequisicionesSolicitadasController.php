@@ -446,18 +446,23 @@ class RequisicionesSolicitadasController extends Controller {
                     break;
                 // CASO DE EXITENCIA DE UN SOLO PRODUCTO EN ALMACEN
                 case 5:
+                    //ACTUALIZO EL ARTICULO EN ALMACEN
                     ArticulosRequisiciones::where('id', '=', $request->id)->update([
                         'EstatusArt' => 8,
                     ]);
 
+                    //OBTENGO EL ID DE LA REQUISICION
                     $Req = ArticulosRequisiciones::where('id', '=', $request->id)->first('requisicion_id');
 
-                    $Cotizacion = Requisiciones::where('id', '=', $Req->requisicion_id)->where('Estatus', '=', 3)->get();
+                    //BUSCO SI EXISTE UN ARTICULO EN COTIZACION
+                    $Cotizacion = Requisiciones::where('id', '=', $Req->requisicion_id)->where('Estatus', '=', 3)->count();
 
+                    //EN CASO DE EXISTIR UN ARTICULO EN COTIZACION ACTUALIZO LA REQUISICION A COTIZACION
                     if($Cotizacion > 0){ //Existe un Articulo al menos que hay que cotizar
                         Requisiciones::find($Req->requisicion_id)->update([
                             'Estatus' => 3,
                         ]);
+                        //EN CASO CONTRARIO QUE TODOS LOS ARTICULOS ESTEN EN ALMACEN ACTUALIZO LA REQUISICION A ALMACEN
                     }else{ //Todos los articulos pertenecientes a la requisicion tienen estatus 8
                         Requisiciones::find($Req->requisicion_id)->update([
                             'Estatus' => 8,
@@ -466,7 +471,7 @@ class RequisicionesSolicitadasController extends Controller {
 
                     return redirect()->back();
                     break;
-                }
+            }
 
         }
     }

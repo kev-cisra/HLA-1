@@ -211,7 +211,8 @@
             <div class="tw-flex tw-flex-wrap tw-content-center tw-text-center tw-text-gray-400">
                 <div class="tw-flex tw-flex-col">
                     <div class="tw-text-center">
-                        <p>Cambiar Visualización</p>
+                        <p v-if="params.Partidas == true">Vista Partidas</p>
+                        <p v-else>Vista Requisiciones</p>
                     </div>
                     <div>
                         <label class="switch">
