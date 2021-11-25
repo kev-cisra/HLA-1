@@ -68,7 +68,7 @@ class ProcesosController extends Controller
                 },
                 'sub_proceso',
                 'formulas.maq_pros.maquinas',
-                'formulas.proc_rela',
+                'formulas.proc_relas',
                 'maq_pros' => function($mp){
                     $mp->select('id', 'proceso_id', 'maquina_id')
                     ->with('maquinas');

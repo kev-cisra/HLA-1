@@ -43,7 +43,7 @@
                         <td >{{ proceso.departamentos.Nombre }}</td>
                         <td class="">
                             <tr  v-for="f in proceso.formulas" :key="f.id" class="hover:tw-text-lg">
-                                - {{f.proc_rela == null ? 'N/A' : f.proc_rela.nompro}} / {{f.maq_pros == null ? 'N/A' : f.maq_pros.maquinas.Nombre}} -
+                                - {{f.proc_relas == null ? 'N/A' : f.proc_relas.nompro}} / {{f.maq_pros == null ? 'N/A' : f.maq_pros.maquinas.Nombre}} -
                             </tr>
                             <tr  v-for="mp in proceso.maq_pros" :key="mp.id" class="hover:tw-text-lg">
                                 - <strong class="tw-text-red-500">{{ mp.id }}</strong> - {{mp.maquinas.Nombre}} -
@@ -498,7 +498,7 @@
                     this.form.maquinas.push({value: mp.maquina_id});
                 })
                 data.formulas.forEach(fo => {
-                    this.form.formulas.push({val: fo.proc_rela.id})
+                    this.form.formulas.push({val: fo.proc_relas.id})
                 })
                 this.editMode = true;
                 this.chageClose();

@@ -716,7 +716,7 @@
                             { "width": "7%", "targets": [5,6,7,8,9,13] },
                             { "width": "5%", "targets": [11,12] }
                         ],
-                        stateSave: true,
+                        //stateSave: true,
                         scrollY:        '40vh',
                         scrollCollapse: true,
                         paging:         false,
@@ -773,32 +773,17 @@
             //datatable de paros
             tablaParo() {
                 this.$nextTick(() => {
-                    /* $('#t_repoPar tfoot th').each( function () {
-                        var title = $(this).text();
-                        $(this).html( '<input type="text" class="InputSelect tw-text-gray-900" placeholder="'+title+'" />' );
-                    } );
-                    initComplete: function () {
-                        // Apply the search
-                        this.api().columns().every( function () {
-                            var that = this;
-
-                            $( 'input', this.footer() ).on( 'keyup change clear', function () {
-                                if ( that.search() !== this.value ) {
-                                    that
-                                        .search( this.value )
-                                        .draw();
-                                }
-                            } );
-                        } );
-                    } */
-
                     var table = $('#t_repoPar').DataTable({
                         "language": this.español,
                         "order": [[0, 'desc'],[1, 'asc']],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                        stateSave: true,
+                        "columnDefs": [
+                            { "width": "10%", "targets": [0,2,4,5,6,7,8,9,10,11,12] },
+                            { "width": "2%", "targets": [1,3] }
+                        ],
+                        //stateSave: true,
                         scrollY:        '40vh',
                         scrollCollapse: true,
                         paging:         false,
@@ -849,6 +834,27 @@
                             } );
                         }
                     })
+
+
+                    /* $('#t_repoPar tfoot th').each( function () {
+                        var title = $(this).text();
+                        $(this).html( '<input type="text" class="InputSelect tw-text-gray-900" placeholder="'+title+'" />' );
+                    } );
+                    initComplete: function () {
+                        // Apply the search
+                        this.api().columns().every( function () {
+                            var that = this;
+
+                            $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                                if ( that.search() !== this.value ) {
+                                    that
+                                        .search( this.value )
+                                        .draw();
+                                }
+                            } );
+                        } );
+                    } */
+
 
                 })
             },

@@ -57,10 +57,11 @@ class Kernel extends ConsoleKernel
         ->timezone('America/Mexico_City')
         ->dailyAt('09:00');
 
-        //Invierno cierre de paros por turnos apertura
+        //Verano cierre de paros por turnos apertura
         $schedule->command('cierre:paroVerano')
         ->timezone('America/Mexico_City')
-        ->twiceDaily(9, 21);
+        ->dailyAt('20:00');
+        //->twiceDaily(9, 21);
     }
 
     /**

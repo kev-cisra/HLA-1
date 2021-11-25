@@ -43,9 +43,9 @@ class CierreParoVerano extends Command
         //Pone la fecha de hoy
         $hoy = Carbon::now();
         //$hoy->toDateTimeString();
+        $txt = 'entro a paro Verano'.$hoy;
 
         if (var_dump($hoy->isDST())) {
-            $txt = 'entro a paro '.$hoy;
             $paros = parosCarga::where('departamento_id', '=', 7)
             ->where('estatus', '=', 'Activo')
             ->get();

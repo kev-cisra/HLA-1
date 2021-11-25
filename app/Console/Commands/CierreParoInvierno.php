@@ -47,7 +47,7 @@ class CierreParoInvierno extends Command
         //$hoy->toDateTimeString();
 
         if (!var_dump($hoy->isDST())) {
-            $txt .= 'entro a paro '.$hoy.' -> ';
+            $txt = 'entro a paro '.$hoy.' -> ';
             $paros = parosCarga::where('departamento_id', '=', 7)
             ->where('estatus', '=', 'Activo')
             ->get();
@@ -88,7 +88,7 @@ class CierreParoInvierno extends Command
                     ]);
                     $up = parosCarga::find($parUp->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 7]);
                 }
-                $txt.= 'entro normal '.$up->id.' || ';
+                //$txt.= 'entro normal '.$up->id.' || ';
             }
         }
 
