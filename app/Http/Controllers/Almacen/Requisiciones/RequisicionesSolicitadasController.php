@@ -441,7 +441,6 @@ class RequisicionesSolicitadasController extends Controller {
                         }
                     }
 
-
                     return redirect()->back();
                     break;
                 // CASO DE EXITENCIA DE UN SOLO PRODUCTO EN ALMACEN

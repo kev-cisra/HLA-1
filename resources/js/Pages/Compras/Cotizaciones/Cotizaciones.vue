@@ -196,7 +196,7 @@
 
         <div class="tw-flex tw-justify-between tw-px-4">
             <div class="tw-flex tw-flex-wrap tw-content-center">
-                <select class="InputSelect" v-model="params.Estatus">
+                <select class="InputSelect" v-model="params.Estatus" @change="FiltroEstatus($event)">
                         <option value="3">SIN COTIZACION</option>
                         <option value="4">SIN ENVIAR</option>
                         <option value="5">EN AUTORIZACION</option>
@@ -608,6 +608,7 @@
                             <select id="Jefe" v-model="form.Moneda"  class="InputSelect">
                                 <option value="MXN" >MXN</option>
                                 <option value="USD" >USD</option>
+                                <option value="EUR" >EUR</option>
                             </select>
                         </div>
 
@@ -1389,6 +1390,19 @@ export default {
             $('#Requisiciones').DataTable().destroy(); //destruyo tabla
             this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
                 onSuccess: () => {
+                    this.tabla() //regeneracion de tabla
+                }, preserveState: true})
+        },
+
+        FiltroEstatus(value){
+            this.params.Estatus = event.target.value;
+
+            $('#Requisiciones').DataTable().clear(); //limpio
+            $('#Requisiciones').DataTable().destroy(); //destruyo tabla
+
+            this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
                     this.tabla() //regeneracion de tabla
                 }, preserveState: true})
         },

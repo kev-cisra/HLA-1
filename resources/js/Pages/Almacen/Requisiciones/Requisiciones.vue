@@ -182,7 +182,7 @@
             <div class="tw-mt-8">
                 <div class="tw-flex tw-justify-between tw-px-4">
                     <div class="tw-flex tw-flex-wrap tw-content-center">
-                        <select class="InputSelect" v-model="params.Estatus">
+                        <select class="InputSelect" v-model="params.Estatus" @change="FiltroEstatus($event)">
                                 <option value="2">SOLICITADO</option>
                                 <option value="3">EN COTIZACION</option>
                                 <option value="5">EN AUTORIZACION</option>
@@ -759,8 +759,8 @@ export default {
                 TipCompra: '',
             },
             params:{
-                month: null,
-                Estatus: null,
+                month: '',
+                Estatus: '',
             },
             Marcas: [],
         };
@@ -788,14 +788,14 @@ export default {
     props: {
         Session: Object,
         errors: Object,
-        flash: Object,
+        flash: Boolean,
         Requisiciones: Object,
         ArticulosRequisiciones: Object,
         ArticulosRequisicion: Object,
-        Almacen: Object,
-        Cotizacion: Object,
-        SinConfirmar: Object,
-        mes: Object,
+        Almacen: Number,
+        Cotizacion: Number,
+        SinConfirmar: Number,
+        mes: String,
     },
 
     methods: {
@@ -929,6 +929,19 @@ export default {
             $('#Requisiciones').DataTable().destroy(); //destruyo tabla
             this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
+                    this.tabla() //regeneracion de tabla
+                }, preserveState: true})
+        },
+
+        FiltroEstatus(value){
+            this.params.Estatus = event.target.value;
+
+            $('#Requisiciones').DataTable().clear(); //limpio
+            $('#Requisiciones').DataTable().destroy(); //destruyo tabla
+
+            this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
                     this.tabla() //regeneracion de tabla
                 }, preserveState: true})
         },

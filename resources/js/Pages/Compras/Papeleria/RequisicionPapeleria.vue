@@ -415,6 +415,7 @@ export default {
         Departamentos: Object,
         Material: Object,
         Papeleria: Object,
+        mes: String,
     },
 
     methods: {
