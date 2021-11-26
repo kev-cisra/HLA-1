@@ -136,10 +136,11 @@
                                     <select class="InputSelect" v-model="form.operacion">
                                         <option value="">Selecciona una operación</option>
                                         <option value="sm_d">SUMA DIARIA</option>
-                                        <!-- <option value="sm_dc">SUMA DIARIA POR CLAVE</option> -->
+                                        <option value="sm_dc">SUMA DIARIA POR CLAVE</option>
                                         <option value="sm_dp">SUMA DIARIA POR PARTIDA</option>
                                         <option value="sm_t">SUMA TURNO</option>
                                         <option value="sm_tc">SUMA TURNO POR CLAVE</option>
+                                        <option value="sm_tp">SUMA TURNO POR PARTIDA</option>
                                         <option value="sem_sm">SUMA SEMANAL</option>
                                         <option value="mes_sm">SUMA MENSUAL</option>
                                         <option value="efi_dia">EFICIENCIA DIARIA</option>
@@ -379,6 +380,7 @@
                 this.$nextTick(() => {
                     $('#t_pro').DataTable({
                         "language": this.español,
+                        stateSave: true,
                         "order": [2, 'desc'],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
@@ -478,7 +480,6 @@
                 this.$inertia.post('/Produccion/Procesos', form, {
                     onSuccess: () => { this.alertSucces(), this.tabla(), this.reset(), this.chageClose()}, onError: () => {this.tabla()}
                 });
-
             },
             //manda datos de la tabla al modal
             edit: function (data) {

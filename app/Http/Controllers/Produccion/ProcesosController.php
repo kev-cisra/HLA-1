@@ -114,11 +114,8 @@ class ProcesosController extends Controller
             'departamento_id' => ['required'],
             'tipo' => ['required']
         ])->validate();
-        if ($request->tipo == 3) {
-            Validator::make($request->all(), [
-                'operacion' => ['required']
-            ])->validate();
-        }elseif ($request->tipo != 0) {
+
+        if ($request->tipo != 0) {
             Validator::make($request->all(), [
                 'proceso_id' => ['required']
             ])->validate();
@@ -138,6 +135,10 @@ class ProcesosController extends Controller
                 }
             }
         }elseif($request->tipo == 3){
+            Validator::make($request->all(), [
+                'operacion' => ['required']
+            ])->validate();
+
             foreach ($request->formulas as $for) {
                 //Verifica si existe el proceso
                 if(!empty($for['val'])){
@@ -154,7 +155,7 @@ class ProcesosController extends Controller
                         }
                         //en caso de que no cuente con maquinas
                         else{
-                            /* consulta el tipo de proceso  */
+                            // consulta el tipo de proceso
                             $tipo = procesos::where('id', '=', $for['val'])
                                 ->first();
                             //en caso de que sea proceso principal o formula va a insertar
@@ -266,14 +267,12 @@ class ProcesosController extends Controller
                     }
                 }
             }
-
-            return redirect()->back()
-                    ->with('message', 'Post Updated Successfully.');
             /* return($sv); */
 
         }
 
-
+        return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
 
     }
 

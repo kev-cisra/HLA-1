@@ -315,7 +315,8 @@
                         "order": [[5, 'asc']],
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
-                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
+                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        stateSave: true,
                     })
                 })
             },

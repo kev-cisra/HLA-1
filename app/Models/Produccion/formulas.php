@@ -21,7 +21,7 @@ class formulas extends Model
         return $this->belongsTo(procesos::class, 'proceso_id');
     }
 
-    public function proc_rela() {
+    public function proc_relas() {
         return $this->belongsTo(procesos::class, 'proc_rela');
     }
 

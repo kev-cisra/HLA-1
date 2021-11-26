@@ -73,6 +73,9 @@ class CalculosController extends Controller
                 case 'sm_tc':
                     $this->sm_tc($ope, $request->depa, $fechas, $perf);
                     break;
+                case 'sm_tp':
+                    $this->sm_tp($ope, $request->depa, $fechas, $perf);
+                    break;
                 case 'sem_sm':
                     $this->sem_sm($ope, $request->depa, $fechas, $perf);
                     break;
@@ -83,7 +86,7 @@ class CalculosController extends Controller
                     $this->efi_dia($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'efi_tur':
-                    //$this->efi_tur($ope, $request->depa, $fechas, $perf);
+                    $this->efi_tur($ope, $request->depa, $fechas, $perf);
                     break;
             }
         }
@@ -293,6 +296,7 @@ class CalculosController extends Controller
 
     }
 
+    //operacion suma dia partida
     public function sm_dp($val, $dep, $fechas, $usuario){
         $partida = carga::where('departamento_id', '=', $dep)
         ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
@@ -389,11 +393,11 @@ class CalculosController extends Controller
     public function sm_tc($val, $dep, $fechas, $usuario){
         //se consultan los turnos que existe menos el turno vacio
         $turnos = turnos::where('departamento_id', '=', $dep)
-            ->with([
-                'equipos'
-            ])
-            ->where('nomtur', '!=', 'Vacío')
-            ->get();
+        ->with([
+            'equipos'
+        ])
+        ->where('nomtur', '!=', 'Vacío')
+        ->get();
         //recorrido del turno
         foreach ($turnos as $tur) {
             //recorrido de formulas
@@ -446,6 +450,63 @@ class CalculosController extends Controller
         }
         //echo 'fin de suma turno por clave';
         return 'sm_tc';
+    }
+
+    //operacion suma turno partida
+    public function sm_tp($val, $dep, $fechas, $usuario){
+        //se consultan los turnos que existe menos el turno vacio
+        $turnos = turnos::where('departamento_id', '=', $dep)
+        ->with([
+            'equipos'
+        ])
+        ->where('nomtur', '!=', 'Vacío')
+        ->get();
+        //Consulta de claves
+        $partida = carga::where('departamento_id', '=', $dep)
+        ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+        ->distinct()
+        ->get(['partida','norma','clave_id']);
+        //recorrdio de turno
+        foreach ($turnos as $tur) {
+            //recorrido de partida
+            foreach ($partida as $pr) {
+                //si la partida existe
+                if ($pr['partida'] != 'N/A') {
+                    $fs = 0;
+                    $fc = 0;
+                    foreach ($val->formulas as $value){
+                        $proce_id = $value->proceso_id;
+                        $maq_id = $value->maq_pros_id;
+
+                        //suma
+                        $suma = carga::where('departamento_id', '=', $dep)
+                            ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                            ->where('partida', '=', $pr->partida)
+                            ->where('clave_id', '=', $pr->clave_id)
+                            ->where('turno_id', '=', $tur->id)
+                            -> where('maq_pro_id', '=', $maq_id)
+                            ->sum('valor');
+
+                        //catidad
+                        $cuenta = carga::where('departamento_id', '=', $dep)
+                            ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                            ->where('partida', '=', $pr->partida)
+                            ->where('clave_id', '=', $pr->clave_id)
+                            ->where('turno_id', '=', $tur->id)
+                            -> where('maq_pro_id', '=', $maq_id)
+                            ->count('valor');
+                        //resultado
+                        $fs += $suma;
+                        $fc += $cuenta;
+                    }
+                    $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => $tur->equipos[0]->id, 'turno_id' => $tur->id, 'cantidad' => $fc, 'partida' => $pr->partida, 'norma' => $pr->norma, 'clave_id' => $pr->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
+                    if ($fc != 0) {
+                        //print_r($proce_id.' -/ '.$fc.' \- '.$pr->partida.' || ');
+                        $this->gua_act($fechas, $data);
+                    }
+                }
+            }
+        }
     }
 
     //operacion suma semanal
@@ -611,6 +672,7 @@ class CalculosController extends Controller
                             $suma = carga::where('departamento_id', '=', $dep)
                                 ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                                 ->where('clave_id', '=', $cla->clave_id)
+                                ->where('turno_id', '=', $tur->id)
                                 -> where('maq_pro_id', '=', $formu->maq_pros_id)
                                 ->sum('valor');
 
@@ -621,6 +683,7 @@ class CalculosController extends Controller
                             $suma = carga::where('departamento_id', '=', $dep)
                                 ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
                                 ->where('clave_id', '=', $cla->clave_id)
+                                ->where('turno_id', '=', $tur->id)
                                 -> where('maq_pro_id', '=', $formu->maq_pros_id)
                                 ->sum('valor');
 

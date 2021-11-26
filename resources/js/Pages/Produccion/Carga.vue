@@ -121,10 +121,16 @@
             <!-- Botones -->
             <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
                 <div>
-                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
+                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" v-show="btnOff" @click="saveNot(form)">Agregar</jet-button>
                 </div>
                 <div>
-                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
+                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" v-show="btnOff" @click="saveCA(form)">Guardar</jet-button>
+                </div>
+                <div v-show="!btnOff">
+                    <jet-button type="button" class="tw-mx-auto" disabled>
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Guardando...
+                    </jet-button>
                 </div>
                 <!-- <div>
                     <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
@@ -182,13 +188,19 @@
                 <!-- Botones -->
                 <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
                     <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
+                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" v-show="btnOff" @click="saveNot(form)">Agregar</jet-button>
                     </div>
                     <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
+                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" v-show="btnOff" @click="saveCA(form)">Guardar</jet-button>
                     </div>
                     <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+                        <jet-button type="button" class="tw-mx-auto" v-if="editMode" v-show="btnOff" @click="updateCA(form)">Actualizar</jet-button>
+                    </div>
+                    <div v-show="!btnOff">
+                        <jet-button type="button" class="tw-mx-auto" disabled>
+                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                            Guardando...
+                        </jet-button>
                     </div>
                     <div>
                         <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
@@ -224,7 +236,7 @@
                         <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
                     </div>
                     <!-- select operador -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="(noCor != 'cor' & noCor != 'ope') | editMode">
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="(noCor != 'lid' & noCor != 'ope') | editMode">
                         <jet-label class="tw-text-white"><span class="required">*</span>Operador</jet-label>
                         <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id">
                             <option value="" disabled>SELECCIONA</option>
@@ -293,13 +305,19 @@
                 <!-- Botones -->
                 <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
                     <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" @click="saveNot(form)">Agregar</jet-button>
+                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" v-show="btnOff" @click="saveNot(form)">Agregar</jet-button>
                     </div>
                     <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" @click="saveCA(form)">Guardar</jet-button>
+                        <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" v-show="btnOff" @click="saveCA(form)">Guardar</jet-button>
                     </div>
                     <div>
                         <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+                    </div>
+                    <div v-show="!btnOff">
+                        <jet-button type="button" class="tw-mx-auto" disabled>
+                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                            Guardando...
+                        </jet-button>
                     </div>
                     <div>
                         <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
@@ -999,6 +1017,7 @@
                 //form.fecha = form.fecha;
                 form.semana = moment(form.fecha).format("GGGG-[W]WW");
                 this.form.departamento_id = this.S_Area;
+                this.btnOff = false;
                 //Asigna si es horario de verano o no
                 form.VerInv = '1';
                 //revisa si el usuario es lider o operador
@@ -1010,6 +1029,7 @@
                             title: 'Oops...',
                             text: 'No tienes asignado ningún equipo, Por favor solicite que le agreguen un equipo',
                         })
+                        this.btnOff = true
                     }else{
                         //revisa si el turno es vacio
                         var vacio = '';
@@ -1024,11 +1044,12 @@
                                 title: 'Oops...',
                                 text: 'Te encuentras en un turno vacío, Por favor solicite cambiar su turno',
                             })
+                            this.btnOff = true
                         }else{
                             //$('#t_carg').DataTable().clear();
                             $('#t_carg').DataTable().destroy();
                             this.$inertia.post('/Produccion/Carga', form, {
-                                onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tabla()}, preserveState: true
+                                onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.tabla(), this.btnOff = true}, preserveState: true
                             });
                         }
                     }
@@ -1038,7 +1059,7 @@
                         //$('#t_carg').DataTable().clear();
                         $('#t_carg').DataTable().destroy();
                         this.$inertia.post('/Produccion/Carga', form, {
-                            onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tabla()}, preserveState: true
+                            onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.tabla(), this.btnOff = true}, preserveState: true
                         });
                     }else{
                         //revisa si tienen equipo
@@ -1048,6 +1069,7 @@
                                 title: 'Oops...',
                                 text: 'No tienes asignado ningún equipo, Por favor solicite que le agreguen un equipo',
                             })
+                            this.btnOff = true
                         }else{
                             //revisa si el turno es vacio
                             var vacio = '';
@@ -1062,11 +1084,12 @@
                                     title: 'Oops...',
                                     text: 'Te encuentras en un turno vacío, Por favor solicite cambiar su turno',
                                 })
+                                this.btnOff = true
                             }else{
                                 //$('#t_carg').DataTable().clear();
                                 $('#t_carg').DataTable().destroy();
                                 this.$inertia.post('/Produccion/Carga', form, {
-                                    onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: (e) => { this.tabla()}, preserveState: true
+                                    onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.tabla(), this.btnOff = true}, preserveState: true
                                 });
                             }
                         }
@@ -1141,12 +1164,13 @@
             },
             updateCA(data){
                 //console.log(data)
+                this.btnOff = false;
                 if (data.nota != '' & data.clave_id != '' & data.valor != '') {
                     //$('#t_carg').DataTable().clear();
                     $('#t_carg').DataTable().destroy();
                 }
                 this.$inertia.put('/Produccion/Carga/' + data.id, data, {
-                    onSuccess: () => {this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces()}, onError: () => {this.tabla()}
+                    onSuccess: () => {this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: () => {this.tabla(), this.btnOff = true}
                 });
             },
             //***************************** Carga de paquetes de operativos **********************************/
@@ -1267,10 +1291,11 @@
                 $('#agObjec').addClass('show')
             },
             saveNot(data){
+                this.btnOff = false;
                 $('#t_carg').DataTable().clear();
                 $('#t_carg').DataTable().destroy();
                 this.$inertia.put('/Produccion/Nota/' + data.id, data, {
-                    onSuccess: () => {this.reCarga(), this.resetCA(), this.tabla(), this.alertSucces()}, onError: () => {this.tabla()},
+                    onSuccess: () => {this.reCarga(), this.resetCA(), this.tabla(), this.alertSucces(), this.btnOff = true}, onError: () => {this.tabla(), this.btnOff = true},
                 });
             },
             /****************************** Carga de paquetes para objetivos *******************************/
@@ -1364,26 +1389,10 @@
             //Opciones Personal
             opcPE: function() {
                 const spe = [];
-                if (this.usuario.dep_pers.length == 0) {
-                    //asignacion de select personal
-                    this.personal.forEach(pe => {
-                        spe.push({value: pe.id, text: pe.perfiles.IdEmp +' - '+ pe.perfiles.Nombre+' '+pe.perfiles.ApPat+' '+pe.perfiles.ApMat});
-                    })
-                }else{
-                    //asignacion de personal a select
-                    this.personal.forEach(pe => {
-                        if (this.noCor == 'enc') {
-                            if (pe.ope_puesto != 'cor') {
-                                spe.push({value: pe.id, text: pe.perfiles.Nombre+' '+pe.perfiles.ApPat+' '+pe.perfiles.ApMat});
-                            }
-                        }else{
-                            if (pe.ope_puesto != 'cor' & pe.ope_puesto != 'enc') {
-                                spe.push({value: pe.id, text: pe.perfiles.Nombre+' '+pe.perfiles.ApPat+' '+pe.perfiles.ApMat});
-                            }
-                        }
-
-                    })
-                }
+                //asignacion de select personal
+                this.personal.forEach(pe => {
+                    spe.push({value: pe.id, text: pe.perfiles.IdEmp +' - '+ pe.perfiles.Nombre+' '+pe.perfiles.ApPat+' '+pe.perfiles.ApMat});
+                })
                 return spe;
             },
             //Opciones Normas

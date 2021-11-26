@@ -566,7 +566,7 @@
                     clave_id: null,
                     partida: null,
                     valor: null,
-                    notas: null
+                    nota: null
                 }
             }
         },
@@ -595,7 +595,7 @@
             /***************************** Calculos ******************************************/
             calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
-                    //this.vCal = false;
+                    this.vCal = false;
                     this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {
                             this.alertSucces(),
@@ -618,10 +618,10 @@
             cambioFechas() {
                 if(this.S_Area == 7){
                     if (moment(this.form.fecha).isDST()) {
-                        this.form.hoy = this.form.fecha+'T09:00';
+                        this.form.hoy = this.form.fecha+'T09:10';
                         this.form.mañana = moment(this.form.hoy).add(1, 'days').format("YYYY-MM-DD[T]HH:mm")
                     }else{
-                        this.form.hoy = this.form.fecha+'T08:00';
+                        this.form.hoy = this.form.fecha+'T08:10';
                         this.form.mañana = moment(this.form.hoy).add(1, 'days').format("YYYY-MM-DD[T]HH:mm")
                     }
                 }else{
@@ -707,7 +707,7 @@
                 this.$nextTick(() => {
                     var table = $('#t_repo').DataTable({
                         "language": this.español,
-                        "order": [[1, 'desc'],[0, 'asc']],
+                        "order": [[4, 'asc'],[0, 'asc']],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -716,7 +716,7 @@
                             { "width": "7%", "targets": [5,6,7,8,9,13] },
                             { "width": "5%", "targets": [11,12] }
                         ],
-                        //stateSave: true,
+                        stateSave: true,
                         scrollY:        '40vh',
                         scrollCollapse: true,
                         paging:         false,
@@ -889,12 +889,12 @@
                     inicio = this.FoFiltro.iniDia+' 07:00:00'
                     if (this.S_Area == 7){
                         if (moment(this.FoFiltro.iniDia).isDST()) {
-                            inicio = this.FoFiltro.iniDia+' 09:00:00';
+                            inicio = this.FoFiltro.iniDia+' 09:10:00';
                         }else{
-                            inicio = this.FoFiltro.iniDia+' 08:00:00';
+                            inicio = this.FoFiltro.iniDia+' 08:10:00';
                         }
                     }
-
+                    //console.log(inicio)
                     //Asigna el dato para la fecha final
                     fin = moment(inicio).add(24, 'hours');
                     //Limpia el datatables
@@ -1156,11 +1156,12 @@
                 this.carga.valor = data.valor;
                 this.carga.proceso_id = data.proceso_id;
                 this.carga.maq_pro_id = data.maq_pro_id;
+                this.carga.nota = '';
                 this.nAnte = data.notas.length == 0 ? '' : `<label class="tw-text-base tw-w-full tw-text-black">Fecha: ${data.notas[0].fecha}</label><label class="tw-text-base tw-w-full tw-text-black tw-capitalize"> ${data.notas[0].nota}</label>`;
             },
             updateCar(data){
                 this.$inertia.put('/Produccion/CarNor/' + data.id, data, {
-                    onSuccess: (v) => { this.resetCar(), this.alertSucces(), this.changeCloseCar(), this.limInputs('00') }, onError: (e) => { }, preserveState: true
+                    onSuccess: (v) => { this.resetCar(), this.alertSucces(), this.changeCloseCar() }, onError: (e) => { }, preserveState: true
                 });
             }
         },

@@ -14,10 +14,12 @@ use App\Models\Produccion\notasCarga;
 use App\Models\Produccion\turnos;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use PhpOffice\PhpSpreadsheet\Calculation\TextData\Format;
 
 class CargaController extends Controller
 {
@@ -394,11 +396,14 @@ class CargaController extends Controller
             'dep_perf_id' => ['required'],
             'valor' => ['required']
         ])->validate();
-
+        $hoy = Carbon::now();
+        $ofec = new Carbon($request->fecha);
+        $fecha = $hoy->format('Y-m-d') != $ofec->format('Y-m-d') ? $request->fecha : $hoy->toDateTimeString();
+        //return $hoy->format('Y-m-d').' -- '.$ofec->format('Y-m-d');
         //$nFecha = $request->fecha.' '.date('H:i:s');
         //if ($request->vacio == 'N/A' | $request->vacio != 'Vacío') {
             carga::create([
-                'fecha' => $request->fecha,
+                'fecha' => $fecha,
                 'semana' => $request->semana,
                 'per_carga' => $request->per_carga,
                 'proceso_id' => $request->proceso_id,
