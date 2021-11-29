@@ -18,7 +18,7 @@ class ClamatController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['permission:Produccion.clamat.index']);
+        $this->middleware(['permission:Produccion.clamat.index|admin.index']);
     }
     /**
      * Display a listing of the resource.

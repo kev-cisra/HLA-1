@@ -104,24 +104,13 @@
                         <td  v-show="FoFiltro.iniDia">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
                         <td v-show="FoFiltro.iniDia" >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
 
-
-                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-w-full table-info tw-rounded-full" v-if="ca.notaPen == 2">
-                            NOTA PENDIENTE
-                        </td>
-                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-w-full table-dark tw-rounded-full" v-if="ca.proceso.tipo == 3">
-                            CALCULOS
-                        </td>
-                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-w-full table-primary tw-rounded-full" v-else-if="ca.proceso.tipo == 1 & ca.notaPen == 1">
-                            PRODUCCION
-                        </td>
-                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-w-full table-danger tw-rounded-full" v-else-if="ca.proceso.tipo == 5 & ca.notaPen == 1">
-                            MERMA
-                        </td>
-                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-w-full table-warning tw-rounded-full" v-else-if="ca.proceso.tipo == 2 & ca.notaPen == 1">
-                            OBJETIVOS COORDINADOR
-                        </td>
-                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-h-full tw-w-full table-success tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1">
-                            ACTUALIZADO
+                        <td class=" tw-w-40">
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-if="ca.notaPen == 2">NOTA PENDIENTE</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-if="ca.proceso.tipo == 3">CALCULOS</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-indigo-600 tw-rounded-full" v-else-if="ca.proceso.tipo == 1 & ca.notaPen == 1">PRODUCCION</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-yellow-600 tw-rounded-full" v-else-if="ca.proceso.tipo == 5 & ca.notaPen == 1">MERMA</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-orange-600 tw-rounded-full" v-else-if="ca.proceso.tipo == 2 & ca.notaPen == 1">OBJETIVO</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-teal-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1"> - ACTUALIZADO</div>
                         </td>
 
                         <td  v-show="FoFiltro.iniDia">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
@@ -151,10 +140,21 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoDelete" v-if="ca.proceso.tipo == 1 | ca.proceso.tipo == 5" @click="deleteCar(ca)">
+                                <!-- eliminar -->
+                                <div class="iconoDelete" v-if="ca.proceso.tipo == 1 | ca.proceso.tipo == 5 | ca.proceso.tipo == 3" @click="deleteCar(ca)">
                                     <span tooltip="Eliminar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos">
+                                <!-- Notas -->
+                                <div class="iconoDetails tw-cursor-pointer" @click="VeNota(ca)" v-show="ca.notas.length != 0">
+                                    <span tooltip="Ver notas" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                         </svg>
                                     </span>
                                 </div>
@@ -209,14 +209,10 @@
                         <td class="tw-text-center">{{ca.paros.descri}}</td>
                         <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.descri}}</td>
 
-                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-w-full table-danger tw-rounded-full" v-if="ca.estatus == 'Activo'">
-                            {{ca.estatus}}
-                        </td>
-                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-w-full table-info tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">
-                            {{ca.estatus}}
-                        </td>
-                        <td class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-w-full table-success tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">
-                            {{ca.estatus}}
+                        <td class="tw-text-center">
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full" v-if="ca.estatus == 'Activo'">{{ca.estatus}}</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">{{ca.estatus}}</div>
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
                         </td>
 
                         <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.perfil_ini == 'N/A' ? ca.perfil_ini : ca.perfil_ini.Nombre + ' ' + ca.perfil_ini.ApPat + ' ' + ca.perfil_ini.ApMat }} </td>
@@ -716,7 +712,7 @@
                             { "width": "7%", "targets": [5,6,7,8,9,13] },
                             { "width": "5%", "targets": [11,12] }
                         ],
-                        stateSave: true,
+                        //stateSave: true,
                         scrollY:        '40vh',
                         scrollCollapse: true,
                         paging:         false,
@@ -757,10 +753,11 @@
                                     } );
 
                                 column.cells('', column[0]).render('display').sort().unique().each( function ( d, j ) {
+                                    var val = $('<div/>').html(d).text();
                                     if(column.search() === '^'+d+'$'){
-                                        select.append( '<option value="'+d+'" selected="selected">'+d+'</option>' )
+                                        select.append( '<option value="' + val + '">' + val + '</option>' );
                                     } else {
-                                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                                        select.append( '<option value="' + val + '">' + val + '</option>' );
                                     }
                                     //select.append( '<option value="'+d+'">'+d+'</option>' )
                                 } );
@@ -824,10 +821,11 @@
                                     } );
 
                                 column.cells('', column[0]).render('display').sort().unique().each( function ( d, j ) {
+                                    var val = $('<div/>').html(d).text();
                                     if(column.search() === '^'+d+'$'){
-                                        select.append( '<option value="'+d+'" selected="selected">'+d+'</option>' )
+                                        select.append( '<option value="' + val + '" selected="selected">' + val + '</option>' );
                                     } else {
-                                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                                        select.append( '<option value="' + val + '">' + val + '</option>' );
                                     }
                                     //select.append( '<option value="'+d+'">'+d+'</option>' )
                                 } );
@@ -878,6 +876,10 @@
                     depa: this.S_Area
                 }
             },
+            //ver notas
+            VeNota(data) {
+                console.log(data.notas.length)
+            },
             /***************************** Crea nuevos arreglos dependiendo de el tipo de reporte ******************/
             //Nuevo arreglo Parar mostrar la produccion
             NuArrayPro() {
@@ -904,7 +906,7 @@
                     //hace el recorrido y asigna el Array
                     this.cargas.forEach(fec => {
                         //console.log(fec.fecha)
-                        if ( moment(fec.fecha).isSameOrAfter(inicio, 'minutes') & moment(fec.fecha).isBefore(fin, 'minutes') ) {
+                        if ( moment(fec.fecha).isSameOrAfter(inicio, 'minutes') & moment(fec.fecha).isBefore(fin, 'minutes') & fec.departamento_id == this.S_Area ) {
                             rt.push(fec);
                         }
                     });
@@ -919,7 +921,7 @@
                     this.cargas.forEach(fec => {
                         //console.log(fec.proceso.operacion)
                         if ( this.FoFiltro.semana == fec.semana & fec.proceso.operacion != null) {
-                            if(fec.proceso.operacion.includes("sem_")){
+                            if(fec.proceso.operacion.includes("sem_") & fec.departamento_id == this.S_Area){
                                 rt.push(fec);
                             }
                         }
@@ -935,7 +937,7 @@
                     this.cargas.forEach(fec => {
                         //console.log(fec.fecha)
                         if ( fec.fecha.includes(this.FoFiltro.mes) & fec.proceso.operacion != null ) {
-                            if(fec.proceso.operacion.includes("mes_")){
+                            if(fec.proceso.operacion.includes("mes_") & fec.departamento_id == this.S_Area){
                                 rt.push(fec);
                             }
                         }
@@ -1160,8 +1162,16 @@
                 this.nAnte = data.notas.length == 0 ? '' : `<label class="tw-text-base tw-w-full tw-text-black">Fecha: ${data.notas[0].fecha}</label><label class="tw-text-base tw-w-full tw-text-black tw-capitalize"> ${data.notas[0].nota}</label>`;
             },
             updateCar(data){
+
                 this.$inertia.put('/Produccion/CarNor/' + data.id, data, {
-                    onSuccess: (v) => { this.resetCar(), this.alertSucces(), this.changeCloseCar() }, onError: (e) => { }, preserveState: true
+                    onSuccess: (v) => {
+                        this.resetCar(),
+                        this.alertSucces(),
+                        this.changeCloseCar(),
+                        this.limInputs('00')
+                    },
+                    onError: (e) => { },
+                    preserveState: true
                 });
             }
         },
@@ -1270,7 +1280,7 @@
 
         watch: {
             S_Area: function(b){
-                $('#t_repo').DataTable().destroy();
+                //$('#t_repo').DataTable().destroy();
                 this.$inertia.get('/Produccion/ReportesPro',{ busca: b, ano: this.ano }, {
                     onSuccess: () => { }, onError: () => { }, preserveState: true
                 });

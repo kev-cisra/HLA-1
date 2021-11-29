@@ -16,7 +16,7 @@ class MaterialesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['permission:Produccion.materiales.index']);
+        $this->middleware(['permission:Produccion.materiales.index|admin.index']);
     }
     /**
      * Display a listing of the resource.

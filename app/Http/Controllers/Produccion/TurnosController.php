@@ -17,7 +17,7 @@ class TurnosController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['permission:Produccion.turnos.index']);
+        $this->middleware(['permission:Produccion.turnos.index|admin.index']);
     }
     /**
      * Display a listing of the resource.

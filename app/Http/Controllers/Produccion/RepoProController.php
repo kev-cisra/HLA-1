@@ -19,7 +19,7 @@ class RepoProController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['permission:Produccion.reporpro.index']);
+        $this->middleware(['permission:Produccion.reporpro.index|admin.index']);
     }
     /**
      * Display a listing of the resource.
@@ -128,7 +128,7 @@ class RepoProController extends Controller
                     -> select('id', 'fecha', 'nota', 'carga_id');
                 }
             ])
-            ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id','VerInv']);
+            ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id','VerInv', 'departamento_id']);
 
             //paros
             $paros = parosCarga::where('departamento_id', '=', $bus)

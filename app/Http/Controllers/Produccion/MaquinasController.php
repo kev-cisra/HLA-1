@@ -19,7 +19,7 @@ class MaquinasController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['permission:Produccion.maquinas.index']);
+        $this->middleware(['permission:Produccion.maquinas.index|admin.index']);
     }
     /**
      * Display a listing of the resource.

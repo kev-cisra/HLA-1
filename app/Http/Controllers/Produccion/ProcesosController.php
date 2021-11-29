@@ -21,7 +21,7 @@ class ProcesosController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['permission:Produccion.procesos.index']);
+        $this->middleware(['permission:Produccion.procesos.index|admin.index']);
     }
     /**
      * Display a listing of the resource.

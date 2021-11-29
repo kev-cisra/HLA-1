@@ -1019,7 +1019,7 @@
                 this.form.departamento_id = this.S_Area;
                 this.btnOff = false;
                 //Asigna si es horario de verano o no
-                form.VerInv = '1';
+                form.VerInv = this.calcuObje != '' ? this.calcuObje : '1';
                 //revisa si el usuario es lider o operador
                 if (this.noCor == 'lid' | this.noCor == 'ope') {
                     //revisa si tienen equipo
