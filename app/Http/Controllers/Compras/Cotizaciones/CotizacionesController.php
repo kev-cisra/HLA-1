@@ -187,8 +187,12 @@ class CotizacionesController extends Controller{
 
             $Req = Requisiciones::where('id', '=', $request->Req)->get();
 
-            //Consulta para obtener los articulos a cotizar
-            $ArticulosCotizar = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->where('EstatusArt', '=', 3)->get();
+            if($request->NumCot == 1){
+                //Consulta para obtener los articulos a cotizar
+                $ArticulosCotizar = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->where('EstatusArt', '=', 3)->get();
+            }else{
+                $ArticulosCotizar = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->where('EstatusArt', '=', 4)->get();
+            }
 
             $ArticulosRequisicion = ArticulosRequisiciones::with([
                 'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
@@ -239,6 +243,8 @@ class CotizacionesController extends Controller{
             ])
             ->where('requisicion_id', '=', $request->Req)
             ->get();
+
+
 
         }else{
             $Req = null;
