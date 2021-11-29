@@ -595,14 +595,11 @@
             </div>
         </div>
 
-        <div class="ModalFooter">
+        <div class="ModalFooter" v-if="Req[0].Estatus < 6">
             <jet-button type="button" @click="AutorizaCotizacion(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 1° Cotizacion</jet-button>
             <jet-button type="button" @click="AutorizaCotizacion2(form)" v-if="NumCot > 0" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 2° Cotizacion</jet-button>
             <jet-CancelButton @click="chagePreciosRequisicion">Cerrar</jet-CancelButton>
         </div>
-<!--         <div class="ModalFooter" v-else>
-            <jet-CancelButton @click="chagePreciosRequisicion">Cerrar</jet-CancelButton>
-        </div> -->
     </modal>
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
@@ -840,7 +837,7 @@ export default {
         Confirmar: Number,
         PendientesMes: Number,
         CotizacionMes: Number,
-        NumCot: Number,
+        NumCot: Object,
         mes: String,
     },
 

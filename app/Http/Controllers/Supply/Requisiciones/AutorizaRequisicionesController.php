@@ -192,7 +192,6 @@ class AutorizaRequisicionesController extends Controller{
                     $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                 },
             ])
-            ->where('EstatusArt', '=', 5)
             ->where('requisicion_id', '=', $request->Req)
             ->get();
 
