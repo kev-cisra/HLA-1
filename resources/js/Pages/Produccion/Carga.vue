@@ -83,7 +83,7 @@
                     <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
             </div>
-            <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
+            <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode" v-on:keyup.enter="saveCA(form)">
                 <!-- select equipo -->
                 <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                     <jet-label class="tw-text-white"><span class="required">*</span>Equipo</jet-label>
@@ -146,24 +146,16 @@
             <!-------------------------------------------- Paquetes ---------------------------------------------->
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full" v-if="noCor == 'lid' | noCor == 'ope'">
                 <!-- formulario -->
-                <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
+                <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode"  v-on:keyup.enter="saveCA(form)">
                     <!-- select Paquetes de operadores -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label class="tw-text-white"><span class="required">*</span>Paquete de operadores</jet-label>
                         <Select2 v-model="paqOpera" class="InputSelect" :settings="{width: '100%'}" :options="opcPaOp" />
-                        <!-- <select class="InputSelect" v-model="paqOpera">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="po in opcPaOp" :key="po.value" :value="po.value">{{po.text}} - {{po.maquina}}</option>
-                        </select> -->
                     </div>
                     <!-- select Paquetes de Normas partida y clave -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label class="tw-text-white"><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
                         <Select2 v-model="paqNorma" class="InputSelect" :settings="{width: '100%'}" :options="opcPaNo" />
-                        <!-- <select class="InputSelect" v-model="paqNorma">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="no in opcPaNo" :key="no.value" :value="no.value">{{no.text}}</option>
-                        </select> -->
                     </div>
                     <!-- Input kilogramos -->
                     <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
@@ -311,7 +303,7 @@
                         <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" v-show="btnOff" @click="saveCA(form)">Guardar</jet-button>
                     </div>
                     <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+                        <jet-button type="button" class="tw-mx-auto" v-if="editMode" v-show="btnOff" @click="updateCA(form)">Actualizar</jet-button>
                     </div>
                     <div v-show="!btnOff">
                         <jet-button type="button" class="tw-mx-auto" disabled>
@@ -1331,7 +1323,7 @@
                 this.formObje.pro_hora = form.pro_hora;
             },
             updateOB(data){
-                console.log(data)
+                //console.log(data)
                 $('#t_ob').DataTable().destroy();
                 this.btnOff = false;
                 this.$inertia.put('/Produccion/ObjeCordi/' + data.id, data, {

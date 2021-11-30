@@ -19533,6 +19533,18 @@ select {
 	margin-left: 14rem;
 	margin-right: 14rem;
 }
+.tw-my-3 {
+	margin-top: 0.75rem;
+	margin-bottom: 0.75rem;
+}
+.tw-my-10 {
+	margin-top: 2.5rem;
+	margin-bottom: 2.5rem;
+}
+.tw-mx-3 {
+	margin-left: 0.75rem;
+	margin-right: 0.75rem;
+}
 .tw-ml-2 {
 	margin-left: 0.5rem;
 }
@@ -19986,6 +19998,9 @@ select {
 .tw-rounded-sm {
 	border-radius: 0.125rem;
 }
+.tw-rounded-xl {
+	border-radius: 0.75rem;
+}
 .tw-rounded-b {
 	border-bottom-right-radius: 0.25rem;
 	border-bottom-left-radius: 0.25rem;
@@ -20354,6 +20369,14 @@ select {
 .tw-bg-orange-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(251, 146, 60, var(--tw-bg-opacity));
+}
+.tw-bg-coolGray-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(156, 163, 175, var(--tw-bg-opacity));
+}
+.tw-bg-coolGray-300 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(209, 213, 219, var(--tw-bg-opacity));
 }
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;

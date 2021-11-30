@@ -265,11 +265,9 @@
             //información del select area
             mostSelect() {
                 this.$nextTick(() => {
+                    this.S_Area = 7;
                     if (this.usuario.dep_pers.length != 0) {
-                        /* console.log(this.usuario.dep_pers[0].departamento_id) */
                         this.S_Area = this.usuario.dep_pers[0].departamento_id;
-                    }else{
-                        this.S_Area = 7;
                     }
                 });
             },
@@ -339,18 +337,18 @@
                 data.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
                 data.departamento_id = this.S_Area;
                 //$('#t_paros').DataTable().clear();
-                if (moment().isDST()) {
-                    data.VerInv = 'Verano';
-                }else{
-                    data.VerInv = 'Invierno';
-                }
+                data.VerInv = '0';
+
+
                 if ( data.orden != '' & (data.paro_id == 13 | data.paro_id == 14 | data.paro_id == 16) ) {
                     var er = data.orden;
                     data.orden = this.tOrden+data.orden;
                 }
                 $('#t_paros').DataTable().destroy();
                 this.$inertia.post('/Produccion/Paros', data, {
-                    onSuccess: () => { this.tabla(), this.reset(), this.alertSucces()}, onError: () => {this.tabla(), data.orden = er}, preserveState: true
+                    onSuccess: () => { this.tabla(), this.reset(), this.alertSucces()},
+                    onError: () => {this.tabla(), data.orden = er},
+                    preserveState: true
                 });
             },
             //actualiza el estatus y lo detiene
@@ -391,8 +389,9 @@
                             'success'
                             )
                             data.estatus = 'Autorizado';
+                            data.usu = data.perfil_fin_id;
                             this.update(data);
-                        }//en caso de que no reinicia y manda a nulo algunos datos
+                        }//en caso de que no, reinicia y manda a nulo algunos datos
                         else if (
                             /* Read more about handling dismissals below */
                             result.dismiss === Swal.DismissReason.cancel

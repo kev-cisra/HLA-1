@@ -79,8 +79,24 @@
 
         <!------------------------------------ Data table de carga de produccion ------------------------------------------------------->
         <div class="table-responsive" v-show="FoFiltro.TipRepo == 1">
+
             <Table id="t_repo">
+                <template v-slot:TableEncabezado>
+                    <th colspan="5" v-show="FoFiltro.iniDia">
+
+                    </th>
+                    <th colspan="4" >
+                        Producción
+                    </th>
+                    <th colspan="6" v-show="FoFiltro.iniDia">
+
+                    </th>
+                    <th>
+                        <button class="btn btn-danger" v-show="deli.elimiMasi.length > 0" @click="eliminaMasiva(deli)" >Eliminar</button>
+                    </th>
+                </template>
                 <template v-slot:TableHeader>
+                    <th class="columna">Indice</th>
                     <th class="columna">Fecha</th>
                     <th class="columna">Proceso</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Maquina</th>
@@ -99,9 +115,18 @@
                 </template>
                 <template v-slot:TableFooter >
                     <tr class="fila" v-for="ca in recoTabla" :key="ca.id">
-                        <td >{{ca.fecha}}</td>
+                        <td>
+                            <div v-if="ca.proceso.tipo == 1 | ca.proceso.tipo == 5 | ca.proceso.tipo == 3">
+                                <input type="checkbox" :value="ca.id" v-model="deli.elimiMasi" class="tw-rounded-xl tw-bg-coolGray-300" :id="'indePro'+ca.id "/>
+                                <label :for="'indePro'+ca.id" class=" tw-mx-3"> {{ca.id}} </label>
+                            </div>
+                            <div v-else>
+                                {{ca.id}}
+                            </div>
+                        </td>
+                        <td>{{ca.fecha}}</td>
                         <td class="">{{ca.proceso == null ? 'N/A' : ca.proceso.nompro}}</td>
-                        <td  v-show="FoFiltro.iniDia">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
+                        <td v-show="FoFiltro.iniDia">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
                         <td v-show="FoFiltro.iniDia" >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
 
                         <td class=" tw-w-40">
@@ -163,6 +188,7 @@
                     </tr>
                 </template>
                 <template v-slot:Foother>
+                    <th class="columna">Indice</th>
                     <th class="columna">Fecha</th>
                     <th class="columna">Proceso</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Maquina</th>
@@ -528,9 +554,13 @@
                 showModal: false,
                 showModalC: false,
                 showModalCar: false,
+                limpPro: true,
                 proc_prin: '',
                 vMasi: true,
                 vCal: true,
+                deli:{
+                    elimiMasi: []
+                },
                 docu: {
                     file: null
                 },
@@ -591,14 +621,15 @@
             /***************************** Calculos ******************************************/
             calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
+                    this.limpPro = false;
                     this.vCal = false;
                     this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {
                             this.alertSucces(),
                             this.vCal = true,
                             this.reset(),
-                            this.chageClose(),
-                            this.limInputs('00')
+                            this.chageClose()
+                            //this.limInputs('00')
                         },
                         onError: (e) => {
                             this.vCal = true
@@ -651,7 +682,8 @@
                 }
             },
             verTabla() {
-                $('#t_repo').DataTable().clear();
+                this.limpPro = true;
+                //$('#t_repo').DataTable().clear();
             },
             //muestra la utima fecha del paro
             nuFin(ar){
@@ -703,14 +735,14 @@
                 this.$nextTick(() => {
                     var table = $('#t_repo').DataTable({
                         "language": this.español,
-                        "order": [[4, 'asc'],[0, 'asc']],
+                        "order": [[5, 'asc'],[1, 'asc']],
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                         "columnDefs": [
-                            { "width": "10%", "targets": [0,1,2,3,4,10] },
-                            { "width": "7%", "targets": [5,6,7,8,9,13] },
-                            { "width": "5%", "targets": [11,12] }
+                            { "width": "10%", "targets": [1,2,3,4,5,11] },
+                            { "width": "7%", "targets": [6,7,8,9,10,14] },
+                            { "width": "5%", "targets": [12, 13] }
                         ],
                         //stateSave: true,
                         scrollY:        '40vh',
@@ -899,13 +931,16 @@
                     //console.log(inicio)
                     //Asigna el dato para la fecha final
                     fin = moment(inicio).add(24, 'hours');
+
                     //Limpia el datatables
-                    $('#t_repo').DataTable().clear();
+                    if (this.limpPro) {
+                        $('#t_repo').DataTable().clear();
+                    }
                     $('#t_repo').DataTable().destroy();
                     this.tabla();
+
                     //hace el recorrido y asigna el Array
                     this.cargas.forEach(fec => {
-                        //console.log(fec.fecha)
                         if ( moment(fec.fecha).isSameOrAfter(inicio, 'minutes') & moment(fec.fecha).isBefore(fin, 'minutes') & fec.departamento_id == this.S_Area ) {
                             rt.push(fec);
                         }
@@ -913,10 +948,14 @@
                 }
                 //consulta de la semana
                 if(this.FoFiltro.semana != null){
+
                     //Limpia el datatables
-                    $('#t_repo').DataTable().clear();
+                    if (this.limpPro) {
+                        $('#t_repo').DataTable().clear();
+                    }
                     $('#t_repo').DataTable().destroy();
                     this.tabla();
+
                     //hace el recorrido y asigna el Array
                     this.cargas.forEach(fec => {
                         //console.log(fec.proceso.operacion)
@@ -929,10 +968,14 @@
                 }
                 //Consulta del mes
                 if(this.FoFiltro.mes != null){
+
                     //Limpia el datatables
-                    $('#t_repo').DataTable().clear();
+                    if (this.limpPro) {
+                        $('#t_repo').DataTable().clear();
+                    }
                     $('#t_repo').DataTable().destroy();
                     this.tabla();
+
                     //hace el recorrido y asigna el Array
                     this.cargas.forEach(fec => {
                         //console.log(fec.fecha)
@@ -948,18 +991,18 @@
             //Nuevo arrego para los paros
             NuArrayParo() {
                 const rtP = [];
+                this.limpPro = true;
                 var inicio = null;
                 var fin = null;
                 //consulta del dia
                 if(this.FoFiltro.iniDia != null){
+                    inicio = this.FoFiltro.iniDia+' 7:00'
                     if (this.S_Area == 7){
                         if (moment(this.FoFiltro.iniDia).isDST()) {
                             inicio = this.FoFiltro.iniDia+' 09:00';
                         }else{
                             inicio = this.FoFiltro.iniDia+' 08:00';
                         }
-                    }else{
-                        inicio = this.FoFiltro.iniDia+' 7:00'
                     }
 
                     //Asigna el dato para la fecha final
@@ -970,7 +1013,7 @@
                     this.tablaParo();
                     //hace el recorrido y asigna el Array
                     this.paros.forEach(fec => {
-                        if ( moment(fec.fecha).isSameOrAfter(inicio, 'minutes') & moment(fec.fecha).isBefore(fin, 'minutes') ) {
+                        if ( moment(fec.fecha).isSameOrAfter(inicio, 'minutes') & moment(fec.fecha).isBefore(fin, 'minutes') & fec.departamento_id == this.S_Area ) {
                             rtP.push(fec);
                         }
                     });
@@ -1002,7 +1045,7 @@
                             maquina = maq.Nombre+' '+maq.marca.Nombre;
 
                             paroNu.forEach(fec => {
-                                if (fec.paro_id == cla.id & fec.tiempo != null & maq.id == fec.maq_pro.maquina_id) {
+                                if (fec.paro_id == cla.id & fec.tiempo != null & maq.id == fec.maq_pro.maquina_id & fec.departamento_id == this.S_Area) {
                                     suma += parseInt(fec.tiempo, 10);
                                     //console.log(maquina+' - '+fec.paros.clave + ' - ' + fec.tiempo + ' - ' + suma + ' || ')
                                 }
@@ -1038,7 +1081,7 @@
                             maquina = maq.Nombre+' '+maq.marca.Nombre;
                             //hace el recorrido y asigna el Array
                             paroNu.forEach(fec => {
-                                if (fec.paro_id == cla.id & fec.tiempo != null & maq.id == fec.maq_pro.maquina_id) {
+                                if (fec.paro_id == cla.id & fec.tiempo != null & maq.id == fec.maq_pro.maquina_id & fec.departamento_id == this.S_Area) {
                                     suma += parseInt(fec.tiempo, 10);
                                     //console.log(fec.paros)
                                 }
@@ -1076,6 +1119,8 @@
                     this.FoFiltro.semana = null;
                     this.FoFiltro.mes = null;
                 }
+                this.deli.elimiMasi = [];
+                this.limpPro = true;
             },
             /***************************** Modal de carga masiva ********************************************/
             //abrir modal carga masiva
@@ -1162,17 +1207,45 @@
                 this.nAnte = data.notas.length == 0 ? '' : `<label class="tw-text-base tw-w-full tw-text-black">Fecha: ${data.notas[0].fecha}</label><label class="tw-text-base tw-w-full tw-text-black tw-capitalize"> ${data.notas[0].nota}</label>`;
             },
             updateCar(data){
-
+                this.limpPro = false;
                 this.$inertia.put('/Produccion/CarNor/' + data.id, data, {
                     onSuccess: (v) => {
                         this.resetCar(),
                         this.alertSucces(),
-                        this.changeCloseCar(),
-                        this.limInputs('00')
+                        this.changeCloseCar()
+                        //this.limInputs('00')
                     },
                     onError: (e) => { },
                     preserveState: true
                 });
+            },
+            //Eliminar produccion masiva
+            eliminaMasiva(data){
+                //console.log(data[0]);
+                Swal.fire({
+                    title: '¿Estás seguro de querer eliminar estos Registros?',
+                    text: "¡Si se eliminan no se podrán revertir!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                        'Eliminadó!',
+                        '¡Los registro se eliminaron correctamente!',
+                        'success'
+                        )
+                        data._method = 'DELETE';
+                        this.limpPro = false;
+                        this.$inertia.post('/Produccion/ReportesPro/' + data.elimiMasi[0], data, {
+                            onSuccess: () => { this.alertDelete(), this.deli.elimiMasi = []},
+                            onError: () => {},
+                            preserveState: true
+                        });
+                    }
+                })
             }
         },
 
@@ -1264,7 +1337,6 @@
             //recorrido para la tabla de produccion
             recoTabla: function() {
                 if (this.FoFiltro.TipRepo == 1) {
-                    //console.log('entro a produccion')
                     return this.NuArrayPro();
                 }
             },

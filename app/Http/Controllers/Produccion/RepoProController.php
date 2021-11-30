@@ -268,8 +268,15 @@ class RepoProController extends Controller
      * @param  \App\Models\Produccion\carga  $carga
      * @return \Illuminate\Http\Response
      */
-    public function destroy(carga $carga)
+    public function destroy(Request $request, carga $carga)
     {
         //
+        foreach ($request->elimiMasi as $eli) {
+            //print($eli.' - ');
+            carga::find($eli)->delete();
+        }
+        //return $request;
+        return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
     }
 }
