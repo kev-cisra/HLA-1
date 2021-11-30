@@ -186,7 +186,7 @@ class AutorizaRequisicionesController extends Controller{
             //Obtengo el numero de cotizaciones realizadas para la requisicion
             $NumCot = PreciosCotizaciones::where('NumCotizacion', '=', 2)->where('requisiciones_id', '=', $request->Req)->count();
 
-            //Consulta de los articulos correspondientes a la cotizacion con sus precios
+            //Consulta los articulos con sus precios correspondientes
             $ArticulosPrecios = ArticulosRequisiciones::with([
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
                     $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
