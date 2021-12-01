@@ -3,9 +3,9 @@
 namespace App\Imports;
 
 use App\Models\Produccion\carga;
+use App\Models\Produccion\carNorm;
+use App\Models\Produccion\carOpe;
 use App\Models\Produccion\catalogos\claves;
-use App\Models\Produccion\dep_per;
-use App\Models\Produccion\equipos;
 use App\Models\Produccion\turnos;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -24,28 +24,32 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
     */
     public function model(array $row)
     {
-        $dp = dep_per::join('perfiles_usuarios', 'perfiles_usuarios.id', 'dep_pers.perfiles_usuarios_id')->where('perfiles_usuarios.IdEmp', '=', $row['operador'])->first(['dep_pers.id AS id', 'dep_pers.departamento_id AS iddepa']);
-        //Consultas para mostrar la clave y la norma
-        $cla = claves::join('dep_mats', 'dep_mats.id', '=', 'claves.dep_mat_id')->join('materiales', 'materiales.id', '=', 'dep_mats.material_id')->where('dep_mats.departamento_id', '=', $dp->iddepa)->where('CVE_ART', '=', $row['clave'])->first(['claves.id AS idcl', 'dep_mats.id AS iddm']);
-        $idnor = !isset($cla->iddm) ? null : $cla->iddm;
-        $idcla = !isset($cla->idcl) ? null : $cla->idcl;
+        $dp = carOpe::where('id', '=', $row['paquete_operador'])
+        ->with([
+            'dep_per' => function($dp) {
+                $dp -> select('id', 'perfiles_usuarios_id', 'equipo_id');
+            }
+        ])
+        ->first(['id', 'proceso_id', 'dep_perf_id', 'maq_pro_id', 'departamento_id']);
+
+        $pn = carNorm::where('id', '=', $row['paquete_norma'])->first(['id', 'partida', 'norma', 'clave_id', 'departamento_id']);
+
         //consulta para mostrar el equipo y el turno
-        $equi = equipos::where('nombre', 'like', '%'.$row['equipo'].'%')->where('departamento_id', '=', $dp->iddepa)->first(['id']);
-        $tur = turnos::where('nomtur', 'like', '%'.$row['turno'].'%')->where('departamento_id', '=', $dp->iddepa)->first(['id']);
+        $tur = turnos::where('nomtur', 'like', '%'.$row['turno'].'%')->where('departamento_id', '=', $dp->departamento_id)->first(['id']);
 
         return new carga([
             'fecha' => $this->transformDateTime($row['fecha']),
             'semana' => date("Y", strtotime($this->transformDateTime($row['fecha']))).'-W'.date("W", strtotime($this->transformDateTime($row['fecha']))),
             'valor' => $row['peso'],
-            'partida' => $row['partida'],
-            'equipo_id' => $equi->id,
-            'dep_perf_id' => $dp->id,
-            'norma' => $idnor,
-            'proceso_id' => $row['proceso'],
-            'maq_pro_id' => $row['maquina'],
-            'clave_id' => $idcla,
+            'partida' => $pn->partida,
+            'equipo_id' => $dp->dep_per->equipo_id,
+            'dep_perf_id' => $dp->dep_perf_id,
+            'norma' => $pn->norma,
+            'proceso_id' => $dp->proceso_id,
+            'maq_pro_id' => $dp->maq_pro_id,
+            'clave_id' => $pn->clave_id,
             'turno_id' => $tur->id,
-            'departamento_id' => $dp->iddepa,
+            'departamento_id' => $dp->departamento_id,
             'per_carga' => Auth::id(),
             'VerInv' => 1,
         ]);

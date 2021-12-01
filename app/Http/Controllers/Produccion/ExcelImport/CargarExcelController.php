@@ -4,11 +4,7 @@ namespace App\Http\Controllers\Produccion\ExcelImport;
 
 use App\Http\Controllers\Controller;
 use App\Imports\CargasImport;
-use App\Models\Produccion\catalogos\claves;
-use App\Models\Produccion\dep_mat;
-use App\Models\Produccion\dep_per;
-use App\Models\Produccion\equipos;
-use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use App\Models\Produccion\carNorm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;

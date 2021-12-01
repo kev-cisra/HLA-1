@@ -612,7 +612,7 @@
             /***************************** Carga Masiva ************************************/
             carMasi(){
                 const form = this.docu;
-                this.vMasi = false;
+                //this.vMasi = false;
                 this.$inertia.post('/Produccion/CargaExcel', form, {
                     onSuccess: (v) => { this.openModalC(), this.resetC(), this.alertSucces(), this.vMasi = true }, onError: (e) => { this.vMasi = true }, preserveState: true
                 });

@@ -323,6 +323,7 @@
         <div class="table-responsive" >
             <Table id="t_carg">
                 <template v-slot:TableHeader>
+                    <th class="columna">Índice</th>
                     <th class="columna">Fecha</th>
                     <th class="columna">Nombre</th>
                     <th class="columna">Departamento</th>
@@ -340,6 +341,7 @@
                 </template>
                 <template v-slot:TableFooter >
                     <tr v-for="ca in v" :key="ca.id"  class="fila">
+                        <td class="tw-text-center"> {{ ca.id }} </td>
                         <td>{{ca.fecha}}</td>
                         <td class="">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
                         <td class="">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
@@ -388,6 +390,7 @@
                     </tr>
                 </template>
                 <template v-slot:Foother>
+                    <th class="columna">Índice</th>
                     <th class="columna">Fecha</th>
                     <th class="columna">Nombre</th>
                     <th class="columna">Departamento</th>
@@ -480,6 +483,7 @@
                 <div class="table-responsive">
                     <TableGreen id="t_op">
                         <template v-slot:TableHeader>
+                            <th class="columna">Índice</th>
                             <th class="columna">Nombre del operador</th>
                             <th class="columna">Sub procesos</th>
                             <th class="columna">Maquina</th>
@@ -489,6 +493,7 @@
                         </template>
                         <template v-slot:TableFooter>
                             <tr v-for="pOpe in paqope" :key="pOpe" class="fila">
+                                <td class="tw-text-center"> {{ pOpe.id }} </td>
                                 <td> {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.Nombre}} {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.ApPat}} {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.ApMat}}</td>
                                 <td>{{pOpe.proceso == null ? 'N/A' : pOpe.proceso.nompro}}</td>
                                 <td> {{pOpe.maq_pro.maquinas.Nombre}} </td>
@@ -578,6 +583,7 @@
                 <div class="table-responsive">
                     <TableCyan id="t_pn">
                         <template v-slot:TableHeader>
+                            <th class="columna">Índice</th>
                             <th class="columna">Norma</th>
                             <th class="columna">Clave</th>
                             <th class="columna">Descripcion</th>
@@ -586,6 +592,7 @@
                         </template>
                         <template v-slot:TableFooter>
                             <tr v-for="pNor in paqnor" :key="pNor" class="fila">
+                                <td class="tw-text-center"> {{ pNor.id }} </td>
                                 <td> {{pNor.dep_mat.materiales.nommat}}</td>
                                 <td >{{pNor.clave.CVE_ART}}</td>
                                 <td > {{pNor.clave.DESCR}}</td>
@@ -694,6 +701,7 @@
                 <div class="table-responsive">
                     <TableBlue id="t_ob">
                         <template v-slot:TableHeader>
+                            <th class="columna">Índice</th>
                             <th class="columna tw-text-center">Proceso</th>
                             <th class="columna tw-text-center">Maquina</th>
                             <th class="columna tw-text-center">Norma</th>
@@ -703,6 +711,7 @@
                         </template>
                         <template v-slot:TableFooter>
                             <tr class="fila" v-for="obje in objetivos" :key="obje.id">
+                                <td class="tw-text-center"> {{ obje.id }} </td>
                                 <td class="tw-text-center"> {{ obje.proceso.nompro }} </td>
                                 <td class="tw-text-center"> {{ obje.maq_pro.maquinas.Nombre }} {{ obje.maq_pro.maquinas.marca.Nombre }} </td>
                                 <td class="tw-text-center"> {{ obje.dep_mat.materiales.idmat }} - {{ obje.dep_mat.materiales.nommat }} </td>
@@ -926,7 +935,7 @@
                     } );
                     $('#t_carg').DataTable({
                         "language": this.español,
-                        "order": [[4, 'asc'], [0, 'desc']],
+                        "order": [[5, 'asc'], [1, 'desc']],
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
