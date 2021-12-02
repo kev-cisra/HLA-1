@@ -87,7 +87,7 @@
                                     </svg>
                                 </div>
                                 <div class="tw-flex tw-flex-col tw-justify-center">
-                                    <div class="tw-text-lg"> {{ CotizacionMes }} </div>
+                                    <div class="tw-text-lg"> {{ ICotizacionMes }} </div>
                                     <div class="tw-text-xs tw-text-gray-400">Pendientes por Cotizar de <strong>{{params.MesLetra}}</strong> </div>
                                 </div>
                             </div>
@@ -832,11 +832,11 @@ export default {
         ArticulosPrecios: Object,
         Req: Object,
         Proveedores: Object,
-        Cotizacion: Object,
+        Cotizacion: Number,
         Pendientes: Number,
         Confirmar: Number,
         PendientesMes: Number,
-        CotizacionMes: Number,
+        ICotizacionMes: Number,
         NumCot: Object,
         mes: String,
     },
@@ -902,6 +902,9 @@ export default {
                     "order": [10, 'asc'],
                     pageLength: 50,
                     bLengthChange: false,
+                    stateSave: true,
+                                            scrollY:        '40vh',
+                        scrollCollapse: true,
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
