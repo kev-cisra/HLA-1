@@ -239,10 +239,17 @@
                                         <i class="fas fa-file-invoice-dollar"></i>
                                     </span>
                                 </div>
+                                <div class="iconoPurple" @click="Partidas(datos)">
+                                    <span tooltip="Edita Precios" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                    </span>
+                                </div>
                             </div>
                             <div class="columnaIconos" v-else-if="datos.Estatus == 5">
-                                <div class="iconoDetails" @click="Requisicion(datos)">
-                                    <span tooltip="Visualiza Requisicion" flow="left">
+                                <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
+                                    <span tooltip="Visualiza Cotizacion" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -256,6 +263,13 @@
                                         <i class="fas fa-shipping-fast"></i>
                                     </span>
                                 </div>
+                                <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
+                                    <span tooltip="Visualiza Cotizacion" flow="left">
+                                        <i class="fas fa-file-invoice-dollar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else-if="datos.Estatus > 6">
                                 <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
                                     <span tooltip="Visualiza Cotizacion" flow="left">
                                         <i class="fas fa-file-invoice-dollar"></i>
@@ -277,7 +291,6 @@
                 </div>
             </div>
         </div>
-
         <div class="tw-mx-4" v-if="ArticulosRequisicion != null">
             <div v-if=" ArticulosRequisicion[0].articulo_user != null">
                 <Table>
@@ -288,6 +301,7 @@
                         <th class="columna">NUM PARTE</th>
                         <th class="columna">RECIBIDO</th>
                         <th class="columna">ESTATUS</th>
+                        <th class="columna">ACCIONES</th>
                     </template>
 
                     <template v-slot:TableFooter>
@@ -338,6 +352,18 @@
                                     </span>
                                 </div>
                             </td>
+                            <td class="tw-text-center">
+                                <div class="columnaIconos">
+                                    <div class="iconoPurple" @click="EdtarPrecio(art)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="iconoPurple" @click="CancelarArticulo(art)">
+                                        <i class="fas fa-ban"></i>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     </template>
                 </Table>
@@ -350,6 +376,7 @@
                         <th class="columna">DESCRIPCION</th>
                         <th class="columna">NUM PARTE</th>
                         <th class="columna">ESTATUS</th>
+                        <th class="columna">ACCIONES</th>
                     </template>
 
                     <template v-slot:TableFooter>
@@ -404,6 +431,25 @@
                                     <span tooltip="Cotizacion Rechazada" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
                                     </span>
+                                </div>
+                            </td>
+                            <td class="tw-text-center">
+                                <div class="columnaIconos" v-if="art.EstatusArt == 3">
+                                    <div class="iconoPurple" @click="EdtarPrecio(art)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="iconoPurple" @click="CancelarArticulo(art)">
+                                        <i class="fas fa-ban"></i>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-if="art.EstatusArt == 4">
+                                    <div class="iconoPurple" @click="EdtarPrecio(art)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -610,7 +656,7 @@
         <div class="tw-px-4 tw-py-4">
             <div class="tw-text-lg">
                 <div class="ModalHeader">
-                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Autoriza Cotización de Requisición <strong></strong></h3>
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Precios de Cotización <strong></strong></h3>
                 </div>
             </div>
             <div class="tw-my-4" v-if="ArticulosPrecios != null">
@@ -628,7 +674,6 @@
                         <th class="columna">PRECIO TOTAL</th>
                         <th class="columna">ARCHIVO</th>
                         <th class="columna">AUTORIZADO</th>
-                        <th class="columna">ACCIONES</th>
                     </template>
 
                     <template v-slot:TableFooter>
@@ -694,22 +739,14 @@
                                     </div>
                                 </tr>
                             </td>
-                            <td>
-                                <div class="columnaIconos">
-                                    <div class="iconoPurple" @click="EdtarPrecio(datos)">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </td>
                         </tr>
                     </template>
                 </Table>
             </div>
         </div>
 
-        <div class="ModalFooter" >
+        <div class="ModalFooter">
+            <jet-button type="button" @click="Editar(form)"  :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Editar</jet-button>
             <jet-CancelButton @click="chagePreciosRequisicion">Cerrar</jet-CancelButton>
         </div>
     </modal>
@@ -724,6 +761,13 @@
             <div class="tw-mt-4">
                 <div class="ModalForm">
                     <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>NÚMERO DE COTIZACION</jet-label>
+                            <select id="NumCot" v-model="form.Cot"  class="InputSelect" @change="NumeroCot()">
+                                <option value="0" >Cotizacion 1</option>
+                                <option value="1" >Cotizacion 2</option>
+                            </select>
+                        </div>
                         <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                             <jet-label><span class="required">*</span>MARCA</jet-label>
                             <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
@@ -743,7 +787,6 @@
                                 <option value="USD" >USD</option>
                             </select>
                         </div>
-
                         <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
                             <jet-label>Tipo Cambio</jet-label>
                             <jet-input type="text" v-model="form.TipoCambio"></jet-input>
@@ -752,12 +795,8 @@
                     </div>
                 </div>
             </div>
-
             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                 <h3 class="tw-text-center tw-font-extrabold">Articulos</h3>
-                <pre>
-                    {{ Precio }}
-                </pre>
                 <Table>
                     <template v-slot:TableHeader>
                         <th>CANTIDAD</th>
@@ -770,17 +809,66 @@
                         <tr v-for="match in Precio" :key="match">
                             <td class="tw-text-center">{{ match.Cantidad }}</td>
                             <td class="tw-text-center">{{ match.Unidad }}</td>
-                            <td>{{ match.Descripcion }}</td>
-                            <td></td>
+                            <td class="tw-text-center">{{ match.Descripcion }}</td>
+                            <td class="tw-flex tw-justify-center"><input type="text" v-model="form.Precio"></td>
                         </tr>
                     </template>
                 </Table>
+            </div>
+            <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                    <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
+                    <textarea name="" id="" cols="2" v-model="form.Comentarios" @input="(val) => (form.Comentarios = form.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                </div>
+            </div>
+            <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                    <jet-label>ARCHIVO</jet-label>
+                    <a >{{ form.Archivo }}</a>
+                    <div class='tw-flex tw-items-center tw-justify-center tw-w-full'>
+                        <label class='tw-flex tw-flex-col tw-border-4 tw-border-dashed tw-w-full tw-h-24 hover:tw-bg-gray-100 hover:tw-border-indigo-300 tw-group'>
+                            <div class='tw-flex tw-flex-col tw-items-center tw-justify-center tw-pt-4'>
+                                <svg class="tw-w-8 tw-h-8 tw-text-indigo-400 group-hover:tw-text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <p class='tw-lowercase tw-text-sm tw-text-gray-400 group-hover:tw-text-indigo-600 tw-mt-2 tw-tracking-wider' v-if="form.archivo == null">Seleccion un Archivo</p>
+                                <span class="tw-mt-2 tw-text-xxs tw-text-teal-500 tw-font-bold" v-if="form.archivo != null">{{  form.archivo.name }}</span>
+                            </div>
+                        <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
+                        </label>
+                    </div>
+                    <span v-if="form.ImagenServidor != null">{{form.archivo}}</span>
+                    <small v-if="errors.archivo" class="validation-alert">{{errors.archivo}}</small>
+                </div>
             </div>
         </div>
 
         <div class="ModalFooter">
             <jet-button type="button" @click="ActualizaCotizacion(form)"  :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualiza</jet-button>
             <jet-CancelButton @click="chageEditarPre">Cerrar</jet-CancelButton>
+        </div>
+    </modal>
+
+    <modal :show="showCancelar" @close="chageCancelar" :maxWidth="tam">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Cancela Partida</h3>
+                </div>
+            </div>
+            <div class="tw-mt-4">
+                <div class="ModalForm">
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                            <jet-label><span class="required">*</span>MOTIVO CANCELACION</jet-label>
+                            <textarea name="" id="" cols="2" v-model="form.MotivoCancelacion" @input="(val) => (form.MotivoCancelacion = form.MotivoCancelacion.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ModalFooter">
+            <jet-button type="button" @click="ConfirmaCancelacion(form)"  :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualiza</jet-button>
+            <jet-CancelButton @click="chageCancelar">Cerrar</jet-CancelButton>
         </div>
     </modal>
 
@@ -824,13 +912,12 @@ export default {
             showOtraCotizacion: false,
             showPreciosRequisicion: false,
             showEditarPre: false,
+            showCancelar: false,
             form: {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
                 IdPre: '',
                 IdArt: '',
-                IdPre: '',
-                IdPre2: '',
                 requisicion_id: '',
                 NumReq:  '',
                 Cantidad: '',
@@ -838,7 +925,9 @@ export default {
                 Marca: '',
                 Proveedor: '',
                 Precio: '',
-                Precio2: '',
+                Cot: 0,
+                NumCot: '',
+                NumCot2: '',
                 PrecioInteger: '',
                 Total: '',
                 TotalInteger: '',
@@ -848,6 +937,7 @@ export default {
                 archivo: '',
                 Comentarios: '',
                 Comentariollegada: '',
+                MotivoCancelacion: '',
                 Fechallegada: '',
                 ImagenServidor: '',
                 PrecioCotizacion: [],
@@ -882,12 +972,15 @@ export default {
         Req: Object, //Obtengo el num de requisicion
         NumCot: Number, //Numero de cotizacions realizadas a la requisicion
         Precio: Object,
+        ArtPre: Object,
+        PrecioEdit: Object,
         Proveedores: Object, //Catalogo
         Requisiciones: Object, //Vista por requisiciones
         ArticulosRequisiciones: Object, //Vista por Articulos
         ArticulosRequisicion: Object, //Partidas
         ArticulosCotizar: Object, //Objeto para generacion de inputs dinamicos para cotizar
         ArticulosPrecios: Object, //Visualizacion de cotizacion
+        PreciosRequisicion: Object,
     },
 
     methods: {
@@ -896,24 +989,31 @@ export default {
             this.form = {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
-                IdArt: null,
-                requisicion_id: null,
-                IdPre: null,
-                NumReq:  null,
-                Cantidad: null,
-                Unidad: null,
-                Precio: null,
-                PrecioInteger: null,
-                Total: null,
-                TotalInteger: null,
-                Moneda: null,
-                TipoCambio: null,
-                Descripcion: null,
-                archivo: null,
-                Comentarios: null,
-                Comentariollegada: null,
-                Fechallegada: null,
-                ImagenServidor: null,
+                IdPre: '',
+                IdArt: '',
+                requisicion_id: '',
+                NumReq:  '',
+                Cantidad: '',
+                Unidad: '',
+                Marca: '',
+                Proveedor: '',
+                Precio: '',
+                Cot: 0,
+                NumCot: '',
+                NumCot2: '',
+                PrecioInteger: '',
+                Total: '',
+                TotalInteger: '',
+                Moneda: '',
+                TipoCambio: '',
+                Descripcion: '',
+                archivo: '',
+                Comentarios: '',
+                Comentariollegada: '',
+                MotivoCancelacion: '',
+                Fechallegada: '',
+                ImagenServidor: '',
+                PrecioCotizacion: [],
             };
         },
 
@@ -1070,7 +1170,6 @@ export default {
         CotizarOtraReq(data){ //Agregar mas cotizaciones
             this.params.Req = data.id;
             this.params.NumCot = 2;
-            console.log(this.params);
             this.$inertia.get('/Compras/Cotizaciones', this.params , {
                 onSuccess: () => {
 
@@ -1101,9 +1200,9 @@ export default {
             this.showEditarPre = !this.showEditarPre;
         },
 
-        EdtarPrecio(data){
-
+        EdtarPrecio(data){ //Abre modal y consulta los precios del articulo
             this.params.Art = data.id;
+            this.form.Cot = 0;
 
             var query  = window.location.search.substring(1);
             var vars = query.split("&");
@@ -1116,20 +1215,45 @@ export default {
 
             this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
                 onSuccess: () => {
+                    this.form.editId = this.PrecioEdit[0].id;
 
-                    this.form.IdPre = this.Precio[0].id;
+                    this.form.Marca = this.PrecioEdit[0].Marca;
+                    this.form.Proveedor = this.PrecioEdit[0].Proveedor;
+                    this.form.Moneda = this.PrecioEdit[0].Moneda;
+                    this.form.TipoCambio = this.PrecioEdit[0].TipoCambio;
+                    this.form.Precio = this.PrecioEdit[0].Precio;
 
-                    this.form.Marca = this.Precio[0].Marca;
-                    this.form.Proveedor = this.Precio[0].Proveedor;
-                    this.form.Moneda = this.Precio[0].Moneda;
-                    this.form.TipoCambio = this.Precio[0].TipoCambio;
-
+                    this.form.Comentarios = this.PrecioEdit[0].Comentarios;
+                    this.form.Archivo = this.PrecioEdit[0].Archivo;
 
                     this.chageEditarPre();
 
             }, preserveState: true })
+        },
 
+        NumeroCot(){ //Cambio de los datos del numero de Cotizacion
+            this.form.editId = this.PrecioEdit[this.form.Cot].id;
 
+            this.form.Marca = this.PrecioEdit[this.form.Cot].Marca;
+            this.form.Proveedor = this.PrecioEdit[this.form.Cot].Proveedor;
+            this.form.Moneda = this.PrecioEdit[this.form.Cot].Moneda;
+            this.form.TipoCambio = this.PrecioEdit[this.form.Cot].TipoCambio;
+            this.form.Precio = this.PrecioEdit[this.form.Cot].Precio;
+
+            this.form.Comentarios = this.PrecioEdit[this.form.Cot].Comentarios;
+            this.form.Archivo = this.PrecioEdit[this.form.Cot].Archivo;
+        },
+
+        ActualizaCotizacion(data){
+            data.metodo = 1;
+            data._method = "PUT";
+            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.reset(),
+                    this.chageEditarPre(),
+                    this.alertSucces();
+                },
+            });
         },
 
         ConfirmaRequisicionCotizada(data, metodo){ //Metodo para enviar cotizacion a Autorizacion
@@ -1146,7 +1270,7 @@ export default {
             this.showPreciosRequisicion = !this.showPreciosRequisicion;
         },
 
-        VisualizaCotizacion(data){
+        VisualizaCotizacion(data){ //Visualiza Precios de cotizacion
             this.params.Req = data.id;
 
             //OBTENER VALOR DE FRILTRO DE LA URL
@@ -1165,6 +1289,30 @@ export default {
                     this.chagePreciosRequisicion();
             }, preserveState: true })
         },
+
+        chageCancelar(){ //Modal para cancelar partida
+            this.showCancelar = !this.showCancelar;
+        },
+
+        CancelarArticulo(data){
+            this.params.Art = data.id;
+            this.form.IdArt = data.id;
+            this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    this.chageCancelar();
+            }, preserveState: true })
+        },
+
+        ConfirmaCancelacion(data){
+            data.metodo = 4;
+            data._method = "PUT";
+            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.chageCancelar();
+                    this.alertSucces();
+                },
+            });
+        }
     },
 };
 </script>

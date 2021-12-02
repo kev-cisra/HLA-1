@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use PhpParser\Node\Stmt\Return_;
 
 use function PHPUnit\Framework\isNull;
 
@@ -35,9 +36,10 @@ class CotizacionesController extends Controller{
         $ArticulosRequisicion = null;
         $ArticulosCotizar = null;
         $ArticulosPrecios = null;
+        $PreciosRequisicion = null;
+        $PrecioEdit = null;
         $Req = null;
         $Precio = null;
-        $PreCount = null;
         $NumCot = null;
 
         /* ********************** CONSULTAS GENERALES************************ */
@@ -112,40 +114,7 @@ class CotizacionesController extends Controller{
             $NumCot = PreciosCotizaciones::where('NumCotizacion', '=', 2)->where('requisiciones_id', '=', $request->Req)->count();
 
             //Consulta para obtener las partidas relacionadas a esa requisicion
-            $ArticulosRequisicion = ArticulosRequisiciones::with([
-                'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
-                    $req->select(
-                        'id', 'IdUser',
-                        'IdEmp', 'Folio',
-                        'NumReq',
-                        'Departamento_id',
-                        'jefes_areas_id',
-                        'Codigo', 'Maquina_id',
-                        'Marca_id', 'TipCompra',
-                        'Observaciones', 'Perfil_id');
-                },
-                'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
-                    $perfil->select('id', 'name');
-                },
-                'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
-                    $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
-                },
-                'ArticulosRequisicion.RequisicionDepartamento' => function($departamento) { //Relacion 1 a 1 De puestos
-                    $departamento->select('id', 'Nombre');
-                },
-                'ArticulosRequisicion.RequisicionJefe' => function($jefe) { //Relacion 1 a 1 De puestos
-                    $jefe->select('id', 'Nombre');
-                },
-                'ArticulosRequisicion.RequisicionMaquina' => function($maquina) { //Relacion 1 a 1 De puestos
-                    $maquina->select('id', 'Nombre');
-                },
-                'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
-                    $marca->select('id', 'Nombre');
-                },
-            ])
-            ->where('requisicion_id','=', $request->Req)
-            ->orderBy('EstatusArt', 'asc')
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+            $ArticulosRequisicion = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
 
             //Consulta los articulos con sus precios correspondientes
             $ArticulosPrecios = ArticulosRequisiciones::with([
@@ -154,7 +123,10 @@ class CotizacionesController extends Controller{
                 },
             ])
             ->where('requisicion_id', '=', $request->Req)
+            ->where('EstatusArt', '!=', 10)
             ->get();
+
+            $PreciosRequisicion = PreciosCotizaciones::where('requisiciones_id', '=', $request->Req)->get();
 
             //Consulta para obtener los articulos a cotizar dinamicamente
             if($request->NumCot == 1){
@@ -167,8 +139,15 @@ class CotizacionesController extends Controller{
 
             if($request->Art != ''){
                 //Obtengo los datos de la requisicion a editar
-                $Precio = PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->Art)->get();
-                $PreCount = PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->Art)->count();
+                $Precio = ArticulosRequisiciones::with([
+                    'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
+                        $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    },
+                ])
+                ->where('id', '=', $request->Art)
+                ->get();
+
+                $PrecioEdit = PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->Art)->get();
             }
 
         }
@@ -178,13 +157,14 @@ class CotizacionesController extends Controller{
             'Req', //Numero de requisicion
             'NumCot', //Numero de cotizaciones realizadas
             'Precio', //Obtengo los precios relacionados al articulo
-            'PreCount',
             'Proveedores',
             'Requisiciones',
+            'PrecioEdit',
             'ArticulosRequisiciones',
             'ArticulosRequisicion',
             'ArticulosCotizar',
             'ArticulosPrecios',
+            'PreciosRequisicion',
         ));
     }
 
@@ -269,7 +249,6 @@ class CotizacionesController extends Controller{
         switch($request->metodo){
             //Actualizacion del precio del articulo de la requisicion
             case 1: {
-
                 $Session = auth()->user();
 
                 if($request->Moneda == 'MXN'){ //Verifico el tipo de moneda
@@ -292,12 +271,12 @@ class CotizacionesController extends Controller{
 
                 }else{
                     //Busco la url del archivo adjuntado anteriormente
-                    $Precio = PreciosCotizaciones::find($request->IdPre)->first();
-                    $url = $Precio->archivo;
+                    $Precio = PreciosCotizaciones::find($request->editId)->first();
+                    $url = $Precio->Archivo;
                 }
 
                 //Actualizacion de datos
-                PreciosCotizaciones::find($request->IdPre)->update([
+                PreciosCotizaciones::find($request->editId)->update([
                     'IdUser' => $request->IdUser,
                     'Precio' => $request->Precio,
                     'Total' => $Total,
@@ -308,38 +287,21 @@ class CotizacionesController extends Controller{
                     'Comentarios' => $request->Comentarios,
                     'Archivo' => $url,
                 ]);
-
-                //Caluclo de segundo precio cotizado
-                if(isset($request->IdPre2) != ''){
-
-                    if($request->Moneda == 'MXN'){
-                        $Total2 = $request->Precio2 * $request->Cantidad;
-                    }else{
-                        $Total1 = round($request->Precio2 * $request->TipoCambio, 2);
-                        $Total2 = $Total1 * $request->Cantidad;
-                    }
-
-                    PreciosCotizaciones::find($request->IdPre2)->update([
-                        'IdUser' => $request->IdUser,
-                        'Precio' => $request->Precio2,
-                        'Total' => $Total2,
-                        'Moneda' => $request->Moneda,
-                        'TipoCambio' => $request->TipoCambio,
-                        'Marca' => $request->Marca,
-                        'Proveedor' => $request->Proveedor,
-                        'Comentarios' => $request->Comentarios,
-                        'Archivo' => $url,
-                    ]);
-                }
                 break;
             }
 
             //Envio de cotizacion a autorizacion
             case 2:{
-                ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->update([
+                //Envio a autorizacion solo los articulos cotizados por primer o segunda vez
+                ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->where('EstatusArt', '=', 3)->update([
                     'EstatusArt' => 5,
                 ]);
 
+                ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->where('EstatusArt', '=', 4)->update([
+                    'EstatusArt' => 5,
+                ]);
+
+                //Envio a autorizacion la requisicion
                 Requisiciones::find($request->id)->update([
                     'Estatus' => 5,
                 ]);
@@ -369,6 +331,14 @@ class CotizacionesController extends Controller{
                 ]);
 
                 break;
+            }
+
+            //Agrega comentario de Cancelacion
+            case 4:{
+                ArticulosRequisiciones::where('id', '=', $request->IdArt)->update([
+                    'MotivoCancelacion' => $request->MotivoCancelacion,
+                    'EstatusArt' => 10,
+                ]);
             }
         }
 
