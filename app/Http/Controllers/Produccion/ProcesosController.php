@@ -142,7 +142,7 @@ class ProcesosController extends Controller
             foreach ($request->formulas as $for) {
                 //Verifica si existe el proceso
                 if(!empty($for['val'])){
-                        foreach ($request->for_maq as $check) {
+                    foreach ($request->for_maq as $check) {
                         $ch = explode('-', $check);
                         //si los procesos a cargar tienen maquinas
                         if ($for['val'] == $ch[0]) {
@@ -205,10 +205,9 @@ class ProcesosController extends Controller
         //actualiza los procesos
         if ($request->has('id')) {
             procesos::find($request->input('id'))->update($request->all());
-            /* return redirect()->back()
-                    ->with('message', 'Post Updated Successfully.'); */
         }
 
+        //editar carga de datos
         if ($request->tipo == 1 || $request->tipo == 2 || $request->tipo == 5) {
             //recorrido de la base de datos
             $mpS = maq_pro::where('proceso_id', '=', $request->id)
@@ -228,7 +227,6 @@ class ProcesosController extends Controller
                 }
                 else{
                     foreach ($mpS as $vS) {
-
                         //recorrido de request
                         $mpR = maq_pro::where('proceso_id', '=', $request->id)
                         ->where('maquina_id', '=', $val['value'])
@@ -251,7 +249,6 @@ class ProcesosController extends Controller
                                     ->delete();
                             }
                         }else{
-
                             //recorrido de request
                             $mpR = maq_pro::where('proceso_id', '=', $request->id)
                             ->where('maquina_id', '=', $val['value'])
@@ -270,9 +267,58 @@ class ProcesosController extends Controller
             /* return($sv); */
 
         }
+        //Editar operaciones
+        else if($request->tipo == 3){
+            //Elimina la formula completa
+            foreach ($request->Nformulas as $for) {
+                if (!in_array($for, $request->formulas)) {
+                    $ver = formulas::where('proceso_id', '=', $request->id)
+                    ->where('proc_rela', '=', $for['val'])
+                    ->get(['id']);
+                    foreach ($ver as $eliF) {
+                        formulas::find($eliF->id)->delete();
+                    }
+
+                }
+            }
+            //Eliminar formula por separado
+            foreach ($request->Nfor_maq as $fm) {
+                if (!in_array($fm, $request->for_maq)) {
+                    $ch = explode('-', $fm);
+                    $ver = formulas::where('proceso_id', '=', $request->id)
+                    ->where('proc_rela', '=', $ch[0])
+                    ->where('maq_pros_id', '=', $ch[1])
+                    ->delete();
+                }
+            }
+            //Agregar nueva formula
+            foreach ($request->for_maq as $fm) {
+                if (!in_array($fm, $request->Nfor_maq)) {
+                    $ch = explode('-', $fm);
+                    //print($ch[0].' - '.$ch[1].' - '.$request->id);
+                    $ver = formulas::where('proceso_id', '=', $request->id)
+                    ->where('proc_rela', '=', $ch[0])
+                    ->where('maq_pros_id', '=', $ch[1])
+                    ->first();
+
+                    //Reactivar la formula
+                    if (!empty($ver)) {
+                        $ver->restore();
+                    }//Crea una nueva formula
+                    else{
+                        formulas::create([
+                            'proc_rela' => $ch[0],
+                            'maq_pros_id' => $ch[1],
+                            'proceso_id' => $request->id
+                        ]);
+                    }
+
+                }
+            }
+        }
 
         return redirect()->back()
-                    ->with('message', 'Post Updated Successfully.');
+            ->with('message', 'Post Updated Successfully.');
 
     }
 

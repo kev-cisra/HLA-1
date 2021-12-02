@@ -196,7 +196,7 @@
                     </div>
                 </div>
                 <!-------------------------------- FORMULAS --------------------------------------->
-                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 3 & !editMode">
+                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 3">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Formulas</h3>
@@ -206,7 +206,7 @@
                     <div class="tw-mt-4">
                         <div class="ModalForm">
                             <!-- boton para agregar procesos -->
-                            <div class="tw-flex tw-justify-center" v-show="!editMode">
+                            <div class="tw-flex tw-justify-center">
                                 <button type="button" class="btn btn-primary tw-w-1/3" @click="addForRow()">Agregar proceso</button>
                             </div>
                             <!-- div de los difierentes procesos -->
@@ -237,7 +237,7 @@
                 <div class="ModalFooter">
                     <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
                     <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
-                    <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+                    <jet-CancelButton @click="chageClose()">Cerrar</jet-CancelButton>
                 </div>
             </form>
         </modal>
@@ -495,11 +495,21 @@
                 this.form.maquinas = [];
                 this.form.formulas = [];
                 this.form.for_maq = [];
+                this.form.Nfor_maq = [];
+                this.form.Nformulas = [];
                 data.maq_pros.forEach(mp => {
                     this.form.maquinas.push({value: mp.maquina_id});
                 })
+
+                var forml = '';
                 data.formulas.forEach(fo => {
-                    this.form.formulas.push({val: fo.proc_relas.id})
+                    forml = this.form.formulas.find(ele => ele.val== fo.proc_relas.id)
+                    this.form.for_maq.push(fo.proc_rela+'-'+fo.maq_pros_id)
+                    this.form.Nfor_maq.push(fo.proc_rela+'-'+fo.maq_pros_id)
+                    if (!forml) {
+                        this.form.formulas.push({val: fo.proc_rela})
+                        this.form.Nformulas.push({val: fo.proc_rela})
+                    }
                 })
                 this.editMode = true;
                 this.chageClose();

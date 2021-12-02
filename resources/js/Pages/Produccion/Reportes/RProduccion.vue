@@ -678,7 +678,6 @@
                             this.idDep = v.id;
                         }
                     })
-
                 }
             },
             verTabla() {

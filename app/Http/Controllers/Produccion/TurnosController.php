@@ -40,7 +40,7 @@ class TurnosController extends Controller
         $personal =[];
 
          /*************** Información para mostrar áreas *************************/
-         if(count($perf->dep_pers) != 0){
+        if(count($perf->dep_pers) != 0){
             //consulta las areas que le pertenecen al usuario
             $depa = dep_per::where('perfiles_usuarios_id','=',$perf->id)
                 ->with([

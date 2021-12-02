@@ -8,14 +8,17 @@ use App\Models\Produccion\catalogos\procesos;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
+use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use PhpParser\Builder\Function_;
 
 class maq_pro extends Model
 {
     use HasFactory;
     use SoftDeletes; //Implementamos
+    use SoftCascadeTrait;
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
+    protected $softCascade = ['formulas']; //eliminar en cascada
 
     //relacion 1 a muchos
     public function cargas() {
@@ -23,7 +26,7 @@ class maq_pro extends Model
     }
 
     public function formulas() {
-        return $this->hasMany(formulas::class);
+        return $this->hasMany(formulas::class, 'maq_pros_id');
     }
 
     public function parocargas(){

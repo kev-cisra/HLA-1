@@ -163,18 +163,18 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="columna">Turno</th>
-                                        <th class="columna">Equipo</th>
-                                        <th class="columna tw-w-64">Personal</th>
+                                        <th class="columna tw-text-center">Turno</th>
+                                        <th class="columna tw-text-center">Equipo</th>
+                                        <th class="columna tw-text-center tw-w-64">Personal</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="equipo in equipos" :key="equipo">
-                                        <td class="fila">{{equipo.turnos.nomtur}}</td>
-                                        <td class="fila">{{equipo.nombre}}</td>
-                                        <td class="">
+                                    <tr class="fila" v-for="equipo in equipos" :key="equipo">
+                                        <td class="tw-text-center">{{equipo.turnos.nomtur}}</td>
+                                        <td class="tw-text-center">{{equipo.nombre}}</td>
+                                        <td >
                                             <div class="overflow-auto tw-h-48">
-                                                <div v-for="perso in equipo.dep_pers" :key="perso" class="tw-border-b-4 tw-border-blueGray-700 hover:tw-bg-sky-600 tw-w-full">
+                                                <div v-for="perso in equipo.dep_pers" :key="perso" class="tw-border-b-4 tw-border-blueGray-700 hover:tw-text-white hover:tw-bg-sky-600 tw-w-full">
                                                     {{perso.perfiles.IdEmp}} - {{perso.perfiles.Nombre}} {{perso.perfiles.ApPat}}
                                                 </div>
                                             </div>
@@ -184,9 +184,9 @@
                             </table>
                         </div>
                     </div>
-                    <div class="modal-footer">
+                    <!-- <div class="modal-footer">
                         <button class="btn btn-primary" data-bs-target="#modla2" data-bs-toggle="modal" data-bs-dismiss="modal">Agregar Equipo</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -210,7 +210,7 @@
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Turno</jet-label>
-                                <select v-model="form2.turno_id" class="InputSelect">
+                                <select v-model="form2.turno_id" class="InputSelect" disabled>
                                     <option value="" disabled>Selecciona un turno</option>
                                     <option v-for="(item, index) in turno" :key="index" :value="item.id" >{{ item.nomtur }}</option>
                                 </select>
@@ -218,7 +218,7 @@
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Equipo</jet-label>
-                                <select v-model="form2.nombre" class="InputSelect">
+                                <select v-model="form2.nombre" class="InputSelect" disabled>
                                     <option value="" disabled>Selecciona un Equipo</option>
                                     <option value="Equipo 1">Equipo 1</option>
                                     <option value="Equipo 2">Equipo 2</option>
