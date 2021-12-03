@@ -31,7 +31,7 @@ class AutorizaRequisicionesController extends Controller{
         // 13844 13843 ->02  16668 4,2
 
         $Proveedores = Proveedores::get();
-
+        $NumCot = null;
         $Perfiles = PerfilesUsuarios::where('jefes_areas_id', '=', $Session->id)->get();
 
         //Consulta Default filtrada por Mes
@@ -201,7 +201,6 @@ class AutorizaRequisicionesController extends Controller{
             $Req = null;
             $PreciosRequisicion = null;
             $ArticulosPrecios = null;
-            $NumCot = null;
         }
 
 
@@ -258,7 +257,8 @@ class AutorizaRequisicionesController extends Controller{
                 ]);
 
                 //Metodos de autorizacion
-                PreciosCotizaciones::where('requisiciones_id', '=', $request->requisicion_id)->where('NumCotizacion', '=', 1)
+                PreciosCotizaciones::where('requisiciones_id', '=', $request->requisicion_id)
+                ->where('NumCotizacion', '=', 1)
                 ->update([
                     'Autorizado' => 2, //Estatus 2 Autorizado
                 ]); //Se autoriza los que tengan estatus 2
@@ -295,12 +295,12 @@ class AutorizaRequisicionesController extends Controller{
                 ]);
 
                 //Metodos de autorizacion
-                PreciosCotizaciones::where('requisiciones_id', '=', $request->requisicion_id)->where('NumCotizacion', '=', 2)
+                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->requisicion_id)->where('NumCotizacion', '=', 2)
                 ->update([
                     'Autorizado' => 2, //Estatus 2 Autorizado
                 ]); //Se autoriza los que tengan estatus 2
 
-                PreciosCotizaciones::where('requisiciones_id', '=', $request->requisicion_id)->where('NumCotizacion', '!=', 2)
+                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->requisicion_id)->where('NumCotizacion', '!=', 2)
                 ->update([
                     'Autorizado' => 1, //Estatus 1 Rechazado
                 ]); //Rechazo los precios de la cotizacion 2
@@ -308,6 +308,42 @@ class AutorizaRequisicionesController extends Controller{
                 TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->id)->update([
                     'Autorizado' => Carbon::now(),
                 ]);
+
+                break;
+
+
+        }
+
+        switch($request->metodo){
+            case 1:
+                ArticulosRequisiciones::where('id', '=', $request->id)->where('EstatusArt', '=', 5)->update([
+                    'EstatusArt' => 6,
+                ]);
+
+                //Metodos de autorizacion
+                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->id)->where('NumCotizacion', '=', 1)
+                ->update([
+                    'Autorizado' => 2, //Estatus 2 Autorizado
+                ]); //Se autoriza los que tengan estatus 2
+
+                //Metodos de autorizacion
+                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->id)->where('NumCotizacion', '=', 2)
+                ->update([
+                    'Autorizado' => 1, //Estatus Rechazado
+                ]); //Se rechaza la segunda cotizacion por dafult
+
+                break;
+
+            case 2:
+                ArticulosRequisiciones::where('id', '=', $request->id)->where('EstatusArt', '=', 5)->update([
+                    'EstatusArt' => 6,
+                ]);
+
+                //Metodos de autorizacion
+                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->id)
+                ->update([
+                    'Autorizado' => 1, //Estatus 1 Rechazado
+                ]); //Se autoriza los que tengan estatus 2
 
                 break;
         }

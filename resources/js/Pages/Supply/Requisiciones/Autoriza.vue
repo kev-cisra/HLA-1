@@ -524,6 +524,7 @@
                         <th class="columna">PRECIO TOTAL</th>
                         <th class="columna">ARCHIVO</th>
                         <th class="columna">AUTORIZADO</th>
+                        <th class="columna">ACCIONES</th>
                     </template>
 
                     <template v-slot:TableFooter>
@@ -589,6 +590,22 @@
                                     </div>
                                 </tr>
                             </td>
+                            <td>
+                                <div class="columnaIconos">
+                                    <div class="iconoEdit">
+                                        <span tooltip="Autorizar" flow="left" @click="AutorizaPartida(datos)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="iconoEdit">
+                                        <span tooltip="Rechazar Partida" flow="left" @click="RechazaPartida(datos)">
+                                                <i class="fas fa-times"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     </template>
                 </Table>
@@ -596,8 +613,8 @@
         </div>
 
         <div class="ModalFooter" v-if="Req[0].Estatus < 6">
-            <jet-button type="button" @click="AutorizaCotizacion(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 1° Cotizacion</jet-button>
-            <jet-button type="button" @click="AutorizaCotizacion2(form)" v-if="NumCot > 0" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 2° Cotizacion</jet-button>
+            <jet-button type="button" @click="AutorizaCotizacion(form)" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 1° Cotizacion</jet-button>
+            <jet-button type="button" @click="AutorizaCotizacion2(form)" v-if="NumCot > 0" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 2° Cotizacion</jet-button>
             <jet-CancelButton @click="chagePreciosRequisicion">Cerrar</jet-CancelButton>
         </div>
     </modal>
@@ -708,8 +725,8 @@
                     <div class="ModalForm">
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Motivo Rechazo</jet-label>
-                                <textarea name="" id="" cols="2" v-model="Rechazo.ComentarioRechazo" @input="(val) => (Rechazo.ComentarioRechazo = Rechazo.ComentarioRechazo.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                                <jet-label><span class="required">*</span>Comentarios de Requisicion</jet-label>
+                                <textarea name="" id="" cols="4" v-model="Rechazo.ComentarioRechazo" @input="(val) => (Rechazo.ComentarioRechazo = Rechazo.ComentarioRechazo.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
                                 <small v-if="errors.ComentarioRechazo" class="validation-alert">{{errors.ComentarioRechazo}}</small>
                             </div>
                         </div>
@@ -777,6 +794,7 @@ export default {
                 IdEmp: this.Session.IdEmp,
                 action: '',
                 requisicion_id: '',
+                articulo_id: '',
             },
             Rechazo: {
                 ComentarioRechazo: null,
@@ -837,7 +855,7 @@ export default {
         Confirmar: Number,
         PendientesMes: Number,
         ICotizacionMes: Number,
-        NumCot: Object,
+        NumCot: Number,
         mes: String,
     },
 
@@ -901,10 +919,6 @@ export default {
                     "language": this.español,
                     "order": [10, 'asc'],
                     pageLength: 50,
-                    bLengthChange: false,
-                    stateSave: true,
-                                            scrollY:        '40vh',
-                        scrollCollapse: true,
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -1211,7 +1225,7 @@ export default {
             }, preserveState: true })
         },
 
-        AutorizaCotizacion(data){
+        AutorizaCotizacion(data){ //Autoriza cotizacion completa
             data._method = "PUT";
             this.form.action = 1;
             this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
@@ -1222,12 +1236,32 @@ export default {
             });
         },
 
-        AutorizaCotizacion2(data){
+        AutorizaCotizacion2(data){ //Autoriza segunda cotizacion de Requisicion completa
             data._method = "PUT";
             this.form.action = 2;
             this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
                 onSuccess: () => {
                     this.chagePreciosRequisicion();
+                    this.alertSucces();
+                },
+            });
+        },
+
+        AutorizaPartida(data){ //Envia partida a autorizacion
+            data._method = "PUT";
+            data.metodo = 1;
+            this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
+        },
+
+        RechazaPartida(data){ //Rechaza partida
+            data._method = "PUT";
+            data.metodo = 2;
+            this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
+                onSuccess: () => {
                     this.alertSucces();
                 },
             });

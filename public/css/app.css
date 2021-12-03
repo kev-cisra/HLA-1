@@ -19707,6 +19707,9 @@ select {
 .tw-h-24 {
 	height: 6rem;
 }
+.tw-h-2\/4 {
+	height: 50%;
+}
 .tw-min-h-screen {
 	min-height: 100vh;
 }
@@ -19775,6 +19778,18 @@ select {
 }
 .tw-w-80 {
 	width: 20rem;
+}
+.tw-w-3\/12 {
+	width: 25%;
+}
+.tw-w-6\/12 {
+	width: 50%;
+}
+.tw-w-8\/12 {
+	width: 66.666667%;
+}
+.tw-w-7\/12 {
+	width: 58.333333%;
 }
 .tw-min-w-0 {
 	min-width: 0px;
@@ -20377,6 +20392,10 @@ select {
 .tw-bg-coolGray-300 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(209, 213, 219, var(--tw-bg-opacity));
+}
+.tw-bg-green-300 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(134, 239, 172, var(--tw-bg-opacity));
 }
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
