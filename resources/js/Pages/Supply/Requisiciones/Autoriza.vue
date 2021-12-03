@@ -918,7 +918,10 @@ export default {
                 $("#Requisiciones").DataTable({
                     "language": this.español,
                     "order": [10, 'asc'],
-                    pageLength: 50,
+                    // pageLength: 50,
+                    scrollY:        '40vh',
+                    scrollCollapse: true,
+                    paging:         false,
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -952,7 +955,10 @@ export default {
             this.$nextTick(() => {
                 $("#Articulos").DataTable({
                     "language": this.español,
-                    pageLength: 25,
+                    // pageLength: 25,
+                    scrollY:        '45vh',
+                    scrollCollapse: true,
+                    paging:         false,
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
