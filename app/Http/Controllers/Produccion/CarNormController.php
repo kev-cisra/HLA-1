@@ -96,10 +96,18 @@ class CarNormController extends Controller
     public function destroy(Request $request)
     {
         //
-        if ($request->has('id')) {
-            carNorm::find($request->input('id'))->delete();
-            return redirect()->back()
-                    ->with('message', 'Post Updated Successfully.');
+        if (isset($request->ElMaPN)) {
+            foreach ($request->ElMaPN as $valu) {
+                //print($valu.' - ');
+                carNorm::find($valu)->delete();
+            }
+        }else{
+            //return $request;
+            if ($request->has('id')) {
+                carNorm::find($request->input('id'))->delete();
+            }
         }
+        return redirect()->back()
+            ->with('message', 'Post Updated Successfully.');
     }
 }

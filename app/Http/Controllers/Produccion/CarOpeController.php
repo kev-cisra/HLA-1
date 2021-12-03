@@ -79,11 +79,16 @@ class CarOpeController extends Controller
     public function destroy(Request $request)
     {
         //
-        //return $request;
-        if ($request->has('id')) {
-            carOpe::find($request->input('id'))->delete();
-            return redirect()->back()
-                    ->with('message', 'Post Updated Successfully.');
+        if (isset($request->ElMaOP)) {
+            foreach ($request->ElMaOP as $val) {
+                carOpe::find($val)->delete();
+            }
+        }else{
+            if ($request->has('id')) {
+                carOpe::find($request->input('id'))->delete();
+            }
         }
+        return redirect()->back()
+            ->with('message', 'Post Updated Successfully.');
     }
 }

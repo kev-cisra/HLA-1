@@ -14,58 +14,43 @@
                 </select>
             </template>
             <template v-slot:BtnNuevo>
-                <jet-button @click="openModal" class="BtnNuevo" v-if="usuario.IdEmp == 78">Nuevo Turno </jet-button>
+                <!-- <jet-button @click="openModal" class="BtnNuevo" v-if="usuario.IdEmp == 78">Nuevo Turno </jet-button> -->
                 <jet-button class="BtnNuevo" data-bs-toggle="modal" href="#tablaEquipo" @click="reset2">Agregar Equipo</jet-button>
             </template>
         </Accions>
         <div class="">
-            <jet-button v-for="bTur in turno" :key="bTur" class="BtnNuevo" data-bs-toggle="collapse" :data-bs-target="'#col'+bTur.id" aria-expanded="false" :aria-controls="'col'+bTur.id">{{bTur.nomtur}}</jet-button>
+            <jet-button v-for="bEqui in equipos" :key="bEqui" class="BtnNuevo" data-bs-toggle="collapse" :data-bs-target="'#col'+bEqui.id" aria-expanded="false" :aria-controls="'col'+bEqui.id">
+                {{bEqui.nombre}}
+            </jet-button>
         </div>
         <div class="lg:tw-flex tw-p-4 tw-gap-3">
-            <div v-for="cTur in turno" :key="cTur" :id="'col'+cTur.id" class="collapse multi-collapse tw-flex-auto">
+            <div v-for="cEqui in equipos" :key="cEqui" :id="'col'+cEqui.id" class="collapse multi-collapse tw-flex-auto">
                 <div class="card card-body">
                     <!----------------- Tabla de turnos -------------->
-                    <table class="table table-striped tw-table-fixed">
+                    <table class="table table-striped">
                         <tr class="tw-text-center tw-bg-teal-600">
-                            <th colspan="2" class="columna tw-border-2">{{ cTur.nomtur }}</th>
+                            <th colspan="3" class="columna tw-border-3">{{ cEqui.nombre }} - {{ cEqui.turnos.nomtur }}</th>
                         </tr>
-                        <tr >
-                            <th class="fila tw-text-center tw-border-2">Departamento</th>
-                            <td class="fila tw-text-center tw-border-2">{{cTur.departamento.Nombre}}</td>
+                        <tr class=" tw-bg-teal-400">
+                            <th class="fila tw-text-center tw-border-2 tw-w-2/12">Numero de empleado</th>
+                            <th class="fila tw-text-center tw-border-2 tw-w-3/12">Puesto</th>
+                            <th class="fila tw-text-center tw-border-2 tw-w-7/12">Nombre</th>
                         </tr>
-                        <tr >
-                            <th class="fila tw-text-center tw-font-semibold tw-border-2" colspan="2">Horario de {{cTur.VerInv}}</th>
+                        <tr v-for="dp in cEqui.dep_pers" :key="dp" class="fila">
+                            <th class="tw-text-center tw-font-semibold tw-border-2">{{dp.perfiles.IdEmp}}</th>
+                            <th class="tw-text-center tw-font-semibold tw-border-2">{{puesto(dp.ope_puesto)}}</th>
+                            <th class="tw-text-center tw-font-semibold tw-border-2">{{dp.perfiles.Nombre}} {{dp.perfiles.ApPat}} {{dp.perfiles.ApMat}}</th>
                         </tr>
-                        <tr >
-                            <th class="fila">
-                                <label class="tw-w-full tw-h-full tw-text-center tw-border-2">Lunes A Viernes</label>
-                                <label class="tw-w-full tw-h-full tw-text-center tw-border-2">{{cTur.LVIni}} - {{cTur.LVFin}}</label>
-                            </th>
-                            <th class="fila">
-                                <label class="tw-w-full tw-h-full tw-text-center tw-border-2">Sabado y Domingo</label>
-                                <label class="tw-w-full tw-h-full tw-text-center tw-border-2">{{cTur.SDIni}} - {{cTur.SDFin}}</label>
-                            </th>
-                        </tr>
-                        <tr >
-                            <th class="fila tw-text-center tw-border-2">Tiempo extra</th>
-                            <td class="fila tw-text-center tw-border-2">{{cTur.cargaExt}}</td>
-                        </tr>
-                        <tr>
-                            <th class="fila tw-text-center  tw-border-2">Equipos asignados</th>
-                            <td class="fila tw-text-center  tw-border-2">
-                                <tr v-for="equ in cTur.equipos" :key="equ" @click="editE(equ)"  data-bs-target="#modla2" data-bs-toggle="modal" data-bs-dismiss="modal" class="columna tw-text-blue-700 hover:tw-text-blue-900 tw-text-center">{{equ.nombre}}</tr>
-                            </td>
-                        </tr>
-                        <td colspan="2" class="tw-text-center ">
-
-                    <jet-button type="button" @click="cambio(cTur)" v-if="S_Area == 7">Cambiar Horario</jet-button>
-                            <jet-button type="button" class="tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-center tw-w-full md:tw-w-2/6 lg:tw-w-3/12" @click="edit(cTur)" v-if="usuario.IdEmp == 78">Actualizar</jet-button>
-                            <jet-CancelButton type="button" class=" tw-text-center tw-w-full md:tw-w-2/6 lg:tw-w-3/12" @click="deleteRow(cTur)" v-if="usuario.IdEmp == 78">Eliminar</jet-CancelButton>
+                        <td colspan="3" class="tw-text-center">
+                            <jet-button type="button" @click="editE(cEqui)" data-bs-target="#modla2" data-bs-toggle="modal" data-bs-dismiss="modal" class="">
+                                Actualizar
+                            </jet-button>
                         </td>
                     </table>
                 </div>
             </div>
         </div>
+
         <!------------------ Modal Turnos------------------------->
         <modal :show="showModal" @close="chageClose">
             <form>
@@ -244,7 +229,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-target="#tablaEquipo" data-bs-toggle="modal" data-bs-dismiss="modal" @click="reset2()">Regresar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" @click="reset2()">Cerrar</button>
                         <jet-button type="button" data-bs-target="#tablaEquipo" data-bs-toggle="modal" data-bs-dismiss="modal" @click="saveE(form2)">Guardar</jet-button>
                         <!-- <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Back to first</button> -->
                     </div>
@@ -402,6 +387,22 @@
                     data.VerInv = 'Invierno'
                 }
                 console.log(data)
+            },
+            puesto(data){
+                switch (data) {
+                    case 'cor':
+                        return 'COORDINADOR';
+                        break;
+                    case 'enc':
+                        return 'ENCARGADO';
+                        break;
+                    case 'lid':
+                        return 'LIDER';
+                        break;
+                    case 'ope':
+                        return 'OPERADOR';
+                        break;
+                }
             },
             /******************************* opciones de modal funciones basicas *******************************************/
             //abrir y reset del modal procesos

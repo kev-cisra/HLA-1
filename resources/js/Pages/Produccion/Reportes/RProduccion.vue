@@ -18,14 +18,16 @@
                 </div>
             </template>
             <template v-slot:BtnNuevo>
-                <!-- boton de calculos -->
                 <div class="md:tw-flex tw-gap-3 tw-mr-10">
+                    <!-- boton de carga masiva -->
                     <div>
                         <jet-button class="BtnNuevo tw-w-full" @click="openModalC">Carga masiva</jet-button>
                     </div>
+                    <!-- boton de calculos
                     <div>
                         <jet-button class="BtnNuevo tw-w-full" @click="openModal">Calculos</jet-button>
-                    </div>
+                    </div> -->
+                    <!-- Boton de filtros -->
                     <div>
                         <jet-button class="BtnNuevo tw-w-full" data-bs-toggle="collapse" data-bs-target="#filtro" aria-expanded="false" aria-controls="filtro"><i class="fas fa-filter"> </i> Filtros</jet-button>
                     </div>
@@ -71,7 +73,17 @@
                     <!-- dia -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Fecha</jet-label>
-                        <jet-input type="date" class="form-control" @click="limInputs(1.5)" v-model="FoFiltro.iniDia" :max="treDia"></jet-input>
+                        <jet-input type="date" class="form-control" @click="limInputs(1.5)" @change="cambioFechas()" v-model="FoFiltro.iniDia" :max="treDia"></jet-input>
+                    </div>
+                    <!-- calculos -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                        <button v-show="vCal" class="btn btn-success" type="button" id="button-addon2" v-if="FoFiltro.iniDia" @click="calcula(form)">
+                            <i class="fas fa-calculator" ></i> Calcular
+                        </button>
+                        <button v-show="!vCal" class="btn btn-success" type="button" disabled>
+                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                            Calculando...
+                        </button>
                     </div>
                 </div>
             </div>
@@ -118,7 +130,7 @@
                         <td>
                             <div v-if="ca.proceso.tipo == 1 | ca.proceso.tipo == 5 | ca.proceso.tipo == 3">
                                 <input type="checkbox" :value="ca.id" v-model="deli.elimiMasi" class="tw-rounded-xl tw-bg-coolGray-300" :id="'indePro'+ca.id "/>
-                                <label :for="'indePro'+ca.id" class=" tw-mx-3"> {{ca.id}} </label>
+                                <label :for="'indePro'+ca.id" class="tw-px-3"> {{ca.id}} </label>
                             </div>
                             <div v-else>
                                 {{ca.id}}
@@ -627,8 +639,8 @@
                         onSuccess: (v) => {
                             this.alertSucces(),
                             this.vCal = true,
-                            this.reset(),
-                            this.chageClose()
+                            this.reset()
+                            //this.chageClose()
                             //this.limInputs('00')
                         },
                         onError: (e) => {
@@ -643,6 +655,10 @@
 
             },
             cambioFechas() {
+                if (this.FoFiltro.iniDia) {
+                    this.form.fecha = this.FoFiltro.iniDia
+                    this.form.depa = this.S_Area;
+                }
                 if(this.S_Area == 7){
                     if (moment(this.form.fecha).isDST()) {
                         this.form.hoy = this.form.fecha+'T09:10';
@@ -655,7 +671,7 @@
                     this.form.hoy = this.form.fecha+'T07:00';
                     this.form.mañana = moment(this.form.hoy).add(1, 'days').format("YYYY-MM-DD[T]HH:mm")
                 }
-
+                //console.log(this.form)
             },
             formatoMexico (number){
                 const exp = /(\d)(?=(\d{3})+(?!\d))/g;
@@ -1106,20 +1122,22 @@
                     this.FoFiltro.finDia = null;
                     this.FoFiltro.mes = null;
                     this.horas = '07:00';
+                    this.limpPro = true;
                 }else if(val == 3){
                     this.FoFiltro.iniDia = null;
                     this.FoFiltro.finDia = null;
                     this.FoFiltro.semana = null;
                     this.horas = '07:00';
+                    this.limpPro = true;
                 }
                 else{
                     this.FoFiltro.iniDia = null;
                     this.FoFiltro.finDia = null;
                     this.FoFiltro.semana = null;
                     this.FoFiltro.mes = null;
+                    this.limpPro = true;
                 }
                 this.deli.elimiMasi = [];
-                this.limpPro = true;
             },
             /***************************** Modal de carga masiva ********************************************/
             //abrir modal carga masiva

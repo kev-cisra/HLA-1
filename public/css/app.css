@@ -20397,6 +20397,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(134, 239, 172, var(--tw-bg-opacity));
 }
+.tw-bg-teal-400 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(45, 212, 191, var(--tw-bg-opacity));
+}
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
 }

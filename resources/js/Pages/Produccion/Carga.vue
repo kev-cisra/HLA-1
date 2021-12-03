@@ -489,11 +489,14 @@
                             <th class="columna">Maquina</th>
                             <th class="columna">Equipo</th>
                             <th class="columna">Turno</th>
-                            <th class="columna"></th>
+                            <th class="columna"><button class="btn btn-danger" v-show="formPacOpe.ElMaOP.length > 0" @click="deletePO(formPacOpe)">Eliminar</button></th>
                         </template>
                         <template v-slot:TableFooter>
                             <tr v-for="pOpe in paqope" :key="pOpe" class="fila">
-                                <td class="tw-text-center"> {{ pOpe.id }} </td>
+                                <td class="tw-text-center">
+                                    <input type="checkbox" :value="pOpe.id" v-model="formPacOpe.ElMaOP" class="tw-rounded-xl tw-bg-coolGray-300" :id="'idOP'+pOpe.id"/>
+                                    <label :for="'idOP'+pOpe.id" class="tw-px-3">{{ pOpe.id }}</label>
+                                </td>
                                 <td> {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.Nombre}} {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.ApPat}} {{pOpe.dep_per == null ? 'N/A' : pOpe.dep_per.perfiles.ApMat}}</td>
                                 <td>{{pOpe.proceso == null ? 'N/A' : pOpe.proceso.nompro}}</td>
                                 <td> {{pOpe.maq_pro.maquinas.Nombre}} </td>
@@ -588,11 +591,14 @@
                             <th class="columna">Clave</th>
                             <th class="columna">Descripcion</th>
                             <th class="columna">Partida</th>
-                            <th class="columna"></th>
+                            <th class="columna"><button class="btn btn-danger" v-show="formPacNor.ElMaPN.length > 0" @click="deletePN(formPacNor)">Eliminar</button></th>
                         </template>
                         <template v-slot:TableFooter>
                             <tr v-for="pNor in paqnor" :key="pNor" class="fila">
-                                <td class="tw-text-center"> {{ pNor.id }} </td>
+                                <td class="tw-text-center">
+                                    <input type="checkbox" :value="pNor.id" v-model="formPacNor.ElMaPN" class="tw-rounded-xl tw-bg-coolGray-300" :id="'idPN'+pNor.id"/>
+                                    <label :for="'idPN'+pNor.id" class=" tw-px-3">{{ pNor.id }}</label>
+                                </td>
                                 <td> {{pNor.dep_mat.materiales.nommat}}</td>
                                 <td >{{pNor.clave.CVE_ART}}</td>
                                 <td > {{pNor.clave.DESCR}}</td>
@@ -821,11 +827,15 @@
                 editModePo: false,
                 editModeOB: false,
                 nAnte: '',
+                formPacNor: {
+                    ElMaPN: []
+                },
                 formPacOpe:{
                     id: null,
                     proceso_id: '',
                     dep_perf_id: '',
                     maq_pro_id: '',
+                    ElMaOP: [],
                     departamento_id: this.S_Area
                 },
                 formObje:{
@@ -1118,6 +1128,7 @@
                 this.form.nota = '';
                 this.form.usu = this.usuario.id;
                 this.form.departamento_id = this.S_Area;
+                this.formPacNor.ElMaPN = [];
 
                 if (this.usuario.dep_pers.length != 0) {
                     this.usuario.dep_pers.forEach(v => {
@@ -1192,6 +1203,7 @@
                 this.formPacOpe.proceso_id = '';
                 this.formPacOpe.dep_perf_id = '';
                 this.formPacOpe.maq_pro_id = '';
+                this.formPacOpe.ElMaOP = [];
                 this.formPacOpe.departamento_id = this.S_Area;
             },
             deletePO(data) {
@@ -1211,10 +1223,14 @@
                         'success'
                         )
                         data._method = 'DELETE';
+                        var id = data.id ? data.id : data.ElMaOP[0];
+                        //console.log(id)
                         $('#t_op').DataTable().clear();
                         $('#t_op').DataTable().destroy()
-                        this.$inertia.post('/Produccion/CarOpe/' + data.id, data, {
-                            onSuccess: () => { this.tablaOpe(), this.alertDelete() }, onError: () => {this.tablaOpe()}, preserveState: true
+                        this.$inertia.post('/Produccion/CarOpe/' + id, data, {
+                            onSuccess: () => { this.tablaOpe(), this.alertDelete() },
+                            onError: () => {this.tablaOpe()},
+                            preserveState: true
                         });
                     }
                 })
@@ -1264,9 +1280,12 @@
                         'success'
                         )
                         data._method = 'DELETE';
+                        var id = !data.ElMaPN ? data.id : data.ElMaPN[0];
+                        /* console.log(data)
+                        console.log(id) */
                         $('#t_pn').DataTable().clear();
                         $('#t_pn').DataTable().destroy()
-                        this.$inertia.post('/Produccion/CarNor/' + data.id, data, {
+                        this.$inertia.post('/Produccion/CarNor/' + id, data, {
                             onSuccess: () => { this.tablaNor(), this.alertDelete() }, onError: () => {this.tablaNor()}, preserveState: true
                         });
                     }
