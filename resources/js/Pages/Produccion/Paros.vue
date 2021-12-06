@@ -86,7 +86,7 @@
             </form>
         </div>
         <!------------------------------------ Data table de carga ------------------------------------------------------->
-        <div class="table-responsive">
+        <div>
             <Table id="t_paros">
                 <template v-slot:TableHeader>
                     <th class="columna tw-text-center">Orden</th>
@@ -311,9 +311,14 @@
                     $('#t_paros').DataTable({
                         "language": this.español,
                         "order": [[5, 'asc']],
+                        "scrollX": true,
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        "columnDefs": [
+                            { "width": "15%", "targets": [3,4,9] },
+                            { "width": "10%", "targets": [0,1,2,5,6,7] }
+                        ],
                         stateSave: true,
                     })
                 })

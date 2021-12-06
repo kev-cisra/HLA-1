@@ -14,8 +14,8 @@
                 </select>
             </template>
             <template v-slot:BtnNuevo>
-                <!-- <jet-button @click="openModal" class="BtnNuevo" v-if="usuario.IdEmp == 78">Nuevo Turno </jet-button> -->
-                <jet-button class="BtnNuevo" data-bs-toggle="modal" href="#tablaEquipo" @click="reset2">Agregar Equipo</jet-button>
+                <!-- <jet-button @click="openModal" class="BtnNuevo" v-if="usuario.IdEmp == 78">Nuevo Turno </jet-button>
+                <jet-button class="BtnNuevo" data-bs-toggle="modal" href="#tablaEquipo" @click="reset2">Agregar Equipo</jet-button> -->
             </template>
         </Accions>
         <div class="">
@@ -230,7 +230,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" @click="reset2()">Cerrar</button>
-                        <jet-button type="button" data-bs-target="#tablaEquipo" data-bs-toggle="modal" data-bs-dismiss="modal" @click="saveE(form2)">Guardar</jet-button>
+                        <jet-button type="button" data-bs-dismiss="modal" aria-label="Close" @click="saveE(form2)">Guardar</jet-button>
                         <!-- <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Back to first</button> -->
                     </div>
                 </div>
@@ -313,7 +313,8 @@
                     departamento_id: this.S_Area,
                     turno_id: '',
                     nombre: '',
-                    emp: []
+                    emp: [],
+                    Nequ: []
                 }
 
             }
@@ -487,16 +488,16 @@
                 })
             },
             editE: function(data) {
-                //this.form2 = Object.assign({}, data);
-                /* console.log(data) */
                 this.form2.departamento_id = data.departamento_id;
                 this.form2.turno_id = data.turno_id;
                 this.form2.nombre = data.nombre;
                 this.form2.emp = [];
+                this.form2.Nequ = [];
                 data.dep_pers.forEach(e => {
                     this.form2.emp.push(e.id);
+                    this.form2.Nequ.push(e.id);
                 })
-                /* this.editMode2 = true; */
+
                 this.chageClose2();
             }
         },

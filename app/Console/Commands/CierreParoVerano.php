@@ -91,7 +91,7 @@ class CierreParoVerano extends Command
 
         }
 
-        Storage::disk('local')->put('paroVerano.txt', $txt);
+        //Storage::disk('local')->put('paroVerano.txt', $txt);
         return Command::SUCCESS;
     }
 }

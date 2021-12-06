@@ -256,8 +256,8 @@ class TurnosController extends Controller
                 'VerInv' => $request->VerInv,
                 'cargaExt' => $request->cargaExt,
             ]);
-            return redirect()->back()
-                    ->with('message', 'Post Updated Successfully.');
+            /* return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.'); */
         }
 
         return redirect()->back()

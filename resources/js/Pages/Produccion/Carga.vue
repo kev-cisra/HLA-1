@@ -320,7 +320,7 @@
         </div>
 
         <!------------------------------------ Data table de carga ------------------------------------------------------->
-        <div class="table-responsive" >
+        <div >
             <Table id="t_carg">
                 <template v-slot:TableHeader>
                     <th class="columna">Índice</th>
@@ -480,7 +480,7 @@
                     </div>
                 </div>
                 <!-- tabla para paquetes operador -->
-                <div class="table-responsive">
+                <div>
                     <TableGreen id="t_op">
                         <template v-slot:TableHeader>
                             <th class="columna">Índice</th>
@@ -583,7 +583,7 @@
 
                 </div>
                 <!---------------------------- Datatable de paquetes ---------------------------------------------------->
-                <div class="table-responsive">
+                <div>
                     <TableCyan id="t_pn">
                         <template v-slot:TableHeader>
                             <th class="columna">Índice</th>
@@ -704,7 +704,7 @@
                     </div>
                 </div>
                 <!----------------------------- Data Table ------------------------------------------------------------>
-                <div class="table-responsive">
+                <div>
                     <TableBlue id="t_ob">
                         <template v-slot:TableHeader>
                             <th class="columna">Índice</th>
@@ -946,6 +946,7 @@
                     $('#t_carg').DataTable({
                         "language": this.español,
                         "order": [[5, 'asc'], [1, 'desc']],
+                        "scrollX": true,
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -995,6 +996,7 @@
                 this.$nextTick(() => {
                     $('#t_op').DataTable( {
                         "language": this.español,
+                        "scrollX": true,
                         scrollY:        '50vh',
                         scrollCollapse: true,
                         paging:         false
@@ -1006,6 +1008,7 @@
                 this.$nextTick(() => {
                     $('#t_pn').DataTable( {
                         "language": this.español,
+                        "scrollX": true,
                         scrollY:        '50vh',
                         scrollCollapse: true,
                         paging:         false
@@ -1017,6 +1020,7 @@
                 this.$nextTick(() => {
                     $('#t_ob').DataTable( {
                         "language": this.español,
+                        "scrollX": true,
                         scrollY:        '50vh',
                         scrollCollapse: true,
                         paging:         false

@@ -77,6 +77,7 @@
                     </div>
                     <!-- calculos -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                        <jet-label>Boton para Calcular Operaciones</jet-label>
                         <button v-show="vCal" class="btn btn-success" type="button" id="button-addon2" v-if="FoFiltro.iniDia" @click="calcula(form)">
                             <i class="fas fa-calculator" ></i> Calcular
                         </button>
@@ -90,23 +91,8 @@
         </div>
 
         <!------------------------------------ Data table de carga de produccion ------------------------------------------------------->
-        <div class="table-responsive" v-show="FoFiltro.TipRepo == 1">
-
+        <div v-show="FoFiltro.TipRepo == 1">
             <Table id="t_repo">
-                <template v-slot:TableEncabezado>
-                    <th colspan="5" v-show="FoFiltro.iniDia">
-
-                    </th>
-                    <th colspan="4" >
-                        Producción
-                    </th>
-                    <th colspan="6" v-show="FoFiltro.iniDia">
-
-                    </th>
-                    <th>
-                        <button class="btn btn-danger" v-show="deli.elimiMasi.length > 0" @click="eliminaMasiva(deli)" >Eliminar</button>
-                    </th>
-                </template>
                 <template v-slot:TableHeader>
                     <th class="columna">Indice</th>
                     <th class="columna">Fecha</th>
@@ -123,7 +109,9 @@
                     <th class="columna">Producción</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Cantidad producida</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Departamento</th>
-                    <th v-show="FoFiltro.iniDia"></th>
+                    <th v-show="FoFiltro.iniDia">
+                        <button class="btn btn-danger" v-show="deli.elimiMasi.length > 0" @click="eliminaMasiva(deli)" >Eliminar</button>
+                    </th>
                 </template>
                 <template v-slot:TableFooter >
                     <tr class="fila" v-for="ca in recoTabla" :key="ca.id">
@@ -139,8 +127,8 @@
                         <td>{{ca.fecha}}</td>
                         <td class="">{{ca.proceso == null ? 'N/A' : ca.proceso.nompro}}</td>
                         <td v-show="FoFiltro.iniDia">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
-                        <td v-show="FoFiltro.iniDia" >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
-
+                        <td v-show="FoFiltro.iniDia" >
+                            {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
                         <td class=" tw-w-40">
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-if="ca.notaPen == 2">NOTA PENDIENTE</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-if="ca.proceso.tipo == 3">CALCULOS</div>
@@ -149,7 +137,6 @@
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-orange-600 tw-rounded-full" v-else-if="ca.proceso.tipo == 2 & ca.notaPen == 1">OBJETIVO</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-teal-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1"> - ACTUALIZADO</div>
                         </td>
-
                         <td  v-show="FoFiltro.iniDia">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
                         <td  v-show="FoFiltro.iniDia">{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
                         <td  v-show="FoFiltro.iniDia">{{ca.partida == null ? 'N/A' : ca.partida}}</td>
@@ -221,7 +208,7 @@
         </div>
 
         <!------------------------------------- Data table de paros ------------------------------------------------------------------>
-        <div class="table-responsive" v-show="FoFiltro.TipRepo == 2">
+        <div v-show="FoFiltro.TipRepo == 2">
             <TableBlue id="t_repoPar">
                 <template v-slot:TableHeader>
                     <th class="columna tw-text-center">Fecha</th>
@@ -698,7 +685,6 @@
             },
             verTabla() {
                 this.limpPro = true;
-                //$('#t_repo').DataTable().clear();
             },
             //muestra la utima fecha del paro
             nuFin(ar){
@@ -754,6 +740,7 @@
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        "scrollX": true,
                         "columnDefs": [
                             { "width": "10%", "targets": [1,2,3,4,5,11] },
                             { "width": "7%", "targets": [6,7,8,9,10,14] },
@@ -827,6 +814,7 @@
                             { "width": "10%", "targets": [0,2,4,5,6,7,8,9,10,11,12] },
                             { "width": "2%", "targets": [1,3] }
                         ],
+                        "scrollX": true,
                         //stateSave: true,
                         scrollY:        '40vh',
                         scrollCollapse: true,
@@ -1370,14 +1358,15 @@
         watch: {
             S_Area: function(b){
                 //$('#t_repo').DataTable().destroy();
+
                 this.$inertia.get('/Produccion/ReportesPro',{ busca: b, ano: this.ano }, {
-                    onSuccess: () => { }, onError: () => { }, preserveState: true
+                    onSuccess: () => { this.FoFiltro.iniDia = this.hoy }, onError: () => { }, preserveState: true
                 });
             },
 
             ano: function(a) {
                 this.$inertia.get('/Produccion/ReportesPro',{ busca: this.S_Area, ano: a }, {
-                    onSuccess: () => { }, onError: () => { }, preserveState: true
+                    onSuccess: () => { console.log('año') }, onError: () => { }, preserveState: true
                 });
 
             },

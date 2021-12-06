@@ -47,12 +47,34 @@ class EquiposController extends Controller
         ])->validate();
 
         $query = equipos::where('departamento_id', '=', $request->departamento_id)
+            ->where('nombre', '=', $request->nombre)
+            ->first();
+
+        //eliminar equipos
+        foreach ($request->Nequ as $eliEqu) {
+            if (!in_array($eliEqu, $request->emp)) {
+                print($eliEqu.' Eliminado');
+                dep_per::find($eliEqu)->update([
+                    'equipo_id' => null
+                ]);
+            }
+        }
+
+        //Agregar equipos
+        foreach ($request->emp as $nueEmp) {
+            if (!in_array($nueEmp, $request->Nequ)) {
+                print($nueEmp.' Agregar');
+                dep_per::find($nueEmp)->update([
+                    'equipo_id' => $query->id
+                ]);
+            }
+        }
+
+        //return $request;
+        /* $query = equipos::where('departamento_id', '=', $request->departamento_id)
                 ->where('nombre', '=', $request->nombre)
                 ->first();
         if(!empty($query)){
-            /*Validator::make($request->all(), [
-                'nombre' => ['unique:equipos']
-            ])->validate();*/
             equipos::find($query->id)->update([
                 'turno_id' => $request->turno_id
             ]);
@@ -63,7 +85,6 @@ class EquiposController extends Controller
                     ]);
                 }
             }
-            //return $query;
         }else{
             $equi = equipos::create($request->all());
 
@@ -74,9 +95,7 @@ class EquiposController extends Controller
                     ]);
                 }
             }
-        }
-
-        //return $request->emp;
+        } */
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');

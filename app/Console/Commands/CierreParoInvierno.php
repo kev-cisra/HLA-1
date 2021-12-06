@@ -92,7 +92,7 @@ class CierreParoInvierno extends Command
             }
         }
 
-        Storage::disk('local')->put('paroInvierno.txt', $txt);
+        //Storage::disk('local')->put('paroInvierno.txt', $txt);
         return Command::SUCCESS;
     }
 }
