@@ -231,7 +231,7 @@
             <Table id="Articulos">
                 <template v-slot:TableHeader>
                     <th class="columna">FECHA</th>
-                    <th class="columna"># REQ</th>
+                    <th class="columna">REQ</th>
                     <th class="columna">DEPARTAMENTO</th>
                     <th class="columna">CÓDIGO</th>
                     <th class="columna">CANTIDAD</th>
@@ -1070,6 +1070,11 @@ export default {
                 $("#Articulos").DataTable({
                     "language": this.español,
                     pageLength: 25,
+                    "scrollX": true,
+                    scrollY:  '40vh',
+                    "columnDefs": [
+                        { "width": "2%", "targets": [0,1] }
+                    ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",

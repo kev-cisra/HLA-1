@@ -872,6 +872,38 @@
         </div>
     </modal>
 
+    <modal :show="showFecha" @close="chageFecha" :maxWidth="tam2">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Confirma fecha aproximada de entrega</h3>
+                </div>
+            </div>
+
+            <div class="tw-mt-4">
+                <div class="tw-mb-6 md:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>FECHA</jet-label>
+                        <jet-input type="date" :min="min" v-model="form.Fechallegada"></jet-input>
+                        <small v-if="errors.Fechallegada" class="validation-alert">{{errors.Fechallegada}}</small>
+                    </div>
+                </div>
+                <div class="tw-mb-6 md:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label>COMENTARIOS</jet-label>
+                        <textarea name="" id="" cols="2" v-model="form.Comentariollegada" @input="(val) => (form.Comentariollegada = form.Comentariollegada.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                        <small v-if="errors.Comentariollegada" class="validation-alert">{{errors.Comentariollegada}}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ModalFooter">
+            <jet-button type="button" @click="ConfirmaFecha(form)">Guardar</jet-button>
+            <jet-CancelButton @click="chageFecha">Cerrar</jet-CancelButton>
+        </div>
+    </modal>
+
     </app-layout>
 </template>
 
@@ -913,6 +945,8 @@ export default {
             showPreciosRequisicion: false,
             showEditarPre: false,
             showCancelar: false,
+            showFecha: false,
+            min: moment().format("YYYY-MM-DD"),
             form: {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
@@ -1312,7 +1346,32 @@ export default {
                     this.alertSucces();
                 },
             });
+        },
+
+        chageFecha() {
+            this.showFecha = !this.showFecha;
+            this.form.Fechallegada = '',
+            this.form.Comentariollegada = '';
+        },
+
+        CapturaFecha(data){
+            this.chageFecha();
+            this.form.requisicion_id = data.id;
+        },
+
+        ConfirmaFecha(data){
+            data.metodo = 3;
+            data._method = "PUT";
+            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.form.Fechallegada = '',
+                    this.form.Comentariollegada = '';
+                    this.chageFecha();
+                    this.alertSucces();
+                },
+            });
         }
+
     },
 };
 </script>

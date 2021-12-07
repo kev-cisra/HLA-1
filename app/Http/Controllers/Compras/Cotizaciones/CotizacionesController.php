@@ -315,19 +315,14 @@ class CotizacionesController extends Controller{
 
             //Agregar comentario de fecha de llegada
             case 3:{
-
-                ArticulosRequisiciones::where('requisicion_id', '=', $request->IdArt)->update([
+                ArticulosRequisiciones::where('requisicion_id', '=', $request->requisicion_id)->update([
                     'Fechallegada' => $request->Fechallegada,
                     'Comentariollegada' => $request->Comentariollegada,
                     'EstatusArt' => 7,
                 ]);
 
-                Requisiciones::find($request->IdArt)->update([
+                Requisiciones::find($request->requisicion_id)->update([
                     'Estatus' => 7,
-                ]);
-
-                TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->IdArt)->update([
-                    'Confirmado' => Carbon::now(),
                 ]);
 
                 break;

@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\Return_;
 
 class AutorizaRequisicionesController extends Controller{
 
@@ -32,6 +33,7 @@ class AutorizaRequisicionesController extends Controller{
 
         $Proveedores = Proveedores::get();
         $NumCot = null;
+        $PorPrecios = null;
         $Perfiles = PerfilesUsuarios::where('jefes_areas_id', '=', $Session->id)->get();
 
         //Consulta Default filtrada por Mes
@@ -196,6 +198,9 @@ class AutorizaRequisicionesController extends Controller{
             ->where('EstatusArt', '!=', 10)
             ->get();
 
+            $PorPrecios = PreciosCotizaciones::with(['PreciosArticulo.ArticulosRequisicion'])
+            ->where('requisiciones_id', '=', $request->Req)
+            ->get();
 
         }else{
             $Req = null;
@@ -229,6 +234,7 @@ class AutorizaRequisicionesController extends Controller{
             'ICotizacionMes',
             'NumCot',
             'mes',
+            'PorPrecios',
             ));
     }
 
@@ -316,36 +322,58 @@ class AutorizaRequisicionesController extends Controller{
 
         switch($request->metodo){
             case 1:
-                ArticulosRequisiciones::where('id', '=', $request->id)->where('EstatusArt', '=', 5)->update([
+                ArticulosRequisiciones::where('id', '=', $request->articulo_id)->where('EstatusArt', '=', 5)->update([
                     'EstatusArt' => 6,
                 ]);
 
-                //Metodos de autorizacion
-                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->id)->where('NumCotizacion', '=', 1)
+                ArticulosRequisiciones::where('requisicion_id', '=', $request->requisicion_id)->update([
+                    'MotivoCancelacion' => $request->Comentario,
+                ]);
+
+                //Rechazo ambos precios por defult en caso de haber mas de 1
+                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->articulo_id)
+                ->update([
+                    'Autorizado' => 1, //Estatus Rechazado
+                ]); //Se rechaza la segunda cotizacion por default
+
+                //Autorizo el precio seleccionado
+                PreciosCotizaciones::where('id', '=', $request->precio_id)
                 ->update([
                     'Autorizado' => 2, //Estatus 2 Autorizado
                 ]); //Se autoriza los que tengan estatus 2
 
-                //Metodos de autorizacion
-                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->id)->where('NumCotizacion', '=', 2)
-                ->update([
-                    'Autorizado' => 1, //Estatus Rechazado
-                ]); //Se rechaza la segunda cotizacion por dafult
+                //Consulta para verificar si aun hay articulos que no estan autorizados
+                $ArticulosAutorizados = ArticulosRequisiciones::where('EstatusArt', '<', 6)
+                ->where('requisicion_id', '=', $request->requisicion_id)
+                ->count();
+
+                //Todos los articulos de la requisicion se autorizaron y se manda la cotizacion completa como Autorizada
+                Requisiciones::where('id', '=', $request->requisicion_id)->update([
+                    'Estatus' => 6,
+                ]);
 
                 break;
 
             case 2:
-                ArticulosRequisiciones::where('id', '=', $request->id)->where('EstatusArt', '=', 5)->update([
+                ArticulosRequisiciones::where('requisicion_id', '=', $request->requisicion_id)->where('EstatusArt', '=', 5)->update([
                     'EstatusArt' => 6,
+                    'MotivoCancelacion' => $request->Comentario,
                 ]);
 
                 //Metodos de autorizacion
-                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->id)
+                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->articulo_id)
                 ->update([
                     'Autorizado' => 1, //Estatus 1 Rechazado
                 ]); //Se autoriza los que tengan estatus 2
 
                 break;
+
+            case 3:
+                return $request->precios_articulo;
+
+                ArticulosRequisiciones::where('id', '=', $request->id)->where('EstatusArt', '=', 5)->update([
+                    'EstatusArt' => 6,
+                ]);
         }
 
         return redirect()->back();

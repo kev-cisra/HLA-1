@@ -512,6 +512,7 @@
             <div class="tw-my-4" v-if="ArticulosPrecios != null">
                 <Table>
                     <template v-slot:TableHeader>
+                        <th class="columna"># COTIZACION</th>
                         <th class="columna">CANTIDAD</th>
                         <th class="columna">UNIDAD</th>
                         <th class="columna">DESCRIPCION</th>
@@ -528,70 +529,53 @@
                     </template>
 
                     <template v-slot:TableFooter>
-                        <tr class="fila tw-bg-gray-200" v-for="datos in ArticulosPrecios" :key="datos.id">
-                            <td class="tw-text-center">{{datos.Cantidad}}</td>
-                            <td class="tw-text-center">{{datos.Unidad}}</td>
-                            <td>{{datos.Descripcion}}</td>
-                            <td>
-                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
-                                    {{Pre.Marca}}
-                                </tr>
-                            </td>
-                            <td>
-                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
-                                    {{Pre.Proveedor}}
-                                </tr>
-                            </td>
-                            <td>
-                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
-                                    {{  Pre.Comentarios }}
-                                </tr>
-                            </td>
-                            <td class="tw-text-center">
-                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
-                                    $ {{Pre.Precio}}
-                                </tr>
-                            </td>
-                            <td class="tw-text-center">
-                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
-                                    {{Pre.Moneda}}
-                                </tr>
-                            </td>
-                            <td class="tw-text-center">
-                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
-                                    $ {{Pre.TipoCambio}}
-                                </tr>
-                            </td>
-                            <td class="tw-text-center">
-                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
-                                    $ {{Pre.Total}}
-                                </tr>
-                            </td>
+                        <tr class="fila tw-bg-gray-200" v-for="datos in PorPrecios" :key="datos.id">
+                            <td class="tw-text-center">{{datos.NumCotizacion}}</td>
+                            <td class="tw-text-center">{{datos.precios_articulo.Cantidad}}</td>
+                            <td class="tw-text-center">{{datos.precios_articulo.Unidad}}</td>
+                            <td class="tw-text-center">{{datos.precios_articulo.Descripcion}}</td>
+                            <td class="tw-text-center">{{datos.Marca}}</td>
+                            <td class="tw-text-center">{{datos.Proveedor}}</td>
+                            <td class="tw-text-center">{{datos.Comentarios}}</td>
+                            <td class="tw-text-center">{{datos.Precio}}</td>
+                            <td class="tw-text-center">{{datos.Moneda}}</td>
+                            <td class="tw-text-center">{{datos.TipoCambio}}</td>
+                            <td class="tw-text-center">{{datos.Total}}</td>
                             <td class="tw-flex tw-justify-center">
-                                <tr class="tw-p-1" v-for="Pre in datos.articulo_precios" :key="Pre">
-                                    <div class="columnaIconos">
-                                        <a target="_blank" :href="path + Pre.Archivo" style="color:black;">
-                                            <i class="far fa-file-image"></i>
-                                        </a>
-                                    </div>
-                                </tr>
-                            </td>
-                            <td>
-                                <tr class="tw-text-center" v-for="Pre in datos.articulo_precios" :key="Pre">
-                                    <div class="columnaIconos" v-if="Pre.Autorizado == 1">
-                                        <span tooltip="Precio no Autorizado" flow="left">
-                                            <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-text-white tw-bg-red-400 tw-rounded-full">No Autorizado</span>
-                                        </span>
-                                    </div>
-                                    <div class="columnaIconos" v-else-if="Pre.Autorizado == 2">
-                                        <span tooltip="Precio Autorizado" flow="left">
-                                            <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-text-white tw-bg-green-400 tw-rounded-full">Autorizado</span>
-                                        </span>
-                                    </div>
-                                </tr>
-                            </td>
-                            <td>
                                 <div class="columnaIconos">
+                                    <a target="_blank" :href="path + datos.Archivo" style="color:black;">
+                                        <i class="far fa-file-image"></i>
+                                    </a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="columnaIconos" v-if="datos.Autorizado == 1">
+                                    <span tooltip="Precio no Autorizado" flow="left">
+                                        <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-text-white tw-bg-red-400 tw-rounded-full">No Autorizado</span>
+                                    </span>
+                                </div>
+                                <div class="columnaIconos" v-else-if="datos.Autorizado == 2">
+                                    <span tooltip="Precio Autorizado" flow="left">
+                                        <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-text-white tw-bg-green-400 tw-rounded-full">Autorizado</span>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="tw-text-center">
+                                <div class="columnaIconos" v-if="PorPrecios[0].precios_articulo.MotivoCancelacion == null">
+                                    <div class="iconoEdit">
+                                        <span tooltip="Autorizar" flow="left" @click="AgregaComentarioAutorizacion(datos)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="iconoEdit">
+                                        <span tooltip="Rechazar Partida" flow="left" @click="AgregaComentarioRechazo(datos)">
+                                                <i class="fas fa-times"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-else>
                                     <div class="iconoEdit">
                                         <span tooltip="Autorizar" flow="left" @click="AutorizaPartida(datos)">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -612,7 +596,7 @@
             </div>
         </div>
 
-        <div class="ModalFooter" v-if="Req[0].Estatus < 6">
+        <div class="ModalFooter">
             <jet-button type="button" @click="AutorizaCotizacion(form)" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 1° Cotizacion</jet-button>
             <jet-button type="button" @click="AutorizaCotizacion2(form)" v-if="NumCot > 0" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 2° Cotizacion</jet-button>
             <jet-CancelButton @click="chagePreciosRequisicion">Cerrar</jet-CancelButton>
@@ -712,33 +696,32 @@
         </form>
     </modal>
 
-    <modal :show="showRechazo" @close="chageCloseRechazo" :maxWidth="tam">
-        <form>
-            <div class="tw-px-4 tw-py-4">
-                <div class="tw-text-lg">
-                    <div class="ModalHeader">
-                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Rechazo de Cotizacion</h3>
-                    </div>
+    <modal :show="showComentarios" @close="chageCloseComentarios" maxWidth="3xl">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Rechazo de Cotizacion</h3>
                 </div>
+            </div>
 
-                <div class="tw-mt-4">
-                    <div class="ModalForm">
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Comentarios de Requisicion</jet-label>
-                                <textarea name="" id="" cols="4" v-model="Rechazo.ComentarioRechazo" @input="(val) => (Rechazo.ComentarioRechazo = Rechazo.ComentarioRechazo.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
-                                <small v-if="errors.ComentarioRechazo" class="validation-alert">{{errors.ComentarioRechazo}}</small>
-                            </div>
+            <div class="tw-mt-4">
+                <div class="ModalForm">
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                            <jet-label><span class="required">*</span>Comentarios de Requisicion</jet-label>
+                            <textarea name="" id="" cols="4" v-model="form.Comentario" @input="(val) => (form.Comentario = form.Comentario.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                            <small v-if="errors.Comentario" class="validation-alert">{{errors.Comentario}}</small>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="ModalFooter">
-                <jet-button type="button" @click="Rechaza(datos, 10)">Guardar</jet-button>
-                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
-            </div>
-        </form>
+        <div class="ModalFooter">
+            <jet-button type="button" @click="AutorizaPartidaComentario(form)" v-if="form.TipoComentario == 1">Guardar</jet-button>
+            <jet-button type="button" @click="RechazaPartidaComentario(form)" v-else-if="form.TipoComentario == 2">Guardar</jet-button>
+            <jet-CancelButton @click="chageCloseComentarios">Cerrar</jet-CancelButton>
+        </div>
     </modal>
 
     </app-layout>
@@ -781,7 +764,7 @@ export default {
         return {
             showPartidas: false,
             showDetalle: false,
-            showRechazo: false,
+            showComentarios: false,
             showPreciosRequisicion: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
@@ -795,11 +778,11 @@ export default {
                 action: '',
                 requisicion_id: '',
                 articulo_id: '',
-            },
-            Rechazo: {
-                ComentarioRechazo: null,
-                rechazo: null,
-                articulo_id: null,
+                precio_id: '',
+                Comentario: '',
+                rechazo: '',
+                TipoComentario: 1,
+                NumCotizacion: '',
             },
             Cotizacion:{
                 Cot: null,
@@ -857,6 +840,7 @@ export default {
         ICotizacionMes: Number,
         NumCot: Number,
         mes: String,
+        PorPrecios: Object,
     },
 
     methods: {
@@ -885,30 +869,28 @@ export default {
             this.form = {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
-                IdArt: null,
-                requisicion_id: null,
-                NumReq:  null,
-                Folio: null,
-                Area: null,
-                Observacioens: null,
-                Cantidad: null,
-                Unidad: null,
-                Descripcion: null,
-                Comentarios: null,
-                MotivoCancelacion: null,
+                IdArt: '',
+                requisicion_id: '',
+                NumReq:  '',
+                Folio: '',
+                Area: '',
+                Observacioens: '',
+                Cantidad: '',
+                Unidad: '',
+                Descripcion: '',
+                Comentarios: '',
+                MotivoCancelacion: '',
+                ComentarioRechazo: '',
+                rechazo: '',
+                articulo_id: '',
 
                 Precios: [{
-                Precio: null,
-                Total: null,
-                Marca: null,
-                Proveedor: null,
-                archivo: null,
+                Precio: '',
+                Total: '',
+                Marca: '',
+                Proveedor: '',
+                archivo: '',
                 }],
-            };
-            this.Rechazo = {
-                ComentarioRechazo: null,
-                rechazo: null,
-                articulo_id: null,
             };
         },
 
@@ -997,8 +979,8 @@ export default {
             this.showModal = !this.showModal;
         },
 
-        chageCloseRechazo() {
-            this.showRechazo = !this.showRechazo;
+        chageCloseComentarios() {
+            this.showComentarios = !this.showComentarios;
         },
 
         MesALetra(){
@@ -1253,25 +1235,69 @@ export default {
             });
         },
 
-        AutorizaPartida(data){ //Envia partida a autorizacion
+        AgregaComentario(data){
+            this.chageCloseComentarios();
+            this.form.articulo_id = data.id;
+            this.form.TipoComentario = 2;
+        },
+
+        AgregaComentarioAutorizacion(data){
+            console.log(data);
+            this.form.precio_id = data.id;
+            this.form.articulo_id = data.articulos_requisiciones_id;
+            this.form.NumCotizacion = data.NumCotizacion;
+            this.chageCloseComentarios();
+            this.form.TipoComentario = 1;
+        },
+
+        AutorizaPartidaComentario(data){ //Envia partida a autorizacion
             data._method = "PUT";
             data.metodo = 1;
             this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
                 onSuccess: () => {
+                    this.chageCloseComentarios();
                     this.alertSucces();
+                    this.reset();
                 },
             });
         },
 
-        RechazaPartida(data){ //Rechaza partida
+        RechazaPartidaComentario(data){ //Rechaza partida
             data._method = "PUT";
             data.metodo = 2;
+            console.log(data);
             this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
                 onSuccess: () => {
+                    this.chageCloseComentarios();
                     this.alertSucces();
+                    this.reset();
                 },
             });
         },
+
+        AgregaComentarioRechazo(data){
+            console.log(data);
+        },
+
+        AutorizaPartida(data){
+            this.form.precio_id = data.id;
+            console.log(this.form);
+            data._method = "PUT";
+            data.metodo = 3;
+            this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                    this.reset();
+                },
+            });
+        },
+
+        RechazaPartida(data){
+            console.log("Rechaza sin comentario");
+        },
+
+
+
     },
 };
 </script>
