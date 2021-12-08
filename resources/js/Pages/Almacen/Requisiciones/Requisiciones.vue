@@ -182,28 +182,133 @@
             <div class="tw-mt-8">
                 <div class="tw-flex tw-justify-between tw-px-4">
                     <div class="tw-flex tw-flex-wrap tw-content-center">
-                        <select class="InputSelect" v-model="params.Estatus" @change="FiltroEstatus($event)">
-                                <option value="2">SOLICITADO</option>
-                                <option value="3">EN COTIZACION</option>
-                                <option value="5">EN AUTORIZACION</option>
-                                <option value="6">AUTORIZADO</option>
-                                <option value="7">CONFIRMADOS</option>
-                                <option value="8">EN ALMACEN</option>
-                                <option value="9">ENTREGADO</option>
-                        </select>
+                        <div class="tw-grid tw-grid-cols-3 tw-gap-4">
+                            <select class="InputSelect" v-model="params.Anio" @change="FiltroAño($event)">
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                            </select>
+                            <select class="InputSelect" v-model="params.Estatus" @change="FiltroEstatus($event)">
+                                    <option value="2">SOLICITADO</option>
+                                    <option value="3">EN COTIZACION</option>
+                                    <option value="5">EN AUTORIZACION</option>
+                                    <option value="6">AUTORIZADO</option>
+                                    <option value="7">CONFIRMADOS</option>
+                                    <option value="8">EN ALMACEN</option>
+                                    <option value="9">ENTREGADO</option>
+                            </select>
+                        </div>
                     </div>
-                    <div>
-
+                    <div class="tw-flex tw-flex-wrap tw-content-center tw-text-center tw-text-gray-400">
+                        <div class="tw-flex tw-flex-col">
+                            <div class="tw-text-center">
+                                <p v-if="params.Partidas == true">Vista Partidas</p>
+                                <p v-else>Vista Requisiciones</p>
+                            </div>
+                            <div>
+                                <label class="switch">
+                                    <input type="checkbox" @click="Visualizacion">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="tw-overflow-x-auto tw-mx-2">
+            <div class="tw-mx-2" v-if="params.Partidas == true">
+                <Table id="Articulos">
+                    <template v-slot:TableHeader>
+                        <th class="columna">ID</th>
+                        <th class="columna">FECHA</th>
+                        <th class="columna">REQ</th>
+                        <th class="columna">DEPARTAMENTO</th>
+                        <th class="columna">CÓDIGO</th>
+                        <th class="columna">CANTIDAD</th>
+                        <th class="columna">UNIDAD</th>
+                        <th class="columna">DESCRIPCIÓN</th>
+                        <th class="columna">MAQUINA</th>
+                        <th class="columna">MARCA</th>
+                        <th class="columna">TIPO COMPRA</th>
+                        <th class="columna">OBSERVACIONES</th>
+                        <th class="columna">SOLICITANTE</th>
+                        <th class="columna">FECHA LLEGADA</th>
+                        <th class="columna">ESTATUS</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr class="fila" v-for="datos in ArticulosRequisiciones" :key="datos.id">
+                            <td class="tw-p-2">{{ datos.id }}</td>
+                            <td class="tw-p-2">{{ datos.Fecha }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.NumReq }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.Codigo }}</td>
+                            <td class="tw-p-2">{{ datos.Cantidad }}</td>
+                            <td class="tw-p-2">{{ datos.Unidad }}</td>
+                            <td class="tw-p-2">{{ datos.Descripcion }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.TipCompra }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.Observaciones }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.Fechallegada }}</td>
+                            <td class="tw-p-2">
+                                <div v-if="datos.EstatusArt == 1">
+                                    <span tooltip="SIN ENVIAR" flow="left">
+                                        <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
+                                            SIN ENVIAR</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 2">
+                                    <span tooltip="Solicitada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 3 || datos.Estatus == 4">
+                                    <span tooltip="En Espera de Cotización" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">COTIZACIÓN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 5">
+                                    <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZACION</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 6">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 7">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 8">
+                                    <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">ALMACEN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 9">
+                                    <span tooltip="Entregado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.EstatusArt == 10">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
+            <div class="tw-mx-2" v-else>
                 <Table id="Requisiciones">
                     <template v-slot:TableHeader>
                         <th class="columna">Id</th>
-                        <th class="columna">NUM</th>
                         <th class="columna">FECHA</th>
+                        <th class="columna">NUM</th>
                         <th class="columna">DEPARTAMENTO</th>
                         <th class="columna">JEFE AREA</th>
                         <th class="columna">CODIGO</th>
@@ -220,8 +325,8 @@
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                             <td class="tw-text-center">{{ datos.id }}</td>
-                            <td class="tw-text-center">{{ datos.NumReq }}</td>
                             <td class="tw-text-center">{{ datos.Fecha }}</td>
+                            <td class="tw-text-center">{{ datos.NumReq }}</td>
                             <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
                             <td class="tw-text-center">{{ datos.requisicion_jefe.Nombre }}</td>
                             <td class="tw-text-center">{{ datos.Codigo }}</td>
@@ -291,6 +396,11 @@
                                     <div class="iconoEdit" @click="RequisicionAlmacen(datos)">
                                         <span tooltip="Confirma existencia toal en Almacén" flow="left">
                                             <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </div>
+                                    <div class="iconoEdit" @click="IndicaProveedor(datos)" v-if="datos.TipCompra == 'SERVICIOS EXTERNOS'">
+                                        <span tooltip="Indica Provedor" flow="left">
+                                            <i class="fas fa-shipping-fast"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -627,7 +737,7 @@
                 </form>
             </modal>
 
-            <modal :show="showProveedor" @close="chageProveedor" maxWidth="2xl">
+            <modal :show="showFirma" @close="chageFirma" maxWidth="2xl">
                 <form>
                     <div class="tw-px-4 tw-py-4">
                         <div class="tw-text-lg">
@@ -692,6 +802,60 @@
                 </form>
             </modal>
 
+            <modal :show="showProveedor" @close="chageProveedor" maxWidth="2xl">
+                <div class="tw-px-4 tw-py-4">
+                    <div class="tw-text-lg">
+                        <div class="ModalHeader">
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>VALE DE SALIDA</h3>
+                        </div>
+                    </div>
+
+                    <div class="tw-mt-4">
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Folio</jet-label>
+                                <jet-input type="text" :min="min" v-model="form.Folio"></jet-input>
+                                <small v-if="errors.Folio" class="validation-alert">{{errors.Folio}}</small>
+                            </div>
+
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Fecha Entrega</jet-label>
+                                <jet-input type="date" v-model="form.FechaEn"></jet-input>
+                                <small v-if="errors.FechaEn" class="validation-alert">{{errors.FechaEn}}</small>
+                            </div>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Proveedor</jet-label>
+                                <select class="InputSelect" v-model="form.Proveedor">
+                                    <option value="2021">2021</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Fecha Entrega</jet-label>
+                                <jet-input type="date" v-model="form.Salida"></jet-input>
+                                <small v-if="errors.Salida" class="validation-alert">{{errors.Salida}}</small>
+                            </div>
+
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Estatus</jet-label>
+                                <select class="InputSelect" v-model="form.EstatusServ">
+                                    <option value="ENTREGADO">ENTREGADO</option>
+                                    <option value="GARANTIA">GARANTIA</option>
+                                    <option value="N/A">N/A</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ModalFooter">
+                    <jet-button type="button" @click="IndicaProveedor(form)">Guardar</jet-button>
+                    <jet-CancelButton @click="chageProveedor">Cerrar</jet-CancelButton>
+                </div>
+            </modal>
         </div>
     </app-layout>
 </template>
@@ -706,6 +870,7 @@ import JetButton from "@/Components/Button";
 import JetCancelButton from "@/Components/CancelButton";
 import Modal from "@/Jetstream/Modal";
 import Pagination from "@/Components/pagination";
+import JetLabel from '@/Jetstream/Label';
 import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
  //datatable
@@ -731,16 +896,20 @@ export default {
     data() {
         return {
             showPartidas: false,
-            showProveedor: false,
+            showFirma: false,
             showConfirm: false,
             showRepo: false,
+            showProveedor: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
+            anio: moment().format("YYYY"),
             tam: "5xl",
             color: "tw-bg-cyan-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             detalles: null,
             form: {
+                Accion: '',
+                req_id: '',
                 IdArt:  '',
                 Parcialidad: '',
                 NumReq: '',
@@ -757,8 +926,15 @@ export default {
                 Maq: '',
                 Mar: '',
                 TipCompra: '',
+                Folio: '',
+                FechaEn: '',
+                Proveedor: '',
+                Salida: '',
+                EstatusServ: '',
             },
             params:{
+                Partidas: true,
+                Anio: this.anio,
                 month: '',
                 Estatus: '',
             },
@@ -767,7 +943,7 @@ export default {
     },
 
     mounted() {
-        this.tabla();
+        this.tablaArticulos();
     },
 
     components: {
@@ -781,6 +957,7 @@ export default {
         Modal,
         Pagination,
         JetInput,
+        JetLabel,
         JetSelect,
         Canvas,
     },
@@ -800,6 +977,26 @@ export default {
 
     methods: {
 
+        Visualizacion(){ //Cambio de visualizacion por partidas o articulos
+            this.params.Partidas  = !this.params.Partidas;
+
+            if (this.params.Partidas == true){
+                $('#Articulos').DataTable().clear(); //limpio
+                $('#Articulos').DataTable().destroy(); //destruyo tabla
+                this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
+                    onSuccess: () => {
+                        this.tablaArticulos()
+                    }, preserveState: true})
+            }else{
+                $('#Requisiciones').DataTable().clear(); //limpio
+                $('#Requisiciones').DataTable().destroy(); //destruyo tabla
+                this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
+                    onSuccess: () => {
+                        this.tabla() //regeneracion de tabla
+                    }, preserveState: true})
+            }
+        },
+
         ClearCanvas(){
             var c = document.getElementById("myCanvas");
             this.canvas.clearRect(0, 0, c.width, c.height);
@@ -815,6 +1012,8 @@ export default {
 
         reset() {
             this.form = {
+                Accion: '',
+                req_id: '',
                 IdArt:  '',
                 Parcialidad: '',
                 NumReq: '',
@@ -831,6 +1030,11 @@ export default {
                 Maq: '',
                 Mar: '',
                 TipCompra: '',
+                Folio: '',
+                FechaEn: '',
+                Proveedor: '',
+                Salida: '',
+                EstatusServ: '',
             };
         },
 
@@ -839,6 +1043,13 @@ export default {
             this.$nextTick(() => {
                 $("#Requisiciones").DataTable({
                     "language": this.español,
+                    paging: false,
+                    "scrollX": true,
+                    scrollY:  '40vh',
+                    "order": [0, 'desc'],
+                    "columnDefs": [
+                        { "width": "2%", "targets": [0,1] }
+                    ],
                     "columnDefs": [
                         {
                             "targets": [ 0 ],
@@ -846,7 +1057,6 @@ export default {
                             "searchable": false
                         },
                     ],
-                    "order": [0, 'desc'],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -875,6 +1085,51 @@ export default {
             this.$inertia.get("/Compras/Requisiciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
         },
 
+        //Generacion de Tabla con Datatables
+        tablaArticulos(){
+            this.$nextTick(() => {
+                $("#Articulos").DataTable({
+                    "language": this.español,
+                    paging: false,
+                    "scrollX": true,
+                    scrollY:  '40vh',
+                    "order": [0, 'desc'],
+                    "columnDefs": [
+                        { "width": "2%", "targets": [0,1] }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": [ 0 ],
+                            "visible": false,
+                            "searchable": false
+                        },
+                    ],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
+                });
+            });
+        },
+
+        //Consulta para generar datos de la tabla
+        verTablaArticulos(event) {
+            $("#Articulos").DataTable().destroy();
+                this.$inertia.get("/Almacen/Requisiciones", { busca: event.target.value },{
+                    onSuccess: () => {
+                        this.tablaArticulos();
+                    },
+                });
+        },
+
         chageClose() {
             this.showModal = !this.showModal;
         },
@@ -889,8 +1144,8 @@ export default {
             this.showPartidas = !this.showPartidas;
         },
 
-        chageProveedor(){
-            this.showProveedor = !this.showProveedor;
+        chageFirma(){
+            this.showFirma = !this.showFirma;
         },
 
         chageRepo(){
@@ -910,10 +1165,34 @@ export default {
 
         FiltroIndicadores(value){
             //Filtro para consultar solo por el estatus
-            this.params.Estatus = value;
+
+            //OBTENER VALOR DE FRILTRO DE LA URL
+            var query  = window.location.search.substring(1);
+            var vars = query.split("&");
+                for (var i=0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == 'Estatus') {
+                        this.params.Partidas = pair[1];
+                    }
+            }
+
+            this.params.Partidas = value;
             this.params.month = '';
             $('#Requisiciones').DataTable().clear(); //limpio
             $('#Requisiciones').DataTable().destroy(); //destruyo tabla
+            this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
+                    this.tabla() //regeneracion de tabla
+                }, preserveState: true})
+        },
+
+        FiltroAño(value){
+            this.params.Anio = event.target.value;
+
+            $('#Requisiciones').DataTable().clear(); //limpio
+            $('#Requisiciones').DataTable().destroy(); //destruyo tabla
+
             this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
                     location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
@@ -934,16 +1213,42 @@ export default {
         },
 
         FiltroEstatus(value){
+
+            var query  = window.location.search.substring(1);
+            var vars = query.split("&");
+                for (var i=0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == 'Estatus') {
+                        this.params.Estatus = pair[1];
+                    }
+            }
+
             this.params.Estatus = event.target.value;
 
-            $('#Requisiciones').DataTable().clear(); //limpio
-            $('#Requisiciones').DataTable().destroy(); //destruyo tabla
+            console.log(this.params);
 
-            this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
-                onSuccess: () => {
-                    location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
-                    this.tabla() //regeneracion de tabla
-                }, preserveState: true})
+            if(this.params.Partidas == true){
+
+                $('#Articulos').DataTable().clear(); //limpio
+                $('#Articulos').DataTable().destroy(); //destruyo tabla
+
+                this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
+                    onSuccess: () => {
+                        // location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
+                        this.tablaArticulos() //regeneracion de tabla
+                    }, preserveState: true})
+
+            }else if(this.params.Partidas == false){
+
+                $('#Requisiciones').DataTable().clear(); //limpio
+                $('#Requisiciones').DataTable().destroy(); //destruyo tabla
+
+                this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
+                    onSuccess: () => {
+                        // location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
+                        this.tabla() //regeneracion de tabla
+                    }, preserveState: true})
+            }
         },
 
         update(data, metodo) {
@@ -1014,8 +1319,10 @@ export default {
         EnviarCotizarRequisicion(data){ //Enviar requisicion a cotizacion
             data.metodo = 1;
             data._method = "PUT";
+            this.form.req_id = data.id;
             this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
                 onSuccess: () => {
+                    this.chageProveedor();
                     this.alertSucces();
                 },
             });
@@ -1066,6 +1373,21 @@ export default {
                 onSuccess: () => {
                     this.alertSucces();
                     this.chageConfirm();
+                },
+            });
+        },
+
+        chageProveedor(){
+            this.showProveedor = !this.showProveedor;
+        },
+
+        IndicaProveedor(data){
+            this.form.Accion = 1;
+            this.$inertia.post("/Almacen/Requisiciones", data, {
+                onSuccess: () => {
+                    this.chageProveedor();
+                    this.alertSucces();
+                    this.reset();
                 },
             });
         },

@@ -197,16 +197,23 @@
 
         <div class="tw-flex tw-justify-between tw-px-4">
             <div class="tw-flex tw-flex-wrap tw-content-center">
-                <select class="InputSelect" v-model="params.Estatus" @change="FiltroEstatus($event)">
-                        <option value="1">SIN ENVIAR</option>
-                        <option value="2">SOLICITADO</option>
-                        <option value="3">EN COTIZACION</option>
-                        <option value="5">EN AUTORIZACION</option>
-                        <option value="6">AUTORIZADO</option>
-                        <option value="7">CONFIRMADOS</option>
-                        <option value="8">EN ALMACEN</option>
-                        <option value="9">ENTREGADO</option>
-                </select>
+                <div class="tw-grid tw-grid-cols-3 tw-gap-4">
+                        <select class="InputSelect" v-model="params.Anio" @change="FiltroAño($event)">
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                        </select>
+
+                    <select class="InputSelect" v-model="params.Estatus" @change="FiltroEstatus($event)">
+                            <option value="1">SIN ENVIAR</option>
+                            <option value="2">SOLICITADO</option>
+                            <option value="3">EN COTIZACION</option>
+                            <option value="5">EN AUTORIZACION</option>
+                            <option value="6">AUTORIZADO</option>
+                            <option value="7">CONFIRMADOS</option>
+                            <option value="8">EN ALMACEN</option>
+                            <option value="9">ENTREGADO</option>
+                    </select>
+                </div>
             </div>
             <div class="tw-flex tw-flex-wrap tw-content-center tw-text-center tw-text-gray-400">
                 <div class="tw-flex tw-flex-col">
@@ -227,9 +234,10 @@
             </div>
         </div>
 
-        <div class="tw-overflow-x-auto tw-mx-2" v-if="params.Partidas == true">
+        <div class="tw-mx-2" v-if="params.Partidas == true">
             <Table id="Articulos">
                 <template v-slot:TableHeader>
+                    <th class="columna">ID</th>
                     <th class="columna">FECHA</th>
                     <th class="columna">REQ</th>
                     <th class="columna">DEPARTAMENTO</th>
@@ -249,6 +257,7 @@
 
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in ArticulosRequisiciones" :key="datos.id">
+                        <td>{{ datos.id }}</td>
                         <td class="tw-p-2">{{ datos.Fecha }}</td>
                         <td class="tw-p-2">{{ datos.articulos_requisicion.NumReq }}</td>
                         <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
@@ -331,11 +340,12 @@
             </Table>
         </div>
 
-        <div class="tw-overflow-x-auto tw-mx-2" v-else>
+        <div class="tw-mx-2" v-else>
             <Table id="Requisicion">
                 <template v-slot:TableHeader>
+                    <th class="columna">ID</th>
                     <th class="columna">FECHA</th>
-                    <th class="columna"># REQ</th>
+                    <th class="columna">REQ</th>
                     <th class="columna">DEPARTAMENTO</th>
                     <th class="columna">CODIGO</th>
                     <th class="columna">MAQUINA</th>
@@ -350,6 +360,7 @@
 
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
+                        <td class="tw-text-center">{{ datos.id }}</td>
                         <td class="tw-text-center">{{ datos.Fecha }}</td>
                         <td class="tw-text-center">{{ datos.NumReq }}</td>
                         <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
@@ -906,6 +917,7 @@ import JetButton from "@/Components/Button";
 import JetCancelButton from "@/Components/CancelButton";
 import Modal from "@/Jetstream/Modal";
 import Pagination from "@/Components/pagination";
+import JetLabel from '@/Jetstream/Label';
 import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
  //datatable
@@ -934,9 +946,11 @@ export default {
             showModal2: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
+            anio: moment().format("YYYY"),
             tam: "5xl",
             color: "tw-bg-cyan-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
+            opc: '<option value="" disabled>Año</option>',
             detalles: '',
             form: {
                 ReqId: '',
@@ -960,10 +974,11 @@ export default {
                 Observaciones: '',
             },
             params:{
+                Anio: this.anio,
                 month: '',
                 Estatus: '',
                 Req: '',
-                Partidas: true,
+                Partidas: false,
             },
             MaquinasDpto:[],
             Marcas: [],
@@ -971,7 +986,7 @@ export default {
     },
 
     mounted() {
-        this.tablaArticulos();
+        this.tabla();
     },
 
     components: {
@@ -985,6 +1000,7 @@ export default {
         Modal,
         Pagination,
         JetInput,
+        JetLabel,
         JetSelect,
     },
 
@@ -1031,7 +1047,19 @@ export default {
             this.$nextTick(() => {
                 $("#Requisicion").DataTable({
                     "language": this.español,
-                    pageLength: 25,
+                    paging: false,
+                    scrollY:  '40vh',
+                    "order": [0, 'desc'],
+                    "columnDefs": [
+                        { "width": "2%", "targets": [0,1] }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": [ 0 ],
+                            "visible": false,
+                            "searchable": false
+                        },
+                    ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -1069,11 +1097,18 @@ export default {
             this.$nextTick(() => {
                 $("#Articulos").DataTable({
                     "language": this.español,
-                    pageLength: 25,
-                    "scrollX": true,
+                    paging: false,
                     scrollY:  '40vh',
+                    "order": [0, 'desc'],
                     "columnDefs": [
                         { "width": "2%", "targets": [0,1] }
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": [ 0 ],
+                            "visible": false,
+                            "searchable": false
+                        },
                     ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
@@ -1172,6 +1207,19 @@ export default {
                 }, preserveState: true})
         },
 
+        FiltroAño(value){
+            this.params.Anio = event.target.value;
+
+            $('#Requisicion').DataTable().clear(); //limpio
+            $('#Requisicion').DataTable().destroy(); //destruyo tabla
+
+            this.$inertia.get('/Compras/Requisiciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
+                    this.tabla() //regeneracion de tabla
+                }, preserveState: true})
+        },
+
         FiltroMes(value){
             //Filtro para consultar por mes
             this.params.month = value;
@@ -1237,6 +1285,7 @@ export default {
         save(data) {
             this.$inertia.post("/Compras/Requisiciones", data, {
                 onSuccess: () => {
+                    // location.reload();
                     this.reset(),
                     this.chageClose(),
                     this.alertSucces();

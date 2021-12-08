@@ -27,7 +27,7 @@ class CreatePreciosCotizacionesTable extends Migration
             $table->integer('Autorizado')->default(0);
 
             $table-> unsignedBigInteger('articulos_requisiciones_id'); //Numero control empleado
-            $table-> unsignedBigInteger('requisiciones_id'); //Numero control empleado
+            $table-> unsignedBigInteger('requisiciones_id');
 
             $table->foreign("articulos_requisiciones_id")->references("id")->on("articulos_requisiciones")
             ->onDelete("cascade")
