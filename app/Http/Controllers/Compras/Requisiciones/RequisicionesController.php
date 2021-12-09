@@ -98,7 +98,7 @@ class RequisicionesController extends Controller{
                     $req->select(
                         'id', 'IdUser',
                         'IdEmp', 'Folio',
-                        'NumReq',
+                        'NumReq', 'OrdenCompra',
                         'Departamento_id',
                         'jefes_areas_id',
                         'Codigo', 'Maquina_id',
@@ -160,7 +160,7 @@ class RequisicionesController extends Controller{
                         $req->select(
                             'id', 'IdUser',
                             'IdEmp', 'Folio',
-                            'NumReq',
+                            'NumReq', 'OrdenCompra',
                             'Departamento_id',
                             'jefes_areas_id',
                             'Codigo', 'Maquina_id',
@@ -223,7 +223,7 @@ class RequisicionesController extends Controller{
                         $req->select(
                             'id', 'IdUser',
                             'IdEmp', 'Folio',
-                            'NumReq',
+                            'NumReq', 'OrdenCompra',
                             'Departamento_id',
                             'jefes_areas_id',
                             'Codigo', 'Maquina_id',
@@ -423,7 +423,7 @@ class RequisicionesController extends Controller{
                     $req->select(
                         'id', 'IdUser',
                         'IdEmp', 'Folio',
-                        'NumReq',
+                        'NumReq', 'OrdenCompra',
                         'Departamento_id',
                         'jefes_areas_id',
                         'Codigo', 'Maquina_id',
@@ -456,7 +456,6 @@ class RequisicionesController extends Controller{
         }else{
             $ArticulosRequisicion = null;
         }
-
 
         return Inertia::render('Compras/Requisiciones/index', compact(
             'Session',

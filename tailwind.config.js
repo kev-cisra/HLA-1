@@ -187,7 +187,7 @@ module.exports = {
                 'rose-900': '#881337',
             },
             fontSize: {
-                'xxs': '.65rem',
+                'xxs': '.60rem',
                 'xs': '.75rem',
                 'sm': '.875rem',
                 'tiny': '.875rem',

@@ -322,6 +322,7 @@ class AutorizaRequisicionesController extends Controller{
 
         switch($request->metodo){
             case 1:
+
                 ArticulosRequisiciones::where('id', '=', $request->articulo_id)->where('EstatusArt', '=', 5)->update([
                     'EstatusArt' => 6,
                 ]);
@@ -343,14 +344,9 @@ class AutorizaRequisicionesController extends Controller{
                 ]); //Se autoriza los que tengan estatus 2
 
                 //Consulta para verificar si aun hay articulos que no estan autorizados
-                $ArticulosAutorizados = ArticulosRequisiciones::where('EstatusArt', '<', 6)
+                $ArticulosAutorizados = ArticulosRequisiciones::where('EstatusArt', '=', 5)
                 ->where('requisicion_id', '=', $request->requisicion_id)
                 ->count();
-
-                //Todos los articulos de la requisicion se autorizaron y se manda la cotizacion completa como Autorizada
-                Requisiciones::where('id', '=', $request->requisicion_id)->update([
-                    'Estatus' => 6,
-                ]);
 
                 break;
 
@@ -369,11 +365,32 @@ class AutorizaRequisicionesController extends Controller{
                 break;
 
             case 3:
-                return $request->precios_articulo;
 
-                ArticulosRequisiciones::where('id', '=', $request->id)->where('EstatusArt', '=', 5)->update([
+                ArticulosRequisiciones::where('id', '=', $request->articulos_requisiciones_id)->where('EstatusArt', '=', 5)->update([
                     'EstatusArt' => 6,
                 ]);
+
+                //Autorizo el precio seleccionado
+                PreciosCotizaciones::where('id', '=', $request->id)
+                ->update([
+                    'Autorizado' => 2, //Estatus 2 Autorizado
+                ]); //Se autoriza los que tengan estatus 2
+
+                $req = PreciosCotizaciones::where('id', '=', $request->id)->first();
+
+                //Consulta para verificar si aun hay articulos que no estan autorizados
+                $ArticulosAutorizados = ArticulosRequisiciones::where('requisicion_id', '=', $req->requisiciones_id)
+                ->where('EstatusArt', '=', 5)
+                ->count();
+
+                if($ArticulosAutorizados == 0){
+                    //Todos los articulos de la requisicion se autorizaron y se manda la cotizacion completa como Autorizada
+                    Requisiciones::where('id', '=', $request->requisicion_id)->update([
+                        'Estatus' => 6,
+                    ]);
+                }
+
+                break;
         }
 
         return redirect()->back();

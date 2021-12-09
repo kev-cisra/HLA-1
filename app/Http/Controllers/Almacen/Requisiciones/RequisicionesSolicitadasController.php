@@ -68,7 +68,7 @@ class RequisicionesSolicitadasController extends Controller {
                 $req->select(
                     'id', 'IdUser',
                     'IdEmp', 'Folio',
-                    'NumReq',
+                    'NumReq', 'OrdenCompra',
                     'Departamento_id',
                     'jefes_areas_id',
                     'Codigo', 'Maquina_id',
@@ -136,7 +136,7 @@ class RequisicionesSolicitadasController extends Controller {
                     $req->select(
                         'id', 'IdUser',
                         'IdEmp', 'Folio',
-                        'NumReq',
+                        'NumReq', 'OrdenCompra',
                         'Departamento_id',
                         'jefes_areas_id',
                         'Codigo', 'Maquina_id',
@@ -176,7 +176,7 @@ class RequisicionesSolicitadasController extends Controller {
                     $req->select(
                         'id', 'IdUser',
                         'IdEmp', 'Folio',
-                        'NumReq',
+                        'NumReq', 'OrdenCompra',
                         'Departamento_id',
                         'jefes_areas_id',
                         'Codigo', 'Maquina_id',

@@ -1,6 +1,6 @@
 <template>
 
-    <table class='table'>
+    <table class='table table-striped tw-text-xxs tw-w-full tw-overflow-hidden tw-uppercase tw-bg-white tw-divide-y tw-divide-gray-300 tw-rounded'>
         <thead :class="[color, font]">
             <tr class="uppercase tw-font-black tw-text-center tw-text-white ">
                 <slot name="TableEncabezado">

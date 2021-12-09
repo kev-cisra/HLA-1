@@ -39,15 +39,16 @@
         </div>
     </div>
 
-    <div class="tw-overflow-x-auto tw-mx-2">
-        <div class="tw-overflow-x-auto tw-mx-2" v-if="params.Partidas == true">
+    <div class="tw-mx-2">
+        <div class="tw-mx-2" v-if="params.Partidas == true">
             <Table id="Articulos">
                 <template v-slot:TableHeader>
+                    <th class="columna">ID</th>
                     <th class="columna">FECHA</th>
                     <th class="columna">REQ</th>
                     <th class="columna">DEPARTAMENTO</th>
                     <th class="columna">CÓDIGO</th>
-                    <th class="columna">CANTIDAD</th>
+                    <th class="columna">CANT.</th>
                     <th class="columna">UNIDAD</th>
                     <th class="columna">DESCRIPCIÓN</th>
                     <th class="columna">MAQUINA</th>
@@ -61,20 +62,21 @@
 
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in ArticulosRequisiciones" :key="datos.id">
-                        <td class="tw-p-2">{{ datos.Fecha }}</td>
-                        <td class="tw-p-2">{{ datos.articulos_requisicion.NumReq }}</td>
-                        <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
-                        <td class="tw-p-2">{{ datos.articulos_requisicion.Codigo }}</td>
-                        <td class="tw-p-2">{{ datos.Cantidad }}</td>
-                        <td class="tw-p-2">{{ datos.Unidad }}</td>
-                        <td class="tw-p-2">{{ datos.Descripcion }}</td>
-                        <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                        <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                        <td class="tw-p-2">{{ datos.articulos_requisicion.TipCompra }}</td>
-                        <td class="tw-p-2">{{ datos.articulos_requisicion.Observaciones }}</td>
-                        <td class="tw-p-2">{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
-                        <td class="tw-p-2">{{ datos.articulos_requisicion.Fechallegada }}</td>
-                        <td class="tw-p-2">
+                        <td>{{ datos.id }}</td>
+                        <td>{{ datos.Fecha }}</td>
+                        <td>{{ datos.articulos_requisicion.NumReq }}</td>
+                        <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
+                        <td>{{ datos.articulos_requisicion.Codigo }}</td>
+                        <td class="tw-text-center">{{ datos.Cantidad }}</td>
+                        <td>{{ datos.Unidad }}</td>
+                        <td>{{ datos.Descripcion }}</td>
+                        <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                        <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                        <td>{{ datos.articulos_requisicion.TipCompra }}</td>
+                        <td>{{ datos.articulos_requisicion.Observaciones }}</td>
+                        <td>{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
+                        <td>{{ datos.articulos_requisicion.Fechallegada }}</td>
+                        <td>
                             <div v-if="datos.EstatusArt == 1">
                                 <span tooltip="SIN ENVIAR" flow="left">
                                     <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
@@ -126,9 +128,10 @@
                 </template>
             </Table>
         </div>
-        <div class="tw-overflow-x-auto tw-mx-2" v-else>
+        <div class="tw-mx-2" v-else>
             <Table id="Requisiciones">
                 <template v-slot:TableHeader>
+                    <th class="columna">ID</th>
                     <th class="columna">FECHA</th>
                     <th class="columna">NUM</th>
                     <th class="columna">DEPARTAMENTO</th>
@@ -146,16 +149,17 @@
 
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
-                        <td class="tw-text-center">{{ datos.Fecha }}</td>
-                        <td class="tw-text-center">{{ datos.NumReq }}</td>
-                        <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
-                        <td class="tw-text-center">{{ datos.requisicion_jefe.Nombre }}</td>
-                        <td class="tw-text-center">{{ datos.Codigo }}</td>
-                        <td class="tw-text-center">{{ datos.requisicion_maquina.Nombre }}</td>
-                        <td class="tw-text-center">{{ datos.requisicion_marca.Nombre }}</td>
-                        <td class="tw-text-center">{{ datos.TipCompra }}</td>
+                        <td>{{ datos.id }}</td>
+                        <td>{{ datos.Fecha }}</td>
+                        <td>{{ datos.NumReq }}</td>
+                        <td>{{ datos.requisicion_departamento.Nombre }}</td>
+                        <td>{{ datos.requisicion_jefe.Nombre }}</td>
+                        <td>{{ datos.Codigo }}</td>
+                        <td>{{ datos.requisicion_maquina.Nombre }}</td>
+                        <td>{{ datos.requisicion_marca.Nombre }}</td>
+                        <td>{{ datos.TipCompra }}</td>
                         <td>{{ datos.Observaciones }}</td>
-                        <td class="tw-text-center">{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                        <td>{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
                         <td>{{ datos.OrdenCompra }}</td>
                         <td>
                             <div v-if="datos.Estatus == 2">
@@ -1075,10 +1079,20 @@ export default {
             this.$nextTick(() => {
                 $("#Requisiciones").DataTable({
                 language: this.español,
-                pageLength: 25,
-                fixedColumns: {
-                    leftColumns: 2//Le indico que deje fijas solo las 2 primeras columnas
-                }
+                paging: false,
+                "scrollX": true,
+                scrollY:  '40vh',
+                "order": [0, 'desc'],
+                "columnDefs": [
+                    { "width": "1%", "targets": [0] },
+                    { "width": "6%", "targets": [1] },
+                    { "width": "3%", "targets": [2] },
+                    {
+                        "targets": [ 0 ],
+                        "visible": false,
+                        "searchable": false
+                    },
+                ],
                 });
             });
         },
@@ -1094,10 +1108,21 @@ export default {
             this.$nextTick(() => {
                 $("#Articulos").DataTable({
                     "language": this.español,
-                    pageLength: 25,
-                    fixedColumns: {
-                        leftColumns: 2//Le indico que deje fijas solo las 2 primeras columnas
-                    },
+                    paging: false,
+                    "scrollX": true,
+                    scrollY:  '40vh',
+                    "order": [0, 'desc'],
+                    "columnDefs": [
+                        { "width": "1%", "targets": [0] },
+                        { "width": "6%", "targets": [1] },
+                        { "width": "3%", "targets": [2] },
+                        { "width": "2%", "targets": [5] },
+                        {
+                            "targets": [ 0 ],
+                            "visible": false,
+                            "searchable": false
+                        },
+                    ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",

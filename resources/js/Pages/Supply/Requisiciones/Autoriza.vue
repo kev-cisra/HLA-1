@@ -240,11 +240,11 @@
             <div class="tw-overflow-x-auto tw-mx-2" v-if="params.Partidas == true">
                 <Table id="Articulos">
                     <template v-slot:TableHeader>
-                        <th class="columna">REQ</th>
                         <th class="columna">FECHA</th>
+                        <th class="columna">REQ</th>
                         <th class="columna">DEPARTAMENTO</th>
                         <th class="columna">CÓDIGO</th>
-                        <th class="columna">CANTIDAD</th>
+                        <th class="columna">CANT</th>
                         <th class="columna">UNIDAD</th>
                         <th class="columna">DESCRIPCIÓN</th>
                         <th class="columna">MAQUINA</th>
@@ -259,20 +259,20 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in ArticulosRequisiciones" :key="datos.id">
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.NumReq }}</td>
-                            <td class="tw-p-2">{{ datos.Fecha }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Codigo }}</td>
-                            <td class="tw-p-2">{{ datos.Cantidad }}</td>
-                            <td class="tw-p-2">{{ datos.Unidad }}</td>
-                            <td class="tw-p-2">{{ datos.Descripcion }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.TipCompra }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Observaciones }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Fechallegada }}</td>
-                            <td class="tw-p-2">
+                            <td>{{ datos.Fecha }}</td>
+                            <td class="tw-text-center">{{ datos.articulos_requisicion.NumReq }}</td>
+                            <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
+                            <td>{{ datos.articulos_requisicion.Codigo }}</td>
+                            <td class="tw-text-center">{{ datos.Cantidad }}</td>
+                            <td class="tw-text-center">{{ datos.Unidad }}</td>
+                            <td>{{ datos.Descripcion }}</td>
+                            <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                            <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="tw-text-center">{{ datos.articulos_requisicion.TipCompra }}</td>
+                            <td>{{ datos.articulos_requisicion.Observaciones }}</td>
+                            <td>{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
+                            <td>{{ datos.articulos_requisicion.Fechallegada }}</td>
+                            <td>
                                 <div v-if="datos.EstatusArt == 1">
                                     <span tooltip="SIN ENVIAR" flow="left">
                                         <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
@@ -336,24 +336,24 @@
             <div class="tw-overflow-x-auto tw-mx-2" v-else>
                 <Table id="Requisiciones">
                     <template v-slot:TableHeader>
-                        <th class="columna">REQ</th>
-                        <th class="columna">FECHA</th>
-                        <th class="columna">DEPARTAMENTO</th>
-                        <th class="columna">CODIGO</th>
-                        <th class="columna">MAQUINA</th>
-                        <th class="columna">MARCA</th>
-                        <th class="columna">TIPO COMPRA</th>
-                        <th class="columna">OBSERVACIONES</th>
-                        <th class="columna">SOLICITANTE</th>
-                        <th class="columna">O.C</th>
-                        <th class="columna">ESTATUS</th>
-                        <th class="columna">ACCIONES</th>
+                        <th>FECHA</th>
+                        <th>REQ</th>
+                        <th>DEPARTAMENTO</th>
+                        <th>CODIGO</th>
+                        <th>MAQUINA</th>
+                        <th>MARCA</th>
+                        <th>TIPO COMPRA</th>
+                        <th>OBSERVACIONES</th>
+                        <th>SOLICITANTE</th>
+                        <th>O.C</th>
+                        <th>ESTATUS</th>
+                        <th>ACCIONES</th>
                     </template>
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
-                            <td class="tw-text-center">{{ datos.NumReq }}</td>
                             <td class="tw-text-center">{{ datos.Fecha }}</td>
+                            <td class="tw-text-center">{{ datos.NumReq }}</td>
                             <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
                             <td class="tw-text-center">{{ datos.Codigo }}</td>
                             <td class="tw-text-center">{{ datos.requisicion_maquina.Nombre }}</td>
@@ -900,10 +900,12 @@ export default {
                 $("#Requisiciones").DataTable({
                     "language": this.español,
                     "order": [10, 'asc'],
-                    // pageLength: 50,
                     scrollY:        '40vh',
                     scrollCollapse: true,
                     paging:         false,
+                    "columnDefs": [
+                        { "width": "7%", "targets": [0] },
+                    ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -937,10 +939,16 @@ export default {
             this.$nextTick(() => {
                 $("#Articulos").DataTable({
                     "language": this.español,
-                    // pageLength: 25,
-                    scrollY:        '45vh',
+                    scrollY:        '40vh',
                     scrollCollapse: true,
                     paging:         false,
+                    "columnDefs": [
+                        { "width": "3%", "targets": [1,4] },
+                        // { "width": "7%", "targets": [0] },
+                        { "width": "7%", "targets": [0,2,3,5,7,8,9] },
+                        // { "width": "8%", "targets": [7,8] },
+                        { "width": "13%", "targets": [6] },
+                    ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -1281,7 +1289,6 @@ export default {
 
         AutorizaPartida(data){
             this.form.precio_id = data.id;
-            console.log(this.form);
             data._method = "PUT";
             data.metodo = 3;
             this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
@@ -1295,8 +1302,6 @@ export default {
         RechazaPartida(data){
             console.log("Rechaza sin comentario");
         },
-
-
 
     },
 };

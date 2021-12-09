@@ -221,6 +221,7 @@
                         <th class="columna">ID</th>
                         <th class="columna">FECHA</th>
                         <th class="columna">REQ</th>
+                        <th class="columna">O.C</th>
                         <th class="columna">DEPARTAMENTO</th>
                         <th class="columna">CÓDIGO</th>
                         <th class="columna">CANTIDAD</th>
@@ -238,10 +239,11 @@
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in ArticulosRequisiciones" :key="datos.id">
                             <td class="tw-p-2">{{ datos.id }}</td>
-                            <td class="tw-p-2">{{ datos.Fecha }}</td>
+                            <td class="tw-p-2">{{ datos.Fecha.substr(5) }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.NumReq }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.OrdenCompra }}</td>
                             <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Codigo }}</td>
+                            <td class="tw-p-2">{{ datos.articulos_requisicion.Codigo.substr(0,1)  }}</td>
                             <td class="tw-p-2">{{ datos.Cantidad }}</td>
                             <td class="tw-p-2">{{ datos.Unidad }}</td>
                             <td class="tw-p-2">{{ datos.Descripcion }}</td>
@@ -309,8 +311,8 @@
                         <th class="columna">Id</th>
                         <th class="columna">FECHA</th>
                         <th class="columna">NUM</th>
+                        <th class="columna">O.C</th>
                         <th class="columna">DEPARTAMENTO</th>
-                        <th class="columna">JEFE AREA</th>
                         <th class="columna">CODIGO</th>
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
@@ -325,17 +327,17 @@
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                             <td class="tw-text-center">{{ datos.id }}</td>
-                            <td class="tw-text-center">{{ datos.Fecha }}</td>
-                            <td class="tw-text-center">{{ datos.NumReq }}</td>
-                            <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
-                            <td class="tw-text-center">{{ datos.requisicion_jefe.Nombre }}</td>
-                            <td class="tw-text-center">{{ datos.Codigo }}</td>
-                            <td class="tw-text-center">{{ datos.requisicion_maquina.Nombre }}</td>
-                            <td class="tw-text-center">{{ datos.requisicion_marca.Nombre }}</td>
-                            <td class="tw-text-center">{{ datos.TipCompra }}</td>
+                            <td>{{ datos.Fecha.substr(5) }}</td>
+                            <td>{{ datos.NumReq }}</td>
+                            <td>{{ datos.OrdenCompra }}</td>
+                            <td>{{ datos.requisicion_departamento.Nombre }}</td>
+                            <td>{{ datos.Codigo.substr(0,1) }}</td>
+                            <td>{{ datos.requisicion_maquina.Nombre }}</td>
+                            <td>{{ datos.requisicion_marca.Nombre }}</td>
+                            <td>{{ datos.TipCompra }}</td>
                             <td>{{ datos.Observaciones }}</td>
-                            <td class="tw-text-center">{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
-                            <td class="tw-text-center">{{ datos.OrdenCompra }}</td>
+                            <td>{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                            <td>{{ datos.OrdenCompra }}</td>
                             <td>
                                 <div v-if="datos.Estatus == 2">
                                     <span tooltip="REQUSICIÓN SOLICITADA" flow="left">
@@ -344,12 +346,12 @@
                                 </div>
                                 <div v-else-if="datos.Estatus == 3 || datos.Estatus == 4">
                                     <span tooltip="REQUSICIÓN EN ESPERA DE COTIZACIÓN" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">EN COTIZACION</span>
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">COTIZACION</span>
                                     </span>
                                 </div>
                                 <div v-else-if="datos.Estatus == 5">
                                     <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZACION</span>
                                     </span>
                                 </div>
                                 <div v-else-if="datos.Estatus == 6">
@@ -364,7 +366,7 @@
                                 </div>
                                 <div v-else-if="datos.Estatus == 8">
                                     <span tooltip="REQUISICIÓN EN ALMACÉN" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">ALMACEN</span>
                                     </span>
                                 </div>
                                 <div v-else-if="datos.Estatus == 9">
@@ -1048,9 +1050,9 @@ export default {
                     scrollY:  '40vh',
                     "order": [0, 'desc'],
                     "columnDefs": [
-                        { "width": "2%", "targets": [0,1] }
-                    ],
-                    "columnDefs": [
+                        { "width": "1%", "targets": [0] },
+                        { "width": "5%", "targets": [1] },
+                        { "width": "3%", "targets": [2] },
                         {
                             "targets": [ 0 ],
                             "visible": false,
@@ -1095,9 +1097,9 @@ export default {
                     scrollY:  '40vh',
                     "order": [0, 'desc'],
                     "columnDefs": [
-                        { "width": "2%", "targets": [0,1] }
-                    ],
-                    "columnDefs": [
+                        { "width": "1%", "targets": [0] },
+                        { "width": "8%", "targets": [1] },
+                        { "width": "3%", "targets": [2] },
                         {
                             "targets": [ 0 ],
                             "visible": false,
