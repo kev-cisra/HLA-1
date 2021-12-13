@@ -178,7 +178,6 @@ class RepoProController extends Controller
 
             //procesos
             $procesos = procesos::where('departamento_id', '=', $request->busca)
-            ->where('tipo', '!=', '3')
             ->where('tipo', '!=', '4')
             ->with([
                 'maq_pros' => function($mp){
@@ -189,6 +188,9 @@ class RepoProController extends Controller
                 },
                 'maq_pros.maquinas.marca'=> function($maq){
                     $maq->select('id', 'Nombre', 'maquinas_id');
+                },
+                'formulas.maq_pros.maquinas' => function($fa){
+                    $fa->select('id', 'Nombre', 'departamento_id');
                 },
             ])
             ->get();
