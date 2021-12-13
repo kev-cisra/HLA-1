@@ -20113,6 +20113,14 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(79, 70, 229, var(--tw-border-opacity));
 }
+.tw-border-violet-500 {
+	--tw-border-opacity: 1;
+	border-color: rgba(139, 92, 246, var(--tw-border-opacity));
+}
+.tw-border-blue-600 {
+	--tw-border-opacity: 1;
+	border-color: rgba(37, 99, 235, var(--tw-border-opacity));
+}
 .tw-bg-violet-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(167, 139, 250, var(--tw-bg-opacity));
@@ -20349,6 +20357,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(251, 146, 60, var(--tw-bg-opacity));
 }
+.tw-bg-violet-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(139, 92, 246, var(--tw-bg-opacity));
+}
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
 }
@@ -20464,6 +20476,9 @@ select {
 }
 .tw-pb-2 {
 	padding-bottom: 0.5rem;
+}
+.tw-pt-2 {
+	padding-top: 0.5rem;
 }
 .tw-text-left {
 	text-align: left;
@@ -20664,6 +20679,10 @@ select {
 .tw-text-emerald-500 {
 	--tw-text-opacity: 1;
 	color: rgba(16, 185, 129, var(--tw-text-opacity));
+}
+.tw-text-coolGray-400 {
+	--tw-text-opacity: 1;
+	color: rgba(156, 163, 175, var(--tw-text-opacity));
 }
 .tw-underline {
 	text-decoration: underline;

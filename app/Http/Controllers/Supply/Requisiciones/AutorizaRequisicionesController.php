@@ -73,7 +73,7 @@ class AutorizaRequisicionesController extends Controller{
                 'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
                     $req->select(
                         'id', 'IdUser',
-                        'IdEmp', 'Folio',
+                        'IdEmp', 'Folio', 'Fecha',
                         'NumReq',
                         'Departamento_id',
                         'jefes_areas_id',
@@ -144,7 +144,7 @@ class AutorizaRequisicionesController extends Controller{
                 'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
                     $req->select(
                         'id', 'IdUser',
-                        'IdEmp', 'Folio',
+                        'IdEmp', 'Folio', 'Fecha',
                         'NumReq',
                         'Departamento_id',
                         'jefes_areas_id',

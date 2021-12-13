@@ -11,6 +11,174 @@
         </Header>
     </div>
 
+    <div class="tw-flex tw-items-center tw-justify-center tw-mt-4">
+        <div class="tw-w-full tw-mx-auto tw-max-w-7xl sm:tw-px-8 lg:tw-px-10">
+            <div class="tw-flex tw-flex-col tw-w-full tw-mb-2 tw-space-y-8 lg:tw-flex-row lg:tw-space-x-10 lg:tw-space-y-0 lg:tw-mb-4">
+
+                <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4">
+                    <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-violet-500 tw-rounded-lg tw-widget">
+                        <div class="tw-flex tw-items-center">
+                            <div class="icon tw-w-10 tw-p-2 tw-bg-violet-500 tw-text-white tw-rounded-full tw-mr-3">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                            <div class="tw-flex tw-flex-col tw-justify-center">
+                                <div class="tw-text-lg"> {{ Cotizacion }} </div>
+                                <div class="tw-text-xs tw-text-gray-400">Pendientes Por cotizar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4">
+                    <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-blue-600 tw-rounded-lg tw-widget">
+                        <div class="tw-flex tw-items-center">
+                            <div class="icon tw-w-10 tw-p-2 tw-bg-blue-600 tw-text-white tw-rounded-full tw-mr-3">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                            <div class="tw-flex tw-flex-col tw-justify-center">
+                                <div class="tw-text-lg"> {{ SinConfirmar }} </div>
+                                <div class="tw-text-xs tw-text-gray-400">Sin Confirmar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/5" @click="FiltroIndicadores(5)">
+                    <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-orange-500 tw-rounded-lg tw-widget">
+                        <div class="tw-flex tw-items-center">
+                            <div class="icon tw-w-10 tw-p-2 tw-bg-orange-400 tw-text-white tw-rounded-full tw-mr-3">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                            <div class="tw-flex tw-flex-col tw-justify-center">
+                                <div class="tw-text-lg"> {{ EnCotizacion }} </div>
+                                <div class="tw-text-xs tw-text-gray-400">Pendientes por Autorizar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tw-overflow-auto md:tw-flex md:tw-justify-center">
+        <div class="tw-flex tw-items-center tw-mt-2 tw-text-center tw-text-white tw-border">
+            <div class="tw-m-3" @click="FiltroMes(1)">
+                <button class="EneroActivo" v-if="mes == 1">
+                    <span class="mx-auto">Enero</span>
+                </button>
+                <button class="Enero" v-else>
+                    <span class="mx-auto">Enero</span>
+                </button>
+            </div>
+
+            <div class="tw-m-3" @click="FiltroMes(2)">
+                <button class="FebreroActivo" v-if="mes == 2">
+                    <span class="mx-auto">Febrero</span>
+                </button>
+                <button class="Febrero" v-else>
+                    <span class="mx-auto">Febrero</span>
+                </button>
+            </div>
+
+            <div class="tw-m-3" @click="FiltroMes(3)">
+                <button class="MarzoActivo" v-if="mes == 3">
+                    <span class="mx-auto">Marzo</span>
+                </button>
+                <button class="Marzo" v-else>
+                    <span class="mx-auto">Marzo</span>
+                </button>
+            </div>
+
+            <div class="tw-m-3" @click="FiltroMes(4)">
+                <button class="AbrilActivo" v-if="mes == 4">
+                    <span class="mx-auto">Abril</span>
+                </button>
+                <button class="Abril" v-else>
+                    <span class="mx-auto">Abril</span>
+                </button>
+            </div>
+
+            <div class="tw-m-3" @click="FiltroMes(5)">
+                <button class="MayoActivo" v-if="mes == 5">
+                    <span class="mx-auto">Mayo</span>
+                </button>
+                <button class="Mayo" v-else>
+                    <span class="mx-auto">Mayo</span>
+                </button>
+            </div>
+
+            <div class="tw-m-3" @click="FiltroMes(6)">
+                <button class="JunioActivo" v-if="mes == 6">
+                    <span class="mx-auto">Junio</span>
+                </button>
+                <button class="Junio" v-else>
+                    <span class="mx-auto">Junio</span>
+                </button>
+            </div>
+
+            <div class="tw-m-3" @click="FiltroMes(7)">
+                <button class="JulioActivo" v-if="mes == 7">
+                    <span class="mx-auto">Julio</span>
+                </button>
+                <button class="Julio" v-else>
+                    <span class="mx-auto">Julio</span>
+                </button>
+            </div>
+
+            <div class="tw-m-3" @click="FiltroMes(8)">
+                <button class="AgostoActivo" v-if="mes == 8">
+                    <span class="mx-auto">Agosto</span>
+                </button>
+                <button class="Agosto" v-else>
+                    <span class="mx-auto">Agosto</span>
+                </button>
+            </div>
+
+            <div class="tw-m-3" @click="FiltroMes(9)">
+                <button class="SeptiembreActivo" v-if="mes == 9">
+                    <span class="mx-auto">Septiembre</span>
+                </button>
+                <button class="Septiembre" v-else>
+                    <span class="mx-auto">Septiembre</span>
+                </button>
+            </div>
+
+            <div class="tw-m-3" @click="FiltroMes(10)">
+                <button class="OctubreActivo" v-if="mes == 10">
+                    <span class="mx-auto">Octubre</span>
+                </button>
+                <button class="Octubre" v-else>
+                    <span class="mx-auto">Octubre</span>
+                </button>
+            </div>
+
+            <div class="tw-m-3" @click="FiltroMes(11)">
+                <button class="NoviembreActivo" v-if="mes == 11">
+                    <span class="mx-auto">Noviembre</span>
+                </button>
+                <button class="Noviembre" v-else>
+                    <span class="mx-auto">Noviembre</span>
+                </button>
+            </div>
+
+            <div class="tw-m-3" @click="FiltroMes(12)">
+                <button class="DiciembreActivo" v-if="mes == 12">
+                    <span class="mx-auto">Diciembre</span>
+                </button>
+                <button class="Diciembre" v-else>
+                    <span class="mx-auto">Diciembre</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
     <div class="tw-flex tw-justify-between tw-px-4">
         <div class="tw-flex tw-flex-wrap tw-content-center">
             <select class="InputSelect" v-model="params.Estatus" @change="FiltroEstatus($event)">
@@ -47,13 +215,13 @@
                     <th class="columna">FECHA</th>
                     <th class="columna">REQ</th>
                     <th class="columna">DEPARTAMENTO</th>
-                    <th class="columna">CÓDIGO</th>
+                    <th class="columna">COD</th>
                     <th class="columna">CANT.</th>
                     <th class="columna">UNIDAD</th>
                     <th class="columna">DESCRIPCIÓN</th>
                     <th class="columna">MAQUINA</th>
                     <th class="columna">MARCA</th>
-                    <th class="columna">TIPO COMPRA</th>
+                    <th class="columna">TIPO</th>
                     <th class="columna">OBSERVACIONES</th>
                     <th class="columna">SOLICITANTE</th>
                     <th class="columna">FECHA LLEGADA</th>
@@ -63,10 +231,10 @@
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in ArticulosRequisiciones" :key="datos.id">
                         <td>{{ datos.id }}</td>
-                        <td>{{ datos.Fecha }}</td>
+                        <td>{{ datos.Fecha.substr(5) }}</td>
                         <td>{{ datos.articulos_requisicion.NumReq }}</td>
                         <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
-                        <td>{{ datos.articulos_requisicion.Codigo }}</td>
+                        <td class="tw-text-center">{{ datos.articulos_requisicion.Codigo.substr(0,1) }}</td>
                         <td class="tw-text-center">{{ datos.Cantidad }}</td>
                         <td>{{ datos.Unidad }}</td>
                         <td>{{ datos.Descripcion }}</td>
@@ -136,10 +304,10 @@
                     <th class="columna">NUM</th>
                     <th class="columna">DEPARTAMENTO</th>
                     <th class="columna">JEFE AREA</th>
-                    <th class="columna">CODIGO</th>
+                    <th class="columna">COD</th>
                     <th class="columna">MAQUINA</th>
                     <th class="columna">MARCA</th>
-                    <th class="columna">TIPO COMPRA</th>
+                    <th class="columna">TIPO</th>
                     <th class="columna">OBSERVACIONES</th>
                     <th class="columna">SOLICITANTE</th>
                     <th class="columna">O.C</th>
@@ -150,11 +318,11 @@
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                         <td>{{ datos.id }}</td>
-                        <td>{{ datos.Fecha }}</td>
+                        <td>{{ datos.Fecha.substr(5) }}</td>
                         <td>{{ datos.NumReq }}</td>
                         <td>{{ datos.requisicion_departamento.Nombre }}</td>
                         <td>{{ datos.requisicion_jefe.Nombre }}</td>
-                        <td>{{ datos.Codigo }}</td>
+                        <td>{{ datos.Codigo.substr(0,1) }}</td>
                         <td>{{ datos.requisicion_maquina.Nombre }}</td>
                         <td>{{ datos.requisicion_marca.Nombre }}</td>
                         <td>{{ datos.TipCompra }}</td>
@@ -288,7 +456,7 @@
     </div>
 
     <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
-        <div class="tw-px-4 tw-py-4">
+        <div class="tw-px-2 tw-py-2">
             <div class="tw-text-lg">
                 <div class="ModalHeader">
                     <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición</h3>
@@ -296,6 +464,29 @@
             </div>
         </div>
         <div class="tw-mx-4" v-if="ArticulosRequisicion != null">
+            <div>
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">FECHA</th>
+                        <th class="columna">NUM REQ</th>
+                        <th class="columna">DEPARTAMENTO</th>
+                        <th class="columna">MAQUINA</th>
+                        <th class="columna">MARCA</th>
+                        <th class="columna">OBSERVACIONES</th>
+                    </template>
+                    <template v-slot:TableFooter>
+                        <tr class="fila">
+                            <td class="tw-text-center">{{ requisicion.Fecha }}</td>
+                            <td class="tw-text-center">{{ requisicion.NumReq }}</td>
+                            <td class="tw-text-center">{{ requisicion.requisicion_departamento.Nombre }}</td>
+                            <td class="tw-text-center">{{ requisicion.requisicion_maquina.Nombre }}</td>
+                            <td class="tw-text-center">{{ requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="tw-text-center">{{ requisicion.Observaciones }}</td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
             <div v-if=" ArticulosRequisicion[0].articulo_user != null">
                 <Table>
                     <template v-slot:TableHeader>
@@ -951,6 +1142,7 @@ export default {
             showCancelar: false,
             showFecha: false,
             min: moment().format("YYYY-MM-DD"),
+            requisicion: [],
             form: {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
@@ -1019,6 +1211,9 @@ export default {
         ArticulosCotizar: Object, //Objeto para generacion de inputs dinamicos para cotizar
         ArticulosPrecios: Object, //Visualizacion de cotizacion
         PreciosRequisicion: Object,
+        Cotizacion: Object,
+        SinConfirmar: Object,
+        EnCotizacion: Object,
     },
 
     methods: {
@@ -1085,8 +1280,7 @@ export default {
                 "order": [0, 'desc'],
                 "columnDefs": [
                     { "width": "1%", "targets": [0] },
-                    { "width": "6%", "targets": [1] },
-                    { "width": "3%", "targets": [2] },
+                    { "width": "3%", "targets": [1,2] },
                     {
                         "targets": [ 0 ],
                         "visible": false,
@@ -1114,8 +1308,7 @@ export default {
                     "order": [0, 'desc'],
                     "columnDefs": [
                         { "width": "1%", "targets": [0] },
-                        { "width": "6%", "targets": [1] },
-                        { "width": "3%", "targets": [2] },
+                        { "width": "3%", "targets": [1,2] },
                         { "width": "2%", "targets": [5] },
                         {
                             "targets": [ 0 ],
@@ -1167,6 +1360,8 @@ export default {
             this.form.Observaciones = data.Observaciones;
             this.params.Req = data.id;
             this.form.Precio = null;
+
+            this.requisicion = data;
 
             this.$inertia.get('/Compras/Cotizaciones', this.params , {
                 onSuccess: () => {

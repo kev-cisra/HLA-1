@@ -33,6 +33,14 @@ class CotizacionesController extends Controller{
         //Obtengo el catalogo de proveedores
         $Proveedores = Proveedores::get();
 
+        //Indicadores
+        $Almacen = Requisiciones::where('Estatus', '=', 8)->count();
+        $Cotizacion = Requisiciones::where('Estatus', '=', 3)->count();
+        $SinConfirmar = Requisiciones::where('Estatus', '=', 5)->count();
+        $Autorizados = Requisiciones::where('Estatus', '=', 5)->count();
+        $EnCotizacion = Requisiciones::where('Estatus', '=', 6)->count();
+        $Precios = Requisiciones::with('ArticuloPrecios')->get();
+
         $ArticulosRequisicion = null;
         $ArticulosCotizar = null;
         $ArticulosPrecios = null;
@@ -165,8 +173,12 @@ class CotizacionesController extends Controller{
             'ArticulosCotizar',
             'ArticulosPrecios',
             'PreciosRequisicion',
+            'Cotizacion',
+            'SinConfirmar',
+            'EnCotizacion',
         ));
     }
+
 
     public function store(Request $request){
 

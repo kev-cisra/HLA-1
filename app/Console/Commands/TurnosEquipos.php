@@ -59,7 +59,7 @@ class TurnosEquipos extends Command
             //si existe algun dato en el equipo
             if(count($tur->equipos) != 0){
                 foreach ($tur->equipos as $equi) {
-                    //$txt .= $equi.' || ';
+                    $txt .= $hoy.' || ';
 
                     if(!empty($equi->max_dia)){
                         if($tur->nomtur == 'Turno 1'){
@@ -98,7 +98,7 @@ class TurnosEquipos extends Command
         }
 
 
-        //Storage::disk('local')->put('EquipoGeneral.txt', $txt);
+        Storage::disk('local')->put('EquipoGeneral.txt', $txt);
         return Command::SUCCESS;
     }
 }

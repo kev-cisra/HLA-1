@@ -249,7 +249,7 @@
                         <th class="columna">DESCRIPCIÓN</th>
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
-                        <th class="columna">TIPO COMPRA</th>
+                        <th class="columna">TIPO</th>
                         <th class="columna">OBSERVACIONES</th>
                         <th class="columna">SOLICITANTE</th>
                         <th class="columna">LLEGADA</th>
@@ -259,10 +259,10 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in ArticulosRequisiciones" :key="datos.id">
-                            <td>{{ datos.Fecha }}</td>
+                            <td>{{ datos.Fecha.substr(5) }}</td>
                             <td class="tw-text-center">{{ datos.articulos_requisicion.NumReq }}</td>
                             <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
-                            <td>{{ datos.articulos_requisicion.Codigo }}</td>
+                            <td class="tw-text-center">{{ datos.articulos_requisicion.Codigo.substr(0,1) }}</td>
                             <td class="tw-text-center">{{ datos.Cantidad }}</td>
                             <td class="tw-text-center">{{ datos.Unidad }}</td>
                             <td>{{ datos.Descripcion }}</td>
@@ -342,7 +342,7 @@
                         <th>CODIGO</th>
                         <th>MAQUINA</th>
                         <th>MARCA</th>
-                        <th>TIPO COMPRA</th>
+                        <th>TIPO</th>
                         <th>OBSERVACIONES</th>
                         <th>SOLICITANTE</th>
                         <th>O.C</th>
@@ -352,10 +352,10 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
-                            <td class="tw-text-center">{{ datos.Fecha }}</td>
+                            <td class="tw-text-center">{{ datos.Fecha.substr(5) }}</td>
                             <td class="tw-text-center">{{ datos.NumReq }}</td>
                             <td class="tw-text-center">{{ datos.requisicion_departamento.Nombre }}</td>
-                            <td class="tw-text-center">{{ datos.Codigo }}</td>
+                            <td class="tw-text-center">{{ datos.Codigo.substr(0,1) }}</td>
                             <td class="tw-text-center">{{ datos.requisicion_maquina.Nombre }}</td>
                             <td class="tw-text-center">{{ datos.requisicion_marca.Nombre }}</td>
                             <td class="tw-text-center">{{ datos.TipCompra }}</td>
@@ -503,13 +503,36 @@
     </modal>
 
     <modal :show="showPreciosRequisicion" @close="chagePreciosRequisicion" :maxWidth="tam">
-        <div class="tw-px-4 tw-py-4">
+        <div class="tw-px-4 tw-py-2">
             <div class="tw-text-lg">
                 <div class="ModalHeader">
                     <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Autoriza Cotización de Requisición <strong>{{ Req[0].NumReq }}</strong></h3>
                 </div>
             </div>
-            <div class="tw-my-4" v-if="ArticulosPrecios != null">
+            <div class="tw-mx-4">
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">FECHA</th>
+                        <th class="columna">NUM REQ</th>
+                        <th class="columna">DEPARTAMENTO</th>
+                        <th class="columna">MAQUINA</th>
+                        <th class="columna">MARCA</th>
+                        <th class="columna">OBSERVACIONES</th>
+                    </template>
+                    <template v-slot:TableFooter>
+                        <tr class="fila">
+                            <td class="tw-text-center">{{ requisicion.Fecha }}</td>
+                            <td class="tw-text-center">{{ requisicion.NumReq }}</td>
+                            <td class="tw-text-center">{{ requisicion.requisicion_departamento.Nombre }}</td>
+                            <td class="tw-text-center">{{ requisicion.requisicion_maquina.Nombre }}</td>
+                            <td class="tw-text-center">{{ requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="tw-text-center">{{ requisicion.Observaciones }}</td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
+            <div class="tw-my-2 tw-mx-4" v-if="ArticulosPrecios != null">
                 <Table>
                     <template v-slot:TableHeader>
                         <th class="columna"># COTIZACION</th>
@@ -772,6 +795,7 @@ export default {
             color: "tw-bg-sky-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             detalles: null,
+            requisicion: [],
             form: {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
@@ -803,7 +827,6 @@ export default {
     },
 
     mounted() {
-        this.tabla();
         this.tablaArticulos();
         this.MesALetra();
     },
@@ -904,7 +927,7 @@ export default {
                     scrollCollapse: true,
                     paging:         false,
                     "columnDefs": [
-                        { "width": "7%", "targets": [0] },
+                        { "width": "3%", "targets": [0] },
                     ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
@@ -943,11 +966,8 @@ export default {
                     scrollCollapse: true,
                     paging:         false,
                     "columnDefs": [
-                        { "width": "3%", "targets": [1,4] },
-                        // { "width": "7%", "targets": [0] },
-                        { "width": "7%", "targets": [0,2,3,5,7,8,9] },
-                        // { "width": "8%", "targets": [7,8] },
-                        { "width": "13%", "targets": [6] },
+                        { "width": "3%", "targets": [0,3,4] },
+                        { "width": "7%", "targets": [1,2,7,8,9] },
                     ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
@@ -1195,6 +1215,7 @@ export default {
             this.form.Observaciones = data.Observaciones;
             this.params.Req = data.id;
             this.form.Precio = null;
+            this.requisicion = data;
             this.chagePartidas();
             this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
@@ -1204,6 +1225,7 @@ export default {
         VisualizaCotizacion(data){
             this.params.Req = data.id;
 
+            this.requisicion = data;
             //OBTENER VALOR DE FRILTRO DE LA URL
             var query  = window.location.search.substring(1);
             var vars = query.split("&");

@@ -50,6 +50,9 @@ class RequisicionesSolicitadasController extends Controller {
             'RequisicionMarca' => function($marca) {
                 $marca->select('id', 'Nombre');
             },
+            'RequisicionesVales' => function($vales) {
+                $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
+            },
             'RequisicionArticulos' => function($Req) {
                 $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
             },

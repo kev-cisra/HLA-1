@@ -2,6 +2,7 @@
 
 namespace App\Models\Compras\Requisiciones;
 
+use App\Models\Almacen\Requisiciones\ValesSalida;
 use App\Models\Catalogos\Maquinas;
 use App\Models\Catalogos\MarcasMaquinas;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
@@ -42,6 +43,10 @@ class Requisiciones extends Model
 
     public function RequisicionMarca() {
         return $this->hasOne(MarcasMaquinas::class, 'id', 'Marca_id');
+    }
+
+    public function RequisicionesVales() {
+        return $this->hasMany(ValesSalida::class, 'requisiciones_id');
     }
 
     //relacion muchos a uno

@@ -223,37 +223,37 @@
                         <th class="columna">REQ</th>
                         <th class="columna">O.C</th>
                         <th class="columna">DEPARTAMENTO</th>
-                        <th class="columna">CÓDIGO</th>
-                        <th class="columna">CANTIDAD</th>
+                        <th class="columna">COD</th>
+                        <th class="columna">CANT</th>
                         <th class="columna">UNIDAD</th>
                         <th class="columna">DESCRIPCIÓN</th>
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
-                        <th class="columna">TIPO COMPRA</th>
+                        <th class="columna">TIPO</th>
                         <th class="columna">OBSERVACIONES</th>
                         <th class="columna">SOLICITANTE</th>
-                        <th class="columna">FECHA LLEGADA</th>
+                        <th class="columna">LLEGADA</th>
                         <th class="columna">ESTATUS</th>
                     </template>
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in ArticulosRequisiciones" :key="datos.id">
-                            <td class="tw-p-2">{{ datos.id }}</td>
-                            <td class="tw-p-2">{{ datos.Fecha.substr(5) }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.NumReq }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.OrdenCompra }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Codigo.substr(0,1)  }}</td>
-                            <td class="tw-p-2">{{ datos.Cantidad }}</td>
-                            <td class="tw-p-2">{{ datos.Unidad }}</td>
-                            <td class="tw-p-2">{{ datos.Descripcion }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.TipCompra }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Observaciones }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
-                            <td class="tw-p-2">{{ datos.articulos_requisicion.Fechallegada }}</td>
-                            <td class="tw-p-2">
+                            <td>{{ datos.id }}</td>
+                            <td>{{ datos.Fecha.substr(5) }}</td>
+                            <td>{{ datos.articulos_requisicion.NumReq }}</td>
+                            <td class="tw-text-center">{{ datos.articulos_requisicion.OrdenCompra }}</td>
+                            <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
+                            <td class="tw-text-center">{{ datos.articulos_requisicion.Codigo.substr(0,1)  }}</td>
+                            <td class="tw-text-center">{{ datos.Cantidad }}</td>
+                            <td>{{ datos.Unidad }}</td>
+                            <td>{{ datos.Descripcion }}</td>
+                            <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                            <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                            <td>{{ datos.articulos_requisicion.TipCompra }}</td>
+                            <td>{{ datos.articulos_requisicion.Observaciones }}</td>
+                            <td>{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
+                            <td>{{ datos.articulos_requisicion.Fechallegada }}</td>
+                            <td>
                                 <div v-if="datos.EstatusArt == 1">
                                     <span tooltip="SIN ENVIAR" flow="left">
                                         <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
@@ -319,7 +319,6 @@
                         <th class="columna">TIPO COMPRA</th>
                         <th class="columna">OBSERVACIONES</th>
                         <th class="columna">SOLICITANTE</th>
-                        <th class="columna">O.C</th>
                         <th class="columna">ESTATUS</th>
                         <th class="columna">ACCIONES</th>
                     </template>
@@ -337,7 +336,6 @@
                             <td>{{ datos.TipCompra }}</td>
                             <td>{{ datos.Observaciones }}</td>
                             <td>{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
-                            <td>{{ datos.OrdenCompra }}</td>
                             <td>
                                 <div v-if="datos.Estatus == 2">
                                     <span tooltip="REQUSICIÓN SOLICITADA" flow="left">
@@ -458,7 +456,7 @@
             </div>
 
             <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
-                <div class="tw-px-4 tw-py-4">
+                <div class="tw-px-2 tw-pt-2">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición </h3>
@@ -466,8 +464,33 @@
                     </div>
                 </div>
 
-                <div class="tw-mx-4" v-if="ArticulosRequisicion != null">
+                <div class="tw-mx-8">
+                    <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
+                    <Table>
+                        <template v-slot:TableHeader>
+                            <th class="columna">FECHA</th>
+                            <th class="columna">NUM REQ</th>
+                            <th class="columna">DEPARTAMENTO</th>
+                            <th class="columna">MAQUINA</th>
+                            <th class="columna">MARCA</th>
+                            <th class="columna">OBSERVACIONES</th>
+                        </template>
+                        <template v-slot:TableFooter>
+                            <tr class="fila">
+                                <td class="tw-text-center">{{ requisicion.Fecha }}</td>
+                                <td class="tw-text-center">{{ requisicion.NumReq }}</td>
+                                <td class="tw-text-center">{{ requisicion.requisicion_departamento.Nombre }}</td>
+                                <td class="tw-text-center">{{ requisicion.requisicion_maquina.Nombre }}</td>
+                                <td class="tw-text-center">{{ requisicion.requisicion_marca.Nombre }}</td>
+                                <td class="tw-text-center">{{ requisicion.Observaciones }}</td>
+                            </tr>
+                        </template>
+                    </Table>
+                </div>
+
+                <div class="tw-mx-8" v-if="ArticulosRequisicion != null">
                     <div v-if=" ArticulosRequisicion[0].articulo_user != null">
+                        <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Articulos --</p>
                         <Table>
                             <template v-slot:TableHeader>
                                 <th class="columna">CANTIDAD</th>
@@ -547,6 +570,7 @@
                         </Table>
                     </div>
                     <div v-else>
+                        <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Articulos --</p>
                         <Table>
                             <template v-slot:TableHeader>
                                 <th class="columna">CANTIDAD</th>
@@ -632,6 +656,28 @@
                 </div>
                 <div v-else>
                     <p>No hay Articulos Asignados a esta requisición</p>
+                </div>
+
+                <div class="tw-mx-8" v-if="requisicion.requisiciones_vales != ''">
+                    <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Vales de Salida --</p>
+                    <Table>
+                        <template v-slot:TableHeader>
+                            <th class="columna">FOLIO</th>
+                            <th class="columna">SALIDA</th>
+                            <th class="columna">PROVEEDOR</th>
+                            <th class="columna">ESTATUS</th>
+                            <th class="columna">SALIDA</th>
+                        </template>
+                        <template v-slot:TableFooter>
+                            <tr class="fila" v-for="vale in requisicion.requisiciones_vales" :key="vale.id">
+                                <td class="tw-text-center">{{ vale.Folio }}</td>
+                                <td class="tw-text-center">{{ vale.Fecha }}</td>
+                                <td class="tw-text-center">{{ vale.NombreProveedor }}</td>
+                                <td class="tw-text-center">{{ vale.EstatusVale }}</td>
+                                <td class="tw-text-center">{{ vale.Salida }}</td>
+                            </tr>
+                        </template>
+                    </Table>
                 </div>
 
                 <div class="ModalFooter">
@@ -909,6 +955,7 @@ export default {
             color: "tw-bg-cyan-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             detalles: null,
+            requisicion: [],
             form: {
                 Accion: '',
                 req_id: '',
@@ -975,6 +1022,7 @@ export default {
         Cotizacion: Number,
         SinConfirmar: Number,
         mes: String,
+        datos: Object,
     },
 
     methods: {
@@ -1098,8 +1146,7 @@ export default {
                     "order": [0, 'desc'],
                     "columnDefs": [
                         { "width": "1%", "targets": [0] },
-                        { "width": "8%", "targets": [1] },
-                        { "width": "3%", "targets": [2] },
+                        { "width": "3%", "targets": [1,2] },
                         {
                             "targets": [ 0 ],
                             "visible": false,
@@ -1309,6 +1356,8 @@ export default {
             this.form.Nombre = data.Perfil_id;
             this.form.Observaciones = data.Observaciones;
             this.params.Req = data.id;
+
+            this.requisicion = data;
 
             this.$inertia.get('/Almacen/Requisiciones', this.params , {
                 preserveState: true,

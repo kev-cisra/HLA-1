@@ -237,13 +237,12 @@
         <div class="tw-mx-2" v-if="params.Partidas == true">
             <Table id="Articulos">
                 <template v-slot:TableHeader>
-                    <th class="columna">ID</th>
                     <th class="columna">FECHA</th>
                     <th class="columna">REQ</th>
                     <th class="columna">O.C</th>
                     <th class="columna">DEPARTAMENTO</th>
-                    <th class="columna">CÓDIGO</th>
-                    <th class="columna">CANTIDAD</th>
+                    <th class="columna">COD</th>
+                    <th class="columna">CANT</th>
                     <th class="columna">UNIDAD</th>
                     <th class="columna">DESCRIPCIÓN</th>
                     <th class="columna">MAQUINA</th>
@@ -258,7 +257,6 @@
 
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in ArticulosRequisiciones" :key="datos.id">
-                        <td>{{ datos.id }}</td>
                         <td>{{ datos.Fecha.substr(5) }}</td>
                         <td>{{ datos.articulos_requisicion.NumReq }}</td>
                         <td>{{ datos.articulos_requisicion.OrdenCompra }}</td>
@@ -345,12 +343,11 @@
         <div class="tw-mx-2" v-else>
             <Table id="Requisicion">
                 <template v-slot:TableHeader>
-                    <th class="columna">ID</th>
                     <th class="columna">FECHA</th>
                     <th class="columna">REQ</th>
                     <th class="columna">O.C</th>
                     <th class="columna">DEPARTAMENTO</th>
-                    <th class="columna">CODIGO</th>
+                    <th class="columna">COD</th>
                     <th class="columna">MAQUINA</th>
                     <th class="columna">MARCA</th>
                     <th class="columna">TIPO COMPRA</th>
@@ -363,7 +360,6 @@
 
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
-                        <td>{{ datos.id }}</td>
                         <td>{{ datos.Fecha.substr(5) }}</td>
                         <td>{{ datos.NumReq }}</td>
                         <td>{{ datos.OrdenCompra }}</td>
@@ -530,7 +526,7 @@
                         <div class="tw-mb-6 md:tw-flex" v-for="(form) in form.Partida" :key="form.id">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>CANTIDAD</jet-label>
-                                <jet-input type="number" min="0" v-model="form.Cantidad"></jet-input>
+                                <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
                                 <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
@@ -1050,6 +1046,7 @@ export default {
                 $("#Requisicion").DataTable({
                     "language": this.español,
                     paging: false,
+                    "scrollX": true,
                     scrollY:  '40vh',
                     "order": [0, 'desc'],
                     "columnDefs": [
@@ -1058,11 +1055,6 @@ export default {
                         { "width": "3%", "targets": [2,3,5] },
                         { "width": "8%", "targets": [4] },
                         { "width": "9%", "targets": [6,7] },
-                        {
-                            "targets": [ 0 ],
-                            "visible": false,
-                            "searchable": false
-                        },
                     ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
@@ -1102,16 +1094,12 @@ export default {
                 $("#Articulos").DataTable({
                     "language": this.español,
                     paging: false,
+                    "scrollX": true,
                     scrollY:  '40vh',
                     "order": [0, 'desc'],
                     "columnDefs": [
                         { "width": "1%", "targets": [0] },
                         { "width": "4%", "targets": [1,2,3,4] },
-                        {
-                            "targets": [ 0 ],
-                            "visible": false,
-                            "searchable": false
-                        },
                     ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
