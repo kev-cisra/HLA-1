@@ -1,1 +1,1 @@
-{"id":4,"nombre":"Equipo 1","turno_id":13,"cue_dia":"5","max_dia":"5","departamento_id":6} || {"id":5,"nombre":"Equipo 2","turno_id":14,"cue_dia":"3","max_dia":"5","departamento_id":6} || {"id":6,"nombre":"Equipo 3","turno_id":15,"cue_dia":"3","max_dia":"3","departamento_id":6} || 
+2021-12-14 07:00:02 || 2021-12-14 07:00:02 || 2021-12-14 07:00:02 || 2021-12-14 07:00:02 || 2021-12-14 07:00:02 || 2021-12-14 07:00:02 || 2021-12-14 07:00:02 || 2021-12-14 07:00:02 || 2021-12-14 07:00:02 || 

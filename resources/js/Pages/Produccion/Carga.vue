@@ -320,7 +320,7 @@
         </div>
 
         <!------------------------------------ Data table de carga ------------------------------------------------------->
-        <div >
+        <div class="tw-m-auto" style="width: 99%">
             <Table id="t_carg">
                 <template v-slot:TableHeader>
                     <th class="columna">Índice</th>

@@ -31,6 +31,9 @@
                     <div>
                         <jet-button class="BtnNuevo tw-w-full" data-bs-toggle="collapse" data-bs-target="#filtro" aria-expanded="false" aria-controls="filtro"><i class="fas fa-filter"> </i> Filtros</jet-button>
                     </div>
+                    <div>
+                        <jet-button class="BtnNuevo tw-w-full" data-bs-toggle="collapse" data-bs-target="#grafica" aria-expanded="false" aria-controls="grafica"><i class="fas fa-chart-pie"></i> Graficas</jet-button>
+                    </div>
                 </div>
             </template>
         </Accions>
@@ -58,6 +61,17 @@
                             </div>
                         </div>
                     </div>
+                    <!-- calculos -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                        <jet-label>Boton para Calcular Operaciones</jet-label>
+                        <button v-show="vCal" class="btn btn-success" type="button" id="button-addon2" v-if="FoFiltro.iniDia" @click="calcula(form)">
+                            <i class="fas fa-calculator" ></i> Calcular
+                        </button>
+                        <button v-show="!vCal" class="btn btn-success" type="button" disabled>
+                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                            Calculando...
+                        </button>
+                    </div>
                 </div>
                 <div class="tw-mb-6 lg:tw-flex">
                     <!-- mes -->
@@ -72,10 +86,52 @@
                     </div>
                     <!-- dia -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Fecha</jet-label>
+                        <jet-label><span class="required">*</span>Fecha Dia</jet-label>
                         <jet-input type="date" class="form-control" @click="limInputs(1.5)" @change="cambioFechas()" v-model="FoFiltro.iniDia" :max="treDia"></jet-input>
                     </div>
-                    <!-- calculos -->
+                </div>
+            </div>
+        </div>
+
+        <!------------------------------------ Muestra las opciones de Graficas ------------------------------------------->
+        <div class="collapse md:tw-ml-10 tw-p-6 tw-bg-teal-300 tw-rounded-3xl tw-shadow-xl tw-m-10" id="grafica">
+            <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
+                <div class="tw-mb-6 lg:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 tw-gap-3 tw-flex">
+                        <label><span class="required">*</span>Tipo de gráfica: </label>
+                        <div>
+                            <input type="checkbox" v-model="graTipo" value="pie" id="pie"> <label for="pie">Gráfica de pie</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" v-model="graTipo" value="punto" id="punto"> <label for="punto">Gráfica de punto</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" v-model="graTipo" value="barra" id="barra"> <label for="barra">Gráfica de barra</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" v-model="graTipo" value="ambos" id="ambos"> <label for="ambos">Gráfica de barar y punto</label>
+                        </div>
+                    </div>
+                    <!-- Año
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Año</jet-label>
+                        <jet-input type="number" class="form-control" v-model="ano" :max="estAño"></jet-input>
+                    </div> -->
+                    <!-- Tipo de reporte
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Tipo de reporte</jet-label>
+                        <div class="tw-flex tw-gap-5">
+                            <div>
+                                <input type="radio" id="uno" value="1" v-model="FoFiltro.TipRepo">
+                                <label for="uno"> Produccion</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="dos" value="2" v-model="FoFiltro.TipRepo">
+                                <label for="dos"> Paros</label>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- calculos
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label>Boton para Calcular Operaciones</jet-label>
                         <button v-show="vCal" class="btn btn-success" type="button" id="button-addon2" v-if="FoFiltro.iniDia" @click="calcula(form)">
@@ -85,13 +141,56 @@
                             <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                             Calculando...
                         </button>
+                    </div> -->
+                </div>
+                <div v-for="tip in graTipo" :key="tip">
+                    <div v-if="tip == 'pie'" class="tw-mb-6 lg:tw-flex tw-flex-col">
+                        <div class="tw-flex tw-m-5">
+                            <div class="tw-w-1/2 tw-text-2xl tw-text-center">
+                                <h1>Gráfica de pie</h1>
+                            </div>
+
+                            <div class="tw-w-1/2">
+                                <button class="btn btn-outline-success " @click="GraPaste(gPie)">Generar gráfica</button>
+                            </div>
+                        </div>
+                        <div class="tw-flex ">
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Fecha Dia</jet-label>
+                                <jet-input type="date" class="form-control" v-model="gPie.fecha" :max="treDia"></jet-input>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Procesos</jet-label>
+                                <div class="tw-overflow-auto" style="height: 10rem">
+                                    <div v-for="pro in proGrafi" :key="pro" class="hover:tw-bg-teal-100">
+                                        <input type="checkbox" v-model="gPie.procesos" :value="pro.value" :id="'pie'+pro.value">
+                                        <label :for="'pie'+pro.value" class="tw-w-11/12">{{pro.text}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <!-- mes
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Mes</jet-label>
+                        <jet-input type="month" class="form-control" @click="limInputs(3)" v-model="FoFiltro.mes"></jet-input>
+                    </div> -->
+                    <!-- semana
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Semana</jet-label>
+                        <jet-input type="week" class="form-control" @click="limInputs(2)" v-model="FoFiltro.semana"></jet-input>
+                    </div> -->
+                    <!-- dia
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                        <jet-label><span class="required">*</span>Fecha Dia</jet-label>
+                        <jet-input type="date" class="form-control" @click="limInputs(1.5)" @change="cambioFechas()" v-model="FoFiltro.iniDia" :max="treDia"></jet-input>
+                    </div> -->
                 </div>
             </div>
         </div>
 
         <!------------------------------------ Data table de carga de produccion ------------------------------------------------------->
-        <div v-show="FoFiltro.TipRepo == 1" style="width: 99%">
+        <div v-show="FoFiltro.TipRepo == 1" class="tw-m-auto" style="width: 99%">
             <Table id="t_repo">
                 <template v-slot:TableHeader>
                     <th class="columna">Indice</th>
@@ -208,7 +307,7 @@
         </div>
 
         <!------------------------------------- Data table de paros ------------------------------------------------------------------>
-        <div v-show="FoFiltro.TipRepo == 2">
+        <div v-show="FoFiltro.TipRepo == 2" class="tw-m-auto" style="width: 99%">
             <TableBlue id="t_repoPar">
                 <template v-slot:TableHeader>
                     <th class="columna tw-text-center">Fecha</th>
@@ -267,15 +366,15 @@
         </div>
 
         <!------------------------------------ Graficas ------------------------------------------------------------------>
-        <div class=" tw-text-center">
-            <div id="chart" style="width: 99%"></div>
-            <div id="chart1" style="width: 99%"></div>
-            <div id="chart2" style="width: 99%"></div>
-            <div id="chart3" style="width: 99%"></div>
+        <div class="tw-text-center tw-m-auto" style="width: 99%">
+            <div id="chart"></div>
+            <div id="chart1"></div>
+            <div id="chart2"></div>
+            <div id="chart3"></div>
         </div>
 
         <pre>
-            {{ proGrafi }}
+            {{  }}
         </pre>
 
         <!------------------------------------- Modal para carga de datos masivas ------------------------------------------------>
@@ -501,7 +600,6 @@
     import JetInput from '@/Components/Input';
     import JetLabel from '@/Jetstream/Label';
     import Select2 from 'vue3-select2-component';
-    import ApexCharts from 'apexcharts';
     import moment from 'moment';
     import 'moment/locale/es';
     //datatable
@@ -544,7 +642,6 @@
             JetInput,
             Modal,
             Select2,
-            ApexCharts,
             JetLabel
         },
 
@@ -605,7 +702,33 @@
                     partida: null,
                     valor: null,
                     nota: null
-                }
+                },
+                graTipo: [],
+                gPie: {
+                    fecha: null,
+                    procesos: []
+                },
+
+
+                series: [44, 55, 13, 43, 22],
+                chartOptions: {
+                    chart: {
+                        width: 380,
+                        type: 'pie',
+                    },
+                    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                            width: 200
+                            },
+                            legend: {
+                            position: 'bottom'
+                            }
+                        }
+                    }]
+                },
             }
         },
 
@@ -1266,29 +1389,69 @@
                 })
             },
             /************************************* Grafica **********************************************/
-            GraPaste(){
-                var options3 = {
-                    series: [44, 55, 13, 43, 22],
-                    chart: {
-                        width: 500,
-                        type: 'pie',
-                    },
-                    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-                    responsive: [{
-                        breakpoint: 480,
-                        options: {
-                            chart: {
-                                width: 500
-                            },
-                            legend: {
-                                position: 'bottom'
-                            }
-                        }
-                    }]
-                };
+            GraPaste(data){
+                var inicio = null;
+                var fin = null;
+                var valor = [];
+                var texto = [];
+                const gr = []
 
-                var chart3 = new ApexCharts(document.querySelector("#chart3"), options3);
-                chart3.render();
+                data.fecha == null ? Swal.fire('Por favor selecciona una fecha.') : '';
+                data.procesos.length <= 0 ? Swal.fire('Por favor selecciona un proceso.') : '';
+
+                if (data.fecha != null & data.procesos.length > 0) {
+                    inicio = this.FoFiltro.iniDia+' 07:00:00'
+                    if (this.S_Area == 7){
+                        if (moment(data.fecha).isDST()) {
+                            inicio = data.fecha+' 09:10:00';
+                        }else{
+                            inicio = data.fecha+' 08:10:00';
+                        }
+                    }
+                    //Asigna el dato para la fecha final
+                    fin = moment(inicio).add(24, 'hours');
+
+
+                    this.cargas.forEach(reco => {
+                        if ( moment(reco.fecha).isSameOrAfter(inicio, 'minutes') & moment(reco.fecha).isBefore(fin, 'minutes') & reco.departamento_id == this.S_Area ) {
+                            gr.push(reco);
+                        }
+                    })
+
+                    gr.forEach(grp =>{
+                        data.procesos.forEach(pro => {
+                            if (grp.proceso_id == pro) {
+                                valor.push(grp.valor);
+                                texto.push(grp.proceso.nompro)
+                                console.log(grp)
+                            }
+                        })
+                    })
+
+
+                    var options3 = {
+                        series: valor,
+                        chart: {
+                            width: 500,
+                            type: 'pie',
+                        },
+                        labels: texto,
+                        responsive: [{
+                            breakpoint: 480,
+                            options: {
+                                chart: {
+                                    width: 500
+                                },
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }]
+                    };
+
+                    var chart3 = new ApexCharts(document.querySelector("#chart3"), options3);
+                    chart3.render();
+                }
             },
             GraBarra(){
                 var options = {
@@ -1522,7 +1685,7 @@
             opcPP: function() {
                 const ppi = [];
                 this.procesos.forEach(pp =>{
-                    if (pp.tipo == 0 || pp.tipo == 3) {
+                    if (pp.tipo == 0) {
                         ppi.push({text: pp.nompro, value: pp.id})
                     }
                 });
@@ -1578,9 +1741,9 @@
             proGrafi: function() {
                 var grafi = [];
                 this.procesos.forEach(gr => {
-                    if (gr.tipo == 2 || gr.tipo == 3) {
-                        grafi.push(gr)
-                        console.log(gr)
+                    if (gr.tipo != 0) {
+                        grafi.push({value: gr.id, text:gr.nompro})
+                        //console.log(gr)
                     }
                 })
                 return grafi;

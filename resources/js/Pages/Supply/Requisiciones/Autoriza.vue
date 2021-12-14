@@ -819,6 +819,7 @@ export default {
                 Partidas: true,
                 Proveedor: '',
                 MesLetra: '',
+                MesEstatus: '',
                 Cot: '',
                 Req: '',
                 Art: '',
@@ -1114,10 +1115,12 @@ export default {
         FiltroIndicadorMensual(value){
             $('#Requisiciones').DataTable().clear(); //limpio
             $('#Requisiciones').DataTable().destroy(); //destruyo tabla
-            this.params.Estatus = value;
+            this.params.Estatus = '';
+            this.params.month = '';
+            this.params.MesEstatus = 1;
             this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
             onSuccess: () => {
-                location.reload();
+                // location.reload();
                 this.tabla() //regeneracion de tabla
             }, preserveState: true})
         },

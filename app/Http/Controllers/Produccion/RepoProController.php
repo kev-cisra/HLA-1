@@ -120,7 +120,7 @@ class RepoProController extends Controller
                 },
                 'clave' => function($cla){
                     $cla ->withTrashed()
-                    -> select('id', 'CVE_ART', 'DESCR');
+                    -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED');
                 },
                 'notas' => function($not){
                     $not ->withTrashed()
@@ -178,7 +178,6 @@ class RepoProController extends Controller
 
             //procesos
             $procesos = procesos::where('departamento_id', '=', $request->busca)
-            ->where('tipo', '!=', '4')
             ->with([
                 'maq_pros' => function($mp){
                     $mp->select('id', 'proceso_id', 'maquina_id');
