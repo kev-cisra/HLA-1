@@ -19539,6 +19539,10 @@ select {
 	margin-left: 14rem;
 	margin-right: 14rem;
 }
+.tw-my-24 {
+	margin-top: 6rem;
+	margin-bottom: 6rem;
+}
 .tw-ml-2 {
 	margin-left: 0.5rem;
 }
@@ -21132,6 +21136,17 @@ select {
 }
 .BtnCancel:disabled {
 	opacity: 0.25;
+}
+.BtnFiltros {
+	margin: 0.5rem;
+	border-top-right-radius: 0.5rem;
+	border-bottom-right-radius: 0.5rem;
+	--tw-bg-opacity: 1;
+	background-color: rgba(2, 132, 199, var(--tw-bg-opacity));
+}
+.BtnFiltros:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgba(14, 165, 233, var(--tw-bg-opacity));
 }
 .input-search {
 	display: block;

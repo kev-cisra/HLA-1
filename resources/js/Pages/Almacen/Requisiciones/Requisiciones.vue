@@ -9,7 +9,7 @@
                     </h3>
                 </slot>
             </Header>
-
+            <!-- Indicadores -->
             <div class="tw-flex tw-items-center tw-justify-center tw-mt-4">
                 <div class="tw-w-full tw-mx-auto tw-max-w-7xl sm:tw-px-8 lg:tw-px-10">
                     <div class="tw-flex tw-flex-col tw-w-full tw-mb-2 tw-space-y-8 lg:tw-flex-row lg:tw-space-x-10 lg:tw-space-y-0 lg:tw-mb-4">
@@ -66,393 +66,323 @@
                 </div>
             </div>
 
-            <div class="tw-overflow-auto md:tw-flex md:tw-justify-center">
-                <div class="tw-flex tw-items-center tw-mt-2 tw-text-center tw-text-white tw-border">
-                    <div class="tw-m-3" @click="FiltroMes(1)">
-                        <button class="EneroActivo" v-if="mes == 1">
-                            <span class="mx-auto">Enero</span>
-                        </button>
-                        <button class="Enero" v-else>
-                            <span class="mx-auto">Enero</span>
-                        </button>
+            <!-- Filtros -->
+            <div class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-mb-4">
+                <div class="tw-flex tw-gap-4">
+                    <div>
+                        <jet-label class="tw-text-center">AÑO</jet-label>
+                        <select class="InputSelect" v-model="params.Year">
+                            <option value="2021"> 2021 --</option>
+                            <option value="2022"> 2022 -- </option>
+                        </select>
                     </div>
 
-                    <div class="tw-m-3" @click="FiltroMes(2)">
-                        <button class="FebreroActivo" v-if="mes == 2">
-                            <span class="mx-auto">Febrero</span>
-                        </button>
-                        <button class="Febrero" v-else>
-                            <span class="mx-auto">Febrero</span>
-                        </button>
+                    <div>
+                        <jet-label class="tw-text-center">MES</jet-label>
+                        <select class="InputSelect" v-model="params.Month">
+                            <option value="0">TODOS</option>
+                            <option value="1">ENERO</option>
+                            <option value="2">FEBRERO</option>
+                            <option value="3">MARZO</option>
+                            <option value="4">ABRIL</option>
+                            <option value="5">MAYO</option>
+                            <option value="6">JUNIO</option>
+                            <option value="7">JULIO</option>
+                            <option value="8">AGOSTO</option>
+                            <option value="9">SEPTIEMBRE</option>
+                            <option value="10">OCTUBRE</option>
+                            <option value="11">NOVIEMBRE</option>
+                            <option value="12">DICIEMBRE</option>
+                        </select>
                     </div>
 
-                    <div class="tw-m-3" @click="FiltroMes(3)">
-                        <button class="MarzoActivo" v-if="mes == 3">
-                            <span class="mx-auto">Marzo</span>
-                        </button>
-                        <button class="Marzo" v-else>
-                            <span class="mx-auto">Marzo</span>
-                        </button>
+                    <div>
+                        <jet-label class="tw-text-center">ESTATUS</jet-label>
+                        <select class="InputSelect" v-model="params.Status">
+                            <option value="0">TODOS</option>
+                            <option value="1">SIN ENVIAR</option>
+                            <option value="2">SOLICITADO</option>
+                            <option value="3">EN COTIZACION</option>
+                            <option value="5">EN AUTORIZACION</option>
+                            <option value="6">AUTORIZADO</option>
+                            <option value="7">CONFIRMADOS</option>
+                            <option value="8">EN ALMACEN</option>
+                            <option value="9">ENTREGADO</option>
+                        </select>
                     </div>
 
-                    <div class="tw-m-3" @click="FiltroMes(4)">
-                        <button class="AbrilActivo" v-if="mes == 4">
-                            <span class="mx-auto">Abril</span>
-                        </button>
-                        <button class="Abril" v-else>
-                            <span class="mx-auto">Abril</span>
-                        </button>
+                    <div>
+                        <jet-label class="tw-text-center">Vista</jet-label>
+                        <select class="InputSelect" v-model="params.View" @change="TipoVista">
+                            <option value="1">PARTIDAS</option>
+                            <option value="2">REQUISICION</option>
+                        </select>
                     </div>
 
-                    <div class="tw-m-3" @click="FiltroMes(5)">
-                        <button class="MayoActivo" v-if="mes == 5">
-                            <span class="mx-auto">Mayo</span>
-                        </button>
-                        <button class="Mayo" v-else>
-                            <span class="mx-auto">Mayo</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroMes(6)">
-                        <button class="JunioActivo" v-if="mes == 6">
-                            <span class="mx-auto">Junio</span>
-                        </button>
-                        <button class="Junio" v-else>
-                            <span class="mx-auto">Junio</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroMes(7)">
-                        <button class="JulioActivo" v-if="mes == 7">
-                            <span class="mx-auto">Julio</span>
-                        </button>
-                        <button class="Julio" v-else>
-                            <span class="mx-auto">Julio</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroMes(8)">
-                        <button class="AgostoActivo" v-if="mes == 8">
-                            <span class="mx-auto">Agosto</span>
-                        </button>
-                        <button class="Agosto" v-else>
-                            <span class="mx-auto">Agosto</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroMes(9)">
-                        <button class="SeptiembreActivo" v-if="mes == 9">
-                            <span class="mx-auto">Septiembre</span>
-                        </button>
-                        <button class="Septiembre" v-else>
-                            <span class="mx-auto">Septiembre</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroMes(10)">
-                        <button class="OctubreActivo" v-if="mes == 10">
-                            <span class="mx-auto">Octubre</span>
-                        </button>
-                        <button class="Octubre" v-else>
-                            <span class="mx-auto">Octubre</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroMes(11)">
-                        <button class="NoviembreActivo" v-if="mes == 11">
-                            <span class="mx-auto">Noviembre</span>
-                        </button>
-                        <button class="Noviembre" v-else>
-                            <span class="mx-auto">Noviembre</span>
-                        </button>
-                    </div>
-
-                    <div class="tw-m-3" @click="FiltroMes(12)">
-                        <button class="DiciembreActivo" v-if="mes == 12">
-                            <span class="mx-auto">Diciembre</span>
-                        </button>
-                        <button class="Diciembre" v-else>
-                            <span class="mx-auto">Diciembre</span>
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="tw-mt-8">
-                <div class="tw-flex tw-justify-between tw-px-4">
-                    <div class="tw-flex tw-flex-wrap tw-content-center">
-                        <div class="tw-grid tw-grid-cols-3 tw-gap-4">
-                            <select class="InputSelect" v-model="params.Anio" @change="FiltroAño($event)">
-                                <option value="2021">2021</option>
-                                <option value="2022">2022</option>
-                            </select>
-                            <select class="InputSelect" v-model="params.Estatus" @change="FiltroEstatus($event)">
-                                    <option value="2">SOLICITADO</option>
-                                    <option value="3">EN COTIZACION</option>
-                                    <option value="5">EN AUTORIZACION</option>
-                                    <option value="6">AUTORIZADO</option>
-                                    <option value="7">CONFIRMADOS</option>
-                                    <option value="8">EN ALMACEN</option>
-                                    <option value="9">ENTREGADO</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="tw-flex tw-flex-wrap tw-content-center tw-text-center tw-text-gray-400">
-                        <div class="tw-flex tw-flex-col">
-                            <div class="tw-text-center">
-                                <p v-if="params.Partidas == true">Vista Partidas</p>
-                                <p v-else>Vista Requisiciones</p>
-                            </div>
-                            <div>
-                                <label class="switch">
-                                    <input type="checkbox" @click="Visualizacion">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
+                    <div class="tw-mt-4">
+                        <jet-button @click="Filtros" class="BtnFiltros"><i class="fas fa-filter tw-mr-1"></i>Aplica Filtros</jet-button>
                     </div>
                 </div>
             </div>
 
-            <div class="tw-mx-2" v-if="params.Partidas == true">
-                <Table id="Articulos">
-                    <template v-slot:TableHeader>
-                        <th class="columna">ID</th>
-                        <th class="columna">FECHA</th>
-                        <th class="columna">REQ</th>
-                        <th class="columna">O.C</th>
-                        <th class="columna">DEPARTAMENTO</th>
-                        <th class="columna">COD</th>
-                        <th class="columna">CANT</th>
-                        <th class="columna">UNIDAD</th>
-                        <th class="columna">DESCRIPCIÓN</th>
-                        <th class="columna">MAQUINA</th>
-                        <th class="columna">MARCA</th>
-                        <th class="columna">TIPO</th>
-                        <th class="columna">OBSERVACIONES</th>
-                        <th class="columna">SOLICITANTE</th>
-                        <th class="columna">LLEGADA</th>
-                        <th class="columna">ESTATUS</th>
-                    </template>
+            <!-- Tablas -->
+            <div class="tw-mx-2">
+                <p class="tw-text-center tw-text-coolGray-400">VISUALIZACIÓN POR {{Visualizacion}}</p>
+                <div v-if="Vista == 1">
+                    <Table id="Requisiciones">
+                        <template v-slot:TableHeader>
+                            <th class="columna">ID</th>
+                            <th class="columna">FECHA</th>
+                            <th class="columna">REQ</th>
+                            <th class="columna">O.C</th>
+                            <th class="columna">DEPARTAMENTO</th>
+                            <th class="columna">COD</th>
+                            <th class="columna">CANT</th>
+                            <th class="columna">UNIDAD</th>
+                            <th class="columna">DESCRIPCIÓN</th>
+                            <th class="columna">MAQUINA</th>
+                            <th class="columna">MARCA</th>
+                            <th class="columna">TIPO</th>
+                            <th class="columna">OBSERVACIONES</th>
+                            <th class="columna">SOLICITANTE</th>
+                            <th class="columna">LLEGADA</th>
+                            <th class="columna">ESTATUS</th>
+                            <th class="columna">ACCIONES</th>
+                        </template>
 
-                    <template v-slot:TableFooter>
-                        <tr class="fila" v-for="datos in ArticulosRequisiciones" :key="datos.id">
-                            <td>{{ datos.id }}</td>
-                            <td>{{ datos.Fecha.substr(5) }}</td>
-                            <td>{{ datos.articulos_requisicion.NumReq }}</td>
-                            <td class="tw-text-center">{{ datos.articulos_requisicion.OrdenCompra }}</td>
-                            <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
-                            <td class="tw-text-center">{{ datos.articulos_requisicion.Codigo.substr(0,1)  }}</td>
-                            <td class="tw-text-center">{{ datos.Cantidad }}</td>
-                            <td>{{ datos.Unidad }}</td>
-                            <td>{{ datos.Descripcion }}</td>
-                            <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
-                            <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
-                            <td>{{ datos.articulos_requisicion.TipCompra }}</td>
-                            <td>{{ datos.articulos_requisicion.Observaciones }}</td>
-                            <td>{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
-                            <td>{{ datos.articulos_requisicion.Fechallegada }}</td>
-                            <td>
-                                <div v-if="datos.EstatusArt == 1">
-                                    <span tooltip="SIN ENVIAR" flow="left">
-                                        <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
-                                            SIN ENVIAR</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.EstatusArt == 2">
-                                    <span tooltip="Solicitada" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.EstatusArt == 3 || datos.Estatus == 4">
-                                    <span tooltip="En Espera de Cotización" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">COTIZACIÓN</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.EstatusArt == 5">
-                                    <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZACION</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.EstatusArt == 6">
-                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.EstatusArt == 7">
-                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.EstatusArt == 8">
-                                    <span tooltip="Pasa por el articulo a almacén" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">ALMACEN</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.EstatusArt == 9">
-                                    <span tooltip="Entregado" flow="left">
+                        <template v-slot:TableFooter>
+                            <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
+                                <td>{{ datos.id }}</td>
+                                <td>{{ datos.Fecha.substr(5) }}</td>
+                                <td>{{ datos.articulos_requisicion.NumReq }}</td>
+                                <td class="tw-text-center">{{ datos.articulos_requisicion.OrdenCompra }}</td>
+                                <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
+                                <td class="tw-text-center">{{ datos.articulos_requisicion.Codigo.substr(0,1)  }}</td>
+                                <td class="tw-text-center">{{ datos.Cantidad }}</td>
+                                <td>{{ datos.Unidad }}</td>
+                                <td>{{ datos.Descripcion }}</td>
+                                <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                                <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                                <td>{{ datos.articulos_requisicion.TipCompra }}</td>
+                                <td>{{ datos.articulos_requisicion.Observaciones }}</td>
+                                <td>{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
+                                <td>{{ datos.articulos_requisicion.Fechallegada }}</td>
+                                <td>
+                                    <div v-if="datos.EstatusArt == 1">
+                                        <span tooltip="SIN ENVIAR" flow="left">
+                                            <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
+                                                SIN ENVIAR</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.EstatusArt == 2">
+                                        <span tooltip="Solicitada" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.EstatusArt == 3 || datos.Estatus == 4">
+                                        <span tooltip="En Espera de Cotización" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">COTIZACIÓN</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.EstatusArt == 5">
+                                        <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZACION</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.EstatusArt == 6">
+                                        <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.EstatusArt == 7">
+                                        <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.EstatusArt == 8">
+                                        <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">ALMACEN</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.EstatusArt == 9">
+                                        <span tooltip="Entregado" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.EstatusArt == 10">
+                                        <span tooltip="Cotizacion Rechazada" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="columnaIconos">
+                                        <div class="iconoEdit" @click="ArticuloAlmacen(datos)">
+                                            <span tooltip="Confirma Partida en Almacén" flow="left">
+                                                <i class="ml-2 fas fa-check-circle"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoEdit" @click="ArticuloCotizacion(datos)">
+                                            <span tooltip="Envia Partida a Cotizacion" flow="left">
+                                                <i class="fas fa-money-bill-wave"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </Table>
+                </div>
+
+                <div v-else>
+                    <Table id="Requisiciones">
+                        <template v-slot:TableHeader>
+                            <th class="columna">Id</th>
+                            <th class="columna">FECHA</th>
+                            <th class="columna">NUM</th>
+                            <th class="columna">O.C</th>
+                            <th class="columna">DEPARTAMENTO</th>
+                            <th class="columna">CODIGO</th>
+                            <th class="columna">MAQUINA</th>
+                            <th class="columna">MARCA</th>
+                            <th class="columna">TIPO COMPRA</th>
+                            <th class="columna">OBSERVACIONES</th>
+                            <th class="columna">SOLICITANTE</th>
+                            <th class="columna">ESTATUS</th>
+                            <th class="columna">ACCIONES</th>
+                        </template>
+
+                        <template v-slot:TableFooter>
+                            <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
+                                <td class="tw-text-center">{{ datos.id }}</td>
+                                <td>{{ datos.Fecha.substr(5) }}</td>
+                                <td>{{ datos.NumReq }}</td>
+                                <td>{{ datos.OrdenCompra }}</td>
+                                <td>{{ datos.requisicion_departamento.Nombre }}</td>
+                                <td>{{ datos.Codigo.substr(0,1) }}</td>
+                                <td>{{ datos.requisicion_maquina.Nombre }}</td>
+                                <td>{{ datos.requisicion_marca.Nombre }}</td>
+                                <td>{{ datos.TipCompra }}</td>
+                                <td>{{ datos.Observaciones }}</td>
+                                <td>{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                                <td>
+                                    <div v-if="datos.Estatus == 2">
+                                        <span tooltip="REQUSICIÓN SOLICITADA" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.Estatus == 3 || datos.Estatus == 4">
+                                        <span tooltip="REQUSICIÓN EN ESPERA DE COTIZACIÓN" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">COTIZACION</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.Estatus == 5">
+                                        <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZACION</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.Estatus == 6">
+                                        <span tooltip="REQUISICIÓN AUTORIZADA" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.Estatus == 7">
+                                        <span tooltip="REQUISICIÓN AUTORIZADA" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.Estatus == 8">
+                                        <span tooltip="REQUISICIÓN EN ALMACÉN" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">ALMACEN</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="datos.Estatus == 9">
+                                    <span tooltip="REQUSICIÓN ENTREGADA" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
                                     </span>
-                                </div>
-                                <div v-else-if="datos.EstatusArt == 10">
+                                    </div>
+                                    <div v-else-if="datos.Estatus == 10">
                                     <span tooltip="Cotizacion Rechazada" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
                                     </span>
-                                </div>
-                            </td>
-                        </tr>
-                    </template>
-                </Table>
-            </div>
-            <div class="tw-mx-2" v-else>
-                <Table id="Requisiciones">
-                    <template v-slot:TableHeader>
-                        <th class="columna">Id</th>
-                        <th class="columna">FECHA</th>
-                        <th class="columna">NUM</th>
-                        <th class="columna">O.C</th>
-                        <th class="columna">DEPARTAMENTO</th>
-                        <th class="columna">CODIGO</th>
-                        <th class="columna">MAQUINA</th>
-                        <th class="columna">MARCA</th>
-                        <th class="columna">TIPO COMPRA</th>
-                        <th class="columna">OBSERVACIONES</th>
-                        <th class="columna">SOLICITANTE</th>
-                        <th class="columna">ESTATUS</th>
-                        <th class="columna">ACCIONES</th>
-                    </template>
-
-                    <template v-slot:TableFooter>
-                        <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
-                            <td class="tw-text-center">{{ datos.id }}</td>
-                            <td>{{ datos.Fecha.substr(5) }}</td>
-                            <td>{{ datos.NumReq }}</td>
-                            <td>{{ datos.OrdenCompra }}</td>
-                            <td>{{ datos.requisicion_departamento.Nombre }}</td>
-                            <td>{{ datos.Codigo.substr(0,1) }}</td>
-                            <td>{{ datos.requisicion_maquina.Nombre }}</td>
-                            <td>{{ datos.requisicion_marca.Nombre }}</td>
-                            <td>{{ datos.TipCompra }}</td>
-                            <td>{{ datos.Observaciones }}</td>
-                            <td>{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
-                            <td>
-                                <div v-if="datos.Estatus == 2">
-                                    <span tooltip="REQUSICIÓN SOLICITADA" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.Estatus == 3 || datos.Estatus == 4">
-                                    <span tooltip="REQUSICIÓN EN ESPERA DE COTIZACIÓN" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">COTIZACION</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.Estatus == 5">
-                                    <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZACION</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.Estatus == 6">
-                                    <span tooltip="REQUISICIÓN AUTORIZADA" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.Estatus == 7">
-                                    <span tooltip="REQUISICIÓN AUTORIZADA" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.Estatus == 8">
-                                    <span tooltip="REQUISICIÓN EN ALMACÉN" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">ALMACEN</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="datos.Estatus == 9">
-                                <span tooltip="REQUSICIÓN ENTREGADA" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
-                                </span>
-                                </div>
-                                <div v-else-if="datos.Estatus == 10">
-                                <span tooltip="Cotizacion Rechazada" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
-                                </span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="columnaIconos" v-if="datos.Estatus == 2">
-                                    <div class="iconoDetails" @click="Partidas(datos)">
-                                        <span tooltip="Visualiza Partidas" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </span>
                                     </div>
-                                    <div class="iconoPurple" @click="EnviarCotizarRequisicion(datos)">
-                                        <span tooltip="Envia Requisicion a Cotización" flow="left">
-                                            <i class="fas fa-money-bill-wave"></i>
-                                        </span>
+                                </td>
+                                <td>
+                                    <div class="columnaIconos" v-if="datos.Estatus == 2">
+                                        <div class="iconoDetails" @click="Partidas(datos)">
+                                            <span tooltip="Visualiza Partidas" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoPurple" @click="EnviarCotizarRequisicion(datos)">
+                                            <span tooltip="Envia Requisicion a Cotización" flow="left">
+                                                <i class="fas fa-money-bill-wave"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoEdit" @click="RequisicionAlmacen(datos)">
+                                            <span tooltip="Confirma existencia toal en Almacén" flow="left">
+                                                <i class="fas fa-check-circle"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoEdit" @click="IndicaProveedor(datos)" v-if="datos.TipCompra == 'SERVICIOS EXTERNOS'">
+                                            <span tooltip="Indica Provedor" flow="left">
+                                                <i class="fas fa-shipping-fast"></i>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="iconoEdit" @click="RequisicionAlmacen(datos)">
-                                        <span tooltip="Confirma existencia toal en Almacén" flow="left">
-                                            <i class="fas fa-check-circle"></i>
-                                        </span>
+                                    <div class="columnaIconos" v-else-if="datos.Estatus == 7">
+                                        <div class="iconoDetails" @click="Partidas(datos)">
+                                            <span tooltip="Visualiza Partidas" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoPurple" @click="RequisicionAlmacen(datos)">
+                                            <span tooltip="Confirma Producto en Almacén" flow="left">
+                                                <i class="ml-2 fas fa-box"></i>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="iconoEdit" @click="IndicaProveedor(datos)" v-if="datos.TipCompra == 'SERVICIOS EXTERNOS'">
-                                        <span tooltip="Indica Provedor" flow="left">
-                                            <i class="fas fa-shipping-fast"></i>
-                                        </span>
+                                    <div class="columnaIconos" v-else-if="datos.Estatus == 8">
+                                        <div class="iconoDetails" @click="Partidas(datos)">
+                                            <span tooltip="Visualiza Partidas" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoLime" @click="EntregaProducto(datos)">
+                                            <span tooltip="Entrega el Artículo" flow="left">
+                                                <i class="fas fa-fingerprint"></i>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="columnaIconos" v-else-if="datos.Estatus == 7">
-                                    <div class="iconoDetails" @click="Partidas(datos)">
-                                        <span tooltip="Visualiza Partidas" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </span>
+                                    <div class="columnaIconos" v-else>
+                                        <div class="iconoDetails" @click="Partidas(datos)">
+                                            <span tooltip="Visualiza Partidas" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="iconoWhite">
+                                            <span tooltip="En proceso" flow="left">
+                                                <i class="fas fa-thumbs-up"></i>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="iconoPurple" @click="RequisicionAlmacen(datos)">
-                                        <span tooltip="Confirma Producto en Almacén" flow="left">
-                                            <i class="ml-2 fas fa-box"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="columnaIconos" v-else-if="datos.Estatus == 8">
-                                    <div class="iconoDetails" @click="Partidas(datos)">
-                                        <span tooltip="Visualiza Partidas" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                    <div class="iconoLime" @click="EntregaProducto(datos)">
-                                        <span tooltip="Entrega el Artículo" flow="left">
-                                            <i class="fas fa-fingerprint"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="columnaIconos" v-else>
-                                    <div class="iconoDetails" @click="Partidas(datos)">
-                                        <span tooltip="Visualiza Partidas" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                    <div class="iconoWhite">
-                                        <span tooltip="En proceso" flow="left">
-                                            <i class="fas fa-thumbs-up"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </template>
-                </Table>
+                                </td>
+                            </tr>
+                        </template>
+                    </Table>
+                </div>
             </div>
 
             <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
@@ -982,17 +912,35 @@ export default {
                 EstatusServ: '',
             },
             params:{
-                Partidas: true,
-                Anio: this.anio,
-                month: '',
-                Estatus: '',
+                Year: moment().format("YYYY"),
+                Month: 0,
+                Status: 0,
+                View: 1,
             },
+            CambioVista: 1,
+            Cambio: false,
+            Visualizacion: 'PARTIDAS',
             Marcas: [],
         };
     },
 
     mounted() {
-        this.tablaArticulos();
+        this.tabla();
+        this.params.Month = this.mes;
+        var query  = window.location.search.substring(1);
+        var vars = query.split("&");
+            for (var i=0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == 'View') {
+                    this.params.View = pair[1];
+                }
+        }
+
+        if(this.params.View == 1){
+            this.Visualizacion = 'PARTIDAS';
+        }else{
+            this.Visualizacion = 'REQUISICIÓN';
+        }
     },
 
     components: {
@@ -1016,35 +964,91 @@ export default {
         errors: Object,
         flash: Boolean,
         Requisiciones: Object,
-        ArticulosRequisiciones: Object,
         ArticulosRequisicion: Object,
         Almacen: Number,
         Cotizacion: Number,
         SinConfirmar: Number,
+        Vista: Number,
         mes: String,
         datos: Object,
     },
 
     methods: {
 
-        Visualizacion(){ //Cambio de visualizacion por partidas o articulos
-            this.params.Partidas  = !this.params.Partidas;
-
-            if (this.params.Partidas == true){
-                $('#Articulos').DataTable().clear(); //limpio
-                $('#Articulos').DataTable().destroy(); //destruyo tabla
-                this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
-                    onSuccess: () => {
-                        this.tablaArticulos()
-                    }, preserveState: true})
-            }else{
-                $('#Requisiciones').DataTable().clear(); //limpio
-                $('#Requisiciones').DataTable().destroy(); //destruyo tabla
-                this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
-                    onSuccess: () => {
-                        this.tabla() //regeneracion de tabla
-                    }, preserveState: true})
+        TipoVista(){ //Cambio de vista entre Partidas y Requisicion
+            //Obtengo la variable de la URl
+            var query  = window.location.search.substring(1);
+            var vars = query.split("&");
+                for (var i=0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == 'View') {
+                        this.CambioVista = pair[1];
+                    }
             }
+            //Verifico si coincide ella variable del Select con el Valor obtenido de la URl
+            if(this.CambioVista != this.params.View){
+                this.Cambio = true; //Habra un cambio de vista al aplicar el filtro
+            }else{
+                this.Cambio = false; //No hubo un cambio la vista se mantuvo
+            }
+        },
+
+        Filtros(){ //Generacion de consulta aplicada con Filtros
+            this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    //Verifico si hubo un cambio en la vista
+                    if(this.Cambio == true){
+                        location.reload();
+                    }
+                }, preserveState: true})
+        },
+
+        //Generacion de Tabla con Datatables
+        tabla(){
+            this.$nextTick(() => {
+                $("#Requisiciones").DataTable({
+                    "language": this.español,
+                    paging: false,
+                    "scrollX": true,
+                    scrollY:  '40vh',
+                    "order": [0, 'desc'],
+                    "columnDefs": [
+                        { "width": "1%", "targets": [0] },
+                        { "width": "5%", "targets": [1] },
+                        { "width": "3%", "targets": [2,3,5] },
+                        { "width": "8%", "targets": [4] },
+                        { "width": "9%", "targets": [6,7] },
+                    ],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
+                });
+            });
+        },
+
+        //Consulta para generar datos de la tabla
+        verTabla(event) {
+            $("#Requisiciones").DataTable().destroy();
+                this.$inertia.get("/Compras/Requisiciones", { busca: event.target.value },{
+                    onSuccess: () => {
+                        this.tabla();
+                    },
+                });
         },
 
         ClearCanvas(){
@@ -1086,97 +1090,6 @@ export default {
                 Salida: '',
                 EstatusServ: '',
             };
-        },
-
-        //datatable
-        tabla() {
-            this.$nextTick(() => {
-                $("#Requisiciones").DataTable({
-                    "language": this.español,
-                    paging: false,
-                    "scrollX": true,
-                    scrollY:  '40vh',
-                    "order": [0, 'desc'],
-                    "columnDefs": [
-                        { "width": "1%", "targets": [0] },
-                        { "width": "5%", "targets": [1] },
-                        { "width": "3%", "targets": [2] },
-                        {
-                            "targets": [ 0 ],
-                            "visible": false,
-                            "searchable": false
-                        },
-                    ],
-                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
-                            "<'row'<'col-sm-12'tr>>" +
-                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                    buttons: [
-                        {
-                            extend: 'excelHtml5',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'pdfHtml5',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        'colvis'
-                    ]
-                });
-            });
-        },
-
-        //consulta para generar datos de la tabla
-        verTabla(event) {
-        $("#Requisiciones").DataTable().destroy();
-            this.$inertia.get("/Compras/Requisiciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
-        },
-
-        //Generacion de Tabla con Datatables
-        tablaArticulos(){
-            this.$nextTick(() => {
-                $("#Articulos").DataTable({
-                    "language": this.español,
-                    paging: false,
-                    "scrollX": true,
-                    scrollY:  '40vh',
-                    "order": [0, 'desc'],
-                    "columnDefs": [
-                        { "width": "1%", "targets": [0] },
-                        { "width": "3%", "targets": [1,2] },
-                        {
-                            "targets": [ 0 ],
-                            "visible": false,
-                            "searchable": false
-                        },
-                    ],
-                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
-                            "<'row'<'col-sm-12'tr>>" +
-                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                    buttons: [
-                        {
-                            extend: 'excelHtml5',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        'colvis'
-                    ]
-                });
-            });
-        },
-
-        //Consulta para generar datos de la tabla
-        verTablaArticulos(event) {
-            $("#Articulos").DataTable().destroy();
-                this.$inertia.get("/Almacen/Requisiciones", { busca: event.target.value },{
-                    onSuccess: () => {
-                        this.tablaArticulos();
-                    },
-                });
         },
 
         chageClose() {
@@ -1234,70 +1147,6 @@ export default {
                     location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
                     this.tabla() //regeneracion de tabla
                 }, preserveState: true})
-        },
-
-        FiltroAño(value){
-            this.params.Anio = event.target.value;
-
-            $('#Requisiciones').DataTable().clear(); //limpio
-            $('#Requisiciones').DataTable().destroy(); //destruyo tabla
-
-            this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
-                onSuccess: () => {
-                    location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
-                    this.tabla() //regeneracion de tabla
-                }, preserveState: true})
-        },
-
-        FiltroMes(value){
-            //Filtro para consultar por mes
-            this.params.month = value;
-            this.params.Estatus = ''; //limpio el estatus para consultar solo por Mes
-            $('#Requisiciones').DataTable().clear(); //limpio
-            $('#Requisiciones').DataTable().destroy(); //destruyo tabla
-            this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
-                onSuccess: () => {
-                    this.tabla() //regeneracion de tabla
-                }, preserveState: true})
-        },
-
-        FiltroEstatus(value){
-
-            var query  = window.location.search.substring(1);
-            var vars = query.split("&");
-                for (var i=0; i < vars.length; i++) {
-                    var pair = vars[i].split("=");
-                    if(pair[0] == 'Estatus') {
-                        this.params.Estatus = pair[1];
-                    }
-            }
-
-            this.params.Estatus = event.target.value;
-
-            console.log(this.params);
-
-            if(this.params.Partidas == true){
-
-                $('#Articulos').DataTable().clear(); //limpio
-                $('#Articulos').DataTable().destroy(); //destruyo tabla
-
-                this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
-                    onSuccess: () => {
-                        // location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
-                        this.tablaArticulos() //regeneracion de tabla
-                    }, preserveState: true})
-
-            }else if(this.params.Partidas == false){
-
-                $('#Requisiciones').DataTable().clear(); //limpio
-                $('#Requisiciones').DataTable().destroy(); //destruyo tabla
-
-                this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
-                    onSuccess: () => {
-                        // location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
-                        this.tabla() //regeneracion de tabla
-                    }, preserveState: true})
-            }
         },
 
         update(data, metodo) {

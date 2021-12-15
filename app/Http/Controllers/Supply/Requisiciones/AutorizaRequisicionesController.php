@@ -103,7 +103,7 @@ class AutorizaRequisicionesController extends Controller{
                 },
             ])
             ->whereMonth('Fecha', $mes)
-            ->where('EstatusArt', '=', 5)
+            ->where('EstatusArt', '>=', 5)
             ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
         }
 
@@ -175,7 +175,7 @@ class AutorizaRequisicionesController extends Controller{
                 },
             ])
             ->whereMonth('Fecha', $mes)
-            ->where('EstatusArt', '=', 5)
+            ->where('EstatusArt', '>=', 5)
             ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
         }
 

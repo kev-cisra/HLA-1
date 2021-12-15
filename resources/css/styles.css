@@ -92,6 +92,14 @@
     @apply tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-bg-gray-700 tw-border tw-border-transparent tw-rounded-md tw-font-semibold tw-text-xs tw-text-white tw-uppercase tw-tracking-widest hover:tw-bg-gray-500 active:tw-bg-gray-700 focus:tw-outline-none focus:tw-border-blue-700 focus:tw-ring focus:tw-ring-gray-300 disabled:tw-opacity-25 tw-transition;
 }
 
+.BtnFiltros{
+    @apply tw-bg-sky-600 tw-m-2 tw-rounded-r-lg;
+}
+
+.BtnFiltros:hover {
+    @apply tw-bg-sky-500;
+}
+
 .input-search{
     @apply tw-block tw-w-11/12 tw-py-2 tw-pl-8 tw-pr-6 tw-text-sm tw-font-semibold tw-text-gray-700 tw-placeholder-gray-400 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none;
 }
