@@ -112,36 +112,6 @@
                             <input type="checkbox" v-model="graTipo" value="ambos" id="ambos"> <label for="ambos">Gráfica de barar y punto</label>
                         </div>
                     </div>
-                    <!-- Año
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Año</jet-label>
-                        <jet-input type="number" class="form-control" v-model="ano" :max="estAño"></jet-input>
-                    </div> -->
-                    <!-- Tipo de reporte
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Tipo de reporte</jet-label>
-                        <div class="tw-flex tw-gap-5">
-                            <div>
-                                <input type="radio" id="uno" value="1" v-model="FoFiltro.TipRepo">
-                                <label for="uno"> Produccion</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="dos" value="2" v-model="FoFiltro.TipRepo">
-                                <label for="dos"> Paros</label>
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- calculos
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label>Boton para Calcular Operaciones</jet-label>
-                        <button v-show="vCal" class="btn btn-success" type="button" id="button-addon2" v-if="FoFiltro.iniDia" @click="calcula(form)">
-                            <i class="fas fa-calculator" ></i> Calcular
-                        </button>
-                        <button v-show="!vCal" class="btn btn-success" type="button" disabled>
-                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                            Calculando...
-                        </button>
-                    </div> -->
                 </div>
                 <div v-for="tip in graTipo" :key="tip">
                     <div v-if="tip == 'pie'" class="tw-mb-6 lg:tw-flex tw-flex-col">
@@ -156,6 +126,9 @@
                         </div>
                         <div class="tw-flex ">
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label>Título</jet-label>
+                                <jet-input type="text" class="form-control" v-model="gPie.titulo"></jet-input>
+
                                 <jet-label><span class="required">*</span>Fecha Dia</jet-label>
                                 <jet-input type="date" class="form-control" v-model="gPie.fecha" :max="treDia"></jet-input>
                             </div>
@@ -170,21 +143,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- mes
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Mes</jet-label>
-                        <jet-input type="month" class="form-control" @click="limInputs(3)" v-model="FoFiltro.mes"></jet-input>
-                    </div> -->
-                    <!-- semana
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Semana</jet-label>
-                        <jet-input type="week" class="form-control" @click="limInputs(2)" v-model="FoFiltro.semana"></jet-input>
-                    </div> -->
-                    <!-- dia
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Fecha Dia</jet-label>
-                        <jet-input type="date" class="form-control" @click="limInputs(1.5)" @change="cambioFechas()" v-model="FoFiltro.iniDia" :max="treDia"></jet-input>
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -366,16 +324,12 @@
         </div>
 
         <!------------------------------------ Graficas ------------------------------------------------------------------>
-        <div class="tw-text-center tw-m-auto" style="width: 99%">
+        <div class="tw-text-center tw-my-24 tw-m-auto" style="width: 99%">
             <div id="chart"></div>
             <div id="chart1"></div>
             <div id="chart2"></div>
             <div id="chart3"></div>
         </div>
-
-        <pre>
-            {{  }}
-        </pre>
 
         <!------------------------------------- Modal para carga de datos masivas ------------------------------------------------>
         <modal :show="showModalC" @close="chageCloseC">
@@ -614,9 +568,12 @@
     import pdfFonts from 'pdfmake/build/vfs_fonts';
     import $ from 'jquery';
 
-
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     window.JSZip = jszip;
+
+    var Highcharts = require('highcharts');
+    // Load module after Highcharts is loaded
+    require('highcharts/modules/exporting')(Highcharts);
 
     export default {
         props: [
@@ -642,7 +599,7 @@
             JetInput,
             Modal,
             Select2,
-            JetLabel
+            JetLabel,
         },
 
         data() {
@@ -706,34 +663,17 @@
                 graTipo: [],
                 gPie: {
                     fecha: null,
-                    procesos: []
-                },
-
-
-                series: [44, 55, 13, 43, 22],
-                chartOptions: {
-                    chart: {
-                        width: 380,
-                        type: 'pie',
-                    },
-                    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-                    responsive: [{
-                        breakpoint: 480,
-                        options: {
-                            chart: {
-                            width: 200
-                            },
-                            legend: {
-                            position: 'bottom'
-                            }
-                        }
-                    }]
+                    procesos: [],
+                    titulo: null,
+                    pVal: [],
+                    pText: []
                 },
             }
         },
 
         mounted() {
             this.global();
+            //this.GraPaste('data');
         },
 
         methods: {
@@ -1390,15 +1330,18 @@
             },
             /************************************* Grafica **********************************************/
             GraPaste(data){
+                //variables internas
                 var inicio = null;
                 var fin = null;
-                var valor = [];
-                var texto = [];
-                const gr = []
+                const gr = [];
+                const valor = [];
+                var partida = '';
+                var clave = '';
 
+                //alertas de inputs vacios
                 data.fecha == null ? Swal.fire('Por favor selecciona una fecha.') : '';
                 data.procesos.length <= 0 ? Swal.fire('Por favor selecciona un proceso.') : '';
-
+                //en caso de que los inputs sean llenados
                 if (data.fecha != null & data.procesos.length > 0) {
                     inicio = this.FoFiltro.iniDia+' 07:00:00'
                     if (this.S_Area == 7){
@@ -1411,46 +1354,54 @@
                     //Asigna el dato para la fecha final
                     fin = moment(inicio).add(24, 'hours');
 
-
+                    //recorrido de fechas
                     this.cargas.forEach(reco => {
                         if ( moment(reco.fecha).isSameOrAfter(inicio, 'minutes') & moment(reco.fecha).isBefore(fin, 'minutes') & reco.departamento_id == this.S_Area ) {
                             gr.push(reco);
                         }
                     })
-
+                    //recorrido de datos final
                     gr.forEach(grp =>{
                         data.procesos.forEach(pro => {
                             if (grp.proceso_id == pro) {
-                                valor.push(grp.valor);
-                                texto.push(grp.proceso.nompro)
-                                console.log(grp)
+                                partida = grp.partida == null ? 'N/A' : grp.partida;
+                                clave = grp.clave_id == null ? 'N/A' : grp.clave.CVE_ART;
+                                valor.push({name: grp.proceso.nompro, y: grp.valor, parti: partida, cl: clave});
                             }
                         })
                     })
 
 
-                    var options3 = {
-                        series: valor,
-                        chart: {
-                            width: 500,
-                            type: 'pie',
-                        },
-                        labels: texto,
-                        responsive: [{
-                            breakpoint: 480,
-                            options: {
-                                chart: {
-                                    width: 500
-                                },
-                                legend: {
-                                    position: 'bottom'
-                                }
-                            }
-                        }]
-                    };
 
-                    var chart3 = new ApexCharts(document.querySelector("#chart3"), options3);
-                    chart3.render();
+                    Highcharts.chart('chart3', {
+                        chart: {
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false,
+                            type: 'pie'
+                        },
+                        title: {
+                            text: this.gPie.titulo
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name} / {point.parti} / {point.cl}</b>: {point.y} - {point.percentage:.1f}%'
+                            }
+                            }
+                        },
+                        series: [{
+                            name: 'Proceso',
+                            colorByPoint: true,
+                            data: valor
+                        }]
+                    });
                 }
             },
             GraBarra(){
