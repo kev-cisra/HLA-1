@@ -89,6 +89,12 @@
                         <jet-label><span class="required">*</span>Fecha Dia</jet-label>
                         <jet-input type="date" class="form-control" @click="limInputs(1.5)" @change="cambioFechas()" v-model="FoFiltro.iniDia" :max="treDia"></jet-input>
                     </div>
+                    <!-- Boton -->
+                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                        <jet-label>-</jet-label>
+                        <button class="btn btn-success" v-if="FoFiltro.TipRepo == 1" @click="NuArrayPro()">Consultar Produccion</button>
+                        <button class="btn btn-success" v-else @click="NuArrayParo()">Consultar Paro</button>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -96,6 +102,7 @@
         <!------------------------------------ Muestra las opciones de Graficas ------------------------------------------->
         <div class="collapse md:tw-ml-10 tw-p-6 tw-bg-teal-300 tw-rounded-3xl tw-shadow-xl tw-m-10" id="grafica">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
+                <!-- arreglo de graficas -->
                 <div class="tw-mb-6 lg:tw-flex">
                     <div class="tw-px-3 tw-mb-6 tw-gap-3 tw-flex">
                         <label><span class="required">*</span>Tipo de gráfica: </label>
@@ -103,7 +110,7 @@
                             <input type="checkbox" v-model="graTipo" value="pie" id="pie"> <label for="pie">Gráfica de pie</label>
                         </div>
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="punto" id="punto"> <label for="punto">Gráfica de punto</label>
+                            <input type="checkbox" v-model="graTipo" value="punto" id="punto"> <label for="punto">Gráfica lineal</label>
                         </div>
                         <div>
                             <input type="checkbox" v-model="graTipo" value="barra" id="barra"> <label for="barra">Gráfica de barra</label>
@@ -113,15 +120,18 @@
                         </div>
                     </div>
                 </div>
+                <!-- recorrido de los tipos de graficas -->
                 <div v-for="tip in graTipo" :key="tip">
-                    <div v-if="tip == 'pie'" class="tw-mb-6 lg:tw-flex tw-flex-col">
+                    <!-- formulario para grafica de pie -->
+                    <div v-if="tip == 'pie'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-blue-700 tw-p-10">
                         <div class="tw-flex tw-m-5">
                             <div class="tw-w-1/2 tw-text-2xl tw-text-center">
-                                <h1>Gráfica de pie</h1>
+                                <h1>Gráfica de Pie</h1>
                             </div>
 
                             <div class="tw-w-1/2">
                                 <button class="btn btn-outline-success " @click="GraPaste(gPie)">Generar gráfica</button>
+                                <button class="btn btn-outline-danger " @click="resetPastel()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
                         <div class="tw-flex ">
@@ -143,10 +153,89 @@
                             </div>
                         </div>
                     </div>
+                    <!-- formulario para grafica de linea -->
+                    <div v-if="tip == 'punto'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-green-700 tw-p-10">
+                        <div class="tw-flex tw-m-5">
+                            <!-- titulo -->
+                            <div class="tw-w-1/2 tw-text-2xl tw-text-center">
+                                <h1>Gráfica Lineal</h1>
+                            </div>
+                            <!-- boton -->
+                            <div class="tw-w-1/2">
+                                <button class="btn btn-outline-success " @click="GraLinea(gLinea)">Generar gráfica</button>
+                                <button class="btn btn-outline-danger " @click="resetLinea()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="tw-flex">
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0 tw-gap-x-5">
+                                <!-- titulos para graficas -->
+                                <div class="tw-flex tw-gap-4">
+                                    <!-- tutulo -->
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Título</jet-label>
+                                        <jet-input type="text" class="form-control" v-model="gLinea.titulo"></jet-input>
+                                    </div>
+                                    <!-- sub titulo -->
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Sub Título</jet-label>
+                                        <jet-input type="text" class="form-control" v-model="gLinea.subtitulo"></jet-input>
+                                    </div>
+                                </div>
+
+                                <!-- dias -->
+                                <div class="tw-flex tw-gap-4">
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-input type="datetime-local" v-model="gLinea.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-input type="datetime-local" v-model="gLinea.fecFin"></jet-input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Procesos</jet-label>
+                                <div class="tw-overflow-auto" style="height: 10rem">
+                                    <div v-for="pro in proGrafi" :key="pro" class="hover:tw-bg-teal-100">
+                                        <input type="checkbox" v-model="gLinea.procesos" :value="pro.value" :id="'pie'+pro.value">
+                                        <label :for="'pie'+pro.value" class="tw-w-11/12">{{pro.text}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- formulario para grafica de barra -->
+                    <div v-if="tip == 'barra'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-yellow-700 tw-p-10">
+                        <div class="tw-flex tw-m-5">
+                            <!-- titulo -->
+                            <div class="tw-w-1/2 tw-text-2xl tw-text-center">
+                                <h1>Gráfica de Barra</h1>
+                            </div>
+                            <!-- boton -->
+                            <div class="tw-w-1/2">
+                                <button class="btn btn-outline-success " @click="GraBarra()">Generar gráfica</button>
+                                <button class="btn btn-outline-danger " @click="resetBarra()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- formulario para grafica combinada -->
+                    <div v-if="tip == 'ambos'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-red-700 tw-p-10">
+                        <div class="tw-flex tw-m-5">
+                            <!-- titulo -->
+                            <div class="tw-w-1/2 tw-text-2xl tw-text-center">
+                                <h1>Gráfica Combinada</h1>
+                            </div>
+                            <!-- boton -->
+                            <div class="tw-w-1/2">
+                                <button class="btn btn-outline-success " @click="GraBaLi()">Generar gráfica</button>
+                                <button class="btn btn-outline-danger " @click="resetBaLi()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
         <!------------------------------------ Data table de carga de produccion ------------------------------------------------------->
         <div v-show="FoFiltro.TipRepo == 1" class="tw-m-auto" style="width: 99%">
             <Table id="t_repo">
@@ -325,10 +414,10 @@
 
         <!------------------------------------ Graficas ------------------------------------------------------------------>
         <div class="tw-text-center tw-my-24 tw-m-auto" style="width: 99%">
-            <div id="chart"></div>
-            <div id="chart1"></div>
-            <div id="chart2"></div>
-            <div id="chart3"></div>
+            <div id="chart" class="tw-m-10"></div>
+            <div id="chart1" class="tw-m-10"></div>
+            <div id="chart2" class="tw-m-10"></div>
+            <div id="chart3" class="tw-m-10"></div>
         </div>
 
         <!------------------------------------- Modal para carga de datos masivas ------------------------------------------------>
@@ -624,6 +713,8 @@
                 proc_prin: '',
                 vMasi: true,
                 vCal: true,
+                /* recoTabla: [],
+                recoTablaParo: [], */
                 deli:{
                     elimiMasi: []
                 },
@@ -662,12 +753,27 @@
                 },
                 graTipo: [],
                 gPie: {
+                    borra: '',
                     fecha: null,
                     procesos: [],
-                    titulo: null,
-                    pVal: [],
-                    pText: []
+                    titulo: null
                 },
+                gBarra: {
+                    borra: '',
+                    titulo: '',
+                    subtitulo: ''
+                },
+                gLinea: {
+                    borra: '',
+                    titulo: '',
+                    subtitulo: '',
+                    fecIni: null,
+                    fecFin: null,
+                    procesos: []
+                },
+                gBaLi: {
+                    borra: ''
+                }
             }
         },
 
@@ -1174,7 +1280,7 @@
                     })
                 }
                 //console.log(rtP)
-                return rtP;
+                this.recoTablaParo = rtP;
             },
             //Limpia los inputs de fechas
             limInputs(val){
@@ -1329,6 +1435,7 @@
                 })
             },
             /************************************* Grafica **********************************************/
+            /* metodos grafica pastel */
             GraPaste(data){
                 //variables internas
                 var inicio = null;
@@ -1366,14 +1473,21 @@
                             if (grp.proceso_id == pro) {
                                 partida = grp.partida == null ? 'N/A' : grp.partida;
                                 clave = grp.clave_id == null ? 'N/A' : grp.clave.CVE_ART;
-                                valor.push({name: grp.proceso.nompro, y: grp.valor, parti: partida, cl: clave});
+                                if (partida != null) {
+                                    valor.push({name: grp.proceso.nompro, y: grp.valor, parti: partida, cl: clave});
+                                }else if (clave != null) {
+                                    valor.push({name: grp.proceso.nompro, y: grp.valor, parti: partida, cl: clave});
+                                }else{
+                                    valor.push({name: grp.proceso.nompro, y: grp.valor, parti: partida, cl: clave});
+                                }
+
                             }
                         })
                     })
 
 
 
-                    Highcharts.chart('chart3', {
+                    this.gPie.borra = Highcharts.chart('chart', {
                         chart: {
                             plotBackgroundColor: null,
                             plotBorderWidth: null,
@@ -1404,187 +1518,267 @@
                     });
                 }
             },
-            GraBarra(){
-                var options = {
-                    series: [{
-                        name: 'Net Profit',
-                        data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-                    }, {
-                    name: 'Revenue',
-                    data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-                    }, {
-                        name: 'Free Cash Flow',
-                        data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-                    }],
+            resetPastel(){
+                this.gPie.borra.destroy();
+            },
+            /* metodos grafica barra */
+            GraBarra(data){
+                this.gBarra.borra = Highcharts.chart('chart2', {
                     chart: {
-                    type: 'bar',
-                    height: 350
+                        type: 'column'
+                    },
+                    title: {
+                        text: this.gBarra.titulo
+                    },
+                    subtitle: {
+                        text: this.gBarra.subtitulo
+                    },
+                    xAxis: {
+                        categories: [
+                        'Jan',
+                        'Feb',
+                        'Mar',
+                        'Apr',
+                        'May',
+                        'Jun',
+                        'Jul',
+                        'Aug',
+                        'Sep',
+                        'Oct',
+                        'Nov',
+                        'Dec'
+                        ],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                        text: 'Rainfall (mm)'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
                     },
                     plotOptions: {
-                    bar: {
-                        horizontal: false,
-                        columnWidth: '55%',
-                        endingShape: 'rounded'
-                    },
-                    },
-                    dataLabels: {
-                    enabled: false
-                    },
-                    stroke: {
-                    show: true,
-                    width: 2,
-                    colors: ['transparent']
-                    },
-                    xaxis: {
-                        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-                    },
-                    yaxis: {
-                        title: {
-                            text: '$ (thousands)'
+                        column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
                         }
                     },
-                    fill: {
-                    opacity: 1
-                    },
-                    tooltip: {
-                        y: {
-                            formatter: function (val) {
-                            return "$ " + val + " thousands"
-                            }
-                        }
-                    }
-                };
-
-                var chart = new ApexCharts(document.querySelector("#chart"), options);
-                chart.render();
-            },
-            GraLinea(){
-                var options2 = {
                     series: [{
-                        name: "Session Duration",
-                        data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
-                    },
-                    {
-                        name: "Page Views",
-                        data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
-                    },
-                    {
-                        name: 'Total Visits',
-                        data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
-                    }
-                    ],
-                    chart: {
-                    height: 350,
-                    type: 'line',
-                    zoom: {
-                        enabled: false
-                    },
-                    },
-                    dataLabels: {
-                    enabled: false
-                    },
-                    stroke: {
-                    width: [5, 7, 5],
-                    curve: 'straight',
-                    dashArray: [0, 8, 5]
-                    },
-                    title: {
-                    text: 'Page Statistics',
-                    align: 'left'
-                    },
-                    legend: {
-                    tooltipHoverFormatter: function(val, opts) {
-                        return val + ' - ' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] + ''
-                    }
-                    },
-                    markers: {
-                    size: 0,
-                    hover: {
-                        sizeOffset: 6
-                    }
-                    },
-                    xaxis: {
-                    categories: ['01 Jan', '02 Jan', '03 Jan', '04 Jan', '05 Jan', '06 Jan', '07 Jan', '08 Jan', '09 Jan',
-                        '10 Jan', '11 Jan', '12 Jan'
-                    ],
-                    },
-                    tooltip: {
-                    y: [
-                        {
-                        title: {
-                            formatter: function (val) {
-                            return val + " (mins)"
-                            }
-                        }
-                        },
-                        {
-                        title: {
-                            formatter: function (val) {
-                            return val + " per session"
-                            }
-                        }
-                        },
-                        {
-                        title: {
-                            formatter: function (val) {
-                            return val;
-                            }
-                        }
-                        }
-                    ]
-                    },
-                    grid: {
-                    borderColor: '#f1f1f1',
-                    }
-                };
+                        name: 'Tokyo',
+                        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
 
-                var chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
-                chart2.render();
-            },
-            GraBaLi(){
-                var options1 = {
-                    series: [{
-                        name: 'Website Blog',
-                        type: 'column',
-                        data: [440, 505, 414, 671, 227, 413, 201, 352, 752, 320, 257, 160]
                     }, {
-                        name: 'Social Media',
-                        type: 'line',
-                        data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16]
-                    }],
+                        name: 'New York',
+                        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+
+                    }, {
+                        name: 'London',
+                        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+
+                    }, {
+                        name: 'Berlin',
+                        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
+
+                    }]
+                });
+            },
+            resetBarra(){
+                this.gBarra.borra.destroy();
+            },
+            /* metodos grafica linea */
+            GraLinea(data){
+
+                var inicio = moment(data.fecIni).format('YYYY-MM-DD HH:mm:ss');
+                var fin = moment(data.fecFin).format('YYYY-MM-DD HH:mm:ss');
+                var partida = '';
+                var clave = '';
+                const gr = [];
+                const linX = [];
+                const valor = [];
+                var nombre = '';
+                const datos = [];
+
+                //alertas de inputs vacios
+                inicio == null ? Swal.fire('Por favor selecciona la fecha de inicio.') : '';
+                fin == null ? Swal.fire('Por favor selecciona la fecha final.') : '';
+                data.procesos.length <= 0 ? Swal.fire('Por favor selecciona un proceso.') : '';
+                if ((inicio != null & fin != null) & data.procesos.length > 0) {
+                    //recorrido de fechas
+                    this.cargas.forEach(reco => {
+                        if ( moment(reco.fecha).isSameOrAfter(inicio, 'minutes') & moment(reco.fecha).isBefore(fin, 'minutes') & reco.departamento_id == this.S_Area ) {
+                            gr.push(reco);
+                        }
+                    })
+
+                    gr.forEach(grp => {
+                        data.procesos.forEach(pro => {
+                            if (grp.proceso_id == pro) {
+                                partida = grp.partida == null ? 'N/A' : grp.partida;
+                                clave = grp.clave_id == null ? 'N/A' : grp.clave.CVE_ART;
+                                valor.push({name: grp.proceso.nompro, data: grp.valor, parti: partida, cl: clave});
+                            }
+                        })
+                    })
+
+                    console.log(valor)
+
+                    this.gLinea.borra = Highcharts.chart('chart1', {
+
                         chart: {
-                        height: 350,
-                        type: 'line',
-                    },
-                    stroke: {
-                        width: [0, 4]
-                    },
-                    title: {
-                        text: 'Traffic Sources'
-                    },
-                    dataLabels: {
-                        enabled: true,
-                        enabledOnSeries: [1]
-                    },
-                    labels: ['01 Jan 2001', '02 Jan 2001', '03 Jan 2001', '04 Jan 2001', '05 Jan 2001', '06 Jan 2001', '07 Jan 2001', '08 Jan 2001', '09 Jan 2001', '10 Jan 2001', '11 Jan 2001', '12 Jan 2001'],
-                    xaxis: {
-                        type: 'datetime'
-                    },
-                    yaxis: [{
-                        title: {
-                            text: 'Website Blog',
+                            zoomType: 'x'
                         },
 
-                    }, {
-                        opposite: true,
                         title: {
-                            text: 'Social Media'
+                            text: data.titulo
+                        },
+
+                        subtitle: {
+                            text: data.subtitulo
+                        },
+
+                        yAxis: {
+                            title: {
+                            text: 'Number of Employees'
+                            }
+                        },
+
+                        xAxis: {
+                            accessibility: {
+                                rangeDescription: 'Range: '+data.finIni+' - '+data.fecFin
+                            }
+                        },
+
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle'
+                        },
+
+                        plotOptions: {
+                            series: {
+                            label: {
+                                connectorAllowed: false
+                            },
+                            pointStart: 2010
+                            }
+                        },
+
+                        series: [{
+                            name: 'Installation',
+                            data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+                        }, {
+                            name: 'Manufacturing',
+                            data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+                        }, {
+                            name: 'Sales & Distribution',
+                            data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+                        }, {
+                            name: 'Project Development',
+                            data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+                        }, {
+                            name: 'Other',
+                            data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+                        }],
+
+                        responsive: {
+                            rules: [{
+                            condition: {
+                                maxWidth: 500
+                            },
+                            chartOptions: {
+                                legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                                }
+                            }
+                            }]
+                        }
+
+                    });
+                }
+
+            },
+            resetLinea(){
+                this.gLinea.borra.destroy();
+            },
+            /* metodo grafica combinada */
+            GraBaLi(){
+                this.gBaLi.borra = Highcharts.chart('chart3', {
+                    title: {
+                        text: 'Combination chart'
+                    },
+                    xAxis: {
+                        categories: ['Apples', 'Oranges', 'Pears', 'Bananas', 'Plums']
+                    },
+                    labels: {
+                        items: [{
+                        html: 'Total fruit consumption',
+                        style: {
+                            left: '50px',
+                            top: '18px',
+                            color: ( // theme
+                            Highcharts.defaultOptions.title.style &&
+                            Highcharts.defaultOptions.title.style.color
+                            ) || 'black'
+                        }
+                        }]
+                    },
+                    series: [{
+                        type: 'column',
+                        name: 'Jane',
+                        data: [3, 2, 1, 3, 4]
+                    }, {
+                        type: 'column',
+                        name: 'John',
+                        data: [2, 3, 5, 7, 6]
+                    }, {
+                        type: 'column',
+                        name: 'Joe',
+                        data: [4, 3, 3, 9, 0]
+                    }, {
+                        type: 'spline',
+                        name: 'Average',
+                        data: [3, 2.67, 3, 6.33, 3.33],
+                        marker: {
+                        lineWidth: 2,
+                        lineColor: Highcharts.getOptions().colors[3],
+                        fillColor: 'white'
+                        }
+                    }, {
+                        type: 'pie',
+                        name: 'Total consumption',
+                        data: [{
+                        name: 'Jane',
+                        y: 13,
+                        color: Highcharts.getOptions().colors[0] // Jane's color
+                        }, {
+                        name: 'John',
+                        y: 23,
+                        color: Highcharts.getOptions().colors[1] // John's color
+                        }, {
+                        name: 'Joe',
+                        y: 19,
+                        color: Highcharts.getOptions().colors[2] // Joe's color
+                        }],
+                        center: [100, 80],
+                        size: 100,
+                        showInLegend: false,
+                        dataLabels: {
+                        enabled: false
                         }
                     }]
-                };
-
-                var chart1 = new ApexCharts(document.querySelector("#chart1"), options1);
-                chart1.render();
+                });
+            },
+            resetBaLi(){
+                this.gBaLi.borra.destroy();
             }
         },
 
@@ -1712,7 +1906,7 @@
 
             ano: function(a) {
                 this.$inertia.get('/Produccion/ReportesPro',{ busca: this.S_Area, ano: a }, {
-                    onSuccess: () => { console.log('año') }, onError: () => { }, preserveState: true
+                    onSuccess: () => {  }, onError: () => { }, preserveState: true
                 });
 
             },
