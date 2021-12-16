@@ -245,6 +245,9 @@ class RequisicionesSolicitadasController extends Controller {
                 'RequisicionMarca' => function($marca) {
                     $marca->select('id', 'Nombre');
                 },
+                'RequisicionesVales' => function($vales) {
+                    $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
+                },
                 'RequisicionArticulos' => function($Req) {
                     $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                 },
@@ -270,6 +273,9 @@ class RequisicionesSolicitadasController extends Controller {
                     },
                     'RequisicionMarca' => function($marca) {
                         $marca->select('id', 'Nombre');
+                    },
+                    'RequisicionesVales' => function($vales) {
+                        $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                     },
                     'RequisicionArticulos' => function($Req) {
                         $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
@@ -297,6 +303,9 @@ class RequisicionesSolicitadasController extends Controller {
                     },
                     'RequisicionMarca' => function($marca) {
                         $marca->select('id', 'Nombre');
+                    },
+                    'RequisicionesVales' => function($vales) {
+                        $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                     },
                     'RequisicionArticulos' => function($Req) {
                         $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
@@ -327,6 +336,9 @@ class RequisicionesSolicitadasController extends Controller {
                         'RequisicionMarca' => function($marca) {
                             $marca->select('id', 'Nombre');
                         },
+                        'RequisicionesVales' => function($vales) {
+                            $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
+                        },
                         'RequisicionArticulos' => function($Req) {
                             $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                         },
@@ -353,6 +365,9 @@ class RequisicionesSolicitadasController extends Controller {
                         },
                         'RequisicionMarca' => function($marca) {
                             $marca->select('id', 'Nombre');
+                        },
+                        'RequisicionesVales' => function($vales) {
+                            $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                         },
                         'RequisicionArticulos' => function($Req) {
                             $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
@@ -434,48 +449,6 @@ class RequisicionesSolicitadasController extends Controller {
             ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
         }
 
-        //Filtro por Partidas pertenecientes a una Requisicion
-        if($request->Req != ''){
-
-            $ArticulosRequisicion = ArticulosRequisiciones::with([
-                'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
-                    $req->select(
-                        'id', 'IdUser',
-                        'IdEmp', 'Folio',
-                        'NumReq', 'OrdenCompra',
-                        'Departamento_id',
-                        'jefes_areas_id',
-                        'Codigo', 'Maquina_id',
-                        'Marca_id', 'TipCompra',
-                        'Observaciones', 'Perfil_id');
-                },
-                'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
-                    $perfil->select('id', 'name');
-                },
-                'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
-                    $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
-                },
-                'ArticulosRequisicion.RequisicionDepartamento' => function($departamento) { //Relacion 1 a 1 De puestos
-                    $departamento->select('id', 'Nombre');
-                },
-                'ArticulosRequisicion.RequisicionJefe' => function($jefe) { //Relacion 1 a 1 De puestos
-                    $jefe->select('id', 'Nombre');
-                },
-                'ArticulosRequisicion.RequisicionMaquina' => function($maquina) { //Relacion 1 a 1 De puestos
-                    $maquina->select('id', 'Nombre');
-                },
-                'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
-                    $marca->select('id', 'Nombre');
-                },
-            ])
-            ->where('requisicion_id','=', $request->Req)
-            ->orderBy('EstatusArt', 'asc')
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
-
-        }else{
-            $ArticulosRequisicion = null;
-        }
-
         // Indicadores de Estatus de requisiciones
         $Almacen = Requisiciones::where('Estatus', '=', 8)->count();
         $Cotizacion = Requisiciones::whereBetween('Estatus', [3, 4])->count();
@@ -484,7 +457,6 @@ class RequisicionesSolicitadasController extends Controller {
         return Inertia::render('Almacen/Requisiciones/Requisiciones',
         compact('Session',
         'Requisiciones',
-        'ArticulosRequisicion',
         'Almacen',
         'Cotizacion',
         'SinConfirmar',
@@ -586,180 +558,181 @@ class RequisicionesSolicitadasController extends Controller {
 
     public function update(Request $request, $id){
 
-        if($request->metodo == 'Parcialidad'){
+        switch ($request->metodo) {
+            //CASO DE ENVIAR REQUISICION A COTIZACION
+            case 1:
 
-            $id = $request->IdArt;
+                //Reviso si hay articulos en Estatus de Solicitud para actualizarlos
+                $Solicitado = ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->where('EstatusArt', '=', 2)->count();
 
-            //Obtengo la cantidad solicitada previamente
-            $Articulo = ArticulosRequisiciones::where('id', '=', $request->IdArt)->first();
-            $Articulo->Cantidad;
-
-            //Resto la diferencia que existen en almacen
-            $Par = $Articulo->Cantidad - $request->Parcialidad;
-
-            ArticulosRequisiciones::where('id', '=', $id)->update([
-                'Cantidad' => $Par,
-            ]);
-
-            $Parcialidad = ArticulosRequisiciones::create([
-                'Fecha' => $Articulo->Fecha,
-                'Cantidad' => $request->Parcialidad,
-                'Unidad' => $Articulo->Unidad,
-                'Descripcion' => $Articulo->Descripcion,
-                'EstatusArt' => $Articulo->EstatusArt,
-                'requisicion_id' => $Articulo->requisicion_id,
-            ]);
-
-        }else{
-
-            switch ($request->metodo) {
-                //CASO DE ENVIAR REQUISICION A COTIZACION
-                case 1:
-
-                    //Reviso si hay articulos en Estatus de Solicitud para actualizarlos
-                    $Solicitado = ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->where('EstatusArt', '=', 2)->count();
-
-                    if($Solicitado > 0){
-                        //Actualizo los articulos que aun esten estatus 2 (Solicitud)
-                        ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->where('EstatusArt', '=', 2)->update([
-                            'EstatusArt' => 3,
-                        ]);
-                    }
-
-                    Requisiciones::find($request->id)->update([
-                        'Estatus' => 3,
+                if($Solicitado > 0){
+                    //Actualizo los articulos que aun esten estatus 2 (Solicitud)
+                    ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->where('EstatusArt', '=', 2)->update([
+                        'EstatusArt' => 3,
                     ]);
+                }
 
-                    TiemposRequisiciones::where('requisicion_id', '=', $request->id)->update([
-                        'Revision' => Carbon::now(),
+                Requisiciones::find($request->id)->update([
+                    'Estatus' => 3,
+                ]);
+
+                TiemposRequisiciones::where('requisicion_id', '=', $request->id)->update([
+                    'Revision' => Carbon::now(),
+                ]);
+
+                return redirect()->back();
+                break;
+
+            //CASO DE CONFIRMAR EXISTENCIA DE REQUISICION EN ALMACEN
+            case 2:
+
+                //Reviso si hay articulos en Estatus de Almacen para actualizarlos
+                $Almacen = ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->where('EstatusArt', '=', 8)->count();
+
+                if($Almacen > 0){
+                    ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->where('EstatusArt', '=', 8)->update([
+                        'EstatusArt' => 8,
                     ]);
+                }
 
-                    return redirect()->back();
-                    break;
+                Requisiciones::find($request->id)->update([
+                    'Estatus' => 8,
+                ]);
 
-                //CASO DE CONFIRMAR EXISTENCIA DE REQUISICION EN ALMACEN
-                case 2:
+                TiemposRequisiciones::where('requisicion_id', '=', $request->id)->update([
+                    'Almacen' => Carbon::now(),
+                ]);
 
-                    //Reviso si hay articulos en Estatus de Almacen para actualizarlos
-                    $Almacen = ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->where('EstatusArt', '=', 8)->count();
+                return redirect()->back();
 
-                    if($Almacen > 0){
-                        ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->where('EstatusArt', '=', 8)->update([
-                            'EstatusArt' => 8,
-                        ]);
-                    }
+                break;
+            //VERIFICA CONTRASEÑA Y USUARIO CORRECTOS
+            case 3:
 
-                    Requisiciones::find($request->id)->update([
-                        'Estatus' => 8,
-                    ]);
+                $User = User::where('IdEmp', '=', $request->User)->first(['id', 'IdEmp', 'password']);
 
-                    TiemposRequisiciones::where('requisicion_id', '=', $request->id)->update([
-                        'Almacen' => Carbon::now(),
-                    ]);
+                if(!empty($User->IdEmp)){
 
-                    return redirect()->back();
+                    $User->IdEmp;
+                    $User->password;
 
-                    break;
-                //VERIFICA CONTRASEÑA Y USUARIO CORRECTOS
-                case 3:
+                    if($request->User == $User->IdEmp){
 
-                    $User = User::where('IdEmp', '=', $request->User)->first(['id', 'IdEmp', 'password']);
+                        if (Hash::check($request->Pass, $User->password)){
 
-                    if(!empty($User->IdEmp)){
+                            Requisiciones::where('id', '=', $request->IdArt)->update([
+                                'Estatus' => 9,
+                            ]);
 
-                        $User->IdEmp;
-                        $User->password;
+                            ArticulosRequisiciones::where('requisicion_id', '=', $request->IdArt)->update([
+                                'EstatusArt' => 9,
+                                'RecibidoPor' => $User->id,
+                            ]);
 
-                        if($request->User == $User->IdEmp){
+                            TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->IdArt)->update([
+                                'Entregado' => Carbon::now(),
+                            ]);
 
-                            if (Hash::check($request->Pass, $User->password)){
+                            return redirect()->back();
 
-                                Requisiciones::where('id', '=', $request->IdArt)->update([
-                                    'Estatus' => 9,
-                                ]);
-
-                                ArticulosRequisiciones::where('requisicion_id', '=', $request->IdArt)->update([
-                                    'EstatusArt' => 9,
-                                    'RecibidoPor' => $User->id,
-                                ]);
-
-                                TiemposRequisiciones::where('articulo_requisicion_id', '=', $request->IdArt)->update([
-                                    'Entregado' => Carbon::now(),
-                                ]);
-
-                                return redirect()->back();
-
-                            }else{
-                                return back()->with([
-                                    'flash' => 3,
-                                ]);
-                            }
                         }else{
                             return back()->with([
-                                'flash' => 2,
+                                'flash' => 3,
                             ]);
                         }
                     }else{
                         return back()->with([
-                            'flash' => 1,
+                            'flash' => 2,
                         ]);
                     }
-                    break;
-
-                //CASO DE MANDAR A COTIZAR SOLO UN ARTICULO
-                case 4:
-
-                    ArticulosRequisiciones::where('id', '=', $request->id)->update([
-                        'EstatusArt' => 3,
+                }else{
+                    return back()->with([
+                        'flash' => 1,
                     ]);
+                }
+                break;
 
-                    //Reviso si hay articulos en Estatus de Solicitud para actualizarlos
-                    $Solicitado = ArticulosRequisiciones::where('id', '=', $request->id)->where('EstatusArt', '=', 2)->count();
+            //CASO DE MANDAR A COTIZAR SOLO UN ARTICULO
+            case 4:
 
-                    if($Solicitado == 0){
-                        //Busco si hay un articulo en estatus de Cotizacion
-                        $Cotizacion = ArticulosRequisiciones::where('id', '=', $request->id)->where('EstatusArt', '=', 3)->count();
-                        //En caso de existir busco el id de la Requisicion a actualizar
-                        if($Cotizacion > 0){
-                            $Req = ArticulosRequisiciones::where('id', '=', $request->id)->first('requisicion_id');
-                            //Actualizo es estatus de la requisicion a Cotizacion
-                            Requisiciones::find($Req->requisicion_id)->update([
-                                'Estatus' => 3,
-                            ]);
-                        }
-                    }
+                ArticulosRequisiciones::where('id', '=', $request->id)->update([
+                    'EstatusArt' => 3,
+                ]);
 
-                    return redirect()->back();
-                    break;
-                // CASO DE EXITENCIA DE UN SOLO PRODUCTO EN ALMACEN
-                case 5:
-                    //ACTUALIZO EL ARTICULO EN ALMACEN
-                    ArticulosRequisiciones::where('id', '=', $request->id)->update([
-                        'EstatusArt' => 8,
-                    ]);
+                //Reviso si hay articulos en Estatus de Solicitud para actualizarlos
+                $Solicitado = ArticulosRequisiciones::where('id', '=', $request->id)->where('EstatusArt', '=', 2)->count();
 
-                    //OBTENGO EL ID DE LA REQUISICION
-                    $Req = ArticulosRequisiciones::where('id', '=', $request->id)->first('requisicion_id');
-
-                    //BUSCO SI EXISTE UN ARTICULO EN COTIZACION
-                    $Cotizacion = Requisiciones::where('id', '=', $Req->requisicion_id)->where('Estatus', '=', 3)->count();
-
-                    //EN CASO DE EXISTIR UN ARTICULO EN COTIZACION ACTUALIZO LA REQUISICION A COTIZACION
-                    if($Cotizacion > 0){ //Existe un Articulo al menos que hay que cotizar
+                if($Solicitado == 0){
+                    //Busco si hay un articulo en estatus de Cotizacion
+                    $Cotizacion = ArticulosRequisiciones::where('id', '=', $request->id)->where('EstatusArt', '=', 3)->count();
+                    //En caso de existir busco el id de la Requisicion a actualizar
+                    if($Cotizacion > 0){
+                        $Req = ArticulosRequisiciones::where('id', '=', $request->id)->first('requisicion_id');
+                        //Actualizo es estatus de la requisicion a Cotizacion
                         Requisiciones::find($Req->requisicion_id)->update([
                             'Estatus' => 3,
                         ]);
-                        //EN CASO CONTRARIO QUE TODOS LOS ARTICULOS ESTEN EN ALMACEN ACTUALIZO LA REQUISICION A ALMACEN
-                    }else{ //Todos los articulos pertenecientes a la requisicion tienen estatus 8
-                        Requisiciones::find($Req->requisicion_id)->update([
-                            'Estatus' => 8,
-                        ]);
                     }
+                }
 
-                    return redirect()->back();
-                    break;
-            }
+                return redirect()->back();
+                break;
+            // CASO DE EXITENCIA DE UN SOLO PRODUCTO EN ALMACEN
+            case 5:
+                //ACTUALIZO EL ARTICULO EN ALMACEN
+                ArticulosRequisiciones::where('id', '=', $request->id)->update([
+                    'EstatusArt' => 8,
+                ]);
 
+                //OBTENGO EL ID DE LA REQUISICION
+                $Req = ArticulosRequisiciones::where('id', '=', $request->id)->first('requisicion_id');
+
+                //BUSCO SI EXISTE UN ARTICULO EN COTIZACION
+                $Cotizacion = Requisiciones::where('id', '=', $Req->requisicion_id)->where('Estatus', '=', 3)->count();
+
+                //EN CASO DE EXISTIR UN ARTICULO EN COTIZACION ACTUALIZO LA REQUISICION A COTIZACION
+                if($Cotizacion > 0){ //Existe un Articulo al menos que hay que cotizar
+                    Requisiciones::find($Req->requisicion_id)->update([
+                        'Estatus' => 3,
+                    ]);
+                    //EN CASO CONTRARIO QUE TODOS LOS ARTICULOS ESTEN EN ALMACEN ACTUALIZO LA REQUISICION A ALMACEN
+                }else{ //Todos los articulos pertenecientes a la requisicion tienen estatus 8
+                    Requisiciones::find($Req->requisicion_id)->update([
+                        'Estatus' => 8,
+                    ]);
+                }
+
+                return redirect()->back();
+                break;
+            //CASO CREA PARCIALIDAD DEL ARTICULO
+            case 6:
+                // return $request;
+                $id = $request->IdArt;
+
+                //Obtengo la cantidad solicitada previamente
+                $Articulo = ArticulosRequisiciones::where('id', '=', $request->IdArt)->first();
+                $Articulo->Cantidad;
+
+                //Resto la diferencia que existen en almacen
+                $Par = $Articulo->Cantidad - $request->Parcialidad;
+
+                ArticulosRequisiciones::where('id', '=', $id)->update([
+                    'Cantidad' => $Par,
+                ]);
+
+                $Parcialidad = ArticulosRequisiciones::create([
+                    'IdEmp' => $request->IdEmp,
+                    'Fecha' => $Articulo->Fecha,
+                    'Cantidad' => $request->Parcialidad,
+                    'Unidad' => $Articulo->Unidad,
+                    'Descripcion' => $Articulo->Descripcion,
+                    'NumParte' => $request->NumParte,
+                    'EstatusArt' => $Articulo->EstatusArt,
+                    'requisicion_id' => $Articulo->requisicion_id,
+                ]);
+
+                return redirect()->back();
+                break;
         }
     }
 

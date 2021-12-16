@@ -332,6 +332,11 @@
                                                 <i class="fas fa-shipping-fast"></i>
                                             </span>
                                         </div>
+                                        <div class="iconoDetails" @click="Ticket(datos)">
+                                            <span tooltip="Imprime Ticket" flow="left">
+                                                <i class="fas fa-ticket-alt"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="columnaIconos" v-else-if="datos.Estatus == 7">
                                         <div class="iconoDetails" @click="Partidas(datos)">
@@ -386,7 +391,7 @@
             </div>
 
             <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
-                <div class="tw-px-2 tw-pt-2">
+                <div class="tw-mt-4 tw-mx-4">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición </h3>
@@ -395,111 +400,31 @@
                 </div>
 
                 <div class="tw-mx-8">
-                    <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
-                    <Table>
-                        <template v-slot:TableHeader>
-                            <th class="columna">FECHA</th>
-                            <th class="columna">NUM REQ</th>
-                            <th class="columna">DEPARTAMENTO</th>
-                            <th class="columna">MAQUINA</th>
-                            <th class="columna">MARCA</th>
-                            <th class="columna">OBSERVACIONES</th>
-                        </template>
-                        <template v-slot:TableFooter>
-                            <tr class="fila">
-                                <td class="tw-text-center">{{ requisicion.Fecha }}</td>
-                                <td class="tw-text-center">{{ requisicion.NumReq }}</td>
-                                <td class="tw-text-center">{{ requisicion.requisicion_departamento.Nombre }}</td>
-                                <td class="tw-text-center">{{ requisicion.requisicion_maquina.Nombre }}</td>
-                                <td class="tw-text-center">{{ requisicion.requisicion_marca.Nombre }}</td>
-                                <td class="tw-text-center">{{ requisicion.Observaciones }}</td>
-                            </tr>
-                        </template>
-                    </Table>
-                </div>
-
-                <div class="tw-mx-8" v-if="ArticulosRequisicion != null">
-                    <div v-if=" ArticulosRequisicion[0].articulo_user != null">
-                        <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Articulos --</p>
+                    <div>
+                        <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
                         <Table>
                             <template v-slot:TableHeader>
-                                <th class="columna">CANTIDAD</th>
-                                <th class="columna">UNIDAD</th>
-                                <th class="columna">DESCRIPCION</th>
-                                <th class="columna">NUM PARTE</th>
-                                <th class="columna">RECIBIDO</th>
-                                <th class="columna">ESTATUS</th>
-                                <th class="columna">ACCIONES</th>
+                                <th class="columna">FECHA</th>
+                                <th class="columna">NUM REQ</th>
+                                <th class="columna">DEPARTAMENTO</th>
+                                <th class="columna">MAQUINA</th>
+                                <th class="columna">MARCA</th>
+                                <th class="columna">OBSERVACIONES</th>
                             </template>
-
                             <template v-slot:TableFooter>
-                                <tr class="fila" v-for="art in ArticulosRequisicion" :key="art.id">
-                                    <td class="tw-text-center">{{ art.Cantidad }}</td>
-                                    <td class="tw-text-center">{{ art.Unidad }}</td>
-                                    <td class="tw-text-center">{{ art.Descripcion }}</td>
-                                    <td class="tw-text-center">{{ art.NumParte }}</td>
-                                    <td class="tw-text-center" >{{ art.articulo_user.name }}</td>
-                                    <td class="tw-text-center">
-                                        <div v-if="art.EstatusArt == 2">
-                                            <span tooltip="Solicitada" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 3 || art.EstatusArt == 4">
-                                            <span tooltip="En Espera de Cotización" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 5">
-                                            <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 6">
-                                            <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 7">
-                                            <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 8">
-                                            <span tooltip="Pasa por el articulo a almacén" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 9">
-                                            <span tooltip="Entregado" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
-                                            </span>
-                                        </div>
-                                        <div v-else-if="art.EstatusArt == 10">
-                                            <span tooltip="Cotizacion Rechazada" flow="left">
-                                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="columnaIconos">
-                                            <div class="iconoEdit" @click="ArticuloAlmacen(art)" v-if="art.EstatusArt == 2">
-                                                <span tooltip="Confirma Partida en Almacén" flow="left">
-                                                    <i class="ml-2 fas fa-check-circle"></i>
-                                                </span>
-                                            </div>
-                                            <div class="iconoEdit" @click="ArticuloCotizacion(art)" v-if="art.EstatusArt == 2">
-                                                <span tooltip="Envia Partida a Cotizacion" flow="left">
-                                                    <i class="fas fa-money-bill-wave"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </td>
+                                <tr class="fila">
+                                    <td class="tw-text-center">{{ Requi.Fecha }}</td>
+                                    <td class="tw-text-center">{{ Requi.NumReq }}</td>
+                                    <td class="tw-text-center">{{ Requi.requisicion_departamento.Nombre }}</td>
+                                    <td class="tw-text-center">{{ Requi.requisicion_maquina.Nombre }}</td>
+                                    <td class="tw-text-center">{{ Requi.requisicion_marca.Nombre }}</td>
+                                    <td class="tw-text-center">{{ Requi.Observaciones }}</td>
                                 </tr>
                             </template>
                         </Table>
                     </div>
-                    <div v-else>
+
+                    <div>
                         <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Articulos --</p>
                         <Table>
                             <template v-slot:TableHeader>
@@ -512,7 +437,7 @@
                             </template>
 
                             <template v-slot:TableFooter>
-                                <tr class="fila" v-for="art in ArticulosRequisicion" :key="art.id">
+                                <tr class="fila" v-for="art in Requi.requisicion_articulos" :key="art.id">
                                     <td class="tw-text-center">{{ art.Cantidad }}</td>
                                     <td class="tw-text-center">{{ art.Unidad }}</td>
                                     <td class="tw-text-center">{{ art.Descripcion }}</td>
@@ -567,6 +492,13 @@
                                     </td>
                                     <td>
                                         <div class="columnaIconos">
+                                            <div class="columnaIconos" v-if="art.EstatusArt >= 3">
+                                                <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
+                                                    <span tooltip="En proceso" flow="left">
+                                                        <i class="fas fa-thumbs-up"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
                                             <div class="iconoEdit" @click="ArticuloAlmacen(art)" v-if="art.EstatusArt == 2">
                                                 <span tooltip="Confirma Partida en Almacén" flow="left">
                                                     <i class="ml-2 fas fa-check-circle"></i>
@@ -577,37 +509,39 @@
                                                     <i class="fas fa-money-bill-wave"></i>
                                                 </span>
                                             </div>
+                                            <div class="iconoEdit" @click="Parcialidad(art)">
+                                                <span tooltip="Confirma Parcialidad" flow="left">
+                                                    <i class="fas fa-box-open"></i>
+                                                </span>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
                             </template>
                         </Table>
                     </div>
-                </div>
-                <div v-else>
-                    <p>No hay Articulos Asignados a esta requisición</p>
-                </div>
 
-                <div class="tw-mx-8" v-if="requisicion.requisiciones_vales != ''">
-                    <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Vales de Salida --</p>
-                    <Table>
-                        <template v-slot:TableHeader>
-                            <th class="columna">FOLIO</th>
-                            <th class="columna">SALIDA</th>
-                            <th class="columna">PROVEEDOR</th>
-                            <th class="columna">ESTATUS</th>
-                            <th class="columna">SALIDA</th>
-                        </template>
-                        <template v-slot:TableFooter>
-                            <tr class="fila" v-for="vale in requisicion.requisiciones_vales" :key="vale.id">
-                                <td class="tw-text-center">{{ vale.Folio }}</td>
-                                <td class="tw-text-center">{{ vale.Fecha }}</td>
-                                <td class="tw-text-center">{{ vale.NombreProveedor }}</td>
-                                <td class="tw-text-center">{{ vale.EstatusVale }}</td>
-                                <td class="tw-text-center">{{ vale.Salida }}</td>
-                            </tr>
-                        </template>
-                    </Table>
+                    <div v-if="Requi.requisiciones_vales != ''">
+                        <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Vales de Salida --</p>
+                        <Table>
+                            <template v-slot:TableHeader>
+                                <th class="columna">FOLIO</th>
+                                <th class="columna">SALIDA</th>
+                                <th class="columna">PROVEEDOR</th>
+                                <th class="columna">ESTATUS</th>
+                                <th class="columna">SALIDA</th>
+                            </template>
+                            <template v-slot:TableFooter>
+                                <tr class="fila" v-for="vale in Requi.requisiciones_vales" :key="vale.id">
+                                    <td class="tw-text-center">{{ vale.Folio }}</td>
+                                    <td class="tw-text-center">{{ vale.Fecha }}</td>
+                                    <td class="tw-text-center">{{ vale.NombreProveedor }}</td>
+                                    <td class="tw-text-center">{{ vale.EstatusVale }}</td>
+                                    <td class="tw-text-center">{{ vale.Salida }}</td>
+                                </tr>
+                            </template>
+                        </Table>
+                    </div>
                 </div>
 
                 <div class="ModalFooter">
@@ -619,54 +553,40 @@
                 <div class="tw-px-4 tw-py-4">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
-                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Crea Parcialidad</h3>
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Crea Parcialidad {{ Requi.NumReq }}</h3>
                         </div>
                     </div>
+                    <div class="tw-mx-8">
 
-                    <div class="tw-mt-4">
-                        <div class="ModalForm">
-                            <div class="tw-flex tw-items-center tw-justify-center tw-uppercase">
-                                <div class="tw-w-full tw-bg-white tw-rounded-lg tw-shadow-xl">
-                                    <div class="tw-p-2 tw-ml-4 tw-space-y-1 tw-border-b md:tw-grid md:tw-grid-cols-3 tw-justify-items-stretch hover:tw-bg-gray-50 md:tw-space-y-0">
-                                        <div class="tw-justify-self-start">
-                                            <p class="tw-text-gray-600">Número de requisición</p>
-                                            <input type="text" class="InfoData" v-model="form.NumReq" disabled/>
-                                        </div>
-                                        <div class="tw-justify-self-start">
-                                            <p class="tw-text-gray-600">Fecha</p>
-                                            <input type="text" class="InfoData" v-model="form.Fecha" disabled/>
-                                        </div>
-                                    </div>
-                                    <div class="tw-p-2 tw-ml-4 tw-space-y-1 tw-border-b md:tw-grid md:tw-grid-cols-3 tw-justify-items-stretch hover:tw-bg-gray-50 md:tw-space-y-0">
-                                        <div class="tw-justify-self-start">
-                                            <p class="tw-text-gray-600">Cantidad</p>
-                                            <input type="text" class="InfoData" v-model="form.Cant" disabled/>
-                                        </div>
-                                        <div class="tw-justify-self-start">
-                                            <p class="tw-text-gray-600">Unidad</p>
-                                            <input type="text" class="InfoData" v-model="form.Uni" disabled/>
-                                        </div>
-                                        <div class="tw-justify-self-start">
-                                            <p class="tw-text-gray-600">descripción</p>
-                                            <input type="text" class="InfoData" v-model="form.Desc" disabled/>
-                                        </div>
-                                    </div>
-                                    <div class="tw-flex tw-flex-col tw-justify-center tw-text-center tw-uppercase tw-rounded">
-                                        <div class="tw-p-4">
-                                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                                <jet-label><span class="required">*</span>Confirma Parcialidad</jet-label>
-                                                <jet-input type="number" v-model="form.Parcialidad"></jet-input>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div>
+                        <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Articulos --</p>
+                        <Table>
+                            <template v-slot:TableHeader>
+                                <th class="columna">CANTIDAD</th>
+                                <th class="columna">UNIDAD</th>
+                                <th class="columna">DESCRIPCION</th>
+                                <th class="columna">NUM PARTE</th>
+                                <th class="columna">PACIALIDAD</th>
+                            </template>
+
+                            <template v-slot:TableFooter>
+                                <tr class="fila">
+                                    <td class="tw-text-center">{{ form.Cant }}</td>
+                                    <td class="tw-text-center">{{ form.Uni }}</td>
+                                    <td class="tw-text-center">{{ form.Desc }}</td>
+                                    <td class="tw-text-center">{{ form.NumParte }}</td>
+                                    <td class="tw-text-center">
+                                        <jet-input type="number" min="1" v-model="form.Parcialidad"></jet-input>
+                                    </td>
+                                </tr>
+                            </template>
+                        </Table>
                     </div>
+                </div>
                 </div>
 
                 <div class="ModalFooter">
-                    <jet-button type="button" @click="update(form, 3.1)">Guardar</jet-button>
+                    <jet-button type="button" @click="ConfirmaParcialidad(form)">Confirmar Parcialidad</jet-button>
                     <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
                 </div>
             </modal>
@@ -887,6 +807,8 @@ export default {
             detalles: null,
             requisicion: [],
             form: {
+                IdUser: this.Session.id,
+                IdEmp: this.Session.IdEmp,
                 Accion: '',
                 req_id: '',
                 IdArt:  '',
@@ -897,6 +819,7 @@ export default {
                 Cant: '',
                 Uni: '',
                 Desc: '',
+                NumParte: '',
                 User: '',
                 Pass: '',
                 NomProveedor: '',
@@ -919,6 +842,8 @@ export default {
             },
             CambioVista: 1,
             Cambio: false,
+            Requi: [], //Asignacion de requisicion para patidas
+            Art: [],
             Visualizacion: 'PARTIDAS',
             Marcas: [],
         };
@@ -964,7 +889,6 @@ export default {
         errors: Object,
         flash: Boolean,
         Requisiciones: Object,
-        ArticulosRequisicion: Object,
         Almacen: Number,
         Cotizacion: Number,
         SinConfirmar: Number,
@@ -1115,14 +1039,28 @@ export default {
         },
 
         Parcialidad(data){
+            this.Art = data;
             this.form.IdArt = data.id;
-            this.form.NumReq = data.articulos_requisicion.NumReq;
+            this.form.NumReq = this.Requi.NumReq;
             this.form.Fecha = data.Fecha;
             this.form.Cant = data.Cantidad;
             this.form.Uni = data.Unidad;
             this.form.Desc = data.Descripcion;
+            this.form.NumParte = data.NumParte;
             this.chageClose();
-            this.editMode = false;
+        },
+
+        ConfirmaParcialidad(data) {
+            console.log(data);
+            data.metodo = 6;
+            data._method = "PUT";
+            this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
+                    onSuccess: () => {
+                        this.reset(),
+                        this.chageClose(),
+                        this.alertSucces();
+                    },
+                });
         },
 
         FiltroIndicadores(value){
@@ -1147,18 +1085,6 @@ export default {
                     location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
                     this.tabla() //regeneracion de tabla
                 }, preserveState: true})
-        },
-
-        update(data, metodo) {
-            data.metodo = "Parcialidad";
-            data._method = "PUT";
-            this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
-                    onSuccess: () => {
-                        this.reset(),
-                        this.chageClose(),
-                        this.alertSucces();
-                    },
-                });
         },
 
         SolicitaReposicion(data){
@@ -1194,26 +1120,8 @@ export default {
         },
 
         Partidas(data){ //Visualizacion de partidas
-            this.form.editId = data.id;
-            this.form.NumReq = data.NumReq;
-            this.form.Fecha = data.Fecha;
-            this.form.Departamento_id = data.Departamento_id;
-            this.form.Codigo = data.Codigo;
-            this.form.Maquina = data.Maquina_id;
-            this.form.Marca = data.Marca_id;
-            this.form.Tipo = data.TipCompra;
-            this.form.Nombre = data.Perfil_id;
-            this.form.Observaciones = data.Observaciones;
-            this.params.Req = data.id;
-
-            this.requisicion = data;
-
-            this.$inertia.get('/Almacen/Requisiciones', this.params , {
-                preserveState: true,
-                    onSuccess: () => {
-                        this.chagePartidas();
-                    },
-                })
+            this.Requi = data;
+            this.chagePartidas();
         },
 
         EnviarCotizarRequisicion(data){ //Enviar requisicion a cotizacion
@@ -1290,6 +1198,10 @@ export default {
                     this.reset();
                 },
             });
+        },
+
+        Ticket(data){
+            console.log(data);
         },
     },
 

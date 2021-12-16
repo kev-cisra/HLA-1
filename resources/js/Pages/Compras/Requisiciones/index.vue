@@ -278,7 +278,7 @@
                             <td>{{ datos.NumReq }}</td>
                             <td>{{ datos.OrdenCompra }}</td>
                             <td>{{ datos.requisicion_departamento.Nombre }}</td>
-                            <td>{{ datos.Codigo.substr(0,1) }}</td>
+                            <td class="tw-text-center">{{ datos.Codigo.substr(0,1) }}</td>
                             <td>{{ datos.requisicion_maquina.Nombre }}</td>
                             <td>{{ datos.requisicion_marca.Nombre }}</td>
                             <td>{{ datos.TipCompra }}</td>
@@ -612,36 +612,105 @@
         <div class="tw-px-4 tw-py-4">
             <div class="tw-text-lg">
                 <div class="ModalHeader">
-                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición </h3>
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición {{ Requi.NumReq }}</h3>
                 </div>
             </div>
         </div>
 
-        <div class="tw-mx-8">
-            <pre>
-                {{ ArticulosRequisicion }}
-            </pre>
-            <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
-<!--             <Table>
-                <template v-slot:TableHeader>
-                    <th class="columna">FECHA</th>
-                    <th class="columna">NUM REQ</th>
-                    <th class="columna">DEPARTAMENTO</th>
-                    <th class="columna">MAQUINA</th>
-                    <th class="columna">MARCA</th>
-                    <th class="columna">OBSERVACIONES</th>
-                </template>
-                <template v-slot:TableFooter>
-                    <tr class="fila">
-                        <td class="tw-text-center">{{ ArticulosRequisicion.Fecha }}</td>
-                        <td class="tw-text-center">{{ ArticulosRequisicion.NumReq }}</td>
-                        <td class="tw-text-center">{{ ArticulosRequisicion.requisicion_departamento.Nombre }}</td>
-                        <td class="tw-text-center">{{ ArticulosRequisicion.requisicion_maquina.Nombre }}</td>
-                        <td class="tw-text-center">{{ ArticulosRequisicion.requisicion_marca.Nombre }}</td>
-                        <td class="tw-text-center">{{ ArticulosRequisicion.Descripcion }}</td>
-                    </tr>
-                </template>
-            </Table> -->
+        <div class="tw-mx-4">
+            <div>
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">FECHA</th>
+                        <th class="columna">NUM REQ</th>
+                        <th class="columna">DEPARTAMENTO</th>
+                        <th class="columna">MAQUINA</th>
+                        <th class="columna">MARCA</th>
+                        <th class="columna">OBSERVACIONES</th>
+                    </template>
+                    <template v-slot:TableFooter>
+                        <tr class="fila">
+                            <td class="tw-text-center">{{ Requi.Fecha }}</td>
+                            <td class="tw-text-center">{{ Requi.NumReq }}</td>
+                            <td class="tw-text-center">{{ Requi.requisicion_departamento.Nombre }}</td>
+                            <td class="tw-text-center">{{ Requi.requisicion_maquina.Nombre }}</td>
+                            <td class="tw-text-center">{{ Requi.requisicion_marca.Nombre }}</td>
+                            <td class="tw-text-center">{{ Requi.Observaciones }}</td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
+
+            <div>
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Articulos --</p>
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">CANTIDAD</th>
+                        <th class="columna">UNIDAD</th>
+                        <th class="columna">DESCRIPCION</th>
+                        <th class="columna">NUM PARTE</th>
+                        <th class="columna">ESTATUS</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr class="fila" v-for="art in Requi.requisicion_articulos" :key="art.id">
+                            <td class="tw-text-center">{{ art.Cantidad }}</td>
+                            <td class="tw-text-center">{{ art.Unidad }}</td>
+                            <td class="tw-text-center">{{ art.Descripcion }}</td>
+                            <td class="tw-text-center">{{ art.NumParte }}</td>
+                            <td class="tw-text-center">
+                                <div v-if="art.EstatusArt == 1">
+                                    <span tooltip="SIN ENVIAR" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
+                                            SIN ENVIAR</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 2">
+                                    <span tooltip="Solicitada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 3 || art.EstatusArt == 4">
+                                    <span tooltip="En Espera de Cotización" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 5">
+                                    <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 6">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 7">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 8">
+                                    <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 9">
+                                    <span tooltip="Entregado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 10">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
         </div>
 
         <div class="ModalFooter">
@@ -727,8 +796,9 @@ export default {
             CambioVista: 1,
             Cambio: false,
             Visualizacion: 'PARTIDAS',
-            MaquinasDpto:[],
-            Marcas: [],
+            MaquinasDpto:[], //Arreglo para select dinamico
+            Marcas: [], //Arreglo para select dinamico
+            Requi: [], //Arreglo para asignar detallle de Requisicion
         };
     },
 
@@ -770,7 +840,6 @@ export default {
         Session: Object,
         errors: Object,
         Requisiciones: Object,
-        ArticulosRequisicion: Object,
         Departamentos: Object,
         Maquinas: Object,
         PerfilesUsuarios: Object,
@@ -823,9 +892,8 @@ export default {
                     "order": [0, 'desc'],
                     "columnDefs": [
                         { "width": "1%", "targets": [0] },
-                        { "width": "5%", "targets": [1] },
+                        { "width": "5%", "targets": [1, 4] },
                         { "width": "3%", "targets": [2,3,5] },
-                        { "width": "8%", "targets": [4] },
                         { "width": "9%", "targets": [6,7] },
                     ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
@@ -942,31 +1010,8 @@ export default {
         },
 
         Partidas(data){
-            console.log(data);
-            //Visualizacion de articulos pertenecientes a la requisicion
-            this.params.Req = data.id;
-            this.form.ReqId = data.id;
-            this.form.Codigo = data.Codigo;
-            this.form.Departamento_id = data.Departamento_id;
-            this.form.Fecha = data.Fecha;
-            this.form.NumReq = data.NumReq;
-            this.form.Maquina = data.Maquina_id;
-            this.form.Tipo = data.TipCompra;
-            this.form.Nombre = data.Perfil_id;
-            this.form.Observaciones = data.Observaciones;
-
-            axios.get('/Compras/Marcas',{
-                params: {
-                    Maquina: this.form.Maquina
-                }
-            })
-            .then(response => this.Marcas = response.data.Marcas)
-            .catch(error => console.log(error))
-
-            this.$inertia.get('/Compras/Requisiciones', this.params , {
-                onSuccess: () => {
-                    this.chagePartidas();
-                },preserveState: true})
+            this.Requi = data;
+            this.chagePartidas();
         },
 
         save(data) {
