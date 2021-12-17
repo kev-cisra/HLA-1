@@ -222,7 +222,7 @@
                                                 <i class="ml-2 fas fa-check-circle"></i>
                                             </span>
                                         </div>
-                                        <div class="iconoEdit" @click="ArticuloCotizacion(datos)">
+                                        <div class="iconoEdit" @click="ArticuloCotizacion(datos)" v-if="datos.EstatusArt == 2">
                                             <span tooltip="Envia Partida a Cotizacion" flow="left">
                                                 <i class="fas fa-money-bill-wave"></i>
                                             </span>
@@ -332,11 +332,6 @@
                                                 <i class="fas fa-shipping-fast"></i>
                                             </span>
                                         </div>
-                                        <div class="iconoDetails" @click="Ticket(datos)">
-                                            <span tooltip="Imprime Ticket" flow="left">
-                                                <i class="fas fa-ticket-alt"></i>
-                                            </span>
-                                        </div>
                                     </div>
                                     <div class="columnaIconos" v-else-if="datos.Estatus == 7">
                                         <div class="iconoDetails" @click="Partidas(datos)">
@@ -367,6 +362,11 @@
                                                 <i class="fas fa-fingerprint"></i>
                                             </span>
                                         </div>
+                                        <div class="iconoDetails" @click="Ticket(datos)">
+                                            <span tooltip="Imprime Ticket" flow="left">
+                                                <i class="fas fa-ticket-alt"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="columnaIconos" v-else>
                                         <div class="iconoDetails" @click="Partidas(datos)">
@@ -387,6 +387,35 @@
                             </tr>
                         </template>
                     </Table>
+                </div>
+            </div>
+
+            <div class="Impresion">
+                <div class="Print">
+                    <div class="Print-header">
+                        Requisicion 0000
+                    </div>
+
+                    <div class="Print-body">
+                        <table class="TablePrint">
+                            <thead>
+                                <th>Cantidad</th>
+                                <th>Unidad</th>
+                                <th>Articulo</th>
+                                <th>Precio Unitario</th>
+                                <th>Total</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>CXX</td>
+                                    <td>Lorem ipsum dolor sit amet.</td>
+                                    <td>00.00</td>
+                                    <td>0000.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -1202,11 +1231,20 @@ export default {
 
         Ticket(data){
             console.log(data);
+            var TotalRequisicion = 0;
             var ventana = window.open('', 'PRINT', 'height=400,width=600');
             ventana.document.write('<html><head><title>' + document.title + '</title>');
             ventana.document.write('<link rel="stylesheet" href="style.css">'); //Aquí agregué la hoja de estilos
-            ventana.document.write('</head><body >');
-            ventana.document.write('Holis');
+            ventana.document.write('</head><body>');
+            ventana.document.write('<div class="Impresion">');
+            ventana.document.write('<div class="Print-header">Requisicion '+data.NumReq+'</div>');
+            data.requisicion_articulos.forEach(function (art) {
+                    art.articulo_precios.forEach(function (pre) {
+                        ventana.document.write('Precio'+pre.Total+'<br>');
+                    });
+                    // TotalRequisicion += pre.Total;
+            });
+            ventana.document.write('<h1>'+TotalRequisicion+'</h1>');
             ventana.document.write('</body></html>');
             ventana.document.close();
             ventana.focus();

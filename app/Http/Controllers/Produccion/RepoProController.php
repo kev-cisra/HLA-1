@@ -11,6 +11,7 @@ use App\Models\Produccion\paros;
 use App\Models\Produccion\parosCarga;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -49,11 +50,8 @@ class RepoProController extends Controller
 
         //Variables
         $depa = [];
-        $carga = [];
         $mate = [];
         $procesos = [];
-        $paros = [];
-        $claParo = [];
         $Maqui = [];
 
         //Condicional
@@ -70,97 +68,11 @@ class RepoProController extends Controller
                 ->get(['id', 'IdUser', 'Nombre', 'departamento_id']);
         }
 
+        //claves de los paros
+        $claParo = paros::get();
+
          /**************************** consulta si existe la busqueda  ****************************************************/
         if (!empty($request->busca)) {
-             //carga
-            $año = empty($request->ano) ? date('Y') : $request->ano;
-            $bus = $request->busca;
-            $carga = carga::where('departamento_id', '=', $bus)
-            ->where('semana', 'LIKE', '%'.$año.'%')
-            ->with([
-                'dep_perf' => function($dp) use($bus) {
-                    $dp ->withTrashed()
-                        ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
-                },
-                'dep_perf.perfiles' => function($perfi){
-                    $perfi->withTrashed()
-                    ->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
-                },
-                'dep_perf.departamentos' => function($dp_de){
-                    $dp_de ->withTrashed()
-                    -> select('id', 'Nombre', 'departamento_id');
-                },
-                'equipo' => function($eq){
-                    $eq ->withTrashed()
-                    -> select('id', 'nombre');
-                },
-                'turno' => function($tu){
-                    $tu ->withTrashed()
-                    ->select('id', 'nomtur');
-                },
-                'maq_pro' => function($mp){
-                    $mp ->withTrashed()
-                    ->select('id', 'proceso_id', 'maquina_id');
-                },
-                'maq_pro.maquinas' => function($ma){
-                    $ma ->withTrashed()
-                    -> select('id', 'Nombre');
-                },
-                'proceso' => function($pr){
-                    $pr ->withTrashed()
-                    -> select('id', 'nompro', 'tipo', 'operacion', 'proceso_id');
-                },
-                'dep_mat' => function($dp){
-                    $dp ->withTrashed()
-                    -> select('id', 'material_id');
-                },
-                'dep_mat.materiales' => function($mat){
-                    $mat ->withTrashed()
-                    -> select('id', 'idmat', 'nommat');
-                },
-                'clave' => function($cla){
-                    $cla ->withTrashed()
-                    -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED');
-                },
-                'notas' => function($not){
-                    $not ->withTrashed()
-                    -> latest()
-                    -> select('id', 'fecha', 'nota', 'carga_id');
-                }
-            ])
-            ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id','VerInv', 'departamento_id']);
-
-            //paros
-            $paros = parosCarga::where('departamento_id', '=', $bus)
-            ->where('fecha', 'LIKE', '%'.$año.'%')
-            ->with([
-                'sub_paro' => function($spa){
-                    $spa->select('id', 'fecha', 'iniFecha', 'orden', 'estatus', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'pla_acci', 'paros_carga_id', 'departamento_id')
-                    ->orderBy('id','desc');
-                },
-                'paros' => function($pr){
-                    $pr->select('id', 'clave', 'descri', 'tipo');
-                },
-                'perfil_ini' => function($pini){
-                    $pini->select('id', 'Nombre', 'ApPat', 'ApMat');
-                },
-                'perfil_fin' => function($pfin){
-                    $pfin->select('id', 'Nombre', 'ApPat', 'ApMat');
-                },
-                'maq_pro' => function($mp){
-                    $mp->select('id', 'maquina_id', 'proceso_id');
-                },
-                'maq_pro.maquinas' => function($ma) {
-                    $ma->select('id', 'Nombre');
-                },
-                'proceso' => function($po) {
-                    $po->select('id', 'nompro');
-                },
-                'departamento' => function($dep) {
-                    $dep->select('id', 'Nombre');
-                }
-            ])
-            ->get(['id', 'fecha', 'iniFecha', 'orden', 'estatus', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'pla_acci', 'paros_carga_id', 'departamento_id']);
 
             //muestra materiales
             $mate = dep_mat::where('departamento_id', '=', $request->busca)
@@ -174,7 +86,6 @@ class RepoProController extends Controller
             ])
             ->get();
 
-            $claParo = paros::get();
 
             //procesos
             $procesos = procesos::where('departamento_id', '=', $request->busca)
@@ -205,62 +116,15 @@ class RepoProController extends Controller
 
         }
 
-        return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'materiales' => $mate, 'procesos' => $procesos, 'paros' => $paros, 'claParo' => $claParo, 'maquinas' => $Maqui]);
+        return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'materiales' => $mate, 'procesos' => $procesos, 'claParo' => $claParo, 'maquinas' => $Maqui]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Produccion\carga  $carga
-     * @return \Illuminate\Http\Response
-     */
-    public function show(carga $carga)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Produccion\carga  $carga
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(carga $carga)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Produccion\carga  $carga
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, carga $carga)
-    {
-        //
+    public function ConProdu(Request $request){
+        if (!empty($request->iniDia)) {
+            $addDia = date("Y-m-d H:m:s" , strtotime($request->iniDia."+ 1 days"));
+            $carga = carga::where('departamento_id', '=', $request->departamento_id);
+        }
+        return $request->iniDia.' '.$addDia;
     }
 
     /**
@@ -278,6 +142,6 @@ class RepoProController extends Controller
         }
         //return $request;
         return redirect()->back()
-                    ->with('message', 'Post Updated Successfully.');
+            ->with('message', 'Post Updated Successfully.');
     }
 }

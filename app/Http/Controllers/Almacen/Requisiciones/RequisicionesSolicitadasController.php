@@ -251,6 +251,9 @@ class RequisicionesSolicitadasController extends Controller {
                 'RequisicionArticulos' => function($Req) {
                     $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                 },
+                'RequisicionArticulos.ArticuloPrecios' => function($pre) {
+                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                },
                 ])
                 ->where('Estatus', '>', 1)
                 ->whereYear('Fecha', $anio)
@@ -279,6 +282,9 @@ class RequisicionesSolicitadasController extends Controller {
                     },
                     'RequisicionArticulos' => function($Req) {
                         $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                    },
+                    'RequisicionArticulos.ArticuloPrecios' => function($pre) {
+                        $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                     },
                     ])
                     ->where('Estatus', '>', 1)
@@ -309,6 +315,9 @@ class RequisicionesSolicitadasController extends Controller {
                     },
                     'RequisicionArticulos' => function($Req) {
                         $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                    },
+                    'RequisicionArticulos.ArticuloPrecios' => function($pre) {
+                        $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                     },
                     ])->where('Estatus', '>', 1)
                     ->whereMonth('Fecha', $request->Month)

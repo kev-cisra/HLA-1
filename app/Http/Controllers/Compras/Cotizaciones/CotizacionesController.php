@@ -183,7 +183,7 @@ class CotizacionesController extends Controller{
     public function store(Request $request){
 
         if(isset($request)){ //Verifico la existencia de datos
-
+            // return $request;
             if(isset($request->archivo)){ //Valido envio de Archivo
 
                 Validator::make($request->all(), [
@@ -226,7 +226,7 @@ class CotizacionesController extends Controller{
                 $Cotizacion = PreciosCotizaciones::create([
                     'IdUser' => $request->IdUser,
                     'Precio' => number_format($value['PrecioUnitario']),
-                    'Total' => $Total ,
+                    'Total' => $Total,
                     'Moneda' => $request->Moneda,
                     'TipoCambio' => $TipoCambio,
                     'Marca' => $request->Marca,

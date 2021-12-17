@@ -280,4 +280,23 @@
     @apply tw-inline-flex tw-items-center tw-w-28 tw-px-4 tw-py-1 tw-font-bold tw-tracking-wide tw-text-gray-800 tw-bg-red-400 tw-border-b-2 tw-border-red-500 tw-rounded tw-shadow-md hover:tw-border-red-600 hover:tw-bg-red-200 hover:tw-text-white;
 }
 
+.Impresion {
+    @apply tw-bg-white tw-max-h-10 tw-max-w-md;
+}
+
+.Print{
+    @apply tw-text-center tw-bg-white tw-h-auto;
+}
+
+.Print-header{
+    @apply tw-text-xs tw-border-b-2;
+}
+
+.Print-body{
+    @apply tw-text-xxs tw-flex tw-justify-center;
+}
+
+.TablePrint{
+    @apply tw-table-auto;
+}
 
