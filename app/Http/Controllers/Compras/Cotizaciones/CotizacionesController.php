@@ -203,13 +203,13 @@ class CotizacionesController extends Controller{
 
                 if($request->Moneda == 'MXN'){ //Obtengo el tipo de moneda
                     $Total = $value['PrecioUnitario'] * $value['Cantidad']; //Calculo el total
-                    $Total = number_format($Total);
+                    $Total = $Total;
                     $TipoCambio = 0;
                 }else{
                     $TipoCambio = $request->TipoCambio;
                     $Total1 = round($value['PrecioUnitario'] * $request->TipoCambio, 2); //Calculo el total del Precio Unitario
                     $Total = $Total1 * $value['Cantidad']; //Calculo el otal del la cotizacion
-                    $Total = number_format($Total);
+                    $Total = $Total;
                 }
 
                 //Obtengo el numero de cotizaciones guardadas para esa requisicion
@@ -225,7 +225,7 @@ class CotizacionesController extends Controller{
 
                 $Cotizacion = PreciosCotizaciones::create([
                     'IdUser' => $request->IdUser,
-                    'Precio' => number_format($value['PrecioUnitario']),
+                    'Precio' => $value['PrecioUnitario'],
                     'Total' => $Total,
                     'Moneda' => $request->Moneda,
                     'TipoCambio' => $TipoCambio,

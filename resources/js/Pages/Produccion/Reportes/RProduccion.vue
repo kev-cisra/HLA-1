@@ -73,20 +73,20 @@
                     <!-- mes -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Mes</jet-label>
-                        <jet-input type="month" class="form-control" @click="limInputs(3)" v-model="FoFiltro.mes"></jet-input>
+                        <jet-input type="month" class="form-control" v-model="FoFiltro.mes"></jet-input>
                     </div>
                     <!-- semana -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Semana</jet-label>
-                        <jet-input type="week" class="form-control" @click="limInputs(2)" v-model="FoFiltro.semana"></jet-input>
+                        <jet-input type="week" class="form-control" v-model="FoFiltro.semana"></jet-input>
                     </div>
                     <!-- dia -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Fecha Dia</jet-label>
-                        <jet-input type="date" class="form-control" @click="limInputs(1.5)" v-model="FoFiltro.iniDia"></jet-input>
+                        <jet-input type="date" class="form-control" v-model="FoFiltro.iniDia"></jet-input>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-button @click="arrProdu(FoFiltro)">Consultar</jet-button>
+                        <jet-button @click="arrProdu()">Consultar</jet-button>
                     </div>
                 </div>
             </div>
@@ -246,7 +246,7 @@ import axios from 'axios';
             },
             /***************************** Datos de procesos *******************************************/
             //Limpia los inputs de fechas
-            limInputs(val){
+            /* limInputs(val){
                 if(val == 1.5){
                     this.FoFiltro.semana = null;
                     this.FoFiltro.mes = null;
@@ -270,29 +270,34 @@ import axios from 'axios';
                     this.FoFiltro.mes = null;
                     this.limpPro = true;
                 }
-            },
+            }, */
             //consulta la produccion para la tabla
-            async arrProdu(data){
-                data.departamento_id = this.S_Area;
-
+            async arrProdu(){
+                var datos = {}
                 if(this.FoFiltro.iniDia != null){
-                    data.iniDia = this.FoFiltro.iniDia+' 07:00:00'
+                    var ini = '';
+                    var fin = '';
                     if (this.S_Area == 7){
                         if (moment(this.FoFiltro.iniDia).isDST()) {
-                            data.iniDia = this.FoFiltro.iniDia+' 09:10:00';
+                            ini = this.FoFiltro.iniDia+' 09:10:00';
                         }else{
-                            data.iniDia = this.FoFiltro.iniDia+' 08:10:00';
+                            ini = this.FoFiltro.iniDia+' 08:10:00';
                         }
+                    }else{
+                        ini = this.FoFiltro.iniDia+' 07:00:00'
                     }
 
                     //Asigna el dato para la fecha final
-                    fin = moment(inicio).add(24, 'hours');
+                    fin = moment(ini).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
+                    datos = {'departamento_id': this.S_Area, 'tipo': 'dia', 'iniDia': ini, 'finDia': fin }
                 }
 
-                let pomesa = await axios.post('Produccion/ReportesPro/ConPro', data)
+                console.log(datos)
+
+                /* let pomesa = await axios.post('Produccion/ReportesPro/ConPro', data)
                 let fin = pomesa.data
                 this.recoTabla = fin
-                return console.log(fin)
+                console.log(fin) */
             }
         },
 

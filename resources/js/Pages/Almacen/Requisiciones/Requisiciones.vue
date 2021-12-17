@@ -1232,19 +1232,25 @@ export default {
         Ticket(data){
             console.log(data);
             var TotalRequisicion = 0;
-            var ventana = window.open('', 'PRINT', 'height=400,width=600');
+            var ventana = window.open('', 'PRINT');
             ventana.document.write('<html><head><title>' + document.title + '</title>');
             ventana.document.write('<link rel="stylesheet" href="style.css">'); //Aquí agregué la hoja de estilos
             ventana.document.write('</head><body>');
             ventana.document.write('<div class="Impresion">');
             ventana.document.write('<div class="Print-header">Requisicion '+data.NumReq+'</div>');
+            ventana.document.write('<div class="Print-header">Orden Compra '+data.OrdenCompra+'</div>');
             data.requisicion_articulos.forEach(function (art) {
+                ventana.document.write('Articulo'+art.Descripcion+'<br>');
                     art.articulo_precios.forEach(function (pre) {
+                        ventana.document.write('Marca'+pre.Marca+'<br>');
+                        ventana.document.write('Marca'+pre.Marca+'<br>');
+                        ventana.document.write('Proveedor'+pre.Proveedor+'<br>');
                         ventana.document.write('Precio'+pre.Total+'<br>');
+                        ventana.document.write('Moneda'+pre.Moneda+'<br>');
+                        TotalRequisicion += Number(pre.Total);
                     });
-                    // TotalRequisicion += pre.Total;
             });
-            ventana.document.write('<h1>'+TotalRequisicion+'</h1>');
+            ventana.document.write('<p>Precio Total <strong>'+TotalRequisicion+'</strong></p>');
             ventana.document.write('</body></html>');
             ventana.document.close();
             ventana.focus();
