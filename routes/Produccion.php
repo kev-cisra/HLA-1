@@ -78,8 +78,15 @@ Route::resource('CarOpe', CarOpeController::class)
 Route::resource('CarNor', CarNormController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
+//Reportes de produccion
 Route::resource('ReportesPro', RepoProController::class)
     ->middleware(['auth:sanctum', 'verified']);
+
+Route::post('/Produccion/ReportesPro/ConPro', [RepoProController::class, 'ConProdu'])->name('ConPro');
+
+//Fin de reporte de rpoduccion
+
+
 
 Route::resource('CargaExcel', CargarExcelController::class)
     ->middleware(['auth:sanctum', 'verified']);
