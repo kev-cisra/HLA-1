@@ -25,6 +25,7 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
     public function model(array $row)
     {
         $dp = carOpe::where('id', '=', $row['paquete_operador'])
+        ->withTrashed()
         ->with([
             'dep_per' => function($dp) {
                 $dp -> select('id', 'perfiles_usuarios_id', 'equipo_id');
@@ -32,7 +33,7 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         ])
         ->first(['id', 'proceso_id', 'dep_perf_id', 'maq_pro_id', 'departamento_id']);
 
-        $pn = carNorm::where('id', '=', $row['paquete_norma'])->first(['id', 'partida', 'norma', 'clave_id', 'departamento_id']);
+        $pn = carNorm::where('id', '=', $row['paquete_norma'])->withTrashed()->first(['id', 'partida', 'norma', 'clave_id', 'departamento_id']);
 
         //consulta para mostrar el equipo y el turno
         $tur = turnos::where('nomtur', 'like', '%'.$row['turno'].'%')->where('departamento_id', '=', $dp->departamento_id)->first(['id']);

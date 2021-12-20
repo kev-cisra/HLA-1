@@ -198,6 +198,7 @@
 
     import moment from 'moment';
     import 'moment/locale/es';
+import axios from 'axios';
 
     export default {
         props: [
@@ -509,11 +510,14 @@
             }
         },
         watch: {
-            S_Area: function(b){
+            S_Area: async function(b){
                 /* $('#t_paros').DataTable().clear(); */
                 $('#t_paros').DataTable().destroy();
                 this.proc_prin = '';
-                this.$inertia.get('/Produccion/Paros',{ busca: b }, {
+                /* await axios.get('/Produccion/Paros',{ busca: b })
+                .then((resu) => { this.tabla(), console.log(resu.data) })
+                .catch(err => {this.tabla()}) */
+                await this.$inertia.get('/Produccion/Paros',{ busca: b }, {
                     onSuccess: () => {
                         this.tabla() }, onError: () => {this.tabla()}, preserveState: true
                 });

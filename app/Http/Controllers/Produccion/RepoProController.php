@@ -120,11 +120,193 @@ class RepoProController extends Controller
     }
 
     public function ConProdu(Request $request){
-        if (!empty($request->iniDia)) {
-            $addDia = date("Y-m-d H:m:s" , strtotime($request->iniDia."+ 1 days"));
-            $carga = carga::where('departamento_id', '=', $request->departamento_id);
+        if ($request->tipo == 'dia') {
+            //$addDia = date("Y-m-d H:m:s" , strtotime($request->iniDia."+ 1 days"));
+            $carga = carga::where('departamento_id', '=', $request->departamento_id)
+            ->whereBetween('fecha', [$request->iniDia, $request->finDia])
+            ->with([
+                'dep_perf' => function($dp) {
+                    $dp ->withTrashed()
+                        ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
+                },
+                'dep_perf.perfiles' => function($perfi){
+                    $perfi->withTrashed()
+                    ->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'dep_perf.departamentos' => function($dp_de){
+                    $dp_de ->withTrashed()
+                    -> select('id', 'Nombre', 'departamento_id');
+                },
+                'equipo' => function($eq){
+                    $eq ->withTrashed()
+                    -> select('id', 'nombre');
+                },
+                'turno' => function($tu){
+                    $tu ->withTrashed()
+                    ->select('id', 'nomtur');
+                },
+                'maq_pro' => function($mp){
+                    $mp ->withTrashed()
+                    ->select('id', 'proceso_id', 'maquina_id');
+                },
+                'maq_pro.maquinas' => function($ma){
+                    $ma ->withTrashed()
+                    -> select('id', 'Nombre');
+                },
+                'proceso' => function($pr){
+                    $pr ->withTrashed()
+                    -> select('id', 'nompro', 'tipo', 'operacion', 'proceso_id');
+                },
+                'dep_mat' => function($dp){
+                    $dp ->withTrashed()
+                    -> select('id', 'material_id');
+                },
+                'dep_mat.materiales' => function($mat){
+                    $mat ->withTrashed()
+                    -> select('id', 'idmat', 'nommat');
+                },
+                'clave' => function($cla){
+                    $cla ->withTrashed()
+                    -> select('id', 'CVE_ART', 'DESCR');
+                },
+                'notas' => function($not){
+                    $not ->withTrashed()
+                    -> latest()
+                    -> select('id', 'fecha', 'nota', 'carga_id');
+                }
+            ])
+            ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id','VerInv', 'departamento_id']);
         }
-        return $request->iniDia.' '.$addDia;
+        if ($request->tipo == 'rango') {
+            $carga = carga::where('departamento_id', '=', $request->departamento_id)
+            ->whereBetween('fecha', [$request->iniDia, $request->finDia])
+            ->whereNotNull('clave_id')
+            ->where('partida', '!=', 'N/A')
+            ->whereHas('proceso', function($q){
+                $q->where('tipo', '!=', '3');
+            })
+            ->selectRaw('clave_id, partida, norma, proceso_id, departamento_id, SUM(valor) AS valor')
+            ->groupBy('proceso_id')
+            ->groupBy('norma')
+            ->groupBy('departamento_id')
+            ->groupBy('clave_id')
+            ->groupBy('partida')
+            ->with([
+                'dep_perf' => function($dp) {
+                    $dp ->withTrashed()
+                        ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
+                },
+                'dep_perf.perfiles' => function($perfi){
+                    $perfi->withTrashed()
+                    ->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'dep_perf.departamentos' => function($dp_de){
+                    $dp_de ->withTrashed()
+                    -> select('id', 'Nombre', 'departamento_id');
+                },
+                'equipo' => function($eq){
+                    $eq ->withTrashed()
+                    -> select('id', 'nombre');
+                },
+                'turno' => function($tu){
+                    $tu ->withTrashed()
+                    ->select('id', 'nomtur');
+                },
+                'maq_pro' => function($mp){
+                    $mp ->withTrashed()
+                    ->select('id', 'proceso_id', 'maquina_id');
+                },
+                'maq_pro.maquinas' => function($ma){
+                    $ma ->withTrashed()
+                    -> select('id', 'Nombre');
+                },
+                'proceso' => function($pr){
+                    $pr ->withTrashed()
+                    -> select('id', 'nompro', 'tipo', 'operacion', 'proceso_id');
+                },
+                'dep_mat' => function($dp){
+                    $dp ->withTrashed()
+                    -> select('id', 'material_id');
+                },
+                'dep_mat.materiales' => function($mat){
+                    $mat ->withTrashed()
+                    -> select('id', 'idmat', 'nommat');
+                },
+                'clave' => function($cla){
+                    $cla ->withTrashed()
+                    -> select('id', 'CVE_ART', 'DESCR');
+                },
+                'notas' => function($not){
+                    $not ->withTrashed()
+                    -> latest()
+                    -> select('id', 'fecha', 'nota', 'carga_id');
+                }
+            ])
+            ->get();
+        }
+        if ($request->tipo == 'semana') {
+            $carga = carga::where('departamento_id', '=', $request->departamento_id)
+            ->where('semana', '=', $request->semana)
+            ->whereNotNull('clave_id')
+            ->where('partida', '!=', 'N/A')
+            ->selectRaw('norma, proceso_id, departamento_id, SUM(valor) AS valor')
+            ->groupBy('proceso_id')
+            ->groupBy('norma')
+            ->groupBy('departamento_id')
+            ->with([
+                'dep_perf' => function($dp) {
+                    $dp ->withTrashed()
+                        ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
+                },
+                'dep_perf.perfiles' => function($perfi){
+                    $perfi->withTrashed()
+                    ->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'dep_perf.departamentos' => function($dp_de){
+                    $dp_de ->withTrashed()
+                    -> select('id', 'Nombre', 'departamento_id');
+                },
+                'equipo' => function($eq){
+                    $eq ->withTrashed()
+                    -> select('id', 'nombre');
+                },
+                'turno' => function($tu){
+                    $tu ->withTrashed()
+                    ->select('id', 'nomtur');
+                },
+                'maq_pro' => function($mp){
+                    $mp ->withTrashed()
+                    ->select('id', 'proceso_id', 'maquina_id');
+                },
+                'maq_pro.maquinas' => function($ma){
+                    $ma ->withTrashed()
+                    -> select('id', 'Nombre');
+                },
+                'proceso' => function($pr){
+                    $pr ->withTrashed()
+                    -> select('id', 'nompro', 'tipo', 'operacion', 'proceso_id');
+                },
+                'dep_mat' => function($dp){
+                    $dp ->withTrashed()
+                    -> select('id', 'material_id');
+                },
+                'dep_mat.materiales' => function($mat){
+                    $mat ->withTrashed()
+                    -> select('id', 'idmat', 'nommat');
+                },
+                'clave' => function($cla){
+                    $cla ->withTrashed()
+                    -> select('id', 'CVE_ART', 'DESCR');
+                },
+                'notas' => function($not){
+                    $not ->withTrashed()
+                    -> latest()
+                    -> select('id', 'fecha', 'nota', 'carga_id');
+                }
+            ])
+            ->get();
+        }
+        return $carga;
     }
 
     /**

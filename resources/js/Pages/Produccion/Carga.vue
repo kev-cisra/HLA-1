@@ -773,6 +773,7 @@
 
     import moment from 'moment';
     import 'moment/locale/es';
+import axios from 'axios';
 
     //
 
@@ -1592,6 +1593,9 @@
                 this.resetCA();
                 this.resetOB();
                 this.proc_prin = '';
+                /* await axios.get('/Produccion/Carga',{ busca: b })
+                .then(() => { this.reCarga(), this.tabla(), this.tablaOpe(), this.tablaNor(), this.tablaObje() })
+                .catch(err => { this.tabla(), this.tablaOpe(), this.tablaNor(), this.tablaObje() }) */
                 this.$inertia.get('/Produccion/Carga',{ busca: b }, {
                     onSuccess: () => { this.reCarga(), this.tabla(), this.tablaOpe(), this.tablaNor(), this.tablaObje() }, onError: () => {this.tabla(), this.tablaOpe(), this.tablaNor(), this.tablaObje()  }, preserveState: true
                 });
