@@ -390,40 +390,11 @@
                 </div>
             </div>
 
-            <div class="Impresion">
-                <div class="Print">
-                    <div class="Print-header">
-                        Requisicion 0000
-                    </div>
-
-                    <div class="Print-body">
-                        <table class="TablePrint">
-                            <thead>
-                                <th>Cantidad</th>
-                                <th>Unidad</th>
-                                <th>Articulo</th>
-                                <th>Precio Unitario</th>
-                                <th>Total</th>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>CXX</td>
-                                    <td>Lorem ipsum dolor sit amet.</td>
-                                    <td>00.00</td>
-                                    <td>0000.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
             <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
                 <div class="tw-mt-4 tw-mx-4">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
-                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición </h3>
+                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición {{ Requi.NumReq }}</h3>
                         </div>
                     </div>
                 </div>
@@ -521,13 +492,6 @@
                                     </td>
                                     <td>
                                         <div class="columnaIconos">
-                                            <div class="columnaIconos" v-if="art.EstatusArt >= 3">
-                                                <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
-                                                    <span tooltip="En proceso" flow="left">
-                                                        <i class="fas fa-thumbs-up"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
                                             <div class="iconoEdit" @click="ArticuloAlmacen(art)" v-if="art.EstatusArt == 2">
                                                 <span tooltip="Confirma Partida en Almacén" flow="left">
                                                     <i class="ml-2 fas fa-check-circle"></i>
@@ -754,8 +718,8 @@
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Proveedor</jet-label>
-                                <select class="InputSelect" v-model="form.Proveedor">
-                                    <option value="2021">2021</option>
+                                <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
+                                    <option v-for="select in Proveedores" :key="select.id" :value="select.Nombre" >{{ select.Nombre }}</option>
                                 </select>
                             </div>
                         </div>
@@ -879,6 +843,7 @@ export default {
     },
 
     mounted() {
+        this.params.Month = this.mes;
         this.tabla();
         this.params.Month = this.mes;
         var query  = window.location.search.substring(1);
@@ -918,6 +883,7 @@ export default {
         errors: Object,
         flash: Boolean,
         Requisiciones: Object,
+        Proveedores: Object,
         Almacen: Number,
         Cotizacion: Number,
         SinConfirmar: Number,
@@ -967,10 +933,10 @@ export default {
                     "order": [0, 'desc'],
                     "columnDefs": [
                         { "width": "1%", "targets": [0] },
-                        { "width": "5%", "targets": [1] },
+                        { "width": "5%", "targets": [1, 7] },
                         { "width": "3%", "targets": [2,3,5] },
                         { "width": "8%", "targets": [4] },
-                        { "width": "9%", "targets": [6,7] },
+                        { "width": "9%", "targets": [6] },
                     ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
@@ -1232,25 +1198,27 @@ export default {
         Ticket(data){
             console.log(data);
             var TotalRequisicion = 0;
-            var ventana = window.open('', 'PRINT');
+            var ventana = window.open('', 'PRINT', 'height=400,width=600');
             ventana.document.write('<html><head><title>' + document.title + '</title>');
             ventana.document.write('<link rel="stylesheet" href="style.css">'); //Aquí agregué la hoja de estilos
             ventana.document.write('</head><body>');
-            ventana.document.write('<div class="Impresion">');
-            ventana.document.write('<div class="Print-header">Requisicion '+data.NumReq+'</div>');
-            ventana.document.write('<div class="Print-header">Orden Compra '+data.OrdenCompra+'</div>');
+            ventana.document.write('<div>');
+            ventana.document.write('<p>Ticket de la orden de compra <strong>'+data.NumReq+'</strong></p>');
+            ventana.document.write('<table>');
+            ventana.document.write('<tr><td>Orden Compra:</td><td><strong>'+data.OrdenCompra+'</strong></td></tr>');
             data.requisicion_articulos.forEach(function (art) {
-                ventana.document.write('Articulo'+art.Descripcion+'<br>');
+                ventana.document.write('<tr><td>Articulo:</td><td><strong>'+art.Descripcion+'</strong></td></tr>');
                     art.articulo_precios.forEach(function (pre) {
-                        ventana.document.write('Marca'+pre.Marca+'<br>');
-                        ventana.document.write('Marca'+pre.Marca+'<br>');
-                        ventana.document.write('Proveedor'+pre.Proveedor+'<br>');
-                        ventana.document.write('Precio'+pre.Total+'<br>');
-                        ventana.document.write('Moneda'+pre.Moneda+'<br>');
+                        ventana.document.write('<tr><td>Marca:</td><td><strong>'+pre.Marca+'</strong></td></tr>');
+                        ventana.document.write('<tr><td>Proveedor:</td><td><strong>'+pre.Proveedor+'</strong></td></tr>');
+                        ventana.document.write('<tr><td>Total:</td><td><strong>'+pre.Total+'</strong></td></tr>');
+                        ventana.document.write('<tr><td>Moneda:</td><td><strong>'+pre.Moneda+'</strong></td></tr>');
                         TotalRequisicion += Number(pre.Total);
                     });
             });
-            ventana.document.write('<p>Precio Total <strong>'+TotalRequisicion+'</strong></p>');
+            ventana.document.write('<tr><td>Precio Total:</td><td><strong>'+TotalRequisicion+'</strong></td></tr>');
+            ventana.document.write('</table>');
+            ventana.document.write('</div>');
             ventana.document.write('</body></html>');
             ventana.document.close();
             ventana.focus();

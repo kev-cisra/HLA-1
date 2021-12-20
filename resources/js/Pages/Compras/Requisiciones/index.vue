@@ -788,7 +788,7 @@ export default {
             },
             params:{
                 Year: moment().format("YYYY"),
-                Month: 0,
+                Month: this.mes,
                 Status: 0,
                 View: 1,
                 Req: '',
@@ -802,9 +802,12 @@ export default {
         };
     },
 
+    Created(){
+        this.params.Month = this.mes;
+    },
+
     mounted() {
         this.tabla();
-
         var query  = window.location.search.substring(1);
         var vars = query.split("&");
             for (var i=0; i < vars.length; i++) {
@@ -886,7 +889,7 @@ export default {
             this.$nextTick(() => {
                 $("#Requisiciones").DataTable({
                     "language": this.español,
-                    paging: false,
+                    paging: true,
                     "scrollX": true,
                     scrollY:  '40vh',
                     "order": [0, 'desc'],

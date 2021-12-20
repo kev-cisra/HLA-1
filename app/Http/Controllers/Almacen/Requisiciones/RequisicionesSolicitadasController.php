@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Almacen\Requisiciones;
 use App\Http\Controllers\Controller;
 use App\Models\Almacen\Requisiciones\ValesSalida;
 use App\Models\Catalogos\Maquinas;
+use App\Models\Compras\Proveedores;
 use App\Models\Compras\Requisiciones\ArticulosRequisiciones;
 use App\Models\Compras\Requisiciones\Requisiciones;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
@@ -31,6 +32,8 @@ class RequisicionesSolicitadasController extends Controller {
         $request->Year == '' ? $anio = 2021 : $anio = $request->Year;
         $request->View == '' ? $Vista = 1 : $Vista = $request->View;
 
+        //Obtengo el catalogo de proveedores
+        $Proveedores = Proveedores::get();
 
         /* *********************************** CONSULTA PRINCIPAL ********************************* */
         if($Vista == 1){
@@ -468,6 +471,7 @@ class RequisicionesSolicitadasController extends Controller {
         'Requisiciones',
         'Almacen',
         'Cotizacion',
+        'Proveedores',
         'SinConfirmar',
         'Vista',
         'mes'));

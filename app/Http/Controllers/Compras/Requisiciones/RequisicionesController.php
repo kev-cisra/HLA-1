@@ -40,7 +40,7 @@ class RequisicionesController extends Controller{
         $hoy = Carbon::now();
 
         //Asigno el mes actual o uno recibido por request
-        $request->Month == '' ? $mes = 0 : $mes = $request->Month;
+        $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
         $request->Year == '' ? $anio = 2021 : $anio = $request->Year;
         $request->View == '' ? $Vista = 1 : $Vista = $request->View;
 
@@ -82,9 +82,10 @@ class RequisicionesController extends Controller{
                             'Codigo', 'Maquina_id',
                             'Marca_id', 'TipCompra',
                             'Observaciones', 'Perfil_id');
+                            $req->orderBy('id', 'desc');
                     },
-                    'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
-                        $perfil->select('id', 'name');
+                    'ArticuloUser' => function($user) { //Relacion 1 a 1 De puestos
+                        $user->select('id', 'name');
                     },
                     'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
                         $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
@@ -118,6 +119,7 @@ class RequisicionesController extends Controller{
                                 'Codigo', 'Maquina_id',
                                 'Marca_id', 'TipCompra',
                                 'Observaciones', 'Perfil_id');
+                            $req->orderBy('id', 'desc');
                         },
                         'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                             $perfil->select('id', 'name');
@@ -139,6 +141,7 @@ class RequisicionesController extends Controller{
                         },
                     ])
                     ->whereYear('Fecha', $anio)
+                    ->orderBy('id', 'desc')
                     ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
                 }
 
@@ -177,6 +180,7 @@ class RequisicionesController extends Controller{
                     ])
                     ->whereYear('Fecha', $anio)
                     ->whereMonth('Fecha', $request->Month)
+                    ->orderBy('id', 'desc')
                     ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
                 }
 
@@ -218,6 +222,7 @@ class RequisicionesController extends Controller{
                         ->whereYear('Fecha', $anio)
                         ->whereMonth('Fecha', $request->Month)
                         ->where('EstatusArt', $request->Status)
+                        ->orderBy('id', 'desc')
                         ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
                     }else{
                         //FILTRO UNICAMENTE POR ESTATUS
@@ -254,6 +259,7 @@ class RequisicionesController extends Controller{
                         ])
                         ->whereYear('Fecha', $anio)
                         ->where('EstatusArt', $request->Status)
+                        ->orderBy('id', 'desc')
                         ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
                     }
                 }

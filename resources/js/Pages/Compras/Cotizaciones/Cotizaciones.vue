@@ -179,6 +179,65 @@
         </div>
     </div>
 
+    <!-- Filtros -->
+    <div class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-mb-4">
+        <div class="tw-flex tw-gap-4">
+            <div>
+                <jet-label class="tw-text-center">AÑO</jet-label>
+                <select class="InputSelect" v-model="params.Year">
+                    <option value="2021"> 2021 --</option>
+                    <option value="2022"> 2022 -- </option>
+                </select>
+            </div>
+
+            <div>
+                <jet-label class="tw-text-center">MES</jet-label>
+                <select class="InputSelect" v-model="params.Month">
+                    <option value="0">TODOS</option>
+                    <option value="1">ENERO</option>
+                    <option value="2">FEBRERO</option>
+                    <option value="3">MARZO</option>
+                    <option value="4">ABRIL</option>
+                    <option value="5">MAYO</option>
+                    <option value="6">JUNIO</option>
+                    <option value="7">JULIO</option>
+                    <option value="8">AGOSTO</option>
+                    <option value="9">SEPTIEMBRE</option>
+                    <option value="10">OCTUBRE</option>
+                    <option value="11">NOVIEMBRE</option>
+                    <option value="12">DICIEMBRE</option>
+                </select>
+            </div>
+
+            <div>
+                <jet-label class="tw-text-center">ESTATUS</jet-label>
+                <select class="InputSelect" v-model="params.Status">
+                    <option value="0">TODOS</option>
+                    <option value="1">SIN ENVIAR</option>
+                    <option value="2">SOLICITADO</option>
+                    <option value="3">EN COTIZACION</option>
+                    <option value="5">EN AUTORIZACION</option>
+                    <option value="6">AUTORIZADO</option>
+                    <option value="7">CONFIRMADOS</option>
+                    <option value="8">EN ALMACEN</option>
+                    <option value="9">ENTREGADO</option>
+                </select>
+            </div>
+
+            <div>
+                <jet-label class="tw-text-center">Vista</jet-label>
+                <select class="InputSelect" v-model="params.View" @change="TipoVista">
+                    <option value="1">PARTIDAS</option>
+                    <option value="2">REQUISICION</option>
+                </select>
+            </div>
+
+            <div class="tw-mt-4">
+                <jet-button @click="Filtros" class="BtnFiltros"><i class="fas fa-filter tw-mr-1"></i>Aplica Filtros</jet-button>
+            </div>
+        </div>
+    </div>
+
     <div class="tw-flex tw-justify-between tw-px-4">
         <div class="tw-flex tw-flex-wrap tw-content-center">
             <select class="InputSelect" v-model="params.Estatus" @change="FiltroEstatus($event)">
@@ -1214,6 +1273,7 @@ export default {
         Cotizacion: Object,
         SinConfirmar: Object,
         EnCotizacion: Object,
+        mes: String,
     },
 
     methods: {
@@ -1274,7 +1334,7 @@ export default {
             this.$nextTick(() => {
                 $("#Requisiciones").DataTable({
                 language: this.español,
-                paging: false,
+                paging: true,
                 "scrollX": true,
                 scrollY:  '40vh',
                 "order": [0, 'desc'],
@@ -1302,7 +1362,7 @@ export default {
             this.$nextTick(() => {
                 $("#Articulos").DataTable({
                     "language": this.español,
-                    paging: false,
+                    paging: true,
                     "scrollX": true,
                     scrollY:  '40vh',
                     "order": [0, 'desc'],

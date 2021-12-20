@@ -20335,6 +20335,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(203, 213, 225, var(--tw-bg-opacity));
 }
+.tw-bg-yellow-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(202, 138, 4, var(--tw-bg-opacity));
+}
 .tw-bg-emerald-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(52, 211, 153, var(--tw-bg-opacity));
@@ -22752,6 +22756,14 @@ select {
 
 	.lg\:tw-w-1\/5 {
 		width: 20%;
+	}
+
+	.lg\:tw-w-5\/12 {
+		width: 41.666667%;
+	}
+
+	.lg\:tw-w-2\/12 {
+		width: 16.666667%;
 	}
 
 	.lg\:tw-flex-row {

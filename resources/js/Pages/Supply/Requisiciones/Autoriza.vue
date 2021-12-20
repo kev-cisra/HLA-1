@@ -924,9 +924,9 @@ export default {
                 $("#Requisiciones").DataTable({
                     "language": this.español,
                     "order": [10, 'asc'],
-                    scrollY:        '40vh',
+                    scrollY: '40vh',
                     scrollCollapse: true,
-                    paging:         false,
+                    paging: true,
                     "columnDefs": [
                         { "width": "3%", "targets": [0] },
                     ],

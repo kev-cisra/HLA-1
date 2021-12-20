@@ -176,6 +176,7 @@ class CotizacionesController extends Controller{
             'Cotizacion',
             'SinConfirmar',
             'EnCotizacion',
+            'mes',
         ));
     }
 
