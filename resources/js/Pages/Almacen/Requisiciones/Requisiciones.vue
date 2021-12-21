@@ -323,7 +323,7 @@
                                             </span>
                                         </div>
                                         <div class="iconoEdit" @click="RequisicionAlmacen(datos)">
-                                            <span tooltip="Confirma existencia toal en Almacén" flow="left">
+                                            <span tooltip="Confirma existencia total en Almacén" flow="left">
                                                 <i class="fas fa-check-circle"></i>
                                             </span>
                                         </div>
@@ -507,6 +507,11 @@
                                                     <i class="fas fa-box-open"></i>
                                                 </span>
                                             </div>
+                                            <div class="iconoPurple" @click="SolicitaReposicion(art)">
+                                                <span tooltip="Solicita Reposición" flow="left">
+                                                    <i class="fas fa-dolly"></i>
+                                                </span>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -589,7 +594,7 @@
                     <div class="tw-px-4 tw-py-4">
                         <div class="tw-text-lg">
                             <div class="ModalHeader">
-                                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Solicita Reposicion de Stock</h3>
+                                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Solicita Reposicion de Stock {{Requi.NumReq}}</h3>
                             </div>
                         </div>
 
@@ -600,20 +605,24 @@
                                     <fieldset class="tw-mb-3 tw-bg-white tw-flex tw-table-column tw-shadow-lg tw-rounded tw-text-gray-600">
                                         <div class="tw-flex tw-border-b tw-border-gray-200 tw-h-12 tw-py-3 tw-items-center">
                                             <div class="tw-w-1/3"><span class="tw-text-right tw-px-2">Número de requsición: </span></div>
-                                            <div class="tw-w-2/3 tw-font-bold">{{form.NumReq}}</div>
+                                            <div class="tw-w-2/3 tw-font-bold">{{Requi.NumReq}}</div>
                                         </div>
                                         <div class="tw-flex tw-border-b tw-border-gray-200 tw-h-12 tw-py-3 tw-items-center">
                                             <div class="tw-w-1/3"><span class="tw-text-right tw-px-2">Material: </span></div>
-                                            <div class="tw-w-2/3 tw-font-bold">{{ form.Cant }} {{ form.Uni }} {{ form.Desc }}</div>
+                                            <div class="tw-w-2/3 tw-font-bold">{{ Repo.Cantidad }} {{ Repo.Unidad }} {{ Repo.Descripcion }}</div>
+                                        </div>
+                                        <div class="tw-flex tw-border-b tw-border-gray-200 tw-h-12 tw-py-3 tw-items-center">
+                                            <div class="tw-w-1/3"><span class="tw-text-right tw-px-2">Cantidad: </span></div>
+                                            <div class="tw-w-2/3 tw-font-bold"><input type="text" class="tw-bg-gray-200 tw-rounded tw-w-16 tw-h-8" v-model="form.Cant"> {{ Repo.Unidad }}</div>
                                         </div>
                                         <div class="tw-flex tw-border-b tw-border-gray-200 tw-h-12 tw-py-3 tw-items-center">
                                             <div class="tw-w-1/3"><span class="tw-text-right tw-px-2">Núm Parte: </span></div>
-                                            <div class="tw-w-2/3 tw-font-bold" v-if="form.NumParte != null">{{ form.NumParte }}</div>
+                                            <div class="tw-w-2/3 tw-font-bold" v-if="Repo.NumParte != ''">{{ Repo.NumParte }}</div>
                                             <div class="tw-w-2/3 tw-font-bold" v-else>N/A</div>
                                         </div>
                                         <div class="tw-flex border-b tw-border-gray-200 tw-h-12 tw-py-3 tw-items-center">
                                             <div class="tw-w-1/3"><span class="tw-text-right tw-px-2">Observaciones:</span></div>
-                                            <div class="tw-w-2/3 tw-font-bold">{{ form.Obser }}</div>
+                                            <div class="tw-w-2/3 tw-font-bold">{{ Requi.Observaciones }}</div>
                                         </div>
                                     </fieldset>
                                 </section>
@@ -813,6 +822,10 @@ export default {
                 Uni: '',
                 Desc: '',
                 NumParte: '',
+                Departamento_id: '',
+                Maquina_id: '',
+                Marca_id: '',
+                TipCompra: '',
                 User: '',
                 Pass: '',
                 NomProveedor: '',
@@ -835,8 +848,9 @@ export default {
             },
             CambioVista: 1,
             Cambio: false,
-            Requi: [], //Asignacion de requisicion para patidas
+            Requi: [], //Asignacion de requisicion para partidas
             Art: [],
+            Repo: [],
             Visualizacion: 'PARTIDAS',
             Marcas: [],
         };
@@ -1046,7 +1060,6 @@ export default {
         },
 
         ConfirmaParcialidad(data) {
-            console.log(data);
             data.metodo = 6;
             data._method = "PUT";
             this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
@@ -1083,23 +1096,26 @@ export default {
         },
 
         SolicitaReposicion(data){
-            this.chageRepo();
-            this.form.NumReq = data.articulos_requisicion.NumReq;
-            this.form.Obser = data.articulos_requisicion.Observaciones;
-            this.form.Codigo = data.articulos_requisicion.Codigo;
-            this.form.Maq = data.articulos_requisicion.Maquina_id;
-            this.form.Mar = data.articulos_requisicion.Marca_id;
-            this.form.TipCompra = data.articulos_requisicion.TipCompra;
+            this.Repo = data;
+            this.form.req_id = this.Requi.id;
+            this.form.NumReq = this.Requi.NumReq;
+            this.form.Departamento_id = this.Requi.Departamento_id;
+            this.form.Codigo = this.Requi.Codigo;
+            this.form.Maquina_id = this.Requi.Maquina_id;
+            this.form.Marca_id = this.Requi.Marca_id;
+            this.form.TipCompra = this.Requi.TipCompra;
+
+            this.form.IdArt = data.id;
+            this.form.Fecha = data.Fecha;
             this.form.Cant = data.Cantidad;
             this.form.Uni = data.Unidad;
             this.form.Desc = data.Descripcion;
             this.form.NumParte = data.NumParte;
-            this.form.Fecha = moment().format("YYYY-MM-DD");
-            this.form.Dpto = this.Session.Departamento;
-            this.form.IdEmp = this.Session.IdEmp;
+            this.chageRepo();
         },
 
         GeneraReposicion(data){
+            this.form.Accion = 2;
             this.$inertia.post("/Almacen/Requisiciones", data, {
                 onSuccess: () => {
                     this.reset(),

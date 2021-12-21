@@ -252,7 +252,7 @@ class RequisicionesSolicitadasController extends Controller {
                     $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                 },
                 'RequisicionArticulos' => function($Req) {
-                    $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                    $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                 },
                 'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                     $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
@@ -284,7 +284,7 @@ class RequisicionesSolicitadasController extends Controller {
                         $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                     },
                     'RequisicionArticulos' => function($Req) {
-                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
@@ -317,7 +317,7 @@ class RequisicionesSolicitadasController extends Controller {
                         $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                     },
                     'RequisicionArticulos' => function($Req) {
-                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
@@ -352,7 +352,7 @@ class RequisicionesSolicitadasController extends Controller {
                             $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                         },
                         'RequisicionArticulos' => function($Req) {
-                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                         },
                         ])
                         ->where('Estatus', '>', 1)
@@ -382,7 +382,7 @@ class RequisicionesSolicitadasController extends Controller {
                             $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                         },
                         'RequisicionArticulos' => function($Req) {
-                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                         },
                         ])
                         ->where('Estatus', '>', 1)
@@ -392,6 +392,7 @@ class RequisicionesSolicitadasController extends Controller {
                 }
             }
         }
+
         //Consulta con Filtro de Estatus
         if ($request->Estatus != '') {
             //Consulta de requisiciones solo por Estatus
@@ -485,85 +486,81 @@ class RequisicionesSolicitadasController extends Controller {
         $SessionId = $Session->IdEmp;
         $SessionIdEmp = $Session->IdEmp;
 
-        if($request->Accion != ''){
+        switch ($request->Accion){
 
-            switch ($request->Accion){
+            case 1:
 
-                case 1:
+                ValesSalida::create([
+                    'IdUser' => $SessionId,
+                    'IdEmp' => $SessionIdEmp,
+                    'Folio' => $request->Folio,
+                    'Fecha' => $request->FechaEn,
+                    'NombreProveedor' => $request->Proveedor,
+                    'EstatusVale' => $request->EstatusServ,
+                    'Salida' => $request->Salida,
+                    'requisiciones_id' => $request->req_id,
+                ]);
 
-                    ValesSalida::create([
-                        'IdUser' => $SessionId,
-                        'IdEmp' => $SessionIdEmp,
-                        'Folio' => $request->Folio,
-                        'Fecha' => $request->FechaEn,
-                        'NombreProveedor' => $request->Proveedor,
-                        'EstatusVale' => $request->EstatusServ,
-                        'Salida' => $request->Salida,
-                        'requisiciones_id' => $request->req_id,
-                    ]);
+                break;
 
-                    break;
-            }
-        }else{
-            //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
-            $ObtenJefe = JefesArea::where('IdEmp', '=', $Session->IdEmp)->first('id','IdEmp');
-            if(isset($ObtenJefe)){
-                $IdJefe = $ObtenJefe->id; //Obtengo el Id del Jefe logueado
-            }else{
-                $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $Session->IdEmp)->first(['id','jefes_areas_id']);
-                $IdJefe = $PerfilesUsuarios->jefes_areas_id; //Obtengo el Id de Jefe que corresponde a la session del empleado
-            }
+            case 2:
+                //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
+                $ObtenJefe = JefesArea::where('IdEmp', '=', $Session->IdEmp)->first('id','IdEmp');
 
-            //Genracion de folio automatico
-            $Numfolio = Requisiciones::all(['Folio']);
-
-            if($Numfolio->count()){
-                $Nfolio = $Numfolio->last(); //Obtengo el ultimo folio con el metodo last
-
-                foreach ($Nfolio as $item){
-                    $serial = $Nfolio->Folio; //asigno el folio a la variable serial
+                if(isset($ObtenJefe)){
+                    $IdJefe = $ObtenJefe->id; //Obtengo el Id del Jefe logueado
+                }else{
+                    $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $Session->IdEmp)->first(['id','jefes_areas_id']);
+                    $IdJefe = $PerfilesUsuarios->jefes_areas_id; //Obtengo el Id de Jefe que corresponde a la session del empleado
                 }
-            }else{
-                $serial = 1000; //en caso de no haber registros asigno un folio
-            }
-            $serial += 1; //Incremento de folio
 
-            $Requisicion = Requisiciones::create([
-                'IdUser' => $Session->id,
-                'IdEmp' => $request->IdEmp,
-                'Folio' => $serial,
-                'NumReq' => $request->NumReq."-S",
-                'Departamento_id' => $request->Dpto,
-                'jefes_areas_id' => $IdJefe,
-                'Codigo' => $request->Codigo,
-                'Maquina_id' => $request->Maq,
-                'Marca_id' => $request->Mar,
-                'TipCompra' => $request->TipCompra,
-                'Observaciones' => "Reposicion de Stock",
-                'Perfil_id' => $Session->id,
-            ]);
+                //Generacion de folio automatico
+                $Numfolio = Requisiciones::all(['Folio']);
 
-            $RequicisionId = $Requisicion->id;
+                if($Numfolio->count()){
+                    $Nfolio = $Numfolio->last(); //Obtengo el ultimo folio con el metodo last
 
-            $Articulos = ArticulosRequisiciones::create([
-                'IdEmp' => $Session->IdEmp,
-                'Fecha' => $request->Fecha,
-                'Cantidad' => $request->Cant,
-                'Unidad' => $request->Uni,
-                'NumParte' => $request->NumParte,
-                'Descripcion' => $request->Desc,
-                'EstatusArt' => 3,
-                'requisicion_id' => $RequicisionId,
-            ]);
+                    foreach ($Nfolio as $item){
+                        $serial = $Nfolio->Folio; //asigno el folio a la variable serial
+                    }
+                }else{
+                    $serial = 1000; //en caso de no haber registros asigno un folio
+                }
 
-            $ArticulosId = $Articulos->id;
+                $serial += 1; //Incremento de folio
 
-            $TiempoReq = TiemposRequisiciones::create([
-                'IdUser' => $Session->id,
-                'IdEmp' => $Session->IdEmp,
-                'requisicion_id' => $RequicisionId,
-                'articulo_requisicion_id' => $ArticulosId,
-            ]);
+                $Requisicion = Requisiciones::create([
+                    'IdUser' => $Session->id,
+                    'IdEmp' => $request->IdEmp,
+                    'Fecha' => $request->Fecha,
+                    'Folio' => $serial,
+                    'NumReq' => $request->NumReq."-A",
+                    'Departamento_id' => $request->Departamento_id,
+                    'jefes_areas_id' => $IdJefe,
+                    'Codigo' => $request->Codigo,
+                    'Maquina_id' => $request->Maquina_id,
+                    'Marca_id' => $request->Marca_id,
+                    'TipCompra' => $request->TipCompra,
+                    'Observaciones' => "REPOSICION DE STOCK",
+                    'Estatus' => 3,
+                    'Perfil_id' => $Session->id,
+                ]);
+
+                $RequicisionId = $Requisicion->id;
+
+                $Articulos = ArticulosRequisiciones::create([
+                    'IdEmp' => $Session->IdEmp,
+                    'Fecha' => $request->Fecha,
+                    'Cantidad' => $request->Cant,
+                    'Unidad' => $request->Uni,
+                    'NumParte' => $request->NumParte,
+                    'Descripcion' => $request->Desc,
+                    'EstatusArt' => 3,
+                    'requisicion_id' => $RequicisionId,
+                ]);
+
+                $ArticulosId = $Articulos->id;
+                break;
         }
 
         return redirect()->back();
