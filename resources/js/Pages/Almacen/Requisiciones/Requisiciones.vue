@@ -908,24 +908,6 @@ export default {
 
     methods: {
 
-        TipoVista(){ //Cambio de vista entre Partidas y Requisicion
-            //Obtengo la variable de la URl
-            var query  = window.location.search.substring(1);
-            var vars = query.split("&");
-                for (var i=0; i < vars.length; i++) {
-                    var pair = vars[i].split("=");
-                    if(pair[0] == 'View') {
-                        this.CambioVista = pair[1];
-                    }
-            }
-            //Verifico si coincide ella variable del Select con el Valor obtenido de la URl
-            if(this.CambioVista != this.params.View){
-                this.Cambio = true; //Habra un cambio de vista al aplicar el filtro
-            }else{
-                this.Cambio = false; //No hubo un cambio la vista se mantuvo
-            }
-        },
-
         Filtros(){ //Generacion de consulta aplicada con Filtros
             this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
