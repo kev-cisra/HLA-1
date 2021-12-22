@@ -35,18 +35,18 @@ class CargaController extends Controller
         $usuario = Auth::id();
         //muestra la información del usuario que inicio sesion
         $perf = PerfilesUsuarios::where('user_id','=',$usuario)
-            ->with([
-                'dep_pers' => function($dp){
-                    $dp -> select('id', 'perfiles_usuarios_id', 'ope_puesto', 'equipo_id', 'departamento_id');
-                },
-                'dep_pers.equipo' => function($dp_eq){
-                    $dp_eq -> select('id', 'nombre', 'turno_id', 'departamento_id');
-                },
-                'dep_pers.departamentos' => function($dp_de){
-                    $dp_de -> select('id', 'Nombre', 'departamento_id');
-                }
-            ])
-            ->first(['id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat', 'jefe_id', 'user_id', 'Puesto_id', 'Departamento_id', 'jefes_areas_id']);
+        ->with([
+            'dep_pers' => function($dp){
+                $dp -> select('id', 'perfiles_usuarios_id', 'ope_puesto', 'equipo_id', 'departamento_id');
+            },
+            'dep_pers.equipo' => function($dp_eq){
+                $dp_eq -> select('id', 'nombre', 'turno_id', 'departamento_id');
+            },
+            'dep_pers.departamentos' => function($dp_de){
+                $dp_de -> select('id', 'Nombre', 'departamento_id');
+            }
+        ])
+        ->first(['id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat', 'jefe_id', 'user_id', 'Puesto_id', 'Departamento_id', 'jefes_areas_id']);
 
         $depa = [];
         $carga = [];
@@ -65,107 +65,6 @@ class CargaController extends Controller
         if (count($perf->dep_pers) != 0) {
             //muestran los departamentos
             $depa = $perf->dep_pers;
-            //muestra de procesos dependiendo del puesto
-            /* $procesos = procesos::where('departamento_id', '=', $perf->Departamento_id)
-                ->where('tipo','!=', '3')
-                ->where('tipo', '!=', '4')
-                ->with([
-                    'maq_pros' => function($mp){
-                        $mp->select('id', 'proceso_id', 'maquina_id');
-                    },
-                    'maq_pros.maquinas' => function($ma){
-                        $ma->select('id', 'Nombre', 'departamento_id');
-                    },
-                    'maq_pros.maquinas.marca'=> function($maq){
-                        $maq->select('id', 'Nombre', 'maquinas_id');
-                    },
-                ])
-                ->get(); */
-            //muestra el personal del departamento
-            /* $personal = dep_per::where('departamento_id', '=', $perf->Departamento_id)
-                ->with([
-                    'perfiles' => function($perfi){
-                        $perfi->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
-                    },
-                    'equipo' => function($eq){
-                        $eq -> select('id', 'nombre', 'turno_id');
-                    },
-                    'equipo.turnos' => function($tur){
-                        $tur -> select('id', 'nomtur');
-                    }
-                ])
-                ->get(['id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id', 'equipo_id']); */
-            //materiales
-            /* $mate = dep_mat::where('departamento_id', '=', $perf->Departamento_id)
-                ->with([
-                    'materiales' => function($mat){
-                        $mat->select('id','idmat', 'nommat');
-                    },
-                    'claves' => function($cla){
-                        $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
-                    }
-                ])
-                ->get(); */
-            //carga
-            /* $bus = $perf->Departamento_id;
-            $carga = carga::whereBetween('fecha', [$dia, $mañana])
-            ->orWhere(function($q) use ($dia){
-                $q->whereDate('fecha', '<=', $dia)
-                ->where('notaPen', '=', '2');
-            })
-            ->with([
-                'dep_perf' => function($dp) use($bus) {
-                    $dp -> where('departamento_id', '=', $bus)
-                        ->withTrashed()
-                        ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
-                },
-                'dep_perf.perfiles' => function($perfi){
-                    $perfi->withTrashed()
-                    ->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
-                },
-                'dep_perf.departamentos' => function($dp_de){
-                    $dp_de ->withTrashed()
-                    -> select('id', 'Nombre', 'departamento_id');
-                },
-                'equipo' => function($eq){
-                    $eq ->withTrashed()
-                    -> select('id', 'nombre');
-                },
-                'turno' => function($tu){
-                    $tu ->withTrashed()
-                    ->select('id', 'nomtur');
-                },
-                'maq_pro' => function($mp){
-                    $mp ->withTrashed()
-                    ->select('id', 'proceso_id', 'maquina_id');
-                },
-                'maq_pro.maquinas' => function($ma){
-                    $ma ->withTrashed()
-                    -> select('id', 'Nombre');
-                },
-                'proceso' => function($pr){
-                    $pr ->withTrashed()
-                    -> select('id', 'nompro', 'tipo', 'proceso_id');
-                },
-                'dep_mat' => function($dp){
-                    $dp ->withTrashed()
-                    -> select('id', 'material_id');
-                },
-                'dep_mat.materiales' => function($mat){
-                    $mat ->withTrashed()
-                    -> select('id', 'idmat', 'nommat');
-                },
-                'clave' => function($cla){
-                    $cla ->withTrashed()
-                    -> select('id', 'CVE_ART', 'DESCR');
-                },
-                'notas' => function($not){
-                    $not ->withTrashed()
-                    -> latest()
-                    -> select('id', 'fecha', 'nota', 'carga_id');
-                }
-            ])
-            ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id']); */
         }else{
             //consulta el id de la area produccion
             $iddeppro = Departamentos::where('Nombre', '=', 'OPERACIONES')

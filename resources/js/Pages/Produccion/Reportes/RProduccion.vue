@@ -38,11 +38,6 @@
         <div class="collapse md:tw-ml-10 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl tw-m-10" id="filtro">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
                 <div class="tw-mb-6 lg:tw-flex">
-                    <!-- Año
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Año</jet-label>
-                        <jet-input type="number" class="form-control" v-model="ano" :max="estAño"></jet-input>
-                    </div> -->
                     <!-- Tipo de reporte -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Tipo de reporte</jet-label>
@@ -319,6 +314,130 @@
             </div>
         </modal>
 
+        <!------------------ Modal Editar Carga------------------------->
+        <modal :show="showModalCar" @close="changeCloseCar">
+            <div class="tw-px-4 tw-py-4">
+                <div class="tw-text-lg">
+                    <div class="ModalHeader">
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Editar datos cargados</h3>
+                    </div>
+                </div>
+
+                <div class="tw-mt-4">
+                    <div class="ModalForm">
+                        <!-- Información general -->
+                        <div class="tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
+                                <jet-label>Numero de empleado</jet-label>
+                                <p>{{carga.idemp}}</p>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
+                                <jet-label>Nombre del operador</jet-label>
+                                <p>{{carga.nomOpe}}</p>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
+                                <jet-label>Turno</jet-label>
+                                <p>{{carga.turno}}</p>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
+                                <jet-label>Equipo</jet-label>
+                                <p>{{carga.equipo}}</p>
+                            </div>
+                        </div>
+                        <!-- datos para editar Fecha, proceso, subproceso, maquinas -->
+                        <div class="tw-md-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
+                                <jet-label>Fecha de la carga</jet-label>
+                                <input type="datetime-local" v-model="carga.fecha" class="InputSelect">
+                                <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
+                            </div>
+                            <!-- Select proceso principal -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
+                                <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
+                                    <option value="" disabled>SELECCIONA</option>
+                                    <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
+                                </select>
+                                <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
+                            </div>
+                            <!-- select Sub proceso -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Sub proceso </jet-label>
+                                <select class="InputSelect" v-model="carga.proceso_id" :disabled="editMode">
+                                    <option value="" disabled>SELECCIONA</option>
+                                    <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
+                                </select>
+                                <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
+                            </div>
+                            <!-- select Maquinas -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Maquinas</jet-label>
+                                <select class="InputSelect" v-model="carga.maq_pro_id" :disabled="editMode">
+                                    <option value="" disabled>SELECCIONA</option>
+                                    <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
+                                </select>
+                                <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                            </div>
+                        </div>
+                        <!-- datos para editar Norma, clave, partida, KG -->
+                        <div class="tw-mb-6 md:tw-flex">
+                            <!-- select norma -->
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Norma</jet-label>
+                                <select class="InputSelect" v-model="carga.norma">
+                                    <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
+                                </select>
+                                <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
+                            </div>
+
+                            <!-- select partida -->
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Partida</jet-label>
+                                <jet-input class="InputSelect" v-model="carga.partida"></jet-input>
+                                <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                            </div>
+                            <!-- select value -->
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Kg</jet-label>
+                                <jet-input class="InputSelect" v-model="carga.valor"></jet-input>
+                                <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
+                            </div>
+                        </div>
+                        <div class="tw-mb-6 md:tw-flex">
+                            <!-- select clave -->
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>Clave</jet-label>
+                                <Select2 v-model="carga.clave_id"  :class="'InputSelect'" :options="opcCL"  :settings="{width: '100%'}" />
+                                <!-- <Select2  v-model="carga.clave_id" class="InputSelect" :options="opcCL" /> -->
+                                <!-- <select class="InputSelect" v-model="carga.clave_id">
+                                    <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
+                                </select> -->
+                                <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
+                            </div>
+                        </div>
+                        <!-- notas -->
+                        <div class="tw-mb-6 lg:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg">
+                                <jet-label>Nota anterior</jet-label>
+                                <jet-label v-html="nAnte"></jet-label>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Nota</jet-label>
+                                <textarea class="InputSelect" v-model="carga.nota" maxlength="250" @input="(val) => (carga.nota = carga.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
+                                <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ModalFooter">
+                <button class="btn btn-outline-success" type="button" @click="updateCar(carga)">
+                    Actualizar
+                </button>
+                <jet-CancelButton @click="changeCloseCar">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
+
     </app-layout>
 </template>
 
@@ -330,6 +449,7 @@
     import TableBlue from '@/Components/TableBlue';
     import Modal from '@/Jetstream/Modal';
     import JetButton from '@/Components/Button';
+    import JetCancelButton from '@/Components/CancelButton';
     import JetInput from '@/Components/Input';
     import JetLabel from '@/Jetstream/Label';
     import Select2 from 'vue3-select2-component';
@@ -360,9 +480,6 @@
         props: [
             'usuario',
             'depa',
-            'materiales',
-            'maquinas',
-            'procesos',
             'claParo',
             'errors'
         ],
@@ -379,6 +496,7 @@
             Modal,
             Select2,
             JetLabel,
+            JetCancelButton
         },
 
         data() {
@@ -386,13 +504,19 @@
                 color: "tw-bg-blue-600",
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
+                maquinas: [],
+                procesos: [],
+                materiales: [],
+                editMode: false,
                 showModalC: false,
+                showModalCar: false,
                 vMasi: true,
                 vCal: true,
                 vTab: true,
                 hoy: moment().format('YYYY-MM-DD'),
                 recoTabla: [],
                 recoTablaParo: [],
+                proc_prin: '',
                 deli:{
                     elimiMasi: []
                 },
@@ -412,6 +536,23 @@
                     hoy: null,
                     mañana: null,
                     depa: this.S_Area
+                },
+                carga: {
+                    id: null,
+                    idemp: null,
+                    noFecha: moment().format('YYYY-MM-DD HH:mm:ss'),
+                    usu: this.usuario.id,
+                    nomOpe: null,
+                    fecha: null,
+                    proceso_id: null,
+                    maq_pro_id: null,
+                    turno: null,
+                    equipo: null,
+                    norma: null,
+                    clave_id: null,
+                    partida: null,
+                    valor: null,
+                    nota: null
                 },
             }
         },
@@ -803,7 +944,7 @@
                 else if (this.FoFiltro.semana != null) {
                     datos = {'departamento_id': this.S_Area, 'tipo': 'semana', 'iniDia': null, 'finDia': null, 'semana': this.FoFiltro.semana, 'mes': null }
                 }//input mes no nulo
-                else if (this.FoFiltro.mes) {
+                else if (this.FoFiltro.mes != null) {
                     datos = {'departamento_id': this.S_Area, 'tipo': 'mes', 'iniDia': null, 'finDia': null, 'semana': null, 'mes': this.FoFiltro.mes }
                 }
 
@@ -821,7 +962,7 @@
             async arrParo(){
                 var datos = {}
                 this.recoTablaParo = [];
-                //this.vTab = false;
+                this.vTab = false;
 
                 //input de fecha no nulo
                 if(this.FoFiltro.iniDia != null){
@@ -855,21 +996,24 @@
                 }
                 //input semana no nulo
                 else if (this.FoFiltro.semana != null) {
-                    datos = {'departamento_id': this.S_Area, 'tipo': 'semana', 'iniDia': null, 'finDia': null, 'semana': this.FoFiltro.semana, 'mes': null }
+                    this.vTab = true;
+                    return 'ya';
+                    //datos = {'departamento_id': this.S_Area, 'tipo': 'semana', 'iniDia': null, 'finDia': null, 'semana': this.FoFiltro.semana, 'mes': null }
                 }
                 //input mes no nulo
-                else if (this.FoFiltro.mes) {
+                else if (this.FoFiltro.mes != null) {
                     datos = {'departamento_id': this.S_Area, 'tipo': 'mes', 'iniDia': null, 'finDia': null, 'semana': null, 'mes': this.FoFiltro.mes }
                 }
 
                 //asigna el recorrido
                 let promesa = await axios.post('Produccion/ReportesPro/ConParo', datos)
-                console.log(promesa.data)
                 this.recoTablaParo = promesa.data
                 //Limpia el datatables
                 $('#t_repoPar').DataTable().clear();
                 $('#t_repoPar').DataTable().destroy();
                 this.tablaParo();
+
+
                 this.vTab = true;
             },
             //Eliminar produccion masiva
@@ -901,6 +1045,117 @@
                     }
                 })
             },
+
+            /**************************** Acciones de la carga ***********************************************/
+            //Abrir modal
+            openModalCar(){
+                this.changeCloseCar();
+                this.resetCar();
+            },
+            //eliminar carga
+            deleteCar(data){
+                //console.log(data)
+                Swal.fire({
+                    title: '¿Estás seguro de querer eliminar este Registro?',
+                    text: "¡Si se elimina no se podrá revertir!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                        'Eliminadó!',
+                        '¡El registro se eliminó correctamente!',
+                        'success'
+                        )
+                        data._method = 'DELETE';
+                        this.$inertia.post('/Produccion/Carga/' + data.id, data, {
+                            onSuccess: () => { this.alertDelete(), this.limInputs('00') }, onError: () => {}, preserveState: true
+                        });
+                    }
+                })
+            },
+            //abrir o cerrar modal para carga de datos
+            changeCloseCar(){
+                this.showModalCar = !this.showModalCar
+            },
+            //reset de carga
+            resetCar(){
+                this.carga.id = null,
+                this.carga.idemp = null,
+                this.carga.nomOpe = null,
+                this.carga.fecha = null,
+                this.carga.turno = null,
+                this.carga.equipo = null,
+                this.carga.norma = null,
+                this.carga.clave_id = null,
+                this.carga.partida = null,
+                this.carga.valor = null,
+                this.carga.notas = null
+            },
+            //editar carga
+            editCar(data){
+                this.openModalCar();
+                this.proc_prin = data.proceso.proceso_id;
+                this.carga.id = data.id;
+                this.carga.idemp = data.dep_perf.perfiles.IdEmp;
+                this.carga.nomOpe = data.dep_perf.perfiles.Nombre+' '+data.dep_perf.perfiles.ApPat+' '+data.dep_perf.perfiles.ApMat;
+                this.carga.fecha = moment(data.fecha).format('YYYY-MM-DD[T]HH:mm:ss');
+                this.carga.turno = data.turno.nomtur;
+                this.carga.equipo = data.equipo.nombre;
+                this.carga.norma = data.norma;
+                this.carga.clave_id = `${data.clave_id}`;
+                this.carga.partida = data.partida;
+                this.carga.valor = data.valor;
+                this.carga.proceso_id = data.proceso_id;
+                this.carga.maq_pro_id = data.maq_pro_id;
+                this.carga.nota = '';
+                this.nAnte = data.notas.length == 0 ? '' : `<label class="tw-text-base tw-w-full tw-text-black">Fecha: ${data.notas[0].fecha}</label><label class="tw-text-base tw-w-full tw-text-black tw-capitalize"> ${data.notas[0].nota}</label>`;
+            },
+            async updateCar(data){
+                this.limpPro = false;
+                await this.$inertia.put('/Produccion/CarNor/' + data.id, data, {
+                    onSuccess: (v) => {
+                        this.resetCar(),
+                        this.alertSucces(),
+                        this.changeCloseCar(),
+                        this.arrProdu()
+                        //this.limInputs('00')
+                    },
+                    onError: (e) => { },
+                    preserveState: true
+                });
+            },
+            //Eliminar produccion masiva
+            eliminaMasiva(data){
+                //console.log(data[0]);
+                Swal.fire({
+                    title: '¿Estás seguro de querer eliminar estos Registros?',
+                    text: "¡Si se eliminan no se podrán revertir!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                        'Eliminadó!',
+                        '¡Los registro se eliminaron correctamente!',
+                        'success'
+                        )
+                        data._method = 'DELETE';
+                        this.limpPro = false;
+                        this.$inertia.post('/Produccion/ReportesPro/' + data.elimiMasi[0], data, {
+                            onSuccess: () => { this.alertDelete(), this.deli.elimiMasi = []},
+                            onError: () => {},
+                            preserveState: true
+                        });
+                    }
+                })
+            },
         },
 
         computed: {
@@ -920,17 +1175,92 @@
                 })
                 return ar;
             },
+
+            //Opciones Normas
+            opcNM: function() {
+                const nm = [];
+                this.materiales.forEach(ma => {
+                    nm.push({value: ma.id, text: ma.materiales.idmat+' - '+ma.materiales.nommat});
+                })
+                return nm;
+            },
+
+            //Opciones Claves
+            opcCL: function() {
+                const scl = [];
+                /* this.form.clave_id = ''; */
+                if (this.carga.norma != '') {
+                    this.materiales.forEach(cl => {
+                        if (this.carga.norma == cl.id) {
+                            //console.log(cl.claves)
+                            cl.claves.forEach(c => {
+                                scl.push({id: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
+                            })
+                        }
+                    })
+                }
+                return scl;
+            },
+
+            //Opciones procesos principales
+            opcPP: function() {
+                const ppi = [];
+                this.procesos.forEach(pp =>{
+                    if (pp.tipo == 0) {
+                        ppi.push({text: pp.nompro, value: pp.id})
+                    }
+                });
+                return ppi;
+            },
+
+            //Opciones subprocesos
+            opcSP: function() {
+                const ssp = [];
+                //recorre y muestra los procesos
+                this.procesos.forEach(sp =>{
+                    if (sp.proceso_id == this.proc_prin) {
+                        ssp.push({id: sp.id, text: sp.id+' - '+sp.nompro});
+                    }
+                })
+                return ssp;
+            },
+
+            //Opciones maquinas
+            opcMQ: function() {
+                const mq = [];
+                var mar = '';
+                if (this.carga.proceso_id != '') {
+                    this.procesos.forEach(pm => {
+                        if (this.carga.proceso_id == pm.id) {
+                            //console.log(pm.maq_pros.length)
+                            pm.maq_pros.forEach(mp => {
+                                mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
+                                mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
+                            })
+                        }
+                    })
+                }
+                return mq;
+            },
         },
 
         watch: {
             S_Area: async function(b){
-                /* await axios.get('/Produccion/ReportesPro',{ busca: b, ano: this.ano })
-                .then((resp) => { this.FoFiltro.iniDia = this.hoy, this.arrProdu(), console.log(resp) }) */
-                await this.$inertia.get('/Produccion/ReportesPro',{ busca: b }, {
-                    onSuccess: (data) => { this.FoFiltro.iniDia = this.hoy, this.arrProdu() },
-                    onError: (err) => {  },
-                    preserveState: true
-                });
+                this.FoFiltro.iniDia = this.hoy;
+                this.arrProdu();
+                var datos = {'departamento_id': this.S_Area};
+
+                //Maquinas
+                let maqui = await axios.post('General/ConMaquina', datos)
+                this.maquinas = maqui.data
+
+                //Produccion
+                let produ = await axios.post('General/ConProduccion', datos)
+                this.procesos = produ.data;
+
+                //Materiales
+                let mate = await axios.post('General/ConMateriales', datos)
+                this.materiales = mate.data
             },
         }
     }

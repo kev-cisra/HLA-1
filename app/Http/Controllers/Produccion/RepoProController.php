@@ -72,7 +72,7 @@ class RepoProController extends Controller
         $claParo = paros::get();
 
          /**************************** consulta si existe la busqueda  ****************************************************/
-        if (!empty($request->busca)) {
+        /* if (!empty($request->busca)) {
 
             //muestra materiales
             $mate = dep_mat::where('departamento_id', '=', $request->busca)
@@ -85,7 +85,6 @@ class RepoProController extends Controller
                 }
             ])
             ->get();
-
 
             //procesos
             $procesos = procesos::where('departamento_id', '=', $request->busca)
@@ -114,9 +113,9 @@ class RepoProController extends Controller
             ])
             ->get(['id', 'Nombre', 'departamento_id']);
 
-        }
+        } */
 
-        return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'materiales' => $mate, 'procesos' => $procesos, 'claParo' => $claParo, 'maquinas' => $Maqui]);
+        return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'claParo' => $claParo]);
     }
 
     public function ConProdu(Request $request){
@@ -447,6 +446,44 @@ class RepoProController extends Controller
             ])
             ->get();
         }
+        elseif ($request->tipo == 'mes') {
+            $paros = parosCarga::where('departamento_id', '=', $request->departamento_id)
+            ->where('fecha', 'LIKE', '%'.$request->mes.'%')
+            ->selectRaw('proceso_id, paro_id, maq_pro_id, SUM(tiempo) AS tiempo')
+            ->groupBy('departamento_id')
+            ->groupBy('proceso_id')
+            ->groupBy('paro_id')
+            ->groupBy('maq_pro_id')
+            ->with([
+                'sub_paro' => function($spa){
+                    $spa->select('id', 'fecha', 'iniFecha', 'orden', 'estatus', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'pla_acci', 'paros_carga_id', 'departamento_id')
+                    ->orderBy('id','desc');
+                },
+                'paros' => function($pr){
+                    $pr->select('id', 'clave', 'descri', 'tipo');
+                },
+                'perfil_ini' => function($pini){
+                    $pini->select('id', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'perfil_fin' => function($pfin){
+                    $pfin->select('id', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'maq_pro' => function($mp){
+                    $mp->select('id', 'maquina_id', 'proceso_id');
+                },
+                'maq_pro.maquinas' => function($ma) {
+                    $ma->select('id', 'Nombre');
+                },
+                'proceso' => function($po) {
+                    $po->select('id', 'nompro');
+                },
+                'departamento' => function($dep) {
+                    $dep->select('id', 'Nombre');
+                }
+            ])
+            ->get();
+        }
+
         return $paros;
     }
 

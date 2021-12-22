@@ -10,6 +10,7 @@ use App\Http\Controllers\Produccion\ClamatController;
 use App\Http\Controllers\Produccion\ClavesController;
 use App\Http\Controllers\Produccion\EntregasController;
 use App\Http\Controllers\Produccion\EquiposController;
+use App\Http\Controllers\Produccion\General\GeneralController;
 use App\Http\Controllers\Produccion\MaquinasController;
 use App\Http\Controllers\Produccion\MaterialesController;
 use App\Http\Controllers\Produccion\notascargaController;
@@ -32,6 +33,16 @@ Route::get('', [MenuProducccionController::class,'index'])->name('Produccion');
 //Redireccion y accion de procesos
 
 //Route::post('Procesos/carform', [ProcesosController::class,'carform']);
+
+/************************************** Consultas Generales ****************************************************/
+//maquinas
+Route::post('General/ConMaquina', [GeneralController::class, 'ConMaqui'])->name('GConMaqui');
+//procesos
+Route::post('General/ConProduccion', [GeneralController::class, 'ConProdu'])->name('GConProdu');
+//materiales
+Route::post('General/ConMateriales', [GeneralController::class, 'ConMate'])->name('GConMate');
+
+/************************************** Fin de consultas generales ********************************************/
 
 Route::resource('Personal', PersonalController::class)
     ->middleware(['auth:sanctum', 'verified']);
