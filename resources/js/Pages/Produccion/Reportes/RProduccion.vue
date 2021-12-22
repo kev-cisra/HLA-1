@@ -78,7 +78,7 @@
                         <jet-input type="month" class="form-control" @click="limInputs(3)" v-model="FoFiltro.mes"></jet-input>
                     </div>
                     <!-- semana -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-if="FoFiltro.TipRepo == 1">
                         <jet-label><span class="required">*</span>Semana</jet-label>
                         <jet-input type="week" class="form-control" @click="limInputs(2)" v-model="FoFiltro.semana"></jet-input>
                     </div>
@@ -99,6 +99,144 @@
                         <BotonCarga v-if="FoFiltro.TipRepo == 1" :verBot="vTab" :textoV="'Consultar Producción'" :textoOC="'Buscando...'" :class="'btn-primary'" @click="arrProdu()"></BotonCarga>
 
                         <BotonCarga v-if="FoFiltro.TipRepo == 2" :verBot="vTab" :textoV="'Consultar Paros'" :textoOC="'Buscando...'" :class="'btn-primary'" @click="arrParo()"></BotonCarga>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!------------------------------------ Muestra las opciones de Graficas ------------------------------------------->
+        <div class="collapse md:tw-ml-10 tw-p-6 tw-bg-teal-300 tw-rounded-3xl tw-shadow-xl tw-m-10" id="grafica">
+            <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
+                <!-- arreglo de graficas -->
+                <div class="tw-mb-6 lg:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 tw-gap-3 tw-flex">
+                        <label><span class="required">*</span>Tipo de gráfica: </label>
+                        <div>
+                            <input type="checkbox" v-model="graTipo" value="pie" id="pie"> <label for="pie">Gráfica de pie</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" v-model="graTipo" value="punto" id="punto"> <label for="punto">Gráfica lineal</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" v-model="graTipo" value="barra" id="barra"> <label for="barra">Gráfica de barra</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" v-model="graTipo" value="ambos" id="ambos"> <label for="ambos">Gráfica de barar y punto</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- recorrido de los tipos de graficas -->
+                <div v-for="tip in graTipo" :key="tip">
+                    <!-- formulario para grafica de pie -->
+                    <div v-if="tip == 'pie'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-blue-700 tw-p-10">
+                        <div class="tw-flex tw-m-5">
+                            <div class="tw-w-1/2 tw-text-2xl tw-text-center">
+                                <h1>Gráfica de Pie</h1>
+                            </div>
+
+                            <div class="tw-w-1/2">
+                                <button class="btn btn-outline-success " @click="GraPaste(gPie)">Generar gráfica</button>
+                                <button class="btn btn-outline-danger " @click="resetPastel()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="tw-flex ">
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label>Título</jet-label>
+                                <jet-input type="text" class="form-control" v-model="gPie.titulo"></jet-input>
+
+                                <jet-label><span class="required">*</span>Fecha Dia</jet-label>
+                                <jet-input type="date" class="form-control" v-model="gPie.fecha" :max="treDia"></jet-input>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Procesos</jet-label>
+                                <div class="tw-overflow-auto" style="height: 10rem">
+                                    <div v-for="pro in proGrafi" :key="pro" class="hover:tw-bg-teal-100">
+                                        <input type="checkbox" v-model="gPie.procesos" :value="pro.value" :id="'pie'+pro.value">
+                                        <label :for="'pie'+pro.value" class="tw-w-11/12">{{pro.text}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- formulario para grafica de linea -->
+                    <div v-if="tip == 'punto'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-green-700 tw-p-10">
+                        <div class="tw-flex tw-m-5">
+                            <!-- titulo -->
+                            <div class="tw-w-1/2 tw-text-2xl tw-text-center">
+                                <h1>Gráfica Lineal</h1>
+                            </div>
+                            <!-- boton -->
+                            <div class="tw-w-1/2">
+                                <button class="btn btn-outline-success " @click="GraLinea(gLinea)">Generar gráfica</button>
+                                <button class="btn btn-outline-danger " @click="resetLinea()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="tw-flex">
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0 tw-gap-x-5">
+                                <!-- titulos para graficas -->
+                                <div class="tw-flex tw-gap-4">
+                                    <!-- tutulo -->
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Título</jet-label>
+                                        <jet-input type="text" class="form-control" v-model="gLinea.titulo"></jet-input>
+                                    </div>
+                                    <!-- sub titulo -->
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Sub Título</jet-label>
+                                        <jet-input type="text" class="form-control" v-model="gLinea.subtitulo"></jet-input>
+                                    </div>
+                                </div>
+
+                                <!-- dias -->
+                                <div class="tw-flex tw-gap-4">
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-input type="datetime-local" v-model="gLinea.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-input type="datetime-local" v-model="gLinea.fecFin"></jet-input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Procesos</jet-label>
+                                <div class="tw-overflow-auto" style="height: 10rem">
+                                    <div v-for="pro in proGrafi" :key="pro" class="hover:tw-bg-teal-100">
+                                        <input type="checkbox" v-model="gLinea.procesos" :value="pro.value" :id="'pie'+pro.value">
+                                        <label :for="'pie'+pro.value" class="tw-w-11/12">{{pro.text}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- formulario para grafica de barra -->
+                    <div v-if="tip == 'barra'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-yellow-700 tw-p-10">
+                        <div class="tw-flex tw-m-5">
+                            <!-- titulo -->
+                            <div class="tw-w-1/2 tw-text-2xl tw-text-center">
+                                <h1>Gráfica de Barra</h1>
+                            </div>
+                            <!-- boton -->
+                            <div class="tw-w-1/2">
+                                <button class="btn btn-outline-success " @click="GraBarra()">Generar gráfica</button>
+                                <button class="btn btn-outline-danger " @click="resetBarra()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- formulario para grafica combinada -->
+                    <div v-if="tip == 'ambos'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-red-700 tw-p-10">
+                        <div class="tw-flex tw-m-5">
+                            <!-- titulo -->
+                            <div class="tw-w-1/2 tw-text-2xl tw-text-center">
+                                <h1>Gráfica Combinada</h1>
+                            </div>
+                            <!-- boton -->
+                            <div class="tw-w-1/2">
+                                <button class="btn btn-outline-success " @click="GraBaLi()">Generar gráfica</button>
+                                <button class="btn btn-outline-danger " @click="resetBaLi()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -279,6 +417,14 @@
                     <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Plan de Acción</th>
                 </template>
             </TableBlue>
+        </div>
+
+        <!------------------------------------ Graficas ------------------------------------------------------------------>
+        <div class="tw-text-center tw-my-24 tw-m-auto" style="width: 99%">
+            <div id="chart" class="tw-m-10"></div>
+            <div id="chart1" class="tw-m-10"></div>
+            <div id="chart2" class="tw-m-10"></div>
+            <div id="chart3" class="tw-m-10"></div>
         </div>
 
         <!------------------------------------- Modal para carga de datos masivas ------------------------------------------------>
@@ -516,6 +662,7 @@
                 hoy: moment().format('YYYY-MM-DD'),
                 recoTabla: [],
                 recoTablaParo: [],
+                graTipo: [],
                 proc_prin: '',
                 deli:{
                     elimiMasi: []
@@ -553,6 +700,12 @@
                     partida: null,
                     valor: null,
                     nota: null
+                },
+                gPie: {
+                    borra: '',
+                    fecha: null,
+                    procesos: [],
+                    titulo: null
                 },
             }
         },
@@ -1242,6 +1395,18 @@
                 }
                 return mq;
             },
+
+            //procesos Graficas
+            proGrafi: function() {
+                var grafi = [];
+                this.procesos.forEach(gr => {
+                    if (gr.tipo != 0) {
+                        grafi.push({value: gr.id, text:gr.nompro})
+                        //console.log(gr)
+                    }
+                })
+                return grafi;
+            }
         },
 
         watch: {
