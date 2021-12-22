@@ -48,11 +48,11 @@
                         <jet-label><span class="required">*</span>Tipo de reporte</jet-label>
                         <div class="tw-flex tw-gap-5">
                             <div>
-                                <input type="radio" id="uno" value="1" v-model="FoFiltro.TipRepo">
+                                <input type="radio" id="uno" value="1" v-model="FoFiltro.TipRepo" @click="arrProdu()">
                                 <label for="uno"> Produccion</label>
                             </div>
                             <div>
-                                <input type="radio" id="dos" value="2" v-model="FoFiltro.TipRepo">
+                                <input type="radio" id="dos" value="2" v-model="FoFiltro.TipRepo" @click="arrParo()">
                                 <label for="dos"> Paros</label>
                             </div>
                         </div>
@@ -60,13 +60,7 @@
                     <!-- calculos -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-if="FoFiltro.TipRepo == 1 & FoFiltro.iniDia != null & FoFiltro.rango == 1" >
                         <jet-label>Boton para Calcular Operaciones</jet-label>
-                        <button v-show="vCal" class="btn btn-success" type="button" id="button-addon2" @click="calcula(form)">
-                            <i class="fas fa-calculator" ></i> Calcular
-                        </button>
-                        <button v-show="!vCal" class="btn btn-success" type="button" disabled>
-                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                            Calculando...
-                        </button>
+                        <BotonCarga :verBot="vCal" :iconoV="'fas fa-calculator'" :textoV="'Calcular'" :textoOC="'Calculando...'" :class="'btn-success'" @click="calcula(form)"></BotonCarga>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label>Opciones de consulta</jet-label>
@@ -96,7 +90,7 @@
                     <!-- dia -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-if="FoFiltro.rango == 1">
                         <jet-label><span class="required">*</span>Fecha Dia</jet-label>
-                        <jet-input type="date" class="form-control" @click="limInputs(1.5)" v-model="FoFiltro.iniDia"></jet-input>
+                        <jet-input type="date" class="form-control" @click="limInputs(1.5)" @change="cambioFechas()" v-model="FoFiltro.iniDia"></jet-input>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-if="FoFiltro.rango == 2">
                         <jet-label><span class="required">*</span>Fecha Dia</jet-label>
@@ -107,8 +101,9 @@
                         <jet-input type="datetime-local" class="form-control" @click="limInputs(1.5)" v-model="FoFiltro.finDia"></jet-input>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-button v-if="FoFiltro.TipRepo == 1" @click="arrProdu()">Consultar Produccion</jet-button>
-                        <jet-button v-if="FoFiltro.TipRepo == 2" @click="arrParo()">Consultar Paros</jet-button>
+                        <BotonCarga v-if="FoFiltro.TipRepo == 1" :verBot="vTab" :textoV="'Consultar Producción'" :textoOC="'Buscando...'" :class="'btn-primary'" @click="arrProdu()"></BotonCarga>
+
+                        <BotonCarga v-if="FoFiltro.TipRepo == 2" :verBot="vTab" :textoV="'Consultar Paros'" :textoOC="'Buscando...'" :class="'btn-primary'" @click="arrParo()"></BotonCarga>
                     </div>
                 </div>
             </div>
@@ -118,28 +113,28 @@
         <div v-show="FoFiltro.TipRepo == 1" class="tw-m-auto" style="width: 99%">
             <Table id="t_repo">
                 <template v-slot:TableHeader>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Indice</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Fecha</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Indice</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Fecha</th>
                     <th class="columna">Proceso</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Maquina</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Nombre</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Estatus</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Equipo</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Turno</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null">Maquina</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Nombre</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Estatus</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null">Equipo</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Turno</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Partida</th>
-                    <th class="columna" v-show="FoFiltro.iniDia">Norma</th>
+                    <th class="columna">Norma</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Clave</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Descripción de clave</th>
                     <th class="columna">Producción</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Cantidad producida</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Departamento</th>
-                    <th v-show="FoFiltro.iniDia | FoFiltro.rango == 1">
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Cantidad producida</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Departamento</th>
+                    <th v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">
                         <button class="btn btn-danger" v-show="deli.elimiMasi.length > 0" @click="eliminaMasiva(deli)" >Eliminar</button>
                     </th>
                 </template>
                 <template v-slot:TableFooter >
                     <tr class="fila" v-for="ca in recoTabla" :key="ca.id">
-                        <td v-show="FoFiltro.iniDia | FoFiltro.rango == 1">
+                        <td v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">
                             <div v-if="ca.proceso.tipo == 1 | ca.proceso.tipo == 5 | ca.proceso.tipo == 3">
                                 <input type="checkbox" :value="ca.id" v-model="deli.elimiMasi" class="tw-rounded-xl tw-bg-coolGray-300" :id="'indePro'+ca.id "/>
                                 <label :for="'indePro'+ca.id" class="tw-px-3"> {{ca.id}} </label>
@@ -148,13 +143,13 @@
                                 {{ca.id}}
                             </div>
                         </td>
-                        <td v-show="FoFiltro.iniDia | FoFiltro.rango == 1">{{ca.fecha}}</td>
+                        <td v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">{{ca.fecha}}</td>
                         <td class="">{{ca.proceso == null ? 'N/A' : ca.proceso.nompro}}</td>
-                        <td v-show="FoFiltro.iniDia | FoFiltro.rango == 1">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
-                        <td v-show="FoFiltro.iniDia | FoFiltro.rango == 1" >
+                        <td v-show="FoFiltro.iniDia != null">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
+                        <td v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1" >
                             {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}
                         </td>
-                        <td class=" tw-w-40" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">
+                        <td class=" tw-w-40" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-if="ca.notaPen == 2">NOTA PENDIENTE</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-if="ca.proceso.tipo == 3">CALCULOS</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-indigo-600 tw-rounded-full" v-else-if="ca.proceso.tipo == 1 & ca.notaPen == 1">PRODUCCION</div>
@@ -162,16 +157,16 @@
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-orange-600 tw-rounded-full" v-else-if="ca.proceso.tipo == 2 & ca.notaPen == 1">OBJETIVO</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-teal-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1"> - ACTUALIZADO</div>
                         </td>
-                        <td  v-show="FoFiltro.iniDia | FoFiltro.rango == 1">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
-                        <td  v-show="FoFiltro.iniDia | FoFiltro.rango == 1">{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
+                        <td  v-show="FoFiltro.iniDia != null">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
+                        <td  v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
                         <td  v-show="FoFiltro.iniDia">{{ca.partida == null ? 'N/A' : ca.partida}}</td>
-                        <td  v-show="FoFiltro.iniDia">{{ca.dep_mat == null ? 'N/A' : ca.dep_mat.materiales.idmat+' - '+ca.dep_mat.materiales.nommat}}</td>
+                        <td >{{ca.dep_mat == null ? 'N/A' : ca.dep_mat.materiales.idmat+' - '+ca.dep_mat.materiales.nommat}}</td>
                         <td  v-show="FoFiltro.iniDia">{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
                         <td  v-show="FoFiltro.iniDia">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
                         <td >{{this.formatoMexico(ca.valor.toFixed(2))}}</td>
-                        <td  v-show="FoFiltro.iniDia | FoFiltro.rango == 1"> {{ca.VerInv}} </td>
-                        <td v-show="FoFiltro.iniDia | FoFiltro.rango == 1" >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
-                        <td v-show="FoFiltro.iniDia | FoFiltro.rango == 1">
+                        <td  v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1"> {{ca.VerInv}} </td>
+                        <td v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1" >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
+                        <td v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">
                             <div class="columnaIconos" v-if="limiteFecha()">
                                 <!-- editar objetivos -->
                                 <div class="iconoEdit" v-if="ca.proceso.tipo == 2 & usuario.dep_pers.length == 0" @click="editCar(ca)">
@@ -212,22 +207,22 @@
                     </tr>
                 </template>
                 <template v-slot:Foother>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Indice</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Fecha</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Indice</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Fecha</th>
                     <th class="columna">Proceso</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Maquina</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Nombre</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Estatus</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Equipo</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Turno</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null">Maquina</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Nombre</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Estatus</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null">Equipo</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Turno</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Partida</th>
-                    <th class="columna" v-show="FoFiltro.iniDia">Norma</th>
+                    <th class="columna">Norma</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Clave</th>
                     <th class="columna" v-show="FoFiltro.iniDia">Descripción de clave</th>
                     <th class="columna">Producción</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Cantidad producida</th>
-                    <th class="columna" v-show="FoFiltro.iniDia | FoFiltro.rango == 1">Departamento</th>
-                    <th v-show="FoFiltro.iniDia | FoFiltro.rango == 1"></th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Cantidad producida</th>
+                    <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Departamento</th>
+                    <th v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1"></th>
                 </template>
             </Table>
         </div>
@@ -236,57 +231,57 @@
         <div v-show="FoFiltro.TipRepo == 2" class="tw-m-auto" style="width: 99%">
             <TableBlue id="t_repoPar">
                 <template v-slot:TableHeader>
-                    <th class="columna tw-text-center">Fecha</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Orden</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Fecha</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Orden</th>
                     <th class="columna tw-text-center">Maquina</th>
                     <th class="columna tw-text-center">Clave de paro</th>
                     <th class="columna tw-text-center">Nombre de paro</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Descripción</th>
-                    <th class="columna tw-text-center">Estatus</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Abierto por</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Cerrado por</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Inicio</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Final</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Descripción</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Estatus</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Abierto por</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Cerrado por</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Inicio</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Final</th>
                     <th class="columna tw-text-center">Tiempo cargado</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Plan de Acción</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Plan de Acción</th>
                 </template>
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="ca in recoTablaParo" :key="ca">
-                        <td class="tw-text-center">{{ca.fecha}}</td>
-                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.orden}}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">{{ca.fecha}}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">{{ca.orden}}</td>
                         <td class="tw-text-center">{{ ca.maq_pro.length ? ca.maq_pro : ca.maq_pro.maquinas.Nombre}}</td>
                         <td class="tw-text-center">{{ca.paros.clave}}</td>
                         <td class="tw-text-center">{{ca.paros.descri}}</td>
-                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.descri}}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">{{ca.descri}}</td>
 
-                        <td class="tw-text-center">
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full" v-if="ca.estatus == 'Activo'">{{ca.estatus}}</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">{{ca.estatus}}</div>
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
                         </td>
 
-                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.perfil_ini == 'N/A' ? ca.perfil_ini : ca.perfil_ini.Nombre + ' ' + ca.perfil_ini.ApPat + ' ' + ca.perfil_ini.ApMat }} </td>
-                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.perfil_fin_id == null ? '' : ca.perfil_fin.Nombre+' '+ca.perfil_fin.ApPat+' '+ca.perfil_fin.ApMat}}</td>
-                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.iniFecha}}</td>
-                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ nuFin(ca) }}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">{{ca.perfil_ini == null ? ca.perfil_ini : ca.perfil_ini.Nombre + ' ' + ca.perfil_ini.ApPat + ' ' + ca.perfil_ini.ApMat }} </td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">{{ca.perfil_fin_id == null ? '' : ca.perfil_fin.Nombre+' '+ca.perfil_fin.ApPat+' '+ca.perfil_fin.ApMat}}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">{{ca.iniFecha}}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">{{ nuFin(ca) }}</td>
                         <td class="tw-text-center">{{tiempo(ca)}}</td>
-                        <td class="tw-text-center" v-show="FoFiltro.iniDia">{{ca.pla_acci}}</td>
+                        <td class="tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">{{ca.pla_acci}}</td>
                     </tr>
                 </template>
                 <template v-slot:Foother>
-                    <th class="columna tw-text-center">Fecha</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Orden</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Fecha</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Orden</th>
                     <th class="columna tw-text-center">Maquina</th>
                     <th class="columna tw-text-center">Clave de paro</th>
                     <th class="columna tw-text-center">Nombre de paro</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Descripción</th>
-                    <th class="columna tw-text-center">Estatus</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Abierto por</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Cerrado por</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Inicio</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Final</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Descripción</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Estatus</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Abierto por</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Cerrado por</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Inicio</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Final</th>
                     <th class="columna tw-text-center">Tiempo cargado</th>
-                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia">Plan de Acción</th>
+                    <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Plan de Acción</th>
                 </template>
             </TableBlue>
         </div>
@@ -316,11 +311,7 @@
                                 <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
-                                <jet-button class="" v-show="vMasi" @click="carMasi">Guardar</jet-button>
-                                <jet-button v-show="!vMasi" disabled>
-                                    <span class="spinner-grow spinner-grow-sm" v-show="!vMasi" role="status" aria-hidden="true"></span>
-                                    Guardando...
-                                </jet-button>
+                                <BotonCarga :verBot="vMasi" :textoV="'Guardar'" :textoOC="'Guardando...'" :class="'btn-primary'" @click="carMasi()"></BotonCarga>
                             </div>
                         </div>
                     </div>
@@ -355,8 +346,8 @@
     import pdfMake from 'pdfmake/build/pdfmake';
     import pdfFonts from 'pdfmake/build/vfs_fonts';
     import $ from 'jquery';
-import { watch } from '@vue/runtime-core';
-import axios from 'axios';
+    import axios from 'axios';
+    import BotonCarga from '../../../Components/BotonCarga.vue';
 
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     window.JSZip = jszip;
@@ -381,6 +372,7 @@ import axios from 'axios';
             Header,
             Accions,
             Table,
+            BotonCarga,
             TableBlue,
             JetButton,
             JetInput,
@@ -397,6 +389,7 @@ import axios from 'axios';
                 showModalC: false,
                 vMasi: true,
                 vCal: true,
+                vTab: true,
                 hoy: moment().format('YYYY-MM-DD'),
                 recoTabla: [],
                 recoTablaParo: [],
@@ -413,6 +406,12 @@ import axios from 'axios';
                     semana: null,
                     iniDia: null,
                     finDia: null,
+                },
+                form: {
+                    fecha: null,
+                    hoy: null,
+                    mañana: null,
+                    depa: this.S_Area
                 },
             }
         },
@@ -592,6 +591,65 @@ import axios from 'axios';
                     preserveState: true
                 });
             },
+            /***************************** Calculos ******************************************/
+            async calcula(form) {
+                if (this.calcu != '' & this.S_Area != '') {
+                    this.limpPro = false;
+                    this.vCal = false;
+
+                    await this.$inertia.post('/Produccion/Calcula', form, {
+                        onSuccess: (v) => {
+                            this.alertSucces(),
+                            this.vCal = true,
+                            //this.reset(),
+                            this.arrProdu()
+                        },
+                        onError: (e) => {
+                            this.vCal = true
+                        },
+                        preserveState: true
+                    });
+                }else{
+                    this.calcu == '' ? Swal.fire('Por favor selecciona una fecha') : '';
+                    this.S_Area == '' ? Swal.fire('Por favor selecciona un departamento') : '';
+                }
+
+            },
+            cambioFechas() {
+                if (this.FoFiltro.iniDia) {
+                    this.form.fecha = this.FoFiltro.iniDia
+                    this.form.depa = this.S_Area;
+                }
+                if(this.S_Area == 7){
+                    if (moment(this.form.fecha).isDST()) {
+                        this.form.hoy = this.form.fecha+'T09:10';
+                        this.form.mañana = moment(this.form.hoy).add(1, 'days').format("YYYY-MM-DD[T]HH:mm")
+                    }else{
+                        this.form.hoy = this.form.fecha+'T08:10';
+                        this.form.mañana = moment(this.form.hoy).add(1, 'days').format("YYYY-MM-DD[T]HH:mm")
+                    }
+                }else{
+                    this.form.hoy = this.form.fecha+'T07:00';
+                    this.form.mañana = moment(this.form.hoy).add(1, 'days').format("YYYY-MM-DD[T]HH:mm")
+                }
+                //console.log(this.form)
+            },
+            formatoMexico (number){
+                const exp = /(\d)(?=(\d{3})+(?!\d))/g;
+                const rep = '$1,';
+                let arr = number.toString().split('.');
+                arr[0] = arr[0].replace(exp,rep);
+                return arr[1] ? arr.join('.'): arr[0];
+            },
+            //reset de imputs
+            reset() {
+                this.form = {
+                    fecha: null,
+                    hoy: null,
+                    mañana: null,
+                    depa: this.S_Area
+                }
+            },
             /****************************** Funciones generales ****************************/
             formatoMexico (number){
                 const exp = /(\d)(?=(\d{3})+(?!\d))/g;
@@ -619,6 +677,49 @@ import axios from 'axios';
                         }
                     })
                 }
+            },
+            //muestra la utima fecha del paro
+            nuFin(ar){
+                //Si es es mes o semana
+                if (ar.iniFecha == 'N/A') {
+                    return 'N/A'
+                }
+                //si es un sub paro
+                /* if (ar.paros_carga_id != null) {
+                    //busca el id del paro princial
+                    var busca = this.paros.find(e => e.id == ar.paros_carga_id);
+                    //en caso de que no este el dato entonces pone la fecha generada
+                    var data = busca == null ? ar.finFecha : busca.sub_paro[0].finFecha;
+                    //consulta en caso de que aun no cierre el paro
+                    var fecha = data == null ? moment().format("YYYY-MM-DD HH:mm:ss") : data;
+                    return fecha;
+                } */
+                //si es uno  principal
+                if (ar.sub_paro.length != 0) {
+                    return ar.sub_paro[0].finFecha == null ? moment().format("YYYY-MM-DD HH:mm:ss") : ar.sub_paro[0].finFecha;
+                }
+                //en caso de que no sea ni subparo o principal
+                if(ar.paros_carga_id == null || ar.sub_paro.length == 0){
+                    return ar.finFecha == null ? moment().format("YYYY-MM-DD HH:mm:ss") : ar.finFecha;
+                }
+            },
+            //calcula el tiempo
+            tiempo(fec){
+
+                var tini = '';
+                var tfin = '';
+                if (fec.iniFecha == null) {
+                    tini = moment();
+                    tfin = moment().add(fec.tiempo, 'minutes');
+                    //return tfin.from(tini, true) + ' || ' + fec.tiempo+' minutos';
+                }else{
+                    tini = moment(fec.iniFecha);
+                    tfin = fec.finFecha == null ? moment() : moment(fec.finFecha);
+                    //return tfin.from(tini, true) + ' || ' +tfin.diff(tini, 'minutes')+' minutos' ;
+                }
+
+                return tfin.from(tini, true) + ' || ' +tfin.diff(tini, 'minutes')+' minutos' ;
+
             },
             /***************************** Modal de carga masiva ********************************************/
             //abrir modal carga masiva
@@ -660,11 +761,13 @@ import axios from 'axios';
                     this.FoFiltro.mes = null;
                     this.limpPro = true;
                 }
+                $('#t_repo').DataTable().clear();
             },
             //consulta la produccion para la tabla
             async arrProdu(){
                 var datos = {}
                 this.recoTabla = [];
+                this.vTab = false;
 
                 //input de fecha no nulo
                 if(this.FoFiltro.iniDia != null){
@@ -687,6 +790,12 @@ import axios from 'axios';
                         fin = moment(ini).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
                         datos = {'departamento_id': this.S_Area, 'tipo': 'dia', 'iniDia': ini, 'finDia': fin, 'semana': null, 'mes': null }
                     }else{
+                        if (this.FoFiltro.iniDia == null) {
+                            return Swal.fire('Selecciona la fecha de inicio.')
+                        }
+                        if (this.FoFiltro.finDia == null) {
+                            return Swal.fire('Selecciona la fecha final.')
+                        }
                         datos = {'departamento_id': this.S_Area, 'tipo': 'rango', 'iniDia': this.FoFiltro.iniDia, 'finDia': this.FoFiltro.finDia, 'semana': null, 'mes': null}
                     }
                 }
@@ -700,17 +809,68 @@ import axios from 'axios';
 
 
                 //asigna el recorrido
-                let pomesa = await axios.post('Produccion/ReportesPro/ConPro', datos)
-                console.log(pomesa.data)
-                this.recoTabla = pomesa.data
+                let promesa = await axios.post('Produccion/ReportesPro/ConPro', datos)
+                this.recoTabla = promesa.data
                 //recorre la tabla
                 $('#t_repo').DataTable().clear();
                 $('#t_repo').DataTable().destroy();
                 this.tabla()
+                this.vTab = true;
             },
             //consulta de paros
             async arrParo(){
-                console.log('paro')
+                var datos = {}
+                this.recoTablaParo = [];
+                //this.vTab = false;
+
+                //input de fecha no nulo
+                if(this.FoFiltro.iniDia != null){
+                    //consulta el dia
+                    if (this.FoFiltro.rango == 1) {
+                        var ini = '';
+                        var fin = '';
+                        if (this.S_Area == 7){
+                            if (moment(this.FoFiltro.iniDia).isDST()) {
+                                ini = this.FoFiltro.iniDia+' 09:10:00';
+                            }else{
+                                ini = this.FoFiltro.iniDia+' 08:10:00';
+                            }
+                        }//consulta por rango
+                        else{
+                            ini = this.FoFiltro.iniDia+' 07:00:00'
+                        }
+
+                        //Asigna el dato para la fecha final
+                        fin = moment(ini).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
+                        datos = {'departamento_id': this.S_Area, 'tipo': 'dia', 'iniDia': ini, 'finDia': fin, 'semana': null, 'mes': null }
+                    }else{
+                        if (this.FoFiltro.iniDia == null) {
+                            return Swal.fire('Selecciona la fecha de inicio.')
+                        }
+                        if (this.FoFiltro.finDia == null) {
+                            return Swal.fire('Selecciona la fecha final.')
+                        }
+                        datos = {'departamento_id': this.S_Area, 'tipo': 'rango', 'iniDia': this.FoFiltro.iniDia, 'finDia': this.FoFiltro.finDia, 'semana': null, 'mes': null}
+                    }
+                }
+                //input semana no nulo
+                else if (this.FoFiltro.semana != null) {
+                    datos = {'departamento_id': this.S_Area, 'tipo': 'semana', 'iniDia': null, 'finDia': null, 'semana': this.FoFiltro.semana, 'mes': null }
+                }
+                //input mes no nulo
+                else if (this.FoFiltro.mes) {
+                    datos = {'departamento_id': this.S_Area, 'tipo': 'mes', 'iniDia': null, 'finDia': null, 'semana': null, 'mes': this.FoFiltro.mes }
+                }
+
+                //asigna el recorrido
+                let promesa = await axios.post('Produccion/ReportesPro/ConParo', datos)
+                console.log(promesa.data)
+                this.recoTablaParo = promesa.data
+                //Limpia el datatables
+                $('#t_repoPar').DataTable().clear();
+                $('#t_repoPar').DataTable().destroy();
+                this.tablaParo();
+                this.vTab = true;
             },
             //Eliminar produccion masiva
             eliminaMasiva(data){
@@ -764,13 +924,13 @@ import axios from 'axios';
 
         watch: {
             S_Area: async function(b){
-                await axios.get('/Produccion/ReportesPro',{ busca: b, ano: this.ano })
-                .then(() => { this.FoFiltro.iniDia = this.hoy, this.arrProdu() })
-                /* await this.$inertia.get('/Produccion/ReportesPro',{ busca: b, ano: this.ano }, {
-                    onSuccess: (data) => {  },
-                    onError: (err) => { console.log(err)},
+                /* await axios.get('/Produccion/ReportesPro',{ busca: b, ano: this.ano })
+                .then((resp) => { this.FoFiltro.iniDia = this.hoy, this.arrProdu(), console.log(resp) }) */
+                await this.$inertia.get('/Produccion/ReportesPro',{ busca: b }, {
+                    onSuccess: (data) => { this.FoFiltro.iniDia = this.hoy, this.arrProdu() },
+                    onError: (err) => {  },
                     preserveState: true
-                }); */
+                });
             },
         }
     }

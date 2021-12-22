@@ -84,6 +84,8 @@ Route::resource('ReportesPro', RepoProController::class)
 
 Route::post('/Produccion/ReportesPro/ConPro', [RepoProController::class, 'ConProdu'])->name('ConPro');
 
+Route::post('/Produccion/ReportesPro/ConParo', [RepoProController::class, 'ConParo'])->name('ConParo');
+
 //Fin de reporte de rpoduccion
 
 
