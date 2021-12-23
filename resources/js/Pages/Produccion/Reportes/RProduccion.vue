@@ -88,11 +88,11 @@
                         <jet-input type="date" class="form-control" @click="limInputs(1.5)" @change="cambioFechas()" v-model="FoFiltro.iniDia"></jet-input>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-if="FoFiltro.rango == 2">
-                        <jet-label><span class="required">*</span>Fecha Dia</jet-label>
+                        <jet-label><span class="required">*</span>Fecha Inicial</jet-label>
                         <jet-input type="datetime-local" class="form-control" @click="limInputs(1.5)" v-model="FoFiltro.iniDia"></jet-input>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-if="FoFiltro.rango == 2">
-                        <jet-label><span class="required">*</span>Fecha Dia</jet-label>
+                        <jet-label><span class="required">*</span>Fecha Final</jet-label>
                         <jet-input type="datetime-local" class="form-control" @click="limInputs(1.5)" v-model="FoFiltro.finDia"></jet-input>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
@@ -128,33 +128,93 @@
                 <!-- recorrido de los tipos de graficas -->
                 <div v-for="tip in graTipo" :key="tip">
                     <!-- formulario para grafica de pie -->
-                    <div v-if="tip == 'pie'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-blue-700 tw-p-10">
+                    <div v-if="tip == 'pie'" class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-rounded-xl tw-border-8 tw-border-blue-700 tw-p-10">
                         <div class="tw-flex tw-m-5">
                             <div class="tw-w-1/2 tw-text-2xl tw-text-center">
                                 <h1>Gráfica de Pie</h1>
                             </div>
 
-                            <div class="tw-w-1/2">
+                            <div class="tw-flex tw-w-1/2">
                                 <button class="btn btn-outline-success " @click="GraPaste(gPie)">Generar gráfica</button>
                                 <button class="btn btn-outline-danger " @click="resetPastel()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
-                        <div class="tw-flex ">
+                        <div class="lg:tw-flex ">
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                 <jet-label>Título</jet-label>
                                 <jet-input type="text" class="form-control" v-model="gPie.titulo"></jet-input>
 
-                                <jet-label><span class="required">*</span>Fecha Dia</jet-label>
-                                <jet-input type="date" class="form-control" v-model="gPie.fecha" :max="treDia"></jet-input>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                <jet-label><span class="required">*</span>Procesos</jet-label>
-                                <div class="tw-overflow-auto" style="height: 10rem">
-                                    <div v-for="pro in proGrafi" :key="pro" class="hover:tw-bg-teal-100">
-                                        <input type="checkbox" v-model="gPie.procesos" :value="pro.value" :id="'pie'+pro.value">
-                                        <label :for="'pie'+pro.value" class="tw-w-11/12">{{pro.text}}</label>
+                                <div class="lg:tw-flex">
+                                    <div class="tw-w-full">
+                                        <jet-label><span class="required">*</span>Procesos</jet-label>
+                                        <Select2 v-model="gPie.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                    </div>
+                                    <div class="tw-w-full" v-if="gPie.tipo == 'norma'">
+                                        <jet-label>Normas</jet-label>
+                                        <Select2 v-model="gPie.norma" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcNM" />
                                     </div>
                                 </div>
+
+
+
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+
+                                <!-- Rango o dia y tipo-->
+                                <div class="xl:tw-flex">
+                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
+                                        <jet-label>Opciones de consulta</jet-label>
+                                        <div class="tw-flex">
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GPdia" @click="limpiarGrafi()" value="1" v-model="gPie.rango">
+                                                <label for="GPdia"> Dia</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GPrango" @click="limpiarGrafi()" value="2" v-model="gPie.rango">
+                                                <label for="GPrango"> Rango</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
+                                        <jet-label>Tipo de grafica</jet-label>
+                                        <div class="tw-flex">
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GPgene" value="general" @click="limpMater()" v-model="gPie.tipo">
+                                                <label for="GPgene"> General</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GPnorma" value="norma" @click="limpMater()" v-model="gPie.tipo">
+                                                <label for="GPnorma"> Norma</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GPparti" value="partida" @click="limpMater()" v-model="gPie.tipo">
+                                                <label for="GPparti"> Partida</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GPequi" value="equipo" @click="limpMater()" v-model="gPie.tipo">
+                                                <label for="GPequi"> Equipo</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Input de fechas -->
+                                <div v-if="gPie.rango == 1" class="">
+                                    <jet-label><span class="required">*</span>Fecha Dia</jet-label>
+                                    <jet-input type="date" class="form-control" v-model="gPie.fecha"></jet-input>
+                                </div>
+
+                                <div v-if="gPie.rango == 2" class="lg:tw-flex">
+                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Fecha Inicial</jet-label>
+                                        <jet-input type="datetime-local" class="form-control" @click="limInputs(1.5)" v-model="gPie.iniDia"></jet-input>
+                                    </div>
+                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                        <jet-label><span class="required">*</span>Fecha Final</jet-label>
+                                        <jet-input type="datetime-local" class="form-control" @click="limInputs(1.5)" v-model="gPie.finDia"></jet-input>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -201,12 +261,13 @@
                             </div>
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                 <jet-label><span class="required">*</span>Procesos</jet-label>
-                                <div class="tw-overflow-auto" style="height: 10rem">
+                                <Select2 v-model="gLinea.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                <!-- <div class="tw-overflow-auto" style="height: 10rem">
                                     <div v-for="pro in proGrafi" :key="pro" class="hover:tw-bg-teal-100">
                                         <input type="checkbox" v-model="gLinea.procesos" :value="pro.value" :id="'pie'+pro.value">
                                         <label :for="'pie'+pro.value" class="tw-w-11/12">{{pro.text}}</label>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -531,7 +592,7 @@
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Norma</jet-label>
                                 <select class="InputSelect" v-model="carga.norma">
-                                    <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
+                                    <option v-for="nm in opcNM" :key="nm" :value="nm.id">{{nm.text}}</option>
                                 </select>
                                 <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                             </div>
@@ -703,9 +764,22 @@
                 },
                 gPie: {
                     borra: '',
-                    fecha: null,
+                    rango: 1,
+                    tipo: 'general',
                     procesos: [],
+                    norma: [],
+                    fecha: null,
+                    iniDia: null,
+                    finDia: null,
                     titulo: null
+                },
+                gLinea: {
+                    borra: '',
+                    titulo: '',
+                    subtitulo: '',
+                    fecIni: null,
+                    fecFin: null,
+                    procesos: []
                 },
             }
         },
@@ -1103,7 +1177,7 @@
 
 
                 //asigna el recorrido
-                let promesa = await axios.post('Produccion/ReportesPro/ConPro', datos)
+                let promesa = await axios.post('ReportesPro/ConPro', datos)
                 this.recoTabla = promesa.data
                 //recorre la tabla
                 $('#t_repo').DataTable().clear();
@@ -1159,7 +1233,7 @@
                 }
 
                 //asigna el recorrido
-                let promesa = await axios.post('Produccion/ReportesPro/ConParo', datos)
+                let promesa = await axios.post('ReportesPro/ConParo', datos)
                 this.recoTablaParo = promesa.data
                 //Limpia el datatables
                 $('#t_repoPar').DataTable().clear();
@@ -1309,6 +1383,247 @@
                     }
                 })
             },
+            /************************** Grafica de pastel ***************************************************/
+            limpiarGrafi(){
+                if (this.gPie.rango == 1) {
+                    this.gPie.fecha = null
+                }else{
+                    this.gPie.iniDia = null
+                    this.gPie.finDia = null
+                }
+            },
+            limpMater(){
+                this.gPie.norma = [];
+            },
+            /* metodos grafica pastel */
+            async GraPaste(data){
+                //variables internas
+                var inicio = null;
+                var fin = null;
+                const valor = [];
+                var clave = '';
+                var mater = '';
+                var part = '';
+                var equ = '';
+                var tur = '';
+
+                //alertas de inputs vacios
+                if (data.procesos.length <= 0 | (this.gPie.rango == 1 & data.fecha == null)) {
+                    data.procesos.length <= 0 ? Swal.fire('Por favor selecciona un proceso.') : '';
+                    data.fecha == null ? Swal.fire('Por favor selecciona una fecha.') : '';
+                    return '';
+                }
+                if (data.procesos.length <= 0 | (this.gPie.rango == 2 & (data.iniDia == null | data.finDia == null))) {
+                    data.procesos.length <= 0 ? Swal.fire('Por favor selecciona un proceso.') : '';
+                    data.iniDia == null ? Swal.fire('Por favor selecciona la fecha de inicio.') : '';
+                    data.finDia == null ? Swal.fire('Por favor selecciona la fecha final.') : '';
+                    return '';
+                }
+
+
+                //en caso de que los inputs sean llenados
+                if (this.gPie.rango == 1) {
+                    inicio = this.FoFiltro.iniDia+' 07:00:00'
+                    if (this.S_Area == 7){
+                        if (moment(data.fecha).isDST()) {
+                            inicio = data.fecha+' 09:10:00';
+                        }else{
+                            inicio = data.fecha+' 08:10:00';
+                        }
+                    }
+                    //Asigna el dato para la fecha final
+                    fin = moment(inicio).add(24, 'hours').format('YYYY-MM-DD hh:mm:ss');
+
+                }else{
+                    inicio = data.iniDia;
+                    fin = data.finDia;
+                }
+
+                var datos = {'departamento_id': this.S_Area, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin};
+
+                let promesa = await axios.post('ReportesPro/PaiGrafi', datos);
+
+                if (data.norma.length != 0) {
+                    promesa.data.forEach(dat => {
+                        data.procesos.forEach(pro => {
+                            if (dat.proceso_id == pro) {
+                                data.norma.forEach(nor => {
+                                    if (dat.norma == nor) {
+                                        mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
+                                        part = dat.partida == null ? '' : '/ ' + dat.partida;
+                                        clave = dat.clave == null ? '' : '/ ' + dat.clave.CVE_ART;
+                                        equ = dat.equipo_id == null ? '' : '/ ' + dat.equipo.nombre;
+                                        tur = dat.turno_id == null ? '' : '/ ' + dat.turno.nomtur;
+                                        valor.push({name: dat.proceso.nompro, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur});
+                                    }
+                                })
+                            }
+                        })
+                    })
+                }else{
+                    promesa.data.forEach(dat => {
+                        data.procesos.forEach(pro => {
+                            if (dat.proceso_id == pro) {
+                                mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
+                                part = dat.partida == null ? '' : '/ ' + dat.partida;
+                                clave = dat.clave == null ? '' : '/ ' + dat.clave.CVE_ART;
+                                equ = dat.equipo_id == null ? '' : '/ ' + dat.equipo.nombre;
+                                tur = dat.turno_id == null ? '' : '/ ' + dat.turno.nomtur;
+                                valor.push({name: dat.proceso.nompro, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur});
+                            }
+                        })
+                    })
+                }
+
+                this.gPie.borra = Highcharts.chart('chart', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: this.gPie.titulo
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name} {point.mate} {point.tr} {point.eq} {point.parti} {point.cl}</b>: {point.y} - {point.percentage:.1f}%'
+                        }
+                        }
+                    },
+                    series: [{
+                        name: 'Proceso',
+                        colorByPoint: true,
+                        data: valor
+                    }]
+                });
+            },
+            resetPastel(){
+                this.gPie.borra.destroy();
+            },
+            /************************* Grafica en linea *****************************************************/
+            lipiaLinea(){},
+            /* metodos grafica linea */
+            GraLinea(data){
+
+                var inicio = moment(data.fecIni).format('YYYY-MM-DD HH:mm:ss');
+                var fin = moment(data.fecFin).format('YYYY-MM-DD HH:mm:ss');
+                var partida = '';
+                var clave = '';
+                const gr = [];
+                const linX = [];
+                const valor = [];
+                var nombre = '';
+                const datos = [];
+
+                //alertas de inputs vacios
+                inicio == null ? Swal.fire('Por favor selecciona la fecha de inicio.') : '';
+                fin == null ? Swal.fire('Por favor selecciona la fecha final.') : '';
+                data.procesos.length <= 0 ? Swal.fire('Por favor selecciona un proceso.') : '';
+                if ((inicio != null & fin != null) & data.procesos.length > 0) {
+                    //recorrido de fechas
+                    /* this.cargas.forEach(reco => {
+                        if ( moment(reco.fecha).isSameOrAfter(inicio, 'minutes') & moment(reco.fecha).isBefore(fin, 'minutes') & reco.departamento_id == this.S_Area ) {
+                            gr.push(reco);
+                        }
+                    })
+
+                    gr.forEach(grp => {
+                        data.procesos.forEach(pro => {
+                            if (grp.proceso_id == pro) {
+                                partida = grp.partida == null ? 'N/A' : grp.partida;
+                                clave = grp.clave_id == null ? 'N/A' : grp.clave.CVE_ART;
+                                valor.push({name: grp.proceso.nompro, data: grp.valor, parti: partida, cl: clave});
+                            }
+                        })
+                    })
+
+                    console.log(valor) */
+
+                    this.gLinea.borra = Highcharts.chart('chart1', {
+
+                        chart: {
+                            zoomType: 'x'
+                        },
+
+                        title: {
+                            text: data.titulo
+                        },
+
+                        subtitle: {
+                            text: data.subtitulo
+                        },
+
+                        yAxis: {
+                            title: {
+                            text: 'Number of Employees'
+                            }
+                        },
+
+                        xAxis: {
+                            accessibility: {
+                                rangeDescription: 'Range: '+data.finIni+' - '+data.fecFin
+                            }
+                        },
+
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle'
+                        },
+
+                        plotOptions: {
+                            series: {
+                            label: {
+                                connectorAllowed: false
+                            },
+                            pointStart: 2010
+                            }
+                        },
+
+                        series: [{
+                            name: 'Installation',
+                            data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+                        }, {
+                            name: 'Manufacturing',
+                            data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+                        }, {
+                            name: 'Sales & Distribution',
+                            data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+                        }, {
+                            name: 'Project Development',
+                            data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+                        }, {
+                            name: 'Other',
+                            data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+                        }],
+
+                        responsive: {
+                            rules: [{
+                            condition: {
+                                maxWidth: 500
+                            },
+                            chartOptions: {
+                                legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                                }
+                            }
+                            }]
+                        }
+
+                    });
+                }
+
+            },
         },
 
         computed: {
@@ -1333,7 +1648,7 @@
             opcNM: function() {
                 const nm = [];
                 this.materiales.forEach(ma => {
-                    nm.push({value: ma.id, text: ma.materiales.idmat+' - '+ma.materiales.nommat});
+                    nm.push({id: ma.id, text: ma.materiales.idmat+' - '+ma.materiales.nommat});
                 })
                 return nm;
             },
@@ -1401,7 +1716,7 @@
                 var grafi = [];
                 this.procesos.forEach(gr => {
                     if (gr.tipo != 0) {
-                        grafi.push({value: gr.id, text:gr.nompro})
+                        grafi.push({id: gr.id, text:gr.nompro})
                         //console.log(gr)
                     }
                 })

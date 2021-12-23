@@ -93,9 +93,11 @@ Route::resource('CarNor', CarNormController::class)
 Route::resource('ReportesPro', RepoProController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
-Route::post('/Produccion/ReportesPro/ConPro', [RepoProController::class, 'ConProdu'])->name('ConPro');
+Route::post('ReportesPro/ConPro', [RepoProController::class, 'ConProdu'])->name('ConPro');
 
-Route::post('/Produccion/ReportesPro/ConParo', [RepoProController::class, 'ConParo'])->name('ConParo');
+Route::post('ReportesPro/ConParo', [RepoProController::class, 'ConParo'])->name('ConParo');
+
+Route::post('ReportesPro/PaiGrafi', [RepoProController::class, 'PaiGrafi'])->name('PaiGrafica');
 
 //Fin de reporte de rpoduccion
 
