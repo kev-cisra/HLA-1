@@ -334,6 +334,23 @@
                                     </span>
                                 </div>
                             </div>
+                            <div class="columnaIconos" v-if="datos.Estatus == 5">
+                                <div class="iconoPurple" @click="Partidas(datos)">
+                                    <span tooltip="Edita Precios" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
+                                    <span tooltip="Visualiza Cotizacion" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 </template>
@@ -768,6 +785,105 @@
         </div>
     </modal>
 
+    <modal :show="showPreciosRequisicion" @close="chagePreciosRequisicion" maxWidth="7xl">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Precios de Cotización <strong></strong></h3>
+                </div>
+            </div>
+            <div class="tw-my-4" v-if="ArticulosPrecios != null">
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">CANTIDAD</th>
+                        <th class="columna">UNIDAD</th>
+                        <th class="columna">DESCRIPCION</th>
+                        <th class="columna">MARCA</th>
+                        <th class="columna">PROVEEDOR</th>
+                        <th class="columna">COMENTARIOS</th>
+                        <th class="columna">PRECIO UNITARIO</th>
+                        <th class="columna">TIPO MONEDA</th>
+                        <th class="columna">TIPO CAMBIO</th>
+                        <th class="columna">PRECIO TOTAL</th>
+                        <th class="columna">ARCHIVO</th>
+                        <th class="columna">AUTORIZADO</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr class="fila tw-bg-gray-200" v-for="datos in ArticulosPrecios" :key="datos.id">
+                            <td class="tw-text-center">{{datos.Cantidad}}</td>
+                            <td class="tw-text-center">{{datos.Unidad}}</td>
+                            <td>{{datos.Descripcion}}</td>
+                            <td>
+                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
+                                    {{Pre.Marca}}
+                                </tr>
+                            </td>
+                            <td>
+                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
+                                    {{Pre.Proveedor}}
+                                </tr>
+                            </td>
+                            <td>
+                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
+                                    {{  Pre.Comentarios }}
+                                </tr>
+                            </td>
+                            <td class="tw-text-center">
+                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
+                                    $ {{Pre.Precio}}
+                                </tr>
+                            </td>
+                            <td class="tw-text-center">
+                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
+                                    {{Pre.Moneda}}
+                                </tr>
+                            </td>
+                            <td class="tw-text-center">
+                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
+                                    $ {{Pre.TipoCambio}}
+                                </tr>
+                            </td>
+                            <td class="tw-text-center">
+                                <tr v-for="Pre in datos.articulo_precios" :key="Pre">
+                                    $ {{Pre.Total}}
+                                </tr>
+                            </td>
+                            <td class="tw-flex tw-justify-center">
+                                <tr class="tw-p-1" v-for="Pre in datos.articulo_precios" :key="Pre">
+                                    <div class="columnaIconos">
+                                        <a target="_blank" :href="path + Pre.Archivo" style="color:black;">
+                                            <i class="far fa-file-image"></i>
+                                        </a>
+                                    </div>
+                                </tr>
+                            </td>
+                            <td>
+                                <tr class="tw-text-center" v-for="Pre in datos.articulo_precios" :key="Pre">
+                                    <div class="columnaIconos" v-if="Pre.Autorizado == 1">
+                                        <span tooltip="Precio no Autorizado" flow="left">
+                                            <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-text-white tw-bg-red-400 tw-rounded-full">No Autorizado</span>
+                                        </span>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="Pre.Autorizado == 2">
+                                        <span tooltip="Precio Autorizado" flow="left">
+                                            <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-text-white tw-bg-green-400 tw-rounded-full">Autorizado</span>
+                                        </span>
+                                    </div>
+                                </tr>
+                            </td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
+        </div>
+
+        <div class="ModalFooter">
+            <jet-button type="button" @click="Editar(form)"  :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Editar</jet-button>
+            <jet-CancelButton @click="chagePreciosRequisicion">Cerrar</jet-CancelButton>
+        </div>
+    </modal>
+
     </app-layout>
 </template>
 
@@ -889,6 +1005,7 @@ export default {
         errors: Object,
         Vista: String,
         Requisiciones: Object,
+        ArticulosPrecios: Object,
         Proveedores: Object,
         Cotizacion: Number,
         SinConfirmar: Number,
@@ -949,13 +1066,18 @@ export default {
         },
 
         Filtros(){ //Cambio de visualizacion por partidas o articulos
-            this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
+            $('#Requisiciones').DataTable().clear();
+            $('#Requisiciones').DataTable().destroy();
+/*             this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
                 onSuccess: () => {
+                    // this.tabla();
                     //Verifico si hubo un cambio en la vista
                     if(this.Cambio == true){
+                        $('#Requisiciones').DataTable().clear();
+                        $('#Requisiciones').DataTable().destroy();
                         location.reload();
                     }
-                }, preserveState: true})
+                }, preserveState: true}) */
         },
 
         //datatable

@@ -34,6 +34,8 @@ class CotizacionesController extends Controller{
         $Autorizados = Requisiciones::where('Estatus', '=', 5)->count();
         $EnCotizacion = Requisiciones::where('Estatus', '=', 6)->count();
 
+        $ArticulosPrecios = null;
+
         //Obtencion de filtros para Fechas
         $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
         $request->Year == '' ? $anio = 2021 : $anio = $request->Year;
@@ -400,10 +402,23 @@ class CotizacionesController extends Controller{
             }
         }
 
+        if($request->Req != ''){ //Obtencion del id de la requisicion
+            //Consulta los articulos con sus precios correspondientes
+            $ArticulosPrecios = ArticulosRequisiciones::with([
+                'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
+                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                },
+            ])
+            ->where('requisicion_id', '=', $request->Req)
+            ->where('EstatusArt', '!=', 10)
+            ->get();
+        }
+
         return Inertia::render('Compras/Cotizaciones/Cotizaciones', compact(
             'Session',
             'Requisiciones',
             'Proveedores',
+            'ArticulosPrecios',
             'Vista',
             'Cotizacion',
             'SinConfirmar',
@@ -411,7 +426,6 @@ class CotizacionesController extends Controller{
             'mes',
         ));
     }
-
 
     public function store(Request $request){
 
@@ -436,13 +450,13 @@ class CotizacionesController extends Controller{
 
                 if($request->Moneda == 'MXN'){ //Obtengo el tipo de moneda
                     $Total = $value['PrecioUnitario'] * $value['Cantidad']; //Calculo el total
-                    $Total = $Total;
+                    $Total = number_format($Total,2);
                     $TipoCambio = 0;
                 }else{
                     $TipoCambio = $request->TipoCambio;
                     $Total1 = round($value['PrecioUnitario'] * $request->TipoCambio, 2); //Calculo el total del Precio Unitario
                     $Total = $Total1 * $value['Cantidad']; //Calculo el otal del la cotizacion
-                    $Total = $Total;
+                    $Total = number_format($Total,2);
                 }
 
                 //Obtengo el numero de cotizaciones guardadas para esa requisicion
@@ -458,7 +472,7 @@ class CotizacionesController extends Controller{
 
                 $Cotizacion = PreciosCotizaciones::create([
                     'IdUser' => $request->IdUser,
-                    'Precio' => $value['PrecioUnitario'],
+                    'Precio' => number_format($value['PrecioUnitario'],2),
                     'Total' => $Total,
                     'Moneda' => $request->Moneda,
                     'TipoCambio' => $TipoCambio,
