@@ -1068,16 +1068,16 @@ export default {
         Filtros(){ //Cambio de visualizacion por partidas o articulos
             $('#Requisiciones').DataTable().clear();
             $('#Requisiciones').DataTable().destroy();
-/*             this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
+            this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
                 onSuccess: () => {
-                    // this.tabla();
+                    this.tabla();
                     //Verifico si hubo un cambio en la vista
                     if(this.Cambio == true){
                         $('#Requisiciones').DataTable().clear();
                         $('#Requisiciones').DataTable().destroy();
                         location.reload();
                     }
-                }, preserveState: true}) */
+                }, preserveState: true})
         },
 
         //datatable

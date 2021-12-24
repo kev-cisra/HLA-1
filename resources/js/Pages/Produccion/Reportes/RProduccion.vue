@@ -129,6 +129,7 @@
                 <div v-for="tip in graTipo" :key="tip">
                     <!-- formulario para grafica de pie -->
                     <div v-if="tip == 'pie'" class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-rounded-xl tw-border-8 tw-border-blue-700 tw-p-10">
+                        <!-- titulo y botones -->
                         <div class="tw-flex tw-m-5">
                             <div class="tw-w-1/2 tw-text-2xl tw-text-center">
                                 <h1>Gráfica de Pie</h1>
@@ -139,12 +140,13 @@
                                 <button class="btn btn-outline-danger " @click="resetPastel()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
+                        <!-- formulario -->
                         <div class="lg:tw-flex ">
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                 <jet-label>Título</jet-label>
                                 <jet-input type="text" class="form-control" v-model="gPie.titulo"></jet-input>
 
-                                <div class="lg:tw-flex">
+                                <div class="lg:tw-flex tw-gap-5">
                                     <div class="tw-w-full">
                                         <jet-label><span class="required">*</span>Procesos</jet-label>
                                         <Select2 v-model="gPie.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
@@ -218,6 +220,7 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- formulario para grafica de linea -->
                     <div v-if="tip == 'punto'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-green-700 tw-p-10">
                         <div class="tw-flex tw-m-5">
@@ -235,7 +238,7 @@
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0 tw-gap-x-5">
                                 <!-- titulos para graficas -->
                                 <div class="tw-flex tw-gap-4">
-                                    <!-- tutulo -->
+                                    <!-- titulo -->
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Título</jet-label>
                                         <jet-input type="text" class="form-control" v-model="gLinea.titulo"></jet-input>
@@ -247,30 +250,51 @@
                                     </div>
                                 </div>
 
+                                <jet-label><span class="required">*</span>Procesos</jet-label>
+                                <Select2 v-model="gLinea.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+
+                                <!-- Rango o dia y tipo-->
+                                <div class="xl:tw-flex">
+                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
+                                        <jet-label>Tipo de grafica</jet-label>
+                                        <div class="tw-flex">
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GLgene" value="general" v-model="gLinea.tipo">
+                                                <label for="GLgene"> General</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GLnorma" value="norma" v-model="gLinea.tipo">
+                                                <label for="GLnorma"> Norma</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GLparti" value="partida" v-model="gLinea.tipo">
+                                                <label for="GLparti"> Partida</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GLequi" value="equipo" v-model="gLinea.tipo">
+                                                <label for="GLequi"> Equipo</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- dias -->
                                 <div class="tw-flex tw-gap-4">
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Fecha Inicio</jet-label>
-                                        <jet-input type="datetime-local" v-model="gLinea.fecIni"></jet-input>
+                                        <jet-input type="date" v-model="gLinea.fecIni"></jet-input>
                                     </div>
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Fecha Fin</jet-label>
-                                        <jet-input type="datetime-local" v-model="gLinea.fecFin"></jet-input>
+                                        <jet-input type="date" v-model="gLinea.fecFin"></jet-input>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                <jet-label><span class="required">*</span>Procesos</jet-label>
-                                <Select2 v-model="gLinea.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
-                                <!-- <div class="tw-overflow-auto" style="height: 10rem">
-                                    <div v-for="pro in proGrafi" :key="pro" class="hover:tw-bg-teal-100">
-                                        <input type="checkbox" v-model="gLinea.procesos" :value="pro.value" :id="'pie'+pro.value">
-                                        <label :for="'pie'+pro.value" class="tw-w-11/12">{{pro.text}}</label>
-                                    </div>
-                                </div> -->
-                            </div>
                         </div>
                     </div>
+
                     <!-- formulario para grafica de barra -->
                     <div v-if="tip == 'barra'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-yellow-700 tw-p-10">
                         <div class="tw-flex tw-m-5">
@@ -285,6 +309,7 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- formulario para grafica combinada -->
                     <div v-if="tip == 'ambos'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-red-700 tw-p-10">
                         <div class="tw-flex tw-m-5">
@@ -777,6 +802,7 @@
                     borra: '',
                     titulo: '',
                     subtitulo: '',
+                    tipo: 'general',
                     fecIni: null,
                     fecFin: null,
                     procesos: []
@@ -1513,41 +1539,38 @@
             /* metodos grafica linea */
             GraLinea(data){
 
-                var inicio = moment(data.fecIni).format('YYYY-MM-DD HH:mm:ss');
-                var fin = moment(data.fecFin).format('YYYY-MM-DD HH:mm:ss');
-                var partida = '';
-                var clave = '';
-                const gr = [];
-                const linX = [];
-                const valor = [];
-                var nombre = '';
-                const datos = [];
+                var inicio = data.fecIni+' 07:00:00';
+                var fin = data.fecFin+' 07:00:00';
+
+                if (this.S_Area == 7){
+                    if (moment(data.fecha).isDST()) {
+                        inicio = data.fecIni+' 09:10:00';
+                        fin = data.fecFin+' 09:10:00';
+                    }else{
+                        inicio = data.fecIni+' 08:10:00';
+                        fin = data.fecFin+' 08:10:00';
+                    }
+                }
 
                 //alertas de inputs vacios
-                inicio == null ? Swal.fire('Por favor selecciona la fecha de inicio.') : '';
-                fin == null ? Swal.fire('Por favor selecciona la fecha final.') : '';
-                data.procesos.length <= 0 ? Swal.fire('Por favor selecciona un proceso.') : '';
-                if ((inicio != null & fin != null) & data.procesos.length > 0) {
-                    //recorrido de fechas
-                    /* this.cargas.forEach(reco => {
-                        if ( moment(reco.fecha).isSameOrAfter(inicio, 'minutes') & moment(reco.fecha).isBefore(fin, 'minutes') & reco.departamento_id == this.S_Area ) {
-                            gr.push(reco);
-                        }
-                    })
+                if (data.fecIni == null || data.fecFin == null) {
+                    data.finIni == null ? Swal.fire('Por favor selecciona la fecha de inicio.') : '';
+                    data.fecFin == null ? Swal.fire('Por favor selecciona la fecha final.') : '';
+                    return '';
+                }
 
-                    gr.forEach(grp => {
-                        data.procesos.forEach(pro => {
-                            if (grp.proceso_id == pro) {
-                                partida = grp.partida == null ? 'N/A' : grp.partida;
-                                clave = grp.clave_id == null ? 'N/A' : grp.clave.CVE_ART;
-                                valor.push({name: grp.proceso.nompro, data: grp.valor, parti: partida, cl: clave});
-                            }
-                        })
-                    })
+                if (data.procesos.length <= 0) {
+                    Swal.fire('Por favor selecciona un proceso.')
+                    return '';
+                }
 
-                    console.log(valor) */
+                //
+                if ((data.fecIni != null & data.fecFin != null) & data.procesos.length > 0) {
+                    const datos = {'departamento_id': this.S_Area, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin};
+                    console.log(datos)
+                }
 
-                    this.gLinea.borra = Highcharts.chart('chart1', {
+                this.gLinea.borra = Highcharts.chart('chart1', {
 
                         chart: {
                             zoomType: 'x'
@@ -1621,7 +1644,6 @@
                         }
 
                     });
-                }
 
             },
         },

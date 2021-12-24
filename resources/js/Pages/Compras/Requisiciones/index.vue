@@ -875,11 +875,14 @@ export default {
         },
 
         Filtros(){
+            $('#Requisiciones').DataTable().clear();
+            $('#Requisiciones').DataTable().destroy();
             this.$inertia.get('/Compras/Requisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
+                    this.tabla();
                     //Verifico si hubo un cambio en la vista
                     if(this.Cambio == true){
-                        location.reload();
+                        // location.reload();
                     }
                 }, preserveState: true})
         },
