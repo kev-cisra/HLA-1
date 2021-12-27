@@ -157,8 +157,6 @@
                                     </div>
                                 </div>
 
-
-
                             </div>
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
 
@@ -250,14 +248,39 @@
                                     </div>
                                 </div>
 
-                                <jet-label><span class="required">*</span>Procesos</jet-label>
-                                <Select2 v-model="gLinea.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                <div class="lg:tw-flex tw-gap-5">
+                                    <div class="tw-w-full">
+                                        <jet-label><span class="required">*</span>Procesos</jet-label>
+                                        <Select2 v-model="gLinea.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                    </div>
+                                    <div class="tw-w-full" v-if="gLinea.tipo == 'norma'">
+                                        <jet-label>Normas</jet-label>
+                                        <Select2 v-model="gLinea.norma" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcNM" />
+                                    </div>
+                                </div>
                             </div>
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
 
                                 <!-- Rango o dia y tipo-->
                                 <div class="xl:tw-flex">
                                     <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
+                                        <jet-label>Opciones de consulta</jet-label>
+                                        <div class="tw-flex">
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GLdia" @click="lipiaLinea(1)" value="1" v-model="gLinea.rango">
+                                                <label for="GLdia"> Diario</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GLmes" @click="lipiaLinea(2)" value="2" v-model="gLinea.rango">
+                                                <label for="GLmes"> Mes</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GLano" @click="lipiaLinea(3)" value="3" v-model="gLinea.rango">
+                                                <label for="GLano"> Año</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
                                         <jet-label>Tipo de grafica</jet-label>
                                         <div class="tw-flex">
                                             <div class=" tw-m-5">
@@ -277,11 +300,11 @@
                                                 <label for="GLequi"> Equipo</label>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <!-- dias -->
-                                <div class="tw-flex tw-gap-4">
+                                <div class="tw-flex tw-gap-4" v-if="gLinea.rango == 1">
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Fecha Inicio</jet-label>
                                         <jet-input type="date" v-model="gLinea.fecIni"></jet-input>
@@ -289,6 +312,28 @@
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Fecha Fin</jet-label>
                                         <jet-input type="date" v-model="gLinea.fecFin"></jet-input>
+                                    </div>
+                                </div>
+                                <!-- mes -->
+                                <div class="tw-flex tw-gap-4" v-else-if="gLinea.rango == 2">
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-input type="month" v-model="gLinea.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-input type="month" v-model="gLinea.fecFin"></jet-input>
+                                    </div>
+                                </div>
+                                <!-- año -->
+                                <div class="tw-flex tw-gap-4" v-else>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-input type="number" v-model="gLinea.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-input type="number" v-model="gLinea.fecFin"></jet-input>
                                     </div>
                                 </div>
                             </div>
@@ -802,10 +847,12 @@
                     borra: '',
                     titulo: '',
                     subtitulo: '',
+                    rango: 1,
                     tipo: 'general',
                     fecIni: null,
                     fecFin: null,
-                    procesos: []
+                    procesos: [],
+                    norma: [],
                 },
             }
         },
@@ -1465,41 +1512,18 @@
                     fin = data.finDia;
                 }
 
-                var datos = {'departamento_id': this.S_Area, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin};
+                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin};
 
                 let promesa = await axios.post('ReportesPro/PaiGrafi', datos);
 
-                if (data.norma.length != 0) {
-                    promesa.data.forEach(dat => {
-                        data.procesos.forEach(pro => {
-                            if (dat.proceso_id == pro) {
-                                data.norma.forEach(nor => {
-                                    if (dat.norma == nor) {
-                                        mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
-                                        part = dat.partida == null ? '' : '/ ' + dat.partida;
-                                        clave = dat.clave == null ? '' : '/ ' + dat.clave.CVE_ART;
-                                        equ = dat.equipo_id == null ? '' : '/ ' + dat.equipo.nombre;
-                                        tur = dat.turno_id == null ? '' : '/ ' + dat.turno.nomtur;
-                                        valor.push({name: dat.proceso.nompro, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur});
-                                    }
-                                })
-                            }
-                        })
-                    })
-                }else{
-                    promesa.data.forEach(dat => {
-                        data.procesos.forEach(pro => {
-                            if (dat.proceso_id == pro) {
-                                mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
-                                part = dat.partida == null ? '' : '/ ' + dat.partida;
-                                clave = dat.clave == null ? '' : '/ ' + dat.clave.CVE_ART;
-                                equ = dat.equipo_id == null ? '' : '/ ' + dat.equipo.nombre;
-                                tur = dat.turno_id == null ? '' : '/ ' + dat.turno.nomtur;
-                                valor.push({name: dat.proceso.nompro, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur});
-                            }
-                        })
-                    })
-                }
+                promesa.data.forEach(dat => {
+                    mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
+                    part = dat.partida == null ? '' : '/ ' + dat.partida;
+                    clave = dat.clave == null ? '' : '/ ' + dat.clave.CVE_ART;
+                    equ = dat.equipo_id == null ? '' : '/ ' + dat.equipo.nombre;
+                    tur = dat.turno_id == null ? '' : '/ ' + dat.turno.nomtur;
+                    valor.push({name: dat.proceso.nompro, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur});
+                })
 
                 this.gPie.borra = Highcharts.chart('chart', {
                     chart: {
@@ -1535,22 +1559,25 @@
                 this.gPie.borra.destroy();
             },
             /************************* Grafica en linea *****************************************************/
-            lipiaLinea(){},
-            /* metodos grafica linea */
-            GraLinea(data){
-
-                var inicio = data.fecIni+' 07:00:00';
-                var fin = data.fecFin+' 07:00:00';
-
-                if (this.S_Area == 7){
-                    if (moment(data.fecha).isDST()) {
-                        inicio = data.fecIni+' 09:10:00';
-                        fin = data.fecFin+' 09:10:00';
-                    }else{
-                        inicio = data.fecIni+' 08:10:00';
-                        fin = data.fecFin+' 08:10:00';
-                    }
+            lipiaLinea(dat){
+                this.gLinea.fecIni = null;
+                this.gLinea.fecFin = null;
+                if (dat == 1) {
+                    //console.log('es diario')
+                }else if(dat == 2){
+                    //console.log('es mes')
                 }
+                else{
+                    this.gLinea.fecIni = moment().format('Y');
+                    this.gLinea.fecFin = moment().format('Y');
+                }
+            },
+            /* metodos grafica linea */
+            async GraLinea(data){
+
+                var inicio = data.fecIni;
+                var fin = data.fecFin;
+                const fechas = [];
 
                 //alertas de inputs vacios
                 if (data.fecIni == null || data.fecFin == null) {
@@ -1565,10 +1592,11 @@
                 }
 
                 //
-                if ((data.fecIni != null & data.fecFin != null) & data.procesos.length > 0) {
-                    const datos = {'departamento_id': this.S_Area, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin};
-                    console.log(datos)
-                }
+                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin};
+
+                let promesa = await axios.post('ReportesPro/LinGrafi', datos);
+
+                console.log(promesa.data)
 
                 this.gLinea.borra = Highcharts.chart('chart1', {
 
@@ -1586,13 +1614,13 @@
 
                         yAxis: {
                             title: {
-                            text: 'Number of Employees'
+                            text: 'Producción'
                             }
                         },
 
                         xAxis: {
                             accessibility: {
-                                rangeDescription: 'Range: '+data.finIni+' - '+data.fecFin
+                                rangeDescription: 'Range: '+data.fecIni+' - '+data.fecFin
                             }
                         },
 
@@ -1605,9 +1633,9 @@
                         plotOptions: {
                             series: {
                             label: {
-                                connectorAllowed: false
-                            },
-                            pointStart: 2010
+                                    connectorAllowed: false
+                                },
+                                pointStart: 2015
                             }
                         },
 

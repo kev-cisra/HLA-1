@@ -99,6 +99,8 @@ Route::post('ReportesPro/ConParo', [RepoProController::class, 'ConParo'])->name(
 
 Route::post('ReportesPro/PaiGrafi', [RepoProController::class, 'PaiGrafi'])->name('PaiGrafica');
 
+Route::post('ReportesPro/LinGrafi', [RepoProController::class, 'LinGrafi'])->name('LinGrafica');
+
 //Fin de reporte de rpoduccion
 
 
