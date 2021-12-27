@@ -901,7 +901,7 @@ export default {
         Almacen: Number,
         Cotizacion: Number,
         SinConfirmar: Number,
-        Vista: Number,
+        Vista: String,
         mes: String,
         datos: Object,
     },
@@ -909,10 +909,16 @@ export default {
     methods: {
 
         Filtros(){ //Generacion de consulta aplicada con Filtros
+            $('#Requisiciones').DataTable().clear();
+            $('#Requisiciones').DataTable().destroy();
             this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
+                    this.tabla();
                     //Verifico si hubo un cambio en la vista
                     if(this.Cambio == true){
+                        $('#Requisiciones').DataTable().clear();
+                        $('#Requisiciones').DataTable().destroy();
+                        this.tabla();
                         location.reload();
                     }
                 }, preserveState: true})
@@ -923,7 +929,7 @@ export default {
             this.$nextTick(() => {
                 $("#Requisiciones").DataTable({
                     "language": this.español,
-                    paging: false,
+                    paging: true,
                     "scrollX": true,
                     scrollY:  '40vh',
                     "order": [0, 'desc'],

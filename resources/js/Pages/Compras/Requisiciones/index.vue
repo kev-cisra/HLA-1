@@ -882,7 +882,7 @@ export default {
                     this.tabla();
                     //Verifico si hubo un cambio en la vista
                     if(this.Cambio == true){
-                        // location.reload();
+                        location.reload();
                     }
                 }, preserveState: true})
         },
