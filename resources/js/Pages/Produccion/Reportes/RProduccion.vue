@@ -349,8 +349,114 @@
                             </div>
                             <!-- boton -->
                             <div class="tw-w-1/2">
-                                <button class="btn btn-outline-success " @click="GraBarra()">Generar gráfica</button>
+                                <button class="btn btn-outline-success " @click="GraBarra(gBarra)">Generar gráfica</button>
                                 <button class="btn btn-outline-danger " @click="resetBarra()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="tw-flex">
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0 tw-gap-x-5">
+                                <!-- titulos para graficas -->
+                                <div class="tw-flex tw-gap-4">
+                                    <!-- titulo -->
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Título</jet-label>
+                                        <jet-input type="text" class="form-control" v-model="gBarra.titulo"></jet-input>
+                                    </div>
+                                    <!-- sub titulo -->
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Sub Título</jet-label>
+                                        <jet-input type="text" class="form-control" v-model="gBarra.subtitulo"></jet-input>
+                                    </div>
+                                </div>
+
+                                <div class="lg:tw-flex tw-gap-5">
+                                    <div class="tw-w-full">
+                                        <jet-label><span class="required">*</span>Procesos</jet-label>
+                                        <Select2 v-model="gBarra.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                    </div>
+                                    <div class="tw-w-full" v-if="gBarra.tipo == 'norma'">
+                                        <jet-label>Normas</jet-label>
+                                        <Select2 v-model="gBarra.norma" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcNM" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+
+                                <!-- Rango o dia y tipo-->
+                                <div class="xl:tw-flex">
+                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
+                                        <jet-label>Opciones de consulta</jet-label>
+                                        <div class="tw-flex">
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GBdia" @click="limpiaBarra(1)" value="1" v-model="gBarra.rango">
+                                                <label for="GBdia"> Diario</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GBmes" @click="limpiaBarra(2)" value="2" v-model="gBarra.rango">
+                                                <label for="GBmes"> Mes</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GBano" @click="limpiaBarra(3)" value="3" v-model="gBarra.rango">
+                                                <label for="GBano"> Año</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
+                                        <jet-label>Tipo de grafica</jet-label>
+                                        <div class="tw-flex">
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GLgene" value="general" v-model="gBarra.tipo">
+                                                <label for="GLgene"> General</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GLnorma" value="norma" v-model="gBarra.tipo">
+                                                <label for="GLnorma"> Norma</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GLparti" value="partida" v-model="gBarra.tipo">
+                                                <label for="GLparti"> Partida</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GLequi" value="equipo" v-model="gBarra.tipo">
+                                                <label for="GLequi"> Equipo</label>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                </div>
+
+                                <!-- dias -->
+                                <div class="tw-flex tw-gap-4" v-if="gBarra.rango == 1">
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-input type="date" v-model="gBarra.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-input type="date" v-model="gBarra.fecFin"></jet-input>
+                                    </div>
+                                </div>
+                                <!-- mes -->
+                                <div class="tw-flex tw-gap-4" v-else-if="gBarra.rango == 2">
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-input type="month" v-model="gBarra.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-input type="month" v-model="gBarra.fecFin"></jet-input>
+                                    </div>
+                                </div>
+                                <!-- año -->
+                                <div class="tw-flex tw-gap-4" v-else>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-input type="number" v-model="gBarra.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-input type="number" v-model="gBarra.fecFin"></jet-input>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -578,7 +684,7 @@
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Fecha de inicio de carga</jet-label>
-                                <input type="file" @input="docu.file = $event.target.files[0]" ref="file" accept=".xlsx">
+                                <input type="file" class="" @input="docu.file = $event.target.files[0]" ref="file" accept=".xlsx">
                                 <br>
                                 <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
                             </div>
@@ -781,7 +887,7 @@
                 color: "tw-bg-blue-600",
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
-                maquinas: [],
+                //maquinas: [],
                 procesos: [],
                 materiales: [],
                 editMode: false,
@@ -854,6 +960,28 @@
                     procesos: [],
                     norma: [],
                 },
+                gBarra: {
+                    borra: '',
+                    titulo: '',
+                    subtitulo: '',
+                    rango: 1,
+                    tipo: 'general',
+                    fecIni: null,
+                    fecFin: null,
+                    procesos: [],
+                    norma: [],
+                },
+                gBaLi: {
+                    borra: '',
+                    titulo: '',
+                    subtitulo: '',
+                    rango: 1,
+                    tipo: 'general',
+                    fecIni: null,
+                    fecFin: null,
+                    procesos: [],
+                    norma: [],
+                }
             }
         },
 
@@ -1558,7 +1686,7 @@
             resetPastel(){
                 this.gPie.borra.destroy();
             },
-            /************************* Grafica en linea *****************************************************/
+            /******************************************* Grafica en linea *****************************************************/
             lipiaLinea(dat){
                 this.gLinea.fecIni = null;
                 this.gLinea.fecFin = null;
@@ -1575,9 +1703,13 @@
             /* metodos grafica linea */
             async GraLinea(data){
 
-                var inicio = data.fecIni;
-                var fin = data.fecFin;
+                var inicio = moment(data.fecIni);
+                var fin = moment(data.fecFin);
                 const fechas = [];
+                const titFec = [];
+                var name = '';
+                var dat = [];
+                const serie = [];
 
                 //alertas de inputs vacios
                 if (data.fecIni == null || data.fecFin == null) {
@@ -1591,88 +1723,241 @@
                     return '';
                 }
 
-                //
-                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin};
+                //Consulta a las graficas
+                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': data.fecIni, 'finDia': data.fecFin};
 
                 let promesa = await axios.post('ReportesPro/LinGrafi', datos);
 
-                console.log(promesa.data)
+                //recorrido para fechas
+                switch (data.rango) {
+                    case 1:
+                        while (inicio.isSameOrBefore(fin, 'days')) {
+                            titFec.push(inicio.format('YYYY-MM-DD'))
+                            fechas.push(inicio.format('YYYY-MM-DD'))
+                            inicio.add(1, 'days')
+
+                        }
+                        break;
+
+                    case '2':
+                        while (inicio.isSameOrBefore(fin, 'month')) {
+                            titFec.push(inicio.format('MMMM-YYYY'))
+                            fechas.push(inicio.format('YYYY-MM'))
+                            inicio.add(1, 'month')
+                        }
+                        break;
+
+                    case '3':
+                        while (inicio.isSameOrBefore(fin, 'year')) {
+                            titFec.push(inicio.format('YYYY'))
+                            fechas.push(inicio.format('YYYY'))
+                            inicio.add(1, 'year')
+                        }
+                        break;
+                }
+
+                data.procesos.forEach(proce => {
+                    dat = [];
+                    fechas.forEach(tiemp => {
+                        let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
+                        if (ver) {
+                            name = ver.proceso.nompro;
+                            dat.push(ver.valor)
+                        }else{
+                            dat.push(null)
+                        }
+                    })
+                    serie.push({name: name, data: dat})
+                })
 
                 this.gLinea.borra = Highcharts.chart('chart1', {
 
-                        chart: {
-                            zoomType: 'x'
-                        },
+                    chart: {
+                        zoomType: 'x'
+                    },
 
+                    title: {
+                        text: data.titulo
+                    },
+
+                    subtitle: {
+                        text: data.subtitulo
+                    },
+
+                    yAxis: {
                         title: {
-                            text: data.titulo
-                        },
-
-                        subtitle: {
-                            text: data.subtitulo
-                        },
-
-                        yAxis: {
-                            title: {
-                            text: 'Producción'
-                            }
-                        },
-
-                        xAxis: {
-                            accessibility: {
-                                rangeDescription: 'Range: '+data.fecIni+' - '+data.fecFin
-                            }
-                        },
-
-                        legend: {
-                            layout: 'vertical',
-                            align: 'right',
-                            verticalAlign: 'middle'
-                        },
-
-                        plotOptions: {
-                            series: {
-                            label: {
-                                    connectorAllowed: false
-                                },
-                                pointStart: 2015
-                            }
-                        },
-
-                        series: [{
-                            name: 'Installation',
-                            data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-                        }, {
-                            name: 'Manufacturing',
-                            data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-                        }, {
-                            name: 'Sales & Distribution',
-                            data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-                        }, {
-                            name: 'Project Development',
-                            data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-                        }, {
-                            name: 'Other',
-                            data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-                        }],
-
-                        responsive: {
-                            rules: [{
-                            condition: {
-                                maxWidth: 500
-                            },
-                            chartOptions: {
-                                legend: {
-                                layout: 'horizontal',
-                                align: 'center',
-                                verticalAlign: 'bottom'
-                                }
-                            }
-                            }]
+                        text: 'Producción'
                         }
+                    },
 
-                    });
+                    xAxis: {
+                        categories: titFec,
+                        accessibility: {
+                            rangeDescription: 'Range: '
+                        }
+                    },
 
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle'
+                    },
+
+                    plotOptions: {
+                        series: {
+                        label: {
+                                connectorAllowed: false
+                            },
+                            pointStart: 2015
+                        }
+                    },
+
+                    series: serie,
+
+                    responsive: {
+                        rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                            }
+                        }
+                        }]
+                    }
+
+                });
+
+            },
+            resetLinea(){
+                this.gLinea.borra.destroy();
+            },
+            /****************************************** Grafica de barras **********************************************/
+            limpiaBarra(dat){
+                this.gBarra.fecIni = null;
+                this.gBarra.fecFin = null;
+                if (dat == 1) {
+                    //console.log('es diario')
+                }else if(dat == 2){
+                    //console.log('es mes')
+                }
+                else{
+                    this.gBarra.fecIni = moment().format('Y');
+                    this.gBarra.fecFin = moment().format('Y');
+                }
+            },
+            /* metodos grafica barra */
+            async GraBarra(data){
+                var inicio = moment(data.fecIni);
+                var fin = moment(data.fecFin);
+                const fechas = [];
+                const titFec = [];
+                var name = '';
+                var dat = [];
+                const serie = [];
+
+                //alertas de inputs vacios
+                if (data.fecIni == null || data.fecFin == null) {
+                    data.finIni == null ? Swal.fire('Por favor selecciona la fecha de inicio.') : '';
+                    data.fecFin == null ? Swal.fire('Por favor selecciona la fecha final.') : '';
+                    return '';
+                }
+
+                if (data.procesos.length <= 0) {
+                    Swal.fire('Por favor selecciona un proceso.')
+                    return '';
+                }
+
+                //Consulta a las graficas
+                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': data.fecIni, 'finDia': data.fecFin};
+
+                let promesa = await axios.post('ReportesPro/LinGrafi', datos);
+
+                //recorrido para fechas
+                switch (data.rango) {
+                    case 1:
+                        while (inicio.isSameOrBefore(fin, 'days')) {
+                            titFec.push(inicio.format('YYYY-MM-DD'))
+                            fechas.push(inicio.format('YYYY-MM-DD'))
+                            inicio.add(1, 'days')
+
+                        }
+                        break;
+
+                    case '2':
+                        while (inicio.isSameOrBefore(fin, 'month')) {
+                            titFec.push(inicio.format('MMMM-YYYY'))
+                            fechas.push(inicio.format('YYYY-MM'))
+                            inicio.add(1, 'month')
+                        }
+                        break;
+
+                    case '3':
+                        while (inicio.isSameOrBefore(fin, 'year')) {
+                            titFec.push(inicio.format('YYYY'))
+                            fechas.push(inicio.format('YYYY'))
+                            inicio.add(1, 'year')
+                        }
+                        break;
+                }
+
+                data.procesos.forEach(proce => {
+                    dat = [];
+                    fechas.forEach(tiemp => {
+                        let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
+                        if (ver) {
+                            name = ver.proceso.nompro;
+                            dat.push(ver.valor)
+                        }else{
+                            dat.push(null)
+                        }
+                    })
+                    serie.push({name: name, data: dat})
+                })
+
+
+
+                this.gBarra.borra = Highcharts.chart('chart2', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: this.gBarra.titulo
+                    },
+                    subtitle: {
+                        text: this.gBarra.subtitulo
+                    },
+                    xAxis: {
+                        categories: titFec,
+                        crosshair: true
+                    },
+                    yAxis: {
+                        title: {
+                        text: 'Producción'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                        }
+                    },
+                    series: serie
+                });
+            },
+            resetBarra(){
+                this.gBarra.borra.destroy();
             },
         },
 
@@ -1781,8 +2066,8 @@
                 var datos = {'departamento_id': this.S_Area};
 
                 //Maquinas
-                let maqui = await axios.post('General/ConMaquina', datos)
-                this.maquinas = maqui.data
+                /* let maqui = await axios.post('General/ConMaquina', datos)
+                this.maquinas = maqui.data */
 
                 //Produccion
                 let produ = await axios.post('General/ConProduccion', datos)
