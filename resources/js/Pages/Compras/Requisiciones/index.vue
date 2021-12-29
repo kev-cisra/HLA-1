@@ -807,7 +807,10 @@ export default {
     },
 
     mounted() {
-        this.tabla();
+        this.$nextTick(() => {
+            this.tabla();
+        });
+
         var query  = window.location.search.substring(1);
         var vars = query.split("&");
             for (var i=0; i < vars.length; i++) {

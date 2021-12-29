@@ -66,7 +66,7 @@
         </div>
     </div>
 
-    <div class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-mb-4">
+    <div class="tw-flex tw-justify-between tw-content-center tw-border tw-p-1 tw-mb-4 tw-mx-4">
         <div class="tw-flex tw-gap-4">
             <div>
                 <jet-label class="tw-text-center">AÑO</jet-label>
@@ -125,7 +125,7 @@
     </div>
 
     <!-- Tablas -->
-    <div class="tw-mx-2">
+    <div class="tw-mx-4">
         <p class="tw-text-center tw-text-coolGray-400">VISUALIZACIÓN POR {{Visualizacion}}</p>
         <div v-if="Vista == 1">
             <Table id="Requisiciones">
@@ -367,7 +367,7 @@
             </div>
         </div>
 
-        <div class="tw-mx-4">
+        <div class="tw-px-4 tw-py-4">
             <div>
                 <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
                 <Table>
@@ -476,7 +476,7 @@
                 </div>
             </div>
 
-            <div class="tw-mt-4">
+            <div class="tw-px-4 tw-py-4">
                 <div class="ModalForm">
                     <div class="tw-mb-6 md:tw-flex">
                         <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
@@ -1091,7 +1091,8 @@ export default {
                 "order": [0, 'desc'],
                 "columnDefs": [
                     { "width": "1%", "targets": [0] },
-                    { "width": "3%", "targets": [1,2] },
+                    { "width": "4%", "targets": [2] },
+                    { "width": "3%", "targets": [1] },
                     {
                         "targets": [ 0 ],
                         "visible": false,
