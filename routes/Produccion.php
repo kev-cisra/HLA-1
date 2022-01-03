@@ -98,6 +98,7 @@ Route::post('ReportesPro/ConPro', [RepoProController::class, 'ConProdu'])->name(
 Route::post('ReportesPro/ConParo', [RepoProController::class, 'ConParo'])->name('ConParo');
 
 Route::post('ReportesPro/PaiGrafi', [RepoProController::class, 'PaiGrafi'])->name('PaiGrafica');
+Route::post('ReportesPro/PrPaiGrafi', [RepoProController::class, 'PrPaiGrafi'])->name('PrPaiGrafica');
 
 Route::post('ReportesPro/LinGrafi', [RepoProController::class, 'LinGrafi'])->name('LinGrafica');
 

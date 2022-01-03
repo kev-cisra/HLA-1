@@ -567,6 +567,70 @@ class RepoProController extends Controller
             ])
             ->get();
         }
+        elseif ($request->tipo == 'catego') {
+            $carga = carga::join('dep_mats', 'dep_mats.id', '=', 'cargas.norma')
+            ->where('cargas.departamento_id', '=', $request->departamento_id)
+            ->whereBetween('cargas.fecha', [$request->iniDia, $request->finDia])
+            ->whereNotNull('cargas.clave_id')
+            ->where('cargas.partida', '!=', 'N/A')
+            ->whereIn('cargas.proceso_id', $request->proceso)
+            ->selectRaw('cargas.proceso_id, dep_mats.categoria, cargas.departamento_id, SUM(cargas.valor) AS valor')
+            ->groupBy('departamento_id')
+            ->groupBy('proceso_id')
+            ->groupBy('dep_mats.categoria')
+            ->with([
+                'dep_perf' => function($dp) {
+                    $dp ->withTrashed()
+                        ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
+                },
+                'dep_perf.perfiles' => function($perfi){
+                    $perfi->withTrashed()
+                    ->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'dep_perf.departamentos' => function($dp_de){
+                    $dp_de ->withTrashed()
+                    -> select('id', 'Nombre', 'departamento_id');
+                },
+                'equipo' => function($eq){
+                    $eq ->withTrashed()
+                    -> select('id', 'nombre');
+                },
+                'turno' => function($tu){
+                    $tu ->withTrashed()
+                    ->select('id', 'nomtur');
+                },
+                'maq_pro' => function($mp){
+                    $mp ->withTrashed()
+                    ->select('id', 'proceso_id', 'maquina_id');
+                },
+                'maq_pro.maquinas' => function($ma){
+                    $ma ->withTrashed()
+                    -> select('id', 'Nombre');
+                },
+                'proceso' => function($pr){
+                    $pr ->withTrashed()
+                    -> select('id', 'nompro', 'tipo', 'operacion', 'proceso_id');
+                },
+                'dep_mat' => function($dp){
+                    $dp ->withTrashed()
+                    -> select('id', 'material_id', 'categoria');
+                },
+                'dep_mat.materiales' => function($mat){
+                    $mat ->withTrashed()
+                    -> select('id', 'idmat', 'nommat');
+                },
+                'clave' => function($cla){
+                    $cla ->withTrashed()
+                    -> select('id', 'CVE_ART', 'DESCR');
+                },
+                'notas' => function($not){
+                    $not ->withTrashed()
+                    -> latest()
+                    -> select('id', 'fecha', 'nota', 'carga_id');
+                }
+            ])
+            ->get();
+        }
         elseif ($request->tipo == 'partida') {
             $carga = carga::where('departamento_id', '=', $request->departamento_id)
             ->whereBetween('fecha', [$request->iniDia, $request->finDia])
@@ -698,6 +762,39 @@ class RepoProController extends Controller
         }
 
         return $carga;
+    }
+
+    public function PrPaiGrafi(Request $request){
+        $paros = parosCarga::where('departamento_id', '=', $request->departamento_id)
+        ->whereBetween('fecha', [$request->iniDia, $request->finDia])
+        ->whereIn('proceso_id', $request->proceso)
+        ->whereIn('proceso_id', $request->proceso)
+        ->selectRaw('proceso_id, maq_pro_id, paro_id, SUM(tiempo) AS tiempo')
+        ->groupBy('proceso_id')
+        ->groupBy('maq_pro_id')
+        ->groupBy('paro_id')
+        ->with([
+            'paros' => function($pr){
+                $pr->select('id', 'clave', 'descri', 'tipo');
+            },
+            'perfil_ini' => function($pini){
+                $pini->select('id', 'Nombre', 'ApPat', 'ApMat');
+            },
+            'maq_pro' => function($mp){
+                $mp->select('id', 'maquina_id', 'proceso_id');
+            },
+            'maq_pro.maquinas' => function($ma) {
+                $ma->select('id', 'Nombre');
+            },
+            'proceso' => function($po) {
+                $po->select('id', 'nompro');
+            },
+            'departamento' => function($dep) {
+                $dep->select('id', 'Nombre');
+            }
+        ])
+        ->get();
+        return $paros;
     }
 
     public function LinGrafi(Request $request){

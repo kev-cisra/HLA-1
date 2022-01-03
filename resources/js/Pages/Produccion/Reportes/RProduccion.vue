@@ -109,8 +109,8 @@
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
                 <!-- arreglo de graficas -->
                 <div class="tw-mb-6 lg:tw-flex">
+                    <label><span class="required">*</span>Tipo de gráfica: </label>
                     <div class="tw-px-3 tw-mb-6 tw-gap-3 tw-flex">
-                        <label><span class="required">*</span>Tipo de gráfica: </label>
                         <div>
                             <input type="checkbox" v-model="graTipo" value="pie" id="pie"> <label for="pie">Gráfica de pie</label>
                         </div>
@@ -125,24 +125,29 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- recorrido de los tipos de graficas -->
                 <div v-for="tip in graTipo" :key="tip">
                     <!-- formulario para grafica de pie -->
                     <div v-if="tip == 'pie'" class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-rounded-xl tw-border-8 tw-border-blue-700 tw-p-10">
                         <!-- titulo y botones -->
-                        <div class="tw-flex tw-m-5">
+                        <div class="sm:tw-flex lg:tw-m-5">
                             <div class="tw-w-1/2 tw-text-2xl tw-text-center">
                                 <h1>Gráfica de Pie</h1>
                             </div>
 
-                            <div class="tw-flex tw-w-1/2">
-                                <button class="btn btn-outline-success " @click="GraPaste(gPie)">Generar gráfica</button>
-                                <button class="btn btn-outline-danger " @click="resetPastel()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            <div class="lg:tw-flex lg:tw-w-1/2">
+                                <div class="tw-flex tw-w-1/2">
+                                    <a class="btn btn-outline-success " href="#chart" @click="GraPaste(gPie)">Generar gráfica</a>
+                                    <button class="btn btn-outline-danger " @click="resetPastel()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                                </div>
                             </div>
                         </div>
+
                         <!-- formulario -->
                         <div class="lg:tw-flex ">
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0 tw-gap-x-5">
                                 <jet-label>Título</jet-label>
                                 <jet-input type="text" class="form-control" v-model="gPie.titulo"></jet-input>
 
@@ -151,20 +156,41 @@
                                         <jet-label><span class="required">*</span>Procesos</jet-label>
                                         <Select2 v-model="gPie.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
                                     </div>
-                                    <div class="tw-w-full" v-if="gPie.tipo == 'norma'">
+                                    <div class="tw-w-full" v-if="gPie.propa == 1 & gPie.tipo == 'norma'">
                                         <jet-label>Normas</jet-label>
                                         <Select2 v-model="gPie.norma" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcNM" />
+                                    </div>
+                                    <div class="tw-w-full" v-if="gPie.propa == 2">
+                                        <jet-label>Paros</jet-label>
+                                        <Select2 v-model="gPie.paro" class="InputSelect" :options="opcPR" :settings="{width: '100%', multiple: true, allowClear: true}"></Select2>
                                     </div>
                                 </div>
 
                             </div>
+
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
 
-                                <!-- Rango o dia y tipo-->
+                                <!-- Inputs radio-->
                                 <div class="xl:tw-flex">
-                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
+
+                                    <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
+                                        <jet-label>Consuta par gráfica</jet-label>
+                                        <div class="md:tw-flex tw-text-center">
+                                            <div class="tw-m-5">
+                                                <input type="radio" id="GPprodu" value="1" v-model="gPie.propa">
+                                                <label for="GPprodu"> Producción</label>
+                                            </div>
+                                            <div class="tw-m-5">
+                                                <input type="radio" id="GPparo" value="2" v-model="gPie.propa">
+                                                <label for="GPparo"> Paro</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
                                         <jet-label>Opciones de consulta</jet-label>
-                                        <div class="tw-flex">
+                                        <div class="md:tw-flex tw-text-center">
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GPdia" @click="limpiarGrafi()" value="1" v-model="gPie.rango">
                                                 <label for="GPdia"> Dia</label>
@@ -175,25 +201,30 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
-                                        <jet-label>Tipo de grafica</jet-label>
-                                        <div class="tw-flex">
-                                            <div class=" tw-m-5">
-                                                <input type="radio" id="GPgene" value="general" @click="limpMater()" v-model="gPie.tipo">
-                                                <label for="GPgene"> General</label>
-                                            </div>
-                                            <div class=" tw-m-5">
-                                                <input type="radio" id="GPnorma" value="norma" @click="limpMater()" v-model="gPie.tipo">
-                                                <label for="GPnorma"> Norma</label>
-                                            </div>
-                                            <div class=" tw-m-5">
-                                                <input type="radio" id="GPparti" value="partida" @click="limpMater()" v-model="gPie.tipo">
-                                                <label for="GPparti"> Partida</label>
-                                            </div>
-                                            <div class=" tw-m-5">
-                                                <input type="radio" id="GPequi" value="equipo" @click="limpMater()" v-model="gPie.tipo">
-                                                <label for="GPequi"> Equipo</label>
-                                            </div>
+                                </div>
+
+                                <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800" v-if="gPie.propa == 1">
+                                    <jet-label>Tipo de grafica</jet-label>
+                                    <div class="lg:tw-flex tw-text-center">
+                                        <div class=" tw-m-5">
+                                            <input type="radio" id="GPgene" value="general" @click="limpMater()" v-model="gPie.tipo">
+                                            <label for="GPgene"> General</label>
+                                        </div>
+                                        <div class=" tw-m-5">
+                                            <input type="radio" id="GPcate" value="catego" @click="limpMater()" v-model="gPie.tipo">
+                                            <label for="GPcate"> Categoria</label>
+                                        </div>
+                                        <div class=" tw-m-5">
+                                            <input type="radio" id="GPnorma" value="norma" @click="limpMater()" v-model="gPie.tipo">
+                                            <label for="GPnorma"> Norma</label>
+                                        </div>
+                                        <div class=" tw-m-5">
+                                            <input type="radio" id="GPparti" value="partida" @click="limpMater()" v-model="gPie.tipo">
+                                            <label for="GPparti"> Partida</label>
+                                        </div>
+                                        <div class=" tw-m-5">
+                                            <input type="radio" id="GPequi" value="equipo" @click="limpMater()" v-model="gPie.tipo">
+                                            <label for="GPequi"> Equipo</label>
                                         </div>
                                     </div>
                                 </div>
@@ -221,21 +252,24 @@
 
                     <!-- formulario para grafica de linea -->
                     <div v-if="tip == 'punto'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-green-700 tw-p-10">
+                        <!-- titulo y botones -->
                         <div class="tw-flex tw-m-5">
                             <!-- titulo -->
                             <div class="tw-w-1/2 tw-text-2xl tw-text-center">
                                 <h1>Gráfica Lineal</h1>
                             </div>
                             <!-- boton -->
-                            <div class="tw-w-1/2">
-                                <button class="btn btn-outline-success " @click="GraLinea(gLinea)">Generar gráfica</button>
+                            <div class="tw-flex tw-w-1/2">
+                                <a class="btn btn-outline-success " href="#chart1" @click="GraLinea(gLinea)">Generar gráfica</a>
                                 <button class="btn btn-outline-danger " @click="resetLinea()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
-                        <div class="tw-flex">
+
+                        <!-- formulario -->
+                        <div class="lg:tw-flex">
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0 tw-gap-x-5">
                                 <!-- titulos para graficas -->
-                                <div class="tw-flex tw-gap-4">
+                                <div class="lg:tw-flex tw-gap-4">
                                     <!-- titulo -->
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Título</jet-label>
@@ -265,7 +299,7 @@
                                 <div class="xl:tw-flex">
                                     <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
                                         <jet-label>Opciones de consulta</jet-label>
-                                        <div class="tw-flex">
+                                        <div class="tw-flex tw-flex-col lg:tw-flex-row">
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GLdia" @click="lipiaLinea(1)" value="1" v-model="gLinea.rango">
                                                 <label for="GLdia"> Diario</label>
@@ -304,7 +338,7 @@
                                 </div>
 
                                 <!-- dias -->
-                                <div class="tw-flex tw-gap-4" v-if="gLinea.rango == 1">
+                                <div class="lg:tw-flex tw-gap-4" v-if="gLinea.rango == 1">
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Fecha Inicio</jet-label>
                                         <jet-input type="date" v-model="gLinea.fecIni"></jet-input>
@@ -315,7 +349,7 @@
                                     </div>
                                 </div>
                                 <!-- mes -->
-                                <div class="tw-flex tw-gap-4" v-else-if="gLinea.rango == 2">
+                                <div class="lg:tw-flex tw-gap-4" v-else-if="gLinea.rango == 2">
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Fecha Inicio</jet-label>
                                         <jet-input type="month" v-model="gLinea.fecIni"></jet-input>
@@ -326,7 +360,7 @@
                                     </div>
                                 </div>
                                 <!-- año -->
-                                <div class="tw-flex tw-gap-4" v-else>
+                                <div class="lg:tw-flex tw-gap-4" v-else>
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Fecha Inicio</jet-label>
                                         <jet-input type="number" v-model="gLinea.fecIni"></jet-input>
@@ -342,21 +376,24 @@
 
                     <!-- formulario para grafica de barra -->
                     <div v-if="tip == 'barra'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-yellow-700 tw-p-10">
+                        <!-- titulo y botones -->
                         <div class="tw-flex tw-m-5">
                             <!-- titulo -->
                             <div class="tw-w-1/2 tw-text-2xl tw-text-center">
                                 <h1>Gráfica de Barra</h1>
                             </div>
                             <!-- boton -->
-                            <div class="tw-w-1/2">
-                                <button class="btn btn-outline-success " @click="GraBarra(gBarra)">Generar gráfica</button>
+                            <div class="tw-flex tw-w-1/2">
+                                <a class="btn btn-outline-success " href="#chart2" @click="GraBarra(gBarra)">Generar gráfica</a>
                                 <button class="btn btn-outline-danger " @click="resetBarra()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
-                        <div class="tw-flex">
+
+                        <!-- Formulario -->
+                        <div class="lg:tw-flex">
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0 tw-gap-x-5">
                                 <!-- titulos para graficas -->
-                                <div class="tw-flex tw-gap-4">
+                                <div class="lg:tw-flex tw-gap-4">
                                     <!-- titulo -->
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Título</jet-label>
@@ -386,7 +423,7 @@
                                 <div class="xl:tw-flex">
                                     <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
                                         <jet-label>Opciones de consulta</jet-label>
-                                        <div class="tw-flex">
+                                        <div class="lg:tw-flex">
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GBdia" @click="limpiaBarra(1)" value="1" v-model="gBarra.rango">
                                                 <label for="GBdia"> Diario</label>
@@ -425,7 +462,7 @@
                                 </div>
 
                                 <!-- dias -->
-                                <div class="tw-flex tw-gap-4" v-if="gBarra.rango == 1">
+                                <div class="lg:tw-flex tw-gap-4" v-if="gBarra.rango == 1">
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Fecha Inicio</jet-label>
                                         <jet-input type="date" v-model="gBarra.fecIni"></jet-input>
@@ -436,7 +473,7 @@
                                     </div>
                                 </div>
                                 <!-- mes -->
-                                <div class="tw-flex tw-gap-4" v-else-if="gBarra.rango == 2">
+                                <div class="lg:tw-flex tw-gap-4" v-else-if="gBarra.rango == 2">
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Fecha Inicio</jet-label>
                                         <jet-input type="month" v-model="gBarra.fecIni"></jet-input>
@@ -447,7 +484,7 @@
                                     </div>
                                 </div>
                                 <!-- año -->
-                                <div class="tw-flex tw-gap-4" v-else>
+                                <div class="lg:tw-flex tw-gap-4" v-else>
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label>Fecha Inicio</jet-label>
                                         <jet-input type="number" v-model="gBarra.fecIni"></jet-input>
@@ -470,7 +507,7 @@
                             </div>
                             <!-- boton -->
                             <div class="tw-w-1/2">
-                                <button class="btn btn-outline-success " @click="GraBaLi()">Generar gráfica</button>
+                                <a class="btn btn-outline-success " href="#chart3" @click="GraBaLi()">Generar gráfica</a>
                                 <button class="btn btn-outline-danger " @click="resetBaLi()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
@@ -887,7 +924,6 @@
                 color: "tw-bg-blue-600",
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
-                //maquinas: [],
                 procesos: [],
                 materiales: [],
                 editMode: false,
@@ -941,7 +977,9 @@
                 gPie: {
                     borra: '',
                     rango: 1,
+                    propa: 1,
                     tipo: 'general',
+                    paro: [],
                     procesos: [],
                     norma: [],
                     fecha: null,
@@ -1346,9 +1384,9 @@
                         var fin = '';
                         if (this.S_Area == 7){
                             if (moment(this.FoFiltro.iniDia).isDST()) {
-                                ini = this.FoFiltro.iniDia+' 09:10:00';
+                                ini = this.FoFiltro.iniDia+' 09:00:00';
                             }else{
-                                ini = this.FoFiltro.iniDia+' 08:10:00';
+                                ini = this.FoFiltro.iniDia+' 08:00:00';
                             }
                         }//consulta por rango
                         else{
@@ -1607,6 +1645,8 @@
                 var part = '';
                 var equ = '';
                 var tur = '';
+                var cate = '';
+                var prpa = '';
 
                 //alertas de inputs vacios
                 if (data.procesos.length <= 0 | (this.gPie.rango == 1 & data.fecha == null)) {
@@ -1621,15 +1661,14 @@
                     return '';
                 }
 
-
                 //en caso de que los inputs sean llenados
                 if (this.gPie.rango == 1) {
                     inicio = this.FoFiltro.iniDia+' 07:00:00'
                     if (this.S_Area == 7){
                         if (moment(data.fecha).isDST()) {
-                            inicio = data.fecha+' 09:10:00';
+                            inicio = data.fecha+' 09:00:00';
                         }else{
-                            inicio = data.fecha+' 08:10:00';
+                            inicio = data.fecha+' 08:00:00';
                         }
                     }
                     //Asigna el dato para la fecha final
@@ -1640,18 +1679,32 @@
                     fin = data.finDia;
                 }
 
-                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin};
+                //Asignacion de datos a un objeto
+                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin, 'paros': data.paro};
 
-                let promesa = await axios.post('ReportesPro/PaiGrafi', datos);
+                //consulta
+                if (data.propa == 1) {
+                    let promesa = await axios.post('ReportesPro/PaiGrafi', datos);
+                    prpa = 'Producción';
+                    promesa.data.forEach(dat => {
+                        mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
+                        part = dat.partida == null ? '' : '/ ' + dat.partida;
+                        clave = dat.clave == null ? '' : '/ ' + dat.clave.CVE_ART;
+                        equ = dat.equipo_id == null ? '' : '/ ' + dat.equipo.nombre;
+                        tur = dat.turno_id == null ? '' : '/ ' + dat.turno.nomtur;
+                        cate = dat.categoria == null ? '' : '/ ' + dat.categoria;
+                        valor.push({name: dat.proceso.nompro, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur, cat: cate});
+                    })
+                }else{
+                    let promesa = await axios.post('ReportesPro/PrPaiGrafi', datos);
+                    prpa = 'Paros en minutos'
+                    promesa.data.forEach(dat => {
+                        mater = dat.maq_pro_id == null ? '' : '/ ' + dat.maq_pro.maquinas.Nombre;
+                        part = dat.paro_id == null ? '' : '/ ' + dat.paros.clave+' - '+dat.paros.descri;
+                        valor.push({name: dat.proceso.nompro, y: dat.tiempo, mate: mater, parti: part});
+                    })
+                }
 
-                promesa.data.forEach(dat => {
-                    mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
-                    part = dat.partida == null ? '' : '/ ' + dat.partida;
-                    clave = dat.clave == null ? '' : '/ ' + dat.clave.CVE_ART;
-                    equ = dat.equipo_id == null ? '' : '/ ' + dat.equipo.nombre;
-                    tur = dat.turno_id == null ? '' : '/ ' + dat.turno.nomtur;
-                    valor.push({name: dat.proceso.nompro, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur});
-                })
 
                 this.gPie.borra = Highcharts.chart('chart', {
                     chart: {
@@ -1672,12 +1725,12 @@
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            format: '<b>{point.name} {point.mate} {point.tr} {point.eq} {point.parti} {point.cl}</b>: {point.y} - {point.percentage:.1f}%'
+                            format: '<b>{point.name} {point.mate} {point.cat} {point.tr} {point.eq} {point.parti} {point.cl}</b>: {point.y} - {point.percentage:.1f}%'
                         }
                         }
                     },
                     series: [{
-                        name: 'Proceso',
+                        name: prpa,
                         colorByPoint: true,
                         data: valor
                     }]
@@ -1729,31 +1782,24 @@
                 let promesa = await axios.post('ReportesPro/LinGrafi', datos);
 
                 //recorrido para fechas
-                switch (data.rango) {
-                    case 1:
-                        while (inicio.isSameOrBefore(fin, 'days')) {
-                            titFec.push(inicio.format('YYYY-MM-DD'))
-                            fechas.push(inicio.format('YYYY-MM-DD'))
-                            inicio.add(1, 'days')
-
-                        }
-                        break;
-
-                    case '2':
-                        while (inicio.isSameOrBefore(fin, 'month')) {
-                            titFec.push(inicio.format('MMMM-YYYY'))
-                            fechas.push(inicio.format('YYYY-MM'))
-                            inicio.add(1, 'month')
-                        }
-                        break;
-
-                    case '3':
-                        while (inicio.isSameOrBefore(fin, 'year')) {
-                            titFec.push(inicio.format('YYYY'))
-                            fechas.push(inicio.format('YYYY'))
-                            inicio.add(1, 'year')
-                        }
-                        break;
+                if (data.rango == 1) {
+                    while (inicio.isSameOrBefore(fin, 'days')) {
+                        titFec.push(inicio.format('YYYY-MM-DD'))
+                        fechas.push(inicio.format('YYYY-MM-DD'))
+                        inicio.add(1, 'days')
+                    }
+                }else if(data.rango == 2){
+                    while (inicio.isSameOrBefore(fin, 'month')) {
+                        titFec.push(inicio.format('MMMM-YYYY'))
+                        fechas.push(inicio.format('YYYY-MM'))
+                        inicio.add(1, 'month')
+                    }
+                }else {
+                    while (inicio.isSameOrBefore(fin, 'year')) {
+                        titFec.push(inicio.format('YYYY'))
+                        fechas.push(inicio.format('YYYY'))
+                        inicio.add(1, 'year')
+                    }
                 }
 
                 data.procesos.forEach(proce => {
@@ -1801,15 +1847,6 @@
                         layout: 'vertical',
                         align: 'right',
                         verticalAlign: 'middle'
-                    },
-
-                    plotOptions: {
-                        series: {
-                        label: {
-                                connectorAllowed: false
-                            },
-                            pointStart: 2015
-                        }
                     },
 
                     series: serie,
@@ -1877,31 +1914,24 @@
                 let promesa = await axios.post('ReportesPro/LinGrafi', datos);
 
                 //recorrido para fechas
-                switch (data.rango) {
-                    case 1:
-                        while (inicio.isSameOrBefore(fin, 'days')) {
-                            titFec.push(inicio.format('YYYY-MM-DD'))
-                            fechas.push(inicio.format('YYYY-MM-DD'))
-                            inicio.add(1, 'days')
-
-                        }
-                        break;
-
-                    case '2':
-                        while (inicio.isSameOrBefore(fin, 'month')) {
-                            titFec.push(inicio.format('MMMM-YYYY'))
-                            fechas.push(inicio.format('YYYY-MM'))
-                            inicio.add(1, 'month')
-                        }
-                        break;
-
-                    case '3':
-                        while (inicio.isSameOrBefore(fin, 'year')) {
-                            titFec.push(inicio.format('YYYY'))
-                            fechas.push(inicio.format('YYYY'))
-                            inicio.add(1, 'year')
-                        }
-                        break;
+                if (data.rango == 1) {
+                    while (inicio.isSameOrBefore(fin, 'days')) {
+                        titFec.push(inicio.format('YYYY-MM-DD'))
+                        fechas.push(inicio.format('YYYY-MM-DD'))
+                        inicio.add(1, 'days')
+                    }
+                }else if(data.rango == 2){
+                    while (inicio.isSameOrBefore(fin, 'month')) {
+                        titFec.push(inicio.format('MMMM-YYYY'))
+                        fechas.push(inicio.format('YYYY-MM'))
+                        inicio.add(1, 'month')
+                    }
+                }else {
+                    while (inicio.isSameOrBefore(fin, 'year')) {
+                        titFec.push(inicio.format('YYYY'))
+                        fechas.push(inicio.format('YYYY'))
+                        inicio.add(1, 'year')
+                    }
                 }
 
                 data.procesos.forEach(proce => {
@@ -1922,7 +1952,8 @@
 
                 this.gBarra.borra = Highcharts.chart('chart2', {
                     chart: {
-                        type: 'column'
+                        type: 'column',
+                        zoomType: 'x'
                     },
                     title: {
                         text: this.gBarra.titulo
@@ -2101,6 +2132,16 @@
                     }
                 })
                 return ssp;
+            },
+
+            //Opciones de paros
+            opcPR: function() {
+                //select paros
+                var pr = []
+                this.claParo.forEach(pa => {
+                    pr.push({id: pa.id, text: pa.clave+' - '+pa.descri });
+                })
+                return pr;
             },
 
             //Opciones maquinas
