@@ -26,8 +26,10 @@ class AutorizaRequisicionesController extends Controller{
         $Session = auth()->user();
         $hoy = Carbon::now();
         //Obtencion de filtros para Fechas
-        $request->month == '' ? $mes = $hoy->format('n') : $mes = $request->month;
-        $anio = 2021;
+        //Obtencion de filtros para Fechas
+        $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
+        $request->Year == '' ? $anio = $hoy->format('Y') : $anio = $request->Year;
+        $request->View == '' ? $Vista = 1 : $Vista = $request->View;
 
         // 13844 13843 ->02  16668 4,2
 
@@ -305,6 +307,7 @@ class AutorizaRequisicionesController extends Controller{
             'ICotizacionMes',
             'NumCot',
             'mes',
+            'Vista',
             'PorPrecios',
             ));
     }

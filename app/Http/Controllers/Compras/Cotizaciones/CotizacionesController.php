@@ -26,6 +26,13 @@ class CotizacionesController extends Controller{
 
         $Session = auth()->user();
         $hoy = Carbon::now();
+        //Obtencion de filtros para Fechas
+        $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
+        $request->Year == '' ? $anio = $hoy->format('Y') : $anio = $request->Year;
+        $request->View == '' ? $Vista = 1 : $Vista = $request->View;
+
+        //Obtengo el catalogo de proveedores
+        $Proveedores = Proveedores::get();
 
         //Indicadores
         $Almacen = Requisiciones::where('Estatus', '=', 8)->count();
@@ -33,16 +40,16 @@ class CotizacionesController extends Controller{
         $SinConfirmar = Requisiciones::where('Estatus', '=', 5)->count();
         $Autorizados = Requisiciones::where('Estatus', '=', 5)->count();
         $EnCotizacion = Requisiciones::where('Estatus', '=', 6)->count();
+        $Precios = Requisiciones::with('ArticuloPrecios')->get();
 
+        $ArticulosRequisicion = null;
+        $ArticulosCotizar = null;
         $ArticulosPrecios = null;
-
-        //Obtencion de filtros para Fechas
-        $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
-        $request->Year == '' ? $anio = 2021 : $anio = $request->Year;
-        $request->View == '' ? $Vista = 1 : $Vista = $request->View;
-
-        //Obtengo el catalogo de proveedores
-        $Proveedores = Proveedores::get();
+        $PreciosRequisicion = null;
+        $PrecioEdit = null;
+        $Req = null;
+        $Precio = null;
+        $NumCot = null;
 
         /* *********************************** CONSULTA PRINCIPAL ********************************* */
         if($Vista == 1){
@@ -403,6 +410,14 @@ class CotizacionesController extends Controller{
         }
 
         if($request->Req != ''){ //Obtencion del id de la requisicion
+
+            $Req = Requisiciones::where('id', '=', $request->Req)->get(); //Obtener el Num de requisicion
+            //Cuento el numero de cotizaciones realizadas
+            $NumCot = PreciosCotizaciones::where('NumCotizacion', '=', 2)->where('requisiciones_id', '=', $request->Req)->count();
+
+            //Consulta para obtener las partidas relacionadas a esa requisicion
+            $ArticulosRequisicion = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
+
             //Consulta los articulos con sus precios correspondientes
             $ArticulosPrecios = ArticulosRequisiciones::with([
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
@@ -412,20 +427,53 @@ class CotizacionesController extends Controller{
             ->where('requisicion_id', '=', $request->Req)
             ->where('EstatusArt', '!=', 10)
             ->get();
+
+            $PreciosRequisicion = PreciosCotizaciones::where('requisiciones_id', '=', $request->Req)->get();
+
+            //Consulta para obtener los articulos a cotizar dinamicamente
+            if($request->NumCot == 1){
+                //Obtengo los articulos son cotizar
+                $ArticulosCotizar = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->where('EstatusArt', '=', 3)->get();
+            }else{
+                //Obtengo los articulos cotizados 1 vez
+                $ArticulosCotizar = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->where('EstatusArt', '=', 4)->get();
+            }
+
+            if($request->Art != ''){
+                //Obtengo los datos de la requisicion a editar
+                $Precio = ArticulosRequisiciones::with([
+                    'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
+                        $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    },
+                ])
+                ->where('id', '=', $request->Art)
+                ->get();
+
+                $PrecioEdit = PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->Art)->get();
+            }
+
         }
 
         return Inertia::render('Compras/Cotizaciones/Cotizaciones', compact(
             'Session',
-            'Requisiciones',
+            'Req', //Numero de requisicion
+            'NumCot', //Numero de cotizaciones realizadas
+            'Precio', //Obtengo los precios relacionados al articulo
             'Proveedores',
+            'Requisiciones',
+            'PrecioEdit',
+            'ArticulosRequisicion',
+            'ArticulosCotizar',
             'ArticulosPrecios',
-            'Vista',
+            'PreciosRequisicion',
             'Cotizacion',
             'SinConfirmar',
             'EnCotizacion',
+            'Vista',
             'mes',
         ));
     }
+
 
     public function store(Request $request){
 
@@ -450,13 +498,13 @@ class CotizacionesController extends Controller{
 
                 if($request->Moneda == 'MXN'){ //Obtengo el tipo de moneda
                     $Total = $value['PrecioUnitario'] * $value['Cantidad']; //Calculo el total
-                    $Total = number_format($Total,2);
+                    $Total = $Total;
                     $TipoCambio = 0;
                 }else{
                     $TipoCambio = $request->TipoCambio;
                     $Total1 = round($value['PrecioUnitario'] * $request->TipoCambio, 2); //Calculo el total del Precio Unitario
                     $Total = $Total1 * $value['Cantidad']; //Calculo el otal del la cotizacion
-                    $Total = number_format($Total,2);
+                    $Total = $Total;
                 }
 
                 //Obtengo el numero de cotizaciones guardadas para esa requisicion
@@ -472,7 +520,7 @@ class CotizacionesController extends Controller{
 
                 $Cotizacion = PreciosCotizaciones::create([
                     'IdUser' => $request->IdUser,
-                    'Precio' => number_format($value['PrecioUnitario'],2),
+                    'Precio' => $value['PrecioUnitario'],
                     'Total' => $Total,
                     'Moneda' => $request->Moneda,
                     'TipoCambio' => $TipoCambio,

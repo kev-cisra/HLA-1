@@ -66,7 +66,8 @@
         </div>
     </div>
 
-    <div class="tw-flex tw-justify-between tw-content-center tw-border tw-p-1 tw-mb-4 tw-mx-4">
+    <!-- Filtros -->
+    <div class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-mb-4 tw-mx-4">
         <div class="tw-flex tw-gap-4">
             <div>
                 <jet-label class="tw-text-center">AÑO</jet-label>
@@ -111,26 +112,24 @@
             </div>
 
             <div>
-                <jet-label class="tw-text-center">VISTA</jet-label>
+                <jet-label class="tw-text-center">Vista</jet-label>
                 <select class="InputSelect" v-model="params.View" @change="TipoVista">
                     <option value="1">PARTIDAS</option>
                     <option value="2">REQUISICION</option>
                 </select>
             </div>
 
-            <div class="tw-mt-2">
-                <jet-button @click="Filtros" class="BtnNuevo"><i class="fas fa-filter"></i></jet-button>
+            <div class="tw-mt-4">
+                <jet-button @click="Filtros" class="BtnFiltros"><i class="fas fa-filter tw-mr-1"></i>Aplica Filtros</jet-button>
             </div>
         </div>
     </div>
 
-    <!-- Tablas -->
-    <div class="tw-mx-4">
+<!--     <div class="tw-mx-4">
         <p class="tw-text-center tw-text-coolGray-400">VISUALIZACIÓN POR {{Visualizacion}}</p>
-        <div v-if="Vista == 1">
+        <div>
             <Table id="Requisiciones">
                 <template v-slot:TableHeader>
-                    <th class="columna">ID</th>
                     <th class="columna">FECHA</th>
                     <th class="columna">REQ</th>
                     <th class="columna">O.C</th>
@@ -144,20 +143,19 @@
                     <th class="columna">TIPO</th>
                     <th class="columna">OBSERVACIONES</th>
                     <th class="columna">SOLICITANTE</th>
-                    <th class="columna">LLEGADA</th>
+                    <th class="columna">FECHA LLEGADA</th>
                     <th class="columna">ESTATUS</th>
                 </template>
 
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
-                        <td>{{ datos.id }}</td>
                         <td>{{ datos.Fecha.substr(5) }}</td>
                         <td>{{ datos.articulos_requisicion.NumReq }}</td>
-                        <td class="tw-text-center">{{ datos.articulos_requisicion.OrdenCompra }}</td>
+                        <td>{{ datos.articulos_requisicion.OrdenCompra }}</td>
                         <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
-                        <td class="tw-text-center">{{ datos.articulos_requisicion.Codigo.substr(0,1)  }}</td>
+                        <td class="tw-text-center">{{ datos.articulos_requisicion.Codigo.substr(0,1) }}</td>
                         <td class="tw-text-center">{{ datos.Cantidad }}</td>
-                        <td>{{ datos.Unidad }}</td>
+                        <td class="tw-text-center">{{ datos.Unidad }}</td>
                         <td>{{ datos.Descripcion }}</td>
                         <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
                         <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
@@ -218,51 +216,56 @@
             </Table>
         </div>
 
-        <div v-else>
+        <div>
             <Table id="Requisiciones">
                 <template v-slot:TableHeader>
-                    <th class="columna">Id</th>
                     <th class="columna">FECHA</th>
-                    <th class="columna">NUM</th>
+                    <th class="columna">REQ</th>
                     <th class="columna">O.C</th>
                     <th class="columna">DEPARTAMENTO</th>
-                    <th class="columna">CODIGO</th>
+                    <th class="columna">COD</th>
                     <th class="columna">MAQUINA</th>
                     <th class="columna">MARCA</th>
                     <th class="columna">TIPO COMPRA</th>
                     <th class="columna">OBSERVACIONES</th>
                     <th class="columna">SOLICITANTE</th>
+                    <th>FEC LLEGADA</th>
                     <th class="columna">ESTATUS</th>
                     <th class="columna">ACCIONES</th>
                 </template>
 
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
-                        <td class="tw-text-center">{{ datos.id }}</td>
                         <td>{{ datos.Fecha.substr(5) }}</td>
                         <td>{{ datos.NumReq }}</td>
                         <td>{{ datos.OrdenCompra }}</td>
                         <td>{{ datos.requisicion_departamento.Nombre }}</td>
-                        <td>{{ datos.Codigo.substr(0,1) }}</td>
+                        <td class="tw-text-center">{{ datos.Codigo.substr(0,1) }}</td>
                         <td>{{ datos.requisicion_maquina.Nombre }}</td>
                         <td>{{ datos.requisicion_marca.Nombre }}</td>
                         <td>{{ datos.TipCompra }}</td>
                         <td>{{ datos.Observaciones }}</td>
                         <td>{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                        <td>{{ datos.requisicion_articulos.Fechallegada }}</td>
                         <td>
                             <div v-if="datos.Estatus == 2">
                                 <span tooltip="REQUSICIÓN SOLICITADA" flow="left">
                                     <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
                                 </span>
                             </div>
-                            <div v-else-if="datos.Estatus == 3 || datos.Estatus == 4">
+                            <div v-else-if="datos.Estatus == 3">
                                 <span tooltip="REQUSICIÓN EN ESPERA DE COTIZACIÓN" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">COTIZACION</span>
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-indigo-500 tw-rounded-full">COTIZAR</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.Estatus == 4">
+                                <span tooltip="AÑADIR OTRA COTIZACION" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blue-500 tw-rounded-full">COTIZADO</span>
                                 </span>
                             </div>
                             <div v-else-if="datos.Estatus == 5">
                                 <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZACION</span>
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
                                 </span>
                             </div>
                             <div v-else-if="datos.Estatus == 6">
@@ -277,18 +280,18 @@
                             </div>
                             <div v-else-if="datos.Estatus == 8">
                                 <span tooltip="REQUISICIÓN EN ALMACÉN" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">ALMACEN</span>
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
                                 </span>
                             </div>
                             <div v-else-if="datos.Estatus == 9">
-                            <span tooltip="REQUSICIÓN ENTREGADA" flow="left">
-                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
-                            </span>
+                                <span tooltip="REQUSICIÓN ENTREGADA" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                </span>
                             </div>
                             <div v-else-if="datos.Estatus == 10">
-                            <span tooltip="Cotizacion Rechazada" flow="left">
-                                <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
-                            </span>
+                                <span tooltip="Cotizacion Rechazada" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                </span>
                             </div>
                         </td>
                         <td>
@@ -334,7 +337,264 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="columnaIconos" v-if="datos.Estatus == 5">
+                            <div class="columnaIconos" v-else-if="datos.Estatus == 5">
+                                <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
+                                    <span tooltip="Visualiza Cotizacion" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else-if="datos.Estatus == 6">
+                                <div class="iconoPurple" @click="CapturaFecha(datos)">
+                                    <span tooltip="Confirma Fecha de Entrega" flow="left">
+                                        <i class="fas fa-shipping-fast"></i>
+                                    </span>
+                                </div>
+                                <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
+                                    <span tooltip="Visualiza Cotizacion" flow="left">
+                                        <i class="fas fa-file-invoice-dollar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else-if="datos.Estatus > 6">
+                                <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
+                                    <span tooltip="Visualiza Cotizacion" flow="left">
+                                        <i class="fas fa-file-invoice-dollar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+            </Table>
+        </div>
+    </div> -->
+
+    <div class="tw-mx-4">
+        <p class="tw-text-center tw-text-coolGray-400">VISUALIZACIÓN POR {{Visualizacion}}</p>
+        <div v-if="Vista == 1">
+            <Table id="Requisiciones">
+                <template v-slot:TableHeader>
+                    <th class="columna">FECHA</th>
+                    <th class="columna">REQ</th>
+                    <th class="columna">O.C</th>
+                    <th class="columna">DEPARTAMENTO</th>
+                    <th class="columna">COD</th>
+                    <th class="columna">CANT</th>
+                    <th class="columna">UNIDAD</th>
+                    <th class="columna">DESCRIPCIÓN</th>
+                    <th class="columna">MAQUINA</th>
+                    <th class="columna">MARCA</th>
+                    <th class="columna">TIPO COMPRA</th>
+                    <th class="columna">OBSERVACIONES</th>
+                    <th class="columna">SOLICITANTE</th>
+                    <th class="columna">LLEGADA</th>
+                    <th class="columna">ESTATUS</th>
+                    <th class="columna">ACCIONES</th>
+                </template>
+
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
+                        <td>{{ datos.Fecha.substr(5) }}</td>
+                        <td>{{ datos.articulos_requisicion.NumReq }}</td>
+                        <td>{{ datos.articulos_requisicion.OrdenCompra }}</td>
+                        <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.articulos_requisicion.Codigo.substr(0,1) }}</td>
+                        <td class="tw-text-center">{{ datos.Cantidad }}</td>
+                        <td class="tw-text-center">{{ datos.Unidad }}</td>
+                        <td>{{ datos.Descripcion }}</td>
+                        <td>{{ datos.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                        <td>{{ datos.articulos_requisicion.requisicion_marca.Nombre }}</td>
+                        <td>{{ datos.articulos_requisicion.TipCompra }}</td>
+                        <td>{{ datos.articulos_requisicion.Observaciones }}</td>
+                        <td>{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
+                        <td>{{ datos.articulos_requisicion.Fechallegada }}</td>
+                        <td>
+                            <div v-if="datos.EstatusArt == 1">
+                                <span tooltip="SIN ENVIAR" flow="left">
+                                    <span class="tw-inline-flex tw-text-xxs tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
+                                        SIN ENVIAR</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 2">
+                                <span tooltip="Solicitada" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 3 || datos.Estatus == 4">
+                                <span tooltip="En Espera de Cotización" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">COTIZACIÓN</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 5">
+                                <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZACION</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 6">
+                                <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 7">
+                                <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 8">
+                                <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">ALMACEN</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 9">
+                                <span tooltip="Entregado" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 10">
+                                <span tooltip="Cotizacion Rechazada" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                </span>
+                            </div>
+                        </td>
+                        <td class="fila">
+                            <div class="columnaIconos" v-if="datos.EstatusArt == 1">
+                                <div class="iconoPurple" @click="ConfirmaReq(datos)">
+                                    <span tooltip="Confirmar Requisición" flow="left">
+                                        <i class="fas fa-check-circle"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else>
+                                <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
+                                    <span tooltip="En proceso" flow="left">
+                                        <i class="fas fa-thumbs-up"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+            </Table>
+        </div>
+
+        <div v-else>
+            <Table id="Requisiciones">
+                <template v-slot:TableHeader>
+                    <th class="columna">FECHA</th>
+                    <th class="columna">REQ</th>
+                    <th class="columna">O.C</th>
+                    <th class="columna">DEPARTAMENTO</th>
+                    <th class="columna">COD</th>
+                    <th class="columna">MAQUINA</th>
+                    <th class="columna">MARCA</th>
+                    <th class="columna">TIPO COMPRA</th>
+                    <th class="columna">OBSERVACIONES</th>
+                    <th class="columna">SOLICITANTE</th>
+                    <th>FEC LLEGADA</th>
+                    <th class="columna">ESTATUS</th>
+                    <th class="columna">ACCIONES</th>
+                </template>
+
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
+                        <td>{{ datos.Fecha.substr(5) }}</td>
+                        <td class="tw-text-center">{{ datos.NumReq }}</td>
+                        <td class="tw-text-center">{{ datos.OrdenCompra }}</td>
+                        <td>{{ datos.requisicion_departamento.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.Codigo.substr(0,1) }}</td>
+                        <td>{{ datos.requisicion_maquina.Nombre }}</td>
+                        <td>{{ datos.requisicion_marca.Nombre }}</td>
+                        <td>{{ datos.TipCompra }}</td>
+                        <td>{{ datos.Observaciones }}</td>
+                        <td>{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
+                        <td>{{ datos.requisicion_articulos.Fechallegada }}</td>
+                        <td>
+                            <div v-if="datos.Estatus == 1">
+                                <span tooltip="SIN ENVIAR" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
+                                        SIN ENVIAR</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.Estatus == 2">
+                                <span tooltip="Solicitada" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.Estatus == 3 || datos.Estatus == 4">
+                                <span tooltip="En Espera de Cotización" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.Estatus == 5">
+                                <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.Estatus == 6">
+                                <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.Estatus == 7">
+                                <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.Estatus == 8">
+                                <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.Estatus == 9">
+                                <span tooltip="Entregado" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.Estatus == 10">
+                                <span tooltip="Cotizacion Rechazada" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="columnaIconos" v-if="datos.Estatus <= 3">
+                                <div class="iconoDetails" @click="Partidas(datos)">
+                                    <span tooltip="Visualiza Partidas" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoPurple" @click="CotizarReq(datos)">
+                                    <span tooltip="Realizar Cotizacion" flow="left">
+                                        <i class="fas fa-file-invoice-dollar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else-if="datos.Estatus == 4">
+                                <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
+                                    <span tooltip="Visualiza Cotizacion" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoEdit" @click="ConfirmaRequisicionCotizada(datos, 5)" >
+                                    <span tooltip="Enviar Cotizacion para Autorización" flow="left">
+                                        <i class="fas fa-check-circle"></i>
+                                    </span>
+                                </div>
+                                <div class="iconoPurple" @click="CotizarOtraReq(datos)">
+                                    <span tooltip="Realizar Otra Cotizacion" flow="left">
+                                        <i class="fas fa-file-invoice-dollar"></i>
+                                    </span>
+                                </div>
                                 <div class="iconoPurple" @click="Partidas(datos)">
                                     <span tooltip="Edita Precios" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -342,12 +602,33 @@
                                         </svg>
                                     </span>
                                 </div>
+                            </div>
+                            <div class="columnaIconos" v-else-if="datos.Estatus == 5">
                                 <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
                                     <span tooltip="Visualiza Cotizacion" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                         </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else-if="datos.Estatus == 6">
+                                <div class="iconoPurple" @click="CapturaFecha(datos)">
+                                    <span tooltip="Confirma Fecha de Entrega" flow="left">
+                                        <i class="fas fa-shipping-fast"></i>
+                                    </span>
+                                </div>
+                                <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
+                                    <span tooltip="Visualiza Cotizacion" flow="left">
+                                        <i class="fas fa-file-invoice-dollar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else-if="datos.Estatus > 6">
+                                <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
+                                    <span tooltip="Visualiza Cotizacion" flow="left">
+                                        <i class="fas fa-file-invoice-dollar"></i>
                                     </span>
                                 </div>
                             </div>
@@ -359,15 +640,14 @@
     </div>
 
     <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
-        <div class="tw-px-4 tw-py-4">
+        <div class="tw-px-2 tw-py-2">
             <div class="tw-text-lg">
                 <div class="ModalHeader">
-                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición {{ Requi.NumReq }}</h3>
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición</h3>
                 </div>
             </div>
         </div>
-
-        <div class="tw-px-4 tw-py-4">
+        <div class="tw-mx-4" v-if="ArticulosRequisicion != null">
             <div>
                 <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
                 <Table>
@@ -381,19 +661,93 @@
                     </template>
                     <template v-slot:TableFooter>
                         <tr class="fila">
-                            <td class="tw-text-center">{{ Requi.Fecha }}</td>
-                            <td class="tw-text-center">{{ Requi.NumReq }}</td>
-                            <td class="tw-text-center">{{ Requi.requisicion_departamento.Nombre }}</td>
-                            <td class="tw-text-center">{{ Requi.requisicion_maquina.Nombre }}</td>
-                            <td class="tw-text-center">{{ Requi.requisicion_marca.Nombre }}</td>
-                            <td class="tw-text-center">{{ Requi.Observaciones }}</td>
+                            <td class="tw-text-center">{{ requisicion.Fecha }}</td>
+                            <td class="tw-text-center">{{ requisicion.NumReq }}</td>
+                            <td class="tw-text-center">{{ requisicion.requisicion_departamento.Nombre }}</td>
+                            <td class="tw-text-center">{{ requisicion.requisicion_maquina.Nombre }}</td>
+                            <td class="tw-text-center">{{ requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="tw-text-center">{{ requisicion.Observaciones }}</td>
                         </tr>
                     </template>
                 </Table>
             </div>
+            <div v-if=" ArticulosRequisicion[0].articulo_user != null">
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">CANTIDAD</th>
+                        <th class="columna">UNIDAD</th>
+                        <th class="columna">DESCRIPCION</th>
+                        <th class="columna">NUM PARTE</th>
+                        <th class="columna">RECIBIDO</th>
+                        <th class="columna">ESTATUS</th>
+                        <th class="columna">ACCIONES</th>
+                    </template>
 
-            <div>
-                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Articulos --</p>
+                    <template v-slot:TableFooter>
+                        <tr class="fila" v-for="art in ArticulosRequisicion" :key="art.id">
+                            <td class="tw-text-center">{{ art.Cantidad }}</td>
+                            <td class="tw-text-center">{{ art.Unidad }}</td>
+                            <td class="tw-text-center">{{ art.Descripcion }}</td>
+                            <td class="tw-text-center">{{ art.NumParte }}</td>
+                            <td class="tw-text-center">
+                                <div v-if="art.EstatusArt == 2">
+                                    <span tooltip="Solicitada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 3 || art.EstatusArt == 4">
+                                    <span tooltip="En Espera de Cotización" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 5">
+                                    <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 6">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 7">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 8">
+                                    <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 9">
+                                    <span tooltip="Entregado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 10">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="tw-text-center">
+                                <div class="columnaIconos">
+                                    <div class="iconoPurple" @click="EdtarPrecio(art)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="iconoPurple" @click="CancelarArticulo(art)">
+                                        <i class="fas fa-ban"></i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
+            <div v-else>
                 <Table>
                     <template v-slot:TableHeader>
                         <th class="columna">CANTIDAD</th>
@@ -401,10 +755,11 @@
                         <th class="columna">DESCRIPCION</th>
                         <th class="columna">NUM PARTE</th>
                         <th class="columna">ESTATUS</th>
+                        <th class="columna">ACCIONES</th>
                     </template>
 
                     <template v-slot:TableFooter>
-                        <tr class="fila" v-for="art in Requi.requisicion_articulos" :key="art.id">
+                        <tr class="fila" v-for="art in ArticulosRequisicion" :key="art.id">
                             <td class="tw-text-center">{{ art.Cantidad }}</td>
                             <td class="tw-text-center">{{ art.Unidad }}</td>
                             <td class="tw-text-center">{{ art.Descripcion }}</td>
@@ -457,145 +812,36 @@
                                     </span>
                                 </div>
                             </td>
+                            <td class="tw-text-center">
+                                <div class="columnaIconos" v-if="art.EstatusArt == 3">
+                                    <div class="iconoPurple" @click="EdtarPrecio(art)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="iconoPurple" @click="CancelarArticulo(art)">
+                                        <i class="fas fa-ban"></i>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-if="art.EstatusArt == 4">
+                                    <div class="iconoPurple" @click="EdtarPrecio(art)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     </template>
                 </Table>
             </div>
         </div>
+        <div v-else>
+            <p>No hay Articulos Asignados a esta requisición</p>
+        </div>
 
         <div class="ModalFooter">
             <jet-CancelButton @click="chagePartidas">Cerrar</jet-CancelButton>
-        </div>
-    </modal>
-
-    <modal :show="showModal" @close="chageClose" :maxWidth="tam">
-        <div class="tw-px-4 tw-py-4">
-            <div class="tw-text-lg">
-                <div class="ModalHeader">
-                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Nueva Requisición</h3>
-                </div>
-            </div>
-
-            <div class="tw-px-4 tw-py-4">
-                <div class="ModalForm">
-                    <div class="tw-mb-6 md:tw-flex">
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>FECHA</jet-label>
-                            <jet-input type="date" :min="min" v-model="form.Fecha"></jet-input>
-                            <small v-if="errors.Fecha" class="validation-alert">{{errors.Fecha}}</small>
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>AREA</jet-label>
-                            <select id="Departamento" v-model="form.Departamento_id" class="InputSelect" @change="loadMaquinas($event)">
-                                <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
-                            </select>
-                            <small v-if="errors.Departamento_id" class="validation-alert">{{errors.Departamento_id}}</small>
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>Num Requisicion</jet-label>
-                            <jet-input type="text" v-model="form.NumReq"></jet-input>
-                            <small v-if="errors.NumReq" class="validation-alert">{{errors.NumReq}}</small>
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>Código</jet-label>
-                            <select id="Empresa" v-model="form.Codigo" class="InputSelect">
-                                <option value="A - EXTRAORDINARIA">A - EXTRAORDINARIA</option>
-                                <option value="B - REGULAR">B - REGULAR</option>
-                                <option value="C - PRESUPUESTO">C - PRESUPUESTO</option>
-                            </select>
-                            <small v-if="errors.Codigo" class="validation-alert">{{errors.Codigo}}</small>
-                        </div>
-                    </div>
-                    <div class="tw-mb-6 md:tw-flex">
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>MÁQUINA</jet-label>
-                            <select id="Maquina" v-model="form.Maquina" name="Maquina" class="InputSelect" @change="loadMarcas($event)">
-                                <option v-for="maq in MaquinasDpto" :key="maq.id" :value="maq.id"> {{ maq.Nombre }}</option>
-                            </select>
-                            <small v-if="errors.Maquina" class="validation-alert">{{errors.Maquina}}</small>
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>MARCA</jet-label>
-                            <select id="Marca" v-model="form.Marca" class="InputSelect">
-                                <option v-for="maq in Marcas" :key="maq.id" :value="maq.id" > {{ maq.Nombre }}</option>
-                            </select>
-                            <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
-                        </div>
-                    </div>
-                    <div class="tw-mb-6 md:tw-flex">
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>TIPO DE COMPRA</jet-label>
-                            <select id="Tipo" v-model="form.Tipo" class="InputSelect">
-                                <option value="REQUISICIÓN">REQUISICIÓN</option>
-                                <option value="REFACCIONES">REFACCIONES</option>
-                                <option value="SERVICIOS EXTERNOS">SERVICIOS EXTERNOS</option>
-                                <option value="ORDEN DE TRABAJO">ORDEN DE TRABAJO</option>
-                                <option value="PRODUCTOS AUXILIARES">PRODUCTOS AUXILIARES</option>
-                                <option value="MODIFICACIONES Y PROYECTOS">MODIFICACIONES Y PROYECTOS</option>
-                            </select>
-                            <small v-if="errors.Tipo" class="validation-alert">{{errors.Tipo}}</small>
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>NOMBRE SOLICITANTE</jet-label>
-                            <select id="Nombre" v-model="form.Nombre" class="InputSelect">
-                                <option v-for="per in PerfilesUsuarios" :key="per.id" :value="per.id" > {{ per.Nombre }} {{per.ApPat}} {{per.ApMat}}</option>
-                            </select>
-                            <small v-if="errors.Nombre" class="validation-alert">{{errors.Nombre}}</small>
-                        </div>
-                    </div>
-                    <div class="tw-mb-6 md:tw-flex">
-                        <div class="tw-px-3">
-                            <input type="button" @click="addRow()" value="Añadir Partida" class="BtnCancel">
-                        </div>
-                    </div>
-                    <div class="tw-mb-6 md:tw-flex" v-for="(form) in form.Partida" :key="form.id">
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>CANTIDAD</jet-label>
-                            <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
-                            <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>UNIDAD</jet-label>
-                            <select id="Unidad" v-model="form.Unidad" class="InputSelect">
-                                <option value="PZ">PIEZAS</option>
-                                <option value="LTS">LITROS</option>
-                                <option value="KG">KILOGRAMOS</option>
-                                <option value="MT">METROS</option>
-                                <option value="SERVICIO">SERVICIO</option>
-                                <option value="CAJA">CAJA</option>
-                                <option value="CUBETA">CUBETA</option>
-                                <option value="OTRO">OTRO</option>
-                            </select>
-                            <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
-                            <jet-label>NÚM PARTE</jet-label>
-                            <jet-input type="text" v-model="form.NumParte" @input="(val) => (form.NumParte = form.NumParte.toUpperCase())"></jet-input>
-                            <small v-if="errors.NumParte" class="validation-alert">{{errors.NumParte}}</small>
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-5/12 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>DESCRIPCIÓN</jet-label>
-                            <jet-input type="text" v-model="form.Descripcion" @input="(val) => (form.Descripcion = form.Descripcion.toUpperCase())"></jet-input>
-                            <small v-if="errors.Descripcion" class="validation-alert">{{errors.Descripcion}}</small>
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/12 md:tw-mb-0">
-                            <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
-                        </div>
-                    </div>
-                    <div class="tw-mb-6 md:tw-flex">
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                            <jet-label><span class="required">*</span>OBSERVACIONES</jet-label>
-                            <textarea name="" id="" cols="2" v-model="form.Observaciones" @input="(val) => (form.Observaciones = form.Observaciones.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
-                            <small v-if="errors.Observaciones" class="validation-alert">{{errors.Observaciones}}</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="ModalFooter">
-            <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
-            <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
         </div>
     </modal>
 
@@ -884,6 +1130,159 @@
         </div>
     </modal>
 
+    <modal :show="showEditarPre" @close="chageEditarPre" :maxWidth="tam">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Edita Precio Cotización # {{form.NumReq}}</h3>
+                </div>
+            </div>
+            <div class="tw-mt-4">
+                <div class="ModalForm">
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>NÚMERO DE COTIZACION</jet-label>
+                            <select id="NumCot" v-model="form.Cot"  class="InputSelect" @change="NumeroCot()">
+                                <option value="0" >Cotizacion 1</option>
+                                <option value="1" >Cotizacion 2</option>
+                            </select>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>MARCA</jet-label>
+                            <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
+                            <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
+                            <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
+                                <option v-for="select in Proveedores" :key="select.id" :value="select.Nombre" >{{ select.Nombre }}</option>
+                            </select>
+                            <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>TIPO MONEDA</jet-label>
+                            <select id="Jefe" v-model="form.Moneda"  class="InputSelect">
+                                <option value="MXN" >MXN</option>
+                                <option value="USD" >USD</option>
+                            </select>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
+                            <jet-label>Tipo Cambio</jet-label>
+                            <jet-input type="text" v-model="form.TipoCambio"></jet-input>
+                            <small v-if="errors.TipoCambio" class="validation-alert">{{errors.TipoCambio}}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                <h3 class="tw-text-center tw-font-extrabold">Articulos</h3>
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th>CANTIDAD</th>
+                        <th>UNIDAD</th>
+                        <th>DESCRIPCION</th>
+                        <th>PRECIO UNITARIO</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr v-for="match in Precio" :key="match">
+                            <td class="tw-text-center">{{ match.Cantidad }}</td>
+                            <td class="tw-text-center">{{ match.Unidad }}</td>
+                            <td class="tw-text-center">{{ match.Descripcion }}</td>
+                            <td class="tw-flex tw-justify-center"><input type="text" v-model="form.Precio"></td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
+            <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                    <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
+                    <textarea name="" id="" cols="2" v-model="form.Comentarios" @input="(val) => (form.Comentarios = form.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                </div>
+            </div>
+            <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                    <jet-label>ARCHIVO</jet-label>
+                    <a >{{ form.Archivo }}</a>
+                    <div class='tw-flex tw-items-center tw-justify-center tw-w-full'>
+                        <label class='tw-flex tw-flex-col tw-border-4 tw-border-dashed tw-w-full tw-h-24 hover:tw-bg-gray-100 hover:tw-border-indigo-300 tw-group'>
+                            <div class='tw-flex tw-flex-col tw-items-center tw-justify-center tw-pt-4'>
+                                <svg class="tw-w-8 tw-h-8 tw-text-indigo-400 group-hover:tw-text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <p class='tw-lowercase tw-text-sm tw-text-gray-400 group-hover:tw-text-indigo-600 tw-mt-2 tw-tracking-wider' v-if="form.archivo == null">Seleccion un Archivo</p>
+                                <span class="tw-mt-2 tw-text-xxs tw-text-teal-500 tw-font-bold" v-if="form.archivo != null">{{  form.archivo.name }}</span>
+                            </div>
+                        <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
+                        </label>
+                    </div>
+                    <span v-if="form.ImagenServidor != null">{{form.archivo}}</span>
+                    <small v-if="errors.archivo" class="validation-alert">{{errors.archivo}}</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="ModalFooter">
+            <jet-button type="button" @click="ActualizaCotizacion(form)"  :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualiza</jet-button>
+            <jet-CancelButton @click="chageEditarPre">Cerrar</jet-CancelButton>
+        </div>
+    </modal>
+
+    <modal :show="showCancelar" @close="chageCancelar" :maxWidth="tam">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Cancela Partida</h3>
+                </div>
+            </div>
+            <div class="tw-mt-4">
+                <div class="ModalForm">
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                            <jet-label><span class="required">*</span>MOTIVO CANCELACION</jet-label>
+                            <textarea name="" id="" cols="2" v-model="form.MotivoCancelacion" @input="(val) => (form.MotivoCancelacion = form.MotivoCancelacion.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ModalFooter">
+            <jet-button type="button" @click="ConfirmaCancelacion(form)"  :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualiza</jet-button>
+            <jet-CancelButton @click="chageCancelar">Cerrar</jet-CancelButton>
+        </div>
+    </modal>
+
+    <modal :show="showFecha" @close="chageFecha" :maxWidth="tam2">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Confirma fecha aproximada de entrega</h3>
+                </div>
+            </div>
+
+            <div class="tw-mt-4">
+                <div class="tw-mb-6 md:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>FECHA</jet-label>
+                        <jet-input type="date" :min="min" v-model="form.Fechallegada"></jet-input>
+                        <small v-if="errors.Fechallegada" class="validation-alert">{{errors.Fechallegada}}</small>
+                    </div>
+                </div>
+                <div class="tw-mb-6 md:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label>COMENTARIOS</jet-label>
+                        <textarea name="" id="" cols="2" v-model="form.Comentariollegada" @input="(val) => (form.Comentariollegada = form.Comentariollegada.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                        <small v-if="errors.Comentariollegada" class="validation-alert">{{errors.Comentariollegada}}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ModalFooter">
+            <jet-button type="button" @click="ConfirmaFecha(form)">Guardar</jet-button>
+            <jet-CancelButton @click="chageFecha">Cerrar</jet-CancelButton>
+        </div>
+    </modal>
+
     </app-layout>
 </template>
 
@@ -908,24 +1307,6 @@ import 'moment/locale/es';
 
 export default {
 
-    mounted() {
-        this.tabla();
-        var query  = window.location.search.substring(1);
-        var vars = query.split("&");
-            for (var i=0; i < vars.length; i++) {
-                var pair = vars[i].split("=");
-                if(pair[0] == 'View') {
-                    this.params.View = pair[1];
-                }
-        }
-
-        if(this.params.View == 1){
-            this.Visualizacion = 'PARTIDAS';
-        }else{
-            this.Visualizacion = 'REQUISICIÓN';
-        }
-    },
-
     data() {
         return {
             tam: "5xl",
@@ -941,8 +1322,6 @@ export default {
             showFecha: false,
             min: moment().format("YYYY-MM-DD"),
             requisicion: [],
-            Requi: [], //Arreglo para asignar detallle de Requisicion
-            Coti: [], //Arreglo para asignar datos para cotizar
             Visualizacion: 'PARTIDAS',
             Cambio: false,
             form: {
@@ -980,9 +1359,32 @@ export default {
                 Status: 0,
                 View: 1,
                 Req: '',
+                Art: '',
                 NumCot: 0,
             },
         };
+    },
+
+    mounted() {
+        this.tabla();
+
+        var query  = window.location.search.substring(1);
+        var vars = query.split("&");
+            for (var i=0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == 'View') {
+                    this.params.View = pair[1];
+                }
+                if(pair[0] == 'Year') {
+                    this.params.Year = pair[1];
+                }
+        }
+
+        if(this.params.View == 1){
+            this.Visualizacion = 'PARTIDAS';
+        }else{
+            this.Visualizacion = 'REQUISICIÓN';
+        }
     },
 
     components: {
@@ -1003,13 +1405,22 @@ export default {
     props: {
         Session: Object,
         errors: Object,
-        Vista: String,
-        Requisiciones: Object,
-        ArticulosPrecios: Object,
-        Proveedores: Object,
+        Req: Object, //Obtengo el num de requisicion
+        NumCot: Number, //Numero de cotizacions realizadas a la requisicion
+        Precio: Object,
+        ArtPre: Object,
+        PrecioEdit: Object,
+        Proveedores: Object, //Catalogo
+        Requisiciones: Object, //Vista por requisiciones
+        ArticulosRequisiciones: Object, //Vista por Articulos
+        ArticulosRequisicion: Object, //Partidas
+        ArticulosCotizar: Object, //Objeto para generacion de inputs dinamicos para cotizar
+        ArticulosPrecios: Object, //Visualizacion de cotizacion
+        PreciosRequisicion: Object,
         Cotizacion: Number,
         SinConfirmar: Number,
         EnCotizacion: Number,
+        Vista: String,
         mes: String,
     },
 
@@ -1065,7 +1476,7 @@ export default {
             }
         },
 
-        Filtros(){ //Cambio de visualizacion por partidas o articulos
+        Filtros(){
             $('#Requisiciones').DataTable().clear();
             $('#Requisiciones').DataTable().destroy();
             this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
@@ -1073,32 +1484,63 @@ export default {
                     this.tabla();
                     //Verifico si hubo un cambio en la vista
                     if(this.Cambio == true){
-                        $('#Requisiciones').DataTable().clear();
-                        $('#Requisiciones').DataTable().destroy();
                         location.reload();
                     }
                 }, preserveState: true})
         },
 
-        //datatable
-        tabla() {
+        Visualizacion(){ //Cambio de visualizacion por partidas o articulos
+            this.params.Partidas  = !this.params.Partidas;
+            if (this.params.Partidas == true){
+                $('#Articulos').DataTable().clear(); //limpio
+                $('#Articulos').DataTable().destroy(); //destruyo tabla
+                this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
+                    onSuccess: () => {
+                        this.tablaArticulos()
+                    }, preserveState: true})
+            }else if(this.params.Partidas == false){
+                $('#Requisiciones').DataTable().clear(); //limpio
+                $('#Requisiciones').DataTable().destroy(); //destruyo tabla
+                this.$inertia.get('/Compras/Cotizaciones', this.params , { //envio de variables por url
+                    onSuccess: () => {
+                        this.tabla() //regeneracion de tabla
+                    }, preserveState: true})
+            }
+        },
+
+        //Generacion de Tabla con Datatables
+        tabla(){
             this.$nextTick(() => {
                 $("#Requisiciones").DataTable({
-                language: this.español,
-                paging: true,
-                "scrollX": true,
-                scrollY:  '40vh',
-                "order": [0, 'desc'],
-                "columnDefs": [
-                    { "width": "1%", "targets": [0] },
-                    { "width": "4%", "targets": [2] },
-                    { "width": "3%", "targets": [1] },
-                    {
-                        "targets": [ 0 ],
-                        "visible": false,
-                        "searchable": false
-                    },
-                ],
+                    "language": this.español,
+                    paging: true,
+                    "scrollX": true,
+                    scrollY:  '40vh',
+                    "order": [0, 'desc'],
+                    "columnDefs": [
+                        { "width": "1%", "targets": [0] },
+                        { "width": "5%", "targets": [1, 4] },
+                        { "width": "3%", "targets": [2,3] },
+                        { "width": "9%", "targets": [6,7] },
+                    ],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
                 });
             });
         },
@@ -1109,13 +1551,76 @@ export default {
                 this.$inertia.get("/Compras/Cotizaciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
         },
 
+        //Generacion de Tabla con Datatables
+        tablaArticulos(){
+            this.$nextTick(() => {
+                $("#Articulos").DataTable({
+                    "language": this.español,
+                    paging: true,
+                    "scrollX": true,
+                    scrollY:  '40vh',
+                    "order": [0, 'desc'],
+                    "columnDefs": [
+                        { "width": "1%", "targets": [0] },
+                        { "width": "3%", "targets": [1,2] },
+                        { "width": "2%", "targets": [5] },
+                        {
+                            "targets": [ 0 ],
+                            "visible": false,
+                            "searchable": false
+                        },
+                    ],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
+                });
+            });
+        },
+
+        //Consulta para generar datos de la tabla
+        verTablaArticulos(event) {
+            $("#Articulos").DataTable().destroy();
+                this.$inertia.get("/Compras/Cotizaciones", { busca: event.target.value },{
+                    onSuccess: () => {
+                        this.tablaArticulos();
+                    },
+                });
+        },
+
         chagePartidas() { //Modal de partidas
             this.showPartidas = !this.showPartidas;
         },
 
         Partidas(data){ //Visualizacion de partidas
-            this.Requi = data;
-            this.chagePartidas();
+            this.reset();
+            this.form.editId = data.id;
+            this.form.NumReq = data.NumReq;
+            this.form.Fecha = data.Fecha;
+            this.form.Departamento_id = data.Departamento_id;
+            this.form.Codigo = data.Codigo;
+            this.form.Maquina = data.Maquina_id;
+            this.form.Marca = data.Marca_id;
+            this.form.Tipo = data.TipCompra;
+            this.form.Nombre = data.Perfil_id;
+            this.form.Observaciones = data.Observaciones;
+            this.params.Req = data.id;
+            this.form.Precio = null;
+
+            this.requisicion = data;
+
+            this.$inertia.get('/Compras/Cotizaciones', this.params , {
+                onSuccess: () => {
+                    this.chagePartidas();
+                },preserveState: true })
         },
 
         chageCotizar() {
@@ -1123,27 +1628,9 @@ export default {
         },
 
         CotizarReq(data){ //Abre modal y general inputs dinamicos de cotizacion
-            this.Coti = data.requisicion_articulos;
             this.params.Req = data.id;
             this.params.NumCot = 1;
-            if(this.Coti != null){
-                this.PreUni = [];
-                this.form.PrecioCotizacion = []; //Arreglo de inputs para precios
-
-                this.Coti.forEach(Art => { //Generacion de inputs apartir del objeto
-                    this.PreUni.push({ //Añado mas campos a visualizar
-                        IdArt: Art.id,
-                        requisicion_id: Art.requisicion_id,
-                        Cantidad: Art.Cantidad,
-                        Unidad: Art.Unidad,
-                        Descripcion: Art.Descripcion,
-                        PrecioUnitario: null
-                        })
-                })
-                this.form.PrecioCotizacion = this.PreUni;
-            }
-            this.chageCotizar();
-/*             this.$inertia.get('/Compras/Cotizaciones', this.params , {
+            this.$inertia.get('/Compras/Cotizaciones', this.params , {
                 onSuccess: () => {
 
                     this.reset();
@@ -1165,7 +1652,7 @@ export default {
                         this.form.PrecioCotizacion = this.PreUni;
                         this.chageCotizar();
                     }
-                },preserveState: true }) */
+                },preserveState: true })
         },
 
         RealizaCotizacion(data) { //Guardado de la informacion para cotizar

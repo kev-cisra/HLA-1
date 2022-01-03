@@ -164,7 +164,7 @@
                         <th class="columna">TIPO COMPRA</th>
                         <th class="columna">OBSERVACIONES</th>
                         <th class="columna">SOLICITANTE</th>
-                        <th class="columna">FECHA LLEGADA</th>
+                        <th class="columna">LLEGADA</th>
                         <th class="columna">ESTATUS</th>
                         <th class="columna">ACCIONES</th>
                     </template>

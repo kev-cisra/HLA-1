@@ -29,7 +29,7 @@ class RequisicionesSolicitadasController extends Controller {
         $hoy = Carbon::now();
         //Obtencion de filtros para Fechas
         $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
-        $request->Year == '' ? $anio = 2021 : $anio = $request->Year;
+        $request->Year == '' ? $anio = $hoy->format('Y') : $anio = $request->Year;
         $request->View == '' ? $Vista = 1 : $Vista = $request->View;
 
         //Obtengo el catalogo de proveedores
