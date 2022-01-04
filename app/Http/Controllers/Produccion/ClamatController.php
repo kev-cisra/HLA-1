@@ -116,7 +116,8 @@ class ClamatController extends Controller
         //
         Validator::make($request->all(), [
             'departamento_id' => ['required'],
-            'material_id' => ['required']
+            'material_id' => ['required'],
+            'categoria' => ['required']
         ])->validate();
 
         $cuenta = dep_mat::where('departamento_id', '=', $request->departamento_id)
@@ -151,10 +152,19 @@ class ClamatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
-
+        Validator::make($request->all(), [
+            'departamento_id' => ['required'],
+            'material_id' => ['required'],
+            'categoria' => ['required']
+        ])->validate();
+        if ($request->has('id')) {
+            dep_mat::find($request->input('id'))->update($request->all());
+            return redirect()->back()
+                    ->with('message', 'Post Updated Successfully.');
+        }
     }
 
     /**

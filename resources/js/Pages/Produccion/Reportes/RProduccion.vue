@@ -153,8 +153,9 @@
 
                                 <div class="lg:tw-flex tw-gap-5">
                                     <div class="tw-w-full">
-                                        <jet-label><span class="required">*</span>Procesos</jet-label>
-                                        <Select2 v-model="gPie.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                        <jet-label><span class="required">*</span>Maquinas</jet-label>
+                                        <!-- <Select2 v-model="gPie.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" /> -->
+                                        <Select2 v-model="gPie.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
                                     </div>
                                     <div class="tw-w-full" v-if="gPie.propa == 1 & gPie.tipo == 'norma'">
                                         <jet-label>Normas</jet-label>
@@ -284,8 +285,9 @@
 
                                 <div class="lg:tw-flex tw-gap-5">
                                     <div class="tw-w-full">
-                                        <jet-label><span class="required">*</span>Procesos</jet-label>
-                                        <Select2 v-model="gLinea.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                        <jet-label><span class="required">*</span>Maquinas</jet-label>
+                                        <!-- <Select2 v-model="gLinea.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" /> -->
+                                        <Select2 v-model="gLinea.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
                                     </div>
                                     <div class="tw-w-full" v-if="gLinea.tipo == 'norma'">
                                         <jet-label>Normas</jet-label>
@@ -408,8 +410,9 @@
 
                                 <div class="lg:tw-flex tw-gap-5">
                                     <div class="tw-w-full">
-                                        <jet-label><span class="required">*</span>Procesos</jet-label>
-                                        <Select2 v-model="gBarra.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                        <jet-label><span class="required">*</span>Maquinas</jet-label>
+                                        <!-- <Select2 v-model="gBarra.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" /> -->
+                                        <Select2 v-model="gBarra.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
                                     </div>
                                     <div class="tw-w-full" v-if="gBarra.tipo == 'norma'">
                                         <jet-label>Normas</jet-label>
@@ -794,7 +797,7 @@
                                 <jet-label><span class="required">*</span>Maquinas</jet-label>
                                 <select class="InputSelect" v-model="carga.maq_pro_id" :disabled="editMode">
                                     <option value="" disabled>SELECCIONA</option>
-                                    <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
+                                    <option v-for="mq in opcMQ" :key="mq.id" :value="mq.id">{{mq.text}}</option>
                                 </select>
                                 <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                             </div>
@@ -828,10 +831,6 @@
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Clave</jet-label>
                                 <Select2 v-model="carga.clave_id"  :class="'InputSelect'" :options="opcCL"  :settings="{width: '100%'}" />
-                                <!-- <Select2  v-model="carga.clave_id" class="InputSelect" :options="opcCL" /> -->
-                                <!-- <select class="InputSelect" v-model="carga.clave_id">
-                                    <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
-                                </select> -->
                                 <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
                             </div>
                         </div>
@@ -980,6 +979,7 @@
                     propa: 1,
                     tipo: 'general',
                     paro: [],
+                    maquinas: [],
                     procesos: [],
                     norma: [],
                     fecha: null,
@@ -995,6 +995,7 @@
                     tipo: 'general',
                     fecIni: null,
                     fecFin: null,
+                    maquinas: [],
                     procesos: [],
                     norma: [],
                 },
@@ -1006,6 +1007,7 @@
                     tipo: 'general',
                     fecIni: null,
                     fecFin: null,
+                    maquinas: [],
                     procesos: [],
                     norma: [],
                 },
@@ -1649,13 +1651,13 @@
                 var prpa = '';
 
                 //alertas de inputs vacios
-                if (data.procesos.length <= 0 | (this.gPie.rango == 1 & data.fecha == null)) {
-                    data.procesos.length <= 0 ? Swal.fire('Por favor selecciona un proceso.') : '';
+                if (this.gPie.rango == 1 & data.fecha == null) {
+                    //data.procesos.length <= 0 ? Swal.fire('Por favor selecciona un proceso.') : '';
                     data.fecha == null ? Swal.fire('Por favor selecciona una fecha.') : '';
                     return '';
                 }
-                if (data.procesos.length <= 0 | (this.gPie.rango == 2 & (data.iniDia == null | data.finDia == null))) {
-                    data.procesos.length <= 0 ? Swal.fire('Por favor selecciona un proceso.') : '';
+                if (this.gPie.rango == 2 & (data.iniDia == null | data.finDia == null)) {
+                    //data.procesos.length <= 0 ? Swal.fire('Por favor selecciona un proceso.') : '';
                     data.iniDia == null ? Swal.fire('Por favor selecciona la fecha de inicio.') : '';
                     data.finDia == null ? Swal.fire('Por favor selecciona la fecha final.') : '';
                     return '';
@@ -1680,11 +1682,12 @@
                 }
 
                 //Asignacion de datos a un objeto
-                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin, 'paros': data.paro};
+                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin, 'paros': data.paro, 'maquinas': data.maquinas};
 
                 //consulta
                 if (data.propa == 1) {
                     let promesa = await axios.post('ReportesPro/PaiGrafi', datos);
+                    console.log(promesa.data)
                     prpa = 'Producción';
                     promesa.data.forEach(dat => {
                         mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
@@ -1693,7 +1696,7 @@
                         equ = dat.equipo_id == null ? '' : '/ ' + dat.equipo.nombre;
                         tur = dat.turno_id == null ? '' : '/ ' + dat.turno.nomtur;
                         cate = dat.categoria == null ? '' : '/ ' + dat.categoria;
-                        valor.push({name: dat.proceso.nompro, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur, cat: cate});
+                        valor.push({name: dat.proceso.nompro, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur, cat: cate, maq: dat.maq_pro.maquinas.Nombre});
                     })
                 }else{
                     let promesa = await axios.post('ReportesPro/PrPaiGrafi', datos);
@@ -1725,7 +1728,7 @@
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            format: '<b>{point.name} {point.mate} {point.cat} {point.tr} {point.eq} {point.parti} {point.cl}</b>: {point.y} - {point.percentage:.1f}%'
+                            format: '<b>{point.name} {point.maq} {point.mate} {point.cat} {point.tr} {point.eq} {point.parti} {point.cl}</b>: {point.y} - {point.percentage:.1f}%'
                         }
                         }
                     },
@@ -1771,13 +1774,8 @@
                     return '';
                 }
 
-                if (data.procesos.length <= 0) {
-                    Swal.fire('Por favor selecciona un proceso.')
-                    return '';
-                }
-
                 //Consulta a las graficas
-                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': data.fecIni, 'finDia': data.fecFin};
+                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': data.fecIni, 'finDia': data.fecFin, 'maquinas': data.maquinas};
 
                 let promesa = await axios.post('ReportesPro/LinGrafi', datos);
 
@@ -1802,12 +1800,12 @@
                     }
                 }
 
-                data.procesos.forEach(proce => {
+                data.maquinas.forEach(proce => {
                     dat = [];
                     fechas.forEach(tiemp => {
-                        let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
+                        let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
                         if (ver) {
-                            name = ver.proceso.nompro;
+                            name = ver.proceso.nompro+': '+ver.maq_pro.maquinas.Nombre;
                             dat.push(ver.valor)
                         }else{
                             dat.push(null)
@@ -1903,13 +1901,8 @@
                     return '';
                 }
 
-                if (data.procesos.length <= 0) {
-                    Swal.fire('Por favor selecciona un proceso.')
-                    return '';
-                }
-
                 //Consulta a las graficas
-                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': data.fecIni, 'finDia': data.fecFin};
+                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': data.fecIni, 'finDia': data.fecFin, 'maquinas': data.maquinas};
 
                 let promesa = await axios.post('ReportesPro/LinGrafi', datos);
 
@@ -1934,12 +1927,12 @@
                     }
                 }
 
-                data.procesos.forEach(proce => {
+                data.maquinas.forEach(proce => {
                     dat = [];
                     fechas.forEach(tiemp => {
-                        let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
+                        let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
                         if (ver) {
-                            name = ver.proceso.nompro;
+                            name = ver.proceso.nompro+': '+ver.maq_pro.maquinas.Nombre;
                             dat.push(ver.valor)
                         }else{
                             dat.push(null)
@@ -1947,8 +1940,6 @@
                     })
                     serie.push({name: name, data: dat})
                 })
-
-
 
                 this.gBarra.borra = Highcharts.chart('chart2', {
                     chart: {
@@ -2144,7 +2135,7 @@
                 return pr;
             },
 
-            //Opciones maquinas
+            //Opciones maquinas de procesos
             opcMQ: function() {
                 const mq = [];
                 var mar = '';
@@ -2154,11 +2145,24 @@
                             //console.log(pm.maq_pros.length)
                             pm.maq_pros.forEach(mp => {
                                 mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
-                                mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
+                                mq.push({id: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
                             })
                         }
                     })
                 }
+                return mq;
+            },
+
+            //Opciones Maquinas
+            opcMaq: function() {
+                const mq = [];
+                var mar = '';
+                this.procesos.forEach(pm => {
+                    pm.maq_pros.forEach(mp => {
+                        mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
+                        mq.push({id: mp.id, text: pm.nompro + ': ' + mp.maquinas.Nombre + ' ' + mar})
+                    })
+                })
                 return mq;
             },
 
@@ -2172,7 +2176,7 @@
                     }
                 })
                 return grafi;
-            }
+            },
         },
 
         watch: {

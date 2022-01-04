@@ -29,15 +29,18 @@
 
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>Material </jet-label>
-                        <jet-input type="text" list="per" v-model="form.material_id"></jet-input>
+                        <Select2 v-model="form.material_id" class="InputSelect" :settings="{width: '100%', allowClear: true}" :options="opcMat" />
                         <small v-if="errors.material_id" class="validation-alert">{{errors.material_id}}</small>
-                        <datalist id="per">
-                            <option v-for="material in materiales" :key="material" :value="material.id">{{ material.idmat }} - {{ material.nommat }}</option>
-                        </datalist>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>Categoria</jet-label>
+                        <jet-input type="text" v-model="form.categoria" @input="(val) => (form.categoria = form.categoria.toUpperCase())"></jet-input>
+                        <small v-if="errors.categoria" class="validation-alert">{{errors.categoria}}</small>
                     </div>
                 </div>
                 <div class="w-100 tw-mx-auto" align="center">
-                    <jet-button type="button" class="tw-mx-auto" @click="saveDM(form)">Guardar</jet-button>
+                    <jet-button type="button" class="tw-mx-auto" v-if="!editModeDM" @click="saveDM(form)">Guardar</jet-button>
+                    <jet-button type="button" class="tw-mx-auto" v-else @click="updateDM(form)">Actualizar</jet-button>
                 </div>
             </form>
         </div>
@@ -48,19 +51,28 @@
                     <th class="columna">id</th>
                     <th class="columna">Clave del material</th>
                     <th class="columna">Nombre</th>
+                    <th class="columna">Categoria</th>
                     <th class="columna">Descripción</th>
                     <th class="columna">Departamento</th>
                     <th></th>
                 </template>
                 <template v-slot:TableFooter>
-                    <tr v-for="cm in clamat" :key="cm">
-                        <td class="fila">{{ cm.id }}</td>
-                        <td class="fila">{{ cm.materiales.idmat }}</td>
-                        <td class="fila">{{ cm.materiales.nommat }}</td>
-                        <td class="fila">{{ cm.materiales.descrip }}</td>
-                        <td class="fila">{{ cm.departamentos.Nombre }}</td>
-                        <td class="fila">
+                    <tr v-for="cm in clamat" :key="cm"  class="fila">
+                        <td>{{ cm.id }}</td>
+                        <td>{{ cm.materiales.idmat }}</td>
+                        <td>{{ cm.materiales.nommat }}</td>
+                        <td>{{ cm.categoria }}</td>
+                        <td>{{ cm.materiales.descrip }}</td>
+                        <td>{{ cm.departamentos.Nombre }}</td>
+                        <td>
                             <div class="columnaIconos">
+                                <div class="iconoEdit" @click="editDM(cm)">
+                                    <span tooltip="Editar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                        </svg>
+                                    </span>
+                                </div>
                                 <div class="iconoDetails" data-bs-toggle="modal" data-bs-target="#tabla_clave" @click="show(cm)">
                                     <span tooltip="Detalles" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
@@ -185,6 +197,7 @@
     require ( 'datatables.net-buttons/js/buttons.colVis' );
     import print from 'datatables.net-buttons/js/buttons.print';
     import jszip from 'jszip/dist/jszip';
+    import Select2 from 'vue3-select2-component';
     import pdfMake from 'pdfmake/build/pdfmake';
     import pdfFonts from 'pdfmake/build/vfs_fonts';
     import $ from 'jquery';
@@ -212,7 +225,8 @@
             JetInput,
             JetSelect,
             Modal,
-            JetLabel
+            JetLabel,
+            Select2
         },
         data() {
             return {
@@ -222,9 +236,12 @@
                 opc: '<option value="" disabled>Selecciona un departamento </option>',
                 showModal: false,
                 editMode: false,
+                editModeDM: false,
                 form: {
+                    id: '',
                     material_id: '',
                     departamento_id: '',
+                    categoria: ''
                 },
                 formCla: {
                     CVE_ART: '',
@@ -349,6 +366,27 @@
                     onSuccess: () => { this.tabla(), this.reset() ,this.alertSucces()}, onError: () => {this.tabla()}, preserveState: true
                 });
             },
+            editDM(data) {
+                this.editModeDM = true;
+                this.form.id = data.id;
+                this.form.material_id = data.material_id;
+                this.form.categoria = data.categoria;
+                this.form.departamento_id = data.departamento_id;
+            },
+            updateDM(data){
+                data._method = 'PUT';
+                $('#t_clamat').DataTable().destroy();
+                this.$inertia.post('/Produccion/Clamat/' + data.id , data, {
+                    onSuccess: () => { this.tabla(), this.resetDM() ,this.alertSucces()}, onError: () => {this.tabla()}, preserveState: true
+                });
+            },
+            resetDM(){
+                this.editModeDM = false;
+                this.form.id = '';
+                this.form.material_id = '';
+                this.form.categoria = '';
+                this.form.departamento_id = '';
+            },
             destroyDM(data){
                 //console.log(data)
                 if (!confirm('¿Estás seguro de querer eliminar este registro?')) return;
@@ -412,6 +450,16 @@
                 this.$inertia.post('/Produccion/Claves/' + data.id, data, {onSuccess: () => { this.alertDelete(), this.tablaCL() },onError: () => {this.tabla()}});
             }
 
+        },
+        computed:{
+            //opciones materiales
+            opcMat: function () {
+                const miMate = [];
+                this.materiales.forEach(ele => {
+                    miMate.push({id: ele.id, text: ele.idmat+' - '+ele.nommat})
+                });
+                return miMate;
+            }
         }
     }
 </script>
