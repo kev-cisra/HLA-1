@@ -901,9 +901,9 @@ export default {
                     "order": [0, 'desc'],
                     "columnDefs": [
                         { "width": "1%", "targets": [0] },
-                        { "width": "5%", "targets": [1, 4] },
-                        { "width": "3%", "targets": [2,3,5] },
-                        { "width": "9%", "targets": [6,7] },
+                        { "width": "5%", "targets": [4] },
+                        { "width": "3%", "targets": [1,2,3,5,6,7] },
+                        // { "width": "9%", "targets": [6,7] },
                     ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +

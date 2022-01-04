@@ -25,57 +25,31 @@ class AutorizaRequisicionesController extends Controller{
 
         $Session = auth()->user();
         $hoy = Carbon::now();
-        //Obtencion de filtros para Fechas
+
         //Obtencion de filtros para Fechas
         $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
         $request->Year == '' ? $anio = $hoy->format('Y') : $anio = $request->Year;
         $request->View == '' ? $Vista = 1 : $Vista = $request->View;
 
-        // 13844 13843 ->02  16668 4,2
-
+        //Catalogo de Proveedores
         $Proveedores = Proveedores::get();
-        $NumCot = null;
-        $PorPrecios = null;
-        $Perfiles = PerfilesUsuarios::where('jefes_areas_id', '=', $Session->id)->get();
 
-        if($request->MesEstatus != ''){
-            //Consulta por Requisiciones con Filtro por mes
-            $Requisiciones = Requisiciones::with([
-                'RequisicionesPerfil' => function($perfil) {
-                    $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
-                },
-                'RequisicionDepartamento' => function($departamento) {
-                    $departamento->select('id', 'Nombre');
-                },
-                'RequisicionJefe' => function($jefe) {
-                    $jefe->select('id', 'Nombre');
-                },
-                'RequisicionMaquina' => function($maquina) {
-                    $maquina->select('id', 'Nombre');
-                },
-                'RequisicionMarca' => function($marca) {
-                    $marca->select('id', 'Nombre');
-                },
-                'RequisicionArticulos' => function($Req) {
-                    $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
-                },
-                'RequisicionArticulos.ArticuloPrecios' => function($pre) {
-                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
-                },
-                ])
-                ->whereYear('Fecha', $anio)
-                ->whereMonth('Fecha', $mes)
-                ->where('Estatus', '=', 5)
-                ->get();
+        //Indicadores
+        $Cotizacion = Requisiciones::whereBetween('Estatus', [3, 4])->count();
+        $Pendientes = Requisiciones::where('Estatus', '=', 5)->count();
+        $PendientesMes = Requisiciones::where('Estatus', '=', 5)->whereMonth('Fecha', $mes)->count();
+        $Confirmar = Requisiciones::where('Estatus', '=', 6)->count();
+        $ICotizacionMes = Requisiciones::whereBetween('Estatus', [3, 4])->whereMonth('Fecha', $mes)->count();
 
-
-            //Consulta por articulos con filtro de Mes
-            $ArticulosRequisiciones = ArticulosRequisiciones::with([
+        /* *********************************** CONSULTA PRINCIPAL ********************************* */
+        if($Vista == 1){
+            //Consulta por Articulos con filtro de Año
+            $Requisiciones = ArticulosRequisiciones::with([
                 'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
                     $req->select(
-                        'id', 'IdUser',
-                        'IdEmp', 'Folio', 'Fecha',
-                        'NumReq',
+                        'id', 'IdUser', 'Fecha',
+                        'IdEmp', 'Folio',
+                        'NumReq', 'OrdenCompra',
                         'Departamento_id',
                         'jefes_areas_id',
                         'Codigo', 'Maquina_id',
@@ -99,216 +73,359 @@ class AutorizaRequisicionesController extends Controller{
                 },
                 'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
                     $marca->select('id', 'Nombre');
-                },
-                'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
-                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
-                },
-            ])
-            ->whereMonth('Fecha', $mes)
-            ->where('EstatusArt', '>=', 5)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
-        }
-
-        //Consulta Default filtrada por Mes
-        if($mes != ''){
-            //Consulta por Requisiciones con Filtro por mes
-            $Requisiciones = Requisiciones::with([
-                'RequisicionesPerfil' => function($perfil) {
-                    $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
-                },
-                'RequisicionDepartamento' => function($departamento) {
-                    $departamento->select('id', 'Nombre');
-                },
-                'RequisicionJefe' => function($jefe) {
-                    $jefe->select('id', 'Nombre');
-                },
-                'RequisicionMaquina' => function($maquina) {
-                    $maquina->select('id', 'Nombre');
-                },
-                'RequisicionMarca' => function($marca) {
-                    $marca->select('id', 'Nombre');
-                },
-                'RequisicionArticulos' => function($Req) {
-                    $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
-                },
-                'RequisicionArticulos.ArticuloPrecios' => function($pre) {
-                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
-                },
-                ])
-                ->whereYear('Fecha', $anio)
-                ->whereMonth('Fecha', $mes)
-                ->where('Estatus', '=', 5)
-                ->get();
-
-
-            //Consulta por articulos con filtro de Mes
-            $ArticulosRequisiciones = ArticulosRequisiciones::with([
-                'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
-                    $req->select(
-                        'id', 'IdUser',
-                        'IdEmp', 'Folio', 'Fecha',
-                        'NumReq',
-                        'Departamento_id',
-                        'jefes_areas_id',
-                        'Codigo', 'Maquina_id',
-                        'Marca_id', 'TipCompra',
-                        'Observaciones', 'Perfil_id');
-                },
-                'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
-                    $perfil->select('id', 'name');
-                },
-                'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
-                    $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
-                },
-                'ArticulosRequisicion.RequisicionDepartamento' => function($departamento) { //Relacion 1 a 1 De puestos
-                    $departamento->select('id', 'Nombre');
-                },
-                'ArticulosRequisicion.RequisicionJefe' => function($jefe) { //Relacion 1 a 1 De puestos
-                    $jefe->select('id', 'Nombre');
-                },
-                'ArticulosRequisicion.RequisicionMaquina' => function($maquina) { //Relacion 1 a 1 De puestos
-                    $maquina->select('id', 'Nombre');
-                },
-                'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
-                    $marca->select('id', 'Nombre');
-                },
-                'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
-                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
-                },
-            ])
-            ->whereMonth('Fecha', $mes)
-            ->where('EstatusArt', '>=', 5)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
-        }
-
-        //Consulta con Filtro de Estatus
-        if ($request->Estatus != '') {
-            //Consulta de requisiciones solo por Estatus
-            $Requisiciones = Requisiciones::with([
-                'RequisicionesPerfil' => function($perfil) {
-                    $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
-                },
-                'RequisicionDepartamento' => function($departamento) {
-                    $departamento->select('id', 'Nombre');
-                },
-                'RequisicionJefe' => function($jefe) {
-                    $jefe->select('id', 'Nombre');
-                },
-                'RequisicionMaquina' => function($maquina) {
-                    $maquina->select('id', 'Nombre');
-                },
-                'RequisicionMarca' => function($marca) {
-                    $marca->select('id', 'Nombre');
-                },
-                'RequisicionArticulos' => function($Req) {
-                    $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
-                },
-                'RequisicionArticulos.ArticuloPrecios' => function($pre) {
-                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
-                },
-                ])
-                ->whereYear('Fecha', $anio)
-                ->where('Estatus', '>', 4)
-                ->where('Estatus', $request->Estatus)
-                ->get();
-
-            //Consulta por articulos filtrado por Estatus
-            $ArticulosRequisiciones = ArticulosRequisiciones::with([
-                'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
-                    $req->select(
-                        'id', 'IdUser',
-                        'IdEmp', 'Folio', 'Fecha',
-                        'NumReq',
-                        'Departamento_id',
-                        'jefes_areas_id',
-                        'Codigo', 'Maquina_id',
-                        'Marca_id', 'TipCompra',
-                        'Observaciones', 'Perfil_id');
-                },
-                'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
-                    $perfil->select('id', 'name');
-                },
-                'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
-                    $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
-                },
-                'ArticulosRequisicion.RequisicionDepartamento' => function($departamento) { //Relacion 1 a 1 De puestos
-                    $departamento->select('id', 'Nombre');
-                },
-                'ArticulosRequisicion.RequisicionJefe' => function($jefe) { //Relacion 1 a 1 De puestos
-                    $jefe->select('id', 'Nombre');
-                },
-                'ArticulosRequisicion.RequisicionMaquina' => function($maquina) { //Relacion 1 a 1 De puestos
-                    $maquina->select('id', 'Nombre');
-                },
-                'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
-                    $marca->select('id', 'Nombre');
-                },
-                'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
-                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                 },
             ])
             ->where('EstatusArt', '>', 4)
-            ->where('EstatusArt', $request->Estatus)
+            ->whereYear('Fecha', $anio)
             ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
+            if(isset($request->Year)){
+                //CONSULTA FILTRADA POR AÑO
+                $Requisiciones = ArticulosRequisiciones::with([
+                    'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
+                        $req->select(
+                            'id', 'IdUser', 'Fecha',
+                            'IdEmp', 'Folio',
+                            'NumReq', 'OrdenCompra',
+                            'Departamento_id',
+                            'jefes_areas_id',
+                            'Codigo', 'Maquina_id',
+                            'Marca_id', 'TipCompra',
+                            'Observaciones', 'Perfil_id');
+                    },
+                    'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
+                        $perfil->select('id', 'name');
+                    },
+                    'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
+                        $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                    },
+                    'ArticulosRequisicion.RequisicionDepartamento' => function($departamento) { //Relacion 1 a 1 De puestos
+                        $departamento->select('id', 'Nombre');
+                    },
+                    'ArticulosRequisicion.RequisicionJefe' => function($jefe) { //Relacion 1 a 1 De puestos
+                        $jefe->select('id', 'Nombre');
+                    },
+                    'ArticulosRequisicion.RequisicionMaquina' => function($maquina) { //Relacion 1 a 1 De puestos
+                        $maquina->select('id', 'Nombre');
+                    },
+                    'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
+                        $marca->select('id', 'Nombre');
+                    },
+                ])
+                ->where('EstatusArt', '>', 4)
+                ->whereYear('Fecha', $anio)
+                ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+            }
+
+            if ($request->Month != 0 && $request->Status == 0) {
+                //CONSULTA FILTRADA SOLO POR MES
+                $Requisiciones = ArticulosRequisiciones::with([
+                    'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
+                        $req->select(
+                            'id', 'IdUser', 'Fecha',
+                            'IdEmp', 'Folio',
+                            'NumReq', 'OrdenCompra',
+                            'Departamento_id',
+                            'jefes_areas_id',
+                            'Codigo', 'Maquina_id',
+                            'Marca_id', 'TipCompra',
+                            'Observaciones', 'Perfil_id');
+                    },
+                    'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
+                        $perfil->select('id', 'name');
+                    },
+                    'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
+                        $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                    },
+                    'ArticulosRequisicion.RequisicionDepartamento' => function($departamento) { //Relacion 1 a 1 De puestos
+                        $departamento->select('id', 'Nombre');
+                    },
+                    'ArticulosRequisicion.RequisicionJefe' => function($jefe) { //Relacion 1 a 1 De puestos
+                        $jefe->select('id', 'Nombre');
+                    },
+                    'ArticulosRequisicion.RequisicionMaquina' => function($maquina) { //Relacion 1 a 1 De puestos
+                        $maquina->select('id', 'Nombre');
+                    },
+                    'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
+                        $marca->select('id', 'Nombre');
+                    },
+                ])
+                ->where('EstatusArt', '>', 4)
+                ->whereYear('Fecha', $anio)
+                ->whereMonth('Fecha', $request->Month)
+                ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+            }
+
+            if($request->Status != 0){
+                //FILTRO POR ESTATUS
+                if($request->Month != 0){
+                    //FILTRO POR ESTATUS Y MES
+                    $Requisiciones = ArticulosRequisiciones::with([
+                        'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
+                            $req->select(
+                                'id', 'IdUser', 'Fecha',
+                                'IdEmp', 'Folio',
+                                'NumReq', 'OrdenCompra',
+                                'Departamento_id',
+                                'jefes_areas_id',
+                                'Codigo', 'Maquina_id',
+                                'Marca_id', 'TipCompra',
+                                'Observaciones', 'Perfil_id');
+                        },
+                        'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
+                            $perfil->select('id', 'name');
+                        },
+                        'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
+                            $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                        },
+                        'ArticulosRequisicion.RequisicionDepartamento' => function($departamento) { //Relacion 1 a 1 De puestos
+                            $departamento->select('id', 'Nombre');
+                        },
+                        'ArticulosRequisicion.RequisicionJefe' => function($jefe) { //Relacion 1 a 1 De puestos
+                            $jefe->select('id', 'Nombre');
+                        },
+                        'ArticulosRequisicion.RequisicionMaquina' => function($maquina) { //Relacion 1 a 1 De puestos
+                            $maquina->select('id', 'Nombre');
+                        },
+                        'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
+                            $marca->select('id', 'Nombre');
+                        },
+                    ])
+                    ->where('EstatusArt', '>', 4)
+                    ->whereYear('Fecha', $anio)
+                    ->whereMonth('Fecha', $request->Month)
+                    ->where('EstatusArt', $request->Status)
+                    ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                }else{
+                    //FILTRO UNICAMENTE POR ESTATUS
+                    $Requisiciones = ArticulosRequisiciones::with([
+                        'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
+                            $req->select(
+                                'id', 'IdUser', 'Fecha',
+                                'IdEmp', 'Folio',
+                                'NumReq', 'OrdenCompra',
+                                'Departamento_id',
+                                'jefes_areas_id',
+                                'Codigo', 'Maquina_id',
+                                'Marca_id', 'TipCompra',
+                                'Observaciones', 'Perfil_id');
+                        },
+                        'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
+                            $perfil->select('id', 'name');
+                        },
+                        'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
+                            $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                        },
+                        'ArticulosRequisicion.RequisicionDepartamento' => function($departamento) { //Relacion 1 a 1 De puestos
+                            $departamento->select('id', 'Nombre');
+                        },
+                        'ArticulosRequisicion.RequisicionJefe' => function($jefe) { //Relacion 1 a 1 De puestos
+                            $jefe->select('id', 'Nombre');
+                        },
+                        'ArticulosRequisicion.RequisicionMaquina' => function($maquina) { //Relacion 1 a 1 De puestos
+                            $maquina->select('id', 'Nombre');
+                        },
+                        'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
+                            $marca->select('id', 'Nombre');
+                        },
+                    ])
+                    ->where('EstatusArt', '>', 4)
+                    ->whereYear('Fecha', $anio)
+                    ->where('EstatusArt', $request->Status)
+                    ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                }
+            }
+
+        }else if($Vista == 2){
+            //Consulta por Requisiciones con Filtro por Año
+            $Requisiciones = Requisiciones::with([
+                'RequisicionesPerfil' => function($perfil) {
+                    $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                },
+                'RequisicionDepartamento' => function($departamento) {
+                    $departamento->select('id', 'Nombre');
+                },
+                'RequisicionJefe' => function($jefe) {
+                    $jefe->select('id', 'Nombre');
+                },
+                'RequisicionMaquina' => function($maquina) {
+                    $maquina->select('id', 'Nombre');
+                },
+                'RequisicionMarca' => function($marca) {
+                    $marca->select('id', 'Nombre');
+                },
+                'RequisicionesVales' => function($vales) {
+                    $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
+                },
+                'RequisicionArticulos' => function($Req) {
+                    $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                },
+                'RequisicionArticulos.ArticuloPrecios' => function($pre) {
+                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                },
+                ])
+                ->where('Estatus', '>', 4)
+                ->whereYear('Fecha', $anio)
+                ->get();
+
+            if(isset($request->Year)){
+                //CONSULTA FILTRADA POR AÑO
+                $Requisiciones = Requisiciones::with([
+                    'RequisicionesPerfil' => function($perfil) {
+                        $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                    },
+                    'RequisicionDepartamento' => function($departamento) {
+                        $departamento->select('id', 'Nombre');
+                    },
+                    'RequisicionJefe' => function($jefe) {
+                        $jefe->select('id', 'Nombre');
+                    },
+                    'RequisicionMaquina' => function($maquina) {
+                        $maquina->select('id', 'Nombre');
+                    },
+                    'RequisicionMarca' => function($marca) {
+                        $marca->select('id', 'Nombre');
+                    },
+                    'RequisicionesVales' => function($vales) {
+                        $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
+                    },
+                    'RequisicionArticulos' => function($Req) {
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                    },
+                    'RequisicionArticulos.ArticuloPrecios' => function($pre) {
+                        $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    },
+                    ])
+                    ->where('Estatus', '>', 4)
+                    ->whereYear('Fecha', $anio)
+                    ->get();
+            }
+
+            if ($request->Month != 0 && $request->Status == 0) {
+                //CONSULTA FILTRADA SOLO POR MES
+                $Requisiciones = Requisiciones::with([
+                    'RequisicionesPerfil' => function($perfil) {
+                        $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                    },
+                    'RequisicionDepartamento' => function($departamento) {
+                        $departamento->select('id', 'Nombre');
+                    },
+                    'RequisicionJefe' => function($jefe) {
+                        $jefe->select('id', 'Nombre');
+                    },
+                    'RequisicionMaquina' => function($maquina) {
+                        $maquina->select('id', 'Nombre');
+                    },
+                    'RequisicionMarca' => function($marca) {
+                        $marca->select('id', 'Nombre');
+                    },
+                    'RequisicionesVales' => function($vales) {
+                        $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
+                    },
+                    'RequisicionArticulos' => function($Req) {
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                    },
+                    'RequisicionArticulos.ArticuloPrecios' => function($pre) {
+                        $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    },
+                    ])->where('Estatus', '>', 4)
+                    ->whereMonth('Fecha', $request->Month)
+                    ->whereYear('Fecha', $anio)
+                    ->get();
+            }
+
+            if($request->Status != 0){
+                //FILTRO POR ESTATUS
+                if($request->Month != 0){
+                    //FILTRO POR ESTATUS Y MES
+                    $Requisiciones = Requisiciones::with([
+                        'RequisicionesPerfil' => function($perfil) {
+                            $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                        },
+                        'RequisicionDepartamento' => function($departamento) {
+                            $departamento->select('id', 'Nombre');
+                        },
+                        'RequisicionJefe' => function($jefe) {
+                            $jefe->select('id', 'Nombre');
+                        },
+                        'RequisicionMaquina' => function($maquina) {
+                            $maquina->select('id', 'Nombre');
+                        },
+                        'RequisicionMarca' => function($marca) {
+                            $marca->select('id', 'Nombre');
+                        },
+                        'RequisicionesVales' => function($vales) {
+                            $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
+                        },
+                        'RequisicionArticulos' => function($Req) {
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        },
+                        ])
+                        ->where('Estatus', '>', 2)
+                        ->whereYear('Fecha', $anio)
+                        ->whereMonth('Fecha', $request->Month)
+                        ->where('Estatus', $request->Status)
+                        ->get();
+                }else{
+                    //FILTRO UNICAMENTE POR ESTATUS
+                    $Requisiciones = Requisiciones::with([
+                        'RequisicionesPerfil' => function($perfil) {
+                            $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                        },
+                        'RequisicionDepartamento' => function($departamento) {
+                            $departamento->select('id', 'Nombre');
+                        },
+                        'RequisicionJefe' => function($jefe) {
+                            $jefe->select('id', 'Nombre');
+                        },
+                        'RequisicionMaquina' => function($maquina) {
+                            $maquina->select('id', 'Nombre');
+                        },
+                        'RequisicionMarca' => function($marca) {
+                            $marca->select('id', 'Nombre');
+                        },
+                        'RequisicionesVales' => function($vales) {
+                            $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
+                        },
+                        'RequisicionArticulos' => function($Req) {
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        },
+                        ])
+                        ->where('Estatus', '>', 2)
+                        ->whereYear('Fecha', $anio)
+                        ->where('Estatus', $request->Status)
+                        ->get();
+                }
+            }
         }
 
-        if($request->Req != ''){
+        /* *********** CONSULTAS ESPECIFICAS ****************** */
+        if(isset($request->Req)){
 
-            $Req = Requisiciones::where('id', '=', $request->Req)->get();
-            // $ArticulosRequisiciones = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->get();
-            $PreciosRequisicion = PreciosCotizaciones::where('requisiciones_id', '=', $request->Req)->get();
-            //Obtengo el numero de cotizaciones realizadas para la requisicion
-            $NumCot = PreciosCotizaciones::where('NumCotizacion', '=', 2)->where('requisiciones_id', '=', $request->Req)->count();
-
-            //Consulta los articulos con sus precios correspondientes
-            $ArticulosPrecios = ArticulosRequisiciones::with([
-                'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
-                    $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
-                },
-            ])
-            ->where('requisicion_id', '=', $request->Req)
-            ->where('EstatusArt', '!=', 10)
-            ->get();
-
-            $PorPrecios = PreciosCotizaciones::with(['PreciosArticulo.ArticulosRequisicion'])
-            ->where('requisiciones_id', '=', $request->Req)
-            ->get();
+            if($request->Req != ''){
+                //Consulta que retorna los precios de la requisicion solicitada
+                $PreciosRequisicion = PreciosCotizaciones::with(['PreciosArticulo.ArticulosRequisicion'])
+                ->where('requisiciones_id', '=', $request->Req)
+                ->get();
+            }
 
         }else{
-            $Req = null;
+
             $PreciosRequisicion = null;
-            $ArticulosPrecios = null;
         }
-
-
-        $Cotizacion = Requisiciones::whereBetween('Estatus', [3, 4])->count();
-
-        $Pendientes = Requisiciones::where('Estatus', '=', 5)->count();
-
-        $PendientesMes = Requisiciones::where('Estatus', '=', 5)->whereMonth('Fecha', $mes)->count();
-
-        $Confirmar = Requisiciones::where('Estatus', '=', 6)->count();
-
-        $ICotizacionMes = Requisiciones::whereBetween('Estatus', [3, 4])->whereMonth('Fecha', $mes)->count();
 
         return Inertia::render('Supply/Requisiciones/Autoriza', compact(
             'Session',
             'Requisiciones',
-            'ArticulosRequisiciones',
-            'PreciosRequisicion',
-            'ArticulosPrecios',
-            'Req',
+            'PreciosRequisicion', //Precios de la requisicion solicitada
             'Proveedores',
             'Cotizacion',
             'Pendientes',
             'PendientesMes',
             'Confirmar',
             'ICotizacionMes',
-            'NumCot',
             'mes',
             'Vista',
-            'PorPrecios',
             ));
     }
 
@@ -424,17 +541,17 @@ class AutorizaRequisicionesController extends Controller{
 
                 break;
 
-            case 2:
+            case 2: //Rechazo de cotizacion
                 ArticulosRequisiciones::where('requisicion_id', '=', $request->requisicion_id)->where('EstatusArt', '=', 5)->update([
                     'EstatusArt' => 6,
                     'MotivoCancelacion' => $request->Comentario,
                 ]);
 
-                //Metodos de autorizacion
-                PreciosCotizaciones::where('articulos_requisiciones_id', '=', $request->articulo_id)
+                //Metodos de Rechazo
+                PreciosCotizaciones::where('id', '=', $request->precio_id)
                 ->update([
                     'Autorizado' => 1, //Estatus 1 Rechazado
-                ]); //Se autoriza los que tengan estatus 2
+                ]);
 
                 break;
 

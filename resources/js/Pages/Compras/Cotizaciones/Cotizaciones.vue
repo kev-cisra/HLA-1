@@ -100,8 +100,6 @@
                 <jet-label class="tw-text-center">ESTATUS</jet-label>
                 <select class="InputSelect" v-model="params.Status">
                     <option value="0">TODOS</option>
-                    <option value="1">SIN ENVIAR</option>
-                    <option value="2">SOLICITADO</option>
                     <option value="3">EN COTIZACION</option>
                     <option value="5">EN AUTORIZACION</option>
                     <option value="6">AUTORIZADO</option>
@@ -1519,9 +1517,7 @@ export default {
                     "order": [0, 'desc'],
                     "columnDefs": [
                         { "width": "1%", "targets": [0] },
-                        { "width": "5%", "targets": [1, 4] },
-                        { "width": "3%", "targets": [2,3] },
-                        { "width": "9%", "targets": [6,7] },
+                        { "width": "3%", "targets": [1,2,3,4] },
                     ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
