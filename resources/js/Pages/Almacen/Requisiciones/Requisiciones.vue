@@ -113,7 +113,7 @@
                     </div>
 
                     <div>
-                        <jet-label class="tw-text-center">Vista</jet-label>
+                        <jet-label class="tw-text-center">VISTA</jet-label>
                         <select class="InputSelect" v-model="params.View" @change="TipoVista">
                             <option value="1">PARTIDAS</option>
                             <option value="2">REQUISICION</option>
@@ -121,7 +121,13 @@
                     </div>
 
                     <div class="tw-mt-4">
-                        <jet-button @click="Filtros" class="BtnFiltros"><i class="fas fa-filter tw-mr-1"></i>Aplica Filtros</jet-button>
+                        <jet-button v-if="loading == true" @click="Filtros" class="BtnFiltros">
+                            <span class="tw-animate-ping tw-relative tw-inline-flex tw-rounded-full tw-h-2 tw-w-2 tw-mr-2 tw-bg-coolGray-100"></span>
+                            <!-- <span class="spinner-grow spinner-grow-sm tw-mr-2" role="status" aria-hidden="true"></span> -->
+                            <p class="tw-animate-pulse">Cargando </p>
+                        </jet-button>
+                        <jet-button v-else @click="Filtros" class="BtnFiltros"> <i class="fas fa-filter tw-mr-1"></i> Aplica Filtros
+                        </jet-button>
                     </div>
                 </div>
             </div>
@@ -779,6 +785,7 @@ import datatable from 'datatables.net-bs5';
 require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
 require( 'datatables.net-buttons/js/buttons.html5' );
 require ( 'datatables.net-buttons/js/buttons.colVis' );
+import BotonCarga from '../../../Components/BotonCarga.vue';
 import print from 'datatables.net-buttons/js/buttons.print';
 import jszip from 'jszip/dist/jszip';
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -801,6 +808,7 @@ export default {
             showConfirm: false,
             showRepo: false,
             showProveedor: false,
+            loading: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
             anio: moment().format("YYYY"),
@@ -885,6 +893,7 @@ export default {
         Table,
         JetButton,
         JetCancelButton,
+        BotonCarga,
         Modal,
         Pagination,
         JetInput,
@@ -910,18 +919,17 @@ export default {
     methods: {
 
         Filtros(){ //Generacion de consulta aplicada con Filtros
+            this.loading = true;
             $('#Requisiciones').DataTable().clear();
             $('#Requisiciones').DataTable().destroy();
             this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
+                    this.loading = false;
                     this.tabla();
                     //Verifico si hubo un cambio en la vista
-                    if(this.Cambio == true){
-                        $('#Requisiciones').DataTable().clear();
-                        $('#Requisiciones').DataTable().destroy();
-                        this.tabla();
+/*                     if(this.Cambio == true){
                         location.reload();
-                    }
+                    } */
                 }, preserveState: true})
         },
 

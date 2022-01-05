@@ -128,15 +128,21 @@
                 </div>
 
                 <div>
-                    <jet-label class="tw-text-center">Vista</jet-label>
+                    <jet-label class="tw-text-center">VISTA</jet-label>
                     <select class="InputSelect" v-model="params.View" @change="TipoVista">
                         <option value="1">PARTIDAS</option>
                         <option value="2">REQUISICION</option>
                     </select>
                 </div>
 
-                <div class="tw-mt-2">
-                    <jet-button @click="Filtros" class="BtnNuevo"><i class="fas fa-filter"></i></jet-button>
+                <div class="tw-mt-4">
+                    <jet-button v-if="loading == true" @click="Filtros" class="BtnFiltros">
+                        <span class="tw-animate-ping tw-relative tw-inline-flex tw-rounded-full tw-h-2 tw-w-2 tw-mr-2 tw-bg-coolGray-100"></span>
+                        <!-- <span class="spinner-grow spinner-grow-sm tw-mr-2" role="status" aria-hidden="true"></span> -->
+                        <p class="tw-animate-pulse">Cargando </p>
+                    </jet-button>
+                    <jet-button v-else @click="Filtros" class="BtnFiltros"> <i class="fas fa-filter tw-mr-1"></i> Aplica Filtros
+                    </jet-button>
                 </div>
             </div>
 
@@ -758,6 +764,7 @@ export default {
         return {
             showPartidas: false,
             showModal2: false,
+            loading: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
             anio: moment().format("YYYY"),
@@ -855,7 +862,7 @@ export default {
         Autorizados: Number,
         Confirmado: Number,
         mes: String,
-        Vista: Number,
+        Vista: String,
     },
 
     methods: {
@@ -879,15 +886,17 @@ export default {
         },
 
         Filtros(){
+            this.loading = true;
             $('#Requisiciones').DataTable().clear();
             $('#Requisiciones').DataTable().destroy();
             this.$inertia.get('/Compras/Requisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
+                    this.loading = false;
                     this.tabla();
                     //Verifico si hubo un cambio en la vista
-                    if(this.Cambio == true){
+/*                     if(this.Cambio == true){
                         location.reload();
-                    }
+                    } */
                 }, preserveState: true})
         },
 

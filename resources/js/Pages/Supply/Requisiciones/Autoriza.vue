@@ -104,6 +104,7 @@
                 <div>
                     <jet-label class="tw-text-center">AÑO</jet-label>
                     <select class="InputSelect" v-model="params.Year">
+                        <option value="0"> TODOS --</option>
                         <option value="2021"> 2021 --</option>
                         <option value="2022"> 2022 -- </option>
                     </select>
@@ -153,7 +154,9 @@
                 </div>
             </div>
         </div>
-
+        <pre>
+            {{Requisiciones}}
+        </pre>
 <!--         <div class="tw-mt-8">
             <div class="tw-overflow-x-auto tw-mx-2" v-if="params.Partidas == true">
                 <Table id="Articulos">
@@ -1274,7 +1277,9 @@ export default {
         FiltroIndicadores(value){
             $('#Requisiciones').DataTable().clear(); //limpio
             $('#Requisiciones').DataTable().destroy(); //destruyo tabla
-            this.params.Estatus = value;
+            this.params.Status = value;
+            this.params.Month = 0;
+            this.params.Year = 0;
             this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
             onSuccess: () => {
                 location.reload();
@@ -1285,7 +1290,7 @@ export default {
         FiltroIndicadorMensual(value){
             $('#Requisiciones').DataTable().clear(); //limpio
             $('#Requisiciones').DataTable().destroy(); //destruyo tabla
-            this.params.Estatus = '';
+            this.params.Status = '';
             this.params.month = '';
             this.params.MesEstatus = 1;
             this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
