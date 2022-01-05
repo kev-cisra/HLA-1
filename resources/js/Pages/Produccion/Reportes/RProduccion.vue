@@ -151,11 +151,17 @@
                                 <jet-label>Título</jet-label>
                                 <jet-input type="text" class="form-control" v-model="gPie.titulo"></jet-input>
 
-                                <div class="lg:tw-flex tw-gap-5">
+                                <div class="tw-gap-5">
                                     <div class="tw-w-full">
-                                        <jet-label><span class="required">*</span>Maquinas</jet-label>
-                                        <!-- <Select2 v-model="gPie.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" /> -->
-                                        <Select2 v-model="gPie.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
+                                        <div v-if="gPie.tipo == 'efiTur' | gPie.tipo == 'efiDia'">
+                                            <jet-label><span class="required">*</span>Proceso</jet-label>
+                                            <Select2 v-model="gPie.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                        </div>
+                                        <div v-else>
+                                            <jet-label><span class="required">*</span>Maquinas</jet-label>
+                                            <Select2 v-model="gPie.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
+                                        </div>
+
                                     </div>
                                     <div class="tw-w-full" v-if="gPie.propa == 1 & gPie.tipo == 'norma'">
                                         <jet-label>Normas</jet-label>
@@ -227,6 +233,14 @@
                                             <input type="radio" id="GPequi" value="equipo" @click="limpMater()" v-model="gPie.tipo">
                                             <label for="GPequi"> Equipo</label>
                                         </div>
+                                        <div class=" tw-m-5">
+                                            <input type="radio" id="GPEfTu" value="efiTur" @click="limpMater()" v-model="gPie.tipo">
+                                            <label for="GPEfTu"> Eficiencia</label>
+                                        </div>
+                                        <!-- <div class=" tw-m-5">
+                                            <input type="radio" id="GPEfGe" value="efiDia" @click="limpMater()" v-model="gPie.tipo">
+                                            <label for="GPEfGe"> Eficiencia general</label>
+                                        </div> -->
                                     </div>
                                 </div>
 
@@ -283,7 +297,7 @@
                                     </div>
                                 </div>
 
-                                <div class="lg:tw-flex tw-gap-5">
+                                <div class="xl:tw-flex tw-gap-5">
                                     <div class="tw-w-full">
                                         <jet-label><span class="required">*</span>Maquinas</jet-label>
                                         <!-- <Select2 v-model="gLinea.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" /> -->
@@ -1687,7 +1701,6 @@
                 //consulta
                 if (data.propa == 1) {
                     let promesa = await axios.post('ReportesPro/PaiGrafi', datos);
-                    console.log(promesa.data)
                     prpa = 'Producción';
                     promesa.data.forEach(dat => {
                         mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
@@ -2169,12 +2182,23 @@
             //procesos Graficas
             proGrafi: function() {
                 var grafi = [];
-                this.procesos.forEach(gr => {
-                    if (gr.tipo != 0) {
-                        grafi.push({id: gr.id, text:gr.nompro})
-                        //console.log(gr)
-                    }
-                })
+                if (this.gPie.tipo == 'efiTur') {
+                    this.procesos.forEach(gr => {
+                        if (gr.tipo == 3 & gr.operacion == 'efi_tur') {
+                            console.log(gr)
+                            grafi.push({id: gr.id, text:gr.nompro})
+                            //console.log(gr)
+                        }
+                    })
+                }else if(this.gPie.tipo == 'efiDia'){
+                    this.procesos.forEach(gr => {
+                        if (gr.tipo == 3 & gr.operacion == 'efi_dia') {
+                            console.log(gr)
+                            grafi.push({id: gr.id, text:gr.nompro})
+                            //console.log(gr)
+                        }
+                    })
+                }
                 return grafi;
             },
         },

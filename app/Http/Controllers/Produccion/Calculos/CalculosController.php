@@ -510,7 +510,7 @@ class CalculosController extends Controller
     }
 
     //operacion suma semanal
-    public function sem_sm($val, $dep, $fechas, $usuario){
+    /* public function sem_sm($val, $dep, $fechas, $usuario){
         $semana = date("Y", strtotime($fechas['fecha'])).'-W'.date("W", strtotime($fechas['fecha']));
         $fs = 0;
         $fc = 0;
@@ -539,10 +539,10 @@ class CalculosController extends Controller
         }
         //print($fs.' | '.$fc.' Fin de suma semana / ');
         return 'sem_sm';
-    }
+    } */
 
     //operacion mes suma
-    public function mes_sm($val, $dep, $fechas, $usuario){
+    /* public function mes_sm($val, $dep, $fechas, $usuario){
         $mes = date("Y-m", strtotime($fechas['fecha']));
         $fs = 0;
         $fc = 0;
@@ -570,7 +570,7 @@ class CalculosController extends Controller
         }
         //print($fs.' | '.$fc.' Fin de suma mes / ');
         return 'mes_sm';
-    }
+    } */
 
     //operacion eficiencia dia
     public function efi_dia($val, $dep, $fechas, $usuario){
