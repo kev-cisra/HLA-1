@@ -72,6 +72,7 @@
                     <div>
                         <jet-label class="tw-text-center">AÑO</jet-label>
                         <select class="InputSelect" v-model="params.Year">
+                            <option value="0"> TODOS --</option>
                             <option value="2021"> 2021 --</option>
                             <option value="2022"> 2022 -- </option>
                         </select>
@@ -841,7 +842,7 @@ export default {
                 EstatusServ: '',
             },
             params:{
-                Year: moment().format("YYYY"),
+                Year: 0,
                 Month: 0,
                 Status: 0,
                 View: 1,

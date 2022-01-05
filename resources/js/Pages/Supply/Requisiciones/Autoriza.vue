@@ -1488,9 +1488,10 @@ export default {
         },
 
         AutorizaPartida(data){
+            console.log('Autoriza sin comentario');
             this.form.precio_id = data.id;
             data._method = "PUT";
-            data.metodo = 3;
+            data.metodo = 4;
             this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
                 onSuccess: () => {
                     this.alertSucces();
@@ -1501,10 +1502,9 @@ export default {
 
         RechazaPartida(data){
             data._method = "PUT";
-            data.metodo = 2;
+            data.metodo = 3;
             this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
                 onSuccess: () => {
-                    this.chageCloseComentarios();
                     this.alertSucces();
                     this.reset();
                 },

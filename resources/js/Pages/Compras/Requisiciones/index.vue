@@ -87,6 +87,7 @@
                 <div>
                     <jet-label class="tw-text-center">AÑO</jet-label>
                     <select class="InputSelect" v-model="params.Year">
+                        <option value="0"> TODOS --</option>
                         <option value="2021"> 2021 --</option>
                         <option value="2022"> 2022 -- </option>
                     </select>
@@ -854,7 +855,7 @@ export default {
         Autorizados: Number,
         Confirmado: Number,
         mes: String,
-        Vista: String,
+        Vista: Number,
     },
 
     methods: {
@@ -1024,14 +1025,23 @@ export default {
         },
 
         save(data) {
-            this.$inertia.post("/Compras/Requisiciones", data, {
-                onSuccess: () => {
-                    // location.reload();
-                    this.reset(),
-                    this.chageClose(),
-                    this.alertSucces();
-                },
-            });
+            var fechaForm = moment(data.Fecha).format("YYYY");
+            if(this.anio == fechaForm){
+                this.$inertia.post("/Compras/Requisiciones", data, {
+                    onSuccess: () => {
+                        // location.reload();
+                        this.reset(),
+                        this.chageClose(),
+                        this.alertSucces();
+                    },
+                });
+            }else{
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Oops...',
+                    text: 'FECHA CORRESPONDIENTE AL AÑO PASADO!',
+                })
+            }
         },
 
         edit: function (data) {
