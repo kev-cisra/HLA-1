@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddDepMatNormaTable extends Migration
+class AlterClaveTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddDepMatNormaTable extends Migration
      */
     public function up()
     {
-        Schema::table('dep_mats', function (Blueprint $table) {
+        Schema::table('claves', function (Blueprint $table) {
             //
-            $table->string('categoria')->after('material_id')->nullable();
+            $table->string('categoria')->after('UNI_MED')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddDepMatNormaTable extends Migration
      */
     public function down()
     {
-        Schema::table('dep_mats', function (Blueprint $table) {
+        Schema::table('claves', function (Blueprint $table) {
             //
             $table->dropColumn('categoria');
         });

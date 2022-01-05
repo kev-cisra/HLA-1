@@ -213,6 +213,7 @@
                                 <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800" v-if="gPie.propa == 1">
                                     <jet-label>Tipo de grafica</jet-label>
                                     <div class="lg:tw-flex tw-text-center">
+                                        <!-- <Select2 v-model="gPie.paro" class="InputSelect" :options="opcPR" :settings="{width: '100%', allowClear: true}"></Select2> -->
                                         <div class=" tw-m-5">
                                             <input type="radio" id="GPgene" value="general" @click="limpMater()" v-model="gPie.tipo">
                                             <label for="GPgene"> General</label>
@@ -1663,6 +1664,8 @@
                 var tur = '';
                 var cate = '';
                 var prpa = '';
+                var proce = '';
+                var maqui = '';
 
                 //alertas de inputs vacios
                 if (this.gPie.rango == 1 & data.fecha == null) {
@@ -1702,15 +1705,18 @@
                 if (data.propa == 1) {
                     let promesa = await axios.post('ReportesPro/PaiGrafi', datos);
                     prpa = 'Producción';
-                    promesa.data.forEach(dat => {
+                    console.log(promesa.data)
+                    /* promesa.data.forEach(dat => {
                         mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
                         part = dat.partida == null ? '' : '/ ' + dat.partida;
                         clave = dat.clave == null ? '' : '/ ' + dat.clave.CVE_ART;
                         equ = dat.equipo_id == null ? '' : '/ ' + dat.equipo.nombre;
                         tur = dat.turno_id == null ? '' : '/ ' + dat.turno.nomtur;
                         cate = dat.categoria == null ? '' : '/ ' + dat.categoria;
-                        valor.push({name: dat.proceso.nompro, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur, cat: cate, maq: dat.maq_pro.maquinas.Nombre});
-                    })
+                        proce = dat.proceso_id == null ? 'General' : '/ ' + dat.proceso.nompro;
+                        maqui = dat.maq_pro_id == null ? '' :'/ ' + dat.maq_pro.maquinas.Nombre
+                        valor.push({name: proce, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur, cat: cate, maq: maqui});
+                    }) */
                 }else{
                     let promesa = await axios.post('ReportesPro/PrPaiGrafi', datos);
                     prpa = 'Paros en minutos'
@@ -2201,6 +2207,11 @@
                 }
                 return grafi;
             },
+
+            //Opciones de tipo
+            opcTipo: function() {
+                //
+            }
         },
 
         watch: {

@@ -43,7 +43,8 @@ class ClavesController extends Controller
         //
         Validator::make($request->all(), [
             'CVE_ART' => ['required','unique:claves'],
-            'DESCR' => ['required']
+            'DESCR' => ['required'],
+            'categoria' => ['required']
         ])->validate();
 
         claves::create($request->all());
@@ -86,7 +87,8 @@ class ClavesController extends Controller
         //
         Validator::make($request->all(), [
             'CVE_ART' => ['required'],
-            'DESCR' => ['required']
+            'DESCR' => ['required'],
+            'categoria' => ['required']
         ])->validate();
 
         if ($request->has('id')) {

@@ -32,11 +32,11 @@
                         <Select2 v-model="form.material_id" class="InputSelect" :settings="{width: '100%', allowClear: true}" :options="opcMat" />
                         <small v-if="errors.material_id" class="validation-alert">{{errors.material_id}}</small>
                     </div>
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <!-- <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>Categoria</jet-label>
                         <jet-input type="text" v-model="form.categoria" @input="(val) => (form.categoria = form.categoria.toUpperCase())"></jet-input>
                         <small v-if="errors.categoria" class="validation-alert">{{errors.categoria}}</small>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="w-100 tw-mx-auto" align="center">
                     <jet-button type="button" class="tw-mx-auto" v-if="!editModeDM" @click="saveDM(form)">Guardar</jet-button>
@@ -51,7 +51,6 @@
                     <th class="columna">id</th>
                     <th class="columna">Clave del material</th>
                     <th class="columna">Nombre</th>
-                    <th class="columna">Categoria</th>
                     <th class="columna">Descripción</th>
                     <th class="columna">Departamento</th>
                     <th></th>
@@ -61,7 +60,6 @@
                         <td>{{ cm.id }}</td>
                         <td>{{ cm.materiales.idmat }}</td>
                         <td>{{ cm.materiales.nommat }}</td>
-                        <td>{{ cm.categoria }}</td>
                         <td>{{ cm.materiales.descrip }}</td>
                         <td>{{ cm.departamentos.Nombre }}</td>
                         <td>
@@ -95,6 +93,10 @@
             </Table>
         </div>
 
+        <pre>
+            {{ ncla }}
+        </pre>
+
         <!------------------------------------------------ modal de carga de claves -->
         <div class="modal fade" id="tabla_clave" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
@@ -109,15 +111,17 @@
                             <template v-slot:TableHeader>
                                 <th class="columna">Clave del material</th>
                                 <th class="columna">Nombre</th>
+                                <th class="columna">Categoria</th>
                                 <th class="columna">Unidad de medida</th>
                                 <th class="columna"></th>
                             </template>
                             <template v-slot:TableFooter >
-                                <tr v-for="vi in ncla" :key="vi">
-                                    <td class="fila">{{vi.CVE_ART}}</td>
-                                    <td class="fila">{{vi.DESCR}}</td>
-                                    <td class="fila">{{vi.UNI_MED}}</td>
-                                    <td class="fila">
+                                <tr v-for="vi in ncla" :key="vi" class="fila">
+                                    <td>{{vi.CVE_ART}}</td>
+                                    <td>{{vi.DESCR}}</td>
+                                    <td>{{ vi.categoria }}</td>
+                                    <td>{{vi.UNI_MED}}</td>
+                                    <td>
                                         <div class="columnaIconos">
                                             <div class="iconoEdit" @click="editCL(vi)" data-bs-target="#ag_clave" data-bs-toggle="modal" data-bs-dismiss="modal">
                                                 <span tooltip="Editar" flow="left">
@@ -164,6 +168,11 @@
                             <jet-label><span class="required">*</span>Descripción</jet-label>
                             <jet-input type="text" v-model="formCla.DESCR" @input="(val) => (formCla.DESCR = formCla.DESCR.toUpperCase())"></jet-input>
                             <small v-if="errors.DESCR" class="validation-alert">{{errors.DESCR}}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>Categoria</jet-label>
+                            <jet-input type="text" v-model="formCla.categoria" @input="(val) => (formCla.categoria = formCla.categoria.toUpperCase())"></jet-input>
+                            <small v-if="errors.categoria" class="validation-alert">{{errors.categoria}}</small>
                         </div>
                     </div>
                 </div>
@@ -240,14 +249,14 @@
                 form: {
                     id: '',
                     material_id: '',
-                    departamento_id: '',
-                    categoria: ''
+                    departamento_id: ''
                 },
                 formCla: {
                     CVE_ART: '',
                     DESCR: '',
                     UNI_MED: 'KG',
-                    dep_mat_id: null
+                    dep_mat_id: null,
+                    categoria: ''
                 }
             }
         },
@@ -370,7 +379,6 @@
                 this.editModeDM = true;
                 this.form.id = data.id;
                 this.form.material_id = data.material_id;
-                this.form.categoria = data.categoria;
                 this.form.departamento_id = data.departamento_id;
             },
             updateDM(data){
@@ -384,7 +392,6 @@
                 this.editModeDM = false;
                 this.form.id = '';
                 this.form.material_id = '';
-                this.form.categoria = '';
                 this.form.departamento_id = '';
             },
             destroyDM(data){
@@ -410,7 +417,8 @@
                     CVE_ART: '',
                     DESCR: '',
                     UNI_MED: 'KG',
-                    dep_mat_id: d
+                    dep_mat_id: d,
+                    categoria: ''
                 }
             },
             //abrir y reset del modal procesos

@@ -447,10 +447,8 @@ class RepoProController extends Controller
             ->whereNotNull('clave_id')
             ->whereIn('maq_pro_id', $request->maquinas)
             ->where('partida', '!=', 'N/A')
-            ->selectRaw('proceso_id, maq_pro_id, departamento_id, SUM(valor) AS valor')
+            ->selectRaw('departamento_id, SUM(valor) AS valor')
             ->groupBy('departamento_id')
-            ->groupBy('proceso_id')
-            ->groupBy('maq_pro_id')
             ->with([
                 'dep_perf' => function($dp) {
                     $dp ->withTrashed()
@@ -571,18 +569,18 @@ class RepoProController extends Controller
             ->get();
         }
         elseif ($request->tipo == 'catego') {
-            $carga = carga::join('dep_mats', 'dep_mats.id', '=', 'cargas.norma')
+            $carga = carga::join('claves', 'claves.id', '=', 'cargas.clave_id')
             ->where('cargas.departamento_id', '=', $request->departamento_id)
             ->whereBetween('cargas.fecha', [$request->iniDia, $request->finDia])
             ->whereNotNull('cargas.clave_id')
             ->where('cargas.partida', '!=', 'N/A')
             //->whereIn('cargas.proceso_id', $request->proceso)
-            ->whereIn('maq_pro_id', $request->maquinas)
-            ->selectRaw('cargas.proceso_id, cargas.maq_pro_id, dep_mats.categoria, cargas.departamento_id, SUM(cargas.valor) AS valor')
+            ->whereIn('cargas.maq_pro_id', $request->maquinas)
+            ->selectRaw('cargas.proceso_id, cargas.maq_pro_id, claves.categoria, cargas.departamento_id, SUM(cargas.valor) AS valor')
             ->groupBy('departamento_id')
             ->groupBy('proceso_id')
             ->groupBy('maq_pro_id')
-            ->groupBy('dep_mats.categoria')
+            ->groupBy('claves.categoria')
             ->with([
                 'dep_perf' => function($dp) {
                     $dp ->withTrashed()
