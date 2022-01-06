@@ -35,7 +35,7 @@
         </Accions>
 
         <!------------------------------------ Muestra las opciones de filtros ------------------------------------------->
-        <div class="collapse md:tw-ml-10 tw-p-6 tw-bg-blue-300 tw-rounded-3xl tw-shadow-xl tw-m-10" id="filtro">
+        <div class="collapse tw-p-6 tw-bg-blue-200 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 tw-w-full lg:tw-left-0 lg:tw-w-6/12" id="filtro">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
                 <div class="tw-mb-6 lg:tw-flex">
                     <!-- Tipo de reporte -->
@@ -105,7 +105,7 @@
         </div>
 
         <!------------------------------------ Muestra las opciones de Graficas ------------------------------------------->
-        <div class="collapse md:tw-ml-10 tw-p-6 tw-bg-teal-300 tw-rounded-3xl tw-shadow-xl tw-m-10" id="grafica">
+        <div class="collapse tw-p-6 tw-bg-green-200 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 tw-w-full lg:tw-right-0 lg:tw-w-6/12" id="grafica">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
                 <!-- arreglo de graficas -->
                 <div class="tw-mb-6 lg:tw-flex">
@@ -153,7 +153,7 @@
 
                                 <div class="tw-gap-5">
                                     <div class="tw-w-full">
-                                        <div v-if="gPie.tipo == 'efiTur' | gPie.tipo == 'efiDia'">
+                                        <div v-if="gPie.tipo == 'efiTur' | gPie.tipo == 'efiDia' | gPie.tipo == 'generalTot'">
                                             <jet-label><span class="required">*</span>Proceso</jet-label>
                                             <Select2 v-model="gPie.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
                                         </div>
@@ -210,38 +210,10 @@
                                     </div>
                                 </div>
 
-                                <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800" v-if="gPie.propa == 1">
+                                <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0" v-if="gPie.propa == 1">
                                     <jet-label>Tipo de grafica</jet-label>
                                     <div class="lg:tw-flex tw-text-center">
-                                        <!-- <Select2 v-model="gPie.paro" class="InputSelect" :options="opcPR" :settings="{width: '100%', allowClear: true}"></Select2> -->
-                                        <div class=" tw-m-5">
-                                            <input type="radio" id="GPgene" value="general" @click="limpMater()" v-model="gPie.tipo">
-                                            <label for="GPgene"> General</label>
-                                        </div>
-                                        <div class=" tw-m-5">
-                                            <input type="radio" id="GPcate" value="catego" @click="limpMater()" v-model="gPie.tipo">
-                                            <label for="GPcate"> Categoria</label>
-                                        </div>
-                                        <div class=" tw-m-5">
-                                            <input type="radio" id="GPnorma" value="norma" @click="limpMater()" v-model="gPie.tipo">
-                                            <label for="GPnorma"> Norma</label>
-                                        </div>
-                                        <div class=" tw-m-5">
-                                            <input type="radio" id="GPparti" value="partida" @click="limpMater()" v-model="gPie.tipo">
-                                            <label for="GPparti"> Partida</label>
-                                        </div>
-                                        <div class=" tw-m-5">
-                                            <input type="radio" id="GPequi" value="equipo" @click="limpMater()" v-model="gPie.tipo">
-                                            <label for="GPequi"> Equipo</label>
-                                        </div>
-                                        <div class=" tw-m-5">
-                                            <input type="radio" id="GPEfTu" value="efiTur" @click="limpMater()" v-model="gPie.tipo">
-                                            <label for="GPEfTu"> Eficiencia</label>
-                                        </div>
-                                        <!-- <div class=" tw-m-5">
-                                            <input type="radio" id="GPEfGe" value="efiDia" @click="limpMater()" v-model="gPie.tipo">
-                                            <label for="GPEfGe"> Eficiencia general</label>
-                                        </div> -->
+                                        <Select2 v-model="gPie.tipo" class="InputSelect" :options="opcTipo" :settings="{width: '100%', allowClear: true}"></Select2>
                                     </div>
                                 </div>
 
@@ -992,7 +964,7 @@
                     borra: '',
                     rango: 1,
                     propa: 1,
-                    tipo: 'general',
+                    tipo: 'generalMaq',
                     paro: [],
                     maquinas: [],
                     procesos: [],
@@ -1705,8 +1677,7 @@
                 if (data.propa == 1) {
                     let promesa = await axios.post('ReportesPro/PaiGrafi', datos);
                     prpa = 'Producción';
-                    console.log(promesa.data)
-                    /* promesa.data.forEach(dat => {
+                    promesa.data.forEach(dat => {
                         mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
                         part = dat.partida == null ? '' : '/ ' + dat.partida;
                         clave = dat.clave == null ? '' : '/ ' + dat.clave.CVE_ART;
@@ -1716,10 +1687,10 @@
                         proce = dat.proceso_id == null ? 'General' : '/ ' + dat.proceso.nompro;
                         maqui = dat.maq_pro_id == null ? '' :'/ ' + dat.maq_pro.maquinas.Nombre
                         valor.push({name: proce, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur, cat: cate, maq: maqui});
-                    }) */
+                    })
                 }else{
                     let promesa = await axios.post('ReportesPro/PrPaiGrafi', datos);
-                    prpa = 'Paros en minutos'
+                    prpa = 'Paros en minutos';
                     promesa.data.forEach(dat => {
                         mater = dat.maq_pro_id == null ? '' : '/ ' + dat.maq_pro.maquinas.Nombre;
                         part = dat.paro_id == null ? '' : '/ ' + dat.paros.clave+' - '+dat.paros.descri;
@@ -2191,7 +2162,6 @@
                 if (this.gPie.tipo == 'efiTur') {
                     this.procesos.forEach(gr => {
                         if (gr.tipo == 3 & gr.operacion == 'efi_tur') {
-                            console.log(gr)
                             grafi.push({id: gr.id, text:gr.nompro})
                             //console.log(gr)
                         }
@@ -2204,13 +2174,37 @@
                             //console.log(gr)
                         }
                     })
+                }else{
+                    this.procesos.forEach(gr => {
+                        if (gr.tipo != 0) {
+                            grafi.push({id: gr.id, text:gr.nompro})
+                        }
+                    })
                 }
                 return grafi;
             },
 
             //Opciones de tipo
             opcTipo: function() {
-                //
+                const arreg = [
+                    {id: 'generalTot', text: 'General Procesos'},
+                    {id: 'generalMaq', text: 'General Maquinas'},
+                    {id: 'catego', text: 'Categoria'},
+                    {id: 'norma', text: 'Norma'},
+                    {id: 'partida', text: 'Partida'},
+                    {id: 'equipo', text: 'Equipo'},
+                    {id: 'efiTur', text: 'Eficiencia por equipo'},
+                    {id: 'efiDia', text: 'Eficiencia General'}
+                ]
+                return arreg;
+            },
+
+            opcTipoOt: function() {
+                const arreg = [
+                    {id: 'generalTot', text: 'General Procesos'},
+                    {id: 'generalMaq', text: 'General Maquinas'}
+                ]
+                return arreg;
             }
         },
 
