@@ -154,9 +154,6 @@
                 </div>
             </div>
         </div>
-        <pre>
-            {{Requisiciones}}
-        </pre>
 <!--         <div class="tw-mt-8">
             <div class="tw-overflow-x-auto tw-mx-2" v-if="params.Partidas == true">
                 <Table id="Articulos">
@@ -358,7 +355,7 @@
                         <th class="columna">TIPO COMPRA</th>
                         <th class="columna">OBSERVACIONES</th>
                         <th class="columna">SOLICITANTE</th>
-                        <th class="columna">LLEGADA</th>
+                        <th class="columna">COMENTARIO</th>
                         <th class="columna">ESTATUS</th>
                         <th class="columna">ACCIONES</th>
                     </template>
@@ -378,7 +375,7 @@
                             <td>{{ datos.articulos_requisicion.TipCompra }}</td>
                             <td>{{ datos.articulos_requisicion.Observaciones }}</td>
                             <td>{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
-                            <td>{{ datos.articulos_requisicion.Fechallegada }}</td>
+                            <td>{{ datos.articulos_requisicion.MotivoCancelacion }}</td>
                             <td>
                                 <div v-if="datos.EstatusArt == 1">
                                     <span tooltip="SIN ENVIAR" flow="left">
@@ -534,6 +531,7 @@
                 </Table>
             </div>
         </div>
+
     </div>
 
     <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
@@ -659,9 +657,10 @@
                         <th class="columna">PROVEEDOR</th>
                         <th class="columna">COMENTARIOS</th>
                         <th class="columna">PRECIO UNITARIO</th>
-                        <th class="columna">TIPO MONEDA</th>
-                        <th class="columna">TIPO CAMBIO</th>
-                        <th class="columna">PRECIO TOTAL</th>
+                        <th class="columna">MONEDA</th>
+                        <th class="columna">CAMBIO</th>
+                        <th class="columna">TOTAL</th>
+                        <th class="columna">COMENTARIO</th>
                         <th class="columna">ARCHIVO</th>
                         <th class="columna">AUTORIZADO</th>
                         <th class="columna">ACCIONES</th>
@@ -680,6 +679,7 @@
                             <td class="tw-text-center">{{datos.Moneda}}</td>
                             <td class="tw-text-center">{{datos.TipoCambio}}</td>
                             <td class="tw-text-center">{{datos.Total}}</td>
+                            <td>{{datos.MotivoCancelacion}}</td>
                             <td class="tw-flex tw-justify-center">
                                 <div class="columnaIconos">
                                     <a target="_blank" :href="path + datos.Archivo" style="color:black;">
@@ -943,7 +943,6 @@ export default {
                 Partidas: true,
                 Proveedor: '',
                 MesLetra: '',
-                MesEstatus: '',
                 Cot: '',
                 Req: '',
                 Art: '',
@@ -963,6 +962,15 @@ export default {
                 }
                 if(pair[0] == 'Year') {
                     this.params.Year = pair[1];
+                }
+                if(pair[0] == 'Month') {
+                    this.params.Month = pair[1];
+                }
+                if(pair[0] == 'Status') {
+                    this.params.Status = pair[1];
+                }
+                if(pair[0] == 'Indicador') {
+                    this.params.Indicador = pair[1];
                 }
         }
 
@@ -1006,7 +1014,7 @@ export default {
         ICotizacionMes: Number,
         NumCot: Number,
         mes: String,
-        Vista: Number,
+        Vista: String,
     },
 
     methods: {
@@ -1029,16 +1037,79 @@ export default {
             }
         },
 
+        //datatable
+        tabla() {
+            this.$nextTick(() => {
+                $("#Requisiciones").DataTable({
+                    "language": this.español,
+                    pageLength : 20,
+                    "order": [10, 'asc'],
+                    scrollY: '40vh',
+                    scrollCollapse: true,
+                    paging: true,
+                    "columnDefs": [
+                        { "width": "3%", "targets": [0] },
+                    ],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
+                });
+            });
+        },
+
+        //consulta para generar datos de la tabla
+        verTabla(event) {
+            $("#Requisiciones").DataTable().destroy();
+                this.$inertia.get("/Supply/AutorizaRequisiciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
+        },
+
         Filtros(){
             $('#Requisiciones').DataTable().clear();
             $('#Requisiciones').DataTable().destroy();
             this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
                 onSuccess: () => {
-                    this.tabla();
-                    //Verifico si hubo un cambio en la vista
-                    if(this.Cambio == true){
-                        location.reload();
-                    }
+                    location.reload();
+                }, preserveState: true})
+        },
+
+        FiltroIndicadores(value){
+            $('#Requisiciones').DataTable().clear();
+            $('#Requisiciones').DataTable().destroy();
+
+            this.params.Status = 5;
+            this.params.Month = 0;
+            this.params.Year = 0;
+
+            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    location.reload();
+                }, preserveState: true})
+        },
+
+        FiltroIndicadorMensual(value){
+            this.params.Status = 5;
+
+            $('#Requisiciones').DataTable().clear();
+            $('#Requisiciones').DataTable().destroy();
+
+            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    location.reload();
                 }, preserveState: true})
         },
 
@@ -1089,84 +1160,6 @@ export default {
                 archivo: '',
                 }],
             };
-        },
-
-        //datatable
-        tabla() {
-            this.$nextTick(() => {
-                $("#Requisiciones").DataTable({
-                    "language": this.español,
-                    "order": [10, 'asc'],
-                    scrollY: '40vh',
-                    scrollCollapse: true,
-                    paging: true,
-                    "columnDefs": [
-                        { "width": "3%", "targets": [0] },
-                    ],
-                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
-                            "<'row'<'col-sm-12'tr>>" +
-                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                    buttons: [
-                        {
-                            extend: 'excelHtml5',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'pdfHtml5',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        'colvis'
-                    ]
-                });
-            });
-        },
-
-        //consulta para generar datos de la tabla
-        verTabla(event) {
-            $("#Requisiciones").DataTable().destroy();
-                this.$inertia.get("/Supply/AutorizaRequisiciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
-        },
-
-        //Generacion de Tabla con Datatables
-        tablaArticulos(){
-            this.$nextTick(() => {
-                $("#Articulos").DataTable({
-                    "language": this.español,
-                    scrollY:        '40vh',
-                    scrollCollapse: true,
-                    paging:         false,
-                    "columnDefs": [
-                        { "width": "3%", "targets": [0,3,4] },
-                        { "width": "7%", "targets": [1,2,7,8,9] },
-                    ],
-                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
-                            "<'row'<'col-sm-12'tr>>" +
-                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                    buttons: [
-                        {
-                            extend: 'excelHtml5',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        'colvis'
-                    ]
-                });
-            });
-        },
-
-        //Consulta para generar datos de la tabla
-        verTablaArticulos(event) {
-            $("#Articulos").DataTable().destroy();
-                this.$inertia.get("/Compras/Cotizaciones", { busca: event.target.value },{
-                    onSuccess: () => {
-                        this.tablaArticulos();
-                    },
-                });
         },
 
         show(id){
@@ -1270,32 +1263,6 @@ export default {
             }
             this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
             onSuccess: () => {
-                this.tabla() //regeneracion de tabla
-            }, preserveState: true})
-        },
-
-        FiltroIndicadores(value){
-            $('#Requisiciones').DataTable().clear(); //limpio
-            $('#Requisiciones').DataTable().destroy(); //destruyo tabla
-            this.params.Status = value;
-            this.params.Month = 0;
-            this.params.Year = 0;
-            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
-            onSuccess: () => {
-                location.reload();
-                this.tabla() //regeneracion de tabla
-            }, preserveState: true})
-        },
-
-        FiltroIndicadorMensual(value){
-            $('#Requisiciones').DataTable().clear(); //limpio
-            $('#Requisiciones').DataTable().destroy(); //destruyo tabla
-            this.params.Status = '';
-            this.params.month = '';
-            this.params.MesEstatus = 1;
-            this.$inertia.get('/Supply/AutorizaRequisiciones', this.params , { //envio de variables por url
-            onSuccess: () => {
-                // location.reload();
                 this.tabla() //regeneracion de tabla
             }, preserveState: true})
         },
