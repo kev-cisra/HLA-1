@@ -21,52 +21,59 @@
                 <div class="md:tw-flex tw-gap-3 tw-mr-10">
                     <!-- boton de carga masiva -->
                     <div>
-                        <jet-button class="BtnNuevo tw-w-full" @click="openModalC">Carga masiva</jet-button>
+                        <button class="btn btn-primary tw-w-full" @click="openModalC">Carga masiva</button>
                     </div>
                     <!-- Boton de filtros -->
                     <div>
-                        <jet-button class="BtnNuevo tw-w-full" data-bs-toggle="collapse" data-bs-target="#filtro" aria-expanded="false" aria-controls="filtro"><i class="fas fa-filter"> </i> Filtros</jet-button>
+                        <button class="btn btn-primary tw-w-full" data-bs-toggle="collapse" data-bs-target="#filtro" aria-expanded="false" aria-controls="filtro"><i class="fas fa-filter"> </i> Filtros</button>
                     </div>
                     <div>
-                        <jet-button class="BtnNuevo tw-w-full" data-bs-toggle="collapse" data-bs-target="#grafica" aria-expanded="false" aria-controls="grafica"><i class="fas fa-chart-pie"></i> Graficas</jet-button>
+                        <button class="btn tw-bg-green-600 hover:tw-bg-green-700 tw-text-white hover:tw-text-white tw-w-full" data-bs-toggle="collapse" data-bs-target="#grafica" aria-expanded="false" aria-controls="grafica"><i class="fas fa-chart-pie"></i> Graficas</button>
                     </div>
                 </div>
             </template>
         </Accions>
 
         <!------------------------------------ Muestra las opciones de filtros ------------------------------------------->
-        <div class="collapse tw-p-6 tw-bg-blue-200 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 tw-w-full lg:tw-left-0 lg:tw-w-6/12" id="filtro">
+        <div class="collapse tw-p-6 tw-border tw-border-8 tw-border-blue-400 tw-bg-blueGray-500 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 tw-w-full lg:tw-left-0 lg:tw-w-6/12" id="filtro">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
                 <div class="tw-mb-6 lg:tw-flex">
                     <!-- Tipo de reporte -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Tipo de reporte</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Tipo de reporte</jet-label>
                         <div class="tw-flex tw-gap-5">
                             <div>
                                 <input type="radio" id="uno" value="1" v-model="FoFiltro.TipRepo" @click="arrProdu()">
-                                <label for="uno"> Produccion</label>
+                                <label for="uno" class="tw-text-white"> Produccion</label>
                             </div>
                             <div>
                                 <input type="radio" id="dos" value="2" v-model="FoFiltro.TipRepo" @click="arrParo()">
-                                <label for="dos"> Paros</label>
+                                <label for="dos" class="tw-text-white"> Paros</label>
                             </div>
                         </div>
                     </div>
                     <!-- calculos -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-if="FoFiltro.TipRepo == 1 & FoFiltro.iniDia != null & FoFiltro.rango == 1" >
-                        <jet-label>Boton para Calcular Operaciones</jet-label>
+                        <jet-label class="tw-text-white">Boton para Calcular Operaciones</jet-label>
                         <BotonCarga :verBot="vCal" :iconoV="'fas fa-calculator'" :textoV="'Calcular'" :textoOC="'Calculando...'" :class="'btn-success'" @click="calcula(form)"></BotonCarga>
                     </div>
+
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label>Opciones de consulta</jet-label>
+                        <jet-label class=" tw-text-gray-500">--</jet-label>
+                        <BotonCarga v-if="FoFiltro.TipRepo == 1" :verBot="vTab" :textoV="'Consultar Producción'" :textoOC="'Buscando...'" :class="'btn-primary'" @click="arrProdu()"></BotonCarga>
+
+                        <BotonCarga v-if="FoFiltro.TipRepo == 2" :verBot="vTab" :textoV="'Consultar Paros'" :textoOC="'Buscando...'" :class="'btn-primary'" @click="arrParo()"></BotonCarga>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                        <jet-label class="tw-text-white">Opciones de consulta</jet-label>
                         <div class="tw-flex tw-gap-5">
                             <div>
                                 <input type="radio" id="Rdia" value="1" v-model="FoFiltro.rango">
-                                <label for="Rdia"> Dia</label>
+                                <label for="Rdia" class="tw-text-white"> Dia</label>
                             </div>
                             <div>
                                 <input type="radio" id="Rrango" value="2" v-model="FoFiltro.rango">
-                                <label for="Rrango"> Rango</label>
+                                <label for="Rrango" class="tw-text-white"> Rango</label>
                             </div>
                         </div>
                     </div>
@@ -74,54 +81,49 @@
                 <div class="tw-mb-6 lg:tw-flex">
                     <!-- mes -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Mes</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Mes</jet-label>
                         <jet-input type="month" class="form-control" @click="limInputs(3)" v-model="FoFiltro.mes"></jet-input>
                     </div>
                     <!-- semana -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-if="FoFiltro.TipRepo == 1">
-                        <jet-label><span class="required">*</span>Semana</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Semana</jet-label>
                         <jet-input type="week" class="form-control" @click="limInputs(2)" v-model="FoFiltro.semana"></jet-input>
                     </div>
                     <!-- dia -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-if="FoFiltro.rango == 1">
-                        <jet-label><span class="required">*</span>Fecha Dia</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Fecha Dia</jet-label>
                         <jet-input type="date" class="form-control" @click="limInputs(1.5)" @change="cambioFechas()" v-model="FoFiltro.iniDia"></jet-input>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-if="FoFiltro.rango == 2">
-                        <jet-label><span class="required">*</span>Fecha Inicial</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Fecha Inicial</jet-label>
                         <jet-input type="datetime-local" class="form-control" @click="limInputs(1.5)" v-model="FoFiltro.iniDia"></jet-input>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-if="FoFiltro.rango == 2">
-                        <jet-label><span class="required">*</span>Fecha Final</jet-label>
+                        <jet-label class="tw-text-white"><span class="required">*</span>Fecha Final</jet-label>
                         <jet-input type="datetime-local" class="form-control" @click="limInputs(1.5)" v-model="FoFiltro.finDia"></jet-input>
-                    </div>
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                        <BotonCarga v-if="FoFiltro.TipRepo == 1" :verBot="vTab" :textoV="'Consultar Producción'" :textoOC="'Buscando...'" :class="'btn-primary'" @click="arrProdu()"></BotonCarga>
-
-                        <BotonCarga v-if="FoFiltro.TipRepo == 2" :verBot="vTab" :textoV="'Consultar Paros'" :textoOC="'Buscando...'" :class="'btn-primary'" @click="arrParo()"></BotonCarga>
                     </div>
                 </div>
             </div>
         </div>
 
         <!------------------------------------ Muestra las opciones de Graficas ------------------------------------------->
-        <div class="collapse tw-p-6 tw-bg-green-200 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 tw-w-full lg:tw-right-0 lg:tw-w-6/12" id="grafica">
+        <div class="collapse tw-p-6 tw-border tw-border-8 tw-border-green-400 tw-bg-blueGray-500 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 tw-w-full lg:tw-right-0 lg:tw-w-10/12" id="grafica">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
                 <!-- arreglo de graficas -->
                 <div class="tw-mb-6 lg:tw-flex">
-                    <label><span class="required">*</span>Tipo de gráfica: </label>
+                    <label  class="tw-text-white"><span class="required">*</span>Tipo de gráfica: </label>
                     <div class="tw-px-3 tw-mb-6 tw-gap-3 tw-flex">
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="pie" id="pie"> <label for="pie">Gráfica de pie</label>
+                            <input type="checkbox" v-model="graTipo" value="pie" id="pie"> <label for="pie" class="tw-text-white">Gráfica de pie</label>
                         </div>
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="punto" id="punto"> <label for="punto">Gráfica lineal</label>
+                            <input type="checkbox" v-model="graTipo" value="punto" id="punto"> <label for="punto" class="tw-text-white">Gráfica lineal</label>
                         </div>
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="barra" id="barra"> <label for="barra">Gráfica de barra</label>
+                            <input type="checkbox" v-model="graTipo" value="barra" id="barra"> <label for="barra" class="tw-text-white">Gráfica de barra</label>
                         </div>
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="ambos" id="ambos"> <label for="ambos">Gráfica de barar y punto</label>
+                            <input type="checkbox" v-model="graTipo" value="ambos" id="ambos"> <label for="ambos" class="tw-text-white">Gráfica de barar y punto</label>
                         </div>
                     </div>
                 </div>
@@ -133,13 +135,13 @@
                         <!-- titulo y botones -->
                         <div class="sm:tw-flex lg:tw-m-5">
                             <div class="tw-w-1/2 tw-text-2xl tw-text-center">
-                                <h1>Gráfica de Pie</h1>
+                                <h1 class="tw-text-white">Gráfica de Pie</h1>
                             </div>
 
                             <div class="lg:tw-flex lg:tw-w-1/2">
                                 <div class="tw-flex tw-w-1/2">
-                                    <a class="btn btn-outline-success " href="#chart" @click="GraPaste(gPie)">Generar gráfica</a>
-                                    <button class="btn btn-outline-danger " @click="resetPastel()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                                    <a class="btn btn-success " href="#chart" @click="GraPaste(gPie)">Generar gráfica</a>
+                                    <button class="btn btn-danger " @click="resetPastel()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -148,27 +150,27 @@
                         <div class="lg:tw-flex ">
 
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0 tw-gap-x-5">
-                                <jet-label>Título</jet-label>
+                                <jet-label class="tw-text-white">Título</jet-label>
                                 <jet-input type="text" class="form-control" v-model="gPie.titulo"></jet-input>
 
                                 <div class="tw-gap-5">
                                     <div class="tw-w-full">
                                         <div v-if="gPie.tipo == 'efiTur' | gPie.tipo == 'efiDia' | gPie.tipo == 'generalTot'">
-                                            <jet-label><span class="required">*</span>Proceso</jet-label>
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Proceso</jet-label>
                                             <Select2 v-model="gPie.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
                                         </div>
                                         <div v-else>
-                                            <jet-label><span class="required">*</span>Maquinas</jet-label>
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
                                             <Select2 v-model="gPie.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
                                         </div>
 
                                     </div>
                                     <div class="tw-w-full" v-if="gPie.propa == 1 & gPie.tipo == 'norma'">
-                                        <jet-label>Normas</jet-label>
+                                        <jet-label class="tw-text-white">Normas</jet-label>
                                         <Select2 v-model="gPie.norma" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcNM" />
                                     </div>
                                     <div class="tw-w-full" v-if="gPie.propa == 2">
-                                        <jet-label>Paros</jet-label>
+                                        <jet-label class="tw-text-white">Paros</jet-label>
                                         <Select2 v-model="gPie.paro" class="InputSelect" :options="opcPR" :settings="{width: '100%', multiple: true, allowClear: true}"></Select2>
                                     </div>
                                 </div>
@@ -180,38 +182,38 @@
                                 <!-- Inputs radio-->
                                 <div class="xl:tw-flex">
 
-                                    <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
-                                        <jet-label>Consuta par gráfica</jet-label>
+                                    <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-white-800">
+                                        <jet-label class="tw-text-white">Consuta par gráfica</jet-label>
                                         <div class="md:tw-flex tw-text-center">
                                             <div class="tw-m-5">
                                                 <input type="radio" id="GPprodu" value="1" v-model="gPie.propa">
-                                                <label for="GPprodu"> Producción</label>
+                                                <label class="tw-text-white" for="GPprodu"> Producción</label>
                                             </div>
                                             <div class="tw-m-5">
                                                 <input type="radio" id="GPparo" value="2" v-model="gPie.propa">
-                                                <label for="GPparo"> Paro</label>
+                                                <label class="tw-text-white" for="GPparo"> Paro</label>
                                             </div>
                                         </div>
 
                                     </div>
 
-                                    <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
-                                        <jet-label>Opciones de consulta</jet-label>
+                                    <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-white-800">
+                                        <jet-label class="tw-text-white">Opciones de consulta</jet-label>
                                         <div class="md:tw-flex tw-text-center">
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GPdia" @click="limpiarGrafi()" value="1" v-model="gPie.rango">
-                                                <label for="GPdia"> Dia</label>
+                                                <label class="tw-text-white" for="GPdia"> Dia</label>
                                             </div>
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GPrango" @click="limpiarGrafi()" value="2" v-model="gPie.rango">
-                                                <label for="GPrango"> Rango</label>
+                                                <label class="tw-text-white" for="GPrango"> Rango</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0" v-if="gPie.propa == 1">
-                                    <jet-label>Tipo de grafica</jet-label>
+                                    <jet-label class="tw-text-white">Tipo de grafica</jet-label>
                                     <div class="lg:tw-flex tw-text-center">
                                         <Select2 v-model="gPie.tipo" class="InputSelect" :options="opcTipo" :settings="{width: '100%', allowClear: true}"></Select2>
                                     </div>
@@ -219,17 +221,17 @@
 
                                 <!-- Input de fechas -->
                                 <div v-if="gPie.rango == 1" class="">
-                                    <jet-label><span class="required">*</span>Fecha Dia</jet-label>
+                                    <jet-label class="tw-text-white"><span class="required">*</span>Fecha Dia</jet-label>
                                     <jet-input type="date" class="form-control" v-model="gPie.fecha"></jet-input>
                                 </div>
 
                                 <div v-if="gPie.rango == 2" class="lg:tw-flex">
                                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                        <jet-label><span class="required">*</span>Fecha Inicial</jet-label>
+                                        <jet-label class="tw-text-white"><span class="required">*</span>Fecha Inicial</jet-label>
                                         <jet-input type="datetime-local" class="form-control" @click="limInputs(1.5)" v-model="gPie.iniDia"></jet-input>
                                     </div>
                                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                        <jet-label><span class="required">*</span>Fecha Final</jet-label>
+                                        <jet-label class="tw-text-white"><span class="required">*</span>Fecha Final</jet-label>
                                         <jet-input type="datetime-local" class="form-control" @click="limInputs(1.5)" v-model="gPie.finDia"></jet-input>
                                     </div>
                                 </div>
@@ -244,12 +246,12 @@
                         <div class="tw-flex tw-m-5">
                             <!-- titulo -->
                             <div class="tw-w-1/2 tw-text-2xl tw-text-center">
-                                <h1>Gráfica Lineal</h1>
+                                <h1 class="tw-text-white">Gráfica Lineal</h1>
                             </div>
                             <!-- boton -->
                             <div class="tw-flex tw-w-1/2">
-                                <a class="btn btn-outline-success " href="#chart1" @click="GraLinea(gLinea)">Generar gráfica</a>
-                                <button class="btn btn-outline-danger " @click="resetLinea()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                                <a class="btn btn-success " href="#chart1" @click="GraLinea(gLinea)">Generar gráfica</a>
+                                <button class="btn btn-danger " @click="resetLinea()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
 
@@ -260,24 +262,24 @@
                                 <div class="lg:tw-flex tw-gap-4">
                                     <!-- titulo -->
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Título</jet-label>
+                                        <jet-label class="tw-text-white">Título</jet-label>
                                         <jet-input type="text" class="form-control" v-model="gLinea.titulo"></jet-input>
                                     </div>
                                     <!-- sub titulo -->
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Sub Título</jet-label>
+                                        <jet-label class="tw-text-white">Sub Título</jet-label>
                                         <jet-input type="text" class="form-control" v-model="gLinea.subtitulo"></jet-input>
                                     </div>
                                 </div>
 
                                 <div class="xl:tw-flex tw-gap-5">
                                     <div class="tw-w-full">
-                                        <jet-label><span class="required">*</span>Maquinas</jet-label>
+                                        <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
                                         <!-- <Select2 v-model="gLinea.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" /> -->
                                         <Select2 v-model="gLinea.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
                                     </div>
                                     <div class="tw-w-full" v-if="gLinea.tipo == 'norma'">
-                                        <jet-label>Normas</jet-label>
+                                        <jet-label class="tw-text-white">Normas</jet-label>
                                         <Select2 v-model="gLinea.norma" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcNM" />
                                     </div>
                                 </div>
@@ -286,76 +288,55 @@
 
                                 <!-- Rango o dia y tipo-->
                                 <div class="xl:tw-flex">
-                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
-                                        <jet-label>Opciones de consulta</jet-label>
+                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-white-800">
+                                        <jet-label class="tw-text-white">Opciones de consulta</jet-label>
                                         <div class="tw-flex tw-flex-col lg:tw-flex-row">
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GLdia" @click="lipiaLinea(1)" value="1" v-model="gLinea.rango">
-                                                <label for="GLdia"> Diario</label>
+                                                <label class="tw-text-white" for="GLdia"> Diario</label>
                                             </div>
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GLmes" @click="lipiaLinea(2)" value="2" v-model="gLinea.rango">
-                                                <label for="GLmes"> Mes</label>
+                                                <label class="tw-text-white" for="GLmes"> Mes</label>
                                             </div>
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GLano" @click="lipiaLinea(3)" value="3" v-model="gLinea.rango">
-                                                <label for="GLano"> Año</label>
+                                                <label class="tw-text-white" for="GLano"> Año</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
-                                        <jet-label>Tipo de grafica</jet-label>
-                                        <div class="tw-flex">
-                                            <div class=" tw-m-5">
-                                                <input type="radio" id="GLgene" value="general" v-model="gLinea.tipo">
-                                                <label for="GLgene"> General</label>
-                                            </div>
-                                            <div class=" tw-m-5">
-                                                <input type="radio" id="GLnorma" value="norma" v-model="gLinea.tipo">
-                                                <label for="GLnorma"> Norma</label>
-                                            </div>
-                                            <div class=" tw-m-5">
-                                                <input type="radio" id="GLparti" value="partida" v-model="gLinea.tipo">
-                                                <label for="GLparti"> Partida</label>
-                                            </div>
-                                            <div class=" tw-m-5">
-                                                <input type="radio" id="GLequi" value="equipo" v-model="gLinea.tipo">
-                                                <label for="GLequi"> Equipo</label>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                 </div>
 
                                 <!-- dias -->
                                 <div class="lg:tw-flex tw-gap-4" v-if="gLinea.rango == 1">
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-label class="tw-text-white">Fecha Inicio</jet-label>
                                         <jet-input type="date" v-model="gLinea.fecIni"></jet-input>
                                     </div>
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-label class="tw-text-white">Fecha Fin</jet-label>
                                         <jet-input type="date" v-model="gLinea.fecFin"></jet-input>
                                     </div>
                                 </div>
                                 <!-- mes -->
                                 <div class="lg:tw-flex tw-gap-4" v-else-if="gLinea.rango == 2">
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-label class="tw-text-white">Fecha Inicio</jet-label>
                                         <jet-input type="month" v-model="gLinea.fecIni"></jet-input>
                                     </div>
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-label class="tw-text-white">Fecha Fin</jet-label>
                                         <jet-input type="month" v-model="gLinea.fecFin"></jet-input>
                                     </div>
                                 </div>
                                 <!-- año -->
                                 <div class="lg:tw-flex tw-gap-4" v-else>
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-label class="tw-text-white">Fecha Inicio</jet-label>
                                         <jet-input type="number" v-model="gLinea.fecIni"></jet-input>
                                     </div>
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-label class="tw-text-white">Fecha Fin</jet-label>
                                         <jet-input type="number" v-model="gLinea.fecFin"></jet-input>
                                     </div>
                                 </div>
@@ -369,12 +350,12 @@
                         <div class="tw-flex tw-m-5">
                             <!-- titulo -->
                             <div class="tw-w-1/2 tw-text-2xl tw-text-center">
-                                <h1>Gráfica de Barra</h1>
+                                <h1 class="tw-text-white">Gráfica de Barra</h1>
                             </div>
                             <!-- boton -->
                             <div class="tw-flex tw-w-1/2">
-                                <a class="btn btn-outline-success " href="#chart2" @click="GraBarra(gBarra)">Generar gráfica</a>
-                                <button class="btn btn-outline-danger " @click="resetBarra()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                                <a class="btn btn-success " href="#chart2" @click="GraBarra(gBarra)">Generar gráfica</a>
+                                <button class="btn btn-danger " @click="resetBarra()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
 
@@ -385,24 +366,23 @@
                                 <div class="lg:tw-flex tw-gap-4">
                                     <!-- titulo -->
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Título</jet-label>
+                                        <jet-label class="tw-text-white">Título</jet-label>
                                         <jet-input type="text" class="form-control" v-model="gBarra.titulo"></jet-input>
                                     </div>
                                     <!-- sub titulo -->
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Sub Título</jet-label>
+                                        <jet-label class="tw-text-white">Sub Título</jet-label>
                                         <jet-input type="text" class="form-control" v-model="gBarra.subtitulo"></jet-input>
                                     </div>
                                 </div>
 
                                 <div class="lg:tw-flex tw-gap-5">
                                     <div class="tw-w-full">
-                                        <jet-label><span class="required">*</span>Maquinas</jet-label>
-                                        <!-- <Select2 v-model="gBarra.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" /> -->
+                                        <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
                                         <Select2 v-model="gBarra.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
                                     </div>
                                     <div class="tw-w-full" v-if="gBarra.tipo == 'norma'">
-                                        <jet-label>Normas</jet-label>
+                                        <jet-label class="tw-text-white">Normas</jet-label>
                                         <Select2 v-model="gBarra.norma" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcNM" />
                                     </div>
                                 </div>
@@ -411,76 +391,55 @@
 
                                 <!-- Rango o dia y tipo-->
                                 <div class="xl:tw-flex">
-                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
-                                        <jet-label>Opciones de consulta</jet-label>
+                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-white-800">
+                                        <jet-label class="tw-text-white">Opciones de consulta</jet-label>
                                         <div class="lg:tw-flex">
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GBdia" @click="limpiaBarra(1)" value="1" v-model="gBarra.rango">
-                                                <label for="GBdia"> Diario</label>
+                                                <label class="tw-text-white" for="GBdia"> Diario</label>
                                             </div>
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GBmes" @click="limpiaBarra(2)" value="2" v-model="gBarra.rango">
-                                                <label for="GBmes"> Mes</label>
+                                                <label class="tw-text-white" for="GBmes"> Mes</label>
                                             </div>
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GBano" @click="limpiaBarra(3)" value="3" v-model="gBarra.rango">
-                                                <label for="GBano"> Año</label>
+                                                <label class="tw-text-white" for="GBano"> Año</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-blueGray-800">
-                                        <jet-label>Tipo de grafica</jet-label>
-                                        <div class="tw-flex">
-                                            <div class=" tw-m-5">
-                                                <input type="radio" id="GLgene" value="general" v-model="gBarra.tipo">
-                                                <label for="GLgene"> General</label>
-                                            </div>
-                                            <div class=" tw-m-5">
-                                                <input type="radio" id="GLnorma" value="norma" v-model="gBarra.tipo">
-                                                <label for="GLnorma"> Norma</label>
-                                            </div>
-                                            <div class=" tw-m-5">
-                                                <input type="radio" id="GLparti" value="partida" v-model="gBarra.tipo">
-                                                <label for="GLparti"> Partida</label>
-                                            </div>
-                                            <div class=" tw-m-5">
-                                                <input type="radio" id="GLequi" value="equipo" v-model="gBarra.tipo">
-                                                <label for="GLequi"> Equipo</label>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                 </div>
 
                                 <!-- dias -->
                                 <div class="lg:tw-flex tw-gap-4" v-if="gBarra.rango == 1">
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-label class="tw-text-white">Fecha Inicio</jet-label>
                                         <jet-input type="date" v-model="gBarra.fecIni"></jet-input>
                                     </div>
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-label class="tw-text-white">Fecha Fin</jet-label>
                                         <jet-input type="date" v-model="gBarra.fecFin"></jet-input>
                                     </div>
                                 </div>
                                 <!-- mes -->
                                 <div class="lg:tw-flex tw-gap-4" v-else-if="gBarra.rango == 2">
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-label class="tw-text-white">Fecha Inicio</jet-label>
                                         <jet-input type="month" v-model="gBarra.fecIni"></jet-input>
                                     </div>
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-label class="tw-text-white">Fecha Fin</jet-label>
                                         <jet-input type="month" v-model="gBarra.fecFin"></jet-input>
                                     </div>
                                 </div>
                                 <!-- año -->
                                 <div class="lg:tw-flex tw-gap-4" v-else>
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Fecha Inicio</jet-label>
+                                        <jet-label class="tw-text-white">Fecha Inicio</jet-label>
                                         <jet-input type="number" v-model="gBarra.fecIni"></jet-input>
                                     </div>
                                     <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label>Fecha Fin</jet-label>
+                                        <jet-label class="tw-text-white">Fecha Fin</jet-label>
                                         <jet-input type="number" v-model="gBarra.fecFin"></jet-input>
                                     </div>
                                 </div>
@@ -493,12 +452,12 @@
                         <div class="tw-flex tw-m-5">
                             <!-- titulo -->
                             <div class="tw-w-1/2 tw-text-2xl tw-text-center">
-                                <h1>Gráfica Combinada</h1>
+                                <h1 class="tw-text-white">Gráfica Combinada</h1>
                             </div>
                             <!-- boton -->
                             <div class="tw-w-1/2">
-                                <a class="btn btn-outline-success " href="#chart3" @click="GraBaLi()">Generar gráfica</a>
-                                <button class="btn btn-outline-danger " @click="resetBaLi()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                                <a class="btn btn-success " href="#chart3" @click="GraBaLi()">Generar gráfica</a>
+                                <button class="btn btn-danger " @click="resetBaLi()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
                     </div>
@@ -507,7 +466,7 @@
         </div>
 
         <!------------------------------------ Data table de carga de produccion ------------------------------------------------------->
-        <div v-show="FoFiltro.TipRepo == 1" class="tw-m-auto" style="width: 99%">
+        <div v-show="FoFiltro.TipRepo == 1" class="tw-m-auto" style="width: 98%">
             <Table id="t_repo">
                 <template v-slot:TableHeader>
                     <th class="columna" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Indice</th>
@@ -625,7 +584,7 @@
         </div>
 
         <!------------------------------------- Data table de paros ------------------------------------------------------------------>
-        <div v-show="FoFiltro.TipRepo == 2" class="tw-m-auto" style="width: 99%">
+        <div v-show="FoFiltro.TipRepo == 2" class="tw-m-auto" style="width: 98%">
             <TableBlue id="t_repoPar">
                 <template v-slot:TableHeader>
                     <th class="columna tw-text-center" v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">Fecha</th>
@@ -1728,6 +1687,7 @@
                         data: valor
                     }]
                 });
+                $('#grafica').removeClass("show")
             },
             resetPastel(){
                 this.gPie.borra.destroy();
@@ -1855,6 +1815,7 @@
                     }
 
                 });
+                $('#grafica').removeClass("show")
 
             },
             resetLinea(){
@@ -1967,6 +1928,7 @@
                     },
                     series: serie
                 });
+                $('#grafica').removeClass("show")
             },
             resetBarra(){
                 this.gBarra.borra.destroy();
@@ -2042,6 +2004,7 @@
                         }
                     }]
                 });
+                $('#grafica').removeClass("show")
             },
             resetBaLi(){
                 this.gBaLi.borra.destroy();

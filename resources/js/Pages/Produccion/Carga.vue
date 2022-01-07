@@ -47,13 +47,13 @@
         </Accions>
 
         <!------------------------------------ Carga de objetivos -------------------------------------------------->
-        <div class="collapse m-5 tw-p-6 tw-bg-yellow-500 tw-rounded-3xl tw-shadow-xl" id="agObjec">
+        <div class="collapse tw-p-6 tw-bg-blueGray-500 tw-border tw-border-yellow-500 tw-border-8 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 lg:tw-mx-14 lg:tw-w-11/12 tw-w-full" id="agObjec">
             <!-- Formulas -->
             <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
                 <!-- Fecha -->
                 <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                     <jet-label class="tw-text-white"><span class="required">*</span>Fecha</jet-label>
-                    <input type="datetime-local" class="InputSelect" v-model="form.fecha" :min="hoy" :max="treDia">
+                    <input type="datetime-local" class="InputSelect" v-model="form.fecha" :min="twoF" :max="treDia">
                     <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
                 </div>
                 <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
@@ -142,7 +142,7 @@
         </div>
 
         <!------------------------------------ carga de datos de produccion ---------------------------------------->
-        <div class="collapse m-5 tw-p-6 tw-bg-green-700 tw-rounded-3xl tw-shadow-xl" id="agPer">
+        <div class="collapse tw-p-6 tw-bg-blueGray-500 tw-border tw-border-green-700 tw-border-8 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 lg:tw-mx-14 lg:tw-w-11/12 tw-w-full" id="agPer">
             <!-------------------------------------------- Paquetes ---------------------------------------------->
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full" v-if="noCor == 'lid' | noCor == 'ope'">
                 <!-- formulario -->
@@ -320,7 +320,7 @@
         </div>
 
         <!------------------------------------ Data table de carga ------------------------------------------------------->
-        <div class="tw-m-auto" style="width: 99%">
+        <div class="tw-m-auto" style="width: 98%">
             <Table id="t_carg">
                 <template v-slot:TableHeader>
                     <th class="columna">Índice</th>
@@ -529,7 +529,7 @@
         </div>
 
         <!------------------------------------- Carga de paquetes Norma, Claves y partida -------------------------------->
-        <div class="offcanvas offcanvas-end sm:tw-w-9/12 lg:tw-w-6/12" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
+        <div class="offcanvas offcanvas-end sm:tw-w-9/12 lg:tw-w-6/12"  data-bs-scroll="true" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
             <div class="offcanvas-header tw-bg-cyan-700">
                 <h3 class="offcanvas-title tw-text-xl tw-text-blueGray-50" id="pacNormaLabel">Paquetes para Normas, Claves y Partidas</h3>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -552,11 +552,11 @@
                         <!-- select Clave -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                             <jet-label><span class="required">*</span>Clave</jet-label>
-                            <!-- <Select2 v-model="form.clave_id" class="InputSelect tw-w-full" :options="opcCL" /> -->
-                            <select class="InputSelect" v-model="form.clave_id">
+                            <Select2 v-model="form.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCL" />
+                            <!-- <select class="InputSelect" v-model="form.clave_id">
                                 <option value="" disabled>SELECCIONA</option>
                                 <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
-                            </select>
+                            </select> -->
                             <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
                         </div>
                         <!-- Inout partida -->
@@ -622,7 +622,7 @@
         </div>
 
         <!------------------------------------- Carga de paquetes Objetivos -------------------------------->
-        <div class="offcanvas offcanvas-bottom tw-h-3/4" tabindex="-1" id="paqCor" aria-labelledby="paqCorLabel">
+        <div class="offcanvas offcanvas-bottom tw-h-3/4" data-bs-scroll="true" tabindex="-1" id="paqCor" aria-labelledby="paqCorLabel">
             <div class="offcanvas-header tw-bg-blue-700">
                 <h3 class="offcanvas-title tw-text-xl tw-text-blueGray-50" id="offcanvasBottomLabel">Paquetes para coordinador</h3>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -672,11 +672,11 @@
                         <!-- select Clave -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
                             <jet-label class="tw-text-white"><span class="required">*</span>Clave</jet-label>
-                            <!-- <Select2 v-model="form.clave_id" class="InputSelect" :options="opcCL"  :settings="{width: '100%'}"/> -->
-                            <select class="InputSelect" v-model="formObje.clave_id">
+                            <Select2 v-model="form.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCL" />
+                            <!-- <select class="InputSelect" v-model="formObje.clave_id">
                                 <option value="" disabled>SELECCIONA</option>
                                 <option v-for="cl in opcCLO" :key="cl" :value="cl.id">{{cl.text}}</option>
-                            </select>
+                            </select> -->
                             <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
                         </div>
                         <!-- input produccion -->
