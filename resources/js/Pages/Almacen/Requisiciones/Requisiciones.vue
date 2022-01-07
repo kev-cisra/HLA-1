@@ -224,14 +224,19 @@
                                 </td>
                                 <td>
                                     <div class="columnaIconos">
-                                        <div class="iconoEdit" @click="ArticuloAlmacen(datos)">
+                                        <div class="iconoEdit" @click="ArticuloCotizacion(datos)" v-if="datos.EstatusArt == 2">
+                                            <span tooltip="Envia Partida a Cotizacion" flow="left">
+                                                <i class="fas fa-money-bill-wave"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoEdit" @click="ArticuloAlmacen(datos)" v-else-if="datos.EstatusArt == 6">
                                             <span tooltip="Confirma Partida en Almacén" flow="left">
                                                 <i class="ml-2 fas fa-check-circle"></i>
                                             </span>
                                         </div>
-                                        <div class="iconoEdit" @click="ArticuloCotizacion(datos)" v-if="datos.EstatusArt == 2">
-                                            <span tooltip="Envia Partida a Cotizacion" flow="left">
-                                                <i class="fas fa-money-bill-wave"></i>
+                                        <div class="iconoEdit" v-else>
+                                            <span tooltip="En proceso" flow="left">
+                                                <i class="ml-2 fas fa-spinner"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -547,6 +552,10 @@
                             </template>
                         </Table>
                     </div>
+
+                    <pre>
+                        {{ Requi }}
+                    </pre>
                 </div>
 
                 <div class="ModalFooter">

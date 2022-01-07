@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+    <app-layout>
     <div class="uppercase tw-mx-4">
         <Header :class="[color, style]">
             <slot>
@@ -158,6 +158,7 @@
             <div v-if="Vista == 1">
                 <Table id="Requisiciones">
                     <template v-slot:TableHeader>
+                        <th class="columna">ID</th>
                         <th class="columna">FECHA</th>
                         <th class="columna">REQ</th>
                         <th class="columna">O.C</th>
@@ -178,6 +179,7 @@
 
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
+                            <td>{{ datos.id }}</td>
                             <td>{{ datos.Fecha.substr(5) }}</td>
                             <td>{{ datos.articulos_requisicion.NumReq }}</td>
                             <td>{{ datos.articulos_requisicion.OrdenCompra }}</td>

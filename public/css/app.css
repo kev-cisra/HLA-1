@@ -19571,6 +19571,14 @@ select {
 	margin-top: auto;
 	margin-bottom: auto;
 }
+.tw-mx-6 {
+	margin-left: 1.5rem;
+	margin-right: 1.5rem;
+}
+.tw-mx-14 {
+	margin-left: 3.5rem;
+	margin-right: 3.5rem;
+}
 .tw-ml-2 {
 	margin-left: 0.5rem;
 }
@@ -20069,6 +20077,10 @@ select {
 	--tw-divide-opacity: 1;
 	border-color: rgba(0, 0, 0, var(--tw-divide-opacity));
 }
+.tw-divide-blueGray-400 > :not([hidden]) ~ :not([hidden]) {
+	--tw-divide-opacity: 1;
+	border-color: rgba(148, 163, 184, var(--tw-divide-opacity));
+}
 .tw-divide-opacity-25 > :not([hidden]) ~ :not([hidden]) {
 	--tw-divide-opacity: 0.25;
 }
@@ -20280,6 +20292,22 @@ select {
 .tw-border-blue-300 {
 	--tw-border-opacity: 1;
 	border-color: rgba(147, 197, 253, var(--tw-border-opacity));
+}
+.tw-border-yellow-500 {
+	--tw-border-opacity: 1;
+	border-color: rgba(234, 179, 8, var(--tw-border-opacity));
+}
+.tw-border-blue-200 {
+	--tw-border-opacity: 1;
+	border-color: rgba(191, 219, 254, var(--tw-border-opacity));
+}
+.tw-border-green-200 {
+	--tw-border-opacity: 1;
+	border-color: rgba(187, 247, 208, var(--tw-border-opacity));
+}
+.tw-border-blue-400 {
+	--tw-border-opacity: 1;
+	border-color: rgba(96, 165, 250, var(--tw-border-opacity));
 }
 .tw-bg-violet-400 {
 	--tw-bg-opacity: 1;
@@ -20548,6 +20576,10 @@ select {
 .tw-bg-blue-200 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(191, 219, 254, var(--tw-bg-opacity));
+}
+.tw-bg-blueGray-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(100, 116, 139, var(--tw-bg-opacity));
 }
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
@@ -22405,6 +22437,14 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(2, 132, 199, var(--tw-bg-opacity));
 }
+.hover\:tw-bg-blue-700:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgba(29, 78, 216, var(--tw-bg-opacity));
+}
+.hover\:tw-bg-green-700:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgba(21, 128, 61, var(--tw-bg-opacity));
+}
 .hover\:tw-text-lg:hover {
 	font-size: 1.125rem;
 }
@@ -22924,6 +22964,11 @@ select {
 		margin-bottom: -1px;
 	}
 
+	.lg\:tw-mx-14 {
+		margin-left: 3.5rem;
+		margin-right: 3.5rem;
+	}
+
 	.lg\:tw-ml-10 {
 		margin-left: 2.5rem;
 	}
@@ -22978,6 +23023,18 @@ select {
 
 	.lg\:tw-w-full {
 		width: 100%;
+	}
+
+	.lg\:tw-w-11\/12 {
+		width: 91.666667%;
+	}
+
+	.lg\:tw-w-8\/12 {
+		width: 66.666667%;
+	}
+
+	.lg\:tw-w-10\/12 {
+		width: 83.333333%;
 	}
 
 	.lg\:tw-flex-row {
