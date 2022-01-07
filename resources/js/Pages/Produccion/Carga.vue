@@ -672,7 +672,7 @@
                         <!-- select Clave -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
                             <jet-label class="tw-text-white"><span class="required">*</span>Clave</jet-label>
-                            <Select2 v-model="form.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCL" />
+                            <Select2 v-model="form.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCLO" />
                             <!-- <select class="InputSelect" v-model="formObje.clave_id">
                                 <option value="" disabled>SELECCIONA</option>
                                 <option v-for="cl in opcCLO" :key="cl" :value="cl.id">{{cl.text}}</option>
