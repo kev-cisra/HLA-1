@@ -27,8 +27,7 @@ class RepoProController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         //
         ///***************** Información de la persona  *****************************/
         //Muestra el id de la persona que inicio sesion
@@ -889,7 +888,8 @@ class RepoProController extends Controller
                 }
             ])
             ->get();
-        }elseif ($request->tipo == 'efiDia') {
+        }
+        elseif ($request->tipo == 'efiDia') {
             # code...
         }
 
@@ -938,7 +938,7 @@ class RepoProController extends Controller
             $tipFec = "%Y";
         }
 
-        if ($request->tipo == 'general') {
+        if ($request->tipo == 'generalMaq') {
             $carga = carga::where('departamento_id', '=', $request->departamento_id)
             ->selectRaw('DATE_FORMAT(fecha, "'.$tipFec.'") AS fec, maq_pro_id, proceso_id, departamento_id, SUM(valor) AS valor')
             ->whereNotNull('clave_id')
@@ -1003,7 +1003,70 @@ class RepoProController extends Controller
             ])
             ->get();
         }
-        elseif ($request->tipo == 'norma') {
+        elseif ($request->tipo == 'generalTot') {
+            $carga = carga::where('departamento_id', '=', $request->departamento_id)
+            ->selectRaw('DATE_FORMAT(fecha, "'.$tipFec.'") AS fec, maq_pro_id, proceso_id, departamento_id, SUM(valor) AS valor')
+            ->whereIn('proceso_id', $request->proceso)
+            //->whereIn('maq_pro_id', $request->maquinas)
+            ->whereRaw('DATE_FORMAT(fecha, "'.$tipFec.'") BETWEEN "'.$request->iniDia.'" AND "'.$request->finDia.'"')
+            ->groupBy('departamento_id')
+            ->groupBy('maq_pro_id')
+            ->groupBy('fec')
+            ->groupBy('proceso_id')
+            ->with([
+                'dep_perf' => function($dp) {
+                    $dp ->withTrashed()
+                        ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
+                },
+                'dep_perf.perfiles' => function($perfi){
+                    $perfi->withTrashed()
+                    ->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'dep_perf.departamentos' => function($dp_de){
+                    $dp_de ->withTrashed()
+                    -> select('id', 'Nombre', 'departamento_id');
+                },
+                'equipo' => function($eq){
+                    $eq ->withTrashed()
+                    -> select('id', 'nombre');
+                },
+                'turno' => function($tu){
+                    $tu ->withTrashed()
+                    ->select('id', 'nomtur');
+                },
+                'maq_pro' => function($mp){
+                    $mp ->withTrashed()
+                    ->select('id', 'proceso_id', 'maquina_id');
+                },
+                'maq_pro.maquinas' => function($ma){
+                    $ma ->withTrashed()
+                    -> select('id', 'Nombre');
+                },
+                'proceso' => function($pr){
+                    $pr ->withTrashed()
+                    -> select('id', 'nompro', 'tipo', 'operacion', 'proceso_id');
+                },
+                'dep_mat' => function($dp){
+                    $dp ->withTrashed()
+                    -> select('id', 'material_id');
+                },
+                'dep_mat.materiales' => function($mat){
+                    $mat ->withTrashed()
+                    -> select('id', 'idmat', 'nommat');
+                },
+                'clave' => function($cla){
+                    $cla ->withTrashed()
+                    -> select('id', 'CVE_ART', 'DESCR');
+                },
+                'notas' => function($not){
+                    $not ->withTrashed()
+                    -> latest()
+                    -> select('id', 'fecha', 'nota', 'carga_id');
+                }
+            ])
+            ->get();
+        }
+        /* elseif ($request->tipo == 'norma') {
             $carga = carga::where('departamento_id', '=', $request->departamento_id)
             ->whereNotNull('clave_id')
             ->where('partida', '!=', 'N/A')
@@ -1203,12 +1266,11 @@ class RepoProController extends Controller
                 }
             ])
             ->get();
-        }
+        } */
         return $carga;
     }
 
-    public function destroy(Request $request, carga $carga)
-    {
+    public function destroy(Request $request, carga $carga){
         //
         foreach ($request->elimiMasi as $eli) {
             //print($eli.' - ');

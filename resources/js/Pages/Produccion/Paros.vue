@@ -86,7 +86,7 @@
             </form>
         </div>
         <!------------------------------------ Data table de carga ------------------------------------------------------->
-        <div>
+        <div class="tw-m-auto" style="width: 98%">
             <Table id="t_paros">
                 <template v-slot:TableHeader>
                     <th class="columna tw-text-center">Orden</th>

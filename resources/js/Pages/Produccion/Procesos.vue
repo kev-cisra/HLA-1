@@ -22,58 +22,61 @@
             </template>
         </Accions>
         <!-- datatables de los procesos -->
-        <Table id="t_pro">
-            <template v-slot:TableHeader>
-                <th class="columna tw-text-center">Id</th>
-                <th class="columna tw-text-center">Nombre</th>
-                <th class="columna tw-text-center">Tipo</th>
-                <th class="columna tw-text-center">Descripción</th>
-                <th class="columna tw-text-center">Departamento</th>
-                <th class="columna tw-text-center tw-w-2/12">Máquinas</th>
-                <th class="columna tw-text-center">Sub procesos</th>
-                <th></th>
-            </template>
-            <template v-slot:TableFooter>
-                <tr v-for="proceso in procesos" :key="proceso.id"  class="fila">
-                    <td>{{ proceso.id }}</td>
-                    <td >{{ proceso.nompro }}</td>
-                    <td >{{ this.tipoProce(proceso.tipo) }}</td>
-                    <td >{{ proceso.descripcion }}</td>
-                    <td >{{ proceso.departamentos.Nombre }}</td>
-                    <td class="">
-                        <tr  v-for="f in proceso.formulas" :key="f.id" class="hover:tw-text-lg">
-                            - {{f.proc_relas == null ? 'N/A' : f.proc_relas.nompro}} / {{f.maq_pros == null ? 'N/A' : f.maq_pros.maquinas.Nombre}} -
-                        </tr>
-                        <tr  v-for="mp in proceso.maq_pros" :key="mp.id" class="hover:tw-text-lg">
-                            - <strong class="tw-text-red-500">{{ mp.id }}</strong> - {{mp.maquinas.Nombre}} -
-                        </tr>
-                    </td>
-                    <td class="fila">
-                        <tr class="fila hover:tw-text-lg" v-for="sub_proce in proceso.sub_proceso" :key="sub_proce">
-                            - {{sub_proce.nompro}} -
-                        </tr>
-                    </td>
-                    <td class="fila">
-                        <div class="columnaIconos">
-                            <div class="iconoEdit" @click="edit(proceso)">
-                                <span tooltip="Editar" flow="left">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                    </svg>
-                                </span>
+        <div class="tw-m-auto" style="width: 98%">
+            <Table id="t_pro">
+                <template v-slot:TableHeader>
+                    <th class="columna tw-text-center">Id</th>
+                    <th class="columna tw-text-center">Nombre</th>
+                    <th class="columna tw-text-center">Tipo</th>
+                    <th class="columna tw-text-center">Descripción</th>
+                    <th class="columna tw-text-center">Departamento</th>
+                    <th class="columna tw-text-center tw-w-2/12">Máquinas</th>
+                    <th class="columna tw-text-center">Sub procesos</th>
+                    <th></th>
+                </template>
+                <template v-slot:TableFooter>
+                    <tr v-for="proceso in procesos" :key="proceso.id"  class="fila">
+                        <td>{{ proceso.id }}</td>
+                        <td >{{ proceso.nompro }}</td>
+                        <td >{{ this.tipoProce(proceso.tipo) }}</td>
+                        <td >{{ proceso.descripcion }}</td>
+                        <td >{{ proceso.departamentos.Nombre }}</td>
+                        <td class="">
+                            <tr  v-for="f in proceso.formulas" :key="f.id" class="hover:tw-text-lg">
+                                - {{f.proc_relas == null ? 'N/A' : f.proc_relas.nompro}} / {{f.maq_pros == null ? 'N/A' : f.maq_pros.maquinas.Nombre}} -
+                            </tr>
+                            <tr  v-for="mp in proceso.maq_pros" :key="mp.id" class="hover:tw-text-lg">
+                                - <strong class="tw-text-red-500">{{ mp.id }}</strong> - {{mp.maquinas.Nombre}} -
+                            </tr>
+                        </td>
+                        <td class="fila">
+                            <tr class="fila hover:tw-text-lg" v-for="sub_proce in proceso.sub_proceso" :key="sub_proce">
+                                - {{sub_proce.nompro}} -
+                            </tr>
+                        </td>
+                        <td class="fila">
+                            <div class="columnaIconos">
+                                <div class="iconoEdit" @click="edit(proceso)">
+                                    <span tooltip="Editar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoDelete" @click="deleteRow(proceso)">
+                                    <span tooltip="Eliminar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="iconoDelete" @click="deleteRow(proceso)">
-                                <span tooltip="Eliminar" flow="left">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </template>
-        </Table>
+                        </td>
+                    </tr>
+                </template>
+            </Table>
+        </div>
+
         <!------------------ Modal ------------------------->
         <modal :show="showModal" @close="chageClose">
             <form>

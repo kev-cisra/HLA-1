@@ -53,7 +53,7 @@
                 <!-- Fecha -->
                 <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                     <jet-label class="tw-text-white"><span class="required">*</span>Fecha</jet-label>
-                    <input type="datetime-local" class="InputSelect" v-model="form.fecha" :min="twoF" :max="treDia">
+                    <input type="datetime-local" class="InputSelect" v-model="form.fecha" :min="hoy" :max="treDia">
                     <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
                 </div>
                 <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
@@ -672,11 +672,7 @@
                         <!-- select Clave -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
                             <jet-label class="tw-text-white"><span class="required">*</span>Clave</jet-label>
-                            <Select2 v-model="form.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCLO" />
-                            <!-- <select class="InputSelect" v-model="formObje.clave_id">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="cl in opcCLO" :key="cl" :value="cl.id">{{cl.text}}</option>
-                            </select> -->
+                            <Select2 v-model="formObje.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCLO" />
                             <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
                         </div>
                         <!-- input produccion -->

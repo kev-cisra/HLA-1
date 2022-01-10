@@ -579,7 +579,7 @@ class CalculosController extends Controller
         ->distinct()
         ->get(['norma','clave_id']);
         //Primer recorrido para claves
-        foreach ($claves as $cla) {
+        //foreach ($claves as $cla) {
             //Contador y suma final
             $fs = 0;
             //Contador y suma de produccion
@@ -589,7 +589,7 @@ class CalculosController extends Controller
             //Segundo recorrido para procesos
             foreach ($val->formulas as $formu) {
                 //La clave tiene que ser difeente de nulo
-                if (!empty($cla->clave_id)) {
+                //if (!empty($cla->clave_id)) {
                     //si su tipo es de produccion realiza la suma
                     if ($formu->proc_relas->tipo == 1) {
                         $proce_id = $formu->proceso_id;
@@ -598,7 +598,6 @@ class CalculosController extends Controller
                         //suma
                         $suma = carga::where('departamento_id', '=', $dep)
                             ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
-                            ->where('clave_id', '=', $cla->clave_id)
                             -> where('maq_pro_id', '=', $formu->maq_pros_id)
                             ->sum('valor');
 
@@ -611,24 +610,22 @@ class CalculosController extends Controller
                         //suma
                         $suma = carga::where('departamento_id', '=', $dep)
                             ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
-                            ->where('clave_id', '=', $cla->clave_id)
                             -> where('maq_pro_id', '=', $formu->maq_pros_id)
                             ->sum('valor');
 
                         //resultado
                         $fsO += $suma;
                     }
-                }
+                //}
             }
 
             if ($fsP != 0 & $fsO != 0) {
                 $fs = ($fsP*100)/$fsO;
-                $data = ['proceso_id' => $proce_id, 'suma' => round($fs, '2'), 'equipo_id' => null, 'turno_id' => null, 'cantidad' => '% ', 'partida' => 'N/A', 'norma' => $cla->norma, 'clave_id' => $cla->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
-                //print($formu->proc_relas->nompro.' | '.$cla->clave->CVE_ART.' | '.$fsP.' - '.' | '.$fsO.' - '.' | '.round($fs, '2').' // ');
+                $data = ['proceso_id' => $proce_id, 'suma' => round($fs, '2'), 'equipo_id' => null, 'turno_id' => null, 'cantidad' => '% ', 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
                 $this->gua_act($fechas, $data);
             }
 
-        }
+        //}
         print ' fin eficiencia clave dia //////// ';
     }
 

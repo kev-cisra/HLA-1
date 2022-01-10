@@ -163,7 +163,6 @@
                                             <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
                                             <Select2 v-model="gPie.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
                                         </div>
-
                                     </div>
                                     <div class="tw-w-full" v-if="gPie.propa == 1 & gPie.tipo == 'norma'">
                                         <jet-label class="tw-text-white">Normas</jet-label>
@@ -274,10 +273,19 @@
 
                                 <div class="xl:tw-flex tw-gap-5">
                                     <div class="tw-w-full">
-                                        <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
-                                        <!-- <Select2 v-model="gLinea.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" /> -->
-                                        <Select2 v-model="gLinea.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
+                                        <div v-if="gLinea.tipo == 'efiTur' | gLinea.tipo == 'efiDia' | gLinea.tipo == 'generalTot'">
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Proceso</jet-label>
+                                            <Select2 v-model="gLinea.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                        </div>
+                                        <div v-else>
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
+                                            <Select2 v-model="gLinea.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
+                                        </div>
                                     </div>
+                                    <!-- <div class="tw-w-full">
+                                        <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
+                                        <Select2 v-model="gLinea.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
+                                    </div> -->
                                     <div class="tw-w-full" v-if="gLinea.tipo == 'norma'">
                                         <jet-label class="tw-text-white">Normas</jet-label>
                                         <Select2 v-model="gLinea.norma" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcNM" />
@@ -304,6 +312,13 @@
                                                 <label class="tw-text-white" for="GLano"> Año</label>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0">
+                                    <jet-label class="tw-text-white">Tipo de grafica</jet-label>
+                                    <div class="lg:tw-flex tw-text-center">
+                                        <Select2 v-model="gLinea.tipo" class="InputSelect" :options="opcTipo" :settings="{width: '100%', allowClear: true}"></Select2>
                                     </div>
                                 </div>
 
@@ -643,7 +658,7 @@
         </div>
 
         <!------------------------------------ Graficas ------------------------------------------------------------------>
-        <div class="tw-text-center tw-my-24 tw-m-auto" style="width: 99%">
+        <div class="tw-text-center tw-my-24 tw-m-auto" style="width: 98%">
             <div id="chart" class="tw-m-10"></div>
             <div id="chart1" class="tw-m-10"></div>
             <div id="chart2" class="tw-m-10"></div>
@@ -938,7 +953,7 @@
                     titulo: '',
                     subtitulo: '',
                     rango: 1,
-                    tipo: 'general',
+                    tipo: 'generalMaq',
                     fecIni: null,
                     fecFin: null,
                     maquinas: [],
@@ -1455,7 +1470,6 @@
                             onError: () => {},
                             preserveState: true
                         });
-                        /* await axios.post('/Produccion/ReportesPro/' + data.elimiMasi[0], data).then(() => {this.alertDelete(), this.deli.elimiMasi = [], this.arrProdu()}) */
                     }
                 })
             },
@@ -1750,19 +1764,39 @@
                     }
                 }
 
-                data.maquinas.forEach(proce => {
-                    dat = [];
-                    fechas.forEach(tiemp => {
-                        let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
-                        if (ver) {
-                            name = ver.proceso.nompro+': '+ver.maq_pro.maquinas.Nombre;
-                            dat.push(ver.valor)
-                        }else{
-                            dat.push(null)
-                        }
+                //
+                if (data.tipo == 'generalMaq') {
+                    data.maquinas.forEach(proce => {
+                        dat = [];
+                        fechas.forEach(tiemp => {
+                            let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
+                            if (ver) {
+                                name = ver.proceso.nompro+': '+ver.maq_pro.maquinas.Nombre;
+                                dat.push(ver.valor)
+                            }else{
+                                dat.push(null)
+                            }
+                        })
+                        serie.push({name: name, data: dat})
                     })
-                    serie.push({name: name, data: dat})
-                })
+                }else{
+                    data.procesos.forEach(proce => {
+                        dat = [];
+                        fechas.forEach(tiemp => {
+                            let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
+                            console.log(ver)
+                            if (ver) {
+                                name = ver.proceso.nompro;
+                                dat.push(ver.valor)
+                            }else{
+                                dat.push(null)
+                            }
+                        })
+                        serie.push({name: name, data: dat})
+                    })
+                }
+
+
 
                 this.gLinea.borra = Highcharts.chart('chart1', {
 
