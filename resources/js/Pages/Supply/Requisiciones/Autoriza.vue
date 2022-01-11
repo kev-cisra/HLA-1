@@ -1428,16 +1428,16 @@ export default {
         },
 
         AutorizaPartidaComentario(data){ //Envia partida a autorizacion
-        this.form.TipoComentario = 1;
-            data._method = "PUT";
-            data.metodo = 1;
-            this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
-                onSuccess: () => {
-                    this.chageCloseComentarios();
-                    this.alertSucces();
-                    this.reset();
-                },
-            });
+            this.form.TipoComentario = 1;
+                data._method = "PUT";
+                data.metodo = 1;
+                this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
+                    onSuccess: () => {
+                        this.chageCloseComentarios();
+                        this.alertSucces();
+                        this.reset();
+                    },
+                });
         },
 
         AgregaComentarioRechazo(data){
@@ -1460,7 +1460,6 @@ export default {
         },
 
         AutorizaPartida(data){
-            console.log('Autoriza sin comentario');
             this.form.precio_id = data.id;
             data._method = "PUT";
             data.metodo = 4;

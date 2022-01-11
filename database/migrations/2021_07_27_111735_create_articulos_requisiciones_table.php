@@ -27,6 +27,7 @@ class CreateArticulosRequisicionesTable extends Migration
             $table->date('Fechallegada')->nullable();
             $table->string('Comentariollegada')->nullable();
             $table->text('MotivoCancelacion')->nullable();
+            $table->text('MotivoRechazo')->nullable();
 
             $table->unsignedBigInteger('RecibidoPor')->nullable();
 

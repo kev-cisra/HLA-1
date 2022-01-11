@@ -130,7 +130,7 @@
 
                 <!-- recorrido de los tipos de graficas -->
                 <div v-for="tip in graTipo" :key="tip">
-                    <!-- formulario para grafica de pie -->
+                    <!------------------------------------------- formulario para grafica de pie ------------------------------------->
                     <div v-if="tip == 'pie'" class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-rounded-xl tw-border-8 tw-border-blue-700 tw-p-10">
                         <!-- titulo y botones -->
                         <div class="sm:tw-flex lg:tw-m-5">
@@ -239,7 +239,7 @@
                         </div>
                     </div>
 
-                    <!-- formulario para grafica de linea -->
+                    <!------------------------------------------- formulario para grafica de linea ------------------------------------->
                     <div v-if="tip == 'punto'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-green-700 tw-p-10">
                         <!-- titulo y botones -->
                         <div class="tw-flex tw-m-5">
@@ -271,6 +271,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Select de procesos, maquinas y normas -->
                                 <div class="xl:tw-flex tw-gap-5">
                                     <div class="tw-w-full">
                                         <div v-if="gLinea.tipo == 'efiTur' | gLinea.tipo == 'efiDia' | gLinea.tipo == 'generalTot'">
@@ -281,14 +282,6 @@
                                             <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
                                             <Select2 v-model="gLinea.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
                                         </div>
-                                    </div>
-                                    <!-- <div class="tw-w-full">
-                                        <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
-                                        <Select2 v-model="gLinea.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
-                                    </div> -->
-                                    <div class="tw-w-full" v-if="gLinea.tipo == 'norma'">
-                                        <jet-label class="tw-text-white">Normas</jet-label>
-                                        <Select2 v-model="gLinea.norma" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcNM" />
                                     </div>
                                 </div>
                             </div>
@@ -315,6 +308,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Select de tipos de graficas -->
                                 <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0">
                                     <jet-label class="tw-text-white">Tipo de grafica</jet-label>
                                     <div class="lg:tw-flex tw-text-center">
@@ -359,7 +353,7 @@
                         </div>
                     </div>
 
-                    <!-- formulario para grafica de barra -->
+                    <!------------------------------------------- formulario para grafica de barra ------------------------------------->
                     <div v-if="tip == 'barra'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-yellow-700 tw-p-10">
                         <!-- titulo y botones -->
                         <div class="tw-flex tw-m-5">
@@ -391,14 +385,17 @@
                                     </div>
                                 </div>
 
+                                <!-- Select de procesos, maquinas y normas -->
                                 <div class="lg:tw-flex tw-gap-5">
                                     <div class="tw-w-full">
-                                        <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
-                                        <Select2 v-model="gBarra.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
-                                    </div>
-                                    <div class="tw-w-full" v-if="gBarra.tipo == 'norma'">
-                                        <jet-label class="tw-text-white">Normas</jet-label>
-                                        <Select2 v-model="gBarra.norma" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcNM" />
+                                        <div v-if="gBarra.tipo == 'efiTur' | gBarra.tipo == 'efiDia' | gBarra.tipo == 'generalTot'">
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Proceso</jet-label>
+                                            <Select2 v-model="gBarra.procesos" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                        </div>
+                                        <div v-else>
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
+                                            <Select2 v-model="gBarra.maquinas" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -422,6 +419,14 @@
                                                 <label class="tw-text-white" for="GBano"> Año</label>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <!-- Select de tipos de graficas -->
+                                <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0">
+                                    <jet-label class="tw-text-white">Tipo de grafica</jet-label>
+                                    <div class="lg:tw-flex tw-text-center">
+                                        <Select2 v-model="gBarra.tipo" class="InputSelect" :options="opcTipo" :settings="{width: '100%', allowClear: true}"></Select2>
                                     </div>
                                 </div>
 
@@ -462,8 +467,9 @@
                         </div>
                     </div>
 
-                    <!-- formulario para grafica combinada -->
+                    <!------------------------------------------- formulario para grafica combinada ------------------------------------->
                     <div v-if="tip == 'ambos'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-red-700 tw-p-10">
+                        <!-- titulo y botones -->
                         <div class="tw-flex tw-m-5">
                             <!-- titulo -->
                             <div class="tw-w-1/2 tw-text-2xl tw-text-center">
@@ -471,8 +477,111 @@
                             </div>
                             <!-- boton -->
                             <div class="tw-w-1/2">
-                                <a class="btn btn-success " href="#chart3" @click="GraBaLi()">Generar gráfica</a>
+                                <a class="btn btn-success " href="#chart3" @click="GraBaLi(gBaLi)">Generar gráfica</a>
                                 <button class="btn btn-danger " @click="resetBaLi()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- formulario -->
+                        <div class="lg:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0 tw-gap-x-5">
+                                <!-- titulos para graficas -->
+                                <div class="lg:tw-flex tw-gap-4">
+                                    <!-- titulo -->
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Título</jet-label>
+                                        <jet-input type="text" class="form-control" v-model="gBaLi.titulo"></jet-input>
+                                    </div>
+                                    <!-- sub titulo -->
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Sub Título</jet-label>
+                                        <jet-input type="text" class="form-control" v-model="gBaLi.subtitulo"></jet-input>
+                                    </div>
+                                </div>
+
+                                <!-- Select de procesos, maquinas y normas -->
+                                <div class="lg:tw-flex tw-gap-5">
+                                    <div class="tw-w-full">
+                                        <div v-if="gBaLi.tipo == 'efiTur' | gBaLi.tipo == 'efiDia' | gBaLi.tipo == 'generalTot'">
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Proceso para Barra</jet-label>
+                                            <Select2 v-model="gBaLi.procesosBar" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Proceso para Linea</jet-label>
+                                            <Select2 v-model="gBaLi.procesosLin" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
+                                        </div>
+                                        <div v-else>
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Maquinas para Barra</jet-label>
+                                            <Select2 v-model="gBaLi.maquinasBar" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Maquinas para Linea</jet-label>
+                                            <Select2 v-model="gBaLi.maquinasLin" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+
+                                <!-- Rango o dia y tipo-->
+                                <div class="xl:tw-flex">
+                                    <div class="tw-px-3 tw-mb-6 lg:tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-white-800">
+                                        <jet-label class="tw-text-white">Opciones de consulta</jet-label>
+                                        <div class="lg:tw-flex">
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GBLdia" @click="limpiaCombi(1)" value="1" v-model="gBaLi.rango">
+                                                <label class="tw-text-white" for="GBLdia"> Diario</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GBLmes" @click="limpiaCombi(2)" value="2" v-model="gBaLi.rango">
+                                                <label class="tw-text-white" for="GBLmes"> Mes</label>
+                                            </div>
+                                            <div class=" tw-m-5">
+                                                <input type="radio" id="GBLano" @click="limpiaCombi(3)" value="3" v-model="gBaLi.rango">
+                                                <label class="tw-text-white" for="GBLano"> Año</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Select de tipos de graficas -->
+                                <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0">
+                                    <jet-label class="tw-text-white">Tipo de grafica</jet-label>
+                                    <div class="lg:tw-flex tw-text-center">
+                                        <Select2 v-model="gBaLi.tipo" class="InputSelect" :options="opcTipo" :settings="{width: '100%', allowClear: true}"></Select2>
+                                    </div>
+                                </div>
+
+                                <!-- dias -->
+                                <div class="lg:tw-flex tw-gap-4" v-if="gBaLi.rango == 1">
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Fecha Inicio</jet-label>
+                                        <jet-input type="date" v-model="gBaLi.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Fecha Fin</jet-label>
+                                        <jet-input type="date" v-model="gBaLi.fecFin"></jet-input>
+                                    </div>
+                                </div>
+                                <!-- mes -->
+                                <div class="lg:tw-flex tw-gap-4" v-else-if="gBaLi.rango == 2">
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Fecha Inicio</jet-label>
+                                        <jet-input type="month" v-model="gBaLi.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Fecha Fin</jet-label>
+                                        <jet-input type="month" v-model="gBaLi.fecFin"></jet-input>
+                                    </div>
+                                </div>
+                                <!-- año -->
+                                <div class="lg:tw-flex tw-gap-4" v-else>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Fecha Inicio</jet-label>
+                                        <jet-input type="number" v-model="gBaLi.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Fecha Fin</jet-label>
+                                        <jet-input type="number" v-model="gBaLi.fecFin"></jet-input>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -965,7 +1074,7 @@
                     titulo: '',
                     subtitulo: '',
                     rango: 1,
-                    tipo: 'general',
+                    tipo: 'generalMaq',
                     fecIni: null,
                     fecFin: null,
                     maquinas: [],
@@ -977,10 +1086,13 @@
                     titulo: '',
                     subtitulo: '',
                     rango: 1,
-                    tipo: 'general',
+                    tipo: 'generalMaq',
                     fecIni: null,
                     fecFin: null,
-                    procesos: [],
+                    maquinasBar: [],
+                    procesosBar: [],
+                    maquinasLin: [],
+                    procesosLin: [],
                     norma: [],
                 }
             }
@@ -1764,7 +1876,7 @@
                     }
                 }
 
-                //
+                //Manejo de tipo entre maquinas y procesos
                 if (data.tipo == 'generalMaq') {
                     data.maquinas.forEach(proce => {
                         dat = [];
@@ -1784,7 +1896,6 @@
                         dat = [];
                         fechas.forEach(tiemp => {
                             let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
-                            console.log(ver)
                             if (ver) {
                                 name = ver.proceso.nompro;
                                 dat.push(ver.valor)
@@ -1795,8 +1906,6 @@
                         serie.push({name: name, data: dat})
                     })
                 }
-
-
 
                 this.gLinea.borra = Highcharts.chart('chart1', {
 
@@ -1912,19 +2021,36 @@
                     }
                 }
 
-                data.maquinas.forEach(proce => {
-                    dat = [];
-                    fechas.forEach(tiemp => {
-                        let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
-                        if (ver) {
-                            name = ver.proceso.nompro+': '+ver.maq_pro.maquinas.Nombre;
-                            dat.push(ver.valor)
-                        }else{
-                            dat.push(null)
-                        }
+                //Manejo de tipo entre maquinas y procesos
+                if (data.tipo == 'generalMaq') {
+                    data.maquinas.forEach(proce => {
+                        dat = [];
+                        fechas.forEach(tiemp => {
+                            let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
+                            if (ver) {
+                                name = ver.proceso.nompro+': '+ver.maq_pro.maquinas.Nombre;
+                                dat.push(ver.valor)
+                            }else{
+                                dat.push(null)
+                            }
+                        })
+                        serie.push({name: name, data: dat})
                     })
-                    serie.push({name: name, data: dat})
-                })
+                }else{
+                    data.procesos.forEach(proce => {
+                        dat = [];
+                        fechas.forEach(tiemp => {
+                            let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
+                            if (ver) {
+                                name = ver.proceso.nompro;
+                                dat.push(ver.valor)
+                            }else{
+                                dat.push(null)
+                            }
+                        })
+                        serie.push({name: name, data: dat})
+                    })
+                }
 
                 this.gBarra.borra = Highcharts.chart('chart2', {
                     chart: {
@@ -1972,72 +2098,170 @@
 
             },
             /* metodo grafica combinada */
-            GraBaLi(){
-                this.gBaLi.borra = Highcharts.chart('chart3', {
+            async GraBaLi(data){
+                /* var inicio = moment(data.fecIni);
+                var fin = moment(data.fecFin);
+                const fechas = [];
+                const titFec = [];
+                var name = '';
+                var dat = [];
+                const serie = [];
+
+                //recorrido para fechas
+                if (data.rango == 1) {
+                    while (inicio.isSameOrBefore(fin, 'days')) {
+                        titFec.push(inicio.format('YYYY-MM-DD'))
+                        fechas.push(inicio.format('YYYY-MM-DD'))
+                        inicio.add(1, 'days')
+                    }
+                }else if(data.rango == 2){
+                    while (inicio.isSameOrBefore(fin, 'month')) {
+                        titFec.push(inicio.format('MMMM-YYYY'))
+                        fechas.push(inicio.format('YYYY-MM'))
+                        inicio.add(1, 'month')
+                    }
+                }else {
+                    while (inicio.isSameOrBefore(fin, 'year')) {
+                        titFec.push(inicio.format('YYYY'))
+                        fechas.push(inicio.format('YYYY'))
+                        inicio.add(1, 'year')
+                    }
+                }
+
+                //Consulta a las graficas
+                var datosBa = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': data.fecIni, 'finDia': data.fecFin, 'maquinas': data.maquinas};
+
+                //Consulta a las graficas
+                var datosLin = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': data.fecIni, 'finDia': data.fecFin, 'maquinas': data.maquinas};
+
+                let promesaBa = await axios.post('ReportesPro/LinGrafi', datosBa);
+
+                let promesaLin = await axios.post('ReportesPro/LinGrafi', datosLin);
+
+                let promesaPas = await axios.post('ReportesPro/PaiGrafi', datosBa);
+                prpa = 'Producción';
+                promesaPas.data.forEach(dat => {
+                    mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
+                    part = dat.partida == null ? '' : '/ ' + dat.partida;
+                    clave = dat.clave == null ? '' : '/ ' + dat.clave.CVE_ART;
+                    equ = dat.equipo_id == null ? '' : '/ ' + dat.equipo.nombre;
+                    tur = dat.turno_id == null ? '' : '/ ' + dat.turno.nomtur;
+                    cate = dat.categoria == null ? '' : '/ ' + dat.categoria;
+                    proce = dat.proceso_id == null ? 'General' : '/ ' + dat.proceso.nompro;
+                    maqui = dat.maq_pro_id == null ? '' :'/ ' + dat.maq_pro.maquinas.Nombre
+                    valor.push({name: proce, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur, cat: cate, maq: maqui});
+                })
+
+                //Manejo de tipo entre maquinas y procesos
+                if (data.tipo == 'generalMaq') {
+
+                    data.maquinas.forEach(proce => {
+                        dat = [];
+                        fechas.forEach(tiemp => {
+                            let ver = promesaBa.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
+                            if (ver) {
+                                name = ver.proceso.nompro+': '+ver.maq_pro.maquinas.Nombre;
+                                dat.push(ver.valor)
+                            }else{
+                                dat.push(null)
+                            }
+                        })
+                        serie.push({type: 'column', name: name, yAxis: 1, data: dat})
+                    })
+                }else{
+                    data.procesos.forEach(proce => {
+                        dat = [];
+                        fechas.forEach(tiemp => {
+                            let ver = promesaBa.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
+                            if (ver) {
+                                name = ver.proceso.nompro;
+                                dat.push(ver.valor)
+                            }else{
+                                dat.push(null)
+                            }
+                        })
+                        serie.push({type: 'column', name: name, yAxis: 1, data: dat})
+                    })
+                } */
+
+                console.log(data)
+
+                /* this.gBaLi.borra = Highcharts.chart('chart3', {
                     title: {
                         text: 'Combination chart'
                     },
                     xAxis: {
                         categories: ['Apples', 'Oranges', 'Pears', 'Bananas', 'Plums']
                     },
-                    labels: {
-                        items: [{
-                        html: 'Total fruit consumption',
+                    yAxis: [{ // Primary yAxis
+                        labels: {
+                        format: '{value}',
                         style: {
-                            left: '50px',
-                            top: '18px',
-                            color: ( // theme
-                            Highcharts.defaultOptions.title.style &&
-                            Highcharts.defaultOptions.title.style.color
-                            ) || 'black'
+                            color: Highcharts.getOptions().colors[1]
                         }
-                        }]
-                    },
+                        },
+                        title: {
+                        text: 'Producción',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                        }
+                    }, { // Secondary yAxis
+                        title: {
+                        text: '',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                        },
+                        labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                        },
+                        opposite: true
+                    }],
                     series: [{
                         type: 'column',
                         name: 'Jane',
+                        yAxis: 1,
                         data: [3, 2, 1, 3, 4]
                     }, {
                         type: 'column',
                         name: 'John',
+                        yAxis: 1,
                         data: [2, 3, 5, 7, 6]
                     }, {
                         type: 'column',
                         name: 'Joe',
+                        yAxis: 1,
                         data: [4, 3, 3, 9, 0]
                     }, {
                         type: 'spline',
                         name: 'Average',
-                        data: [3, 2.67, 3, 6.33, 3.33],
-                        marker: {
-                        lineWidth: 2,
-                        lineColor: Highcharts.getOptions().colors[3],
-                        fillColor: 'white'
-                        }
+                        data: [90, 85.67, 83, 96.33, 73.33]
                     }, {
                         type: 'pie',
-                        name: 'Total consumption',
+                        name: 'Total',
                         data: [{
-                        name: 'Jane',
-                        y: 13,
-                        color: Highcharts.getOptions().colors[0] // Jane's color
+                            name: 'Jane',
+                            y: 13,
                         }, {
-                        name: 'John',
-                        y: 23,
-                        color: Highcharts.getOptions().colors[1] // John's color
+                            name: 'John',
+                            y: 23,
                         }, {
-                        name: 'Joe',
-                        y: 19,
-                        color: Highcharts.getOptions().colors[2] // Joe's color
+                            name: 'Joe',
+                            y: 19,
                         }],
-                        center: [100, 80],
+                        center: [80, 20],
                         size: 100,
                         showInLegend: false,
                         dataLabels: {
-                        enabled: false
+                            enabled: false
                         }
                     }]
-                });
+                }); */
+
                 $('#grafica').removeClass("show")
             },
             resetBaLi(){

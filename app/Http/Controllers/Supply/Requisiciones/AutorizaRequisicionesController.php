@@ -75,6 +75,7 @@ class AutorizaRequisicionesController extends Controller{
                     $marca->select('id', 'Nombre');
                 },
             ])
+            ->where('EstatusArt', '>', 4)
             ->whereYear('Fecha', $anio)
             ->whereMonth('Fecha', $mes)
             ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo','Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
@@ -654,6 +655,20 @@ class AutorizaRequisicionesController extends Controller{
                 ->where('requisicion_id', '=', $request->requisicion_id)
                 ->count();
 
+                //Genracion de Orden de Compra
+                $MaxOrdenCompra = Requisiciones::max('OrdenCompra');
+
+                if($MaxOrdenCompra >= 1000){
+                    $OrdenCompra = $MaxOrdenCompra + 1;
+                }else{
+                    $OrdenCompra = 1000;
+                }
+
+                Requisiciones::where('id', '=', $request->requisicion_id)->update([
+                    'Estatus' => 6,
+                    'OrdenCompra' => $OrdenCompra,
+                ]);
+
                 break;
 
             case 2: //Rechazo de cotizacion
@@ -722,6 +737,20 @@ class AutorizaRequisicionesController extends Controller{
                     //Todos los articulos de la requisicion se autorizaron y se manda la cotizacion completa como Autorizada
                     Requisiciones::where('id', '=', $request->requisicion_id)->update([
                         'Estatus' => 6,
+                    ]);
+
+                    //Genracion de Orden de Compra
+                    $MaxOrdenCompra = Requisiciones::max('OrdenCompra');
+
+                    if($MaxOrdenCompra >= 1000){
+                        $OrdenCompra = $MaxOrdenCompra + 1;
+                    }else{
+                        $OrdenCompra = 1000;
+                    }
+
+                    Requisiciones::where('id', '=', $request->requisicion_id)->update([
+                        'Estatus' => 6,
+                        'OrdenCompra' => $OrdenCompra,
                     ]);
                 }
                 break;

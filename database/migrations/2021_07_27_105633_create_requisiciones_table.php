@@ -17,9 +17,10 @@ class CreateRequisicionesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('IdUser')->nullable(); //Id de Session
             $table->unsignedBigInteger('IdEmp'); //Numero control empleado
+            $table->date('Fecha')->nullable();
             $table->integer('Folio')->unique();
             $table->integer('NumReq');
-
+            $table->integer('OrdenCompra')->nullable();
             $table->unsignedBigInteger('Departamento_id')->Nullable();
 
             $table->foreign("Departamento_id")->references("id")->on("departamentos")
@@ -54,6 +55,8 @@ class CreateRequisicionesTable extends Migration
             $table->foreign("Perfil_id")->references("id")->on("perfiles_usuarios")
             ->onDelete("cascade")
             ->onUpdate("cascade");
+
+            $table->integer('Estatus')->nullable();
 
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
