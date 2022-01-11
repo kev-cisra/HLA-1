@@ -539,9 +539,9 @@
                 <!---------------------------- Formulario de paquete para normas, claves y partida ---------------------->
                 <div class="m-5 tw-p-6 tw-bg-cyan-600 tw-rounded-3xl tw-shadow-xl">
                     <!-- Proceso proncipal, sub procesos, operador -->
-                    <div class="tw-mb-6 lg:tw-flex">
+                    <div class="tw-mb-6 lg:tw-flex tw-justify-center">
                         <!-- Select Normas -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                             <jet-label><span class="required">*</span>Norma</jet-label>
                             <select class="InputSelect" v-model="form.norma" :disabled="editMode">
                                 <option value="" disabled>SELECCIONA</option>
@@ -549,21 +549,20 @@
                             </select>
                             <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                         </div>
-                        <!-- select Clave -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>Clave</jet-label>
-                            <Select2 v-model="form.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCL" />
-                            <!-- <select class="InputSelect" v-model="form.clave_id">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="cl in opcCL" :key="cl" :value="cl.id">{{cl.text}}</option>
-                            </select> -->
-                            <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
-                        </div>
                         <!-- Inout partida -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                             <jet-label>Partida</jet-label>
                             <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
                             <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                        </div>
+                    </div>
+
+                    <div class="tw-mb-6 lg:tw-flex tw-justify-center">
+                        <!-- select Clave -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Clave</jet-label>
+                            <Select2 v-model="form.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCL" />
+                            <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
                         </div>
                     </div>
 

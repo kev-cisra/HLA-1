@@ -529,14 +529,14 @@
                                                 <input type="radio" id="GBLdia" @click="limpiaCombi(1)" value="1" v-model="gBaLi.rango">
                                                 <label class="tw-text-white" for="GBLdia"> Diario</label>
                                             </div>
-                                            <div class=" tw-m-5">
+                                            <!-- <div class=" tw-m-5">
                                                 <input type="radio" id="GBLmes" @click="limpiaCombi(2)" value="2" v-model="gBaLi.rango">
                                                 <label class="tw-text-white" for="GBLmes"> Mes</label>
                                             </div>
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GBLano" @click="limpiaCombi(3)" value="3" v-model="gBaLi.rango">
                                                 <label class="tw-text-white" for="GBLano"> Año</label>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -1713,16 +1713,8 @@
                 //variables internas
                 var inicio = null;
                 var fin = null;
+                var prpa = null;
                 const valor = [];
-                var clave = '';
-                var mater = '';
-                var part = '';
-                var equ = '';
-                var tur = '';
-                var cate = '';
-                var prpa = '';
-                var proce = '';
-                var maqui = '';
 
                 //alertas de inputs vacios
                 if (this.gPie.rango == 1 & data.fecha == null) {
@@ -1763,14 +1755,14 @@
                     let promesa = await axios.post('ReportesPro/PaiGrafi', datos);
                     prpa = 'Producción';
                     promesa.data.forEach(dat => {
-                        mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
-                        part = dat.partida == null ? '' : '/ ' + dat.partida;
-                        clave = dat.clave == null ? '' : '/ ' + dat.clave.CVE_ART;
-                        equ = dat.equipo_id == null ? '' : '/ ' + dat.equipo.nombre;
-                        tur = dat.turno_id == null ? '' : '/ ' + dat.turno.nomtur;
-                        cate = dat.categoria == null ? '' : '/ ' + dat.categoria;
-                        proce = dat.proceso_id == null ? 'General' : '/ ' + dat.proceso.nompro;
-                        maqui = dat.maq_pro_id == null ? '' :'/ ' + dat.maq_pro.maquinas.Nombre
+                        let mater = dat.dep_mat == null ? '' : dat.dep_mat.materiales.nommat + ' / ';
+                        let part = dat.partida == null ? '' : dat.partida + ' / ';
+                        let clave = dat.clave == null ? '' : dat.clave.CVE_ART + ' / ';
+                        let equ = dat.equipo_id == null ? '' : dat.equipo.nombre + ' / ';
+                        let tur = dat.turno_id == null ? '' : dat.turno.nomtur + ' / ';
+                        let cate = dat.categoria == null ? '' : dat.categoria + ' / ';
+                        let proce = dat.proceso_id == null ? 'General' : dat.proceso.nompro + ' / ';
+                        let maqui = dat.maq_pro_id == null ? '' :dat.maq_pro.maquinas.Nombre + ' / ';
                         valor.push({name: proce, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur, cat: cate, maq: maqui});
                     })
                 }else{
@@ -2095,11 +2087,21 @@
             },
             /***************************************** Grafica combinada **********************************************/
             limpiaCombi(dat){
-
+                this.gBaLi.fecIni = null;
+                this.gBaLi.fecFin = null;
+                if (dat == 1) {
+                    //console.log('es diario')
+                }else if(dat == 2){
+                    //console.log('es mes')
+                }
+                else{
+                    this.gBaLi.fecIni = moment().format('Y');
+                    this.gBaLi.fecFin = moment().format('Y');
+                }
             },
             /* metodo grafica combinada */
             async GraBaLi(data){
-                /* var inicio = moment(data.fecIni);
+                var inicio = moment(data.fecIni);
                 var fin = moment(data.fecFin);
                 const fechas = [];
                 const titFec = [];
@@ -2129,33 +2131,19 @@
                 }
 
                 //Consulta a las graficas
-                var datosBa = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': data.fecIni, 'finDia': data.fecFin, 'maquinas': data.maquinas};
+                var datosBa = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesosBar, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': data.fecIni, 'finDia': data.fecFin, 'maquinas': data.maquinasBar};
 
                 //Consulta a las graficas
-                var datosLin = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': data.fecIni, 'finDia': data.fecFin, 'maquinas': data.maquinas};
+                var datosLin = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesosLin, 'rango': data.rango, 'tipo': data.tipo, 'iniDia': data.fecIni, 'finDia': data.fecFin, 'maquinas': data.maquinasLin};
 
                 let promesaBa = await axios.post('ReportesPro/LinGrafi', datosBa);
 
                 let promesaLin = await axios.post('ReportesPro/LinGrafi', datosLin);
 
-                let promesaPas = await axios.post('ReportesPro/PaiGrafi', datosBa);
-                prpa = 'Producción';
-                promesaPas.data.forEach(dat => {
-                    mater = dat.dep_mat == null ? '' : '/ ' + dat.dep_mat.materiales.nommat;
-                    part = dat.partida == null ? '' : '/ ' + dat.partida;
-                    clave = dat.clave == null ? '' : '/ ' + dat.clave.CVE_ART;
-                    equ = dat.equipo_id == null ? '' : '/ ' + dat.equipo.nombre;
-                    tur = dat.turno_id == null ? '' : '/ ' + dat.turno.nomtur;
-                    cate = dat.categoria == null ? '' : '/ ' + dat.categoria;
-                    proce = dat.proceso_id == null ? 'General' : '/ ' + dat.proceso.nompro;
-                    maqui = dat.maq_pro_id == null ? '' :'/ ' + dat.maq_pro.maquinas.Nombre
-                    valor.push({name: proce, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur, cat: cate, maq: maqui});
-                })
-
                 //Manejo de tipo entre maquinas y procesos
                 if (data.tipo == 'generalMaq') {
-
-                    data.maquinas.forEach(proce => {
+                    //Recorrido de barra
+                    data.maquinasBar.forEach(proce => {
                         dat = [];
                         fechas.forEach(tiemp => {
                             let ver = promesaBa.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
@@ -2168,8 +2156,25 @@
                         })
                         serie.push({type: 'column', name: name, yAxis: 1, data: dat})
                     })
+
+                    //Recorrido de linea
+                    data.maquinasLin.forEach(proce => {
+                        dat = [];
+                        fechas.forEach(tiemp => {
+                            let ver = promesaLin.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
+                            if (ver) {
+                                name = ver.proceso.nompro+': '+ver.maq_pro.maquinas.Nombre;
+                                dat.push(ver.valor)
+                            }else{
+                                dat.push(null)
+                            }
+                        })
+                        serie.push({type: 'spline', name: name, data: dat})
+                    })
+
                 }else{
-                    data.procesos.forEach(proce => {
+                    //Recorrido de barra
+                    data.procesosBar.forEach(proce => {
                         dat = [];
                         fechas.forEach(tiemp => {
                             let ver = promesaBa.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
@@ -2182,85 +2187,78 @@
                         })
                         serie.push({type: 'column', name: name, yAxis: 1, data: dat})
                     })
-                } */
 
-                console.log(data)
+                    //Recorrido de linea
+                    data.procesosLin.forEach(proce => {
+                        dat = [];
+                        fechas.forEach(tiemp => {
+                            let ver = promesaLin.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
+                            if (ver) {
+                                name = ver.proceso.nompro;
+                                dat.push(ver.valor)
+                            }else{
+                                dat.push(null)
+                            }
+                        })
+                        serie.push({type: 'spline', name: name, data: dat})
+                    })
+                }
 
-                /* this.gBaLi.borra = Highcharts.chart('chart3', {
+                let promesaPas = await axios.post('ReportesPro/PaiGrafi', datosBa);
+                var dtPas = [];
+
+                promesaPas.data.forEach(dat => {
+                    let mater = dat.dep_mat == null ? '' : dat.dep_mat.materiales.nommat + ' / ';
+                    let part = dat.partida == null ? '' : dat.partida + ' / ';
+                    let clave = dat.clave == null ? '' : dat.clave.CVE_ART + ' / ';
+                    let equ = dat.equipo_id == null ? '' : dat.equipo.nombre + ' / ';
+                    let tur = dat.turno_id == null ? '' : dat.turno.nomtur + ' / ';
+                    let cate = dat.categoria == null ? '' : dat.categoria + ' / ';
+                    let proce = dat.proceso_id == null ? 'General' : dat.proceso.nompro + ' / ';
+                    let maqui = dat.maq_pro_id == null ? '' :dat.maq_pro.maquinas.Nombre + ' / ';
+                    let todo = proce+maqui+mater+part+clave+equ+tur+cate;
+                    dtPas.push({name: todo, y: dat.valor});
+                })
+                serie.push({type: 'pie', name: 'Total', data: dtPas, center: [80, 20], size: 100, showInLegend: false, dataLabels: { enabled: false }})
+
+                this.gBaLi.borra = Highcharts.chart('chart3', {
                     title: {
-                        text: 'Combination chart'
+                        text: this.gBaLi.titulo
                     },
                     xAxis: {
-                        categories: ['Apples', 'Oranges', 'Pears', 'Bananas', 'Plums']
+                        categories: titFec,
+                        crosshair: true
                     },
-                    yAxis: [{ // Primary yAxis
-                        labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
-                        },
+                    yAxis: [{ // Secondary yAxis
                         title: {
-                        text: 'Producción',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
-                        }
-                    }, { // Secondary yAxis
-                        title: {
-                        text: '',
-                        style: {
-                            color: Highcharts.getOptions().colors[0]
-                        }
+                            text: '--',
+                            style: {
+                                color: Highcharts.getOptions().colors[5]
+                            }
                         },
                         labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[0]
-                        }
+                            format: '{value}',
+                            style: {
+                                color: Highcharts.getOptions().colors[5]
+                            }
                         },
                         opposite: true
-                    }],
-                    series: [{
-                        type: 'column',
-                        name: 'Jane',
-                        yAxis: 1,
-                        data: [3, 2, 1, 3, 4]
-                    }, {
-                        type: 'column',
-                        name: 'John',
-                        yAxis: 1,
-                        data: [2, 3, 5, 7, 6]
-                    }, {
-                        type: 'column',
-                        name: 'Joe',
-                        yAxis: 1,
-                        data: [4, 3, 3, 9, 0]
-                    }, {
-                        type: 'spline',
-                        name: 'Average',
-                        data: [90, 85.67, 83, 96.33, 73.33]
-                    }, {
-                        type: 'pie',
-                        name: 'Total',
-                        data: [{
-                            name: 'Jane',
-                            y: 13,
-                        }, {
-                            name: 'John',
-                            y: 23,
-                        }, {
-                            name: 'Joe',
-                            y: 19,
-                        }],
-                        center: [80, 20],
-                        size: 100,
-                        showInLegend: false,
-                        dataLabels: {
-                            enabled: false
+                    },{ // Primary yAxis
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
+                        },
+                        title: {
+                            text: 'Producción',
+                            style: {
+                                color: Highcharts.getOptions().colors[1]
+                            }
                         }
-                    }]
-                }); */
+                    }],
+                    series: serie
+                });
 
                 $('#grafica').removeClass("show")
             },
