@@ -553,9 +553,6 @@
                         </Table>
                     </div>
 
-                    <pre>
-                        {{ Requi }}
-                    </pre>
                 </div>
 
                 <div class="ModalFooter">
@@ -1219,26 +1216,23 @@ export default {
 
         Ticket(data){
             console.log(data);
+            console.log(data.requisicion_articulos[0].articulo_precios[0].Proveedor);
             var TotalRequisicion = 0;
             var ventana = window.open('', 'PRINT', 'height=400,width=600');
             ventana.document.write('<html><head><title>' + document.title + '</title>');
             ventana.document.write('<link rel="stylesheet" href="style.css">'); //Aquí agregué la hoja de estilos
-            ventana.document.write('</head><body>');
+            ventana.document.write('</head><body style="background: red;">');
             ventana.document.write('<div>');
-            ventana.document.write('<p>Ticket de la orden de compra <strong>'+data.NumReq+'</strong></p>');
+            ventana.document.write('<p style="font-size: 0.875em;">Requisición <strong>'+data.NumReq+'</strong></p>');
             ventana.document.write('<table>');
-            ventana.document.write('<tr><td>Orden Compra:</td><td><strong>'+data.OrdenCompra+'</strong></td></tr>');
+            ventana.document.write('<tr><td style="font-size: 0.875em;">Orden Compra:</td><td><strong>'+data.OrdenCompra+'</strong></td></tr>');
+            ventana.document.write('<tr><td style="font-size: 0.875em;">Proveedor:</td><td><strong>'+data.requisicion_articulos[0].articulo_precios[0].Proveedor+'</strong></td></tr>');
             data.requisicion_articulos.forEach(function (art) {
-                ventana.document.write('<tr><td>Articulo:</td><td><strong>'+art.Descripcion+'</strong></td></tr>');
                     art.articulo_precios.forEach(function (pre) {
-                        ventana.document.write('<tr><td>Marca:</td><td><strong>'+pre.Marca+'</strong></td></tr>');
-                        ventana.document.write('<tr><td>Proveedor:</td><td><strong>'+pre.Proveedor+'</strong></td></tr>');
-                        ventana.document.write('<tr><td>Total:</td><td><strong>'+pre.Total+'</strong></td></tr>');
-                        ventana.document.write('<tr><td>Moneda:</td><td><strong>'+pre.Moneda+'</strong></td></tr>');
                         TotalRequisicion += Number(pre.Total);
                     });
             });
-            ventana.document.write('<tr><td>Precio Total:</td><td><strong>'+TotalRequisicion+'</strong></td></tr>');
+            ventana.document.write('<tr><td style="font-size: 0.875em;">Precio Total:</td><td><strong>'+TotalRequisicion+'</strong></td></tr>');
             ventana.document.write('</table>');
             ventana.document.write('</div>');
             ventana.document.write('</body></html>');

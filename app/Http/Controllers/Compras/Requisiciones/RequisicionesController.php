@@ -31,7 +31,7 @@ class RequisicionesController extends Controller{
             6 => AUTORIZADO
             7 => CONFIRMADO COMPRAS
             8 => EN ALMACEN
-            9 => ENTREGAD10
+            9 => ENTREGADO
             10 => RECHAZADO
     ************************************************* */
 

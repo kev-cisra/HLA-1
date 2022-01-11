@@ -36,10 +36,12 @@ class CotizacionesController extends Controller{
 
         //Indicadores
         $Almacen = Requisiciones::where('Estatus', '=', 8)->count();
-        $Cotizacion = Requisiciones::where('Estatus', '=', 3)->count();
-        $SinConfirmar = Requisiciones::where('Estatus', '=', 5)->count();
         $Autorizados = Requisiciones::where('Estatus', '=', 5)->count();
+
+        $Cotizacion = Requisiciones::where('Estatus', '=', 3)->count();
+        $SinConfirmar = Requisiciones::where('Estatus', '=', 6)->count(); // Estatus en espera de fecha de confirmacion
         $EnCotizacion = Requisiciones::where('Estatus', '=', 6)->count();
+
         $Precios = Requisiciones::with('ArticuloPrecios')->get();
 
         $ArticulosRequisicion = null;

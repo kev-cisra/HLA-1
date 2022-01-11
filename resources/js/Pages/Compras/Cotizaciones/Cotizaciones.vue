@@ -111,7 +111,7 @@
             </div>
 
             <div>
-                <jet-label class="tw-text-center">Vista</jet-label>
+                <jet-label class="tw-text-center">VISTA</jet-label>
                 <select class="InputSelect" v-model="params.View" @change="TipoVista">
                     <option value="1">PARTIDAS</option>
                     <option value="2">REQUISICION</option>
@@ -123,7 +123,6 @@
             </div>
         </div>
     </div>
-
 <!--     <div class="tw-mx-4">
         <p class="tw-text-center tw-text-coolGray-400">VISUALIZACIÓN POR {{Visualizacion}}</p>
         <div>
@@ -410,7 +409,7 @@
                         <td>{{ datos.articulos_requisicion.TipCompra }}</td>
                         <td>{{ datos.articulos_requisicion.Observaciones }}</td>
                         <td>{{ datos.articulos_requisicion.requisiciones_perfil.Nombre }} {{ datos.articulos_requisicion.requisiciones_perfil.ApPat }}</td>
-                        <td>{{ datos.articulos_requisicion.Fechallegada }}</td>
+                        <td>{{ datos.Fechallegada }}</td>
                         <td>
                             <div v-if="datos.EstatusArt == 1">
                                 <span tooltip="SIN ENVIAR" flow="left">
@@ -493,7 +492,7 @@
                     <th class="columna">TIPO COMPRA</th>
                     <th class="columna">OBSERVACIONES</th>
                     <th class="columna">SOLICITANTE</th>
-                    <th>FEC LLEGADA</th>
+                    <th>LLEGADA</th>
                     <th class="columna">ESTATUS</th>
                     <th class="columna">ACCIONES</th>
                 </template>
@@ -510,7 +509,7 @@
                         <td>{{ datos.TipCompra }}</td>
                         <td>{{ datos.Observaciones }}</td>
                         <td>{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
-                        <td>{{ datos.requisicion_articulos.Fechallegada }}</td>
+                        <td>{{ datos.requisicion_articulos[0].Fechallegada }}</td>
                         <td>
                             <div v-if="datos.Estatus == 1">
                                 <span tooltip="SIN ENVIAR" flow="left">
@@ -530,7 +529,7 @@
                             </div>
                             <div v-else-if="datos.Estatus == 5">
                                 <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZACION</span>
                                 </span>
                             </div>
                             <div v-else-if="datos.Estatus == 6">
@@ -545,7 +544,7 @@
                             </div>
                             <div v-else-if="datos.Estatus == 8">
                                 <span tooltip="Pasa por el articulo a almacén" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">ALMACEN</span>
                                 </span>
                             </div>
                             <div v-else-if="datos.Estatus == 9">
@@ -637,6 +636,7 @@
             </Table>
         </div>
     </div>
+
 
     <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
         <div class="tw-px-2 tw-py-2">
