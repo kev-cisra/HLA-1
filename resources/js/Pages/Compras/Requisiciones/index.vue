@@ -206,7 +206,7 @@
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
                                     </span>
                                 </div>
-                                <div v-else-if="datos.EstatusArt == 3 || datos.Estatus == 4">
+                                <div v-else-if="datos.EstatusArt == 3 || datos.EstatusArt == 4">
                                     <span tooltip="En Espera de Cotización" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">COTIZACIÓN</span>
                                     </span>
@@ -827,6 +827,18 @@ export default {
                 var pair = vars[i].split("=");
                 if(pair[0] == 'View') {
                     this.params.View = pair[1];
+                }
+                if(pair[0] == 'Year') {
+                    this.params.Year = pair[1];
+                }
+                if(pair[0] == 'Month') {
+                    this.params.Month = pair[1];
+                }
+                if(pair[0] == 'Status') {
+                    this.params.Status = pair[1];
+                }
+                if(pair[0] == 'Indicador') {
+                    this.params.Indicador = pair[1];
                 }
         }
 

@@ -77,7 +77,7 @@ class RequisicionesSolicitadasController extends Controller {
                     ->where('EstatusArt', '>', 1)
                     ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo','Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
-                }elseif ($request->Year == 0 && $request->Month != 0 && $request->Status == 0) {
+                }elseif ($request->Year == 0 && $request->Month != 0 && $request->Status == 0){
 
                     $Requisiciones = ArticulosRequisiciones::with([
                         'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
@@ -293,6 +293,42 @@ class RequisicionesSolicitadasController extends Controller {
                     ->whereMonth('Fecha', $mes)
                     ->where('EstatusArt', '=', $request->Status)
                     ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo','Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                }elseif ($request->Year != 0 && $request->Month != 0 && $request->Status == 0){
+                    $Requisiciones = ArticulosRequisiciones::with([
+                        'ArticulosRequisicion' => function($req) { //Relacion 1 a 1 De puestos
+                            $req->select(
+                                'id', 'IdUser', 'Fecha',
+                                'IdEmp', 'Folio',
+                                'NumReq', 'OrdenCompra',
+                                'Departamento_id',
+                                'jefes_areas_id',
+                                'Codigo', 'Maquina_id',
+                                'Marca_id', 'TipCompra',
+                                'Observaciones', 'Perfil_id');
+                        },
+                        'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
+                            $perfil->select('id', 'name');
+                        },
+                        'ArticulosRequisicion.RequisicionesPerfil' => function($perfil) { //Relacion 1 a 1 De puestos
+                            $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                        },
+                        'ArticulosRequisicion.RequisicionDepartamento' => function($departamento) { //Relacion 1 a 1 De puestos
+                            $departamento->select('id', 'Nombre');
+                        },
+                        'ArticulosRequisicion.RequisicionJefe' => function($jefe) { //Relacion 1 a 1 De puestos
+                            $jefe->select('id', 'Nombre');
+                        },
+                        'ArticulosRequisicion.RequisicionMaquina' => function($maquina) { //Relacion 1 a 1 De puestos
+                            $maquina->select('id', 'Nombre');
+                        },
+                        'ArticulosRequisicion.RequisicionMarca' => function($marca) { //Relacion 1 a 1 De puestos
+                            $marca->select('id', 'Nombre');
+                        },
+                    ])
+                    ->whereYear('Fecha', $anio)
+                    ->whereMonth('Fecha', $mes)
+                    ->where('EstatusArt', '>', 1)
+                    ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo','Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
                 }
             }
 
@@ -318,7 +354,7 @@ class RequisicionesSolicitadasController extends Controller {
                     $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                 },
                 'RequisicionArticulos' => function($Req) {
-                    $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                    $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo', 'RecibidoPor', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                 },
                 'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                     $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
@@ -350,7 +386,7 @@ class RequisicionesSolicitadasController extends Controller {
                         $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                     },
                     'RequisicionArticulos' => function($Req) {
-                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo', 'RecibidoPor', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
@@ -358,7 +394,7 @@ class RequisicionesSolicitadasController extends Controller {
                     ])
                     ->where('Estatus', '>', 1)
                     ->get();
-            }elseif ($request->Year == 0 && $request->Month != 0 && $request->Status == 0) {
+            }elseif ($request->Year == 0 && $request->Month != 0 && $request->Status == 0){
                 //CONSULTA TODOS LOS MESES SIN IMPORTAR EL AÑO
                 $Requisiciones = Requisiciones::with([
                     'RequisicionesPerfil' => function($perfil) {
@@ -411,7 +447,7 @@ class RequisicionesSolicitadasController extends Controller {
                         $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                     },
                     'RequisicionArticulos' => function($Req) {
-                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo', 'RecibidoPor', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
@@ -440,7 +476,7 @@ class RequisicionesSolicitadasController extends Controller {
                         $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                     },
                     'RequisicionArticulos' => function($Req) {
-                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo', 'RecibidoPor', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
@@ -469,7 +505,7 @@ class RequisicionesSolicitadasController extends Controller {
                         $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                     },
                     'RequisicionArticulos' => function($Req) {
-                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo', 'RecibidoPor', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
@@ -499,7 +535,7 @@ class RequisicionesSolicitadasController extends Controller {
                         $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                     },
                     'RequisicionArticulos' => function($Req) {
-                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo', 'RecibidoPor', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
@@ -529,7 +565,7 @@ class RequisicionesSolicitadasController extends Controller {
                         $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
                     },
                     'RequisicionArticulos' => function($Req) {
-                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'MotivoRechazo', 'RecibidoPor', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');

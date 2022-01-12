@@ -422,7 +422,7 @@
                                     <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
                                 </span>
                             </div>
-                            <div v-else-if="datos.EstatusArt == 3 || datos.Estatus == 4">
+                            <div v-else-if="datos.EstatusArt == 3 || datos.EstatusArt == 4">
                                 <span tooltip="En Espera de Cotización" flow="left">
                                     <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">COTIZACIÓN</span>
                                 </span>
@@ -636,7 +636,6 @@
             </Table>
         </div>
     </div>
-
 
     <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
         <div class="tw-px-2 tw-py-2">

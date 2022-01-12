@@ -82,7 +82,7 @@
     import JetCheckbox from '@/Jetstream/Checkbox'
     import JetLabel from '@/Jetstream/Label'
     import JetValidationErrors from '@/Jetstream/ValidationErrors'
-import { computed } from '@vue/reactivity'
+    import { computed } from '@vue/reactivity'
 
     export default {
         components: {
