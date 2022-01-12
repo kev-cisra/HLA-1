@@ -259,7 +259,6 @@ import axios from 'axios';
         mounted() {
             this.mostSelect();
             this.tabla();
-
         },
         methods: {
             /****************************** opciones de selec del departamento *****************************/
@@ -319,8 +318,7 @@ import axios from 'axios';
                         "columnDefs": [
                             { "width": "15%", "targets": [3,4,9] },
                             { "width": "10%", "targets": [0,1,2,5,6,7] }
-                        ],
-                        stateSave: true,
+                        ]
                     })
                 })
             },

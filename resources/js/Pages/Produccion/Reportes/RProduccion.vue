@@ -107,7 +107,8 @@
         </div>
 
         <!------------------------------------ Muestra las opciones de Graficas ------------------------------------------->
-        <div class="collapse tw-p-6 tw-border tw-border-8 tw-border-green-400 tw-bg-blueGray-500 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 tw-w-full lg:tw-right-0 lg:tw-w-10/12" id="grafica">
+        <div class=" tw-z-10 tw-bg-gray-700 tw-absolute" @click="cer()">
+        <div class="collapse tw-p-6 tw-border tw-border-8 tw-border-green-400 tw-bg-blueGray-500 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-20 tw-w-full lg:tw-right-0 lg:tw-w-10/12" id="grafica">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
                 <!-- arreglo de graficas -->
                 <div class="tw-mb-6 lg:tw-flex">
@@ -529,14 +530,14 @@
                                                 <input type="radio" id="GBLdia" @click="limpiaCombi(1)" value="1" v-model="gBaLi.rango">
                                                 <label class="tw-text-white" for="GBLdia"> Diario</label>
                                             </div>
-                                            <!-- <div class=" tw-m-5">
+                                            <div class=" tw-m-5">
                                                 <input type="radio" id="GBLmes" @click="limpiaCombi(2)" value="2" v-model="gBaLi.rango">
                                                 <label class="tw-text-white" for="GBLmes"> Mes</label>
                                             </div>
                                             <div class=" tw-m-5">
                                                 <input type="radio" id="GBLano" @click="limpiaCombi(3)" value="3" v-model="gBaLi.rango">
                                                 <label class="tw-text-white" for="GBLano"> Año</label>
-                                            </div> -->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -548,7 +549,6 @@
                                         <Select2 v-model="gBaLi.tipo" class="InputSelect" :options="opcTipo" :settings="{width: '100%', allowClear: true}"></Select2>
                                     </div>
                                 </div>
-
                                 <!-- dias -->
                                 <div class="lg:tw-flex tw-gap-4" v-if="gBaLi.rango == 1">
                                     <div class=" tw-w-full md:tw-w-1/2">
@@ -588,7 +588,7 @@
                 </div>
             </div>
         </div>
-
+        </div>
         <!------------------------------------ Data table de carga de produccion ------------------------------------------------------->
         <div v-show="FoFiltro.TipRepo == 1" class="tw-m-auto" style="width: 98%">
             <Table id="t_repo">
@@ -1103,6 +1103,9 @@
         },
 
         methods: {
+            cer(){
+                console.log('cerrar')
+            },
             /****************************** datatables ********************************************************/
             //datatable de carga de produccion
             tabla() {
