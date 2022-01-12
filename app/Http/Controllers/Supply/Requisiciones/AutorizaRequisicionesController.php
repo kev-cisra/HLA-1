@@ -481,6 +481,36 @@ class AutorizaRequisicionesController extends Controller{
                         ->whereYear('Fecha', $anio)
                         ->where('Estatus', '=', $request->Status)
                         ->get();
+                }elseif ($request->Year != 0 && $request->Month == 0 && $request->Status != 0){
+
+                    $Requisiciones = Requisiciones::with([
+                        'RequisicionesPerfil' => function($perfil) {
+                            $perfil->select('id', 'Nombre', 'ApPat', 'ApMat', 'jefes_areas_id');
+                        },
+                        'RequisicionDepartamento' => function($departamento) {
+                            $departamento->select('id', 'Nombre');
+                        },
+                        'RequisicionJefe' => function($jefe) {
+                            $jefe->select('id', 'Nombre');
+                        },
+                        'RequisicionMaquina' => function($maquina) {
+                            $maquina->select('id', 'Nombre');
+                        },
+                        'RequisicionMarca' => function($marca) {
+                            $marca->select('id', 'Nombre');
+                        },
+                        'RequisicionesVales' => function($vales) {
+                            $vales->select('id', 'IdUser', 'IdEmp', 'Folio', 'Fecha', 'NombreProveedor', 'EstatusVale', 'Salida', 'requisiciones_id');
+                        },
+                        'RequisicionArticulos' => function($Req) {
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte' ,'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        },
+                        'RequisicionArticulos.ArticuloPrecios' => function($pre) {
+                            $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                        },])
+                        ->whereYear('Fecha', $anio)
+                        ->where('Estatus', '=', $request->Status)
+                        ->get();
 
                 }elseif ($request->Year != 0 && $request->Month != 0 && $request->Status != 0){
                     $Requisiciones = Requisiciones::with([

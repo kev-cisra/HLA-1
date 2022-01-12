@@ -2221,6 +2221,8 @@
                 })
                 serie.push({type: 'pie', name: 'Total', data: dtPas, center: [80, 20], size: 100, showInLegend: false, dataLabels: { enabled: false }})
 
+                console.log(serie)
+
                 this.gBaLi.borra = Highcharts.chart('chart3', {
                     title: {
                         text: this.gBaLi.titulo
