@@ -34,6 +34,8 @@
             </template>
         </Accions>
 
+        <canvas class="tw-bg-red-600 tw-border-sky-800 "></canvas>
+
         <!------------------------------------ Muestra las opciones de filtros ------------------------------------------->
         <div class="collapse tw-p-6 tw-border tw-border-8 tw-border-blue-400 tw-bg-blueGray-500 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 tw-w-full lg:tw-left-0 lg:tw-w-6/12" id="filtro">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
@@ -943,6 +945,7 @@
     import Select2 from 'vue3-select2-component';
     import moment from 'moment';
     import 'moment/locale/es';
+    import ActionMessage from '@/Components/ActionMessage'
     //datatable
     import datatable from 'datatables.net-bs5';
     require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
@@ -956,6 +959,8 @@
     import $ from 'jquery';
     import axios from 'axios';
     import BotonCarga from '../../../Components/BotonCarga.vue';
+
+    import Canvas from '@/Components/Canvas';
 
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     window.JSZip = jszip;
@@ -984,6 +989,8 @@
             Modal,
             Select2,
             JetLabel,
+            ActionMessage,
+            Canvas,
             JetCancelButton
         },
 

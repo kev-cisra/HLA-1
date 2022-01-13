@@ -20339,6 +20339,10 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(96, 165, 250, var(--tw-border-opacity));
 }
+.tw-border-sky-800 {
+	--tw-border-opacity: 1;
+	border-color: rgba(7, 89, 133, var(--tw-border-opacity));
+}
 .tw-bg-violet-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(167, 139, 250, var(--tw-bg-opacity));
