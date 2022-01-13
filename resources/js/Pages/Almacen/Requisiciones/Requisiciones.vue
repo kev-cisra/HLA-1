@@ -46,7 +46,7 @@
                             </div>
                         </div>
 
-                        <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="FiltroIndicadores(5)">
+                        <div class="tw-w-full tw-cursor-pointer lg:tw-w-1/4" @click="FiltroIndicadores(6)">
                             <div class="tw-w-full tw-p-2 tw-bg-white tw-border-l-4 tw-border-fuchsia-600 tw-rounded-lg tw-widget">
                                 <div class="tw-flex tw-items-center">
                                     <div class="icon tw-w-10 tw-p-2 tw-bg-fuchsia-600 tw-text-white tw-rounded-full tw-mr-3">
@@ -627,9 +627,7 @@
                             </template>
                         </Table>
                     </div>
-        <PRE>
-            {{ Requi.requisicion_articulos }}
-        </PRE>
+
                     <div v-if="Requi.requisiciones_vales != ''">
                         <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Vales de Salida --</p>
                         <Table>
@@ -868,6 +866,21 @@
                     <jet-CancelButton @click="chageProveedor">Cerrar</jet-CancelButton>
                 </div>
             </modal>
+
+            <!-- Impresion oculta -->
+<!--             <div id="div_print">
+                <div>
+                    <p>Requisicion: <strong> {{ DatosTicket.NumReq }}</strong></p>
+                    <p>Orden Compra: <strong>{{ DatosTicket.OrdenCompra }}</strong></p>
+                    <p>Fecha <strong>{{ now }}</strong></p>
+                </div>
+                <div class="tw-p-2 tw-h-64 tw-h-64">
+                    <div class="qrcode-style" id="qrcode"></div>
+                </div>
+            </div>
+
+            <button type="button" @click="imprimirSeleccion('div_print')">Imprimir</button>
+ -->
         </div>
     </app-layout>
 </template>
@@ -885,6 +898,7 @@ import Pagination from "@/Components/pagination";
 import JetLabel from '@/Jetstream/Label';
 import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
+import QRCode from "qrcodejs2";
  //datatable
 import datatable from 'datatables.net-bs5';
 require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
@@ -960,6 +974,10 @@ export default {
                 Status: 0,
                 View: 1,
             },
+            DatosTicket: {
+                NumReq: 0,
+                OrdenCompra: 0,
+            },
             CambioVista: 1,
             Cambio: false,
             Requi: [], //Asignacion de requisicion para partidas
@@ -971,6 +989,7 @@ export default {
     },
 
     mounted() {
+        // this.qrcode();
         this.params.Month = this.mes;
         this.tabla();
         this.params.Month = this.mes;
@@ -1035,6 +1054,16 @@ export default {
 
     methods: {
 
+        qrcode() {
+            let qrcode = new QRCode("qrcode", {
+                ancho: 200, // establece el ancho en píxeles
+                height: 200, // establece la altura en píxeles
+                text: "https://intranethlangeles.com/Compras/Requisiciones?Year=2022&Month=2&Status=0&View=1&Req=", // Establezca el contenido del código QR o la dirección de redireccionamiento,
+                colorDark : "#64748B",
+                colorLight : "#ffffff",
+            });
+        },
+
         Filtros(){ //Generacion de consulta aplicada con Filtros
             this.loading = true;
             $('#Requisiciones').DataTable().clear();
@@ -1044,9 +1073,42 @@ export default {
                     this.loading = false;
                     this.tabla();
                     //Verifico si hubo un cambio en la vista
-/*                     if(this.Cambio == true){
+                    if(this.Cambio == true){
                         location.reload();
-                    } */
+                    }
+                }, preserveState: true})
+        },
+
+
+        FiltroIndicadores(value){
+            //Filtro para consultar solo por el estatus
+
+            //OBTENER VALOR DE FRILTRO DE LA URL
+            var query  = window.location.search.substring(1);
+            var vars = query.split("&");
+                for (var i=0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == 'View') {
+                        this.params.View = pair[1];
+                    }
+            }
+
+            this.params.Year = 0;
+            this.params.Month = 0;
+            this.params.Status = value;
+            this.loading = true;
+
+            $('#Requisiciones').DataTable().clear();
+            $('#Requisiciones').DataTable().destroy();
+            this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    this.loading = false;
+                    // location.reload();
+                    this.tabla();
+                    //Verifico si hubo un cambio en la vista
+                    if(this.Cambio == true){
+                        location.reload();
+                    }
                 }, preserveState: true})
         },
 
@@ -1185,30 +1247,6 @@ export default {
                 });
         },
 
-        FiltroIndicadores(value){
-            //Filtro para consultar solo por el estatus
-
-            //OBTENER VALOR DE FRILTRO DE LA URL
-            var query  = window.location.search.substring(1);
-            var vars = query.split("&");
-                for (var i=0; i < vars.length; i++) {
-                    var pair = vars[i].split("=");
-                    if(pair[0] == 'Estatus') {
-                        this.params.Partidas = pair[1];
-                    }
-            }
-
-            this.params.Partidas = value;
-            this.params.month = '';
-            $('#Requisiciones').DataTable().clear(); //limpio
-            $('#Requisiciones').DataTable().destroy(); //destruyo tabla
-            this.$inertia.get('/Almacen/Requisiciones', this.params , { //envio de variables por url
-                onSuccess: () => {
-                    location.reload(); //Recargo pagina para evitar conflictos de la regeneracion de la tabla
-                    this.tabla() //regeneracion de tabla
-                }, preserveState: true})
-        },
-
         SolicitaReposicion(data){
             this.Repo = data;
             this.form.req_id = this.Requi.id;
@@ -1246,7 +1284,6 @@ export default {
 
         Partidas(data){ //Visualizacion de partidas
             this.Requi = data;
-            console.log(data);
             this.chagePartidas();
         },
 
@@ -1327,15 +1364,16 @@ export default {
         },
 
         Ticket(data){
-            console.log(data);
-            console.log(data.requisicion_articulos[0].articulo_precios[0].Proveedor);
             var TotalRequisicion = 0;
+            this.DatosTicket.NumReq = data.NumReq;
+            this.DatosTicket.OrdenCompra = data.OrdenCompra;
             var ventana = window.open('', 'PRINT', 'height=400,width=600');
             ventana.document.write('<html><head><title>' + document.title + '</title>');
-            ventana.document.write('<link rel="stylesheet" href="style.css">'); //Aquí agregué la hoja de estilos
-            ventana.document.write('</head><body style="background: green;">');
+            ventana.document.write('<link rel="stylesheet" href="style.css" media="print">'); //Aquí agregué la hoja de estilos
+            ventana.document.write('</head><body>');
             ventana.document.write('<div>');
-            ventana.document.write('<p style="font-size: 0.875em;">Requisición <strong>'+data.NumReq+'</strong></p>');
+            ventana.document.write('<p style="font-size: 0.875em;">Requisición: <strong>'+data.NumReq+'</strong></p>');
+            ventana.document.write('<p style="font-size: 0.875em;">Fecha:  <strong>'+this.now+'</strong></p>');
             ventana.document.write('<table>');
             ventana.document.write('<tr><td style="font-size: 0.875em;">Orden Compra:</td><td><strong>'+data.OrdenCompra+'</strong></td></tr>');
             ventana.document.write('<tr><td style="font-size: 0.875em;">Proveedor:</td><td><strong>'+data.requisicion_articulos[0].articulo_precios[0].Proveedor+'</strong></td></tr>');
@@ -1346,6 +1384,9 @@ export default {
             });
             ventana.document.write('<tr><td style="font-size: 0.875em;">Precio Total:</td><td><strong>'+TotalRequisicion+'</strong></td></tr>');
             ventana.document.write('</table>');
+            ventana.document.write('<div class="turnout-wrapper turnin-wrapper">');
+            ventana.document.write('<div class="qrcode-style" id="qrcode"></div>');
+            ventana.document.write('</div>');
             ventana.document.write('</div>');
             ventana.document.write('</body></html>');
             ventana.document.close();
@@ -1355,6 +1396,15 @@ export default {
                 ventana.close();
             };
             return true;
+        },
+
+        imprimirSeleccion(nombre) { //Imprimir div oculto
+            var ficha = document.getElementById(nombre);
+            var ventana = window.open(' ', 'popimpr', 'height=400,width=600');
+            ventana.document.write( ficha.innerHTML );
+            ventana.document.close();
+            ventana.print();
+            ventana.close();
         },
     },
 

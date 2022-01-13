@@ -779,15 +779,15 @@ class RequisicionesSolicitadasController extends Controller {
 
             //CASO DE CONFIRMAR EXISTENCIA DE REQUISICION EN ALMACEN
             case 2:
-
+                // return $request;
                 //Reviso si hay articulos en Estatus de Almacen para actualizarlos
                 $Almacen = ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->where('EstatusArt', '=', 8)->count();
 
-                if($Almacen > 0){
-                    ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->where('EstatusArt', '=', 8)->update([
+                // if($Almacen > 0){
+                    ArticulosRequisiciones::where('requisicion_id', '=', $request->id)->update([
                         'EstatusArt' => 8,
                     ]);
-                }
+                // }
 
                 Requisiciones::find($request->id)->update([
                     'Estatus' => 8,
@@ -925,6 +925,13 @@ class RequisicionesSolicitadasController extends Controller {
                     'requisicion_id' => $Articulo->requisicion_id,
                 ]);
 
+                return redirect()->back();
+                break;
+
+            case 10:
+                ArticulosRequisiciones::where('id', '=', 1)->update([
+                    'Cantidad' => 666,
+                ]);
                 return redirect()->back();
                 break;
         }

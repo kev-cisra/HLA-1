@@ -107,7 +107,6 @@
         </div>
 
         <!------------------------------------ Muestra las opciones de Graficas ------------------------------------------->
-        <div class=" tw-z-10 tw-bg-gray-700 tw-absolute" @click="cer()">
         <div class="collapse tw-p-6 tw-border tw-border-8 tw-border-green-400 tw-bg-blueGray-500 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-20 tw-w-full lg:tw-right-0 lg:tw-w-10/12" id="grafica">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
                 <!-- arreglo de graficas -->
@@ -588,7 +587,6 @@
                 </div>
             </div>
         </div>
-        </div>
         <!------------------------------------ Data table de carga de produccion ------------------------------------------------------->
         <div v-show="FoFiltro.TipRepo == 1" class="tw-m-auto" style="width: 98%">
             <Table id="t_repo">
@@ -673,8 +671,8 @@
                                     </span>
                                 </div>
                             </div>
+                            <!-- Notas
                             <div class="columnaIconos">
-                                <!-- Notas -->
                                 <div class="iconoDetails tw-cursor-pointer" @click="VeNota(ca)" v-show="ca.notas.length != 0">
                                     <span tooltip="Ver notas" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -683,6 +681,7 @@
                                     </span>
                                 </div>
                             </div>
+                            -->
                         </td>
                     </tr>
                 </template>
@@ -2224,7 +2223,7 @@
                 })
                 serie.push({type: 'pie', name: 'Total', data: dtPas, center: [80, 20], size: 100, showInLegend: false, dataLabels: { enabled: false }})
 
-                console.log(serie)
+                //console.log(serie)
 
                 this.gBaLi.borra = Highcharts.chart('chart3', {
                     title: {
