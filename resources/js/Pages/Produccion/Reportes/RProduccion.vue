@@ -34,8 +34,6 @@
             </template>
         </Accions>
 
-        <canvas class="tw-bg-red-600 tw-border-sky-800 "></canvas>
-
         <!------------------------------------ Muestra las opciones de filtros ------------------------------------------->
         <div class="collapse tw-p-6 tw-border tw-border-8 tw-border-blue-400 tw-bg-blueGray-500 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 tw-w-full lg:tw-left-0 lg:tw-w-6/12" id="filtro">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
