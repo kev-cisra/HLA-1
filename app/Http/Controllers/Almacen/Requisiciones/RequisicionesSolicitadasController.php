@@ -673,7 +673,6 @@ class RequisicionesSolicitadasController extends Controller {
         switch ($request->Accion){
 
             case 1:
-
                 ValesSalida::create([
                     'IdUser' => $SessionId,
                     'IdEmp' => $SessionIdEmp,

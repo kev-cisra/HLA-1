@@ -339,7 +339,7 @@
                                                 <i class="fas fa-check-circle"></i>
                                             </span>
                                         </div>
-                                        <div class="iconoEdit" @click="IndicaProveedor(datos)" v-if="datos.TipCompra == 'SERVICIOS EXTERNOS'">
+                                        <div class="iconoEdit" @click="IndicaProveedor(datos)">
                                             <span tooltip="Indica Provedor" flow="left">
                                                 <i class="fas fa-shipping-fast"></i>
                                             </span>
@@ -862,7 +862,7 @@
                 </div>
 
                 <div class="ModalFooter">
-                    <jet-button type="button" @click="IndicaProveedor(form)">Guardar</jet-button>
+                    <jet-button type="button" @click="GuardaProveedor(form)">Guardar</jet-button>
                     <jet-CancelButton @click="chageProveedor">Cerrar</jet-CancelButton>
                 </div>
             </modal>
@@ -1078,7 +1078,6 @@ export default {
                     }
                 }, preserveState: true})
         },
-
 
         FiltroIndicadores(value){
             //Filtro para consultar solo por el estatus
@@ -1354,6 +1353,11 @@ export default {
 
         IndicaProveedor(data){
             this.form.Accion = 1;
+            this.chageProveedor();
+            this.form.req_id = data.id;
+        },
+
+        GuardaProveedor(data){
             this.$inertia.post("/Almacen/Requisiciones", data, {
                 onSuccess: () => {
                     this.chageProveedor();
