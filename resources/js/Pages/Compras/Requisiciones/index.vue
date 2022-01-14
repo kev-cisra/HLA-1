@@ -357,6 +357,13 @@
                                             <i class="fas fa-check-circle"></i>
                                         </span>
                                     </div>
+                                    <div class="iconoPurple" @click="edit(datos)" v-if="datos.Estatus == 1">
+                                        <span tooltip="Editar" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                            </svg>
+                                        </span>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -660,6 +667,7 @@
                         <th class="columna">DESCRIPCION</th>
                         <th class="columna">NUM PARTE</th>
                         <th class="columna">ESTATUS</th>
+                        <!-- <th class="columna">ACCIONES</th> -->
                     </template>
 
                     <template v-slot:TableFooter>
@@ -716,6 +724,8 @@
                                     </span>
                                 </div>
                             </td>
+<!--                             <td class="tw-text-center">
+                            </td> -->
                         </tr>
                     </template>
                 </Table>
@@ -920,6 +930,7 @@ export default {
                 $("#Requisiciones").DataTable({
                     "language": this.español,
                     paging: true,
+                    pageLength : 20,
                     "scrollX": true,
                     scrollY:  '40vh',
                     "order": [0, 'desc'],
@@ -966,7 +977,7 @@ export default {
             this.editMode2 = false;
         },
 
-        chageClose2() {
+        showModal2() {
             this.showModal2 = !this.showModal2;
         },
 
@@ -1068,6 +1079,7 @@ export default {
         },
 
         edit: function (data) {
+            console.log(data);
             this.form.ArtId = data.id;
             this.form.Cantidad = data.Cantidad;
             this.form.Unidad = data.Unidad;
