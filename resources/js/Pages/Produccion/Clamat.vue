@@ -45,7 +45,7 @@
             </form>
         </div>
         <!----------------------------------- tabla de datos -------------------------------------------------------->
-        <div class="table-responsive">
+        <div class="tw-m-auto" style="width: 98%">
             <Table id="t_clamat">
                 <template v-slot:TableHeader>
                     <th class="columna">id</th>
@@ -93,10 +93,6 @@
             </Table>
         </div>
 
-        <pre>
-            {{ ncla }}
-        </pre>
-
         <!------------------------------------------------ modal de carga de claves -->
         <div class="modal fade" id="tabla_clave" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
@@ -105,44 +101,42 @@
                     <h5 class="modal-title" id="exampleModalToggleLabel">Claves de Material</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <Table id="t_clave">
-                            <template v-slot:TableHeader>
-                                <th class="columna">Clave del material</th>
-                                <th class="columna">Nombre</th>
-                                <th class="columna">Categoria</th>
-                                <th class="columna">Unidad de medida</th>
-                                <th class="columna"></th>
-                            </template>
-                            <template v-slot:TableFooter >
-                                <tr v-for="vi in ncla" :key="vi" class="fila">
-                                    <td>{{vi.CVE_ART}}</td>
-                                    <td>{{vi.DESCR}}</td>
-                                    <td>{{ vi.categoria }}</td>
-                                    <td>{{vi.UNI_MED}}</td>
-                                    <td>
-                                        <div class="columnaIconos">
-                                            <div class="iconoEdit" @click="editCL(vi)" data-bs-target="#ag_clave" data-bs-toggle="modal" data-bs-dismiss="modal">
-                                                <span tooltip="Editar" flow="left">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                            <div class="iconoDelete" @click="destroyCL(vi)">
-                                                <span tooltip="Eliminar" flow="left">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                    </svg>
-                                                </span>
-                                            </div>
+                <div class="modal-body tw-m-auto" style="width: 98%">
+                    <Table id="t_clave">
+                        <template v-slot:TableHeader>
+                            <th class="columna">Clave del material</th>
+                            <th class="columna">Nombre</th>
+                            <th class="columna">Categoria</th>
+                            <th class="columna">Unidad de medida</th>
+                            <th class="columna"></th>
+                        </template>
+                        <template v-slot:TableFooter >
+                            <tr v-for="vi in ncla" :key="vi" class="fila">
+                                <td>{{vi.CVE_ART}}</td>
+                                <td>{{vi.DESCR}}</td>
+                                <td>{{ vi.categoria }}</td>
+                                <td>{{vi.UNI_MED}}</td>
+                                <td>
+                                    <div class="columnaIconos">
+                                        <div class="iconoEdit" @click="editCL(vi)" data-bs-target="#ag_clave" data-bs-toggle="modal" data-bs-dismiss="modal">
+                                            <span tooltip="Editar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                </svg>
+                                            </span>
                                         </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </Table>
-                    </div>
+                                        <div class="iconoDelete" @click="destroyCL(vi)">
+                                            <span tooltip="Eliminar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </Table>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" data-bs-target="#ag_clave" data-bs-toggle="modal" data-bs-dismiss="modal">Agregar nueva clave</button>
@@ -275,6 +269,7 @@
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        scrollCollapse: true,
                         buttons: [
                             {
                                 extend: 'copyHtml5',
@@ -303,12 +298,7 @@
                 this.$nextTick(() => {
                     $('#t_clave').DataTable({
                         "language": this.español,
-                        scrollY:        '30vh',
                         scrollCollapse: true,
-                        paging:         false,
-                        "dom": '<"row"<"col-sm-12 mt-3 col-md-9"B><"col-sm-12 col-md-3"f>>'+
-                                "<'row'<'col-sm-12'tr>>" +
-                                "<'row'<'col-sm-12 col-md-5'i>>",
                         buttons: [
                             {
                                 extend: 'copyHtml5',
@@ -407,7 +397,7 @@
                 $('#t_clave').DataTable().clear();
                 $('#t_clave').DataTable().destroy();
                 this.$inertia.get('/Produccion/Clamat',{ busca: data.departamentos.id, cls: data.id }, {
-                    onSuccess: () => { this.tablaCL(); }, onError: () => {this.tabla()}, preserveState: true
+                    onSuccess: () => { this.tablaCL(); }, onError: () => {/* this.tabla() */}, preserveState: true
                 });
                 //this.tablaVi = data.claves;
             },

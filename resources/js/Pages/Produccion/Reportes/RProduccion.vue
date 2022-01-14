@@ -488,15 +488,15 @@
                                 <!-- titulos para graficas -->
                                 <div class="lg:tw-flex tw-gap-4">
                                     <!-- titulo -->
-                                    <div class=" tw-w-full md:tw-w-1/2">
+                                    <div class=" tw-w-full md:tw-w-full">
                                         <jet-label class="tw-text-white">Título</jet-label>
                                         <jet-input type="text" class="form-control" v-model="gBaLi.titulo"></jet-input>
                                     </div>
-                                    <!-- sub titulo -->
+                                    <!-- sub titulo
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label class="tw-text-white">Sub Título</jet-label>
                                         <jet-input type="text" class="form-control" v-model="gBaLi.subtitulo"></jet-input>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <!-- Select de procesos, maquinas y normas -->
@@ -530,11 +530,15 @@
                                                 <label class="tw-text-white" for="GBLdia"> Diario</label>
                                             </div>
                                             <div class=" tw-m-5">
+                                                <input type="radio" id="GBLsema" @click="limpiaCombi(3)" value="3" v-model="gBaLi.rango">
+                                                <label class="tw-text-white" for="GBLsema"> Semana</label>
+                                            </div>
+                                            <div class=" tw-m-5">
                                                 <input type="radio" id="GBLmes" @click="limpiaCombi(2)" value="2" v-model="gBaLi.rango">
                                                 <label class="tw-text-white" for="GBLmes"> Mes</label>
                                             </div>
                                             <div class=" tw-m-5">
-                                                <input type="radio" id="GBLano" @click="limpiaCombi(3)" value="3" v-model="gBaLi.rango">
+                                                <input type="radio" id="GBLano" @click="limpiaCombi(4)" value="4" v-model="gBaLi.rango">
                                                 <label class="tw-text-white" for="GBLano"> Año</label>
                                             </div>
                                         </div>
@@ -559,6 +563,17 @@
                                         <jet-input type="date" v-model="gBaLi.fecFin"></jet-input>
                                     </div>
                                 </div>
+                                <!-- semana -->
+                                <div class="lg:tw-flex tw-gap-4" v-if="gBaLi.rango == 3">
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Fecha Inicio</jet-label>
+                                        <jet-input type="week" v-model="gBaLi.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Fecha Fin</jet-label>
+                                        <jet-input type="week" v-model="gBaLi.fecFin"></jet-input>
+                                    </div>
+                                </div>
                                 <!-- mes -->
                                 <div class="lg:tw-flex tw-gap-4" v-else-if="gBaLi.rango == 2">
                                     <div class=" tw-w-full md:tw-w-1/2">
@@ -571,7 +586,7 @@
                                     </div>
                                 </div>
                                 <!-- año -->
-                                <div class="lg:tw-flex tw-gap-4" v-else>
+                                <div class="lg:tw-flex tw-gap-4" v-else-if="gBaLi.rango == 4">
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label class="tw-text-white">Fecha Inicio</jet-label>
                                         <jet-input type="number" v-model="gBaLi.fecIni"></jet-input>
@@ -1776,8 +1791,8 @@
                     let promesa = await axios.post('ReportesPro/PrPaiGrafi', datos);
                     prpa = 'Paros en minutos';
                     promesa.data.forEach(dat => {
-                        mater = dat.maq_pro_id == null ? '' : '/ ' + dat.maq_pro.maquinas.Nombre;
-                        part = dat.paro_id == null ? '' : '/ ' + dat.paros.clave+' - '+dat.paros.descri;
+                        let mater = dat.maq_pro_id == null ? '' : dat.maq_pro.maquinas.Nombre + ' / ';
+                        let part = dat.paro_id == null ? '' : dat.paros.clave+' - '+dat.paros.descri + ' / ';
                         valor.push({name: dat.proceso.nompro, y: dat.tiempo, mate: mater, parti: part});
                     })
                 }
@@ -2116,6 +2131,9 @@
                 var dat = [];
                 const serie = [];
 
+                    //console.log(inicio.isSameOrBefore(fin, 'week'))
+
+
                 //recorrido para fechas
                 if (data.rango == 1) {
                     while (inicio.isSameOrBefore(fin, 'days')) {
@@ -2129,7 +2147,15 @@
                         fechas.push(inicio.format('YYYY-MM'))
                         inicio.add(1, 'month')
                     }
-                }else {
+                }else if(data.rango == 3){
+                    console.log(inicio)
+                    while (inicio.isSameOrBefore(fin, 'week')) {
+                        titFec.push(inicio.format('WW-YYYY'))
+                        fechas.push(inicio.format('GGGG-[W]WW'))
+                        inicio.add(1, 'week')
+                        console.log(fechas)
+                    }
+                }else{
                     while (inicio.isSameOrBefore(fin, 'year')) {
                         titFec.push(inicio.format('YYYY'))
                         fechas.push(inicio.format('YYYY'))
@@ -2145,7 +2171,9 @@
 
                 let promesaBa = await axios.post('ReportesPro/LinGrafi', datosBa);
 
-                let promesaLin = await axios.post('ReportesPro/LinGrafi', datosLin);
+                    let promesaLin = await axios.post('ReportesPro/LinGrafi', datosLin);
+
+                console.log(promesaBa.data)
 
                 //Manejo de tipo entre maquinas y procesos
                 if (data.tipo == 'generalMaq') {
@@ -2227,8 +2255,6 @@
                     dtPas.push({name: todo, y: dat.valor});
                 })
                 serie.push({type: 'pie', name: 'Total', data: dtPas, center: [80, 20], size: 100, showInLegend: false, dataLabels: { enabled: false }})
-
-                //console.log(serie)
 
                 this.gBaLi.borra = Highcharts.chart('chart3', {
                     title: {
