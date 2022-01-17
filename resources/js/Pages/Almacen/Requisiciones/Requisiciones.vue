@@ -1386,7 +1386,7 @@ export default {
                         TotalRequisicion += Number(pre.Total);
                     });
             });
-            ventana.document.write('<tr><td style="font-size: 0.875em;">Precio Total:</td><td><strong>'+TotalRequisicion+'</strong></td></tr>');
+            ventana.document.write('<tr><td style="font-size: 0.875em;">Total:</td><td><strong>'+TotalRequisicion+'</strong></td></tr>');
             ventana.document.write('</table>');
             ventana.document.write('<div class="turnout-wrapper turnin-wrapper">');
             ventana.document.write('<div class="qrcode-style" id="qrcode"></div>');

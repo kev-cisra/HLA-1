@@ -515,11 +515,6 @@
                     <div class="ModalForm">
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>FECHA</jet-label>
-                                <jet-input type="date" :min="min" v-model="form.Fecha"></jet-input>
-                                <small v-if="errors.Fecha" class="validation-alert">{{errors.Fecha}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>AREA</jet-label>
                                 <select id="Departamento" v-model="form.Departamento_id" class="InputSelect" @change="loadMaquinas($event)">
                                     <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
@@ -539,6 +534,11 @@
                                     <option value="C - PRESUPUESTO">C - PRESUPUESTO</option>
                                 </select>
                                 <small v-if="errors.Codigo" class="validation-alert">{{errors.Codigo}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Codigo == 'C - PRESUPUESTO'">
+                                <jet-label><span class="required">*</span>FECHA</jet-label>
+                                <jet-input type="date" :min="min" v-model="form.Fecha"></jet-input>
+                                <small v-if="errors.Fecha" class="validation-alert">{{errors.Fecha}}</small>
                             </div>
                         </div>
                         <div class="tw-mb-6 md:tw-flex">
@@ -1076,6 +1076,14 @@ export default {
         save(data) {
             var fechaForm = moment(data.Fecha).format("YYYY");
             if(this.anio == fechaForm){
+
+                //Asigno el valor dependiendo de tipo del codigo
+                if(this.form.Fecha == ''){
+                    this.form.Fecha = moment(data.Fecha).format("Y-m-d");
+                }else{
+                    this.form.Fecha = this.form.Fecha;
+                }
+
                 this.$inertia.post("/Compras/Requisiciones", data, {
                     onSuccess: () => {
                         // location.reload();
@@ -1099,6 +1107,7 @@ export default {
 
         edit(data) {
             this.chageClose2();
+            this.form.ReqId = data.articulos_requisicion.id;
             this.form.Fecha = data.Fecha;
             this.form.Departamento_id = data.articulos_requisicion.Departamento_id;
             this.form.NumReq = data.articulos_requisicion.NumReq;
@@ -1112,8 +1121,6 @@ export default {
             this.form.Unidad = data.Unidad;
             this.form.Descripcion = data.Descripcion;
             this.form.Observaciones = data.articulos_requisicion.Observaciones;
-            // this.chagePartidas();
-            console.log(this.form);
         },
 
         update(data) {

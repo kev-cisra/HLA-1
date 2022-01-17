@@ -833,6 +833,14 @@ class RequisicionesController extends Controller{
             $IdJefe = $PerfilesUsuarios->jefes_areas_id; //Obtengo el Id de Jefe que corresponde a la session del empleado
         }
 
+/*         if($request->Fecha == ''){
+            $Fecha = $hoy->format('Y-m-d');
+        }else{
+            $Fecha = $request->Fecha;
+        }
+
+        return $Fecha; */
+
         //Genracion de folio automatico
         $Numfolio = Requisiciones::all(['Folio']);
 
