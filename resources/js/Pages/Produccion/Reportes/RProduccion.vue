@@ -297,11 +297,15 @@
                                                 <label class="tw-text-white" for="GLdia"> Diario</label>
                                             </div>
                                             <div class=" tw-m-5">
+                                                <input type="radio" id="GLsema" @click="lipiaLinea(3)" value="3" v-model="gLinea.rango">
+                                                <label class="tw-text-white" for="GLsema"> Semana</label>
+                                            </div>
+                                            <div class=" tw-m-5">
                                                 <input type="radio" id="GLmes" @click="lipiaLinea(2)" value="2" v-model="gLinea.rango">
                                                 <label class="tw-text-white" for="GLmes"> Mes</label>
                                             </div>
                                             <div class=" tw-m-5">
-                                                <input type="radio" id="GLano" @click="lipiaLinea(3)" value="3" v-model="gLinea.rango">
+                                                <input type="radio" id="GLano" @click="lipiaLinea(3)" value="4" v-model="gLinea.rango">
                                                 <label class="tw-text-white" for="GLano"> Año</label>
                                             </div>
                                         </div>
@@ -327,6 +331,17 @@
                                         <jet-input type="date" v-model="gLinea.fecFin"></jet-input>
                                     </div>
                                 </div>
+                                <!-- semana -->
+                                <div class="lg:tw-flex tw-gap-4" v-else-if="gLinea.rango == 3">
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Fecha Inicio</jet-label>
+                                        <jet-input type="week" v-model="gLinea.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Fecha Fin</jet-label>
+                                        <jet-input type="week" v-model="gLinea.fecFin"></jet-input>
+                                    </div>
+                                </div>
                                 <!-- mes -->
                                 <div class="lg:tw-flex tw-gap-4" v-else-if="gLinea.rango == 2">
                                     <div class=" tw-w-full md:tw-w-1/2">
@@ -339,7 +354,7 @@
                                     </div>
                                 </div>
                                 <!-- año -->
-                                <div class="lg:tw-flex tw-gap-4" v-else>
+                                <div class="lg:tw-flex tw-gap-4" v-else-if="gLinea.rango == 4">
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label class="tw-text-white">Fecha Inicio</jet-label>
                                         <jet-input type="number" v-model="gLinea.fecIni"></jet-input>
@@ -411,11 +426,15 @@
                                                 <label class="tw-text-white" for="GBdia"> Diario</label>
                                             </div>
                                             <div class=" tw-m-5">
+                                                <input type="radio" id="GBsema" @click="limpiaBarra(3)" value="3" v-model="gBarra.rango">
+                                                <label class="tw-text-white" for="GBsema"> Semana</label>
+                                            </div>
+                                            <div class=" tw-m-5">
                                                 <input type="radio" id="GBmes" @click="limpiaBarra(2)" value="2" v-model="gBarra.rango">
                                                 <label class="tw-text-white" for="GBmes"> Mes</label>
                                             </div>
                                             <div class=" tw-m-5">
-                                                <input type="radio" id="GBano" @click="limpiaBarra(3)" value="3" v-model="gBarra.rango">
+                                                <input type="radio" id="GBano" @click="limpiaBarra(3)" value="4" v-model="gBarra.rango">
                                                 <label class="tw-text-white" for="GBano"> Año</label>
                                             </div>
                                         </div>
@@ -441,6 +460,17 @@
                                         <jet-input type="date" v-model="gBarra.fecFin"></jet-input>
                                     </div>
                                 </div>
+                                <!-- semana -->
+                                <div class="lg:tw-flex tw-gap-4" v-else-if="gBarra.rango == 3">
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Fecha Inicio</jet-label>
+                                        <jet-input type="week" v-model="gBarra.fecIni"></jet-input>
+                                    </div>
+                                    <div class=" tw-w-full md:tw-w-1/2">
+                                        <jet-label class="tw-text-white">Fecha Fin</jet-label>
+                                        <jet-input type="week" v-model="gBarra.fecFin"></jet-input>
+                                    </div>
+                                </div>
                                 <!-- mes -->
                                 <div class="lg:tw-flex tw-gap-4" v-else-if="gBarra.rango == 2">
                                     <div class=" tw-w-full md:tw-w-1/2">
@@ -453,7 +483,7 @@
                                     </div>
                                 </div>
                                 <!-- año -->
-                                <div class="lg:tw-flex tw-gap-4" v-else>
+                                <div class="lg:tw-flex tw-gap-4" v-else-if="gBarra.rango == 4">
                                     <div class=" tw-w-full md:tw-w-1/2">
                                         <jet-label class="tw-text-white">Fecha Inicio</jet-label>
                                         <jet-input type="number" v-model="gBarra.fecIni"></jet-input>
@@ -1882,7 +1912,13 @@
                         fechas.push(inicio.format('YYYY-MM'))
                         inicio.add(1, 'month')
                     }
-                }else {
+                }else if(data.rango == 3){
+                    while (inicio.isSameOrBefore(fin, 'week')) {
+                        titFec.push('Semana '+inicio.format('WW-YYYY'))
+                        fechas.push(inicio.format('GGGG-[W]WW'))
+                        inicio.add(1, 'week')
+                    }
+                }else{
                     while (inicio.isSameOrBefore(fin, 'year')) {
                         titFec.push(inicio.format('YYYY'))
                         fechas.push(inicio.format('YYYY'))
@@ -2027,7 +2063,13 @@
                         fechas.push(inicio.format('YYYY-MM'))
                         inicio.add(1, 'month')
                     }
-                }else {
+                }else if(data.rango == 3){
+                    while (inicio.isSameOrBefore(fin, 'week')) {
+                        titFec.push('Semana '+inicio.format('WW-YYYY'))
+                        fechas.push(inicio.format('GGGG-[W]WW'))
+                        inicio.add(1, 'week')
+                    }
+                }else{
                     while (inicio.isSameOrBefore(fin, 'year')) {
                         titFec.push(inicio.format('YYYY'))
                         fechas.push(inicio.format('YYYY'))
@@ -2130,9 +2172,7 @@
                 var name = '';
                 var dat = [];
                 const serie = [];
-
-                    //console.log(inicio.isSameOrBefore(fin, 'week'))
-
+                var dire = 'ReportesPro/PaiGrafiRan';
 
                 //recorrido para fechas
                 if (data.rango == 1) {
@@ -2141,6 +2181,7 @@
                         fechas.push(inicio.format('YYYY-MM-DD'))
                         inicio.add(1, 'days')
                     }
+                    dire = 'ReportesPro/PaiGrafi';
                 }else if(data.rango == 2){
                     while (inicio.isSameOrBefore(fin, 'month')) {
                         titFec.push(inicio.format('MMMM-YYYY'))
@@ -2148,12 +2189,10 @@
                         inicio.add(1, 'month')
                     }
                 }else if(data.rango == 3){
-                    console.log(inicio)
                     while (inicio.isSameOrBefore(fin, 'week')) {
-                        titFec.push(inicio.format('WW-YYYY'))
+                        titFec.push('Semana '+inicio.format('WW-YYYY'))
                         fechas.push(inicio.format('GGGG-[W]WW'))
                         inicio.add(1, 'week')
-                        console.log(fechas)
                     }
                 }else{
                     while (inicio.isSameOrBefore(fin, 'year')) {
@@ -2171,9 +2210,8 @@
 
                 let promesaBa = await axios.post('ReportesPro/LinGrafi', datosBa);
 
-                    let promesaLin = await axios.post('ReportesPro/LinGrafi', datosLin);
+                let promesaLin = await axios.post('ReportesPro/LinGrafi', datosLin);
 
-                console.log(promesaBa.data)
 
                 //Manejo de tipo entre maquinas y procesos
                 if (data.tipo == 'generalMaq') {
@@ -2239,7 +2277,7 @@
                     })
                 }
 
-                let promesaPas = await axios.post('ReportesPro/PaiGrafi', datosBa);
+                let promesaPas = await axios.post(dire, datosBa);
                 var dtPas = [];
 
                 promesaPas.data.forEach(dat => {

@@ -249,6 +249,13 @@
                                             <i class="fas fa-check-circle"></i>
                                         </span>
                                     </div>
+                                    <div class="iconoPurple" @click="edit(datos)" v-if="datos.EstatusArt == 1">
+                                        <span tooltip="Editar" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                            </svg>
+                                        </span>
+                                    </div>
                                 </div>
                                 <div class="columnaIconos" v-else>
                                     <div class="tw-w-4 tw-mr-2 tw-transform tw-cursor-pointer hover:tw-text-green-500 hover:tw-scale-125">
@@ -372,6 +379,128 @@
             </div>
         </div>
     </div>
+
+    <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición {{ Requi.NumReq }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="tw-mx-4">
+            <div>
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">FECHA</th>
+                        <th class="columna">NUM REQ</th>
+                        <th class="columna">DEPARTAMENTO</th>
+                        <th class="columna">MAQUINA</th>
+                        <th class="columna">MARCA</th>
+                        <th class="columna">OBSERVACIONES</th>
+                    </template>
+                    <template v-slot:TableFooter>
+                        <tr class="fila">
+                            <td class="tw-text-center">{{ Requi.Fecha }}</td>
+                            <td class="tw-text-center">{{ Requi.NumReq }}</td>
+                            <td class="tw-text-center">{{ Requi.requisicion_departamento.Nombre }}</td>
+                            <td class="tw-text-center">{{ Requi.requisicion_maquina.Nombre }}</td>
+                            <td class="tw-text-center">{{ Requi.requisicion_marca.Nombre }}</td>
+                            <td class="tw-text-center">{{ Requi.Observaciones }}</td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
+
+            <div>
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Articulos --</p>
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">CANTIDAD</th>
+                        <th class="columna">UNIDAD</th>
+                        <th class="columna">DESCRIPCION</th>
+                        <th class="columna">NUM PARTE</th>
+                        <th class="columna">ESTATUS</th>
+                        <th class="columna">ACCIONES</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr class="fila" v-for="art in Requi.requisicion_articulos" :key="art.id">
+                            <td class="tw-text-center">{{ art.Cantidad }}</td>
+                            <td class="tw-text-center">{{ art.Unidad }}</td>
+                            <td class="tw-text-center">{{ art.Descripcion }}</td>
+                            <td class="tw-text-center">{{ art.NumParte }}</td>
+                            <td class="tw-text-center">
+                                <div v-if="art.EstatusArt == 1">
+                                    <span tooltip="SIN ENVIAR" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
+                                            SIN ENVIAR</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 2">
+                                    <span tooltip="Solicitada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 3 || art.EstatusArt == 4">
+                                    <span tooltip="En Espera de Cotización" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 5">
+                                    <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 6">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 7">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 8">
+                                    <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 9">
+                                    <span tooltip="Entregado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 10">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="columnaIconos">
+                                    <div class="iconoDetails" @click="edit(art)">
+                                        <span tooltip="Editar" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
+        </div>
+
+        <div class="ModalFooter">
+            <jet-CancelButton @click="chagePartidas">Cerrar</jet-CancelButton>
+        </div>
+    </modal>
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
         <form>
@@ -507,233 +636,118 @@
     </modal>
 
     <modal :show="showModal2" @close="chageClose2" :maxWidth="tam">
-        <form>
-            <div class="tw-px-4 tw-py-4">
-                <div class="tw-text-lg">
-                    <div class="ModalHeader">
-                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Edita Partida de la Requisición</h3>
-                    </div>
-                </div>
-
-                <div class="tw-mt-4">
-                    <div class="ModalForm">
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>FECHA</jet-label>
-                                <jet-input type="date" :min="min" v-model="form.Fecha"></jet-input>
-                                <small v-if="errors.Fecha" class="validation-alert">{{errors.Fecha}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>AREA</jet-label>
-                                <select  v-model="form.Departamento_id" class="InputSelect">
-                                    <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
-                                </select>
-                                <small v-if="errors.Fecha" class="validation-alert">{{errors.Fecha}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Num Requisicion</jet-label>
-                                <jet-input type="text" v-model="form.NumReq"></jet-input>
-                                <small v-if="errors.NumReq" class="validation-alert">{{errors.NumReq}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Código</jet-label>
-                                <select id="Empresa" v-model="form.Codigo" class="InputSelect">
-                                    <option value="A - EXTRAORDINARIA">A - EXTRAORDINARIA</option>
-                                    <option value="B - REGULAR">B - REGULAR</option>
-                                    <option value="C - PRESUPUESTO">C - PRESUPUESTO</option>
-                                </select>
-                                <small v-if="errors.Codigo" class="validation-alert">{{errors.Codigo}}</small>
-                            </div>
-                        </div>
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>MÁQUINA</jet-label>
-                                <select id="Maquina" v-model="form.Maquina" name="Maquina" class="InputSelect" @change="loadMarcas($event)">
-                                    <option v-for="maq in Maquinas" :key="maq.id" :value="maq.id"> {{ maq.Nombre }}</option>
-                                </select>
-                                <small v-if="errors.Maquina" class="validation-alert">{{errors.Maquina}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>MARCA</jet-label>
-                                <select id="Marca" v-model="form.Marca" class="InputSelect">
-                                    <option v-for="maq in Marcas" :key="maq.id" :value="maq.id" > {{ maq.Nombre }}</option>
-                                </select>
-                                <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
-                            </div>
-                        </div>
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>TIPO DE COMPRA</jet-label>
-                                <select id="Tipo" v-model="form.Tipo" class="InputSelect">
-                                    <option value="REQUISICIÓN">REQUISICIÓN</option>
-                                    <option value="REFACCIONES">REFACCIONES</option>
-                                    <option value="SERVICIOS EXTERNOS">SERVICIOS EXTERNOS</option>
-                                    <option value="ORDEN DE TRABAJO">ORDEN DE TRABAJO</option>
-                                    <option value="PRODUCTOS AUXILIARES">PRODUCTOS AUXILIARES</option>
-                                    <option value="MODIFICACIONES Y PROYECTOS">MODIFICACIONES Y PROYECTOS</option>
-                                </select>
-                                <small v-if="errors.Tipo" class="validation-alert">{{errors.Tipo}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>NOMBRE SOLICITANTE</jet-label>
-                                <select id="Nombre" v-model="form.Nombre" class="InputSelect">
-                                    <option v-for="per in PerfilesUsuarios" :key="per.id" :value="per.id" > {{ per.Nombre }} {{per.ApPat}} {{per.ApMat}}</option>
-                                </select>
-                                <small v-if="errors.Nombre" class="validation-alert">{{errors.Nombre}}</small>
-                            </div>
-                        </div>
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>CANTIDAD</jet-label>
-                                <jet-input type="number" v-model="form.Cantidad"></jet-input>
-                                <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>UNIDAD</jet-label>
-                                <select id="Unidad" v-model="form.Unidad" class="InputSelect">
-                                    <option value="PZ">PIEZAS</option>
-                                    <option value="LTS">LITROS</option>
-                                    <option value="KG">KILOGRAMOS</option>
-                                    <option value="MT">METROS</option>
-                                    <option value="SERVICIO">SERVICIO</option>
-                                    <option value="CAJA">CAJA</option>
-                                    <option value="OTRO">OTRO</option>
-                                </select>
-                                <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-8/12 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>DESCRIPCIÓN</jet-label>
-                                <jet-input type="text" v-model="form.Descripcion" @input="(val) => (form.Descripcion = form.Descripcion.toUpperCase())"></jet-input>
-                                <small v-if="errors.Descripcion" class="validation-alert">{{errors.Descripcion}}</small>
-                            </div>
-                        </div>
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label><span class="required">*</span>OBSERVACIONES</jet-label>
-                                <textarea name="" id="" cols="2" v-model="form.Observaciones" @input="(val) => (form.Observaciones = form.Observaciones.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="ModalFooter">
-                <jet-button type="button" @click="update(form)">Actualizar</jet-button>
-                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
-            </div>
-        </form>
-    </modal>
-
-    <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
         <div class="tw-px-4 tw-py-4">
             <div class="tw-text-lg">
                 <div class="ModalHeader">
-                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición {{ Requi.NumReq }}</h3>
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Edita Partida de la Requisición</h3>
                 </div>
             </div>
-        </div>
 
-        <div class="tw-mx-4">
-            <div>
-                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
-                <Table>
-                    <template v-slot:TableHeader>
-                        <th class="columna">FECHA</th>
-                        <th class="columna">NUM REQ</th>
-                        <th class="columna">DEPARTAMENTO</th>
-                        <th class="columna">MAQUINA</th>
-                        <th class="columna">MARCA</th>
-                        <th class="columna">OBSERVACIONES</th>
-                    </template>
-                    <template v-slot:TableFooter>
-                        <tr class="fila">
-                            <td class="tw-text-center">{{ Requi.Fecha }}</td>
-                            <td class="tw-text-center">{{ Requi.NumReq }}</td>
-                            <td class="tw-text-center">{{ Requi.requisicion_departamento.Nombre }}</td>
-                            <td class="tw-text-center">{{ Requi.requisicion_maquina.Nombre }}</td>
-                            <td class="tw-text-center">{{ Requi.requisicion_marca.Nombre }}</td>
-                            <td class="tw-text-center">{{ Requi.Observaciones }}</td>
-                        </tr>
-                    </template>
-                </Table>
-            </div>
-
-            <div>
-                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Articulos --</p>
-                <Table>
-                    <template v-slot:TableHeader>
-                        <th class="columna">CANTIDAD</th>
-                        <th class="columna">UNIDAD</th>
-                        <th class="columna">DESCRIPCION</th>
-                        <th class="columna">NUM PARTE</th>
-                        <th class="columna">ESTATUS</th>
-                        <!-- <th class="columna">ACCIONES</th> -->
-                    </template>
-
-                    <template v-slot:TableFooter>
-                        <tr class="fila" v-for="art in Requi.requisicion_articulos" :key="art.id">
-                            <td class="tw-text-center">{{ art.Cantidad }}</td>
-                            <td class="tw-text-center">{{ art.Unidad }}</td>
-                            <td class="tw-text-center">{{ art.Descripcion }}</td>
-                            <td class="tw-text-center">{{ art.NumParte }}</td>
-                            <td class="tw-text-center">
-                                <div v-if="art.EstatusArt == 1">
-                                    <span tooltip="SIN ENVIAR" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
-                                            SIN ENVIAR</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 2">
-                                    <span tooltip="Solicitada" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 3 || art.EstatusArt == 4">
-                                    <span tooltip="En Espera de Cotización" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 5">
-                                    <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 6">
-                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 7">
-                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 8">
-                                    <span tooltip="Pasa por el articulo a almacén" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 9">
-                                    <span tooltip="Entregado" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 10">
-                                    <span tooltip="Cotizacion Rechazada" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
-                                    </span>
-                                </div>
-                            </td>
-<!--                             <td class="tw-text-center">
-                            </td> -->
-                        </tr>
-                    </template>
-                </Table>
+            <div class="tw-mt-4">
+                <div class="ModalForm">
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>FECHA</jet-label>
+                            <jet-input type="date" :min="min" v-model="form.Fecha"></jet-input>
+                            <small v-if="errors.Fecha" class="validation-alert">{{errors.Fecha}}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>AREA</jet-label>
+                            <select  v-model="form.Departamento_id" class="InputSelect">
+                                <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
+                            </select>
+                            <small v-if="errors.Departamento_id" class="validation-alert">{{errors.Departamento_id}}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>Num Requisicion</jet-label>
+                            <jet-input type="text" v-model="form.NumReq"></jet-input>
+                            <small v-if="errors.NumReq" class="validation-alert">{{errors.NumReq}}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>Código</jet-label>
+                            <select id="Empresa" v-model="form.Codigo" class="InputSelect">
+                                <option value="A - EXTRAORDINARIA">A - EXTRAORDINARIA</option>
+                                <option value="B - REGULAR">B - REGULAR</option>
+                                <option value="C - PRESUPUESTO">C - PRESUPUESTO</option>
+                            </select>
+                            <small v-if="errors.Codigo" class="validation-alert">{{errors.Codigo}}</small>
+                        </div>
+                    </div>
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>MÁQUINA</jet-label>
+                            <select id="Maquina" v-model="form.Maquina" name="Maquina" class="InputSelect" @change="loadMarcas($event)">
+                                <option v-for="maq in Maquinas" :key="maq.id" :value="maq.id"> {{ maq.Nombre }}</option>
+                            </select>
+                            <small v-if="errors.Maquina" class="validation-alert">{{errors.Maquina}}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>MARCA</jet-label>
+                            <select id="Marca" v-model="form.Marca" class="InputSelect">
+                                <option v-for="maq in Marcas" :key="maq.id" :value="maq.id" > {{ maq.Nombre }}</option>
+                            </select>
+                            <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
+                        </div>
+                    </div>
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>TIPO DE COMPRA</jet-label>
+                            <select id="Tipo" v-model="form.Tipo" class="InputSelect">
+                                <option value="REQUISICIÓN">REQUISICIÓN</option>
+                                <option value="REFACCIONES">REFACCIONES</option>
+                                <option value="SERVICIOS EXTERNOS">SERVICIOS EXTERNOS</option>
+                                <option value="ORDEN DE TRABAJO">ORDEN DE TRABAJO</option>
+                                <option value="PRODUCTOS AUXILIARES">PRODUCTOS AUXILIARES</option>
+                                <option value="MODIFICACIONES Y PROYECTOS">MODIFICACIONES Y PROYECTOS</option>
+                            </select>
+                            <small v-if="errors.Tipo" class="validation-alert">{{errors.Tipo}}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>NOMBRE SOLICITANTE</jet-label>
+                            <select id="Nombre" v-model="form.Nombre" class="InputSelect">
+                                <option v-for="per in PerfilesUsuarios" :key="per.id" :value="per.id" > {{ per.Nombre }} {{per.ApPat}} {{per.ApMat}}</option>
+                            </select>
+                            <small v-if="errors.Nombre" class="validation-alert">{{errors.Nombre}}</small>
+                        </div>
+                    </div>
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>CANTIDAD</jet-label>
+                            <jet-input type="number" v-model="form.Cantidad"></jet-input>
+                            <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>UNIDAD</jet-label>
+                            <select id="Unidad" v-model="form.Unidad" class="InputSelect">
+                                <option value="PZ">PIEZAS</option>
+                                <option value="LTS">LITROS</option>
+                                <option value="KG">KILOGRAMOS</option>
+                                <option value="MT">METROS</option>
+                                <option value="SERVICIO">SERVICIO</option>
+                                <option value="CAJA">CAJA</option>
+                                <option value="OTRO">OTRO</option>
+                            </select>
+                            <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-8/12 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>DESCRIPCIÓN</jet-label>
+                            <jet-input type="text" v-model="form.Descripcion" @input="(val) => (form.Descripcion = form.Descripcion.toUpperCase())"></jet-input>
+                            <small v-if="errors.Descripcion" class="validation-alert">{{errors.Descripcion}}</small>
+                        </div>
+                    </div>
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                            <jet-label><span class="required">*</span>OBSERVACIONES</jet-label>
+                            <textarea name="" id="" cols="2" v-model="form.Observaciones" @input="(val) => (form.Observaciones = form.Observaciones.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="ModalFooter">
-            <jet-CancelButton @click="chagePartidas">Cerrar</jet-CancelButton>
+            <jet-button type="button" @click="update(form)">Actualizar</jet-button>
+            <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
         </div>
     </modal>
 
@@ -775,6 +789,7 @@ export default {
     data() {
         return {
             showPartidas: false,
+            showModal: false,
             showModal2: false,
             loading: false,
             min: moment().format("YYYY-MM-DD"),
@@ -796,8 +811,12 @@ export default {
                 Codigo: '',
                 Maquina: '',
                 Marca: '',
+                TipCompra: '',
                 Tipo: '',
                 Nombre: '',
+                Cantidad: '',
+                Unidad: '',
+                Descripcion: '',
                 Partida: [{
                     Cantidad: '',
                     Unidad: '',
@@ -886,7 +905,7 @@ export default {
         Autorizados: Number,
         Confirmado: Number,
         mes: String,
-        Vista: String,
+        Vista: Number,
     },
 
     methods: {
@@ -975,10 +994,6 @@ export default {
         openModal2() {
             this.chageClose2();
             this.editMode2 = false;
-        },
-
-        showModal2() {
-            this.showModal2 = !this.showModal2;
         },
 
         chagePartidas() {
@@ -1078,14 +1093,27 @@ export default {
             }
         },
 
-        edit: function (data) {
-            console.log(data);
+        chageClose2(){
+            this.showModal2 = !this.showModal2;
+        },
+
+        edit(data) {
+            this.chageClose2();
+            this.form.Fecha = data.Fecha;
+            this.form.Departamento_id = data.articulos_requisicion.Departamento_id;
+            this.form.NumReq = data.articulos_requisicion.NumReq;
+            this.form.Codigo = data.articulos_requisicion.Codigo;
+            this.form.Maquina = data.articulos_requisicion.Maquina_id;
+            this.form.Marca = data.articulos_requisicion.Marca_id;
+            this.form.Tipo = data.articulos_requisicion.TipCompra;
+            this.form.Nombre = data.articulos_requisicion.Perfil_id;
             this.form.ArtId = data.id;
             this.form.Cantidad = data.Cantidad;
             this.form.Unidad = data.Unidad;
             this.form.Descripcion = data.Descripcion;
-            this.chagePartidas();
-            this.chageClose2();
+            this.form.Observaciones = data.articulos_requisicion.Observaciones;
+            // this.chagePartidas();
+            console.log(this.form);
         },
 
         update(data) {
