@@ -53,7 +53,7 @@ class RequisicionesSolicitadasController extends Controller {
                                 'jefes_areas_id',
                                 'Codigo', 'Maquina_id',
                                 'Marca_id', 'TipCompra',
-                                'Observaciones', 'Perfil_id');
+                                'Observaciones', 'Perfil_id', 'FecAutorizacion');
                         },
                         'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                             $perfil->select('id', 'name');
@@ -89,7 +89,7 @@ class RequisicionesSolicitadasController extends Controller {
                                 'jefes_areas_id',
                                 'Codigo', 'Maquina_id',
                                 'Marca_id', 'TipCompra',
-                                'Observaciones', 'Perfil_id');
+                                'Observaciones', 'Perfil_id', 'FecAutorizacion');
                         },
                         'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                             $perfil->select('id', 'name');
@@ -126,7 +126,7 @@ class RequisicionesSolicitadasController extends Controller {
                                 'jefes_areas_id',
                                 'Codigo', 'Maquina_id',
                                 'Marca_id', 'TipCompra',
-                                'Observaciones', 'Perfil_id');
+                                'Observaciones', 'Perfil_id', 'FecAutorizacion');
                         },
                         'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                             $perfil->select('id', 'name');
@@ -161,7 +161,7 @@ class RequisicionesSolicitadasController extends Controller {
                                 'jefes_areas_id',
                                 'Codigo', 'Maquina_id',
                                 'Marca_id', 'TipCompra',
-                                'Observaciones', 'Perfil_id');
+                                'Observaciones', 'Perfil_id', 'FecAutorizacion');
                         },
                         'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                             $perfil->select('id', 'name');
@@ -233,7 +233,7 @@ class RequisicionesSolicitadasController extends Controller {
                                 'jefes_areas_id',
                                 'Codigo', 'Maquina_id',
                                 'Marca_id', 'TipCompra',
-                                'Observaciones', 'Perfil_id');
+                                'Observaciones', 'Perfil_id', 'FecAutorizacion');
                         },
                         'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                             $perfil->select('id', 'name');
@@ -268,7 +268,7 @@ class RequisicionesSolicitadasController extends Controller {
                                 'jefes_areas_id',
                                 'Codigo', 'Maquina_id',
                                 'Marca_id', 'TipCompra',
-                                'Observaciones', 'Perfil_id');
+                                'Observaciones', 'Perfil_id', 'FecAutorizacion');
                         },
                         'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                             $perfil->select('id', 'name');
@@ -304,7 +304,7 @@ class RequisicionesSolicitadasController extends Controller {
                                 'jefes_areas_id',
                                 'Codigo', 'Maquina_id',
                                 'Marca_id', 'TipCompra',
-                                'Observaciones', 'Perfil_id');
+                                'Observaciones', 'Perfil_id', 'FecAutorizacion');
                         },
                         'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                             $perfil->select('id', 'name');
@@ -619,7 +619,7 @@ class RequisicionesSolicitadasController extends Controller {
                         'jefes_areas_id',
                         'Codigo', 'Maquina_id',
                         'Marca_id', 'TipCompra',
-                        'Observaciones', 'Perfil_id');
+                        'Observaciones', 'Perfil_id', 'updated_at');
                 },
                 'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                     $perfil->select('id', 'name');
@@ -643,7 +643,7 @@ class RequisicionesSolicitadasController extends Controller {
             ->whereYear('Fecha', $anio)
             ->where('EstatusArt', '>', 1)
             ->where('EstatusArt', $request->Estatus)
-            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+            ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id', 'updated_at']);
         }
 
         // Indicadores de Estatus de requisiciones
