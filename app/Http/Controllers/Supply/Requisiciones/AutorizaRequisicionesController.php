@@ -12,10 +12,12 @@ use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\Supply\Requisiciones\TiemposRequisiciones;
+use App\Mail\ContactaProveedorMailable;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Return_;
 
@@ -783,6 +785,17 @@ class AutorizaRequisicionesController extends Controller{
                         'OrdenCompra' => $OrdenCompra,
                     ]);
                 }
+                break;
+            case 5:
+
+                $Req = Requisiciones::where('id', '=', $request->requisicion_id)->get(['id','NumReq', 'Fecha', 'OrdenCompra']);
+
+                $correo = new ContactaProveedorMailable($Req);
+
+                Mail::to('programador@hlangeles.com')->send($correo);
+                Mail::to('Usir95.hp@gmail.com')->send($correo);
+
+                return "Mensaje Enviado";
                 break;
         }
 

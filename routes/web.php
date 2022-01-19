@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use App\Mail\ContactaProveedorMailable;
 /*
 |--------------------------------------------------------------------------
 | Web Routes

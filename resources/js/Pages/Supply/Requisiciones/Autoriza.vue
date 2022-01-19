@@ -736,6 +736,7 @@
         </div>
 
         <div class="ModalFooter">
+            <jet-button type="button" @click="Correo(form)" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Envia Correo</jet-button>
             <jet-button type="button" @click="AutorizaCotizacion(form)" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 1° Cotizacion</jet-button>
             <jet-button type="button" @click="AutorizaCotizacion2(form)" v-if="NumCot > 0" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 2° Cotizacion</jet-button>
             <jet-CancelButton @click="chagePreciosRequisicion">Cerrar</jet-CancelButton>
@@ -1478,6 +1479,16 @@ export default {
                 onSuccess: () => {
                     this.alertSucces();
                     this.reset();
+                },
+            });
+        },
+
+        Correo(data){
+            data._method = "PUT";
+            data.metodo = 5;
+            this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
                 },
             });
         },

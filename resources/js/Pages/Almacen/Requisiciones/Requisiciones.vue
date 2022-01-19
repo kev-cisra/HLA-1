@@ -1374,6 +1374,10 @@ export default {
             var ventana = window.open('', 'PRINT', 'height=400,width=600');
             ventana.document.write('<html><head><title>' + document.title + '</title>');
             ventana.document.write('<link rel="stylesheet" href="style.css" media="print">'); //Aquí agregué la hoja de estilos
+            ventana.document.write('<style>');
+            // ventana.document.write('');
+            ventana.document.write('@media print { @page{margin: 0;} body{margin: 2cm;} }');
+            ventana.document.write('</style>');
             ventana.document.write('</head><body>');
             ventana.document.write('<div>');
             ventana.document.write('<p style="font-size: 0.875em;">Requisición: <strong>'+data.NumReq+'</strong></p>');
@@ -1386,7 +1390,7 @@ export default {
                         TotalRequisicion += Number(pre.Total);
                     });
             });
-            ventana.document.write('<tr><td style="font-size: 0.875em;">Total:</td><td><strong>'+TotalRequisicion+'</strong></td></tr>');
+            ventana.document.write('<tr><td style="font-size: 0.875em;">Total:</td><td><strong>$'+TotalRequisicion+'</strong></td></tr>');
             ventana.document.write('</table>');
             ventana.document.write('<div class="turnout-wrapper turnin-wrapper">');
             ventana.document.write('<div class="qrcode-style" id="qrcode"></div>');
