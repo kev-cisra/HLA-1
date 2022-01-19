@@ -902,7 +902,7 @@ class RepoProController extends Controller
         $paros = parosCarga::where('departamento_id', '=', $request->departamento_id)
         ->whereBetween('fecha', [$request->iniDia, $request->finDia])
         ->whereIn('maq_pro_id', $request->maquinas)
-        ->whereIn('paro_id', $request->paros)
+        //->whereIn('paro_id', $request->paros)
         ->selectRaw('proceso_id, maq_pro_id, paro_id, SUM(tiempo) AS tiempo')
         ->groupBy('proceso_id')
         ->groupBy('maq_pro_id')

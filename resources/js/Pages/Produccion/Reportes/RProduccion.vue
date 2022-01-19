@@ -193,7 +193,6 @@
                                                 <label class="tw-text-white" for="GPparo"> Paro</label>
                                             </div>
                                         </div>
-
                                     </div>
 
                                     <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0 tw-rounded-xl tw-border tw-border-white-800">
@@ -316,7 +315,7 @@
                                 <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0">
                                     <jet-label class="tw-text-white">Tipo de grafica</jet-label>
                                     <div class="lg:tw-flex tw-text-center">
-                                        <Select2 v-model="gLinea.tipo" class="InputSelect" :options="opcTipo" :settings="{width: '100%', allowClear: true}"></Select2>
+                                        <Select2 v-model="gLinea.tipo" class="InputSelect" :options="opcTipoOt" :settings="{width: '100%', allowClear: true}"></Select2>
                                     </div>
                                 </div>
 
@@ -445,7 +444,7 @@
                                 <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0">
                                     <jet-label class="tw-text-white">Tipo de grafica</jet-label>
                                     <div class="lg:tw-flex tw-text-center">
-                                        <Select2 v-model="gBarra.tipo" class="InputSelect" :options="opcTipo" :settings="{width: '100%', allowClear: true}"></Select2>
+                                        <Select2 v-model="gBarra.tipo" class="InputSelect" :options="opcTipoOt" :settings="{width: '100%', allowClear: true}"></Select2>
                                     </div>
                                 </div>
 
@@ -516,17 +515,24 @@
                         <div class="lg:tw-flex">
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0 tw-gap-x-5">
                                 <!-- titulos para graficas -->
-                                <div class="lg:tw-flex tw-gap-4">
+                                <div class="tw-gap-4">
                                     <!-- titulo -->
-                                    <div class=" tw-w-full md:tw-w-full">
+                                    <div class=" tw-w-full">
                                         <jet-label class="tw-text-white">Título</jet-label>
                                         <jet-input type="text" class="form-control" v-model="gBaLi.titulo"></jet-input>
                                     </div>
-                                    <!-- sub titulo
-                                    <div class=" tw-w-full md:tw-w-1/2">
-                                        <jet-label class="tw-text-white">Sub Título</jet-label>
-                                        <jet-input type="text" class="form-control" v-model="gBaLi.subtitulo"></jet-input>
-                                    </div> -->
+                                    <jet-label class="tw-text-white"><span class="required">*</span>Títulos laterales</jet-label>
+                                    <!-- sub titulo -->
+                                    <div class="tw-w-full tw-flex tw-gap-3">
+                                        <div class="tw-w-full md:tw-w-1/2">
+                                            <jet-label class="tw-text-white">Izquierdo</jet-label>
+                                            <jet-input type="text" class="form-control" v-model="gBaLi.subIz"></jet-input>
+                                        </div>
+                                        <div class="tw-w-full md:tw-w-1/2">
+                                            <jet-label class="tw-text-white">Derecho</jet-label>
+                                            <jet-input type="text" class="form-control" v-model="gBaLi.subDe"></jet-input>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- Select de procesos, maquinas y normas -->
@@ -579,7 +585,7 @@
                                 <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0">
                                     <jet-label class="tw-text-white">Tipo de grafica</jet-label>
                                     <div class="lg:tw-flex tw-text-center">
-                                        <Select2 v-model="gBaLi.tipo" class="InputSelect" :options="opcTipo" :settings="{width: '100%', allowClear: true}"></Select2>
+                                        <Select2 v-model="gBaLi.tipo" class="InputSelect" :options="opcTipoOt" :settings="{width: '100%', allowClear: true}"></Select2>
                                     </div>
                                 </div>
                                 <!-- dias -->
@@ -1133,7 +1139,8 @@
                 gBaLi: {
                     borra: '',
                     titulo: '',
-                    subtitulo: '',
+                    subIz: '',
+                    subDe: '',
                     rango: 1,
                     tipo: 'generalMaq',
                     fecIni: null,
@@ -2304,7 +2311,7 @@
                     },
                     yAxis: [{ // Secondary yAxis
                         title: {
-                            text: '--',
+                            text: data.subDe,
                             style: {
                                 color: Highcharts.getOptions().colors[5]
                             }
@@ -2324,7 +2331,7 @@
                             }
                         },
                         title: {
-                            text: 'Producción',
+                            text: data.subIz,
                             style: {
                                 color: Highcharts.getOptions().colors[1]
                             }
