@@ -21,11 +21,11 @@ class ProveedoresController extends Controller{
         return Inertia::render('Compras/Proveedores/Proveedores', compact('Session', 'Proveedores', 'Departamentos'));
     }
 
-
     public function store(Request $request){
 
         Validator::make($request->all(), [
             'Nombre' => ['required'],
+            'Correo' => ['required', 'email'],
             'Departamentos_id' => ['required'],
             'TipoPago' => ['required'],
         ])->validate();
@@ -33,6 +33,7 @@ class ProveedoresController extends Controller{
         Proveedores::create([
             'IdUser' => $request->IdUser,
             'Nombre' => $request->Nombre,
+            'Correo' => $request->Correo,
             'Departamentos_id' => $request->Departamentos_id,
             'TipoPago' =>  $request->TipoPago,
         ]);
@@ -44,6 +45,7 @@ class ProveedoresController extends Controller{
 
         Validator::make($request->all(), [
             'Nombre' => ['required'],
+            'Correo' => ['required','email'],
             'Departamentos_id' => ['required'],
             'TipoPago' => ['required'],
         ])->validate();

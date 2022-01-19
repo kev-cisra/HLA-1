@@ -58,48 +58,53 @@
     </div>
 
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
-        <form>
-            <div class="tw-px-4 tw-py-4">
-                <div class="tw-text-lg">
-                    <div class="ModalHeader">
-                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Registro de Información</h3>
-                    </div>
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Registro de Información</h3>
                 </div>
+            </div>
 
-                <div class="tw-mt-4">
-                    <div class="ModalForm">
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>NOMBRE</jet-label>
-                                <jet-input type="text" v-model="form.Nombre" @input="(val) => (form.Nombre = form.Nombre.toUpperCase())"></jet-input>
-                                <small v-if="errors.Nombre" class="validation-alert">{{errors.Nombre}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>DEPARTAMENTO</jet-label>
-                                <select id="Jefe" v-model="form.Departamentos_id" class="InputSelect">
-                                    <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
-                                </select>
-                                <small v-if="errors.Departamentos_id" class="validation-alert">{{errors.Departamentos_id}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>TIPO PAGO</jet-label>
-                                <select id="Jefe" v-model="form.TipoPago" class="InputSelect">
-                                    <option value="REMISION">REMISIÓN</option>
-                                    <option value="FACTURADO">FACTURADO</option>
-                                </select>
-                                <small v-if="errors.TipoPago" class="validation-alert">{{errors.TipoPago}}</small>
-                            </div>
+            <div class="tw-mt-4">
+                <div class="ModalForm">
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>NOMBRE</jet-label>
+                            <jet-input type="text" v-model="form.Nombre" @input="(val) => (form.Nombre = form.Nombre.toUpperCase())"></jet-input>
+                            <small v-if="errors.Nombre" class="validation-alert">{{errors.Nombre}}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>CORREO</jet-label>
+                            <jet-input type="email" v-model="form.Correo" @input="(val) => (form.Correo = form.Correo.toUpperCase())"></jet-input>
+                            <small v-if="errors.Correo" class="validation-alert">{{errors.Correo}}</small>
+                        </div>
+                    </div>
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>DEPARTAMENTO</jet-label>
+                            <select id="Jefe" v-model="form.Departamentos_id" class="InputSelect">
+                                <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
+                            </select>
+                            <small v-if="errors.Departamentos_id" class="validation-alert">{{errors.Departamentos_id}}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>TIPO PAGO</jet-label>
+                            <select id="TipoPago" v-model="form.TipoPago" class="InputSelect">
+                                <option value="REMISION">REMISIÓN</option>
+                                <option value="FACTURADO">FACTURADO</option>
+                            </select>
+                            <small v-if="errors.TipoPago" class="validation-alert">{{errors.TipoPago}}</small>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="ModalFooter">
-                <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
-                <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
-                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
-            </div>
-        </form>
+        <div class="ModalFooter">
+            <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
+            <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
+            <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+        </div>
     </modal>
 
   </app-layout>
@@ -134,9 +139,10 @@ export default {
             color: "tw-bg-teal-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             form: {
-                Nombre: null,
-                Departamentos_id: null,
-                TipoPago: null,
+                Nombre: '',
+                Correo: '',
+                Departamentos_id: '',
+                TipoPago: '',
             },
         };
     },
@@ -167,9 +173,10 @@ export default {
             this.form = {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
-                Nombre: null,
-                Departamentos_id: null,
-                TipoPago: null,
+                Nombre: '',
+                Correo: '',
+                Departamentos_id: '',
+                TipoPago: '',
             };
         },
 
