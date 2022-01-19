@@ -660,7 +660,10 @@ class AutorizaRequisicionesController extends Controller{
         }
 
         switch($request->metodo){
-            case 1:
+            case 1: //Autorizacion de articulo con comentario
+
+                $hoy = Carbon::now();
+                $hoy->format('Y-m-d h:i:s');
 
                 ArticulosRequisiciones::where('id', '=', $request->articulo_id)->where('EstatusArt', '=', 5)->update([
                     'EstatusArt' => 6,
@@ -699,6 +702,7 @@ class AutorizaRequisicionesController extends Controller{
                 Requisiciones::where('id', '=', $request->requisicion_id)->update([
                     'Estatus' => 6,
                     'OrdenCompra' => $OrdenCompra,
+                    'FecAutorizacion' => $hoy,
                 ]);
 
                 break;
@@ -745,7 +749,7 @@ class AutorizaRequisicionesController extends Controller{
                 }
 
                 break;
-            case 4:
+            case 4: //Autorizacion de articulo sin comentario
                 //Actualizo el estatus del articulo
                 ArticulosRequisiciones::where('id', '=', $request->articulos_requisiciones_id)->where('EstatusArt', '=', 5)->update([
                     'EstatusArt' => 6,
@@ -793,7 +797,6 @@ class AutorizaRequisicionesController extends Controller{
                 $correo = new ContactaProveedorMailable($Req);
 
                 Mail::to('programador@hlangeles.com')->send($correo);
-                Mail::to('Usir95.hp@gmail.com')->send($correo);
 
                 return "Mensaje Enviado";
                 break;

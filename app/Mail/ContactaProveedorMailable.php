@@ -11,7 +11,7 @@ class ContactaProveedorMailable extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject = "Informacion de contacto";
+    public $subject = "SOLICITUD DE REQUISICION";
     public $Req;
     /**
      * Create a new message instance.

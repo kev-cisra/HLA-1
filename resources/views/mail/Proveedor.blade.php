@@ -98,6 +98,9 @@
                                 </ul>
                             </th>
                         </tr>
+                        <th style="text-align: justify; text-transform: uppercase; opacity: 0.8; padding-left: 20px; padding-right: 15px;">
+                            <p>No responder a este correo</p>
+                        </th>
                         <tr>
                             <td>
                                 <p style="margin-top: 23px; margin-bottom: 0px; font-size: 14px; font-family: Arial, sans-serif; text-aling: center; color: #0284C7;">&reg; HilaturasLosAngeles<br/><a href="http://hilaturaslosangeles.com/" style="color: #ffffff; text-decoration: underline"></a></p>
