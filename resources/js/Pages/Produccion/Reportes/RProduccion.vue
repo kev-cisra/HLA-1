@@ -168,10 +168,6 @@
                                         <jet-label class="tw-text-white">Normas</jet-label>
                                         <Select2 v-model="gPie.norma" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcNM" />
                                     </div>
-                                    <div class="tw-w-full" v-if="gPie.propa == 2">
-                                        <jet-label class="tw-text-white">Paros</jet-label>
-                                        <Select2 v-model="gPie.paro" class="InputSelect" :options="opcPR" :settings="{width: '100%', multiple: true, allowClear: true}"></Select2>
-                                    </div>
                                 </div>
 
                             </div>
@@ -215,6 +211,17 @@
                                     <div class="lg:tw-flex tw-text-center">
                                         <Select2 v-model="gPie.tipo" class="InputSelect" :options="opcTipo" :settings="{width: '100%', allowClear: true}"></Select2>
                                     </div>
+                                </div>
+
+                                <div class="tw-w-full" v-else>
+                                    <jet-label class="tw-text-white">Tipo de grafica</jet-label>
+                                    <div class="lg:tw-flex tw-text-center">
+                                        <select v-model="gPie.tipoParo" class="InputSelect">
+                                            <option v-for="otp in opcTipoParo" :key="otp.id" :value="otp.id">{{otp.text}}</option>
+                                        </select>
+                                    </div>
+                                    <!-- <jet-label class="tw-text-white">Paros</jet-label>
+                                    <Select2 v-model="gPie.paro" class="InputSelect" :options="opcPR" :settings="{width: '100%', multiple: true, allowClear: true}"></Select2> -->
                                 </div>
 
                                 <!-- Input de fechas -->
@@ -1103,6 +1110,7 @@
                     rango: 1,
                     propa: 1,
                     tipo: 'generalMaq',
+                    tipoParo: 'total',
                     paro: [],
                     maquinas: [],
                     procesos: [],
@@ -1335,8 +1343,8 @@
             /***************************** Calculos ******************************************/
             async calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
-                    this.limpPro = false;
-                    this.vCal = false;
+                    //this.limpPro = false;
+                    //this.vCal = false;
 
                     await this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {
@@ -1807,7 +1815,7 @@
                 }
 
                 //Asignacion de datos a un objeto
-                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin, 'paros': data.paro, 'maquinas': data.maquinas};
+                var datos = {'departamento_id': this.S_Area, 'norma': data.norma, 'proceso': data.procesos, 'tipo': data.tipo, 'iniDia': inicio, 'finDia': fin, 'paros': data.paro, 'maquinas': data.maquinas, 'tipoParo': data.tipoParo};
 
                 //consulta
                 if (data.propa == 1) {
@@ -1828,9 +1836,10 @@
                     let promesa = await axios.post('ReportesPro/PrPaiGrafi', datos);
                     prpa = 'Paros en minutos';
                     promesa.data.forEach(dat => {
+                        let proce = dat.proceso_id == null ? 'General' : dat.proceso.nompro + ' / ';
                         let mater = dat.maq_pro_id == null ? '' : dat.maq_pro.maquinas.Nombre + ' / ';
                         let part = dat.paro_id == null ? '' : dat.paros.clave+' - '+dat.paros.descri + ' / ';
-                        valor.push({name: dat.proceso.nompro, y: dat.tiempo, mate: mater, parti: part});
+                        valor.push({name: proce, y: dat.tiempo, mate: mater, parti: part});
                     })
                 }
 
@@ -2502,6 +2511,14 @@
                 const arreg = [
                     {id: 'generalTot', text: 'General Procesos'},
                     {id: 'generalMaq', text: 'General Maquinas'}
+                ]
+                return arreg;
+            },
+
+            opcTipoParo: function() {
+                const arreg = [
+                    {id: 'total', text: 'Total'},
+                    {id: 'separa', text: 'Separado'}
                 ]
                 return arreg;
             }

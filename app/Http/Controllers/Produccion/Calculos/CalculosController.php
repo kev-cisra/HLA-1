@@ -58,7 +58,7 @@ class CalculosController extends Controller
         foreach ($calcula as $ope) {
             //dependiendo del tipo de operacion
             switch ($ope->operacion) {
-                case 'sm_d':
+                /* case 'sm_d':
                     $this->sm_d($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_dc':
@@ -87,11 +87,14 @@ class CalculosController extends Controller
                     break;
                 case 'efi_tur':
                     $this->efi_tur($ope, $request->depa, $fechas, $perf);
+                    break; */
+                case 'efi_sem':
+                    $this->efi_sem($ope, $request->depa, $fechas, $perf);
                     break;
             }
         }
 
-        //return 'Listo';
+        return 'Listo';
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
@@ -604,9 +607,6 @@ class CalculosController extends Controller
                         //resultado
                         $fsP += $suma;
                     }else{
-                        /* $proce_id = $formu->proceso_id;
-                        $maq_id = $formu->maq_pros_id; */
-
                         //suma
                         $suma = carga::where('departamento_id', '=', $dep)
                             ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
@@ -699,6 +699,42 @@ class CalculosController extends Controller
         }
 
         print ' fin eficiencia clave turno //////// ';
+    }
 
+    //Operacion eficiencia semana
+    public function efi_sem($val, $dep, $fechas, $usuario){
+        $semana = date("Y", strtotime($fechas['fecha'])).'-W'.date("W", strtotime($fechas['fecha']));
+        ////Contador y suma final
+        $fs = 0;
+        //Contador y suma de produccion
+        $fsP = 0;
+        //Contador y suma de objetivos
+        $fsO = 0;
+        foreach ($val->formulas as $formu) {
+            # code...
+            print $formu;
+            if ($formu->proc_relas->tipo == 1) {
+                $proce_id = $formu->proceso_id;
+                $maq_id = $formu->maq_pros_id;
+
+                //suma
+                $suma = carga::where('departamento_id', '=', $dep)
+                    ->where('semana', '=', $semana)
+                    -> where('maq_pro_id', '=', $formu->maq_pros_id)
+                    ->sum('valor');
+
+                //resultado
+                $fsP += $suma;
+            }else{
+                //suma
+                $suma = carga::where('departamento_id', '=', $dep)
+                    ->where('semana', '=', $semana)
+                    -> where('maq_pro_id', '=', $formu->maq_pros_id)
+                    ->sum('valor');
+                //resultado
+                $fsO += $suma;
+            }
+        }
+        return '$val';
     }
 }
