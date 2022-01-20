@@ -552,7 +552,7 @@ class AutorizaRequisicionesController extends Controller{
 
             if($request->Req != ''){
                 //Consulta que retorna los precios de la requisicion solicitada
-                $PreciosRequisicion = PreciosCotizaciones::with(['PreciosArticulo.ArticulosRequisicion'])
+                $PreciosRequisicion = PreciosCotizaciones::with(['PreciosArticulo.ArticulosRequisicion', 'PrecioProveedor'])
                 ->where('requisiciones_id', '=', $request->Req)
                 ->get();
             }
@@ -691,7 +691,7 @@ class AutorizaRequisicionesController extends Controller{
                 ->count();
 
                 //Genracion de Orden de Compra
-                $MaxOrdenCompra = Requisiciones::max('OrdenCompra');
+                $MaxOrdenCompra = Requisiciones::max('OrdenCompra'); //Busco el folio de mayor denominacion
 
                 if($MaxOrdenCompra >= 1000){
                     $OrdenCompra = $MaxOrdenCompra + 1;
@@ -702,9 +702,25 @@ class AutorizaRequisicionesController extends Controller{
                 Requisiciones::where('id', '=', $request->requisicion_id)->update([
                     'Estatus' => 6,
                     'OrdenCompra' => $OrdenCompra,
-                    'FecAutorizacion' => $hoy,
+                    'FecAutorizacion' => $hoy, //Fecha de autorizacion
                 ]);
 
+                //Busco si todos los precios de la requisicion se autorizaron o rechazaron
+                $Autorizada = PreciosCotizaciones::where('requisiciones_id', '=', $request->requisicion_id)
+                    ->where('Autorizado', '=', 0)
+                    ->count();
+
+                if($Autorizada == 0){ //Todos los precios de la cotizacion se Autorizaron/Rechazaron
+
+                    $Prov = PreciosCotizaciones::where('id', '=',$request->precio_id)->first('Proveedor'); //Obtengo el nombre del proveedor
+                    $Proveedor = Proveedores::where('id', '=', $Prov->Proveedor)->first(); //Obtengo el correo del proveedor
+                    //Obtengo los datos necesarios para enviarlos en el correo
+                    $Req = Requisiciones::where('id', '=', $request->requisicion_id)->get(['id','NumReq', 'Fecha', 'OrdenCompra']);
+
+                    //Envio de Correo al proveedor
+                    $correo = new ContactaProveedorMailable($Req);
+                    Mail::to($Proveedor->Correo)->send($correo);
+                }
                 break;
 
             case 2: //Rechazo de cotizacion
@@ -750,6 +766,10 @@ class AutorizaRequisicionesController extends Controller{
 
                 break;
             case 4: //Autorizacion de articulo sin comentario
+
+                $hoy = Carbon::now();
+                $hoy->format('Y-m-d h:i:s');
+
                 //Actualizo el estatus del articulo
                 ArticulosRequisiciones::where('id', '=', $request->articulos_requisiciones_id)->where('EstatusArt', '=', 5)->update([
                     'EstatusArt' => 6,
@@ -761,19 +781,13 @@ class AutorizaRequisicionesController extends Controller{
                     'Autorizado' => 2, //Estatus 2 Autorizado
                 ]); //Se autoriza los que tengan estatus 2
 
-                //Busco el id de la requisicion a la que pertenece
-                $req = PreciosCotizaciones::where('id', '=', $request->id)->first();
-
                 //Consulta para verificar si aun hay articulos que no estan autorizados
-                $ArticulosAutorizados = ArticulosRequisiciones::where('requisicion_id', '=', $req->requisiciones_id)
+                $ArticulosAutorizados = ArticulosRequisiciones::where('requisicion_id', '=', $request->requisiciones_id)
                 ->where('EstatusArt', '=', 5)
                 ->count();
 
                 if($ArticulosAutorizados == 0){
                     //Todos los articulos de la requisicion se autorizaron y se manda la cotizacion completa como Autorizada
-                    Requisiciones::where('id', '=', $request->requisicion_id)->update([
-                        'Estatus' => 6,
-                    ]);
 
                     //Genracion de Orden de Compra
                     $MaxOrdenCompra = Requisiciones::max('OrdenCompra');
@@ -784,10 +798,20 @@ class AutorizaRequisicionesController extends Controller{
                         $OrdenCompra = 1000;
                     }
 
-                    Requisiciones::where('id', '=', $request->requisicion_id)->update([
+                    Requisiciones::where('id', '=', $request->requisiciones_id)->update([
                         'Estatus' => 6,
                         'OrdenCompra' => $OrdenCompra,
+                        'FecAutorizacion' => $hoy, //Fecha de autorizacion
                     ]);
+
+                    $Prov = PreciosCotizaciones::where('id', '=',$request->id)->first('Proveedor'); //Obtengo el nombre del proveedor
+                    $Proveedor = Proveedores::where('id', '=', $Prov->Proveedor)->first(); //Obtengo el correo del proveedor
+                    //Obtengo los datos necesarios para enviarlos en el correo
+                    $Req = Requisiciones::where('id', '=', $request->requisiciones_id)->get(['id','NumReq', 'Fecha', 'OrdenCompra']);
+
+                    //Envio de Correo al proveedor
+                    $correo = new ContactaProveedorMailable($Req);
+                    Mail::to($Proveedor->Correo)->send($correo);
                 }
                 break;
             case 5:
@@ -796,7 +820,9 @@ class AutorizaRequisicionesController extends Controller{
 
                 $correo = new ContactaProveedorMailable($Req);
 
-                Mail::to('programador@hlangeles.com')->send($correo);
+                Mail::to('programador@hlangeles.com')
+                    ->cc('sistemas@hlangeles.com')
+                    ->send($correo);
 
                 return "Mensaje Enviado";
                 break;

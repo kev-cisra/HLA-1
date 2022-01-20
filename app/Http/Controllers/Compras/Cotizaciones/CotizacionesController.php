@@ -29,7 +29,7 @@ class CotizacionesController extends Controller{
         //Obtencion de filtros para Fechas
         $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
         $request->Year == '' ? $anio = $hoy->format('Y') : $anio = $request->Year;
-        $request->View == '' ? $Vista = 1 : $Vista = $request->View;
+        $request->View == '' ? $Vista = 2 : $Vista = $request->View;
 
         //Obtengo el catalogo de proveedores
         $Proveedores = Proveedores::get();
@@ -275,9 +275,13 @@ class CotizacionesController extends Controller{
                 'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                     $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                 },
+                'RequisicionArticulos.ArticuloPrecios.PrecioProveedor' => function($pre) {
+                    $pre->select('id', 'Nombre', 'Correo');
+                },
                 ])
                 ->where('Estatus', '>', 2)
                 ->whereYear('Fecha', $anio)
+                ->whereMonth('Fecha', $mes)
                 ->get();
 
             if(isset($request->Year)){
@@ -425,6 +429,9 @@ class CotizacionesController extends Controller{
                 'ArticuloPrecios' => function($pre) { //Relacion 1 a 1 De puestos
                     $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                 },
+                'ArticuloPrecios.PrecioProveedor' => function($pre) {
+                    $pre->select('id', 'Nombre', 'Correo');
+                },
             ])
             ->where('requisicion_id', '=', $request->Req)
             ->where('EstatusArt', '!=', 10)
@@ -476,11 +483,10 @@ class CotizacionesController extends Controller{
         ));
     }
 
-
     public function store(Request $request){
 
         if(isset($request)){ //Verifico la existencia de datos
-            // return $request;
+
             if(isset($request->archivo)){ //Valido envio de Archivo
 
                 Validator::make($request->all(), [

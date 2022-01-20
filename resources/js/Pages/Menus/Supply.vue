@@ -7,16 +7,58 @@
         </template>
 
         <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
-            <div v-for="modulo in modulos" :key="modulo.id" class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110">
-                <Link :href="modulo.Ruta" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i :class="modulo.Icono"></i>
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.personal.index'])">
+                        <Link href="Supply/AutorizaRequisiciones" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-stamp"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">AUTORIZA REQUISICIONES</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">{{ modulo.NombreModulo }}</h4>
-                        <span class="linea"></span>
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.procesos.index'])">
+                        <Link href="Supply/Presupuestos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">PRESUPUESTOS</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                </Link>
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.maquinas.index'])">
+                        <Link href="Supply/GastosRequisiciones" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-cash-register"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">GASTOS REQUISICIONES</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
+                    </div>
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.turnos.index'])">
+                        <Link href="Supply/InsumosSolicitados" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">INSUMOS SOLICITADOS</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
+                    </div>
+
+                </div>
             </div>
         </section>
     </app-layout>

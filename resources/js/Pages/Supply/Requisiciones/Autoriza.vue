@@ -673,7 +673,7 @@
                             <td class="tw-text-center">{{datos.precios_articulo.Unidad}}</td>
                             <td class="tw-text-center">{{datos.precios_articulo.Descripcion}}</td>
                             <td class="tw-text-center">{{datos.Marca}}</td>
-                            <td class="tw-text-center">{{datos.Proveedor}}</td>
+                            <td class="tw-text-center">{{datos.precio_proveedor.Nombre}}</td>
                             <td class="tw-text-center">{{datos.Comentarios}}</td>
                             <td class="tw-text-center">{{datos.Precio}}</td>
                             <td class="tw-text-center">{{datos.Moneda}}</td>
@@ -734,7 +734,6 @@
                 </Table>
             </div>
         </div>
-
         <div class="ModalFooter">
             <jet-button type="button" @click="Correo(form)" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Envia Correo</jet-button>
             <jet-button type="button" @click="AutorizaCotizacion(form)" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Autoriza 1° Cotizacion</jet-button>
