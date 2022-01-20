@@ -19,42 +19,42 @@
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ------------------------------------>
         <div class="collapse m-5 tw-p-6 tw-bg-blue-300 tw-rounded-3xl" id="agPer">
-                <div class="tw-mb-6 md:tw-flex">
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                        <jet-label><span class="required">*</span>Departamento </jet-label>
-                        <select class="InputSelect" v-model="form.departamento_id" v-html="opc"></select>
-                        <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
-                    </div>
-
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                        <jet-label><span class="required">*</span>Puesto </jet-label>
-                        <select class="InputSelect" v-model="form.ope_puesto">
-                            <option value="" disabled>Selecciona un puesto</option>
-                            <option value="cor">Coordinador</option>
-                            <option value="enc">Encargado</option>
-                            <option value="lid">Lider</option>
-                            <option value="ope">Operador</option>
-                        </select>
-                        <small v-if="errors.ope_puesto" class="validation-alert">{{errors.ope_puesto}}</small>
-                    </div>
-
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                        <jet-label><span class="required">*</span>Personal </jet-label>
-                        <Select2 v-model="form.perfiles_usuarios_id" class="InputSelect" :options="optionPer"  :settings="{width: '100%'}" />
-                        <small v-if="errors.perfiles_usuarios_id" class="validation-alert">{{errors.perfiles_usuarios_id}}</small>
-                        <!-- <jet-input type="text" list="per" v-model="form.perfiles_usuarios_id"></jet-input>
-                        <small v-if="errors.perfiles_usuarios_id" class="validation-alert">{{errors.perfiles_usuarios_id}}</small>
-                        <datalist id="per">
-                            <option v-for="persona in personal" :key="persona" :value="persona.id">{{ persona.IdEmp }} {{ persona.Nombre }} {{ persona.ApPat }} {{ persona.ApMat }}</option>
-                        </datalist> -->
-                    </div>
+            <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Departamento </jet-label>
+                    <select class="InputSelect" v-model="form.departamento_id" v-html="opc"></select>
+                    <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
                 </div>
-                <div class="w-100 tw-mx-auto" align="center">
-                    <jet-button type="button" class="tw-mx-auto" @click="save(form)">Guardar</jet-button>
+
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Puesto </jet-label>
+                    <select class="InputSelect" v-model="form.ope_puesto">
+                        <option value="" disabled>Selecciona un puesto</option>
+                        <option value="cor">Coordinador</option>
+                        <option value="enc">Encargado</option>
+                        <option value="lid">Lider</option>
+                        <option value="ope">Operador</option>
+                    </select>
+                    <small v-if="errors.ope_puesto" class="validation-alert">{{errors.ope_puesto}}</small>
                 </div>
+
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Personal </jet-label>
+                    <Select2 v-model="form.perfiles_usuarios_id" class="InputSelect" :options="optionPer"  :settings="{width: '100%'}" />
+                    <small v-if="errors.perfiles_usuarios_id" class="validation-alert">{{errors.perfiles_usuarios_id}}</small>
+                    <!-- <jet-input type="text" list="per" v-model="form.perfiles_usuarios_id"></jet-input>
+                    <small v-if="errors.perfiles_usuarios_id" class="validation-alert">{{errors.perfiles_usuarios_id}}</small>
+                    <datalist id="per">
+                        <option v-for="persona in personal" :key="persona" :value="persona.id">{{ persona.IdEmp }} {{ persona.Nombre }} {{ persona.ApPat }} {{ persona.ApMat }}</option>
+                    </datalist> -->
+                </div>
+            </div>
+            <div class="w-100 tw-mx-auto" align="center">
+                <jet-button type="button" class="tw-mx-auto" @click="save(form)">Guardar</jet-button>
+            </div>
         </div>
         <!----------------------------------- tabla de datos -------------------------------------------------------->
-        <div class="table-responsive">
+        <div class="tw-m-auto" style="width: 98%">
             <Table id="t_per">
                 <template v-slot:TableHeader>
                     <th class="columna">Número de empleado</th>
@@ -64,12 +64,12 @@
                     <th></th>
                 </template>
                 <template v-slot:TableFooter>
-                    <tr v-for="ap in areper" :key="ap.id">
-                        <td class="fila">{{ ap.perfiles.IdEmp }}</td>
-                        <td class="fila">{{ puesto(ap.ope_puesto) }}</td>
-                        <td class="fila">{{ ap.perfiles.Nombre }} {{ ap.perfiles.ApPat }} {{ ap.perfiles.ApMat }}</td>
-                        <td class="fila">{{ ap.departamentos.Nombre }}</td>
-                        <td class="fila">
+                    <tr v-for="ap in areper" :key="ap.id" class="fila">
+                        <td>{{ ap.perfiles.IdEmp }}</td>
+                        <td>{{ puesto(ap.ope_puesto) }}</td>
+                        <td>{{ ap.perfiles.Nombre }} {{ ap.perfiles.ApPat }} {{ ap.perfiles.ApMat }}</td>
+                        <td>{{ ap.departamentos.Nombre }}</td>
+                        <td>
                             <div class="columnaIconos">
                                 <div class="iconoDelete" @click="deleteRow(ap)">
                                     <span tooltip="Eliminar" flow="left">
@@ -221,6 +221,11 @@
                         "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        "columnDefs": [
+                            { "width": "10%", "targets": [0,4] },
+                            { "width": "30%", "targets": [1,2,3] }
+                        ],
+                        "scrollX": true,
                         buttons: [
                             {
                                 extend: 'copyHtml5',

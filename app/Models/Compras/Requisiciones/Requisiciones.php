@@ -5,6 +5,7 @@ namespace App\Models\Compras\Requisiciones;
 use App\Models\Almacen\Requisiciones\ValesSalida;
 use App\Models\Catalogos\Maquinas;
 use App\Models\Catalogos\MarcasMaquinas;
+use App\Models\Compras\Proveedores;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
@@ -54,4 +55,8 @@ class Requisiciones extends Model
         return $this->hasMany(PreciosCotizaciones::class, 'articulos_requisiciones_id');
     }
 
+    //Relacion de Requisicion a Precios
+    public function RequisicionPrecios(){
+        return $this->hasMany(PreciosCotizaciones::class, 'requisiciones_id');
+    }
 }

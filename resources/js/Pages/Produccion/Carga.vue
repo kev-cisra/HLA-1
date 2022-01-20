@@ -481,7 +481,7 @@
                 </div>
                 <!-- tabla para paquetes operador -->
                 <div>
-                    <TableGreen id="t_op">
+                    <TableGreen id="t_op" style="width:100%">
                         <template v-slot:TableHeader>
                             <th class="columna">Índice</th>
                             <th class="columna">Nombre del operador</th>
@@ -583,7 +583,7 @@
                 </div>
                 <!---------------------------- Datatable de paquetes ---------------------------------------------------->
                 <div>
-                    <TableCyan id="t_pn">
+                    <TableCyan id="t_pn" style="width:100%">
                         <template v-slot:TableHeader>
                             <th class="columna">Índice</th>
                             <th class="columna">Norma</th>
@@ -701,7 +701,7 @@
                 </div>
                 <!----------------------------- Data Table ------------------------------------------------------------>
                 <div>
-                    <TableBlue id="t_ob">
+                    <TableBlue id="t_ob" style="width:100%">
                         <template v-slot:TableHeader>
                             <th class="columna">Índice</th>
                             <th class="columna tw-text-center">Proceso</th>
