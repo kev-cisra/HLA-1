@@ -805,7 +805,7 @@ export default {
                 ArtId: '',
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
-                Fecha: new Date(),
+                Fecha: '',
                 Departamento_id: '',
                 NumReq: '',
                 Codigo: '',
@@ -1005,7 +1005,7 @@ export default {
                 editId: '',
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
-                Fecha: new Date(),
+                Fecha: '',
                 Departamento_id: '',
                 NumReq: '',
                 Codigo: '',
@@ -1075,15 +1075,19 @@ export default {
 
         save(data) {
             var fechaForm = moment(data.Fecha).format("YYYY");
-            if(this.anio == fechaForm){
+            if(data.Codigo == 'C - PRESUPUESTO'){
+                data.Fecha = data.Fecha;
+            }else{
+                data.Fecha = this.now;
+            }
 
-                //Asigno el valor dependiendo de tipo del codigo
-                if(this.form.Fecha == ''){
-                    this.form.Fecha = moment(data.Fecha).format("Y-m-d");
-                }else{
-                    this.form.Fecha = this.form.Fecha;
-                }
-
+            if(data.Fecha < this.now){
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Oops...',
+                    text: 'Fecha menor al día actual',
+                })
+            }else{
                 this.$inertia.post("/Compras/Requisiciones", data, {
                     onSuccess: () => {
                         // location.reload();
@@ -1092,12 +1096,6 @@ export default {
                         this.alertSucces();
                     },
                 });
-            }else{
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Oops...',
-                    text: 'FECHA CORRESPONDIENTE AL AÑO PASADO!',
-                })
             }
         },
 
