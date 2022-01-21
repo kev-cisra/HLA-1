@@ -374,7 +374,7 @@
                                                 <i class="fas fa-fingerprint"></i>
                                             </span>
                                         </div>
-                                        <div class="iconoDetails" @click="Ticket(datos)">
+                                        <div class="iconoDetails" @click="Ticket(datos)" v-if="datos.Etiqueta == null">
                                             <span tooltip="Imprime Ticket" flow="left">
                                                 <i class="fas fa-ticket-alt"></i>
                                             </span>
@@ -866,8 +866,6 @@
                     <jet-CancelButton @click="chageProveedor">Cerrar</jet-CancelButton>
                 </div>
             </modal>
-
-            <table></table>
 
             <!-- Impresion oculta -->
 <!--             <div id="div_print">
@@ -1398,12 +1396,37 @@ export default {
             ventana.document.write('</body></html>');
             ventana.document.close();
             ventana.focus();
+
+            var beforePrint = function() {
+                console.log(data);
+                ventana.close();
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+
+                Toast.fire({
+                    icon: "success",
+                    title: "Impresión Exitosa",
+                    // background: '#99F6E4',
+                });
+            };
+
             ventana.onload = function() {
                 ventana.print();
                 ventana.close();
+                beforePrint();
             };
             return true;
         },
+
 
         imprimirSeleccion(nombre) { //Imprimir div oculto
             var ficha = document.getElementById(nombre);

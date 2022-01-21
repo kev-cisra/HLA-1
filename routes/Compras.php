@@ -14,11 +14,17 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+//RUTA DEL MENU DE COMPRAS
 Route::get('', [MenuComprasController::class,'index'])->name('Compras');
 
+//RUTAS DE REQUISICIONES
 Route::resource('Requisiciones', RequisicionesController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('Requisiciones');
 
+Route::post('Requisiciones/RequisicionesMes', [RequisicionesController::class, 'RequisicionesMes'])
+    ->middleware(['auth:sanctum', 'verified'])->name('RequisicionesMensual');
+
+//RUTAS DE COTIZACIONES
 Route::resource('Cotizaciones', CotizacionesController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('Cotizaciones');
 

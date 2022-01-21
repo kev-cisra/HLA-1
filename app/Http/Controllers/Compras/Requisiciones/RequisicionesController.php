@@ -34,7 +34,6 @@ class RequisicionesController extends Controller{
             9 => ENTREGADO
             10 => RECHAZADO
     ************************************************* */
-
     public function index(Request $request){
         // return $request;
         $hoy = Carbon::now();
@@ -817,6 +816,34 @@ class RequisicionesController extends Controller{
             'mes'));
     }
 
+    public function RequisicionesMes(Request $request){
+        $hoy = Carbon::now();
+        $mes = $hoy->format('n');
+
+        $TotalRequisiciones = Requisiciones::whereMonth('Fecha',$mes)->count();
+
+        $Solicitdado = Requisiciones::whereMonth('Fecha',$mes)->where('Estatus', '=', 2)->count();
+        $Cotizacion = Requisiciones::whereMonth('Fecha',$mes)->where('Estatus', '=', 3)->count();
+        $Cotizado = Requisiciones::whereMonth('Fecha',$mes)->where('Estatus', '=', 4)->count();
+        $Autorizacion = Requisiciones::whereMonth('Fecha',$mes)->where('Estatus', '=', 5)->count();
+        $Autorizado = Requisiciones::whereMonth('Fecha',$mes)->where('Estatus', '=', 6)->count();
+        $Confirmado = Requisiciones::whereMonth('Fecha',$mes)->where('Estatus', '=', 7)->count();
+        $Almacen = Requisiciones::whereMonth('Fecha',$mes)->where('Estatus', '=', 8)->count();
+        $Entregado = Requisiciones::whereMonth('Fecha',$mes)->where('Estatus', '=', 9)->count();
+
+        $Informacion = [
+        'Solicitdado'=> $Solicitdado,
+        'Cotizacion' => $Cotizacion,
+        'Cotizado' => $Cotizado,
+        'Autorizacion' => $Autorizacion,
+        'Autorizado' => $Autorizado,
+        'Confirmado' => $Confirmado,
+        'Almacen' => $Almacen,
+        'Entregado' => $Entregado];
+
+        return $Informacion;
+    }
+
     public function store(RequisicionesRequest $request){
 
         $hoy = Carbon::now();
@@ -832,14 +859,6 @@ class RequisicionesController extends Controller{
             $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $request->IdEmp)->first(['id','jefes_areas_id']);
             $IdJefe = $PerfilesUsuarios->jefes_areas_id; //Obtengo el Id de Jefe que corresponde a la session del empleado
         }
-
-/*         if($request->Fecha == ''){
-            $Fecha = $hoy->format('Y-m-d');
-        }else{
-            $Fecha = $request->Fecha;
-        }
-
-        return $Fecha; */
 
         //Genracion de folio automatico
         $Numfolio = Requisiciones::all(['Folio']);

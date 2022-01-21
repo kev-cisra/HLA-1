@@ -121,7 +121,7 @@
                 </div>
 
                 <!-- Responsive Navigation Menu -->
-                <div :class="{'tw-block': showingNavigationDropdown, 'tw-hidden': ! showingNavigationDropdown}" class="lg:tw-hidden">
+                <div :class="{'tw-block': showingNavigationDropdown, 'tw-hidden': ! showingNavigationDropdown}" class="tw-uppercase lg:tw-hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                             <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i> INICIO
@@ -149,7 +149,7 @@
                     </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Contabilidad.index'])">
                         <jet-responsive-nav-link :href="route('Contabilidad')" :active="route().current('Contabilidad')">
-                            <i class="tw-mr-2 fas fa-balance-scale tw-text-gray-600"></i> Contabilidad
+                            <i class="tw-mr-2 fas fa-balance-scale tw-text-gray-600"></i> CONTABILIDAD
                         </jet-responsive-nav-link>
                     </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">

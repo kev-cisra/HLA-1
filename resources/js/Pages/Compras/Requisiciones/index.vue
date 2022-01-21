@@ -146,6 +146,13 @@
                 </div>
             </div>
 
+            <div v-if="Session.roles[0].name == 'Administrador' || Session.roles[0].name == 'ONEPIECE'">
+                <div>
+                    <jet-button @click="changeGraficas" class="BtnGraficas">
+                        <i class="fas fa-chart-pie tw-mr-1"></i>Graficas</jet-button>
+                </div>
+            </div>
+
             <div>
                 <div>
                     <jet-button @click="openModal" class="BtnNuevo">Nueva Requisición</jet-button>
@@ -751,6 +758,25 @@
         </div>
     </modal>
 
+    <modal :show="showGraficas" @close="changeGraficas" maxWidth="7xl">
+        <div class="tw-px-4 tw-py-4">
+            <div class="tw-text-lg">
+                <div class="ModalHeader">
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Graficas</h3>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div id="container" class="tw-m-10"></div>
+        </div>
+
+        <div class="ModalFooter">
+            <jet-CancelButton @click="GeneraGrafica()">Grafica</jet-CancelButton>
+            <jet-CancelButton @click="changeGraficas">Cerrar</jet-CancelButton>
+        </div>
+    </modal>
+
     </app-layout>
 </template>
 
@@ -767,16 +793,21 @@ import Pagination from "@/Components/pagination";
 import JetLabel from '@/Jetstream/Label';
 import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
- //datatable
+ //Datatable
 import datatable from 'datatables.net-bs5';
 require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
 require( 'datatables.net-buttons/js/buttons.html5' );
 require ( 'datatables.net-buttons/js/buttons.colVis' );
+//Highcharts
+var Highcharts = require('highcharts');
+// Load module after Highcharts is loaded
+require('highcharts/modules/exporting')(Highcharts);
 import print from 'datatables.net-buttons/js/buttons.print';
 import jszip from 'jszip/dist/jszip';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import $ from 'jquery';
+import axios from 'axios';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 window.JSZip = jszip
@@ -791,6 +822,7 @@ export default {
             showPartidas: false,
             showModal: false,
             showModal2: false,
+            showGraficas: false,
             loading: false,
             min: moment().format("YYYY-MM-DD"),
             now: moment().format("YYYY-MM-DD"),
@@ -909,6 +941,57 @@ export default {
     },
 
     methods: {
+
+        changeGraficas() {
+            this.showGraficas = !this.showGraficas;
+        },
+
+        async GeneraGrafica(){
+            const valores = [];
+
+            let EstatusReq = await axios.post('Requisiciones/RequisicionesMes');
+            console.log(EstatusReq.data);
+
+            Object.entries(EstatusReq.data).forEach(([key, value]) => {
+                console.log(key + '=>'+value);
+                valores.push({name: key, y: value});
+            });
+
+            Highcharts.chart('container', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Estatus de requisiciones del mes'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                accessibility: {
+                    point: {
+                    valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+                    }
+                },
+                series: [{
+                    name: 'Porcentaje',
+                    colorByPoint: true,
+                    data: valores,
+                }]
+            });
+        },
 
         TipoVista(){
             //Obtengo la variable de la URl
@@ -1151,7 +1234,7 @@ export default {
                     this.alertSucces();
                 },
             });
-        }
+        },
 
     },
 
