@@ -15,7 +15,15 @@ class CreatePacGraficasTable extends Migration
     {
         Schema::create('pac_graficas', function (Blueprint $table) {
             $table->id();
+            $table->string('graTipo');
+            $table->string('subtitulo');
+            $table->string('subIz');
+            $table->string('subDe');
             $table->string('titulo');
+            $table->enum('rango', [1,2,3,4])->default(1)->nullable();
+            $table->enum('propa', [1,2,3])->default(1);
+            $table->string('tipo');
+            $table->string('tipoParo');
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });
