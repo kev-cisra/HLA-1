@@ -18,6 +18,7 @@ class RepoProController extends Controller
     {
         $this->middleware(['permission:Produccion.reporpro.index|admin.index']);
     }
+
     /**
      * Display a listing of the resource.
      *

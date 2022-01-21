@@ -20,27 +20,22 @@
                     <!-- BTN Paquete de Operador -->
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
                         <button class="btn tw-bg-teal-600 hover:tw-bg-teal-700 tw-text-white hover:tw-text-white tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe" @click="resetPO()">Paquete de operativos</button>
-                        <!-- <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe" @click="resetCA()">Paquete de operativos</jet-button> -->
                     </div>
                     <!-- BTN Paquetes de Coordiandor -->
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
                         <button class="btn btn-primary tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetOB()">Paquetes Objetivos</button>
-                        <!-- <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetCA()">Paquetes para coordinador</jet-button> -->
                     </div>
                     <!-- BTN Paquetes de normas -->
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
                         <button class="btn tw-bg-cyan-600 hover:tw-bg-cyan-700 tw-w-full tw-text-white hover:tw-text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacNorma" aria-controls="pacNorma" @click="resetCA()">Paquete de Normas</button>
-                        <!-- <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacNorma" aria-controls="pacNorma" @click="resetCA()">Paquete de Normas</jet-button> -->
                     </div>
                     <!-- BTN Carga Objetivos -->
                     <div v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
                         <button class="btn btn-warning tw-w-full" data-bs-toggle="collapse" data-bs-target="#agObjec" aria-expanded="false" aria-controls="agObjec" @click="resetCA()">Carga de Objetivos</button>
-                        <!-- <jet-button class="BtnNuevo tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetCA()">Paquetes para coordinador</jet-button> -->
                     </div>
                     <!-- BTN Carga de produccion -->
                     <div>
                         <button class="btn btn-success tw-w-full" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Carga de Produccion</button>
-                        <!-- <jet-button class="BtnNuevo tw-bg-green-600 tw-w-full" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Carga de Produccion</jet-button> -->
                     </div>
                 </div>
             </template>

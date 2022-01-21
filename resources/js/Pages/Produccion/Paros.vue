@@ -508,16 +508,15 @@ import axios from 'axios';
             }
         },
         watch: {
-            S_Area: async function(b){
+            S_Area: function(b){
                 /* $('#t_paros').DataTable().clear(); */
                 $('#t_paros').DataTable().destroy();
                 this.proc_prin = '';
                 /* await axios.get('/Produccion/Paros',{ busca: b })
                 .then((resu) => { this.tabla(), console.log(resu.data) })
                 .catch(err => {this.tabla()}) */
-                await this.$inertia.get('/Produccion/Paros',{ busca: b }, {
-                    onSuccess: () => {
-                        this.tabla() }, onError: () => {this.tabla()}, preserveState: true
+                this.$inertia.get('/Produccion/Paros',{ busca: b }, {
+                    onSuccess: () => { this.tabla() }, onError: () => {this.tabla()}, preserveState: true
                 });
                 //this.claParo()
             },

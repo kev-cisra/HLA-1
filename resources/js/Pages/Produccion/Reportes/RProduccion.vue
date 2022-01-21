@@ -35,11 +35,11 @@
         </Accions>
 
         <!------------------------------------ Muestra las opciones de filtros ------------------------------------------->
-        <div class="collapse tw-p-6 tw-border tw-border-8 tw-border-blue-400 tw-bg-blueGray-500 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 tw-w-full lg:tw-left-0 lg:tw-w-6/12" id="filtro">
+        <div class="collapse tw-p-6 tw-border tw-border-8 tw-border-blue-400 tw-bg-blueGray-500 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 tw-w-full lg:tw-left-0 lg:tw-w-8/12" id="filtro">
             <div class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-w-full">
                 <div class="tw-mb-6 lg:tw-flex">
                     <!-- Tipo de reporte -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                    <div class="tw-px-3 tw-mb-6 lg:tw-mb-0">
                         <jet-label class="tw-text-white"><span class="required">*</span>Tipo de reporte</jet-label>
                         <div class="tw-flex tw-gap-5">
                             <div>
@@ -53,16 +53,19 @@
                         </div>
                     </div>
                     <!-- calculos -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-if="FoFiltro.TipRepo == 1 & FoFiltro.iniDia != null & FoFiltro.rango == 1" >
+                    <div class="tw-px-3 tw-mb-6 lg:tw-mb-0" v-if="FoFiltro.TipRepo == 1 & FoFiltro.iniDia != null & FoFiltro.rango == 1" >
                         <jet-label class="tw-text-white">Boton para Calcular Operaciones</jet-label>
                         <BotonCarga :verBot="vCal" :iconoV="'fas fa-calculator'" :textoV="'Calcular'" :textoOC="'Calculando...'" :class="'btn-success'" @click="calcula(form)"></BotonCarga>
                     </div>
 
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                    <div class="tw-px-3 tw-mb-6 lg:tw-mb-0">
                         <jet-label class=" tw-text-gray-500">--</jet-label>
-                        <BotonCarga v-if="FoFiltro.TipRepo == 1" :verBot="vTab" :textoV="'Consultar Producción'" :textoOC="'Buscando...'" :class="'btn-primary'" @click="arrProdu()"></BotonCarga>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <BotonCarga v-if="FoFiltro.TipRepo == 1" :verBot="vTab" :textoV="'Consultar'" :textoOC="'Buscando...'" :class="'btn-primary'" @click="arrProdu()"></BotonCarga>
+                            <BotonCarga v-if="FoFiltro.TipRepo == 2" :verBot="vTab" :textoV="'Consultar'" :textoOC="'Buscando...'" :class="'btn-primary'" @click="arrParo()"></BotonCarga>
+                            <button class="btn btn-danger" data-bs-toggle="collapse" data-bs-target="#filtro" aria-expanded="false" aria-controls="filtro">Cerrar</button>
+                        </div>
 
-                        <BotonCarga v-if="FoFiltro.TipRepo == 2" :verBot="vTab" :textoV="'Consultar Paros'" :textoOC="'Buscando...'" :class="'btn-primary'" @click="arrParo()"></BotonCarga>
                     </div>
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
                         <jet-label class="tw-text-white">Opciones de consulta</jet-label>
@@ -1111,14 +1114,14 @@
                     propa: 1,
                     tipo: 'generalMaq',
                     tipoParo: 'total',
+                    fecha: null,
+                    iniDia: null,
+                    finDia: null,
+                    titulo: null,
                     paro: [],
                     maquinas: [],
                     procesos: [],
                     norma: [],
-                    fecha: null,
-                    iniDia: null,
-                    finDia: null,
-                    titulo: null
                 },
                 gLinea: {
                     borra: '',
