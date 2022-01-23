@@ -40,12 +40,7 @@ class ParosController extends Controller
             ->first(['id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat', 'jefe_id', 'user_id', 'Puesto_id', 'Departamento_id', 'jefes_areas_id']);
         //manda array vacios
         $depa = [];
-        $procesos = [];
         $carga = [];
-        $mate = [];
-        $hoy = date('Y-m-d');
-        $dia = date("Y-m-d",strtotime($hoy."- 1 days")).' 19:00:00';
-        $mañana = date("Y-m-d",strtotime($hoy."+ 1 days")).' 07:00:00';
 
         if (count($perf->dep_pers) != 0) {
             //muestran los departamentos
@@ -63,7 +58,7 @@ class ParosController extends Controller
         /**************************** consulta si existe la busqueda  ****************************************************/
         if (!empty($request->busca)) {
             //muestran los departamentos
-            $procesos = procesos::where('departamento_id', '=', $request->busca)
+            /**$procesos = procesos::where('departamento_id', '=', $request->busca)
                 ->where('tipo', '!=', '3')
                 ->where('tipo', '!=', '4')
                 ->with([
@@ -91,40 +86,78 @@ class ParosController extends Controller
                 ->get();
             //carga
             $carga = parosCarga::where('departamento_id', '=', $request->busca)
-                ->whereBetween('fecha', [$dia, $mañana])
-                ->orWhere(function($q) use ($dia, $request){
-                    $q->whereDate('fecha', '<=', $dia)
-                    ->where('departamento_id', '=', $request->busca)
-                    ->where('estatus', '!=', 'Autorizado');
-                })
-                ->with([
-                    'paros' => function($pr){
-                        $pr->select('id', 'clave', 'descri', 'tipo');
-                    },
-                    'perfil_ini' => function($pini){
-                        $pini->select('id', 'Nombre', 'ApPat', 'ApMat');
-                    },
-                    'maq_pro' => function($mp){
-                        $mp->select('id', 'maquina_id', 'proceso_id');
-                    },
-                    'maq_pro.maquinas' => function($ma) {
-                        $ma->select('id', 'Nombre');
-                    },
-                    'proceso' => function($po) {
-                        $po->select('id', 'nompro');
-                    },
-                    'departamento' => function($dep) {
-                        $dep->select('id', 'Nombre');
-                    }
-                ])
-                ->get(['id', 'fecha', 'iniFecha', 'orden', 'estatus', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'pla_acci', 'departamento_id']);
+            ->whereBetween('fecha', [$dia, $mañana])
+            ->orWhere(function($q) use ($dia, $request){
+                $q->whereDate('fecha', '<=', $dia)
+                ->where('departamento_id', '=', $request->busca)
+                ->where('estatus', '!=', 'Autorizado');
+            })
+            ->with([
+                'paros' => function($pr){
+                    $pr->select('id', 'clave', 'descri', 'tipo');
+                },
+                'perfil_ini' => function($pini){
+                    $pini->select('id', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'maq_pro' => function($mp){
+                    $mp->select('id', 'maquina_id', 'proceso_id');
+                },
+                'maq_pro.maquinas' => function($ma) {
+                    $ma->select('id', 'Nombre');
+                },
+                'proceso' => function($po) {
+                    $po->select('id', 'nompro');
+                },
+                'departamento' => function($dep) {
+                    $dep->select('id', 'Nombre');
+                }
+            ])
+            ->get(['id', 'fecha', 'iniFecha', 'orden', 'estatus', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'pla_acci', 'departamento_id']); **/
 
         }
 
         //paros
         $paros = paros::get();
 
-        return Inertia::render('Produccion/Paros', ['usuario' => $perf, 'depa' => $depa, 'procesos' => $procesos, 'cargas' => $carga, 'materiales' => $mate, 'paros' => $paros]);
+        return Inertia::render('Produccion/Paros', ['usuario' => $perf, 'depa' => $depa, 'cargas' => $carga, 'paros' => $paros]);
+    }
+
+    public function ParoCarga(Request $request) {
+        //paros cargados 
+        $hoy = date('Y-m-d');
+        $dia = date("Y-m-d",strtotime($hoy."- 1 days")).' 19:00:00';
+        $mañana = date("Y-m-d",strtotime($hoy."+ 1 days")).' 07:00:00';
+
+        $paros = parosCarga::where('departamento_id', '=', $request->departamento_id)
+        ->whereBetween('fecha', [$dia, $mañana])
+        ->orWhere(function($q) use ($dia, $request){
+            $q->whereDate('fecha', '<=', $dia)
+            ->where('departamento_id', '=', $request->departamento_id)
+            ->where('estatus', '!=', 'Autorizado');
+        })
+        ->with([
+            'paros' => function($pr){
+                $pr->select('id', 'clave', 'descri', 'tipo');
+            },
+            'perfil_ini' => function($pini){
+                $pini->select('id', 'Nombre', 'ApPat', 'ApMat');
+            },
+            'maq_pro' => function($mp){
+                $mp->select('id', 'maquina_id', 'proceso_id');
+            },
+            'maq_pro.maquinas' => function($ma) {
+                $ma->select('id', 'Nombre');
+            },
+            'proceso' => function($po) {
+                $po->select('id', 'nompro');
+            },
+            'departamento' => function($dep) {
+                $dep->select('id', 'Nombre');
+            }
+        ])
+        ->get(['id', 'fecha', 'iniFecha', 'orden', 'estatus', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'pla_acci', 'departamento_id']);
+
+        return $paros;
     }
 
     public function store(Request $request)

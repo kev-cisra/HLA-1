@@ -2528,7 +2528,7 @@
             S_Area: async function(b){
                 this.FoFiltro.iniDia = this.hoy;
                 this.arrProdu();
-                var datos = {'departamento_id': this.S_Area};
+                var datos = {'departamento_id': this.S_Area, 'modulo': 'repoPro'};
 
                 //Maquinas
                 /* let maqui = await axios.post('General/ConMaquina', datos)
