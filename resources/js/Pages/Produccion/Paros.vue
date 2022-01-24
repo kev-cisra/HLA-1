@@ -10,7 +10,7 @@
         </Header>
         <Accions>
             <template  v-slot:SelectB v-if="usuario.dep_pers.length != 1">
-                <select class="InputSelect sm:tw-w-full" @change="verTabla()" v-model="S_Area">
+                <select class="InputSelect sm:tw-w-full" v-model="S_Area">
                     <option value="" disabled>Selecciona un departamento</option>
                     <option v-for="o in opc" :key="o.value" :value="o.value">{{o.text}}</option>
                 </select>
@@ -102,7 +102,7 @@
                     <th></th>
                 </template>
                 <template v-slot:TableFooter >
-                    <tr class="fila" v-for="ca in cargas" :key="ca.id">
+                    <tr class="fila" v-for="ca in Pcarga" :key="ca.id">
                         <td class="tw-text-center">{{ca.orden}}</td>
                         <td class="tw-text-center">{{ca.maq_pro.maquinas.Nombre}}</td>
                         <td class="tw-text-center">{{ca.paros.clave}}</td>
@@ -181,350 +181,354 @@
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout.vue';
-    import Header from '@/Components/Header'
-    import Accions from '@/Components/Accions'
-    import Table from '@/Components/Table'
-    import JetButton from '@/Components/Button';
-    import JetCancelButton from '@/Components/CancelButton';
-    import JetInput from '@/Components/Input';
-    import JetSelect from '@/Components/Select';
-    import Modal from '@/Jetstream/Modal';
-    import JetLabel from '@/Jetstream/Label';
-    import Select2 from 'vue3-select2-component';
-    //datatable
-    import datatable from 'datatables.net-bs5';
-    import $ from 'jquery';
+import AppLayout from '@/Layouts/AppLayout.vue';
+import Header from '@/Components/Header'
+import Accions from '@/Components/Accions'
+import Table from '@/Components/Table'
+import JetButton from '@/Components/Button';
+import JetCancelButton from '@/Components/CancelButton';
+import JetInput from '@/Components/Input';
+import JetSelect from '@/Components/Select';
+import Modal from '@/Jetstream/Modal';
+import JetLabel from '@/Jetstream/Label';
+import Select2 from 'vue3-select2-component';
+//datatable
+import datatable from 'datatables.net-bs5';
+import $ from 'jquery';
 
-    import moment from 'moment';
-    import 'moment/locale/es';
+import moment from 'moment';
+import 'moment/locale/es';
 import axios from 'axios';
 
-    export default {
-        props: [
-            'usuario',
-            'depa',
-            'cargas',
-            'procesos',
-            'paros',
-            'materiales',
-            'errors'
-        ],
-        components: {
-            Select2,
-            AppLayout,
-            Header,
-            Accions,
-            Table,
-            JetButton,
-            JetCancelButton,
-            JetInput,
-            JetSelect,
-            Modal,
-            JetLabel
-        },
-        data() {
-            return {
-                color: "tw-bg-blue-600",
-                style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
-                S_Area: '',
-                proc_prin: '',
-                showModal: false,
-                editMode: false,
-                form: {
-                    fecha: moment().format("YYYY-MM-DD HH:mm:ss"),
-                    usu:  this.usuario.id,
-                    departamento_id: this.S_Area,
-                    tiempo: null,
-                    proceso_id: '',
-                    maq_pro_id: '',
-                    estatus: 'Activo',
-                    paro_id: '',
-                    descri: '',
-                    orden: ''
-                },
-                planA: {
-                    id: '',
-                    fecha: '',
-                    finFecha: moment().format("YYYY-MM-DD HH:mm:ss"),
-                    usu:  this.usuario.id,
-                    iniFecha: '',
-                    pla_acci: '',
-                    estatus: '',
-                    paro_id: '',
-                    tiempo: null,
-                }
-            }
-        },
-        mounted() {
-            this.mostSelect();
-            this.tabla();
-        },
-        methods: {
-            /****************************** opciones de selec del departamento *****************************/
-            //información del select area
-            mostSelect() {
-                this.$nextTick(() => {
-                    this.S_Area = 7;
-                    if (this.usuario.dep_pers.length != 0) {
-                        this.S_Area = this.usuario.dep_pers[0].departamento_id;
-                    }
-                });
+export default {
+    props: [
+        'usuario',
+        'depa',
+        'paros',
+        'errors'
+    ],
+    components: {
+        Select2,
+        AppLayout,
+        Header,
+        Accions,
+        Table,
+        JetButton,
+        JetCancelButton,
+        JetInput,
+        JetSelect,
+        Modal,
+        JetLabel
+    },
+    data() {
+        return {
+            color: "tw-bg-blue-600",
+            style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
+            S_Area: '',
+            procesos: [],
+            materiales: [],
+            Pcarga: [],
+            proc_prin: '',
+            showModal: false,
+            editMode: false,
+            form: {
+                fecha: moment().format("YYYY-MM-DD HH:mm:ss"),
+                usu:  this.usuario.id,
+                departamento_id: this.S_Area,
+                tiempo: null,
+                proceso_id: '',
+                maq_pro_id: '',
+                estatus: 'Activo',
+                paro_id: '',
+                descri: '',
+                orden: ''
             },
-            //consulta para generar datos de la tabla
-            verTabla(event){
+            planA: {
+                id: '',
+                fecha: '',
+                finFecha: moment().format("YYYY-MM-DD HH:mm:ss"),
+                usu:  this.usuario.id,
+                iniFecha: '',
+                pla_acci: '',
+                estatus: '',
+                paro_id: '',
+                tiempo: null,
+            }
+        }
+    },
+    mounted(){
+        this.global()
+    },
+    methods: {
+        async ParosCarga(limp){
+            var datos = {'departamento_id': this.S_Area, 'modulo': 'Paros'};
+            if(limp){
                 $('#t_paros').DataTable().clear();
-            },
-            tiempo(ini, fin){
-                var tini = moment(ini);
-                var tfin = fin == null ? moment() : moment(fin);
-                return tfin.from(tini, true);
-            },
-            //plan de trabajo
-            plan(data){
-                this.showModal = !this.showModal
-                this.planA.id = data.id;
-                this.planA.fecha = data.fecha;
-                this.planA.iniFecha = data.iniFecha
-                this.planA.pla_acci = '';
-                this.planA.paro_id = data.paro_id;
-                this.planA.estatus = 'En revisión';
-                this.planA.tiempo =  this.tiempo(data.iniFecha, data.finFecha);
-
-            },
-            resetPlan(){
-                if (this.planA.pla_acci != '') {
-                    this.showModal = !this.showModal
-                }
-                this.planA.id = '';
-                this.planA.fecha = '';
-                this.planA.iniFecha = '';
-                this.planA.pla_acci = '';
-                this.planA.paro_id = '';
-                this.planA.estatus = '';
-                this.planA.tiempo = null;
-            },
-            /****************************** datatables ********************************************************/
-            //datatable de carga
-            tabla() {
-                this.$nextTick(() => {
-                    $('#t_paros').DataTable({
-                        "language": this.español,
-                        "order": [[5, 'asc']],
-                        "scrollX": true,
-                        "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
-                                "<'row'<'col-sm-12'tr>>" +
-                                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                        "columnDefs": [
-                            { "width": "15%", "targets": [3,4,9] },
-                            { "width": "10%", "targets": [0,1,2,5,6,7] }
-                        ]
-                    })
+            }
+            //Consulta los paros cargados
+            let promesa = await axios.post('Paros/ParCar', datos);
+            this.Pcarga = promesa.data;
+            $('#t_paros').DataTable().destroy();
+            this.tabla()
+            
+        },
+        //datatable de carga
+        tabla() {
+            this.$nextTick(() => {
+                $('#t_paros').DataTable({
+                    "language": this.español,
+                    "order": [[5, 'asc']],
+                    "scrollX": true,
+                    "stateSave": true,
+                    "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    "columnDefs": [
+                        { "width": "15%", "targets": [3,4,9] },
+                        { "width": "10%", "targets": [0,1,2,5,6,7] }
+                    ]
                 })
-            },
-            /****************************** carga de carga de datos ******************************************/
-            reset(){
-                //this.claParo();
-                //this.form.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
-                this.proc_prin = '';
-                this.form.proceso_id = '';
-                this.form.maq_pro_id = '';
-                this.form.paro_id = '';
-                this.form.descri = '';
-                this.form.tiempo = null;
-                this.form.estatus = 'Activo',
-                this.form.orden = '';
-                this.form.departamento_id = this.S_Area;
-                this.editMode = false;
-            },
-            save(data){
-                data.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
-                data.departamento_id = this.S_Area;
-                //$('#t_paros').DataTable().clear();
-                data.VerInv = '0';
-
-
-                if ( data.orden != '' & (data.paro_id == 13 | data.paro_id == 14 | data.paro_id == 16) ) {
-                    var er = data.orden;
-                    data.orden = this.tOrden+data.orden;
-                }
-                $('#t_paros').DataTable().destroy();
-                this.$inertia.post('/Produccion/Paros', data, {
-                    onSuccess: () => { this.tabla(), this.reset(), this.alertSucces()},
-                    onError: () => {this.tabla(), data.orden = er},
-                    preserveState: true
-                });
-            },
-            //actualiza el estatus y lo detiene
-            detener(det, data){
-                //primer stop cambia estatus a "En revisión"
-                if (det == 1) {
-                    data.estatus = 'En revisión';
-                    data.usu = this.usuario.id;
-                    data.finFecha = moment().format("YYYY-MM-DD HH:mm:ss");
-                    data.tiempo = this.tiempo(data.iniFecha, data.finFecha);
-                    this.update(data);
-                }
-                //pregunta si ya se va a guardas el dato o se deniega cambia estatus a "Autorizado" o "Activo"
-                else if(det == 2){
-
-                    const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger mx-3'
-                    },
-                    buttonsStyling: false
-                    })
-
-                    swalWithBootstrapButtons.fire({
-                        title: '¿Autorizar?',
-                        text: "Selecciona una opción",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Aceptar',
-                        cancelButtonText: 'Denegar',
-                        reverseButtons: true
-                    }).then((result) => {
-                        //si se acepta el paro se guarda
-                        if (result.isConfirmed) {
-                            swalWithBootstrapButtons.fire(
-                            '¡Autorizado!',
-                            'El paro fue autorizado correctamente',
-                            'success'
-                            )
-                            data.estatus = 'Autorizado';
-                            data.usu = data.perfil_fin_id;
-                            this.update(data);
-                        }//en caso de que no, reinicia y manda a nulo algunos datos
-                        else if (
-                            /* Read more about handling dismissals below */
-                            result.dismiss === Swal.DismissReason.cancel
-                        ) {
-                            swalWithBootstrapButtons.fire(
-                            '¡Denegado!',
-                            'El paro se actualizó correctamente',
-                            'error'
-                            )
-                            data.estatus = 'Activo';
-                            data.finFecha = null;
-                            data.tiempo = null;
-                            this.update(data);
-                        }
-                    })
-
-                }
-
-            },
-            //actualiza los paros y sus estatus
-            update(data){
-                $('#t_paros').DataTable().destroy();
-                this.$inertia.put('/Produccion/Paros/' + data.id, data, {
-                    onSuccess: () => {this.tabla(), this.alertSucces(), this.resetPlan()}, onError: () => {this.tabla()}
-                });
+            })
+        },
+        global(){
+            if (this.usuario.dep_pers.length == 0) {
+                this.S_Area = 7;
+            }else{
+                //Asigna el primer departamento
+                this.S_Area = this.usuario.dep_pers[0].departamento_id;
+                this.usuario.dep_pers.forEach(v => {
+                    if (v.departamento_id = this.S_Area) {
+                        //asigna
+                        this.idDep = v.id;
+                    }
+                })
             }
         },
-        computed: {
-            noCor: function() {
-                if (this.usuario.dep_pers.length != 0) {
-                    return this.usuario.dep_pers[0].ope_puesto;
+        tiempo(ini, fin){
+            var tini = moment(ini);
+            var tfin = fin == null ? moment() : moment(fin);
+            return tfin.from(tini, true);
+        },
+        //plan de trabajo
+        plan(data){
+            this.showModal = !this.showModal
+            this.planA.id = data.id;
+            this.planA.fecha = data.fecha;
+            this.planA.iniFecha = data.iniFecha
+            this.planA.pla_acci = '';
+            this.planA.paro_id = data.paro_id;
+            this.planA.estatus = 'En revisión';
+            this.planA.tiempo =  this.tiempo(data.iniFecha, data.finFecha);
+
+        },
+        resetPlan(){
+            if (this.planA.pla_acci != '') {
+                this.showModal = !this.showModal
+            }
+            this.planA.id = '';
+            this.planA.fecha = '';
+            this.planA.iniFecha = '';
+            this.planA.pla_acci = '';
+            this.planA.paro_id = '';
+            this.planA.estatus = '';
+            this.planA.tiempo = null;
+        },
+        /****************************** carga de carga de datos ******************************************/
+        reset(){
+            //this.claParo();
+            //this.form.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
+            this.proc_prin = '';
+            this.form.proceso_id = '';
+            this.form.maq_pro_id = '';
+            this.form.paro_id = '';
+            this.form.descri = '';
+            this.form.tiempo = null;
+            this.form.estatus = 'Activo',
+            this.form.orden = '';
+            this.form.departamento_id = this.S_Area;
+            this.editMode = false;
+        },
+        async save(data){
+            data.fecha = moment().format("YYYY-MM-DD HH:mm:ss");
+            data.departamento_id = this.S_Area;
+            //$('#t_paros').DataTable().clear();
+            data.VerInv = '0';
+
+
+            if ( data.orden != '' & (data.paro_id == 13 | data.paro_id == 14 | data.paro_id == 16) ) {
+                var er = data.orden;
+                data.orden = this.tOrden+data.orden;
+            }
+            await axios.post('/Produccion/Paros', data)
+            .then(resp => {this.reset(), this.alertSucces()});
+            this.ParosCarga(false)
+        },
+        //actualiza el estatus y lo detiene
+        detener(det, data){
+            //primer stop cambia estatus a "En revisión"
+            if (det == 1) {
+                data.estatus = 'En revisión';
+                data.usu = this.usuario.id;
+                data.finFecha = moment().format("YYYY-MM-DD HH:mm:ss");
+                data.tiempo = this.tiempo(data.iniFecha, data.finFecha);
+                this.update(data);
+            }
+            //pregunta si ya se va a guardas el dato o se deniega cambia estatus a "Autorizado" o "Activo"
+            else if(det == 2){
+
+                const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger mx-3'
+                },
+                buttonsStyling: false
+                })
+
+                swalWithBootstrapButtons.fire({
+                    title: '¿Autorizar?',
+                    text: "Selecciona una opción",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Aceptar',
+                    cancelButtonText: 'Denegar',
+                    reverseButtons: true
+                }).then((result) => {
+                    //si se acepta el paro se guarda
+                    if (result.isConfirmed) {
+                        swalWithBootstrapButtons.fire(
+                        '¡Autorizado!',
+                        'El paro fue autorizado correctamente',
+                        'success'
+                        )
+                        data.estatus = 'Autorizado';
+                        data.usu = data.perfil_fin_id;
+                        this.update(data);
+                    }//en caso de que no, reinicia y manda a nulo algunos datos
+                    else if (
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                        '¡Denegado!',
+                        'El paro se actualizó correctamente',
+                        'error'
+                        )
+                        data.estatus = 'Activo';
+                        data.finFecha = null;
+                        data.tiempo = null;
+                        this.update(data);
+                    }
+                })
+
+            }
+
+        },
+        //actualiza los paros y sus estatus
+        async update(data){
+            /*axios.post('/Produccion/Paros/' + data.id, data)
+            .then(resp => {this.ParosCarga(false), this.resetPlan(), this.alertSucces()});*/
+            await this.$inertia.put('/Produccion/Paros/' + data.id, data, {
+                onSuccess: () => {this.ParosCarga(false), this.alertSucces(), this.resetPlan()}, onError: () => {this.tabla()}
+            });
+        }
+    },
+    computed: {
+        noCor: function() {
+            if (this.usuario.dep_pers.length != 0) {
+                return this.usuario.dep_pers[0].ope_puesto;
+            }
+        },
+        tOrden: function() {
+            var depa = this.S_Area
+            if(depa == 4){
+                return '1-H1-';
+            }else if(depa == 5){
+                return '1-H2-';
+            }else if(depa == 6){
+                return '1-H3-';
+            }else if(depa == 7){
+                return 'AP-';
+            }else if(depa == 18){
+                return '1-PREP-';
+            }else {
+                return 'N/A'
+            }
+        },
+        //Opciones departamento
+        opc: function() {
+            const ar = [];
+            this.depa.forEach(r => {
+                if (r.departamentos) {
+                    ar.push({text: r.departamentos.Nombre, value: r.departamentos.id});
+                }else{
+                    ar.push({text: r.Nombre, value: r.id});
+                    r.sub__departamentos.forEach(rr => {
+                        ar.push({text: rr.Nombre, value: rr.id});
+                        //console.log(rr.Nombre);
+                    })
                 }
-            },
-            tOrden: function() {
-                var depa = this.S_Area
-                if(depa == 4){
-                    return '1-H1-';
-                }else if(depa == 5){
-                    return '1-H2-';
-                }else if(depa == 6){
-                    return '1-H3-';
-                }else if(depa == 7){
-                    return 'AP-';
-                }else if(depa == 18){
-                    return '1-PREP-';
-                }else {
-                    return 'N/A'
+            })
+            return ar;
+        },
+        //Opciones procesos principales
+        opcPP: function() {
+            const ppi = [];
+            this.procesos.forEach(pp =>{
+                if (pp.tipo == 0 & pp.tipo_carga == 'pro') {
+                    ppi.push({text: pp.nompro, value: pp.id})
                 }
-            },
-            //Opciones departamento
-            opc: function() {
-                const ar = [];
-                this.depa.forEach(r => {
-                    if (r.departamentos) {
-                        ar.push({text: r.departamentos.Nombre, value: r.departamentos.id});
-                    }else{
-                        ar.push({text: r.Nombre, value: r.id});
-                        r.sub__departamentos.forEach(rr => {
-                            ar.push({text: rr.Nombre, value: rr.id});
-                            //console.log(rr.Nombre);
+            });
+            return ppi;
+        },
+        //Opciones subprocesos
+        opcSP: function() {
+            const ssp = [];
+            //recorre y muestra los procesos
+            this.procesos.forEach(sp =>{
+                if ((sp.tipo == 1 & sp.proceso_id == this.proc_prin) | this.editMode ) {
+                    ssp.push({id: sp.id, text: sp.id+' - '+sp.nompro});
+                }
+            })
+            return ssp;
+        },
+        //Opciones maquinas
+        opcMQ: function() {
+            const mq = [];
+            var mar = '';
+            if (this.form.proceso_id != '') {
+                this.procesos.forEach(pm => {
+                    if (this.form.proceso_id == pm.id) {
+                        pm.maq_pros.forEach(mp => {
+                            mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
+                            mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
                         })
                     }
                 })
-                return ar;
-            },
-            //Opciones procesos principales
-            opcPP: function() {
-                const ppi = [];
-                this.procesos.forEach(pp =>{
-                    if (pp.tipo == 0 & pp.tipo_carga == 'pro') {
-                        ppi.push({text: pp.nompro, value: pp.id})
-                    }
-                });
-                return ppi;
-            },
-            //Opciones subprocesos
-            opcSP: function() {
-                const ssp = [];
-                //recorre y muestra los procesos
-                this.procesos.forEach(sp =>{
-                    if ((sp.tipo == 1 & sp.proceso_id == this.proc_prin) | this.editMode ) {
-                        ssp.push({id: sp.id, text: sp.id+' - '+sp.nompro});
-                    }
-                })
-                return ssp;
-            },
-            //Opciones maquinas
-            opcMQ: function() {
-                const mq = [];
-                var mar = '';
-                if (this.form.proceso_id != '') {
-                    this.procesos.forEach(pm => {
-                        if (this.form.proceso_id == pm.id) {
-                            pm.maq_pros.forEach(mp => {
-                                mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
-                                mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
-                            })
-                        }
-                    })
-                }
-                return mq;
-            },
-            opcPR: function() {
-                //select paros
-                var pr = []
-                this.paros.forEach(pa => {
-                    pr.push({id: pa.id, text: pa.clave+' - '+pa.descri });
-                })
-                return pr;
             }
+            return mq;
         },
-        watch: {
-            S_Area: function(b){
-                /* $('#t_paros').DataTable().clear(); */
-                $('#t_paros').DataTable().destroy();
-                this.proc_prin = '';
-                /* await axios.get('/Produccion/Paros',{ busca: b })
-                .then((resu) => { this.tabla(), console.log(resu.data) })
-                .catch(err => {this.tabla()}) */
-                this.$inertia.get('/Produccion/Paros',{ busca: b }, {
-                    onSuccess: () => { this.tabla() }, onError: () => {this.tabla()}, preserveState: true
-                });
-                //this.claParo()
-            },
-            proc_prin: function(v) {
-                this.form.proceso_id = '';
-                this.form.maq_pro_id = '';
-                this.form.paro_id = '';
-            }
+        opcPR: function() {
+            //select paros
+            var pr = []
+            this.paros.forEach(pa => {
+                pr.push({id: pa.id, text: pa.clave+' - '+pa.descri });
+            })
+            return pr;
         }
+    },
+    watch: {
+         S_Area: async function(b){
+             var datos = {'departamento_id': this.S_Area, 'modulo': 'Paros'};
+             //Produccion
+            let produ = await axios.post('General/ConProduccion', datos)
+            this.procesos = produ.data;
+
+            //Materiales
+            let mate = await axios.post('General/ConMateriales', datos)
+            this.materiales = mate.data
+
+            this.ParosCarga(true)
+         }
     }
+}
 </script>

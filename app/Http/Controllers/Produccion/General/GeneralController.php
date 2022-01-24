@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Catalogos\Maquinas;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
+use App\Models\Produccion\parosCarga;
 use Illuminate\Http\Request;
 
 class GeneralController extends Controller
@@ -25,22 +26,40 @@ class GeneralController extends Controller
 
     public function ConProdu(Request $request) {
         //procesos
-        $procesos = procesos::where('departamento_id', '=', $request->departamento_id)
-        ->with([
-            'maq_pros' => function($mp){
-                $mp->select('id', 'proceso_id', 'maquina_id');
-            },
-            'maq_pros.maquinas' => function($ma){
-                $ma->select('id', 'Nombre', 'departamento_id');
-            },
-            'maq_pros.maquinas.marca'=> function($maq){
-                $maq->select('id', 'Nombre', 'maquinas_id');
-            },
-            'formulas.maq_pros.maquinas' => function($fa){
-                $fa->select('id', 'Nombre', 'departamento_id');
-            },
-        ])
-        ->get();
+        if ($request->modulo == "repoPro") {
+            $procesos = procesos::where('departamento_id', '=', $request->departamento_id)
+            ->with([
+                'maq_pros' => function($mp){
+                    $mp->select('id', 'proceso_id', 'maquina_id');
+                },
+                'maq_pros.maquinas' => function($ma){
+                    $ma->select('id', 'Nombre', 'departamento_id');
+                },
+                'maq_pros.maquinas.marca'=> function($maq){
+                    $maq->select('id', 'Nombre', 'maquinas_id');
+                },
+                'formulas.maq_pros.maquinas' => function($fa){
+                    $fa->select('id', 'Nombre', 'departamento_id');
+                },
+            ])
+            ->get();
+        }elseif ($request->modulo == "Paros") {
+            $procesos = procesos::where('departamento_id', '=', $request->departamento_id)
+            ->where('tipo', '!=', '3')
+            ->where('tipo', '!=', '4')
+            ->with([
+                'maq_pros' => function($mp){
+                    $mp->select('id', 'proceso_id', 'maquina_id');
+                },
+                'maq_pros.maquinas' => function($ma){
+                    $ma->select('id', 'Nombre', 'departamento_id');
+                },
+                'maq_pros.maquinas.marca'=> function($maq){
+                    $maq->select('id', 'Nombre', 'maquinas_id');
+                },
+            ])
+            ->get();
+        }
         return $procesos;
     }
 

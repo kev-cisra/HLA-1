@@ -74,8 +74,13 @@ Route::resource('Carga', CargaController::class)
 Route::resource('Nota', notascargaController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
+//Modulo de paros
 Route::resource('Paros', ParosController::class)
     ->middleware(['auth:sanctum', 'verified']);
+
+Route::post('Paros/ParCar', [ParosController::class, 'ParoCarga'])->name('ParoCarga');
+
+//fin modulo paros
 
 Route::resource('Entregas', EntregasController::class)
     ->middleware(['auth:sanctum', 'verified']);
