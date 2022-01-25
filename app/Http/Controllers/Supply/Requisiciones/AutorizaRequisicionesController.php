@@ -717,9 +717,13 @@ class AutorizaRequisicionesController extends Controller{
                     //Obtengo los datos necesarios para enviarlos en el correo
                     $Req = Requisiciones::where('id', '=', $request->requisicion_id)->get(['id','NumReq', 'Fecha', 'OrdenCompra']);
 
-                    //Envio de Correo al proveedor
-                    $correo = new ContactaProveedorMailable($Req);
-                    Mail::to($Proveedor->Correo)->send($correo);
+                    if($Proveedor->Correo != ''){
+                        //Envio de Correo al proveedor
+                        $correo = new ContactaProveedorMailable($Req);
+                        Mail::to($Proveedor->Correo)
+                        ->cc('compras@hlangeles.com')
+                        ->send($correo);
+                    }
                 }
                 break;
 
@@ -809,9 +813,13 @@ class AutorizaRequisicionesController extends Controller{
                     //Obtengo los datos necesarios para enviarlos en el correo
                     $Req = Requisiciones::where('id', '=', $request->requisiciones_id)->get(['id','NumReq', 'Fecha', 'OrdenCompra']);
 
-                    //Envio de Correo al proveedor
-                    $correo = new ContactaProveedorMailable($Req);
-                    Mail::to($Proveedor->Correo)->send($correo);
+                    if($Proveedor->Correo != ''){
+                        //Envio de Correo al proveedor
+                        $correo = new ContactaProveedorMailable($Req);
+                        Mail::to($Proveedor->Correo)
+                        ->cc('compras@hlangeles.com')
+                        ->send($correo);
+                    }
                 }
                 break;
             case 5:

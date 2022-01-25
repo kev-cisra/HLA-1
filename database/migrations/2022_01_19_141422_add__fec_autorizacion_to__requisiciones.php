@@ -27,8 +27,8 @@ class AddFecAutorizacionToRequisiciones extends Migration
     public function down()
     {
         Schema::table('requisiciones', function (Blueprint $table) {
-            // $table->dropColumn('FecAutorizacion');
-            // $table->dropColumn('Etiqueta');
+            $table->dropColumn('FecAutorizacion');
+            $table->dropColumn('Etiqueta');
         });
     }
 }

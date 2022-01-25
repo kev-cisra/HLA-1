@@ -17,4 +17,11 @@ class paros extends Model
     public function parocargas(){
         return $this->hasMany(parosCarga::class, 'paro_id');
     }
+
+    public function grafi_arrs(){
+        return $this->hasMany(grafi_arr::class, 'paro_id');
+    }
+
+    //relacion uno a muchos inversa
+
 }

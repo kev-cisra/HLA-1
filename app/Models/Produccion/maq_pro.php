@@ -41,6 +41,14 @@ class maq_pro extends Model
         return $this->hasMany(obje_cordi::class, 'maq_pro_id');
     }
 
+    public function grafi_arrs(){
+        return $this->hasMany(grafi_arr::class, 'maq_pro_id');
+    }
+
+    public function grafi_arrs_linea(){
+        return $this->hasMany(grafi_arr::class, 'maq_pro_linea_id');
+    }
+
     //relacion 1 a muchos inversas
     public function procesos() {
         return $this->belongsTo(procesos::class, 'proceso_id');
@@ -49,6 +57,5 @@ class maq_pro extends Model
     public function maquinas() {
         return $this->belongsTo(Maquinas::class, 'maquina_id');
     }
-
 
 }

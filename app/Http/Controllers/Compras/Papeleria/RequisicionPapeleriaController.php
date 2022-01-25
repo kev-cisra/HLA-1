@@ -19,8 +19,9 @@ class RequisicionPapeleriaController extends Controller{
     public function index(Request $request){
 
         $hoy = Carbon::now();
-        $request->month == '' ? $mes = $hoy->format('n') : $mes = $request->month;
-        $anio = 2021;
+        //Asigno el mes actual o uno recibido por request
+        $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
+        $request->Year == '' ? $anio = $hoy->format('Y') : $anio = $request->Year;
 
         $Session = auth()->user();
         $IdEmp = $Session->id;
@@ -28,26 +29,88 @@ class RequisicionPapeleriaController extends Controller{
         $Material = MaterialPapeleria::all();
         $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
 
-        $Papeleria = ArticulosPapeleriaRequisicion::with([
-            'ArticulosPapeleria' => function($Art) {
-                $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
-            },
-            'ArticuloMaterial' => function($Art) {
-                $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
-            },
-            'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
-                $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
-            },
-            'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
-                $Art->select('id', 'IdUser', 'Nombre');
-            },
-        ])
-        ->where('IdEmp', '=', $Session->IdEmp)
-        ->whereMonth('created_at', $mes)
-        ->orderBy('id', 'desc')
-        ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
+        if($anio != 0 && $mes != 0){
 
-        return Inertia::render('Compras/Papeleria/RequisicionPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria', 'mes'));
+            $Papeleria = ArticulosPapeleriaRequisicion::with([
+                'ArticulosPapeleria' => function($Art) {
+                    $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                },
+                'ArticuloMaterial' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
+                },
+                'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
+                },
+                'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre');
+                },
+            ])
+            ->where('IdEmp', '=', $Session->IdEmp)
+            ->whereYear('created_at', $anio)
+            ->whereMonth('created_at', $mes)
+            ->orderBy('id', 'desc')
+            ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
+
+        }elseif($anio == 0 && $mes != 0){
+
+            $Papeleria = ArticulosPapeleriaRequisicion::with([
+                'ArticulosPapeleria' => function($Art) {
+                    $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                },
+                'ArticuloMaterial' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
+                },
+                'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
+                },
+                'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre');
+                },
+            ])
+            ->where('IdEmp', '=', $Session->IdEmp)
+            ->whereMonth('created_at', $mes)
+            ->orderBy('id', 'desc')
+            ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
+
+        }elseif ($anio != 0 && $mes == 0) {
+            $Papeleria = ArticulosPapeleriaRequisicion::with([
+                'ArticulosPapeleria' => function($Art) {
+                    $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                },
+                'ArticuloMaterial' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
+                },
+                'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
+                },
+                'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre');
+                },
+            ])
+            ->where('IdEmp', '=', $Session->IdEmp)
+            ->whereYear('created_at', $anio)
+            ->orderBy('id', 'desc')
+            ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
+        }elseif ($anio == 0 && $mes == 0) {
+            $Papeleria = ArticulosPapeleriaRequisicion::with([
+                'ArticulosPapeleria' => function($Art) {
+                    $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                },
+                'ArticuloMaterial' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
+                },
+                'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
+                },
+                'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre');
+                },
+            ])
+            ->where('IdEmp', '=', $Session->IdEmp)
+            ->orderBy('id', 'desc')
+            ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
+        }
+        return Inertia::render('Compras/Papeleria/RequisicionPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria', 'anio','mes'));
     }
 
     public function store(Request $request){

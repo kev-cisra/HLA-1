@@ -117,7 +117,7 @@
                     <label  class="tw-text-white"><span class="required">*</span>Tipo de gráfica: </label>
                     <div class="tw-px-3 tw-mb-6 tw-gap-3 tw-flex">
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="pie" id="pie"> <label for="pie" class="tw-text-white">Gráfica de pie</label>
+                            <input type="checkbox" v-model="graTipo" value="pie" id="pie"> <label for="pie" class="tw-text-white">Gráfica de pastel</label>
                         </div>
                         <div>
                             <input type="checkbox" v-model="graTipo" value="punto" id="punto"> <label for="punto" class="tw-text-white">Gráfica lineal</label>
@@ -129,6 +129,7 @@
                             <input type="checkbox" v-model="graTipo" value="ambos" id="ambos"> <label for="ambos" class="tw-text-white">Gráfica de barar y punto</label>
                         </div>
                     </div>
+                    <button class="btn btn-warning" @click="ConGra()">Graficas guardadas</button>
                 </div>
 
                 <!-- recorrido de los tipos de graficas -->
@@ -137,14 +138,15 @@
                     <div v-if="tip == 'pie'" class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-rounded-xl tw-border-8 tw-border-blue-700 tw-p-10">
                         <!-- titulo y botones -->
                         <div class="sm:tw-flex lg:tw-m-5">
-                            <div class="tw-w-1/2 tw-text-2xl tw-text-center">
-                                <h1 class="tw-text-white">Gráfica de Pie</h1>
+                            <div class="tw-w-full lg:tw-w-1/2 tw-text-2xl tw-text-center">
+                                <h1 class="tw-text-white">Gráfica de Pastel</h1>
                             </div>
 
-                            <div class="lg:tw-flex lg:tw-w-1/2">
-                                <div class="tw-flex tw-w-1/2">
-                                    <a class="btn btn-success " href="#chart" @click="GraPaste(gPie)">Generar gráfica</a>
-                                    <button class="btn btn-danger " @click="resetPastel()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            <div class="lg:tw-flex tw-w-full lg:tw-w-1/2">
+                                <div class="sm:tw-flex tw-w-1/2 tw-m-auto">
+                                    <a class="btn btn-primary" href="#chart" @click="GraPaste(gPie)">Generar gráfica</a>
+                                    <button class="btn btn-success" @click="savePaste(gPie)" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                    <button class="btn btn-danger" @click="resetPastel()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -210,7 +212,7 @@
                                 </div>
 
                                 <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-mb-0" v-if="gPie.propa == 1">
-                                    <jet-label class="tw-text-white">Tipo de grafica</jet-label>
+                                    <jet-label class="tw-text-white">Tipo de gráfica</jet-label>
                                     <div class="lg:tw-flex tw-text-center">
                                         <Select2 v-model="gPie.tipo" class="InputSelect" :options="opcTipo" :settings="{width: '100%', allowClear: true}"></Select2>
                                     </div>
@@ -1121,7 +1123,7 @@
                     paro: [],
                     maquinas: [],
                     procesos: [],
-                    norma: [],
+                    norma: []
                 },
                 gLinea: {
                     borra: '',
@@ -1878,6 +1880,27 @@
             resetPastel(){
                 this.gPie.borra.destroy();
             },
+            async savePaste(datos){
+                datos.graTipo = "pie";
+                datos.departamento_id = this.S_Area;
+                if (datos.tipo == "generalTot") {
+                    datos.maquinas = [];
+                    datos.norma = [];
+                }else if(datos.tipo == "norma") {
+                    datos.procesos = [];
+                }else{
+                    datos.procesos = [];
+                    datos.norma = [];
+                }
+
+                if (datos.propa == "2") {
+                    datos.procesos = [];
+                    datos.norma = [];
+                }
+
+                var d = await axios.post('ReportesPro/SaveGra', datos).then(resp => {this.alertSucces()})
+                //console.log(d)
+            },
             /******************************************* Grafica en linea *****************************************************/
             lipiaLinea(dat){
                 this.gLinea.fecIni = null;
@@ -2353,6 +2376,13 @@
             },
             resetBaLi(){
                 this.gBaLi.borra.destroy();
+            },
+            /***************************************** Graficas guardadas ********************************************/
+            //consulta las graficas guardadas
+            async ConGra() {
+                var datos = {'departamento_id': this.S_Area}
+                var nuArr = await axios.post('ReportesPro/ConGrafi', datos)
+                console.log(nuArr.data)
             }
         },
 

@@ -23,43 +23,136 @@ class SolicitudesPapeleriaController extends Controller{
 
         $hoy = Carbon::now();
 
-        $request->month == '' ? $mes = $hoy->format('n') : $mes = $request->month;
-        $anio = 2021;
+        //Asigno el mes actual o uno recibido por request
+        $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
+        $request->Year == '' ? $anio = $hoy->format('Y') : $anio = $request->Year;
 
         $Session = auth()->user();
 
         $Material = MaterialPapeleria::orderBy('Nombre', 'asc')->get(['id','Nombre']);
         $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
 
-        $Papeleria = ArticulosPapeleriaRequisicion::with([
-            'ArticulosPapeleria' => function($Art) {
-                $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
-            },
-            'ArticuloMaterial' => function($Art) {
-                $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
-            },
-            'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
-                $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
-            },
-            'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
-                $Art->select('id', 'IdUser', 'Nombre');
-            },
-        ])
-        ->whereMonth('created_at', $mes)
-        ->where('Estatus', '>', 0)
-        ->orderBy('id', 'desc')
-        ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus', 'created_at']);
+        if($anio != 0 && $mes != 0){
+            $Papeleria = ArticulosPapeleriaRequisicion::with([
+                'ArticulosPapeleria' => function($Art) {
+                    $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                },
+                'ArticuloMaterial' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
+                },
+                'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
+                },
+                'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre');
+                },
+            ])
+            ->whereYear('created_at', $anio)
+            ->whereMonth('created_at', $mes)
+            ->where('Estatus', '>', 0)
+            ->orderBy('id', 'desc')
+            ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus', 'created_at']);
 
-        $Solicitud = (DB::select("
-        SELECT M.Unidad, M.Nombre, SUM(A.Cantidad) AS Total FROM articulos_papeleria_requisicions AS A
-        JOIN material_papelerias AS M
-        ON A.material_id = M.id
-        WHERE MONTH(A.created_at) = ".$mes."
-        AND A.Estatus = 1
-        GROUP BY M.Unidad, M.Nombre"));
+            $Solicitud = (DB::select("
+            SELECT M.Unidad, M.Nombre, SUM(A.Cantidad) AS Total FROM articulos_papeleria_requisicions AS A
+            JOIN material_papelerias AS M
+            ON A.material_id = M.id
+            WHERE YEAR(A.created_at) = ".$anio."
+            AND MONTH(A.created_at) = ".$mes."
+            AND A.Estatus = 1
+            GROUP BY M.Unidad, M.Nombre"));
+
+        }elseif($anio == 0 && $mes != 0){
+            $Papeleria = ArticulosPapeleriaRequisicion::with([
+                'ArticulosPapeleria' => function($Art) {
+                    $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                },
+                'ArticuloMaterial' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
+                },
+                'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
+                },
+                'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre');
+                },
+            ])
+            ->whereMonth('created_at', $mes)
+            ->where('Estatus', '>', 0)
+            ->orderBy('id', 'desc')
+            ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus', 'created_at']);
+
+            $Solicitud = (DB::select("
+            SELECT M.Unidad, M.Nombre, SUM(A.Cantidad) AS Total FROM articulos_papeleria_requisicions AS A
+            JOIN material_papelerias AS M
+            ON A.material_id = M.id
+            WHERE MONTH(A.created_at) = ".$mes."
+            AND A.Estatus = 1
+            GROUP BY M.Unidad, M.Nombre"));
+
+        }elseif ($anio != 0 && $mes == 0) {
+            $Papeleria = ArticulosPapeleriaRequisicion::with([
+                'ArticulosPapeleria' => function($Art) {
+                    $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                },
+                'ArticuloMaterial' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
+                },
+                'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
+                },
+                'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre');
+                },
+            ])
+            ->whereYear('created_at', $anio)
+            ->where('Estatus', '>', 0)
+            ->orderBy('id', 'desc')
+            ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus', 'created_at']);
+
+            $Solicitud = (DB::select("
+            SELECT M.Unidad, M.Nombre, SUM(A.Cantidad) AS Total FROM articulos_papeleria_requisicions AS A
+            JOIN material_papelerias AS M
+            ON A.material_id = M.id
+            WHERE YEAR(A.created_at) = ".$anio."
+            AND A.Estatus = 1
+            GROUP BY M.Unidad, M.Nombre"));
+        }elseif ($anio == 0 && $mes == 0) {
+            $Papeleria = ArticulosPapeleriaRequisicion::with([
+                'ArticulosPapeleria' => function($Art) {
+                    $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                },
+                'ArticuloMaterial' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
+                },
+                'ArticulosPapeleria.RequisicionDepartamento' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
+                },
+                'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
+                    $Art->select('id', 'IdUser', 'Nombre');
+                },
+            ])
+            ->where('Estatus', '>', 0)
+            ->orderBy('id', 'desc')
+            ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus', 'created_at']);
+
+            $Solicitud = (DB::select("
+            SELECT M.Unidad, M.Nombre, SUM(A.Cantidad) AS Total FROM articulos_papeleria_requisicions AS A
+            JOIN material_papelerias AS M
+            ON A.material_id = M.id
+            AND A.Estatus = 1
+            GROUP BY M.Unidad, M.Nombre"));
+        }
 
 
-        return Inertia::render('Compras/Papeleria/SolicitudPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria', 'Solicitud', 'mes'));
+        return Inertia::render('Compras/Papeleria/SolicitudPapeleria',
+        compact('Session',
+        'Departamentos' ,
+        'Material',
+        'Papeleria',
+        'Solicitud',
+        'anio',
+        'mes'));
     }
 
     public function store(Request $request){

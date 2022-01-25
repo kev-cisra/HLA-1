@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produccion\carga;
+use App\Models\Produccion\grafi_arr;
+use App\Models\Produccion\pac_grafica;
 use App\Models\Produccion\paros;
 use App\Models\Produccion\parosCarga;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
@@ -67,6 +69,7 @@ class RepoProController extends Controller
         return Inertia::render('Produccion/Reportes/RProduccion', ['usuario' => $perf, 'depa' => $depa, 'claParo' => $claParo]);
     }
 
+    //Consulta para la produccion
     public function ConProdu(Request $request){
         if ($request->tipo == 'dia') {
             //$addDia = date("Y-m-d H:m:s" , strtotime($request->iniDia."+ 1 days"));
@@ -324,6 +327,7 @@ class RepoProController extends Controller
         return $carga;
     }
 
+    //consulta para los paros
     public function ConParo(Request $request){
         if ($request->tipo == 'dia') {
             //paros
@@ -436,6 +440,19 @@ class RepoProController extends Controller
         return $paros;
     }
 
+    //consulta graficas guardadas
+    public function ConGrafi(Request $request){
+        $grafi = pac_grafica::where('departamento_id', '=', $request->departamento_id)
+        ->with([
+            'grafi_arrs' => function($ga){
+                $ga->select('id');
+            }
+        ])
+        ->get(['id', 'graTipo', 'propa', 'rango', 'subDe', 'subIz', 'subtitulo', 'tipo', 'tipoParo', 'titulo']);
+        return $grafi;
+    }
+
+    //grafica de pastel
     public function PaiGrafi(Request $request){
         if ($request->tipo == 'generalMaq') {
             $carga = carga::where('departamento_id', '=', $request->departamento_id)
@@ -895,6 +912,7 @@ class RepoProController extends Controller
         return $carga;
     }
 
+    //grafica paros de pastel
     public function PrPaiGrafi(Request $request){
         if ($request->tipoParo == 'total') {
             # code...
@@ -961,6 +979,7 @@ class RepoProController extends Controller
         return $paros;
     }
 
+    //grafica de punto o barra
     public function LinGrafi(Request $request){
         if ($request->rango == 1) {
             $tipFec = 'DATE_FORMAT(fecha, "%Y-%m-%d")';
@@ -1101,6 +1120,7 @@ class RepoProController extends Controller
         return $carga;
     }
 
+    //grafica de pastel por rango para combinada
     public function PaiGrafiRan(Request $request){
         if ($request->rango == 1) {
             $tipFec = 'DATE_FORMAT(fecha, "%Y-%m-%d")';
@@ -1239,6 +1259,46 @@ class RepoProController extends Controller
             ->get();
         }
         return $carga;
+    }
+
+    //Guardado de graficas
+    public function SaveGrafi(Request $request){
+        $nuGrafi = pac_grafica::create([
+            'graTipo' => $request->graTipo,
+            'titulo' => $request->titulo,
+            'subtitulo' => '',
+            'rango' => $request->rango,
+            'propa' => $request->propa,
+            'tipo' => $request->tipo,
+            'tipoParo' => $request->tipoParo,
+            'departamento_id' => $request->departamento_id
+        ]);
+
+        foreach ($request->maquinas as $maq) {
+            grafi_arr::create([
+                'tipo' => $request->tipo,
+                'pac_grafica_id' => $nuGrafi->id,
+                'maq_pro_id' => $maq
+            ]);
+        }
+
+        foreach ($request->procesos as $pro) {
+            grafi_arr::create([
+                'tipo' => $request->tipo,
+                'pac_grafica_id' => $nuGrafi->id,
+                'proceso_id' => $pro
+            ]);
+        }
+
+        foreach ($request->norma as $nor) {
+            grafi_arr::create([
+                'tipo' => $request->tipo,
+                'pac_grafica_id' => $nuGrafi->id,
+                'material_id' => $nor
+            ]);
+        }
+
+        return $request;
     }
 
     public function destroy(Request $request, carga $carga){

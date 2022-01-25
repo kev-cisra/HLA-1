@@ -21,69 +21,67 @@
         </Accions>
         <!------------------------------------ carga de datos de personal y areas ---------------------------------------->
         <div class="collapse m-5 tw-p-6 tw-bg-green-600 tw-rounded-3xl tw-shadow-xl" id="agPer">
-            <form>
-                <!-- inputs principales -->
-                <div class="tw-mb-6 md:tw-flex">
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                        <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
-                        <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
-                        </select>
-                    </div>
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="opcSP">
-                        <jet-label><span class="required">*</span>Sub proceso </jet-label>
-                        <select class="InputSelect" v-model="form.proceso_id" :disabled="editMode">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
-                        </select>
-                        <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
-                    </div>
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
-                        <jet-label><span class="required">*</span>Maquinas</jet-label>
-                        <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
-                        </select>
-                        <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
-                    </div>
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
-                        <jet-label><span class="required">*</span>Tipo de paro</jet-label>
-                        <Select2 v-model="form.paro_id"  class="InputSelect" :options="opcPR"  :settings="{width: '100%'}"/>
-                        <!-- <select  v-model="form.paro_id" v-html="opcPR" ></select> -->
-                        <small v-if="errors.paro_id" class="validation-alert">{{errors.paro_id}}</small>
-                    </div>
+            <!-- inputs principales -->
+            <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Proceso proncipal</jet-label>
+                    <select class="InputSelect" v-model="proc_prin" :disabled="editMode">
+                        <option value="" disabled>SELECCIONA</option>
+                        <option v-for="pp in opcPP" :key="pp" :value="pp.value" >{{pp.text}}</option>
+                    </select>
                 </div>
-                <!-- inputs orden y descripcion -->
-                <div class="tw-mb-6 md:tw-flex">
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 tw-text-center tw-mx-auto md:tw-mb-0">
-                        <jet-label>Folio de orden de trabajo</jet-label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon3" v-text="tOrden"></span>
-                            <jet-input type="text" class="form-control" v-model="form.orden" @input="(val) => (form.orden = form.orden.toUpperCase())"></jet-input>
-                        </div>
-                        <small v-if="errors.orden" class="validation-alert">{{errors.orden}}</small>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="opcSP">
+                    <jet-label><span class="required">*</span>Sub proceso </jet-label>
+                    <select class="InputSelect" v-model="form.proceso_id" :disabled="editMode">
+                        <option value="" disabled>SELECCIONA</option>
+                        <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
+                    </select>
+                    <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
+                </div>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Maquinas</jet-label>
+                    <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
+                        <option value="" disabled>SELECCIONA</option>
+                        <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
+                    </select>
+                    <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                </div>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                    <jet-label><span class="required">*</span>Tipo de paro</jet-label>
+                    <Select2 v-model="form.paro_id"  class="InputSelect" :options="opcPR"  :settings="{width: '100%'}"/>
+                    <!-- <select  v-model="form.paro_id" v-html="opcPR" ></select> -->
+                    <small v-if="errors.paro_id" class="validation-alert">{{errors.paro_id}}</small>
+                </div>
+            </div>
+            <!-- inputs orden y descripcion -->
+            <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 tw-text-center tw-mx-auto md:tw-mb-0">
+                    <jet-label>Folio de orden de trabajo</jet-label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon3" v-text="tOrden"></span>
+                        <jet-input type="text" class="form-control" v-model="form.orden" @input="(val) => (form.orden = form.orden.toUpperCase())"></jet-input>
+                    </div>
+                    <small v-if="errors.orden" class="validation-alert">{{errors.orden}}</small>
 
-                    </div>
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 tw-text-center tw-mx-auto md:tw-mb-0">
-                        <jet-label>Descripción</jet-label>
-                        <textarea class="InputSelect" v-model="form.descri" maxlength="250" @input="(val) => (form.descri = form.descri.toUpperCase())" placeholder="Máximo 250 caracteres"></textarea>
-                        <small v-if="errors.descri" class="validation-alert">{{errors.descri}}</small>
-                    </div>
                 </div>
-                <!-- Botones Actualizar guardar y cancelar -->
-                <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                    <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="!editMode" @click="save(form)">Guardar</jet-button>
-                    </div>
-                    <div>
-                        <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
-                    </div>
-                    <div>
-                        <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
-                    </div>
+                <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 tw-text-center tw-mx-auto md:tw-mb-0">
+                    <jet-label>Descripción</jet-label>
+                    <textarea class="InputSelect" v-model="form.descri" maxlength="250" @input="(val) => (form.descri = form.descri.toUpperCase())" placeholder="Máximo 250 caracteres"></textarea>
+                    <small v-if="errors.descri" class="validation-alert">{{errors.descri}}</small>
                 </div>
-            </form>
+            </div>
+            <!-- Botones Actualizar guardar y cancelar -->
+            <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+                <div>
+                    <jet-button type="button" class="tw-mx-auto" v-if="!editMode" @click="save(form)">Guardar</jet-button>
+                </div>
+                <div>
+                    <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
+                </div>
+                <div>
+                    <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
+                </div>
+            </div>
         </div>
         <!------------------------------------ Data table de carga ------------------------------------------------------->
         <div class="tw-m-auto" style="width: 98%">
@@ -270,7 +268,7 @@ export default {
             this.Pcarga = promesa.data;
             $('#t_paros').DataTable().destroy();
             this.tabla()
-            
+
         },
         //datatable de carga
         tabla() {
@@ -357,10 +355,21 @@ export default {
 
             if ( data.orden != '' & (data.paro_id == 13 | data.paro_id == 14 | data.paro_id == 16) ) {
                 var er = data.orden;
-                data.orden = this.tOrden+data.orden;
+                if (er.includes(this.tOrden) == false) {
+                    data.orden = this.tOrden+data.orden;
+                }
             }
             await axios.post('/Produccion/Paros', data)
-            .then(resp => {this.reset(), this.alertSucces()});
+            .then(resp => {this.reset(), this.alertSucces()})
+            .catch(e => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: '¡Aun Faltan registros por llenar!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            });
             this.ParosCarga(false)
         },
         //actualiza el estatus y lo detiene
@@ -517,8 +526,8 @@ export default {
         }
     },
     watch: {
-         S_Area: async function(b){
-             var datos = {'departamento_id': this.S_Area, 'modulo': 'Paros'};
+        S_Area: async function(b){
+            var datos = {'departamento_id': this.S_Area, 'modulo': 'Paros'};
              //Produccion
             let produ = await axios.post('General/ConProduccion', datos)
             this.procesos = produ.data;
@@ -528,7 +537,7 @@ export default {
             this.materiales = mate.data
 
             this.ParosCarga(true)
-         }
+        }
     }
 }
 </script>

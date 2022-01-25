@@ -298,27 +298,23 @@ class CargaController extends Controller
         $hoy = Carbon::now();
         $ofec = new Carbon($request->fecha);
         $fecha = $hoy->format('Y-m-d') != $ofec->format('Y-m-d') ? $request->fecha : $hoy->toDateTimeString();
-        //return $hoy->format('Y-m-d').' -- '.$ofec->format('Y-m-d');
-        //$nFecha = $request->fecha.' '.date('H:i:s');
-        //if ($request->vacio == 'N/A' | $request->vacio != 'Vacío') {
-            carga::create([
-                'fecha' => $fecha,
-                'semana' => $request->semana,
-                'per_carga' => $request->per_carga,
-                'proceso_id' => $request->proceso_id,
-                'dep_perf_id' => $request->dep_perf_id,
-                'maq_pro_id' => $request->maq_pro_id,
-                'partida' => $request->partida,
-                'valor' => $request->valor,
-                'norma' => $request->norma,
-                'equipo_id' => $request->equipo_id,
-                'clave_id' => $request->clave_id,
-                'turno_id' => $request->turno_id,
-                'notaPen' => $request->notaPen,
-                'departamento_id' => $request->departamento_id,
-                'VerInv' => $request->VerInv
-            ]);
-        //}
+        carga::create([
+            'fecha' => $fecha,
+            'semana' => $request->semana,
+            'per_carga' => $request->per_carga,
+            'proceso_id' => $request->proceso_id,
+            'dep_perf_id' => $request->dep_perf_id,
+            'maq_pro_id' => $request->maq_pro_id,
+            'partida' => $request->partida,
+            'valor' => $request->valor,
+            'norma' => $request->norma,
+            'equipo_id' => $request->equipo_id,
+            'clave_id' => $request->clave_id,
+            'turno_id' => $request->turno_id,
+            'notaPen' => $request->notaPen,
+            'departamento_id' => $request->departamento_id,
+            'VerInv' => $request->VerInv
+        ]);
 
 
         return redirect()->back()

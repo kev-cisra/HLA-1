@@ -59,6 +59,14 @@ class procesos extends Model
         return $this->hasMany(obje_cordi::class, 'proceso_id');
     }
 
+    public function grafi_arrs(){
+        return $this->hasMany(grafi_arr::class, 'proceso_id');
+    }
+
+    public function grafi_arrs_linea(){
+        return $this->hasMany(grafi_arr::class, 'proceso_linea_id');
+    }
+
     //Relaciones 1 a muchos inversas
     public function departamentos() {
         return $this->belongsTo(Departamentos::class, 'departamento_id');

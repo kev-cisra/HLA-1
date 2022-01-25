@@ -112,6 +112,10 @@
     @apply tw-block tw-w-full tw-px-4 tw-py-2 tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-lg tw-appearance-none;
 }
 
+.Select2{
+    @apply tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-lg tw-appearance-none;
+}
+
 .InputSelectFilter{
     @apply tw-block tw-w-full tw-px-4 tw-py-2 tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-appearance-none tw-rounded-full;
 }
