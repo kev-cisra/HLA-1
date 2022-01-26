@@ -86,7 +86,7 @@
                         <table class="table-body">
                             <tbody>
                             <tr><th style="text-align: justify; text-transform: uppercase; opacity: 0.8; padding-left: 20px; padding-right: 15px;">
-                                <p>Buen día por este medio se confirma la cotización solicitada con el numero de requisición <span style="font-size: 1.1em; font-family: 'Muli', sans-serif; color: #0369A1; opacity: 1;">{{ $Req[0]->NumReq }}.</span>
+                                <p>Buen día por este medio se confirma la cotización solicitada con el numero de requisición <span style="font-size: 1.1em; font-family: 'Muli', sans-serif; color: #0369A1; opacity: 1;">{{ $Req->NumReq }}.</span>
                                     Favor de entregar al material o realizar el servicio.
                                 </p>
                             </th></tr>
@@ -97,8 +97,8 @@
                             </th></tr>
                             <tr><th style="text-align: justify; text-transform: uppercase; opacity: 0.8; padding-left: 20px; padding-right: 15px;">
                                     <ul>
-                                        <li>Número de requisición: <span style="font-size: 1.1em; font-family: 'Muli', sans-serif; color: #0369A1; opacity: 1;">{{ $Req[0]->NumReq }}</span> </li>
-                                        <li>Orden de Compra: <span style="font-size: 1.1em; font-family: 'Muli', sans-serif; color: #0369A1; opacity: 1;">{{ $Req[0]->OrdenCompra }}</span></li>
+                                        <li>Número de requisición: <span style="font-size: 1.1em; font-family: 'Muli', sans-serif; color: #0369A1; opacity: 1;">{{ $Req->NumReq }}</span> </li>
+                                        <li>Orden de Compra: <span style="font-size: 1.1em; font-family: 'Muli', sans-serif; color: #0369A1; opacity: 1;">{{ $Req->OrdenCompra }}</span></li>
                                     </ul>
                             </th></tr>
                             <tr><th style="text-align: justify; text-transform: uppercase; opacity: 0.8; padding-left: 20px; padding-right: 15px;">
