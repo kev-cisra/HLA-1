@@ -217,6 +217,8 @@
                         <div class="tw-mb-6 md:tw-flex tw-justify-center">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-96 md:tw-mb-0 tw-text-left">
                                 <jet-label><span class="required">*</span>Personal</jet-label>
+                                <!-- <Select2 v-model="form2.emp" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcPer" /> -->
+
                                 <div class="overflow-auto tw-h-40 tw-mx-auto">
                                     <div v-for="persona in personal" :key="persona" class="tw-gap-y-10 hover:tw-bg-sky-600">
                                         <input type="checkbox" :id="persona.id" v-model="form2.emp" :value="persona.id">
@@ -250,7 +252,7 @@
     import JetSelect from '@/Components/Select';
     import Modal from '@/Jetstream/Modal';
     import JetLabel from '@/Jetstream/Label';
-    import Select from '../../Components/Select.vue';
+    import Select2 from 'vue3-select2-component';
     //datatable
     import datatable from 'datatables.net-bs5';
     require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
@@ -284,6 +286,7 @@
             JetInput,
             JetSelect,
             Modal,
+            Select2,
             JetLabel
         },
         data() {
@@ -499,6 +502,15 @@
                 })
 
                 this.chageClose2();
+            }
+        },
+        computed: {
+            opcPer: function() {
+                const perso = [];
+                this.personal.forEach(per => {
+                    perso.push({id: per.id, text: per.perfiles.IdEmp+' - '+per.perfiles.Nombre+' '+per.perfiles.ApPat})
+                })
+                return perso;
             }
         },
         watch: {

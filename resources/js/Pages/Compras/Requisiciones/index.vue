@@ -568,7 +568,6 @@
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>TIPO DE COMPRA</jet-label>
                                 <select id="Tipo" v-model="form.Tipo" class="InputSelect">
-                                    <option value="REQUISICIÓN">REQUISICIÓN</option>
                                     <option value="REFACCIONES">REFACCIONES</option>
                                     <option value="SERVICIOS EXTERNOS">SERVICIOS EXTERNOS</option>
                                     <option value="ORDEN DE TRABAJO">ORDEN DE TRABAJO</option>
@@ -585,43 +584,207 @@
                                 <small v-if="errors.Nombre" class="validation-alert">{{errors.Nombre}}</small>
                             </div>
                         </div>
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3">
-                                <input type="button" @click="addRow()" value="Añadir Partida" class="BtnCancel">
+                        <div v-if="form.Tipo == 'REFACCIONES'">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3">
+                                    <input type="button" @click="addRow()" value="Añadir Partida" class="BtnCancel">
+                                </div>
+                            </div>
+                            <div class="tw-mb-6 md:tw-flex" v-for="(form) in form.Partida" :key="form.id">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>CANTIDAD</jet-label>
+                                    <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
+                                    <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>UNIDAD</jet-label>
+                                    <select id="Unidad" v-model="form.Unidad" class="InputSelect">
+                                        <option value="PZ">PIEZAS</option>
+                                        <option value="LTS">LITROS</option>
+                                        <option value="KG">KILOGRAMOS</option>
+                                        <option value="MT">METROS</option>
+                                        <option value="CAJA">CAJA</option>
+                                        <option value="CUBETA">CUBETA</option>
+                                        <option value="OTRO">OTRO</option>
+                                    </select>
+                                    <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label>NÚM PARTE</jet-label>
+                                    <jet-input type="text" v-model="form.NumParte" @input="(val) => (form.NumParte = form.NumParte.toUpperCase())"></jet-input>
+                                    <small v-if="errors.NumParte" class="validation-alert">{{errors.NumParte}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-5/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>DESCRIPCIÓN</jet-label>
+                                    <jet-input type="text" v-model="form.Descripcion" @input="(val) => (form.Descripcion = form.Descripcion.toUpperCase())"></jet-input>
+                                    <small v-if="errors.Descripcion" class="validation-alert">{{errors.Descripcion}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/12 md:tw-mb-0">
+                                    <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="tw-mb-6 md:tw-flex" v-for="(form) in form.Partida" :key="form.id">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>CANTIDAD</jet-label>
-                                <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
-                                <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
+                        <div v-if="form.Tipo == 'SERVICIOS EXTERNOS'">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3">
+                                    <input type="button" @click="addRow()" value="Añadir Partida" class="BtnCancel">
+                                </div>
                             </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>UNIDAD</jet-label>
-                                <select id="Unidad" v-model="form.Unidad" class="InputSelect">
-                                    <option value="PZ">PIEZAS</option>
-                                    <option value="LTS">LITROS</option>
-                                    <option value="KG">KILOGRAMOS</option>
-                                    <option value="MT">METROS</option>
-                                    <option value="SERVICIO">SERVICIO</option>
-                                    <option value="CAJA">CAJA</option>
-                                    <option value="CUBETA">CUBETA</option>
-                                    <option value="OTRO">OTRO</option>
-                                </select>
-                                <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
+                            <div class="tw-mb-6 md:tw-flex" v-for="(form) in form.Partida" :key="form.id">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>CANTIDAD</jet-label>
+                                    <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
+                                    <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>UNIDAD</jet-label>
+                                    <select id="Unidad" v-model="form.Unidad" class="InputSelect">
+                                        <option value="LTS">LITROS</option>
+                                        <option value="KG">KILOGRAMOS</option>
+                                        <option value="MT">METROS</option>
+                                        <option value="SERVICIO">SERVICIO</option>
+                                        <option value="CAJA">CAJA</option>
+                                        <option value="CUBETA">CUBETA</option>
+                                        <option value="OTRO">OTRO</option>
+                                    </select>
+                                    <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label>NÚM PARTE</jet-label>
+                                    <jet-input type="text" v-model="form.NumParte" @input="(val) => (form.NumParte = form.NumParte.toUpperCase())"></jet-input>
+                                    <small v-if="errors.NumParte" class="validation-alert">{{errors.NumParte}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-5/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>DESCRIPCIÓN</jet-label>
+                                    <jet-input type="text" v-model="form.Descripcion" @input="(val) => (form.Descripcion = form.Descripcion.toUpperCase())"></jet-input>
+                                    <small v-if="errors.Descripcion" class="validation-alert">{{errors.Descripcion}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/12 md:tw-mb-0">
+                                    <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
+                                </div>
                             </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
-                                <jet-label>NÚM PARTE</jet-label>
-                                <jet-input type="text" v-model="form.NumParte" @input="(val) => (form.NumParte = form.NumParte.toUpperCase())"></jet-input>
-                                <small v-if="errors.NumParte" class="validation-alert">{{errors.NumParte}}</small>
+                        </div>
+                        <div v-if="form.Tipo == 'ORDEN DE TRABAJO'">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3">
+                                    <input type="button" @click="addRow()" value="Añadir Partida" class="BtnCancel">
+                                </div>
                             </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-5/12 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>DESCRIPCIÓN</jet-label>
-                                <jet-input type="text" v-model="form.Descripcion" @input="(val) => (form.Descripcion = form.Descripcion.toUpperCase())"></jet-input>
-                                <small v-if="errors.Descripcion" class="validation-alert">{{errors.Descripcion}}</small>
+                            <div class="tw-mb-6 md:tw-flex" v-for="(form) in form.Partida" :key="form.id">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>CANTIDAD</jet-label>
+                                    <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
+                                    <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>UNIDAD</jet-label>
+                                    <select id="Unidad" v-model="form.Unidad" class="InputSelect">
+                                        <option value="PZ">PIEZAS</option>
+                                        <option value="LTS">LITROS</option>
+                                        <option value="KG">KILOGRAMOS</option>
+                                        <option value="MT">METROS</option>
+                                        <option value="SERVICIO">SERVICIO</option>
+                                        <option value="CAJA">CAJA</option>
+                                        <option value="CUBETA">CUBETA</option>
+                                        <option value="OTRO">OTRO</option>
+                                    </select>
+                                    <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label>NÚM PARTE</jet-label>
+                                    <jet-input type="text" v-model="form.NumParte" @input="(val) => (form.NumParte = form.NumParte.toUpperCase())"></jet-input>
+                                    <small v-if="errors.NumParte" class="validation-alert">{{errors.NumParte}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-5/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>DESCRIPCIÓN</jet-label>
+                                    <jet-input type="text" v-model="form.Descripcion" @input="(val) => (form.Descripcion = form.Descripcion.toUpperCase())"></jet-input>
+                                    <small v-if="errors.Descripcion" class="validation-alert">{{errors.Descripcion}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/12 md:tw-mb-0">
+                                    <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
+                                </div>
                             </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/12 md:tw-mb-0">
-                                <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
+                        </div>
+                        <div v-if="form.Tipo == 'PRODUCTOS AUXILIARES'">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3">
+                                    <input type="button" @click="addRow()" value="Añadir Partida" class="BtnCancel">
+                                </div>
+                            </div>
+                            <div class="tw-mb-6 md:tw-flex" v-for="(form) in form.Partida" :key="form.id">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>CANTIDAD</jet-label>
+                                    <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
+                                    <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>UNIDAD</jet-label>
+                                    <select id="Unidad" v-model="form.Unidad" class="InputSelect">
+                                        <option value="PZ">PIEZAS</option>
+                                        <option value="LTS">LITROS</option>
+                                        <option value="KG">KILOGRAMOS</option>
+                                        <option value="MT">METROS</option>
+                                        <option value="SERVICIO">SERVICIO</option>
+                                        <option value="CAJA">CAJA</option>
+                                        <option value="CUBETA">CUBETA</option>
+                                        <option value="OTRO">OTRO</option>
+                                    </select>
+                                    <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label>NÚM PARTE</jet-label>
+                                    <jet-input type="text" v-model="form.NumParte" @input="(val) => (form.NumParte = form.NumParte.toUpperCase())"></jet-input>
+                                    <small v-if="errors.NumParte" class="validation-alert">{{errors.NumParte}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-5/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>DESCRIPCIÓN</jet-label>
+                                    <jet-input type="text" v-model="form.Descripcion" @input="(val) => (form.Descripcion = form.Descripcion.toUpperCase())"></jet-input>
+                                    <small v-if="errors.Descripcion" class="validation-alert">{{errors.Descripcion}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/12 md:tw-mb-0">
+                                    <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="form.Tipo == 'MODIFICACIONES Y PROYECTOS'">
+                            <div class="tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3">
+                                    <input type="button" @click="addRow()" value="Añadir Partida" class="BtnCancel">
+                                </div>
+                            </div>
+                            <div class="tw-mb-6 md:tw-flex" v-for="(form) in form.Partida" :key="form.id">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>CANTIDAD</jet-label>
+                                    <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
+                                    <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>UNIDAD</jet-label>
+                                    <select id="Unidad" v-model="form.Unidad" class="InputSelect">
+                                        <option value="PZ">PIEZAS</option>
+                                        <option value="LTS">LITROS</option>
+                                        <option value="KG">KILOGRAMOS</option>
+                                        <option value="MT">METROS</option>
+                                        <option value="SERVICIO">SERVICIO</option>
+                                        <option value="CAJA">CAJA</option>
+                                        <option value="CUBETA">CUBETA</option>
+                                        <option value="OTRO">OTRO</option>
+                                    </select>
+                                    <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                                    <jet-label>NÚM PARTE</jet-label>
+                                    <jet-input type="text" v-model="form.NumParte" @input="(val) => (form.NumParte = form.NumParte.toUpperCase())"></jet-input>
+                                    <small v-if="errors.NumParte" class="validation-alert">{{errors.NumParte}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-5/12 md:tw-mb-0">
+                                    <jet-label><span class="required">*</span>DESCRIPCIÓN</jet-label>
+                                    <jet-input type="text" v-model="form.Descripcion" @input="(val) => (form.Descripcion = form.Descripcion.toUpperCase())"></jet-input>
+                                    <small v-if="errors.Descripcion" class="validation-alert">{{errors.Descripcion}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/12 md:tw-mb-0">
+                                    <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
+                                </div>
                             </div>
                         </div>
                         <div class="tw-mb-6 md:tw-flex">

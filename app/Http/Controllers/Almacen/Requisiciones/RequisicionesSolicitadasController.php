@@ -358,7 +358,11 @@ class RequisicionesSolicitadasController extends Controller {
                 },
                 'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                     $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
-                },])
+                },
+                'RequisicionArticulos.ArticuloPrecios.PrecioProveedor' => function($pro) {
+                    $pro->select('id', 'Nombre');
+                },
+                ])
                 ->whereYear('Fecha', $anio)
                 ->whereMonth('Fecha', $mes)
                 ->where('Estatus', '>', 1)
@@ -391,6 +395,9 @@ class RequisicionesSolicitadasController extends Controller {
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
                     },
+                    'RequisicionArticulos.ArticuloPrecios.PrecioProveedor' => function($pro) {
+                        $pro->select('id', 'Nombre', 'Correo');
+                    },
                     ])
                     ->where('Estatus', '>', 1)
                     ->get();
@@ -420,7 +427,11 @@ class RequisicionesSolicitadasController extends Controller {
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
-                    },])
+                    },
+                    'RequisicionArticulos.ArticuloPrecios.PrecioProveedor' => function($pro) {
+                        $pro->select('id', 'Nombre', 'Correo');
+                    },
+                    ])
                     ->whereMonth('Fecha', $mes)
                     ->where('Estatus', '>', 1)
                     ->get();
@@ -451,7 +462,11 @@ class RequisicionesSolicitadasController extends Controller {
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
-                    },])
+                    },
+                    'RequisicionArticulos.ArticuloPrecios.PrecioProveedor' => function($pro) {
+                        $pro->select('id', 'Nombre', 'Correo');
+                    },
+                    ])
                     ->where('Estatus', '=', $request->Status)
                     ->get();
             }elseif ($request->Year == 0 && $request->Month != 0 && $request->Status != 0){
@@ -480,6 +495,9 @@ class RequisicionesSolicitadasController extends Controller {
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    },
+                    'RequisicionArticulos.ArticuloPrecios.PrecioProveedor' => function($pro) {
+                        $pro->select('id', 'Nombre', 'Correo');
                     },])
                     ->whereMonth('Fecha', $mes)
                     ->where('Estatus', '=', $request->Status)
@@ -509,6 +527,9 @@ class RequisicionesSolicitadasController extends Controller {
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    },
+                    'RequisicionArticulos.ArticuloPrecios.PrecioProveedor' => function($pro) {
+                        $pro->select('id', 'Nombre', 'Correo');
                     },])
                     ->whereYear('Fecha', $anio)
                     ->where('Estatus', '>', 1)
@@ -539,6 +560,9 @@ class RequisicionesSolicitadasController extends Controller {
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    },
+                    'RequisicionArticulos.ArticuloPrecios.PrecioProveedor' => function($pro) {
+                        $pro->select('id', 'Nombre', 'Correo');
                     },])
                     ->whereYear('Fecha', $anio)
                     ->where('Estatus', '=', $request->Status)
@@ -569,6 +593,9 @@ class RequisicionesSolicitadasController extends Controller {
                     },
                     'RequisicionArticulos.ArticuloPrecios' => function($pre) {
                         $pre->select('id', 'Precio', 'Total', 'Moneda', 'TipoCambio', 'Marca', 'Proveedor', 'Comentarios', 'Archivo', 'Firma', 'NombreProveedor', 'NumCotizacion', 'Autorizado', 'articulos_requisiciones_id', 'requisiciones_id');
+                    },
+                    'RequisicionArticulos.ArticuloPrecios.PrecioProveedor' => function($pro) {
+                        $pro->select('id', 'Nombre', 'Correo');
                     },])
                     ->whereYear('Fecha', $anio)
                     ->whereMonth('Fecha', $mes)
@@ -743,6 +770,7 @@ class RequisicionesSolicitadasController extends Controller {
                 ]);
 
                 $ArticulosId = $Articulos->id;
+
                 break;
         }
 
@@ -750,7 +778,6 @@ class RequisicionesSolicitadasController extends Controller {
     }
 
     public function update(Request $request, $id){
-
         switch ($request->metodo) {
             //CASO DE ENVIAR REQUISICION A COTIZACION
             case 1:

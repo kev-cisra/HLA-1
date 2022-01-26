@@ -277,7 +277,7 @@
                             </div>
                             <div v-else-if="datos.Estatus == 3 || datos.Estatus == 4">
                                 <span tooltip="En Espera de Cotización" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">COTIZAR</span>
                                 </span>
                             </div>
                             <div v-else-if="datos.Estatus == 5">
@@ -375,11 +375,25 @@
                                         <i class="fas fa-file-invoice-dollar"></i>
                                     </span>
                                 </div>
+                                <div class="iconoCorreo" @click="EnviaCorreo(datos)" v-if="datos.CorreoEnviado == 0">
+                                    <span tooltip="Envia Correo Proveedor" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-3 tw-w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+                                        </svg>
+                                    </span>
+                                </div>
                             </div>
                             <div class="columnaIconos" v-else-if="datos.Estatus > 6">
                                 <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
                                     <span tooltip="Visualiza Cotizacion" flow="left">
                                         <i class="fas fa-file-invoice-dollar"></i>
+                                    </span>
+                                </div>
+                                <div class="iconoCorreo" @click="EnviaCorreo(datos)" v-if="datos.CorreoEnviado == 0">
+                                    <span tooltip="Envia Correo Proveedor" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-3 tw-w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+                                        </svg>
                                     </span>
                                 </div>
                             </div>
@@ -1172,7 +1186,7 @@ export default {
         Cotizacion: Number,
         SinConfirmar: Number,
         EnCotizacion: Number,
-        Vista: String,
+        Vista: Number,
         mes: String,
     },
 
@@ -1597,7 +1611,17 @@ export default {
                     this.alertSucces();
                 },
             });
-        }
+        },
+
+        EnviaCorreo(data){
+            data.metodo = 5;
+            data._method = "PUT";
+            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
+                onSuccess: () => {
+                    console.log(data);
+                },
+            });
+        },
 
     },
 };

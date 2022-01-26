@@ -650,6 +650,22 @@ class CotizacionesController extends Controller{
                     'EstatusArt' => 10,
                 ]);
             }
+
+            case 5:{
+                return $request;
+
+                $Prov = PreciosCotizaciones::where('id', '=',$request->id)->first('Proveedor'); //Obtengo el nombre del proveedor
+                $Proveedor = Proveedores::where('id', '=', $Prov->Proveedor)->first(); //Obtengo el correo del proveedor
+
+                // if($Proveedor->Correo != ''){
+                //     //Envio de Correo al proveedor
+                //     $correo = new ContactaProveedorMailable($Req);
+                //     Mail::to($Proveedor->Correo)
+                //     ->cc('compras@hlangeles.com')
+                //     ->send($correo);
+                // }
+                break;
+            }
         }
 
         return redirect()->back();

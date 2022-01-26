@@ -177,7 +177,7 @@
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-8/12 md:tw-mb-0">
                                     <jet-label><span class="required">*</span>MATERIAL</jet-label>
-                                    <Select2 v-model="form.Material" class="InputSelect" :settings="{class:'Select2',width: '100%', allowClear: true}" :options="BuscaNombre" />
+                                    <Select2 v-model="form.Material" class="InputSelect" :settings="{width: '100%',allowClear: true}" element="background: '#e5e7eb'" :options="BuscaNombre" />
                                     <small v-if="errors.Material" class="validation-alert">{{errors.Material}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
