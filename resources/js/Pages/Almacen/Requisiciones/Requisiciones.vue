@@ -422,6 +422,7 @@
                                 <th class="columna">MAQUINA</th>
                                 <th class="columna">MARCA</th>
                                 <th class="columna">OBSERVACIONES</th>
+                                <th class="columna">CORREO</th>
                             </template>
                             <template v-slot:TableFooter>
                                 <tr class="fila">
@@ -431,6 +432,24 @@
                                     <td class="tw-text-center">{{ Requi.requisicion_maquina.Nombre }}</td>
                                     <td class="tw-text-center">{{ Requi.requisicion_marca.Nombre }}</td>
                                     <td class="tw-text-center">{{ Requi.Observaciones }}</td>
+                                    <td class="tw-text-center">
+                                        <div class="columnaIconos">
+                                            <div class="iconoCorreoNoEnviado" v-if="Requi.CorreoEnviado == 0">
+                                                <span tooltip="Envia Correo Proveedor" flow="left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-3 tw-w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="iconoCorreoEnviado" v-else>
+                                                <span tooltip="Envia Correo Proveedor" flow="left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-3 tw-w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             </template>
                         </Table>
@@ -444,6 +463,7 @@
                                 <th class="columna">UNIDAD</th>
                                 <th class="columna">DESCRIPCION</th>
                                 <th class="columna">NUM PARTE</th>
+                                <th class="columna">NOTA</th>
                                 <th class="columna">ESTATUS</th>
                                 <th class="columna">ACCIONES</th>
                             </template>
@@ -454,6 +474,7 @@
                                     <td class="tw-text-center">{{ art.Unidad }}</td>
                                     <td class="tw-text-center">{{ art.Descripcion }}</td>
                                     <td class="tw-text-center">{{ art.NumParte }}</td>
+                                    <td class="tw-text-center">{{ art.MotivoCancelacion }}</td>
                                     <td class="tw-text-center">
                                         <div v-if="art.EstatusArt == 1">
                                             <span tooltip="SIN ENVIAR" flow="left">
@@ -539,6 +560,7 @@
                                 <th class="columna">UNIDAD</th>
                                 <th class="columna">DESCRIPCION</th>
                                 <th class="columna">NUM PARTE</th>
+                                <th class="columna">NOTA</th>
                                 <th class="columna">RECIBIO</th>
                                 <th class="columna">ESTATUS</th>
                                 <th class="columna">ACCIONES</th>
@@ -550,6 +572,7 @@
                                     <td class="tw-text-center">{{ art.Unidad }}</td>
                                     <td class="tw-text-center">{{ art.Descripcion }}</td>
                                     <td class="tw-text-center">{{ art.NumParte }}</td>
+                                    <td class="tw-text-center">{{ art.MotivoCancelacion }}</td>
                                     <td class="tw-text-center">{{ art.RecibidoPor }}</td>
                                     <td class="tw-text-center">
                                         <div v-if="art.EstatusArt == 1">
@@ -649,7 +672,6 @@
                             </template>
                         </Table>
                     </div>
-
                 </div>
 
                 <div class="ModalFooter">
@@ -824,20 +846,20 @@
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Folio</jet-label>
-                                <jet-input type="text" :min="min" v-model="form.Folio"></jet-input>
+                                <jet-input type="text" :min="min" v-model="ValeSalida.Folio"></jet-input>
                                 <small v-if="errors.Folio" class="validation-alert">{{errors.Folio}}</small>
                             </div>
 
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Fecha Entrega</jet-label>
-                                <jet-input type="date" v-model="form.FechaEn"></jet-input>
+                                <jet-input type="date" v-model="ValeSalida.Fecha"></jet-input>
                                 <small v-if="errors.FechaEn" class="validation-alert">{{errors.FechaEn}}</small>
                             </div>
                         </div>
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Proveedor</jet-label>
-                                <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
+                                <select id="Jefe" v-model="ValeSalida.NombreProveedor"  class="InputSelect">
                                     <option v-for="select in Proveedores" :key="select.id" :value="select.Nombre" >{{ select.Nombre }}</option>
                                 </select>
                             </div>
@@ -845,13 +867,13 @@
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Fecha Entrega</jet-label>
-                                <jet-input type="date" v-model="form.Salida"></jet-input>
+                                <jet-input type="date" v-model="ValeSalida.Salida"></jet-input>
                                 <small v-if="errors.Salida" class="validation-alert">{{errors.Salida}}</small>
                             </div>
 
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Estatus</jet-label>
-                                <select class="InputSelect" v-model="form.EstatusServ">
+                                <select class="InputSelect" v-model="ValeSalida.EstatusVale">
                                     <option value="ENTREGADO">ENTREGADO</option>
                                     <option value="GARANTIA">GARANTIA</option>
                                     <option value="N/A">N/A</option>
@@ -862,7 +884,7 @@
                 </div>
 
                 <div class="ModalFooter">
-                    <jet-button type="button" @click="GuardaProveedor(form)">Guardar</jet-button>
+                    <jet-button type="button" @click="GuardaProveedor(ValeSalida)">Guardar</jet-button>
                     <jet-CancelButton @click="chageProveedor">Cerrar</jet-CancelButton>
                 </div>
             </modal>
@@ -967,6 +989,17 @@ export default {
                 Proveedor: '',
                 Salida: '',
                 EstatusServ: '',
+            },
+            ValeSalida:{
+                IdUser: this.Session.id,
+                IdEmp: this.Session.IdEmp,
+                Accion: 1,
+                Folio: '',
+                Fecha: '',
+                NombreProveedor: '',
+                EstatusVale: '',
+                Salida: '',
+                requisiciones_id: '',
             },
             params:{
                 Year: 0,
@@ -1198,6 +1231,18 @@ export default {
                 Salida: '',
                 EstatusServ: '',
             };
+
+            this.ValeSalida = {
+                IdUser: this.Session.id,
+                IdEmp: this.Session.IdEmp,
+                Accion: 1,
+                Folio: '',
+                Fecha: '',
+                NombreProveedor: '',
+                EstatusVale: '',
+                Salida: '',
+                requisiciones_id: '',
+            };
         },
 
         chageClose() {
@@ -1290,9 +1335,12 @@ export default {
             data.metodo = 1;
             data._method = "PUT";
             this.form.req_id = data.id;
+            this.ValeSalida.requisiciones_id = data.id;
             this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
                 onSuccess: () => {
-                    this.chageProveedor();
+                    if(data.TipCompra == 'SERVICIOS EXTERNOS'){
+                        this.chageProveedor();
+                    }
                     this.alertSucces();
                 },
             });
@@ -1354,10 +1402,11 @@ export default {
         IndicaProveedor(data){
             this.form.Accion = 1;
             this.chageProveedor();
-            this.form.req_id = data.id;
+            this.ValeSalida.requisiciones_id = data.id;
         },
 
         GuardaProveedor(data){
+            console.log(data);
             this.$inertia.post("/Almacen/Requisiciones", data, {
                 onSuccess: () => {
                     this.chageProveedor();
