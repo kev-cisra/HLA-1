@@ -704,11 +704,11 @@ class RequisicionesSolicitadasController extends Controller {
                     'IdUser' => $SessionId,
                     'IdEmp' => $SessionIdEmp,
                     'Folio' => $request->Folio,
-                    'Fecha' => $request->FechaEn,
-                    'NombreProveedor' => $request->Proveedor,
-                    'EstatusVale' => $request->EstatusServ,
+                    'Fecha' => $request->Fecha,
+                    'NombreProveedor' => $request->NombreProveedor,
+                    'EstatusVale' => $request->EstatusVale,
                     'Salida' => $request->Salida,
-                    'requisiciones_id' => $request->req_id,
+                    'requisiciones_id' => $request->requisiciones_id,
                 ]);
 
                 break;
