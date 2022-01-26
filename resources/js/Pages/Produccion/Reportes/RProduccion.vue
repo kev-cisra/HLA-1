@@ -521,7 +521,7 @@
                             <!-- boton -->
                             <div class="tw-w-1/2">
                                 <a class="btn btn-primary " href="#chart3" @click="GraBaLi(gBaLi)">Generar gráfica</a>
-                                <button class="btn btn-success" @click="saveLine(gLinea, 'Combinado')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                <button class="btn btn-success" @click="saveCom(gBaLi, 'Combinado')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
                                 <button class="btn btn-danger " @click="resetBaLi()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
@@ -660,14 +660,24 @@
                 <h5 id="grafiGuarLabel">Graficas</h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
+
             <div class="offcanvas-body">
-                <div v-for="gg in GrafGua" :key="gg" class="tw-w-full tw-rounded-2xl hover:tw-bg-cyan-200 active:tw-bg-cyan-300 tw-p-5 tw-shadow-lg tw-cursor-pointer tw-m-3" data-bs-dismiss="offcanvas">
-                    <img src="http://192.168.11.3/storage/Archivos/Pastel.png" class="tw-object-none tw-relative">
-                    <label class="tw-cursor-pointer tw-text-lg"><strong>Tipo de gráfica:</strong> {{gg.graTipo}}</label><br>
-                    <label class="tw-cursor-pointer tw-text-lg"><strong>Título:</strong> {{ gg.titulo }} </label>
+                <div v-for="gg in GrafGua" :key="gg" class="tw-shadow-lg tw-rounded-2xl">
+                    <div class="GraficaImg" @click="asigGrafi(gg)"  data-bs-dismiss="offcanvas">
+                        <div :style="'background: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1)), url('+imgGrafi(gg.graTipo)+'); background-size: 40% 95%;  background-repeat: no-repeat; background-position: right top;'">
+                            <label class="tw-cursor-pointer tw-text-lg"><strong>Tipo de gráfica:</strong> {{gg.graTipo}}</label><br>
+                            <label class="tw-cursor-pointer tw-text-lg"><strong>Título:</strong> {{ gg.titulo }} </label>
+                        </div>
+                    </div>
+                    <div class="btn-group tw-w-full" role="group">
+                        <button class="btn btn-outline-primary">Actualizar</button>
+                        <button class="btn btn-outline-danger" @click="elimiGrafi(gg)">Eliminar</button>
+                    </div>
                 </div>
             </div>
         </div>
+
+
 
         <!------------------------------------ Data table de carga de produccion ------------------------------------------------------->
         <div v-show="FoFiltro.TipRepo == 1" class="tw-m-auto" style="width: 98%">
@@ -1131,7 +1141,7 @@
                     nota: null
                 },
                 gPie: {
-                    borra: '',
+                    borra: null,
                     rango: 1,
                     propa: 1,
                     tipo: 'generalMaq',
@@ -1147,7 +1157,7 @@
                 },
                 gLinea: {
                     borra: '',
-                    titulo: '',
+                    titulo: null,
                     subtitulo: '',
                     rango: 1,
                     tipo: 'generalMaq',
@@ -1159,7 +1169,7 @@
                 },
                 gBarra: {
                     borra: '',
-                    titulo: '',
+                    titulo: null,
                     subtitulo: '',
                     rango: 1,
                     tipo: 'generalMaq',
@@ -1171,7 +1181,7 @@
                 },
                 gBaLi: {
                     borra: '',
-                    titulo: '',
+                    titulo: null,
                     subIz: '',
                     subDe: '',
                     rango: 1,
@@ -1449,6 +1459,101 @@
                     })
                 }
             },
+            imgGrafi(data){
+                //console.log(data);
+                var img = 'http://192.168.11.3/storage/Archivos/Pastel.png'
+                if (data == 'Pastel') {
+                    img = 'http://192.168.11.3/storage/Archivos/Pastel.png';
+                }else if(data == 'Linea'){
+                    img = 'http://192.168.11.3/storage/Archivos/Linea.png';
+                }else if(data == 'Barra'){
+                    img = 'http://192.168.11.3/storage/Archivos/Barra.png';
+                }else{
+                    img = 'http://192.168.11.3/storage/Archivos/Combinado.png';
+                }
+                return img;
+            },
+            asigGrafi(data){
+                const tip = this.graTipo.find(el => el == data.graTipo)
+                //Asigna los tipos de graficas para mostrarlos
+                if (tip == undefined) {
+                    this.graTipo.push(data.graTipo)
+                }
+                //Asigna la informacion general de cada grafica
+                if (data.graTipo == "Pastel") {
+                    this.gPie.titulo = data.titulo;
+                    this.gPie.propa = data.propa;
+                    this.gPie.rango = data.rango;
+                    this.gPie.tipo = data.tipo;
+                    this.gPie.tipoParo = data.tipoParo;
+                    //Asigana el tipo de dato
+                    data.grafi_arrs.forEach(eve => {
+                        //console.log(eve);
+                        if (eve.maq_pro_id != null) {
+                            this.gPie.maquinas.push(eve.maq_pro_id)
+                        }
+                        if (eve.proceso_id != null) {
+                            this.gPie.procesos.push(eve.proceso_id)
+                        }
+                        if (eve.material_id != null) {
+                            this.gPie.norma.push(eve.material_id)
+                        }
+                    })
+                }else if (data.graTipo == "Linea"){
+                    this.gLinea.titulo = data.titulo;
+                    this.gLinea.subtitulo = data.subtitulo;
+                    this.gLinea.rango = data.rango;
+                    this.gLinea.tipo = data.tipo;
+                    //Asigana el tipo de dato
+                    data.grafi_arrs.forEach(eve => {
+                        //console.log(eve);
+                        if (eve.maq_pro_id != null) {
+                            this.gLinea.maquinas.push(eve.maq_pro_id)
+                        }
+                        if (eve.proceso_id != null) {
+                            this.gLinea.procesos.push(eve.proceso_id)
+                        }
+                    })
+                }else if (data.graTipo == "Barra") {
+                    this.gBarra.titulo = data.titulo;
+                    this.gBarra.subtitulo = data.subtitulo;
+                    this.gBarra.rango = data.rango;
+                    this.gBarra.tipo = data.tipo;
+                    //Asigana el tipo de dato
+                    data.grafi_arrs.forEach(eve => {
+                        //console.log(eve);
+                        if (eve.maq_pro_id != null) {
+                            this.gBarra.maquinas.push(eve.maq_pro_id)
+                        }
+                        if (eve.proceso_id != null) {
+                            this.gBarra.procesos.push(eve.proceso_id)
+                        }
+                    })
+                }else{
+                    this.gBaLi.titulo = data.titulo;
+                    this.gBaLi.subDe = data.subDe;
+                    this.gBaLi.subIz = data.subIz;
+                    this.gBaLi.rango = data.rango;
+                    this.gBaLi.tipo = data.tipo;
+                    //Asigana el tipo de dato
+                    data.grafi_arrs.forEach(eve => {
+                        //console.log(eve);
+                        if (eve.maq_pro_id != null) {
+                            this.gBaLi.maquinasBar.push(eve.maq_pro_id)
+                        }
+                        if (eve.maq_pro_linea_id != null) {
+                            this.gBaLi.maquinasLin.push(eve.maq_pro_linea_id)
+                        }
+                        if (eve.proceso_id != null) {
+                            this.gBaLi.procesosBar.push(eve.proceso_id)
+                        }
+                        if (eve.proceso_linea_id != null) {
+                            this.gBaLi.procesosLin.push(eve.proceso_linea_id)
+                        }
+                    })
+                }
+                //console.log(data)
+            },
             //muestra la utima fecha del paro
             nuFin(ar){
                 //Si es es mes o semana
@@ -1674,7 +1779,6 @@
                     }
                 })
             },
-
             /**************************** Acciones de la carga ***********************************************/
             //Abrir modal
             openModalCar(){
@@ -1898,7 +2002,22 @@
                 $('#grafica').removeClass("show")
             },
             resetPastel(){
-                this.gPie.borra.destroy();
+                if (this.gPie.borra != null) {
+                    this.gPie.borra.destroy();
+                }
+                this.gPie.borra = null
+                this.gPie.rango = 1;
+                this.gPie.propa = 1;
+                this.gPie.tipo = 'generalMaq';
+                this.gPie.tipoParo = 'total';
+                this.gPie.fecha = null;
+                this.gPie.iniDia = null;
+                this.gPie.finDia = null;
+                this.gPie.titulo = null;
+                this.gPie.paro = [];
+                this.gPie.maquinas = [];
+                this.gPie.procesos = [];
+                this.gPie.norma = [];
             },
             async savePaste(datos){
                 datos.borra = '';
@@ -1919,8 +2038,11 @@
                         datos.norma = [];
                     }
                 }
-
-                var d = await axios.post('ReportesPro/SaveGra', datos).then(resp => {this.alertSucces()})
+                if (datos.titulo) {
+                    await axios.post('ReportesPro/SaveGra', datos).then(resp => {this.alertSucces()})
+                }else{
+                    Swal.fire('Es necesario agregar un titulo')
+                }
                 //console.log(d)
             },
             /******************************************* Grafica en linea *****************************************************/
@@ -2073,7 +2195,19 @@
 
             },
             resetLinea(){
-                this.gLinea.borra.destroy();
+                if (this.gLinea.borra != null) {
+                    this.gLinea.borra.destroy();
+                }
+                this.gLinea.borra = null;
+                this.gLinea.titulo = null;
+                this.gLinea.subtitulo = '';
+                this.gLinea.rango = 1;
+                this.gLinea.tipo = 'generalMaq';
+                this.gLinea.fecIni = null;
+                this.gLinea.fecFin = null;
+                this.gLinea.maquinas = [];
+                this.gLinea.procesos = [];
+                this.gLinea.norma = [];
             },
             async saveLine(datos, titu){
                 datos.borra = '';
@@ -2085,7 +2219,11 @@
                 }else{
                     datos.procesos = [];
                 }
-                var d = await axios.post('ReportesPro/SaveGra', datos).then(resp => {this.alertSucces()})
+                if (datos.titulo) {
+                    await axios.post('ReportesPro/SaveGra', datos).then(resp => {this.alertSucces()})
+                }else{
+                    Swal.fire('Es necesario agregar un titulo')
+                }
             },
             /****************************************** Grafica de barras **********************************************/
             limpiaBarra(dat){
@@ -2220,7 +2358,19 @@
                 $('#grafica').removeClass("show")
             },
             resetBarra(){
-                this.gBarra.borra.destroy();
+                if (this.gBarra.borra != null) {
+                    this.gBarra.borra.destroy();
+                }
+                this.gBarra.borra = null;
+                this.gBarra.titulo = null;
+                this.gBarra.subtitulo = '';
+                this.gBarra.rango = 1;
+                this.gBarra.tipo = 'generalMaq';
+                this.gBarra.fecIni = null;
+                this.gBarra.fecFin = null;
+                this.gBarra.maquinas = [];
+                this.gBarra.procesos = [];
+                this.gBarra.norma = [];
             },
             /***************************************** Grafica combinada **********************************************/
             limpiaCombi(dat){
@@ -2409,7 +2559,40 @@
                 $('#grafica').removeClass("show")
             },
             resetBaLi(){
-                this.gBaLi.borra.destroy();
+                if (this.gBaLi.borra != null) {
+                    this.gBaLi.borra.destroy();
+                }
+                this.gBaLi.borra = null;
+                this.gBaLi.titulo = null;
+                this.gBaLi.subIz = '';
+                this.gBaLi.subDe = '';
+                this.gBaLi.rango = 1;
+                this.gBaLi.tipo = 'generalMaq';
+                this.gBaLi.fecIni = null;
+                this.gBaLi.fecFin = null;
+                this.gBaLi.maquinasBar = [];
+                this.gBaLi.procesosBar = [];
+                this.gBaLi.maquinasLin = [];
+                this.gBaLi.procesosLin = [];
+                this.gBaLi.norma = [];
+            },
+            async saveCom(datos, titu){
+                datos.borra = '';
+                datos.graTipo = titu
+                datos.departamento_id = this.S_Area;
+
+                if (datos.tipo == "generalTot") {
+                    datos.maquinasBar = [];
+                    datos.maquinasLin = [];
+                }else{
+                    datos.procesosLin = [];
+                    datos.procesosBar = [];
+                }
+                if (datos.titulo) {
+                    await axios.post('ReportesPro/SaveGra', datos).then(resp => {this.alertSucces()})
+                }else{
+                    Swal.fire('Es necesario agregar un titulo')
+                }
             },
             /***************************************** Graficas guardadas ********************************************/
             //consulta las graficas guardadas
@@ -2418,6 +2601,10 @@
                 var nuArr = await axios.post('ReportesPro/ConGrafi', datos)
                 this.GrafGua = nuArr.data;
                 //console.log(nuArr.data)
+            },
+            async elimiGrafi(data) {
+                //console.log(data)
+                await axios.post('ReportesPro/ElimiGra', data).then(eve => {this.ConGra()})
             }
         },
 

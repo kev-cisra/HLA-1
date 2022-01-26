@@ -1275,30 +1275,89 @@ class RepoProController extends Controller
             'departamento_id' => $request->departamento_id
         ]);
 
-        foreach ($request->maquinas as $maq) {
-            grafi_arr::create([
-                'tipo' => $request->tipo,
-                'pac_grafica_id' => $nuGrafi->id,
-                'maq_pro_id' => $maq
-            ]);
+        //recorrido de maquinas
+        if (!empty($request->maquinas)) {
+            foreach ($request->maquinas as $maq) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'maq_pro_id' => $maq
+                ]);
+            }
         }
 
-        foreach ($request->procesos as $pro) {
-            grafi_arr::create([
-                'tipo' => $request->tipo,
-                'pac_grafica_id' => $nuGrafi->id,
-                'proceso_id' => $pro
-            ]);
+        //recorrido de maquinas barra
+        if (!empty($request->maquinasBar)) {
+            foreach ($request->maquinasBar as $maq) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'maq_pro_id' => $maq
+                ]);
+            }
         }
 
-        foreach ($request->norma as $nor) {
-            grafi_arr::create([
-                'tipo' => $request->tipo,
-                'pac_grafica_id' => $nuGrafi->id,
-                'material_id' => $nor
-            ]);
+        //recorrido de maquina linea
+        if (!empty($request->maquinasLin)) {
+            foreach ($request->maquinasLin as $maq) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'maq_pro_linea_id' => $maq
+                ]);
+            }
         }
 
+        //recorrido de procesos
+        if (!empty($request->procesos)) {
+            foreach ($request->procesos as $pro) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'proceso_id' => $pro
+                ]);
+            }
+        }
+
+        //recorrrido de procesos de para barra
+        if (!empty($request->procesosBar)) {
+            foreach ($request->procesosBar as $pro) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'proceso_id' => $pro
+                ]);
+            }
+        }
+
+        //recorrido de procesos para lineas
+        if (!empty($request->procesosLin)) {
+            foreach ($request->procesosLin as $pro) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'proceso_linea_id' => $pro
+                ]);
+            }
+        }
+
+        //recorrdio de normas
+        if (!empty($request->norma)) {
+            foreach ($request->norma as $nor) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'material_id' => $nor
+                ]);
+            }
+        }
+
+        return $request;
+    }
+
+    //Elimina las graficas guardadas
+    public function ElimiGra(Request $request){
+        pac_grafica::find($request->id)->delete();
         return $request;
     }
 
