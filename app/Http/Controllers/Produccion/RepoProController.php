@@ -445,9 +445,10 @@ class RepoProController extends Controller
         $grafi = pac_grafica::where('departamento_id', '=', $request->departamento_id)
         ->with([
             'grafi_arrs' => function($ga){
-                $ga->select('id');
+                $ga->select('id', 'tipo', 'pac_grafica_id', 'material_id', 'maq_pro_id', 'proceso_id', 'maq_pro_linea_id', 'proceso_linea_id');
             }
         ])
+        ->orderBy('graTipo', 'desc')
         ->get(['id', 'graTipo', 'propa', 'rango', 'subDe', 'subIz', 'subtitulo', 'tipo', 'tipoParo', 'titulo']);
         return $grafi;
     }

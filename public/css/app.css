@@ -348,7 +348,9 @@ form.was-validated select:valid ~ .select2-container--bootstrap4 .select2-select
   white-space: nowrap !important; }
 
 .select2-container--default .select2-selection--single {
-  background-color: #e5e7eb; }
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-radius: 4px; }
   .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #444;
     line-height: 28px; }
@@ -13395,7 +13397,6 @@ textarea.form-control-lg {
 }
 
 .sticky-top {
-  position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 1020;
@@ -13403,7 +13404,6 @@ textarea.form-control-lg {
 
 @media (min-width: 576px) {
   .sticky-sm-top {
-    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -13411,7 +13411,6 @@ textarea.form-control-lg {
 }
 @media (min-width: 768px) {
   .sticky-md-top {
-    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -13419,7 +13418,6 @@ textarea.form-control-lg {
 }
 @media (min-width: 992px) {
   .sticky-lg-top {
-    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -13427,7 +13425,6 @@ textarea.form-control-lg {
 }
 @media (min-width: 1200px) {
   .sticky-xl-top {
-    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -13435,7 +13432,6 @@ textarea.form-control-lg {
 }
 @media (min-width: 1400px) {
   .sticky-xxl-top {
-    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -13638,7 +13634,6 @@ textarea.form-control-lg {
 }
 
 .position-sticky {
-  position: -webkit-sticky !important;
   position: sticky !important;
 }
 
@@ -18336,7 +18331,7 @@ div.dt-buttons a.btn.processing:after {
   -webkit-animation: dtb-spinner 1500ms infinite linear;
   -moz-animation: dtb-spinner 1500ms infinite linear;
 }
-/*! tailwindcss v2.2.19 | MIT License | https://tailwindcss.com *//*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
+/*! tailwindcss v2.2.16 | MIT License | https://tailwindcss.com *//*! modern-normalize v1.1.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
 
 /*
 Document
@@ -19452,7 +19447,6 @@ select {
 	position: relative;
 }
 .tw-sticky {
-	position: -webkit-sticky;
 	position: sticky;
 }
 .tw-inset-0 {
@@ -19501,6 +19495,10 @@ select {
 .tw-m-3 {
 	margin: 0.75rem;
 }
+.tw-mx-auto {
+	margin-left: auto;
+	margin-right: auto;
+}
 .tw-my-8 {
 	margin-top: 2rem;
 	margin-bottom: 2rem;
@@ -19516,10 +19514,6 @@ select {
 .tw-mx-32 {
 	margin-left: 8rem;
 	margin-right: 8rem;
-}
-.tw-mx-auto {
-	margin-left: auto;
-	margin-right: auto;
 }
 .tw-mx-4 {
 	margin-left: 1rem;
@@ -19664,14 +19658,14 @@ select {
 .tw-hidden {
 	display: none;
 }
-.tw-h-6 {
-	height: 1.5rem;
-}
 .tw-h-full {
 	height: 100%;
 }
 .tw-h-4 {
 	height: 1rem;
+}
+.tw-h-6 {
+	height: 1.5rem;
 }
 .tw-h-5 {
 	height: 1.25rem;
@@ -19712,17 +19706,20 @@ select {
 .tw-h-24 {
 	height: 6rem;
 }
+.tw-h-3 {
+	height: 0.75rem;
+}
 .tw-min-h-screen {
 	min-height: 100vh;
 }
 .tw-w-full {
 	width: 100%;
 }
-.tw-w-6 {
-	width: 1.5rem;
-}
 .tw-w-4 {
 	width: 1rem;
+}
+.tw-w-6 {
+	width: 1.5rem;
 }
 .tw-w-16 {
 	width: 4rem;
@@ -19783,6 +19780,9 @@ select {
 }
 .tw-w-14 {
 	width: 3.5rem;
+}
+.tw-w-3 {
+	width: 0.75rem;
 }
 .tw-min-w-0 {
 	min-width: 0px;
@@ -20046,14 +20046,14 @@ select {
 	border-top-left-radius: 0.25rem;
 	border-top-right-radius: 0.25rem;
 }
+.tw-border {
+	border-width: 1px;
+}
 .tw-border-2 {
 	border-width: 2px;
 }
 .tw-border-4 {
 	border-width: 4px;
-}
-.tw-border {
-	border-width: 1px;
 }
 .tw-border-8 {
 	border-width: 8px;
@@ -20091,6 +20091,10 @@ select {
 .tw-border-dashed {
 	border-style: dashed;
 }
+.tw-border-gray-300 {
+	--tw-border-opacity: 1;
+	border-color: rgba(209, 213, 219, var(--tw-border-opacity));
+}
 .tw-border-violet-600 {
 	--tw-border-opacity: 1;
 	border-color: rgba(124, 58, 237, var(--tw-border-opacity));
@@ -20102,10 +20106,6 @@ select {
 .tw-border-green-500 {
 	--tw-border-opacity: 1;
 	border-color: rgba(34, 197, 94, var(--tw-border-opacity));
-}
-.tw-border-gray-300 {
-	--tw-border-opacity: 1;
-	border-color: rgba(209, 213, 219, var(--tw-border-opacity));
 }
 .tw-border-indigo-500 {
 	--tw-border-opacity: 1;
@@ -20206,6 +20206,10 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(79, 70, 229, var(--tw-border-opacity));
 }
+.tw-bg-gray-200 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
+}
 .tw-bg-violet-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(167, 139, 250, var(--tw-bg-opacity));
@@ -20221,10 +20225,6 @@ select {
 .tw-bg-green-100 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(220, 252, 231, var(--tw-bg-opacity));
-}
-.tw-bg-gray-200 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
 }
 .tw-bg-blueGray-200 {
 	--tw-bg-opacity: 1;
@@ -20444,9 +20444,17 @@ select {
 .tw-fill-current {
 	fill: currentColor;
 }
+.tw-object-contain {
+	-o-object-fit: contain;
+	   object-fit: contain;
+}
 .tw-object-cover {
 	-o-object-fit: cover;
 	   object-fit: cover;
+}
+.tw-object-none {
+	-o-object-fit: none;
+	   object-fit: none;
 }
 .tw-p-4 {
 	padding: 1rem;
@@ -20465,6 +20473,9 @@ select {
 }
 .tw-p-10 {
 	padding: 2.5rem;
+}
+.tw-p-5 {
+	padding: 1.25rem;
 }
 .tw-p-3\.5 {
 	padding: 0.875rem;
@@ -20575,11 +20586,11 @@ select {
 .tw-font-mono {
 	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
-.tw-text-xs {
-	font-size: .75rem;
-}
 .tw-text-sm {
 	font-size: .875rem;
+}
+.tw-text-xs {
+	font-size: .75rem;
 }
 .tw-text-lg {
 	font-size: 1.125rem;
@@ -20603,11 +20614,11 @@ select {
 .tw-text-4xl {
 	font-size: 2.25rem;
 }
-.tw-font-bold {
-	font-weight: 700;
-}
 .tw-font-semibold {
 	font-weight: 600;
+}
+.tw-font-bold {
+	font-weight: 700;
 }
 .tw-font-medium {
 	font-weight: 500;
@@ -20645,6 +20656,14 @@ select {
 .tw-tracking-wider {
 	letter-spacing: 0.05em;
 }
+.tw-text-gray-500 {
+	--tw-text-opacity: 1;
+	color: rgba(107, 114, 128, var(--tw-text-opacity));
+}
+.tw-text-gray-700 {
+	--tw-text-opacity: 1;
+	color: rgba(55, 65, 81, var(--tw-text-opacity));
+}
 .tw-text-violet-600 {
 	--tw-text-opacity: 1;
 	color: rgba(124, 58, 237, var(--tw-text-opacity));
@@ -20660,14 +20679,6 @@ select {
 .tw-text-green-700 {
 	--tw-text-opacity: 1;
 	color: rgba(21, 128, 61, var(--tw-text-opacity));
-}
-.tw-text-gray-500 {
-	--tw-text-opacity: 1;
-	color: rgba(107, 114, 128, var(--tw-text-opacity));
-}
-.tw-text-gray-700 {
-	--tw-text-opacity: 1;
-	color: rgba(55, 65, 81, var(--tw-text-opacity));
 }
 .tw-text-gray-600 {
 	--tw-text-opacity: 1;
@@ -21080,6 +21091,18 @@ select {
 	transform: var(--tw-transform);
 	--tw-text-opacity: 1;
 	color: rgba(255, 255, 255, var(--tw-text-opacity));
+}
+.iconoCorreo {
+	margin-right: 0.5rem;
+	width: 1rem;
+	transform: var(--tw-transform);
+	--tw-text-opacity: 1;
+	color: rgba(6, 182, 212, var(--tw-text-opacity));
+}
+.iconoCorreo:hover {
+	--tw-scale-x: 1.1;
+	--tw-scale-y: 1.1;
+	transform: var(--tw-transform);
 }
 .btn-row {
 	display: block;
@@ -22325,6 +22348,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(21, 128, 61, var(--tw-bg-opacity));
 }
+.hover\:tw-bg-cyan-200:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgba(165, 243, 252, var(--tw-bg-opacity));
+}
 .hover\:tw-text-lg:hover {
 	font-size: 1.125rem;
 }
@@ -22491,6 +22518,10 @@ select {
 .active\:tw-bg-gray-50:active {
 	--tw-bg-opacity: 1;
 	background-color: rgba(249, 250, 251, var(--tw-bg-opacity));
+}
+.active\:tw-bg-cyan-300:active {
+	--tw-bg-opacity: 1;
+	background-color: rgba(103, 232, 249, var(--tw-bg-opacity));
 }
 .active\:tw-text-gray-800:active {
 	--tw-text-opacity: 1;

@@ -23,7 +23,7 @@
         </Accions>
         <!-- datatables de los procesos -->
         <div class="tw-m-auto" style="width: 98%">
-            <Table id="t_pro">
+            <Table id="t_pro" style="width: 100%">
                 <template v-slot:TableHeader>
                     <th class="columna tw-text-center">Id</th>
                     <th class="columna tw-text-center">Nombre</th>
@@ -155,10 +155,13 @@
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="form.tipo != 0">
                                     <jet-label><span class="required">*</span>Proceso principal</jet-label>
-                                    <select class="InputSelect" v-model="form.proceso_id">
+
+                                    <Select2 v-model="form.proceso_id" class="InputSelect" :settings="{width: '100%', allowClear: true}" :options="opcPP" />
+
+                                    <!-- <select class="InputSelect" v-model="form.proceso_id">
                                         <option value="" disabled>Selecciona un proceso</option>
                                         <option v-for="pp in opcPP" :key="pp" :value="pp.id">{{pp.text}}</option>
-                                    </select>
+                                    </select> -->
                                     <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
                                 </div>
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
@@ -186,10 +189,11 @@
                             <div class="row tw-overflow-auto" style="height: 20rem">
                                 <div class="tw-flex tw-justify-center tw-h-1/6" v-for="(row, index) in form.maquinas" :key="row.id">
                                     <div class="input-group tw-my-2">
-                                        <select class="form-select" v-model="row.value" >
+                                        <Select2 v-model="row.value" class="form-select" :settings="{width: '100%', allowClear: true}" :options="opcMaq" />
+                                        <!-- <select class="form-select" v-model="row.value" >
                                             <option value="" disabled>Selecciona una máquina</option>
                                             <option v-for="mq in opcMaq" :key="mq" :value="mq.id">{{mq.text}} - {{mq.marca}}</option>
-                                        </select>
+                                        </select> -->
                                         <button type="button" class="btn btn-success" @click="addRow()">Agregar</button>
                                         <button type="button" class="btn btn-danger" @click="removeRow(index)">Quitar</button>
                                     </div>
@@ -216,10 +220,13 @@
                             <!-- div de los difierentes procesos -->
                             <div class="overflow-auto row" style="height: 22rem">
                                 <div v-for="(f, index) in form.formulas" :key="f.id" class="m-3 mx-auto col-md-5">
-                                    <select class="InputSelect" v-model="f.val">
+                                    <!-- <select class="InputSelect" v-model="f.val">
                                         <option value="">Selecciona un proceso</option>
                                         <option v-for="proceso in opcFP" :key="proceso.id" :value="proceso.id">{{proceso.text}}</option>
-                                    </select>
+                                    </select> -->
+
+                                    <Select2 v-model="f.val" class="form-select" :settings="{width: '100%', allowClear: true}" :options="opcFP" />
+
                                     <div v-for="proceso in procesos" :key="proceso.id">
                                         <div v-if="proceso.id == f.val & proceso.maq_pros.length != 0" class="overflow-auto tw-text-center" style="height: 10rem">
                                             <label v-for="mp in proceso.maq_pros" :key="mp.id" class="m-2 w-100">
@@ -257,6 +264,7 @@
     import JetCancelButton from '@/Components/CancelButton';
     import JetInput from '@/Components/Input';
     import JetSelect from '@/Components/Select';
+    import Select2 from 'vue3-select2-component';
     import Modal from '@/Jetstream/Modal';
     import JetLabel from '@/Jetstream/Label';
 
@@ -294,6 +302,7 @@
             JetInput,
             JetSelect,
             Modal,
+            Select2,
             JetLabel
         },
         data() {

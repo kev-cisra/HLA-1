@@ -117,25 +117,25 @@
                     <label  class="tw-text-white"><span class="required">*</span>Tipo de gráfica: </label>
                     <div class="tw-px-3 tw-mb-6 tw-gap-3 tw-flex">
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="pie" id="pie"> <label for="pie" class="tw-text-white">Gráfica de pastel</label>
+                            <input type="checkbox" v-model="graTipo" value="Pastel" id="Pastel"> <label for="Pastel" class="tw-text-white">Gráfica de pastel</label>
                         </div>
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="punto" id="punto"> <label for="punto" class="tw-text-white">Gráfica lineal</label>
+                            <input type="checkbox" v-model="graTipo" value="Linea" id="Linea"> <label for="Linea" class="tw-text-white">Gráfica lineal</label>
                         </div>
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="barra" id="barra"> <label for="barra" class="tw-text-white">Gráfica de barra</label>
+                            <input type="checkbox" v-model="graTipo" value="Barra" id="Barra"> <label for="Barra" class="tw-text-white">Gráfica de barra</label>
                         </div>
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="ambos" id="ambos"> <label for="ambos" class="tw-text-white">Gráfica de barar y punto</label>
+                            <input type="checkbox" v-model="graTipo" value="Combinado" id="Combinado"> <label for="Combinado" class="tw-text-white">Gráfica de barrar y punto</label>
                         </div>
                     </div>
-                    <button class="btn btn-warning" @click="ConGra()">Graficas guardadas</button>
+                    <button class="btn btn-warning" @click="ConGra()" data-bs-toggle="offcanvas" data-bs-target="#grafiGuar" aria-controls="grafiGuar">Graficas guardadas</button>
                 </div>
 
                 <!-- recorrido de los tipos de graficas -->
                 <div v-for="tip in graTipo" :key="tip">
                     <!------------------------------------------- formulario para grafica de pie ------------------------------------->
-                    <div v-if="tip == 'pie'" class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-rounded-xl tw-border-8 tw-border-blue-700 tw-p-10">
+                    <div v-if="tip == 'Pastel'" class="tw-mb-6 lg:tw-flex lg:tw-flex-col tw-rounded-xl tw-border-8 tw-border-blue-700 tw-p-10">
                         <!-- titulo y botones -->
                         <div class="sm:tw-flex lg:tw-m-5">
                             <div class="tw-w-full lg:tw-w-1/2 tw-text-2xl tw-text-center">
@@ -251,7 +251,7 @@
                     </div>
 
                     <!------------------------------------------- formulario para grafica de linea ------------------------------------->
-                    <div v-if="tip == 'punto'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-green-700 tw-p-10">
+                    <div v-if="tip == 'Linea'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-green-700 tw-p-10">
                         <!-- titulo y botones -->
                         <div class="tw-flex tw-m-5">
                             <!-- titulo -->
@@ -260,7 +260,8 @@
                             </div>
                             <!-- boton -->
                             <div class="tw-flex tw-w-1/2">
-                                <a class="btn btn-success " href="#chart1" @click="GraLinea(gLinea)">Generar gráfica</a>
+                                <a class="btn btn-primary " href="#chart1" @click="GraLinea(gLinea)">Generar gráfica</a>
+                                <button class="btn btn-success" @click="saveLine(gLinea, 'Linea')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
                                 <button class="btn btn-danger " @click="resetLinea()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
@@ -380,7 +381,7 @@
                     </div>
 
                     <!------------------------------------------- formulario para grafica de barra ------------------------------------->
-                    <div v-if="tip == 'barra'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-yellow-700 tw-p-10">
+                    <div v-if="tip == 'Barra'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-yellow-700 tw-p-10">
                         <!-- titulo y botones -->
                         <div class="tw-flex tw-m-5">
                             <!-- titulo -->
@@ -389,7 +390,8 @@
                             </div>
                             <!-- boton -->
                             <div class="tw-flex tw-w-1/2">
-                                <a class="btn btn-success " href="#chart2" @click="GraBarra(gBarra)">Generar gráfica</a>
+                                <a class="btn btn-primary " href="#chart2" @click="GraBarra(gBarra)">Generar gráfica</a>
+                                <button class="btn btn-success" @click="saveLine(gLinea, 'Barra')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
                                 <button class="btn btn-danger " @click="resetBarra()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
@@ -509,7 +511,7 @@
                     </div>
 
                     <!------------------------------------------- formulario para grafica combinada ------------------------------------->
-                    <div v-if="tip == 'ambos'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-red-700 tw-p-10">
+                    <div v-if="tip == 'Combinado'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-red-700 tw-p-10">
                         <!-- titulo y botones -->
                         <div class="tw-flex tw-m-5">
                             <!-- titulo -->
@@ -518,7 +520,8 @@
                             </div>
                             <!-- boton -->
                             <div class="tw-w-1/2">
-                                <a class="btn btn-success " href="#chart3" @click="GraBaLi(gBaLi)">Generar gráfica</a>
+                                <a class="btn btn-primary " href="#chart3" @click="GraBaLi(gBaLi)">Generar gráfica</a>
+                                <button class="btn btn-success" @click="saveLine(gLinea, 'Combinado')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
                                 <button class="btn btn-danger " @click="resetBaLi()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
@@ -650,6 +653,22 @@
                 </div>
             </div>
         </div>
+
+        <!------------------------------------ Graficas guardadas --------------------------------------------------------->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="grafiGuar" aria-labelledby="grafiGuarLabel">
+            <div class="offcanvas-header">
+                <h5 id="grafiGuarLabel">Graficas</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div v-for="gg in GrafGua" :key="gg" class="tw-w-full tw-rounded-2xl hover:tw-bg-cyan-200 active:tw-bg-cyan-300 tw-p-5 tw-shadow-lg tw-cursor-pointer tw-m-3" data-bs-dismiss="offcanvas">
+                    <img src="http://192.168.11.3/storage/Archivos/Pastel.png" class="tw-object-none tw-relative">
+                    <label class="tw-cursor-pointer tw-text-lg"><strong>Tipo de gráfica:</strong> {{gg.graTipo}}</label><br>
+                    <label class="tw-cursor-pointer tw-text-lg"><strong>Título:</strong> {{ gg.titulo }} </label>
+                </div>
+            </div>
+        </div>
+
         <!------------------------------------ Data table de carga de produccion ------------------------------------------------------->
         <div v-show="FoFiltro.TipRepo == 1" class="tw-m-auto" style="width: 98%">
             <Table id="t_repo">
@@ -1068,6 +1087,7 @@
                 vMasi: true,
                 vCal: true,
                 vTab: true,
+                GrafGua: [],
                 hoy: moment().format('YYYY-MM-DD'),
                 recoTabla: [],
                 recoTablaParo: [],
@@ -1881,21 +1901,23 @@
                 this.gPie.borra.destroy();
             },
             async savePaste(datos){
-                datos.graTipo = "pie";
+                datos.borra = '';
+                datos.graTipo = "Pastel";
                 datos.departamento_id = this.S_Area;
-                if (datos.tipo == "generalTot") {
-                    datos.maquinas = [];
-                    datos.norma = [];
-                }else if(datos.tipo == "norma") {
-                    datos.procesos = [];
-                }else{
-                    datos.procesos = [];
-                    datos.norma = [];
-                }
 
                 if (datos.propa == "2") {
                     datos.procesos = [];
                     datos.norma = [];
+                }else{
+                    if (datos.tipo == "generalTot") {
+                        datos.maquinas = [];
+                        datos.norma = [];
+                    }else if(datos.tipo == "norma") {
+                        datos.procesos = [];
+                    }else{
+                        datos.procesos = [];
+                        datos.norma = [];
+                    }
                 }
 
                 var d = await axios.post('ReportesPro/SaveGra', datos).then(resp => {this.alertSucces()})
@@ -2052,6 +2074,18 @@
             },
             resetLinea(){
                 this.gLinea.borra.destroy();
+            },
+            async saveLine(datos, titu){
+                datos.borra = '';
+                datos.graTipo = titu
+                datos.departamento_id = this.S_Area;
+
+                if (datos.tipo == "generalTot") {
+                    datos.maquinas = [];
+                }else{
+                    datos.procesos = [];
+                }
+                var d = await axios.post('ReportesPro/SaveGra', datos).then(resp => {this.alertSucces()})
             },
             /****************************************** Grafica de barras **********************************************/
             limpiaBarra(dat){
@@ -2382,7 +2416,8 @@
             async ConGra() {
                 var datos = {'departamento_id': this.S_Area}
                 var nuArr = await axios.post('ReportesPro/ConGrafi', datos)
-                console.log(nuArr.data)
+                this.GrafGua = nuArr.data;
+                //console.log(nuArr.data)
             }
         },
 
