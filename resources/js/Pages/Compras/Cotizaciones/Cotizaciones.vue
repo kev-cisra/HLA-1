@@ -171,13 +171,18 @@
                                 </span>
                             </div>
                             <div v-else-if="datos.EstatusArt == 2">
-                                <span tooltip="Solicitada" flow="left">
+                                <span tooltip="solicitado" flow="left">
                                     <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
                                 </span>
                             </div>
-                            <div v-else-if="datos.EstatusArt == 3 || datos.EstatusArt == 4">
-                                <span tooltip="En Espera de Cotización" flow="left">
+                            <div v-else-if="datos.EstatusArt == 3">
+                                <span tooltip="ARTICULO SIN COTIZAR" flow="left">
                                     <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">COTIZACIÓN</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.EstatusArt == 4">
+                                <span tooltip="ARTICULO COTIZADO" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-text-xxs tw-h-6 tw-px-3 tw-text-white tw-bg-purple-600 tw-rounded-full">COTIZADO</span>
                                 </span>
                             </div>
                             <div v-else-if="datos.EstatusArt == 5">
@@ -271,13 +276,18 @@
                                 </span>
                             </div>
                             <div v-else-if="datos.Estatus == 2">
-                                <span tooltip="Solicitada" flow="left">
+                                <span tooltip="SOLICITADO" flow="left">
                                     <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
                                 </span>
                             </div>
-                            <div v-else-if="datos.Estatus == 3 || datos.Estatus == 4">
-                                <span tooltip="En Espera de Cotización" flow="left">
+                            <div v-else-if="datos.Estatus == 3">
+                                <span tooltip="REQUISICIÓN SIN COTIZACIÓN" flow="left">
                                     <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">COTIZAR</span>
+                                </span>
+                            </div>
+                            <div v-else-if="datos.Estatus == 4">
+                                <span tooltip="REQUISICIÓN COTIZADA" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-purple-600 tw-rounded-full">COTIZADO</span>
                                 </span>
                             </div>
                             <div v-else-if="datos.Estatus == 5">
@@ -375,10 +385,18 @@
                                         <i class="fas fa-file-invoice-dollar"></i>
                                     </span>
                                 </div>
-                                <div class="iconoCorreo" @click="EnviaCorreo(datos)" v-if="datos.CorreoEnviado == 0">
+                                <div class="iconoCorreoNoEnviado" @click="EnviaCorreo(datos)" v-if="datos.CorreoEnviado == 0">
                                     <span tooltip="Envia Correo Proveedor" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-3 tw-w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-3 tw-w-3" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M2.94 6.412A2 2 0 002 8.108V16a2 2 0 002 2h12a2 2 0 002-2V8.108a2 2 0 00-.94-1.696l-6-3.75a2 2 0 00-2.12 0l-6 3.75zm2.615 2.423a1 1 0 10-1.11 1.664l5 3.333a1 1 0 001.11 0l5-3.333a1 1 0 00-1.11-1.664L10 11.798 5.555 8.835z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoCorreoEnviado" v-else>
+                                    <span tooltip="Correo Enviado" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-3 tw-w-3" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                                         </svg>
                                     </span>
                                 </div>
@@ -389,10 +407,18 @@
                                         <i class="fas fa-file-invoice-dollar"></i>
                                     </span>
                                 </div>
-                                <div class="iconoCorreo" @click="EnviaCorreo(datos)" v-if="datos.CorreoEnviado == 0">
+                                <div class="iconoCorreoNoEnviado" @click="EnviaCorreo(datos)" v-if="datos.CorreoEnviado == 0">
                                     <span tooltip="Envia Correo Proveedor" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-3 tw-w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-3 tw-w-3" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M2.94 6.412A2 2 0 002 8.108V16a2 2 0 002 2h12a2 2 0 002-2V8.108a2 2 0 00-.94-1.696l-6-3.75a2 2 0 00-2.12 0l-6 3.75zm2.615 2.423a1 1 0 10-1.11 1.664l5 3.333a1 1 0 001.11 0l5-3.333a1 1 0 00-1.11-1.664L10 11.798 5.555 8.835z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoCorreoEnviado" v-else>
+                                    <span tooltip="Correo Enviado" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-3 tw-w-3" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                                         </svg>
                                     </span>
                                 </div>
@@ -405,14 +431,15 @@
     </div>
 
     <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
-        <div class="tw-px-2 tw-py-2">
+        <div class="tw-mt-4 tw-mx-4">
             <div class="tw-text-lg">
                 <div class="ModalHeader">
-                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición</h3>
+                    <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Articulos de requisición {{ Requi.NumReq }}</h3>
                 </div>
             </div>
         </div>
-        <div class="tw-mx-4" v-if="ArticulosRequisicion != null">
+
+        <div class="tw-mx-8">
             <div>
                 <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
                 <Table>
@@ -423,88 +450,31 @@
                         <th class="columna">MAQUINA</th>
                         <th class="columna">MARCA</th>
                         <th class="columna">OBSERVACIONES</th>
+                        <th class="columna">CORREO</th>
                     </template>
                     <template v-slot:TableFooter>
                         <tr class="fila">
-                            <td class="tw-text-center">{{ requisicion.Fecha }}</td>
-                            <td class="tw-text-center">{{ requisicion.NumReq }}</td>
-                            <td class="tw-text-center">{{ requisicion.requisicion_departamento.Nombre }}</td>
-                            <td class="tw-text-center">{{ requisicion.requisicion_maquina.Nombre }}</td>
-                            <td class="tw-text-center">{{ requisicion.requisicion_marca.Nombre }}</td>
-                            <td class="tw-text-center">{{ requisicion.Observaciones }}</td>
-                        </tr>
-                    </template>
-                </Table>
-            </div>
-            <div v-if=" ArticulosRequisicion[0].articulo_user != null">
-                <Table>
-                    <template v-slot:TableHeader>
-                        <th class="columna">CANTIDAD</th>
-                        <th class="columna">UNIDAD</th>
-                        <th class="columna">DESCRIPCION</th>
-                        <th class="columna">NUM PARTE</th>
-                        <th class="columna">RECIBIDO</th>
-                        <th class="columna">ESTATUS</th>
-                        <th class="columna">ACCIONES</th>
-                    </template>
-
-                    <template v-slot:TableFooter>
-                        <tr class="fila" v-for="art in ArticulosRequisicion" :key="art.id">
-                            <td class="tw-text-center">{{ art.Cantidad }}</td>
-                            <td class="tw-text-center">{{ art.Unidad }}</td>
-                            <td class="tw-text-center">{{ art.Descripcion }}</td>
-                            <td class="tw-text-center">{{ art.NumParte }}</td>
-                            <td class="tw-text-center">
-                                <div v-if="art.EstatusArt == 2">
-                                    <span tooltip="Solicitada" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 3 || art.EstatusArt == 4">
-                                    <span tooltip="En Espera de Cotización" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 5">
-                                    <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 6">
-                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 7">
-                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 8">
-                                    <span tooltip="Pasa por el articulo a almacén" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 9">
-                                    <span tooltip="Entregado" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
-                                    </span>
-                                </div>
-                                <div v-else-if="art.EstatusArt == 10">
-                                    <span tooltip="Cotizacion Rechazada" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
-                                    </span>
-                                </div>
-                            </td>
+                            <td class="tw-text-center">{{ Requi.Fecha }}</td>
+                            <td class="tw-text-center">{{ Requi.NumReq }}</td>
+                            <td class="tw-text-center">{{ Requi.requisicion_departamento.Nombre }}</td>
+                            <td class="tw-text-center">{{ Requi.requisicion_maquina.Nombre }}</td>
+                            <td class="tw-text-center">{{ Requi.requisicion_marca.Nombre }}</td>
+                            <td class="tw-text-center">{{ Requi.Observaciones }}</td>
                             <td class="tw-text-center">
                                 <div class="columnaIconos">
-                                    <div class="iconoPurple" @click="EdtarPrecio(art)">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                        </svg>
+                                    <div class="iconoCorreoNoEnviado" v-if="Requi.CorreoEnviado == 0">
+                                        <span tooltip="Envia Correo Proveedor" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-3 tw-w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+                                            </svg>
+                                        </span>
                                     </div>
-                                    <div class="iconoPurple" @click="CancelarArticulo(art)">
-                                        <i class="fas fa-ban"></i>
+                                    <div class="iconoCorreoEnviado" v-else>
+                                        <span tooltip="Envia Correo Proveedor" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-3 tw-w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                            </svg>
+                                        </span>
                                     </div>
                                 </div>
                             </td>
@@ -512,23 +482,26 @@
                     </template>
                 </Table>
             </div>
-            <div v-else>
+
+            <div v-if="Requi.requisicion_articulos[0].RecibidoPor == null">
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Articulos --</p>
                 <Table>
                     <template v-slot:TableHeader>
                         <th class="columna">CANTIDAD</th>
                         <th class="columna">UNIDAD</th>
                         <th class="columna">DESCRIPCION</th>
                         <th class="columna">NUM PARTE</th>
+                        <th class="columna">NOTA</th>
                         <th class="columna">ESTATUS</th>
-                        <th class="columna">ACCIONES</th>
                     </template>
 
                     <template v-slot:TableFooter>
-                        <tr class="fila" v-for="art in ArticulosRequisicion" :key="art.id">
+                        <tr class="fila" v-for="art in Requi.requisicion_articulos" :key="art.id">
                             <td class="tw-text-center">{{ art.Cantidad }}</td>
                             <td class="tw-text-center">{{ art.Unidad }}</td>
                             <td class="tw-text-center">{{ art.Descripcion }}</td>
                             <td class="tw-text-center">{{ art.NumParte }}</td>
+                            <td class="tw-text-center">{{ art.MotivoCancelacion }}</td>
                             <td class="tw-text-center">
                                 <div v-if="art.EstatusArt == 1">
                                     <span tooltip="SIN ENVIAR" flow="left">
@@ -577,32 +550,106 @@
                                     </span>
                                 </div>
                             </td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
+
+            <div v-else-if="Requi.requisicion_articulos[0].RecibidoPor != ''">
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Articulos --</p>
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">CANTIDAD</th>
+                        <th class="columna">UNIDAD</th>
+                        <th class="columna">DESCRIPCION</th>
+                        <th class="columna">NUM PARTE</th>
+                        <th class="columna">NOTA</th>
+                        <th class="columna">RECIBIO</th>
+                        <th class="columna">ESTATUS</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr class="fila" v-for="art in Requi.requisicion_articulos" :key="art.id">
+                            <td class="tw-text-center">{{ art.Cantidad }}</td>
+                            <td class="tw-text-center">{{ art.Unidad }}</td>
+                            <td class="tw-text-center">{{ art.Descripcion }}</td>
+                            <td class="tw-text-center">{{ art.NumParte }}</td>
+                            <td class="tw-text-center">{{ art.MotivoCancelacion }}</td>
+                            <td class="tw-text-center">{{ art.RecibidoPor }}</td>
                             <td class="tw-text-center">
-                                <div class="columnaIconos" v-if="art.EstatusArt == 3">
-                                    <div class="iconoPurple" @click="EdtarPrecio(art)">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="iconoPurple" @click="CancelarArticulo(art)">
-                                        <i class="fas fa-ban"></i>
-                                    </div>
+                                <div v-if="art.EstatusArt == 1">
+                                    <span tooltip="SIN ENVIAR" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-gray-400 tw-rounded-full">
+                                            SIN ENVIAR</span>
+                                    </span>
                                 </div>
-                                <div class="columnaIconos" v-if="art.EstatusArt == 4">
-                                    <div class="iconoPurple" @click="EdtarPrecio(art)">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                        </svg>
-                                    </div>
+                                <div v-else-if="art.EstatusArt == 2">
+                                    <span tooltip="Solicitada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-400 tw-rounded-full">SOLICITADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 3 || art.EstatusArt == 4">
+                                    <span tooltip="En Espera de Cotización" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-600 tw-rounded-full">EN COTIZACIÓN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 5">
+                                    <span tooltip="EN ESPERA DE AUTORIZACIÓN" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN AUTORIZACION</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 6">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-600 tw-rounded-full">AUTORIZADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 7">
+                                    <span tooltip="ARTICULO AUTORIZADO" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-600 tw-rounded-full">CONFIRMADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 8">
+                                    <span tooltip="Pasa por el articulo a almacén" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">EN ALMACEN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 9">
+                                    <span tooltip="Entregado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-teal-600 tw-rounded-full">ENTREGADO</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="art.EstatusArt == 10">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-font-semibold tw-text-white tw-bg-red-500 tw-rounded-full">COTIZACION RECHAZADA</span>
+                                    </span>
                                 </div>
                             </td>
                         </tr>
                     </template>
                 </Table>
             </div>
-        </div>
-        <div v-else>
-            <p>No hay Articulos Asignados a esta requisición</p>
+
+            <div v-if="Requi.requisiciones_vales != ''">
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Vales de Salida --</p>
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">FOLIO</th>
+                        <th class="columna">SALIDA</th>
+                        <th class="columna">PROVEEDOR</th>
+                        <th class="columna">ESTATUS</th>
+                        <th class="columna">SALIDA</th>
+                    </template>
+                    <template v-slot:TableFooter>
+                        <tr class="fila" v-for="vale in Requi.requisiciones_vales" :key="vale.id">
+                            <td class="tw-text-center">{{ vale.Folio }}</td>
+                            <td class="tw-text-center">{{ vale.Fecha }}</td>
+                            <td class="tw-text-center">{{ vale.NombreProveedor }}</td>
+                            <td class="tw-text-center">{{ vale.EstatusVale }}</td>
+                            <td class="tw-text-center">{{ vale.Salida }}</td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
         </div>
 
         <div class="ModalFooter">
@@ -803,7 +850,29 @@
                     <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Precios de Cotización <strong></strong></h3>
                 </div>
             </div>
-
+            <div class="tw-mx-4">
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">FECHA</th>
+                        <th class="columna">NUM REQ</th>
+                        <th class="columna">DEPARTAMENTO</th>
+                        <th class="columna">MAQUINA</th>
+                        <th class="columna">MARCA</th>
+                        <th class="columna">OBSERVACIONES</th>
+                    </template>
+                    <template v-slot:TableFooter>
+                        <tr class="fila">
+                            <td class="tw-text-center">{{ requisicion.Fecha }}</td>
+                            <td class="tw-text-center">{{ requisicion.NumReq }}</td>
+                            <td class="tw-text-center">{{ requisicion.requisicion_departamento.Nombre }}</td>
+                            <td class="tw-text-center">{{ requisicion.requisicion_maquina.Nombre }}</td>
+                            <td class="tw-text-center">{{ requisicion.requisicion_marca.Nombre }}</td>
+                            <td class="tw-text-center">{{ requisicion.Observaciones }}</td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
             <div class="tw-my-4" v-if="ArticulosPrecios != null">
                 <Table>
                     <template v-slot:TableHeader>
@@ -1088,6 +1157,7 @@ export default {
             showFecha: false,
             min: moment().format("YYYY-MM-DD"),
             requisicion: [],
+            Requi: [], //Asignacion de requisicion para partidas
             Visualizacion: 'PARTIDAS',
             Cambio: false,
             form: {
@@ -1365,6 +1435,7 @@ export default {
         },
 
         Partidas(data){ //Visualizacion de partidas
+            this.Requi = data;
             this.reset();
             this.form.editId = data.id;
             this.form.NumReq = data.NumReq;
@@ -1546,6 +1617,9 @@ export default {
         },
 
         VisualizaCotizacion(data){ //Visualiza Precios de cotizacion
+            //Asgino los valores de la requisicion a un nuevo arreglo
+            this.requisicion = data;
+            //Envio el id de la requisicion para generar una nueva consulta
             this.params.Req = data.id;
 
             //OBTENER VALOR DE FRILTRO DE LA URL
@@ -1614,13 +1688,32 @@ export default {
         },
 
         EnviaCorreo(data){
-            data.metodo = 5;
-            data._method = "PUT";
-            this.$inertia.post("/Compras/Cotizaciones/" + data.id, data, {
-                onSuccess: () => {
-                    console.log(data);
-                },
-            });
+            //data.metodo = 5;
+            if (data.requisicion_articulos[0].articulo_precios.length != 0) {
+                const datos = {
+                    id: data.id,
+                    metodo: '5',
+                    NumReq: data.NumReq,
+                    OrdenCompra: data.OrdenCompra,
+                    Autorizado: data.requisicion_articulos[0].articulo_precios[0].Autorizado,
+                    proveedor_id: data.requisicion_articulos[0].articulo_precios[0].precio_proveedor.id,
+                    Correo: data.requisicion_articulos[0].articulo_precios[0].precio_proveedor.Correo,
+                    Nombre: data.requisicion_articulos[0].articulo_precios[0].precio_proveedor.Nombre,
+                    _method: "PUT"
+                }
+                //console.log(datos)
+                this.$inertia.post("/Compras/Cotizaciones/" + datos.id, datos, {
+                    onSuccess: () => {
+                        this.alertSucces();
+                    },
+                });
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Aún no se registra un correo!',
+                })
+            }
         },
 
     },

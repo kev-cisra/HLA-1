@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Compras\Cotizaciones;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ContactaProveedorMailable;
 use App\Models\Catalogos\Maquinas;
 use App\Models\Compras\Proveedores;
 use App\Models\Compras\Requisiciones\ArticulosRequisiciones;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Stmt\Return_;
 
 use function PHPUnit\Framework\isNull;
@@ -652,18 +654,22 @@ class CotizacionesController extends Controller{
             }
 
             case 5:{
-                return $request;
+                //return $request;
 
-                $Prov = PreciosCotizaciones::where('id', '=',$request->id)->first('Proveedor'); //Obtengo el nombre del proveedor
-                $Proveedor = Proveedores::where('id', '=', $Prov->Proveedor)->first(); //Obtengo el correo del proveedor
+                //Envio de Correo al proveedor
 
-                // if($Proveedor->Correo != ''){
-                //     //Envio de Correo al proveedor
-                //     $correo = new ContactaProveedorMailable($Req);
-                //     Mail::to($Proveedor->Correo)
-                //     ->cc('compras@hlangeles.com')
-                //     ->send($correo);
-                // }
+                $correo = new ContactaProveedorMailable($request);
+                Mail::to($request->Correo)
+                ->cc('compras@hlangeles.com')
+                ->send($correo);
+
+                if (Mail::failures()) {
+                    return response()->Fail('Error al Enviar el correo');
+                }else{
+                    Requisiciones::where('id', '=', $request->id)->update([
+                        'CorreoEnviado' => 1,
+                    ]);
+                }
                 break;
             }
         }
