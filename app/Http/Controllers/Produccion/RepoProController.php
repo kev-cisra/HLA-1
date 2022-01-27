@@ -1376,21 +1376,55 @@ class RepoProController extends Controller
             'tipoParo' => $request->tipoParo
         ]);
 
+        //eliminar maquinas
+        foreach ($request->Nmaquinas as $dele) {
+            if (!in_array($dele, $request->maquinas)) {
+                grafi_arr::where('pac_grafica_id', '=', $request->id)
+                ->where('material_id', '=', $dele)
+                ->delete();
+            }
+        }
+
         //recorrido de maquinas
         if (!empty($request->maquinas)) {
-
-            //eliminar maquinas
-            foreach ($request->Nmaquinas as $dele) {
-                if (!in_array($dele, $request->maquinas)) {
-                    pac_grafica::where('pac_grafica_id', '=', $request->id)
-                    ->where('material_id', '=', $dele)
-                    ->delete();
-                }
-            }
 
 
             foreach ($request->maquinas as $maq) {
                 if (!in_array($maq, $request->Nmaquinas)) {
+                    $ver = grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    ->where('material_id', '=', $maq)
+                    ->first();
+
+                    print($ver);
+
+                    if (!empty($ver)) {
+                        $ver->restore();
+                    }else{
+                        grafi_arr::create([
+                            'tipo' => $request->tipo,
+                            'pac_grafica_id' => $request->id,
+                            'maq_pro_id' => $maq
+                        ]);
+                    }
+                }
+            }
+
+        }
+
+        //eliminar de maquinas barra
+        /* foreach ($request->NmaquinasBar as $dele) {
+            if (!in_array($dele, $request->maquinasBar)) {
+                pac_grafica::where('pac_grafica_id', '=', $request->id)
+                ->where('maq_pro_id', '=', $dele)
+                ->delete();
+            }
+        }
+
+        //recorrido de maquinas barra
+        if (!empty($request->maquinasBar)) {
+
+            foreach ($request->maquinasBar as $maq) {
+                if (!in_array($maq, $request->NmaquinasBar)) {
                     $ver = pac_grafica::where('pac_grafica_id', '=', $request->id)
                     ->where('material_id', '=', $dele)
                     ->first();
@@ -1404,25 +1438,12 @@ class RepoProController extends Controller
                             'maq_pro_id' => $maq
                         ]);
                     }
-
-
                 }
             }
-        }
-
-        //recorrido de maquinas barra
-        /* if (!empty($request->maquinasBar)) {
-            foreach ($request->maquinasBar as $maq) {
-                grafi_arr::create([
-                    'tipo' => $request->tipo,
-                    'pac_grafica_id' => $nuGrafi->id,
-                    'maq_pro_id' => $maq
-                ]);
-            }
-        }
+        } */
 
         //recorrido de maquina linea
-        if (!empty($request->maquinasLin)) {
+        /* if (!empty($request->maquinasLin)) {
             foreach ($request->maquinasLin as $maq) {
                 grafi_arr::create([
                     'tipo' => $request->tipo,

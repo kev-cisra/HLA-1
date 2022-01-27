@@ -669,8 +669,8 @@
                 <div v-for="gg in GrafGua" :key="gg" class="tw-shadow-lg tw-rounded-2xl">
                     <div class="GraficaImg" @click="asigGrafi(gg)"  data-bs-dismiss="offcanvas">
                         <div :style="'background: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1)), url('+imgGrafi(gg.graTipo)+'); background-size: 40% 95%;  background-repeat: no-repeat; background-position: right top;'">
-                            <label class="tw-cursor-pointer tw-text-lg"><strong>Tipo de gráfica:</strong> {{gg.graTipo}}</label><br>
-                            <label class="tw-cursor-pointer tw-text-lg"><strong>Título:</strong> {{ gg.titulo }} </label>
+                            <label class="tw-cursor-pointer tw-text-lg"><strong>Título:</strong> {{ gg.titulo }} </label><br>
+                            <label class="tw-cursor-pointer tw-text-lg"><strong>Tipo de gráfica:</strong> {{gg.graTipo}}</label>
                         </div>
                     </div>
                     <div class="btn-group tw-w-full" role="group">
@@ -680,8 +680,6 @@
                 </div>
             </div>
         </div>
-
-
 
         <!------------------------------------ Data table de carga de produccion ------------------------------------------------------->
         <div v-show="FoFiltro.TipRepo == 1" class="tw-m-auto" style="width: 98%">
@@ -1159,6 +1157,9 @@
                     maquinas: [],
                     procesos: [],
                     norma: [],
+                    Nmaquinas: [],
+                    Nprocesos: [],
+                    Nnorma: [],
                     update: false
                 },
                 gLinea: {
@@ -1172,6 +1173,8 @@
                     fecFin: null,
                     maquinas: [],
                     procesos: [],
+                    Nmaquinas: [],
+                    Nprocesos: [],
                     norma: [],
                     update: false
                 },
@@ -1186,6 +1189,8 @@
                     fecFin: null,
                     maquinas: [],
                     procesos: [],
+                    Nmaquinas: [],
+                    Nprocesos: [],
                     norma: [],
                     update: false
                 },
@@ -1203,6 +1208,10 @@
                     procesosBar: [],
                     maquinasLin: [],
                     procesosLin: [],
+                    NmaquinasBar: [],
+                    NprocesosBar: [],
+                    NmaquinasLin: [],
+                    NprocesosLin: [],
                     norma: [],
                     update: false
                 }
@@ -1505,12 +1514,15 @@
                         //console.log(eve);
                         if (eve.maq_pro_id != null) {
                             this.gPie.maquinas.push(eve.maq_pro_id)
+                            this.gPie.Nmaquinas.push(eve.maq_pro_id)
                         }
                         if (eve.proceso_id != null) {
                             this.gPie.procesos.push(eve.proceso_id)
+                            this.gPie.Nprocesos.push(eve.proceso_id)
                         }
                         if (eve.material_id != null) {
                             this.gPie.norma.push(eve.material_id)
+                            this.gPie.Nnorma.push(eve.material_id)
                         }
                     })
                 }else if (data.graTipo == "Linea"){
@@ -1525,9 +1537,11 @@
                         //console.log(eve);
                         if (eve.maq_pro_id != null) {
                             this.gLinea.maquinas.push(eve.maq_pro_id)
+                            this.gLinea.Nmaquinas.push(eve.maq_pro_id)
                         }
                         if (eve.proceso_id != null) {
                             this.gLinea.procesos.push(eve.proceso_id)
+                            this.gLinea.Nprocesos.push(eve.proceso_id)
                         }
                     })
                 }else if (data.graTipo == "Barra") {
@@ -1542,9 +1556,11 @@
                         //console.log(eve);
                         if (eve.maq_pro_id != null) {
                             this.gBarra.maquinas.push(eve.maq_pro_id)
+                            this.gBarra.Nmaquinas.push(eve.maq_pro_id)
                         }
                         if (eve.proceso_id != null) {
                             this.gBarra.procesos.push(eve.proceso_id)
+                            this.gBarra.Nprocesos.push(eve.proceso_id)
                         }
                     })
                 }else{
@@ -1560,15 +1576,19 @@
                         //console.log(eve);
                         if (eve.maq_pro_id != null) {
                             this.gBaLi.maquinasBar.push(eve.maq_pro_id)
+                            this.gBaLi.NmaquinasBar.push(eve.maq_pro_id)
                         }
                         if (eve.maq_pro_linea_id != null) {
                             this.gBaLi.maquinasLin.push(eve.maq_pro_linea_id)
+                            this.gBaLi.NmaquinasLin.push(eve.maq_pro_linea_id)
                         }
                         if (eve.proceso_id != null) {
                             this.gBaLi.procesosBar.push(eve.proceso_id)
+                            this.gBaLi.NprocesosBar.push(eve.proceso_id)
                         }
                         if (eve.proceso_linea_id != null) {
                             this.gBaLi.procesosLin.push(eve.proceso_linea_id)
+                            this.gBaLi.NprocesosLin.push(eve.proceso_linea_id)
                         }
                     })
                 }
@@ -2039,10 +2059,13 @@
                 this.gPie.maquinas = [];
                 this.gPie.procesos = [];
                 this.gPie.norma = [];
+                this.gPie.Nmaquinas = [];
+                this.gPie.Nprocesos = [];
+                this.gPie.Nnorma = [];
                 this.gPie.update = false
             },
             async savePaste(datos){
-                datos.borra = '';
+                //datos.borra = null;
                 datos.graTipo = "Pastel";
                 datos.departamento_id = this.S_Area;
 
@@ -2071,20 +2094,15 @@
                 if (datos.propa == "2") {
                     datos.procesos = [];
                     datos.norma = [];
-                    datos.Nmaquinas = datos.maquinas;
                 }else{
                     if (datos.tipo == "generalTot") {
                         datos.maquinas = [];
                         datos.norma = [];
-                        datos.Nprocesos = datos.procesos;
                     }else if(datos.tipo == "norma") {
                         datos.procesos = [];
-                        datos.Nmaquinas = datos.maquinas;
-                        datos.Nnorma = datos.norma;
                     }else{
                         datos.procesos = [];
                         datos.norma = [];
-                        datos.Nmaquinas = datos.maquinas;
                     }
                 }
                 await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {console.log(resp.data), this.alertSucces()})
@@ -2253,10 +2271,12 @@
                 this.gLinea.maquinas = [];
                 this.gLinea.procesos = [];
                 this.gLinea.norma = [];
+                this.gLinea.Nmaquinas = [];
+                this.gLinea.Nprocesos = [];
                 this.gLinea.update = false
             },
             async saveLine(datos, titu){
-                datos.borra = '';
+                //datos.borra = '';
                 datos.graTipo = titu
                 datos.departamento_id = this.S_Area;
 
@@ -2274,10 +2294,8 @@
             async updateLine(datos){
                 if (datos.tipo == "generalTot") {
                     datos.maquinas = [];
-                    datos.Nprocesos = datos.procesos;
                 }else{
                     datos.procesos = [];
-                    datos.Nmaquinas = datos.maquinas;
                 }
 
                 await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {console.log(resp.data), this.alertSucces()})
@@ -2635,10 +2653,14 @@
                 this.gBaLi.maquinasLin = [];
                 this.gBaLi.procesosLin = [];
                 this.gBaLi.norma = [];
+                this.gBaLi.NmaquinasBar = [];
+                this.gBaLi.NprocesosBar = [];
+                this.gBaLi.NmaquinasLin = [];
+                this.gBaLi.NprocesosLin = [];
                 this.gBaLi.update = false
             },
             async saveCom(datos, titu){
-                datos.borra = '';
+                //datos.borra = '';
                 datos.graTipo = titu
                 datos.departamento_id = this.S_Area;
 
@@ -2660,15 +2682,9 @@
                 if (datos.tipo == "generalTot") {
                     datos.maquinasBar = [];
                     datos.maquinasLin = [];
-
-                    datos.NprocesosLin = datos.procesosLin;
-                    datos.NprocesosBar = datos.procesosBar;
                 }else{
                     datos.procesosLin = [];
                     datos.procesosBar = [];
-
-                    datos.NmaquinasBar = datos.maquinasBar;
-                    datos.NmaquinasLin = datos.maquinasLin;
                 }
 
                 await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {console.log(resp.data), this.alertSucces()})
