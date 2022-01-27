@@ -1391,11 +1391,21 @@ class RepoProController extends Controller
 
             foreach ($request->maquinas as $maq) {
                 if (!in_array($maq, $request->Nmaquinas)) {
-                    grafi_arr::create([
-                        'tipo' => $request->tipo,
-                        'pac_grafica_id' => $request->id,
-                        'maq_pro_id' => $maq
-                    ]);
+                    $ver = pac_grafica::where('pac_grafica_id', '=', $request->id)
+                    ->where('material_id', '=', $dele)
+                    ->first();
+
+                    if (!empty($ver)) {
+                        $ver->restore();
+                    }else{
+                        grafi_arr::create([
+                            'tipo' => $request->tipo,
+                            'pac_grafica_id' => $request->id,
+                            'maq_pro_id' => $maq
+                        ]);
+                    }
+
+
                 }
             }
         }

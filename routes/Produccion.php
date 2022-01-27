@@ -114,6 +114,8 @@ Route::post('ReportesPro/LinGrafi', [RepoProController::class, 'LinGrafi'])->nam
 
 Route::post('ReportesPro/SaveGra', [RepoProController::class, 'SaveGrafi'])->name('SaveGrafica');
 
+Route::post('ReportesPro/UpdateGrafi', [RepoProController::class, 'UpdateGrafi'])->name('UpdateGrafica');
+
 //Fin de reporte de rpoduccion
 
 

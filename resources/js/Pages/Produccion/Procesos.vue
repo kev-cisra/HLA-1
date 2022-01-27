@@ -587,7 +587,7 @@
                 var mar = '';
                 this.maquinas.forEach(r => {
                     mar = r.marca == null ? 'N/A' : r.marca.Nombre;
-                    mq.push({id: r.id, text: r.Nombre, marca: mar});
+                    mq.push({id: r.id, text: r.Nombre+' - '+mar});
                 })
                 return mq;
             },

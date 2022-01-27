@@ -144,8 +144,9 @@
 
                             <div class="lg:tw-flex tw-w-full lg:tw-w-1/2">
                                 <div class="sm:tw-flex tw-w-1/2 tw-m-auto">
-                                    <a class="btn btn-primary" href="#chart" @click="GraPaste(gPie)">Generar gráfica</a>
-                                    <button class="btn btn-success" @click="savePaste(gPie)" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                    <a class="btn btn-info" href="#chart" @click="GraPaste(gPie)">Generar gráfica</a>
+                                    <button class="btn btn-success" v-if="!gPie.update" @click="savePaste(gPie)" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                    <button class="btn btn-primary" v-else @click="updatePaste(gPie)" tooltip="Actualizar gráfica" flow="right"><i class="fas fa-edit"></i></button>
                                     <button class="btn btn-danger" @click="resetPastel()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                                 </div>
                             </div>
@@ -260,8 +261,9 @@
                             </div>
                             <!-- boton -->
                             <div class="tw-flex tw-w-1/2">
-                                <a class="btn btn-primary " href="#chart1" @click="GraLinea(gLinea)">Generar gráfica</a>
-                                <button class="btn btn-success" @click="saveLine(gLinea, 'Linea')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                <a class="btn btn-info " href="#chart1" @click="GraLinea(gLinea)">Generar gráfica</a>
+                                <button class="btn btn-success" v-if="!gLinea.update" @click="saveLine(gLinea, 'Linea')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                <button class="btn btn-primary" v-else @click="updateLine(gLinea)" tooltip="Actualizar gráfica" flow="right"><i class="fas fa-edit"></i></button>
                                 <button class="btn btn-danger " @click="resetLinea()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
@@ -390,8 +392,9 @@
                             </div>
                             <!-- boton -->
                             <div class="tw-flex tw-w-1/2">
-                                <a class="btn btn-primary " href="#chart2" @click="GraBarra(gBarra)">Generar gráfica</a>
-                                <button class="btn btn-success" @click="saveLine(gLinea, 'Barra')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                <a class="btn btn-info " href="#chart2" @click="GraBarra(gBarra)">Generar gráfica</a>
+                                <button class="btn btn-success" v-if="!gBarra.update" @click="saveLine(gBarra, 'Barra')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                <button class="btn btn-primary" v-else @click="updateLine(gBarra)" tooltip="Actualizar gráfica" flow="right"><i class="fas fa-edit"></i></button>
                                 <button class="btn btn-danger " @click="resetBarra()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
@@ -520,8 +523,9 @@
                             </div>
                             <!-- boton -->
                             <div class="tw-w-1/2">
-                                <a class="btn btn-primary " href="#chart3" @click="GraBaLi(gBaLi)">Generar gráfica</a>
-                                <button class="btn btn-success" @click="saveCom(gBaLi, 'Combinado')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                <a class="btn btn-info " href="#chart3" @click="GraBaLi(gBaLi)">Generar gráfica</a>
+                                <button class="btn btn-success" v-if="!gBaLi.update" @click="saveCom(gBaLi, 'Combinado')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                <button class="btn btn-primary" v-else @click="updateCom(gBaLi)" tooltip="Actualizar gráfica" flow="right"><i class="fas fa-edit"></i></button>
                                 <button class="btn btn-danger " @click="resetBaLi()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
@@ -657,7 +661,7 @@
         <!------------------------------------ Graficas guardadas --------------------------------------------------------->
         <div class="offcanvas offcanvas-end" tabindex="-1" id="grafiGuar" aria-labelledby="grafiGuarLabel">
             <div class="offcanvas-header">
-                <h5 id="grafiGuarLabel">Graficas</h5>
+                <div id="grafiGuarLabel" class=" tw-text-4xl"><strong>Graficas</strong></div>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
 
@@ -670,7 +674,7 @@
                         </div>
                     </div>
                     <div class="btn-group tw-w-full" role="group">
-                        <button class="btn btn-outline-primary">Actualizar</button>
+                        <!-- <button class="btn btn-outline-primary">Actualizar</button> -->
                         <button class="btn btn-outline-danger" @click="elimiGrafi(gg)">Eliminar</button>
                     </div>
                 </div>
@@ -1141,6 +1145,7 @@
                     nota: null
                 },
                 gPie: {
+                    id: null,
                     borra: null,
                     rango: 1,
                     propa: 1,
@@ -1153,10 +1158,12 @@
                     paro: [],
                     maquinas: [],
                     procesos: [],
-                    norma: []
+                    norma: [],
+                    update: false
                 },
                 gLinea: {
-                    borra: '',
+                    id: null,
+                    borra: null,
                     titulo: null,
                     subtitulo: '',
                     rango: 1,
@@ -1166,9 +1173,11 @@
                     maquinas: [],
                     procesos: [],
                     norma: [],
+                    update: false
                 },
                 gBarra: {
-                    borra: '',
+                    id: null,
+                    borra: null,
                     titulo: null,
                     subtitulo: '',
                     rango: 1,
@@ -1178,9 +1187,11 @@
                     maquinas: [],
                     procesos: [],
                     norma: [],
+                    update: false
                 },
                 gBaLi: {
-                    borra: '',
+                    id: null,
+                    borra: null,
                     titulo: null,
                     subIz: '',
                     subDe: '',
@@ -1193,6 +1204,7 @@
                     maquinasLin: [],
                     procesosLin: [],
                     norma: [],
+                    update: false
                 }
             }
         },
@@ -1481,11 +1493,13 @@
                 }
                 //Asigna la informacion general de cada grafica
                 if (data.graTipo == "Pastel") {
+                    this.gPie.id = data.id;
                     this.gPie.titulo = data.titulo;
                     this.gPie.propa = data.propa;
                     this.gPie.rango = data.rango;
                     this.gPie.tipo = data.tipo;
                     this.gPie.tipoParo = data.tipoParo;
+                    this.gPie.update = true
                     //Asigana el tipo de dato
                     data.grafi_arrs.forEach(eve => {
                         //console.log(eve);
@@ -1500,10 +1514,12 @@
                         }
                     })
                 }else if (data.graTipo == "Linea"){
+                    this.gLinea.id = data.id;
                     this.gLinea.titulo = data.titulo;
                     this.gLinea.subtitulo = data.subtitulo;
                     this.gLinea.rango = data.rango;
                     this.gLinea.tipo = data.tipo;
+                    this.gLinea.update = true
                     //Asigana el tipo de dato
                     data.grafi_arrs.forEach(eve => {
                         //console.log(eve);
@@ -1515,10 +1531,12 @@
                         }
                     })
                 }else if (data.graTipo == "Barra") {
+                    this.gBarra.id = data.id;
                     this.gBarra.titulo = data.titulo;
                     this.gBarra.subtitulo = data.subtitulo;
                     this.gBarra.rango = data.rango;
                     this.gBarra.tipo = data.tipo;
+                    this.gBarra.update = true
                     //Asigana el tipo de dato
                     data.grafi_arrs.forEach(eve => {
                         //console.log(eve);
@@ -1530,11 +1548,13 @@
                         }
                     })
                 }else{
+                    this.gBaLi.id = data.id;
                     this.gBaLi.titulo = data.titulo;
                     this.gBaLi.subDe = data.subDe;
                     this.gBaLi.subIz = data.subIz;
                     this.gBaLi.rango = data.rango;
                     this.gBaLi.tipo = data.tipo;
+                    this.gBaLi.update = true
                     //Asigana el tipo de dato
                     data.grafi_arrs.forEach(eve => {
                         //console.log(eve);
@@ -2005,6 +2025,7 @@
                 if (this.gPie.borra != null) {
                     this.gPie.borra.destroy();
                 }
+                this.gPie.id = null
                 this.gPie.borra = null
                 this.gPie.rango = 1;
                 this.gPie.propa = 1;
@@ -2018,6 +2039,7 @@
                 this.gPie.maquinas = [];
                 this.gPie.procesos = [];
                 this.gPie.norma = [];
+                this.gPie.update = false
             },
             async savePaste(datos){
                 datos.borra = '';
@@ -2044,6 +2066,28 @@
                     Swal.fire('Es necesario agregar un titulo')
                 }
                 //console.log(d)
+            },
+            async updatePaste(datos){
+                if (datos.propa == "2") {
+                    datos.procesos = [];
+                    datos.norma = [];
+                    datos.Nmaquinas = datos.maquinas;
+                }else{
+                    if (datos.tipo == "generalTot") {
+                        datos.maquinas = [];
+                        datos.norma = [];
+                        datos.Nprocesos = datos.procesos;
+                    }else if(datos.tipo == "norma") {
+                        datos.procesos = [];
+                        datos.Nmaquinas = datos.maquinas;
+                        datos.Nnorma = datos.norma;
+                    }else{
+                        datos.procesos = [];
+                        datos.norma = [];
+                        datos.Nmaquinas = datos.maquinas;
+                    }
+                }
+                await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {console.log(resp.data), this.alertSucces()})
             },
             /******************************************* Grafica en linea *****************************************************/
             lipiaLinea(dat){
@@ -2198,6 +2242,7 @@
                 if (this.gLinea.borra != null) {
                     this.gLinea.borra.destroy();
                 }
+                this.gLinea.id = null;
                 this.gLinea.borra = null;
                 this.gLinea.titulo = null;
                 this.gLinea.subtitulo = '';
@@ -2208,6 +2253,7 @@
                 this.gLinea.maquinas = [];
                 this.gLinea.procesos = [];
                 this.gLinea.norma = [];
+                this.gLinea.update = false
             },
             async saveLine(datos, titu){
                 datos.borra = '';
@@ -2224,6 +2270,17 @@
                 }else{
                     Swal.fire('Es necesario agregar un titulo')
                 }
+            },
+            async updateLine(datos){
+                if (datos.tipo == "generalTot") {
+                    datos.maquinas = [];
+                    datos.Nprocesos = datos.procesos;
+                }else{
+                    datos.procesos = [];
+                    datos.Nmaquinas = datos.maquinas;
+                }
+
+                await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {console.log(resp.data), this.alertSucces()})
             },
             /****************************************** Grafica de barras **********************************************/
             limpiaBarra(dat){
@@ -2361,6 +2418,7 @@
                 if (this.gBarra.borra != null) {
                     this.gBarra.borra.destroy();
                 }
+                this.gBarra.id = null;
                 this.gBarra.borra = null;
                 this.gBarra.titulo = null;
                 this.gBarra.subtitulo = '';
@@ -2371,6 +2429,7 @@
                 this.gBarra.maquinas = [];
                 this.gBarra.procesos = [];
                 this.gBarra.norma = [];
+                this.gBarra.update = false
             },
             /***************************************** Grafica combinada **********************************************/
             limpiaCombi(dat){
@@ -2562,6 +2621,7 @@
                 if (this.gBaLi.borra != null) {
                     this.gBaLi.borra.destroy();
                 }
+                this.gBaLi.id = null;
                 this.gBaLi.borra = null;
                 this.gBaLi.titulo = null;
                 this.gBaLi.subIz = '';
@@ -2575,6 +2635,7 @@
                 this.gBaLi.maquinasLin = [];
                 this.gBaLi.procesosLin = [];
                 this.gBaLi.norma = [];
+                this.gBaLi.update = false
             },
             async saveCom(datos, titu){
                 datos.borra = '';
@@ -2588,11 +2649,29 @@
                     datos.procesosLin = [];
                     datos.procesosBar = [];
                 }
+
                 if (datos.titulo) {
                     await axios.post('ReportesPro/SaveGra', datos).then(resp => {this.alertSucces()})
                 }else{
                     Swal.fire('Es necesario agregar un titulo')
                 }
+            },
+            async updateCom(datos){
+                if (datos.tipo == "generalTot") {
+                    datos.maquinasBar = [];
+                    datos.maquinasLin = [];
+
+                    datos.NprocesosLin = datos.procesosLin;
+                    datos.NprocesosBar = datos.procesosBar;
+                }else{
+                    datos.procesosLin = [];
+                    datos.procesosBar = [];
+
+                    datos.NmaquinasBar = datos.maquinasBar;
+                    datos.NmaquinasLin = datos.maquinasLin;
+                }
+
+                await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {console.log(resp.data), this.alertSucces()})
             },
             /***************************************** Graficas guardadas ********************************************/
             //consulta las graficas guardadas
@@ -2779,7 +2858,10 @@
         watch: {
             S_Area: async function(b){
                 this.FoFiltro.iniDia = this.hoy;
+
                 this.arrProdu();
+                this.arrParo();
+
                 var datos = {'departamento_id': this.S_Area, 'modulo': 'repoPro'};
 
                 //Maquinas
