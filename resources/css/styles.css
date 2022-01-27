@@ -72,8 +72,12 @@
     @apply tw-w-4 tw-mr-2 tw-transform tw-text-gray-500 hover:tw-text-white hover:tw-scale-110;
 }
 
-.iconoCorreo{
+.iconoCorreoEnviado{
     @apply tw-w-4 tw-mr-2 tw-transform tw-text-cyan-500 hover:tw-scale-110;
+}
+
+.iconoCorreoNoEnviado{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-red-500 hover:tw-scale-110;
 }
 
 .btn-row{
@@ -310,5 +314,9 @@
 
 .TablePrint{
     @apply tw-table-auto;
+}
+
+.GraficaImg{
+    @apply tw-w-full tw-rounded-t-2xl hover:tw-bg-cyan-200 active:tw-bg-cyan-300 tw-p-5 tw-cursor-pointer tw-mt-3;
 }
 

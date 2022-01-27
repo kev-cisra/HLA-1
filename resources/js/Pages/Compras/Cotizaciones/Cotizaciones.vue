@@ -1189,6 +1189,17 @@ export default {
                 ImagenServidor: '',
                 PrecioCotizacion: [],
             },
+            datosCorreo: {
+                id: '',
+                metodo: '5',
+                NumReq: '',
+                OrdenCompra: '',
+                Autorizado: '',
+                proveedor_id: '',
+                Correo: '',
+                Nombre: '',
+                _method: "PUT"
+            },
             params:{
                 Year: moment().format("YYYY"),
                 Month: this.mes,
@@ -1291,6 +1302,18 @@ export default {
                 Fechallegada: '',
                 ImagenServidor: '',
                 PrecioCotizacion: [],
+            };
+
+            this.datosCorreo= {
+                id: '',
+                metodo: '5',
+                NumReq: '',
+                OrdenCompra: '',
+                Autorizado: '',
+                proveedor_id: '',
+                Correo: '',
+                Nombre: '',
+                _method: "PUT"
             };
         },
 
@@ -1688,32 +1711,35 @@ export default {
         },
 
         EnviaCorreo(data){
-            //data.metodo = 5;
             if (data.requisicion_articulos[0].articulo_precios.length != 0) {
-                const datos = {
-                    id: data.id,
-                    metodo: '5',
-                    NumReq: data.NumReq,
-                    OrdenCompra: data.OrdenCompra,
-                    Autorizado: data.requisicion_articulos[0].articulo_precios[0].Autorizado,
-                    proveedor_id: data.requisicion_articulos[0].articulo_precios[0].precio_proveedor.id,
-                    Correo: data.requisicion_articulos[0].articulo_precios[0].precio_proveedor.Correo,
-                    Nombre: data.requisicion_articulos[0].articulo_precios[0].precio_proveedor.Nombre,
-                    _method: "PUT"
-                }
-                //console.log(datos)
-                this.$inertia.post("/Compras/Cotizaciones/" + datos.id, datos, {
-                    onSuccess: () => {
-                        this.alertSucces();
-                    },
-                });
+                    this.datosCorreo.id =  data.id;
+                    this.datosCorreo.NumReq = data.NumReq;
+                    this.datosCorreo.OrdenCompra = data.OrdenCompra;
+                    this.datosCorreo.Autorizado = data.requisicion_articulos[0].articulo_precios[0].Autorizado;
+                    this.datosCorreo.proveedor_id = data.requisicion_articulos[0].articulo_precios[0].precio_proveedor.id;
+                    this.datosCorreo.Correo = data.requisicion_articulos[0].articulo_precios[0].precio_proveedor.Correo;
+                    this.datosCorreo.Nombre = data.requisicion_articulos[0].articulo_precios[0].precio_proveedor.Nombre;
             }else{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Aún no se registra un correo!',
-                })
+                this.datosCorreo.id =  data.id;
+                this.datosCorreo.NumReq = data.NumReq;
+                this.datosCorreo.OrdenCompra = data.OrdenCompra;
+
+                data.requisicion_articulos.forEach(dat => {
+                    if (dat.articulo_precios.length != 0) {
+                        this.datosCorreo.Autorizado = dat.articulo_precios[0].Autorizado;
+                        this.datosCorreo.proveedor_id = dat.articulo_precios[0].precio_proveedor.id;
+                        this.datosCorreo.Correo = dat.articulo_precios[0].precio_proveedor.Correo;
+                        this.datosCorreo.Nombre = dat.articulo_precios[0].precio_proveedor.Nombre;
+                    }
+                });
             }
+
+            this.$inertia.post("/Compras/Cotizaciones/" + this.datosCorreo.id, this.datosCorreo, {
+                onSuccess: () => {
+                    this.reset();
+                    this.alertSucces();
+                },
+            });
         },
 
     },

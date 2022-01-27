@@ -223,18 +223,27 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="columnaIconos">
-                                        <div class="iconoEdit" @click="ArticuloCotizacion(datos)" v-if="datos.EstatusArt == 2">
+                                    <div class="columnaIconos" v-if="datos.EstatusArt == 2">
+                                        <div class="iconoEdit" @click="ArticuloCotizacion(datos)">
                                             <span tooltip="Envia Partida a Cotizacion" flow="left">
                                                 <i class="fas fa-money-bill-wave"></i>
                                             </span>
                                         </div>
-                                        <div class="iconoEdit" @click="ArticuloAlmacen(datos)" v-else-if="datos.EstatusArt == 6">
+                                        <div class="iconoEdit" @click="ArticuloAlmacen(datos)">
                                             <span tooltip="Confirma Partida en Almacén" flow="left">
                                                 <i class="ml-2 fas fa-check-circle"></i>
                                             </span>
                                         </div>
-                                        <div class="iconoEdit" v-else>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="datos.EstatusArt == 6">
+                                        <div class="iconoEdit" @click="ArticuloAlmacen(datos)">
+                                            <span tooltip="Confirma Partida en Almacén" flow="left">
+                                                <i class="ml-2 fas fa-check-circle"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else>
+                                        <div class="iconoEdit" >
                                             <span tooltip="En proceso" flow="left">
                                                 <i class="ml-2 fas fa-spinner"></i>
                                             </span>
@@ -1406,7 +1415,6 @@ export default {
         },
 
         GuardaProveedor(data){
-            console.log(data);
             this.$inertia.post("/Almacen/Requisiciones", data, {
                 onSuccess: () => {
                     this.chageProveedor();
