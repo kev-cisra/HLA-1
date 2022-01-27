@@ -1188,6 +1188,8 @@ export default {
         tabla(){
             this.$nextTick(() => {
                 $("#Requisiciones").DataTable({
+                    'destroy'      :true,
+                    'stateSave'   : true,
                     "language": this.español,
                     paging: true,
                     pageLength : 20,
@@ -1218,7 +1220,7 @@ export default {
                         },
                         'colvis'
                     ]
-                });
+                }).draw();
             });
         },
 

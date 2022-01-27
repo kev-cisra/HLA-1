@@ -20204,6 +20204,10 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(79, 70, 229, var(--tw-border-opacity));
 }
+.tw-border-violet-400 {
+	--tw-border-opacity: 1;
+	border-color: rgba(167, 139, 250, var(--tw-border-opacity));
+}
 .tw-bg-gray-200 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(229, 231, 235, var(--tw-bg-opacity));

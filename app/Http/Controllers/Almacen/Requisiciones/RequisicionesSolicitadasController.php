@@ -676,7 +676,7 @@ class RequisicionesSolicitadasController extends Controller {
         // Indicadores de Estatus de requisiciones
         $Almacen = Requisiciones::where('Estatus', '=', 8)->count();
         $Cotizacion = Requisiciones::whereBetween('Estatus', [3, 4])->count();
-        $SinConfirmar = Requisiciones::where('Estatus', '=', 7)->count();
+        $Solicitadas = Requisiciones::where('Estatus', '=', 2)->count();
 
         return Inertia::render('Almacen/Requisiciones/Requisiciones',
         compact('Session',
@@ -684,7 +684,7 @@ class RequisicionesSolicitadasController extends Controller {
         'Almacen',
         'Cotizacion',
         'Proveedores',
-        'SinConfirmar',
+        'Solicitadas',
         'Vista',
         'mes'));
     }
