@@ -1191,7 +1191,7 @@ export default {
             },
             datosCorreo: {
                 id: '',
-                metodo: '5',
+                metodo: '',
                 NumReq: '',
                 OrdenCompra: '',
                 Autorizado: '',
@@ -1306,7 +1306,7 @@ export default {
 
             this.datosCorreo= {
                 id: '',
-                metodo: '5',
+                metodo: '',
                 NumReq: '',
                 OrdenCompra: '',
                 Autorizado: '',
@@ -1711,16 +1711,17 @@ export default {
         },
 
         EnviaCorreo(data){
+            console.log(data);
             if (data.requisicion_articulos[0].articulo_precios.length != 0) {
+                console.log(1);
+                console.log(data);
                     this.datosCorreo.id =  data.id;
-                    this.datosCorreo.NumReq = data.NumReq;
-                    this.datosCorreo.OrdenCompra = data.OrdenCompra;
-                    this.datosCorreo.Autorizado = data.requisicion_articulos[0].articulo_precios[0].Autorizado;
-                    this.datosCorreo.proveedor_id = data.requisicion_articulos[0].articulo_precios[0].precio_proveedor.id;
-                    this.datosCorreo.Correo = data.requisicion_articulos[0].articulo_precios[0].precio_proveedor.Correo;
-                    this.datosCorreo.Nombre = data.requisicion_articulos[0].articulo_precios[0].precio_proveedor.Nombre;
+                    this.datosCorreo.metodo = 5;
             }else{
+                console.log(2);
+                console.log(data);
                 this.datosCorreo.id =  data.id;
+                this.datosCorreo.metodo = 6;
                 this.datosCorreo.NumReq = data.NumReq;
                 this.datosCorreo.OrdenCompra = data.OrdenCompra;
 
@@ -1736,6 +1737,7 @@ export default {
 
             this.$inertia.post("/Compras/Cotizaciones/" + this.datosCorreo.id, this.datosCorreo, {
                 onSuccess: () => {
+                    console.log(this.datosCorreo);
                     this.reset();
                     this.alertSucces();
                 },

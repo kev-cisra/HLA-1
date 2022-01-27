@@ -654,10 +654,28 @@ class CotizacionesController extends Controller{
             }
 
             case 5:{
+                $Proveedor = PreciosCotizaciones::where('requisiciones_id', '=', $request->id)->where('Autorizado', '=', 2)->first();
+                $DatosProveedor = Proveedores::where('id', '=', $Proveedor->Proveedor)->first();
+                //Envio de Correo al proveedor
+                $correo = new ContactaProveedorMailable($request);
+                Mail::to($DatosProveedor->Correo)
+                ->cc('compras@hlangeles.com')
+                ->send($correo);
+
+                if (Mail::failures()) {
+                    return response()->Fail('Error al Enviar el correo');
+                }else{
+                    Requisiciones::where('id', '=', $request->id)->update([
+                        'CorreoEnviado' => 1,
+                    ]);
+                }
+                break;
+            }
+
+            case 6:{
                 //return $request;
 
                 //Envio de Correo al proveedor
-
                 $correo = new ContactaProveedorMailable($request);
                 Mail::to($request->Correo)
                 ->cc('compras@hlangeles.com')

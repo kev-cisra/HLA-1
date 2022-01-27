@@ -938,6 +938,8 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout";
+import NProgress from 'nprogress';
+import { Inertia } from '@inertiajs/inertia';
 import Welcome from "@/Jetstream/Welcome";
 import Header from "@/Components/Header";
 import Accions from "@/Components/Accions";
