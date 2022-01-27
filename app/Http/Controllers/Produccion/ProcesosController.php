@@ -218,7 +218,7 @@ class ProcesosController extends Controller
                 array_push($sv,strval($v['value']));
             }
             foreach ($request->maquinas as $val) {
-                echo 'entro';
+                //echo 'entro';
                 if (count($mpS) == 0) {
                     maq_pro::create([
                         'proceso_id' => $request->id,

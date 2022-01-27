@@ -19,6 +19,7 @@ use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Stmt\Return_;
+use stdClass;
 
 use function PHPUnit\Framework\isNull;
 
@@ -654,10 +655,20 @@ class CotizacionesController extends Controller{
             }
 
             case 5:{
+                //Busco los datos de la requisicion
+                $Requisicion = Requisiciones::where('id', '=', $request->id)->first();
+                //Creo un objeto para asiognar los datos y enviarlo por la funcion de correo
+                $DatosCorreo = new stdClass();
+                //Asigno los valores correspondientes al correo
+                $DatosCorreo->id = $request->id;
+                $DatosCorreo->NumReq = $Requisicion->NumReq;
+                $DatosCorreo->OrdenCompra = $Requisicion->OrdenCompra;
+                //Obtengo el id del proveedor que se registro en la cotizacion
                 $Proveedor = PreciosCotizaciones::where('requisiciones_id', '=', $request->id)->where('Autorizado', '=', 2)->first();
+                //Obtengo el correo de la table de proveedores
                 $DatosProveedor = Proveedores::where('id', '=', $Proveedor->Proveedor)->first();
                 //Envio de Correo al proveedor
-                $correo = new ContactaProveedorMailable($request);
+                $correo = new ContactaProveedorMailable($DatosCorreo);
                 Mail::to($DatosProveedor->Correo)
                 ->cc('compras@hlangeles.com')
                 ->send($correo);

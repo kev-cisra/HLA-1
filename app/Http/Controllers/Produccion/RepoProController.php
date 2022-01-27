@@ -1264,10 +1264,15 @@ class RepoProController extends Controller
 
     //Guardado de graficas
     public function SaveGrafi(Request $request){
+        $sutitu = empty($request->subtitulo) ? '' : $request->subtitulo;
+        $subIz = empty($request->subIz) ? '' : $request->subIz;
+        $subDe = empty($request->subDe) ? '' : $request->subDe;
         $nuGrafi = pac_grafica::create([
             'graTipo' => $request->graTipo,
             'titulo' => $request->titulo,
-            'subtitulo' => '',
+            'subtitulo' => $sutitu,
+            'subIz' => $subIz,
+            'subDe' => $subDe,
             'rango' => $request->rango,
             'propa' => $request->propa,
             'tipo' => $request->tipo,
@@ -1351,6 +1356,115 @@ class RepoProController extends Controller
                 ]);
             }
         }
+
+        return $request;
+    }
+
+    //Actualizar graficas guardadas
+    public function UpdateGrafi(Request $request){
+        $sutitu = empty($request->subtitulo) ? '' : $request->subtitulo;
+        $subIz = empty($request->subIz) ? '' : $request->subIz;
+        $subDe = empty($request->subDe) ? '' : $request->subDe;
+        pac_grafica::find($request->id)->update([
+            'titulo' => $request->titulo,
+            'subtitulo' => $sutitu,
+            'subIz' => $subIz,
+            'subDe' => $subDe,
+            'rango' => $request->rango,
+            'propa' => $request->propa,
+            'tipo' => $request->tipo,
+            'tipoParo' => $request->tipoParo
+        ]);
+
+        //recorrido de maquinas
+        if (!empty($request->maquinas)) {
+
+            //eliminar maquinas
+            foreach ($request->Nmaquinas as $dele) {
+                if (!in_array($dele, $request->maquinas)) {
+                    pac_grafica::where('pac_grafica_id', '=', $request->id)
+                    ->where('material_id', '=', $dele)
+                    ->delete();
+                }
+            }
+
+
+            foreach ($request->maquinas as $maq) {
+                if (!in_array($maq, $request->Nmaquinas)) {
+                    grafi_arr::create([
+                        'tipo' => $request->tipo,
+                        'pac_grafica_id' => $request->id,
+                        'maq_pro_id' => $maq
+                    ]);
+                }
+            }
+        }
+
+        //recorrido de maquinas barra
+        /* if (!empty($request->maquinasBar)) {
+            foreach ($request->maquinasBar as $maq) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'maq_pro_id' => $maq
+                ]);
+            }
+        }
+
+        //recorrido de maquina linea
+        if (!empty($request->maquinasLin)) {
+            foreach ($request->maquinasLin as $maq) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'maq_pro_linea_id' => $maq
+                ]);
+            }
+        }
+
+        //recorrido de procesos
+        if (!empty($request->procesos)) {
+            foreach ($request->procesos as $pro) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'proceso_id' => $pro
+                ]);
+            }
+        }
+
+        //recorrrido de procesos de para barra
+        if (!empty($request->procesosBar)) {
+            foreach ($request->procesosBar as $pro) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'proceso_id' => $pro
+                ]);
+            }
+        }
+
+        //recorrido de procesos para lineas
+        if (!empty($request->procesosLin)) {
+            foreach ($request->procesosLin as $pro) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'proceso_linea_id' => $pro
+                ]);
+            }
+        }
+
+        //recorrdio de normas
+        if (!empty($request->norma)) {
+            foreach ($request->norma as $nor) {
+                grafi_arr::create([
+                    'tipo' => $request->tipo,
+                    'pac_grafica_id' => $nuGrafi->id,
+                    'material_id' => $nor
+                ]);
+            }
+        } */
 
         return $request;
     }
