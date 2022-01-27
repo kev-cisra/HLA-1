@@ -20607,6 +20607,9 @@ select {
 .tw-text-4xl {
 	font-size: 2.25rem;
 }
+.tw-text-3xl {
+	font-size: 1.875rem;
+}
 .tw-font-semibold {
 	font-weight: 600;
 }

@@ -130,6 +130,9 @@
                         </jet-button>
                     </div>
                 </div>
+                <div class="tw-mt-2">
+                    <jet-button @click="Recarga" class="BtnFiltros"> <i class="fas fa-sync-alt tw-mr-1"></i> Actualiza</jet-button>
+                </div>
             </div>
 
             <!-- Tablas -->
@@ -1501,6 +1504,14 @@ export default {
             ventana.document.close();
             ventana.print();
             ventana.close();
+        },
+
+        Recarga(){
+            location.reload();
+            var Rows =  $('#Requisiciones').DataTable().rows().count();
+            console.log(Rows);
+            if(Rows == 0){
+            }
         },
     },
 
