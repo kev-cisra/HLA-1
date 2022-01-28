@@ -20,10 +20,7 @@ use App\Http\Controllers\Produccion\PersonalController;
 use App\Http\Controllers\Produccion\ProcesosController;
 use App\Http\Controllers\Produccion\RepoProController;
 use App\Http\Controllers\Produccion\TurnosController;
-use App\Models\Produccion\parosCarga;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*Route::middleware(['auth:sanctum', 'verified'])->get('', function(){
     return Inertia::render('Produccion/index');

@@ -18,7 +18,9 @@
                 </select>
             </template>
             <template v-slot:BtnNuevo>
-                <jet-button @click="openModal" class="BtnNuevo">Nuevo Proceso </jet-button>
+                <div class="tw-m-3">
+                    <jet-button @click="openModal" class="tw-w-full">Nuevo Proceso </jet-button>
+                </div>
             </template>
         </Accions>
         <!-- datatables de los procesos -->

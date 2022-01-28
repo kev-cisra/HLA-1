@@ -19953,6 +19953,9 @@ select {
 	-moz-column-gap: 1.25rem;
 	     column-gap: 1.25rem;
 }
+.tw-gap-y-5 {
+	row-gap: 1.25rem;
+}
 .tw-space-x-8 > :not([hidden]) ~ :not([hidden]) {
 	--tw-space-x-reverse: 0;
 	margin-right: calc(2rem * var(--tw-space-x-reverse));
@@ -22835,6 +22838,10 @@ select {
 
 	.md\:tw-w-2\/4 {
 		width: 50%;
+	}
+
+	.md\:tw-w-3 {
+		width: 0.75rem;
 	}
 
 	.md\:tw-grid-cols-3 {

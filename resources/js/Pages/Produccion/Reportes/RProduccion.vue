@@ -18,16 +18,16 @@
                 </div>
             </template>
             <template v-slot:BtnNuevo v-if="S_Area">
-                <div class="md:tw-flex tw-gap-3 tw-mr-10">
+                <div class="md:tw-flex tw-gap-3">
                     <!-- boton de carga masiva -->
-                    <div>
+                    <div class="tw-m-3">
                         <button class="btn btn-primary tw-w-full" @click="openModalC">Carga masiva</button>
                     </div>
                     <!-- Boton de filtros -->
-                    <div>
+                    <div class="tw-m-3">
                         <button class="btn btn-primary tw-w-full" data-bs-toggle="collapse" data-bs-target="#filtro" aria-expanded="false" aria-controls="filtro"><i class="fas fa-filter"> </i> Filtros</button>
                     </div>
-                    <div>
+                    <div class="tw-m-3">
                         <button class="btn tw-bg-green-600 hover:tw-bg-green-700 tw-text-white hover:tw-text-white tw-w-full" data-bs-toggle="collapse" data-bs-target="#grafica" aria-expanded="false" aria-controls="grafica"><i class="fas fa-chart-pie"></i> Graficas</button>
                     </div>
                 </div>
