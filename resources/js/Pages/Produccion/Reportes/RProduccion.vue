@@ -2105,6 +2105,7 @@
                         datos.norma = [];
                     }
                 }
+                //console.log(datos)
                 await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {console.log(resp.data), this.alertSucces()})
             },
             /******************************************* Grafica en linea *****************************************************/

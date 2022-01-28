@@ -1430,7 +1430,6 @@ export default {
         },
 
         Ticket(data){
-            console.log(data);
             var TotalRequisicion = 0;
             this.DatosTicket.NumReq = data.NumReq;
             this.DatosTicket.OrdenCompra = data.OrdenCompra;
@@ -1469,8 +1468,6 @@ export default {
             ventana.focus();
 
             var beforePrint = function() {
-                console.log(data);
-                ventana.close();
                 const Toast = Swal.mixin({
                     toast: true,
                     position: "top-end",

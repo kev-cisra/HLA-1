@@ -817,7 +817,6 @@ class RequisicionesSolicitadasController extends Controller {
 
                 Requisiciones::find($request->id)->update([
                     'Estatus' => 8,
-                    'Etiqueta' => 1,
                 ]);
 
                 TiemposRequisiciones::where('requisicion_id', '=', $request->id)->update([
@@ -955,7 +954,6 @@ class RequisicionesSolicitadasController extends Controller {
                 return redirect()->back();
                 break;
             case 7: //Bloqueo de Impresion de etiqueta
-                return $request;
                 Requisiciones::where('id', '=', $request->id)->update([
                     'Etiqueta' => 1, //Actualizo el estatus de la Impresion de la etiqueta de la requisicion
                 ]);
