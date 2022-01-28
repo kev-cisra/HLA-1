@@ -99,7 +99,7 @@ class TurnosEquiposVeranoApertura extends Command
             }
 
         }
-        Storage::disk('local')->put('EquipoVerano.txt', $txt);
+        //Storage::disk('local')->put('EquipoVerano.txt', $txt);
         return Command::SUCCESS;
     }
 }

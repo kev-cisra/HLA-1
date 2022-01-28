@@ -98,7 +98,7 @@ class TurnosEquipos extends Command
         }
 
 
-        Storage::disk('local')->put('EquipoGeneral.txt', $txt);
+        //Storage::disk('local')->put('EquipoGeneral.txt', $txt);
         return Command::SUCCESS;
     }
 }

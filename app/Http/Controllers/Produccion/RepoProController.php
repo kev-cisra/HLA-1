@@ -1415,7 +1415,7 @@ class RepoProController extends Controller
         if (!empty($request->NmaquinasBar)) {
             foreach ($request->NmaquinasBar as $dele) {
                 if (!in_array($dele, $request->maquinasBar)) {
-                    $ver = grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    grafi_arr::where('pac_grafica_id', '=', $request->id)
                     ->where('maq_pro_id', '=', $dele)
                     ->delete();
                     //print('$dele');
@@ -1428,12 +1428,12 @@ class RepoProController extends Controller
 
             foreach ($request->maquinasBar as $maq) {
                 if (!in_array($maq, $request->NmaquinasBar)) {
-                    grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    $ver1 = grafi_arr::where('pac_grafica_id', '=', $request->id)
                     ->where('maq_pro_id', '=', $dele)
                     ->first();
 
-                    if (!empty($ver)) {
-                        $ver->restore();
+                    if (!empty($ver1)) {
+                        $ver1->restore();
                     }else{
                         grafi_arr::create([
                             'tipo' => $request->tipo,
@@ -1443,29 +1443,30 @@ class RepoProController extends Controller
                     }
                 }
             }
+
         }
 
         //eliminar maquinas Linea combinado
         if (!empty($request->NmaquinasLin)) {
             foreach ($request->NmaquinasLin as $dele) {
                 if (!in_array($dele, $request->maquinasBar)) {
-                    $ver = grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    grafi_arr::where('pac_grafica_id', '=', $request->id)
                     ->where('maq_pro_linea_id', '=', $dele)
                     ->delete();
                 }
             }
         }
 
-        //recorrido de maquina linea combinado
+        //Agregar de maquina linea combinado
         if (!empty($request->maquinasLin)) {
             foreach ($request->maquinasLin as $maq) {
                 if (!in_array($maq, $request->NmaquinasBar)) {
-                    grafi_arr::where('pac_grafica_id', '=', $request->id)
-                    ->where('maq_pro_linea_id', '=', $dele)
+                    $ver3 = grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    ->where('maq_pro_linea_id', '=', $maq)
                     ->first();
 
-                    if (!empty($ver)) {
-                        $ver->restore();
+                    if (!empty($ver3)) {
+                        $ver3->restore();
                     }else{
                         grafi_arr::create([
                             'tipo' => $request->tipo,
@@ -1477,49 +1478,133 @@ class RepoProController extends Controller
             }
         }
 
-        //recorrido de procesos
-        /* if (!empty($request->procesos)) {
-            foreach ($request->procesos as $pro) {
-                grafi_arr::create([
-                    'tipo' => $request->tipo,
-                    'pac_grafica_id' => $nuGrafi->id,
-                    'proceso_id' => $pro
-                ]);
+        //eliminar procesos
+        if (!empty($request->Nprocesos)) {
+            foreach ($request->Nprocesos as $dele) {
+                if (!in_array($dele, $request->procesos)) {
+                    grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    ->where('proceso_id', '=', $dele)
+                    ->delete();
+                }
             }
         }
 
-        //recorrrido de procesos de para barra
+        //Agregar de procesos
+        if (!empty($request->procesos)) {
+            foreach ($request->procesos as $pro) {
+                if (!in_array($pro, $request->Nprocesos)) {
+                    $ver4 = grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    ->where('proceso_id', '=', $pro)
+                    ->first();
+
+                    if (!empty($ver4)) {
+                        $ver4->restore();
+                    }else{
+                        grafi_arr::create([
+                            'tipo' => $request->tipo,
+                            'pac_grafica_id' => $request->id,
+                            'proceso_id' => $pro
+                        ]);
+                    }
+                }
+            }
+        }
+
+        //eliminar procesos barra combinado
+        if (!empty($request->NprocesosBar)) {
+            foreach ($request->NprocesosBar as $dele) {
+                if (!in_array($dele, $request->procesosBar)) {
+                    grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    ->where('proceso_id', '=', $dele)
+                    ->delete();
+                }
+            }
+        }
+
+        //Agregar procesos para barra combinado
         if (!empty($request->procesosBar)) {
             foreach ($request->procesosBar as $pro) {
-                grafi_arr::create([
-                    'tipo' => $request->tipo,
-                    'pac_grafica_id' => $nuGrafi->id,
-                    'proceso_id' => $pro
-                ]);
+                if (!in_array($pro, $request->NprocesosBar)) {
+                    $ver5 = grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    ->where('proceso_id', '=', $pro)
+                    ->first();
+
+                    if (!empty($ver5)) {
+                        $ver5->restore();
+                    }else{
+                        grafi_arr::create([
+                            'tipo' => $request->tipo,
+                            'pac_grafica_id' => $request->id,
+                            'proceso_id' => $pro
+                        ]);
+                    }
+                }
             }
         }
 
-        //recorrido de procesos para lineas
+        //eliminar procesos barra combinado
+        if (!empty($request->NprocesosLin)) {
+            foreach ($request->NprocesosLin as $dele) {
+                if (!in_array($dele, $request->procesosLin)) {
+                    grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    ->where('proceso_linea_id', '=', $dele)
+                    ->delete();
+                }
+            }
+        }
+
+        //agregar procesos para lineas combinado
         if (!empty($request->procesosLin)) {
             foreach ($request->procesosLin as $pro) {
-                grafi_arr::create([
-                    'tipo' => $request->tipo,
-                    'pac_grafica_id' => $nuGrafi->id,
-                    'proceso_linea_id' => $pro
-                ]);
+                if (!in_array($pro, $request->NprocesosLin)) {
+                    $ver6 = grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    ->where('proceso_linea_id', '=', $pro)
+                    ->first();
+
+                    if (!empty($ver6)) {
+                        $ver6->restore();
+                    }else{
+                        grafi_arr::create([
+                            'tipo' => $request->tipo,
+                            'pac_grafica_id' => $request->id,
+                            'proceso_linea_id' => $pro
+                        ]);
+                    }
+                }
+            }
+        }
+
+        //eliminar normas
+        if (!empty($request->Nnorma)) {
+            foreach ($request->Nnorma as $dele) {
+                if (!in_array($dele, $request->norma)) {
+                    grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    ->where('material_id', '=', $dele)
+                    ->delete();
+                }
             }
         }
 
         //recorrdio de normas
         if (!empty($request->norma)) {
             foreach ($request->norma as $nor) {
-                grafi_arr::create([
-                    'tipo' => $request->tipo,
-                    'pac_grafica_id' => $nuGrafi->id,
-                    'material_id' => $nor
-                ]);
+                if (!in_array($nor, $request->Nnorma)) {
+                    $ver7 = grafi_arr::where('pac_grafica_id', '=', $request->id)
+                    ->where('material_id', '=', $nor)
+                    ->first();
+
+                    if (!empty($ver7)) {
+                        $ver7->restore();
+                    }else{
+                        grafi_arr::create([
+                            'tipo' => $request->tipo,
+                            'pac_grafica_id' => $request->id,
+                            'material_id' => $nor
+                        ]);
+                    }
+                }
             }
-        } */
+        }
 
         return $request;
     }

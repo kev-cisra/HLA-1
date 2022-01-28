@@ -11,7 +11,7 @@ class CierreParoGeneral extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'task:paroGeneral';
 
     /**
      * The console command description.
@@ -37,6 +37,8 @@ class CierreParoGeneral extends Command
      */
     public function handle()
     {
-        return Command::SUCCESS;
+        $hoy = Carbon::now();
+        $txt = 'Prueba:'.$hoy;
+        Storage::disk('local')->put('prueba.txt', $txt);
     }
 }

@@ -6,46 +6,59 @@
             </div>
         </template>
 
-        <Canvas/>
-
         <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
-            <!-- For -->
-            <div class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110">
-                <Link href="/Admin/Modulos" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i class="fab fa-laravel"></i>
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10" v-if="hasAnyPermission(['admin.index', 'Produccion.personal.index'])">
+                        <Link href="/Admin/Modulos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fab fa-laravel"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Modulos del Sistema</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Modulos del Sistema</h4>
-                        <span class="linea"></span>
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.procesos.index'])">
+                        <Link href="/Admin/Usuarios" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fab fa-laravel"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Usuarios del Sistema</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                </Link>
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.turnos.index'])">
+                        <Link href="Supply/InsumosSolicitados" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-sitemap"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">ROLES DE USUARIO</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
+                    </div>
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.turnos.index'])">
+                        <Link href="Supply/InsumosSolicitados" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-code-branch"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">PANEL</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
+                    </div>
+                </div>
             </div>
-
-            <div class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110">
-                <Link href="/Admin/Usuarios" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i class="fab fa-laravel"></i>
-                    </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Usuarios del Sistema</h4>
-                        <span class="linea"></span>
-                    </div>
-                </Link>
-            </div>
-
-            <div class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110">
-                <Link href="/Admin/RolesUsuarios" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i class="fas fa-sitemap"></i>
-                    </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">ROLES DE USUARIO</h4>
-                        <span class="linea"></span>
-                    </div>
-                </Link>
-            </div>
-            <!-- Fin for -->
         </section>
     </app-layout>
 </template>

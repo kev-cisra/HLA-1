@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Administrador\ModuloController;
+use App\Http\Controllers\Administrador\Panel\AdminPanelController;
 use App\Http\Controllers\Administrador\Roles\RolesUsuariosController;
 use App\Http\Controllers\Administrador\Roles\UserController;
 use App\Http\Controllers\Administrador\Usuarios\UsersController;
@@ -21,6 +22,9 @@ Route::resource('Usuarios', UsersController::class)
 
 Route::resource('RolesUsuarios', RolesUsuariosController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('RolesUsuarios');
+
+Route::resource('AdminPanel', AdminPanelController::class)
+    ->middleware(['auth:sanctum', 'verified'])->names('AdminPanel');
 
 Route::resource('users', UserController::class)->only(['index', 'edit', 'update'])->names('admin.users');
 

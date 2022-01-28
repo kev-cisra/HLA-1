@@ -18,7 +18,8 @@ class Kernel extends ConsoleKernel
         Commands\TurnosEquiposInviernoApertura::class,
         Commands\TurnosEquiposVeranoApertura::class,
         commands\CierreParoInvierno::class,
-        commands\CierreParoVerano::class
+        commands\CierreParoVerano::class,
+        commands\CierreParoGeneral::class
     ];
 
     /**
@@ -34,7 +35,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('test:task')
         ->timezone('America/Mexico_City')
-        ->dailyAt('01:00');
+        ->everyMinute();
+        //->dailyAt('01:00');
 
         //Invierno equipos apertura
         $schedule->command('CTurnos:General')
@@ -62,6 +64,10 @@ class Kernel extends ConsoleKernel
         ->timezone('America/Mexico_City')
         ->dailyAt('20:00');
         //->twiceDaily(9, 21);
+
+        //$schedule->command('task:paroGeneral')
+        //->timezone('America/Mexico_City')
+        //->everyMinute();
     }
 
     /**

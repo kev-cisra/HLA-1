@@ -666,6 +666,9 @@
             </div>
 
             <div class="offcanvas-body">
+                <div class="tw-w-full">
+                    <label for=""></label>
+                </div>
                 <div v-for="gg in GrafGua" :key="gg" class="tw-shadow-lg tw-rounded-2xl">
                     <div class="GraficaImg" @click="asigGrafi(gg)"  data-bs-dismiss="offcanvas">
                         <div :style="'background: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1)), url('+imgGrafi(gg.graTipo)+'); background-size: 40% 95%;  background-repeat: no-repeat; background-position: right top;'">
@@ -2065,7 +2068,10 @@
                 this.gPie.update = false
             },
             async savePaste(datos){
-                //datos.borra = null;
+                if (datos.borra != null) {
+                    datos.borra.destroy();
+                }
+                datos.borra = null;
                 datos.graTipo = "Pastel";
                 datos.departamento_id = this.S_Area;
 
@@ -2091,6 +2097,10 @@
                 //console.log(d)
             },
             async updatePaste(datos){
+                if (datos.borra != null) {
+                    datos.borra.destroy();
+                }
+                datos.borra = null;
                 if (datos.propa == "2") {
                     datos.procesos = [];
                     datos.norma = [];
@@ -2106,7 +2116,7 @@
                     }
                 }
                 //console.log(datos)
-                await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {console.log(resp.data), this.alertSucces()})
+                await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {this.alertSucces()})
             },
             /******************************************* Grafica en linea *****************************************************/
             lipiaLinea(dat){
@@ -2277,7 +2287,10 @@
                 this.gLinea.update = false
             },
             async saveLine(datos, titu){
-                //datos.borra = '';
+                if (datos.borra != null) {
+                    datos.borra.destroy();
+                }
+                datos.borra = null;
                 datos.graTipo = titu
                 datos.departamento_id = this.S_Area;
 
@@ -2293,13 +2306,17 @@
                 }
             },
             async updateLine(datos){
+                if (datos.borra != null) {
+                    datos.borra.destroy();
+                }
+                datos.borra = null;
                 if (datos.tipo == "generalTot") {
                     datos.maquinas = [];
                 }else{
                     datos.procesos = [];
                 }
 
-                await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {console.log(resp.data), this.alertSucces()})
+                await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {this.alertSucces()})
             },
             /****************************************** Grafica de barras **********************************************/
             limpiaBarra(dat){
@@ -2448,6 +2465,8 @@
                 this.gBarra.maquinas = [];
                 this.gBarra.procesos = [];
                 this.gBarra.norma = [];
+                this.gBarra.Nmaquinas = [];
+                this.gBarra.Nprocesos = [];
                 this.gBarra.update = false
             },
             /***************************************** Grafica combinada **********************************************/
@@ -2661,7 +2680,10 @@
                 this.gBaLi.update = false
             },
             async saveCom(datos, titu){
-                //datos.borra = '';
+                if (datos.borra != null) {
+                    datos.borra.destroy();
+                }
+                datos.borra = null;
                 datos.graTipo = titu
                 datos.departamento_id = this.S_Area;
 
@@ -2680,6 +2702,10 @@
                 }
             },
             async updateCom(datos){
+                if (datos.borra != null) {
+                    datos.borra.destroy();
+                }
+                datos.borra = null;
                 if (datos.tipo == "generalTot") {
                     datos.maquinasBar = [];
                     datos.maquinasLin = [];
@@ -2688,7 +2714,7 @@
                     datos.procesosBar = [];
                 }
 
-                await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {console.log(resp.data), this.alertSucces()})
+                await axios.post('ReportesPro/UpdateGrafi', datos).then(resp => {this.alertSucces()})
             },
             /***************************************** Graficas guardadas ********************************************/
             //consulta las graficas guardadas
