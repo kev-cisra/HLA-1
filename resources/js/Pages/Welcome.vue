@@ -54,6 +54,13 @@
                         <jet-input id="password" type="password" class="tw-block tw-w-full tw-mt-1" v-model="form.password" required autocomplete="current-password" />
                     </div>
 
+                    <div class="tw-mt-4">
+                        <jet-label for="empresa" value="Empresa" />
+                        <select id="empresa" v-model="form.Empresa" required class="InputSelect">
+                            <option v-for="emp in Empresas" :key="emp" :value="emp.Empresa">{{emp.Empresa}}</option>
+                        </select>
+                    </div>
+
                     <div class="mt-4 tw-flex tw-items-center tw-justify-end">
                         <button type="submit"
                         class="tw-relative tw-flex tw-justify-center tw-w-full tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-text-white tw-bg-indigo-600 tw-border tw-border-transparent tw-rounded-md tw-group hover:tw-bg-indigo-700 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2 focus:tw-ring-indigo-500"
@@ -83,6 +90,7 @@
     import JetLabel from '@/Jetstream/Label'
     import JetValidationErrors from '@/Jetstream/ValidationErrors'
     import { computed } from '@vue/reactivity'
+import axios from 'axios'
 
     export default {
         components: {
@@ -109,9 +117,15 @@
                 form: this.$inertia.form({
                     IdEmp: '',
                     password: '',
+                    Empresa: '',
                     remember: false
-                })
+                }),
+                Empresas: [],
             }
+        },
+
+        mounted(){
+            this.conEmpre();
         },
 
         methods: {
@@ -124,6 +138,9 @@
                     .post(this.route('login'), {
                         onFinish: () => this.form.reset('password'),
                     })
+            },
+            conEmpre() {
+                axios.get('General/ConEmpre').then(eve => {this.Empresas = eve.data})
             }
         },
 
@@ -131,7 +148,7 @@
             verAlert: function() {
                 var URLactual = window.location;
                 return URLactual.host == '192.168.11.3';
-            }
+            },
         }
     }
 </script>
