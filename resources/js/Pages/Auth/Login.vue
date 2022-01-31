@@ -21,6 +21,13 @@
                 <jet-input id="password" type="password" class="tw-block tw-w-full tw-mt-1" v-model="form.password" required autocomplete="current-password" />
             </div>
 
+            <div class="tw-mt-4">
+                <jet-label for="empresa" value="Empresa" />
+                <select id="empresa" v-model="form.Empresa" required class="InputSelect">
+                    <option v-for="emp in Empresas" :key="emp" :value="emp.Empresa">{{emp.Empresa}}</option>
+                </select>
+            </div>
+
             <div class="mt-4 tw-flex tw-items-center tw-justify-end">
 
                 <jet-button class="tw-ml-4" :class="{ 'tw-opacity-25': form.processing }" :disabled="form.processing">
@@ -62,8 +69,13 @@
                     IdEmp: '',
                     password: '',
                     remember: false
-                })
+                }),
+                Empresas: [],
             }
+        },
+
+        mounted() {
+            this.conEmpre();
         },
 
         methods: {
@@ -76,6 +88,9 @@
                     .post(this.route('login'), {
                         onFinish: () => this.form.reset('password'),
                     })
+            },
+            conEmpre() {
+                axios.get('General/ConEmpre').then(eve => {this.Empresas = eve.data})
             }
         }
     }

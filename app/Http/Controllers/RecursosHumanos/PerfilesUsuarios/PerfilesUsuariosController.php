@@ -35,6 +35,8 @@ class PerfilesUsuariosController extends Controller{
 
     public function store(Request $request){
 
+        /* return $request->Empresa; */
+
         $Session = auth()->user();
 
         Validator::make($request->all(), [
@@ -61,6 +63,7 @@ class PerfilesUsuariosController extends Controller{
         $Nick = User::create([
             'IdEmp' => $request->IdEmp,
             'name' => $request->Nombre.' '.$request->ApPat.' '.$request->ApMat,
+            'Empresa' => $request->Empresa,
             'Departamento' => $Departamento->Nombre,
             'password' => bcrypt($request->IdEmp)
         ]);

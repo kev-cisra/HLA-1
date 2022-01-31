@@ -256,8 +256,20 @@ export default {
     },
     mounted(){
         this.global()
+
+        /* var URLactual = window.location;
+        if (URLactual.pathname.includes('/Produccion/Paros')) {
+            this.temporizador()
+        } */
     },
     methods: {
+        temporizador() {
+            setInterval(() => {
+                this.ParosCarga(false)
+                /* var changes = ((Math.random() * 100).toFixed(2))+'%'; */
+                console.log ('ya');
+            }, 300000);
+        },
         async ParosCarga(limp){
             var datos = {'departamento_id': this.S_Area, 'modulo': 'Paros'};
             if(limp){

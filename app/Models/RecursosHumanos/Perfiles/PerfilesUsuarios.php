@@ -24,7 +24,7 @@ class PerfilesUsuarios extends Model
     use SoftCascadeTrait;
 
     protected $dates = ['deleted_at']; //Registramos la nueva columna
-    protected $guarded = ['id', 'created_at','updated_at'];
+    protected $guarded = ['created_at','updated_at'];
     protected $softCascade = ['dep_pers']; //eliminar en cascada
 
     //relacion uno a uno inversa

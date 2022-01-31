@@ -281,7 +281,7 @@
             reset(val){
                 this.form = {
                     perfiles_usuarios_id: '',
-                    ope_puesto: '',
+                    //ope_puesto: '',
                     departamento_id: val,
                 }
             },
