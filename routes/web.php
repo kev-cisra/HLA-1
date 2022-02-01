@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Produccion\General\GeneralController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,8 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('General/ConEmpre', [GeneralController::class, 'ConEmpre'])->name('ConEmpresa');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');

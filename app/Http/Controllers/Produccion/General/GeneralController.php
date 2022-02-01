@@ -7,6 +7,7 @@ use App\Models\Catalogos\Maquinas;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
 use App\Models\Produccion\parosCarga;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class GeneralController extends Controller
@@ -76,5 +77,10 @@ class GeneralController extends Controller
         ])
         ->get();
         return $mate;
+    }
+
+    public function ConEmpre() {
+        $user = User::select('Empresa')->distinct()->get();
+        return $user;
     }
 }

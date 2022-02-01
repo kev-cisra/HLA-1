@@ -47,8 +47,9 @@
             <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
                 <!-- Fecha -->
                 <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                    <!--  :min="hoy" -->
                     <jet-label class="tw-text-white"><span class="required">*</span>Fecha</jet-label>
-                    <input type="datetime-local" class="InputSelect" v-model="form.fecha" :min="hoy" :max="treDia">
+                    <input type="datetime-local" class="InputSelect" v-model="form.fecha" :max="treDia">
                     <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
                 </div>
                 <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
