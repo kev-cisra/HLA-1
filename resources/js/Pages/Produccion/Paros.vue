@@ -40,10 +40,11 @@
                 </div>
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Maquinas</jet-label>
-                    <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
+                    <Select2 v-model="form.maq_pro_id"  class="InputSelect" :options="opcMQ"  :settings="{width: '100%'}"/>
+                    <!-- <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
                         <option value="" disabled>SELECCIONA</option>
                         <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
-                    </select>
+                    </select> -->
                     <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
@@ -471,7 +472,11 @@ export default {
                 return 'AP-';
             }else if(depa == 18){
                 return '1-PREP-';
-            }else {
+            }
+            else if(depa == 8){
+                return 'HA-';
+            }
+            else {
                 return 'N/A'
             }
         },
@@ -521,7 +526,7 @@ export default {
                     if (this.form.proceso_id == pm.id) {
                         pm.maq_pros.forEach(mp => {
                             mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
-                            mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
+                            mq.push({id: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
                         })
                     }
                 })
