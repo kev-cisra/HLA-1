@@ -49,7 +49,7 @@
                 <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                     <!--  :min="hoy" -->
                     <jet-label class="tw-text-white"><span class="required">*</span>Fecha</jet-label>
-                    <input type="datetime-local" class="InputSelect" v-model="form.fecha" :max="treDia">
+                    <input type="datetime-local" class="InputSelect" v-model="form.fecha" :min="hoy" :max="treDia">
                     <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
                 </div>
                 <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
@@ -717,7 +717,7 @@
                                 <td class="tw-text-center"> {{ obje.pro_hora }} </td>
                                 <td class="tw-text-center">
                                     <div class="columnaIconos">
-                                        <!-- editar objetivos -->
+                                        <!-- editar objetivos
                                         <a class="iconoEdit" @click="editOB(obje)" href="#Fobje">
                                             <span tooltip="Editar" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -731,7 +731,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
                                             </span>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </td>
                             </tr>
