@@ -68,6 +68,7 @@
                 form: this.$inertia.form({
                     IdEmp: '',
                     password: '',
+                    Empresa: '',
                     remember: false
                 }),
                 Empresas: [],

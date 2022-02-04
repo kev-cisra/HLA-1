@@ -18,7 +18,7 @@ class maq_pro extends Model
     use SoftCascadeTrait;
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
-    protected $softCascade = ['formulas']; //eliminar en cascada
+    protected $softCascade = ['formulas', 'parocargas', 'carOpes', 'obje_cordi', 'grafi_arrs', 'grafi_arrs_linea']; //eliminar en cascada
 
     //relacion 1 a muchos
     public function cargas() {

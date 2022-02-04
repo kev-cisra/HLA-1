@@ -147,6 +147,7 @@
                 </template>
             </Table>
         </div>
+
         <!-- Modal -->
         <modal :show="showModal" @close="chageClose">
             <form>

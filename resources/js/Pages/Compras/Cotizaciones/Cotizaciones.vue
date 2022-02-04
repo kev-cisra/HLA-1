@@ -239,7 +239,7 @@
 
         <div v-else>
             <Table id="Requisiciones">
-             <template v-slot:TableHeader>
+                <template v-slot:TableHeader>
                     <th class="columna">FECHA</th>
                     <th class="columna">REQ</th>
                     <th class="columna">O.C</th>
@@ -250,7 +250,7 @@
                     <th class="columna">TIPO COMPRA</th>
                     <th class="columna">OBSERVACIONES</th>
                     <th class="columna">SOLICITANTE</th>
-                    <!-- <th>LLEGADA</th> -->
+                    <th>LLEGADA</th>
                     <th class="columna">ESTATUS</th>
                     <th class="columna">ACCIONES</th>
                 </template>
@@ -267,7 +267,8 @@
                         <td>{{ datos.TipCompra }}</td>
                         <td>{{ datos.Observaciones }}</td>
                         <td>{{ datos.requisiciones_perfil.Nombre }} {{ datos.requisiciones_perfil.ApPat }}</td>
-                        <!-- <td>{{ datos.requisicion_articulos[0].Fechallegada }}</td> -->
+                        <td v-if="datos.requisicion_articulos[0].Fechallegada != ''">{{ datos.requisicion_articulos[0].Fechallegada }}</td>
+                        <td v-else>{{ datos.requisicion_articulos[1].Fechallegada }}</td>
                         <td>
                             <div v-if="datos.Estatus == 1">
                                 <span tooltip="SIN ENVIAR" flow="left">

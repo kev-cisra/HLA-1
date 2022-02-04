@@ -959,6 +959,19 @@ class RequisicionesSolicitadasController extends Controller {
                 ]);
                 return redirect()->back();
                 break;
+            //CASO PARA EDITAR VALE DE SALIDA
+            case 8:
+                ValesSalida::where('id', '=', $request->id)->update([
+                    'IdUser' => $request->IdUser,
+                    'IdEmp' => $request->IdEmp,
+                    'Folio' => $request->Folio,
+                    'Fecha' => $request->Fecha,
+                    'NombreProveedor' => $request->NombreProveedor,
+                    'EstatusVale' => $request->EstatusVale,
+                    'Salida' => $request->Salida,
+                ]);
+                return redirect()->back();
+                break;
             case 10:
                 ArticulosRequisiciones::where('id', '=', 1)->update([
                     'Cantidad' => 666,

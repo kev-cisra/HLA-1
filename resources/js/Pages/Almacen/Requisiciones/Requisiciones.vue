@@ -672,6 +672,7 @@
                                 <th class="columna">PROVEEDOR</th>
                                 <th class="columna">ESTATUS</th>
                                 <th class="columna">SALIDA</th>
+                                <th class="columna">ACCIONES</th>
                             </template>
                             <template v-slot:TableFooter>
                                 <tr class="fila" v-for="vale in Requi.requisiciones_vales" :key="vale.id">
@@ -680,6 +681,13 @@
                                     <td class="tw-text-center">{{ vale.NombreProveedor }}</td>
                                     <td class="tw-text-center">{{ vale.EstatusVale }}</td>
                                     <td class="tw-text-center">{{ vale.Salida }}</td>
+                                    <div class="columnaIconos">
+                                        <div class="iconoEdit" @click="EditaVale(vale)">
+                                            <span tooltip="EditaVale" flow="left">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </tr>
                             </template>
                         </Table>
@@ -896,7 +904,8 @@
                 </div>
 
                 <div class="ModalFooter">
-                    <jet-button type="button" @click="GuardaProveedor(ValeSalida)">Guardar</jet-button>
+                    <jet-button type="button" @click="GuardaProveedor(ValeSalida)" v-if="ValeSalida.Edit == false">Guardar</jet-button>
+                    <jet-button type="button" @click="EditaProveedor(ValeSalida)" v-else>Editar</jet-button>
                     <jet-CancelButton @click="chageProveedor">Cerrar</jet-CancelButton>
                 </div>
             </modal>
@@ -1006,6 +1015,9 @@ export default {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
                 Accion: 1,
+                metodo: 0,
+                Edit: false,
+                id: '',
                 Folio: '',
                 Fecha: '',
                 NombreProveedor: '',
@@ -1250,6 +1262,9 @@ export default {
                 IdUser: this.Session.id,
                 IdEmp: this.Session.IdEmp,
                 Accion: 1,
+                metodo: 0,
+                Edit: true,
+                id: '',
                 Folio: '',
                 Fecha: '',
                 NombreProveedor: '',
@@ -1512,6 +1527,31 @@ export default {
             if(Rows == 0){
             }
         },
+
+        EditaVale(data){
+            this.ValeSalida.metodo = 8,
+            this.ValeSalida.Edit= true,
+            this.ValeSalida.id = data.id,
+            this.ValeSalida.Folio = data.Folio,
+            this.ValeSalida.Fecha = data.Fecha,
+            this.ValeSalida.NombreProveedor = data.NombreProveedor,
+            this.ValeSalida.EstatusVale = data.EstatusVale;
+            this.ValeSalida.Salida = data.Salida;
+            this.ValeSalida.requisiciones_id = data.requisiciones_id;
+            this.chageProveedor();
+        },
+
+        EditaProveedor(data){
+            data._method = "PUT";
+            this.$inertia.post("/Almacen/Requisiciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.reset(),
+                    this.chageProveedor(),
+                    this.chagePartidas(),
+                    this.alertSucces();
+                },
+            });
+        }
     },
 
 };
