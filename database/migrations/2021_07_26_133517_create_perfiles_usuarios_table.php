@@ -22,12 +22,12 @@ class CreatePerfilesUsuariosTable extends Migration
             $table->string('Nombre',35);
             $table->string('ApPat',35);
             $table->string('ApMat',35);
-            $table->string('Curp',20)->unique();
-            $table->string('Rfc',20)->unique();
-            $table->string('Nss',20)->unique();
-            $table->string('Direccion');
-            $table->string('Telefono',20);
-            $table->date('Cumpleaños');
+            $table->string('Curp')->unique()->nullable();
+            $table->string('Rfc',20)->unique()->nullable();
+            $table->string('Nss',20)->unique()->nullable();
+            $table->string('Direccion')->nullable();
+            $table->string('Telefono',20)->nullable();
+            $table->date('Cumpleaños')->nullable();
             $table->date('FecIng');
             $table->integer('Antiguedad');
             $table->integer('DiasVac');
