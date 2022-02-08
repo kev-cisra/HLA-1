@@ -654,10 +654,10 @@ class RepoProController extends Controller
             ->where('cargas.partida', '!=', 'N/A')
             //->whereIn('cargas.proceso_id', $request->proceso)
             ->whereIn('cargas.maq_pro_id', $request->maquinas)
-            ->selectRaw('cargas.proceso_id, cargas.maq_pro_id, claves.categoria, cargas.departamento_id, SUM(cargas.valor) AS valor')
+            ->selectRaw('claves.categoria, cargas.departamento_id, SUM(cargas.valor) AS valor')
             ->groupBy('departamento_id')
-            ->groupBy('proceso_id')
-            ->groupBy('maq_pro_id')
+            //->groupBy('proceso_id')
+            //->groupBy('maq_pro_id')
             ->groupBy('claves.categoria')
             ->with([
                 'dep_perf' => function($dp) {
