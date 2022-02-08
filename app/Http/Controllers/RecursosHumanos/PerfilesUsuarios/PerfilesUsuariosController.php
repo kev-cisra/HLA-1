@@ -91,7 +91,7 @@ class PerfilesUsuariosController extends Controller{
             'jefes_areas_id' => $request->jefes_areas_id,
         ]);
 
-            return redirect()->back();
+        return redirect()->back();
     }
 
     public function update(Request $request, $id){

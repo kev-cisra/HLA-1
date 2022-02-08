@@ -877,6 +877,7 @@
                     <div class="ModalHeader">
                         <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Carga Masiva</h3>
                     </div>
+                    {{ this.descarga }}
                 </div>
 
                 <div class="tw-mt-4">
@@ -1401,7 +1402,7 @@
             async calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
                     this.limpPro = false;
-                    //this.vCal = false;
+                    this.vCal = false;
 
                     await this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {
@@ -1471,7 +1472,7 @@
                 return dife <= 3;
             },
             global(){
-                this.descarga = this.URLactual == '192.168.11.3' ? this.path2+'/Archivos/FormatosExcel/Carga_Masiva.xlsx' : 'http://192.168.11.3/storage/Archivos/FormatosExcel/Carga_Masiva.xlsx';
+                this.descarga = this.URLactual == '192.168.11.3' ? this.path+'Archivos/FormatosExcel/Carga_Masiva.xlsx' : 'http://192.168.11.3/storage/Archivos/FormatosExcel/Carga_Masiva.xlsx';
                 if (this.usuario.dep_pers.length == 0) {
                     this.S_Area = 7;
                 }else{
@@ -1486,20 +1487,21 @@
                 }
             },
             imgGrafi(data){
-                //console.log(data);
                 //var URLactual = window.location;
-                var nuPath = this.URLactual == '192.168.11.3' ? this.path2 : 'http://192.168.11.3/storage';
-                //console.log(nuPath)
+                var nuPath = this.URLactual == '192.168.11.3' ? this.path : 'http://192.168.11.3/storage/';
 
-                var img = nuPath+'/Archivos/Pastel.png'
+                console.log(nuPath);
+                console.log(this.URLactual)
+
+                var img = nuPath+'Archivos/Pastel.png'
                 if (data == 'Pastel') {
-                    img = nuPath+'/Archivos/Pastel.png';
+                    img = nuPath+'Archivos/Pastel.png';
                 }else if(data == 'Linea'){
-                    img = nuPath+'/Archivos/Linea.png';
+                    img = nuPath+'Archivos/Linea.png';
                 }else if(data == 'Barra'){
-                    img = nuPath+'/Archivos/Barra.png';
+                    img = nuPath+'Archivos/Barra.png';
                 }else{
-                    img = nuPath+'/Archivos/Combinado.png';
+                    img = nuPath+'Archivos/Combinado.png';
                 }
                 return img;
             },
@@ -2728,7 +2730,6 @@
                 var datos = {'departamento_id': this.S_Area}
                 var nuArr = await axios.post('ReportesPro/ConGrafi', datos)
                 this.GrafGua = nuArr.data;
-                console.log(nuArr.data)
             },
             async elimiGrafi(data) {
                 //console.log(data)
