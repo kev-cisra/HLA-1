@@ -58,7 +58,7 @@ class CalculosController extends Controller
         foreach ($calcula as $ope) {
             //dependiendo del tipo de operacion
             switch ($ope->operacion) {
-                case 'sm_d':
+                /* case 'sm_d':
                     $this->sm_d($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_dc':
@@ -87,17 +87,17 @@ class CalculosController extends Controller
                     break;
                 case 'efi_tur':
                     $this->efi_tur($ope, $request->depa, $fechas, $perf);
-                    break;
+                    break; */
                 case 'efi_sem':
                     $this->efi_sem($ope, $request->depa, $fechas, $perf);
                     break;
             }
         }
 
-        //return 'Listo';
+        return 'Listo';
 
-        return redirect()->back()
-            ->with('message', 'Post Created Successfully.');
+        /* return redirect()->back()
+            ->with('message', 'Post Created Successfully.'); */
     }
     /************************************** Guardado o Actualizado ************************************/
     public function gua_act($fec, $data){
@@ -545,7 +545,7 @@ class CalculosController extends Controller
     }
 
     //operacion mes suma
-    /* public function mes_sm($val, $dep, $fechas, $usuario){
+    public function mes_sm($val, $dep, $fechas, $usuario){
         $mes = date("Y-m", strtotime($fechas['fecha']));
         $fs = 0;
         $fc = 0;
@@ -573,7 +573,7 @@ class CalculosController extends Controller
         }
         //print($fs.' | '.$fc.' Fin de suma mes / ');
         return 'mes_sm';
-    } */
+    }
 
     //operacion eficiencia dia
     public function efi_dia($val, $dep, $fechas, $usuario){
@@ -724,7 +724,6 @@ class CalculosController extends Controller
 
                 //resultado
                 $fsP += $suma;
-
             }else{
                 //suma
                 $suma = carga::where('departamento_id', '=', $dep)
@@ -733,16 +732,17 @@ class CalculosController extends Controller
                     ->sum('valor');
                 //resultado
                 $fsO += $suma;
+                print($fsO);
             }
         }
         if ($fsP != 0 & $fsO != 0) {
-            //print $fsO.' '.$fsP.' /';
+            print $fsO.' '.$fsP.' /';
             $fs = ($fsP*100)/$fsO;
             $data = ['proceso_id' => $proce_id, 'suma' => round($fs, '2'), 'equipo_id' => null, 'turno_id' => null, 'cantidad' => '% ', 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
-            //print_r($data);
+            print_r($data);
             //$this->gua_act($fechas, $data);
             $this->gua_act_sem($fechas, $data);
         }
-        return '$val';
+        return $data;
     }
 }

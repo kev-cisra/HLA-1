@@ -38,7 +38,7 @@
                     </select>
                     <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Maquinas</jet-label>
                     <Select2 v-model="form.maq_pro_id"  class="InputSelect" :options="opcMQ"  :settings="{width: '100%'}"/>
                     <!-- <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
@@ -47,15 +47,15 @@
                     </select> -->
                     <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                 </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+            </div>
+            <!-- inputs orden y descripcion -->
+            <div class="tw-mb-6 md:tw-flex">
+                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Tipo de paro</jet-label>
                     <Select2 v-model="form.paro_id"  class="InputSelect" :options="opcPR"  :settings="{width: '100%'}"/>
                     <!-- <select  v-model="form.paro_id" v-html="opcPR" ></select> -->
                     <small v-if="errors.paro_id" class="validation-alert">{{errors.paro_id}}</small>
                 </div>
-            </div>
-            <!-- inputs orden y descripcion -->
-            <div class="tw-mb-6 md:tw-flex">
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 tw-text-center tw-mx-auto md:tw-mb-0">
                     <jet-label>Folio de orden de trabajo</jet-label>
                     <div class="input-group mb-3">
@@ -108,9 +108,14 @@
                         <td class="tw-text-center">{{ca.paros.descri}}</td>
                         <td class="tw-text-center">{{ca.descri}}</td>
                         <td class="tw-text-center">
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full" v-if="ca.estatus == 'Activo'">{{ca.estatus}}</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-else-if="ca.estatus == 'En revisión'">{{ca.estatus}}</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-else-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
+                            <!-- detener normal -->
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full tw-cursor-pointer" tooltip="Detener" flow="left" @click="detener(1, ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id != 13 & ca.paro_id != 14 & ca.paro_id != 16)">{{ca.estatus}}</div>
+                            <!-- detener con plan de accion -->
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full tw-cursor-pointer" tooltip="Detener" flow="left" @click="plan(ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id == 13 | ca.paro_id == 14 | ca.paro_id == 16)">{{ca.estatus}}</div>
+                            <!-- Autorizar -->
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full tw-cursor-pointer" tooltip="Autorizar" flow="left" @click="detener(2, ca)" v-if="(usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')) & ca.estatus == 'En revisión'">{{ca.estatus}}</div>
+
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
                         </td>
                         <td class="tw-text-center">{{ca.iniFecha}}</td>
                         <td class="tw-text-center">{{ca.finFecha == null ? '' : ca.finFecha}}</td>
@@ -258,11 +263,6 @@ export default {
     },
     mounted(){
         this.global()
-
-        /* var URLactual = window.location;
-        if (URLactual.pathname.includes('/Produccion/Paros')) {
-            this.temporizador()
-        } */
     },
     methods: {
         temporizador() {

@@ -146,8 +146,8 @@ import axios from 'axios'
 
         computed: {
             verAlert: function() {
-                var URLactual = window.location;
-                return URLactual.host == '192.168.11.3';
+                //var URLactual = window.location;
+                return this.URLactual.host == '192.168.11.3';
             },
         }
     }

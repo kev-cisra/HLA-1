@@ -881,21 +881,21 @@
 
                 <div class="tw-mt-4">
                     <div class="ModalForm">
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <a target="_blank" href="../public/FormatosExcel/FileNotFound404.jpg" download="not.jpg">Link de descarga</a>
-                            </div>
-                        </div>
-
-                        <div class="tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Fecha de inicio de carga</jet-label>
+                        <div class="tw-mt-10 tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0 tw-justify-center">
+                                <!-- <jet-label><span class="required">*</span>Fecha de inicio de carga</jet-label> -->
                                 <input type="file" class="" @input="docu.file = $event.target.files[0]" ref="file" accept=".xlsx">
                                 <br>
                                 <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
                                 <BotonCarga :verBot="vMasi" :textoV="'Guardar'" :textoOC="'Guardando...'" :class="'btn-primary'" @click="carMasi()"></BotonCarga>
+                            </div>
+                        </div>
+
+                        <div class="tw-mt-6 tw-mb-6 md:tw-flex tw-m-auto">
+                            <div class="tw-px-3 tw-mb-6 md:tw-mb-0">
+                                <a target="_blank" class="tw-text-blue-600 tw-text-xl" :href="descarga" download="Carga Masiva.xlsx">Descargar Archivo</a>
                             </div>
                         </div>
                     </div>
@@ -1092,6 +1092,7 @@
         data() {
             return {
                 color: "tw-bg-blue-600",
+                descarga: "",
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
                 procesos: [],
@@ -1400,7 +1401,7 @@
             async calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
                     this.limpPro = false;
-                    this.vCal = false;
+                    //this.vCal = false;
 
                     await this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {
@@ -1470,6 +1471,7 @@
                 return dife <= 3;
             },
             global(){
+                this.descarga = this.URLactual == '192.168.11.3' ? this.path2+'/Archivos/FormatosExcel/Carga_Masiva.xlsx' : 'http://192.168.11.3/storage/Archivos/FormatosExcel/Carga_Masiva.xlsx';
                 if (this.usuario.dep_pers.length == 0) {
                     this.S_Area = 7;
                 }else{
@@ -1485,15 +1487,19 @@
             },
             imgGrafi(data){
                 //console.log(data);
-                var img = 'http://192.168.11.3/storage/Archivos/Pastel.png'
+                //var URLactual = window.location;
+                var nuPath = this.URLactual == '192.168.11.3' ? this.path2 : 'http://192.168.11.3/storage';
+                //console.log(nuPath)
+
+                var img = nuPath+'/Archivos/Pastel.png'
                 if (data == 'Pastel') {
-                    img = 'http://192.168.11.3/storage/Archivos/Pastel.png';
+                    img = nuPath+'/Archivos/Pastel.png';
                 }else if(data == 'Linea'){
-                    img = 'http://192.168.11.3/storage/Archivos/Linea.png';
+                    img = nuPath+'/Archivos/Linea.png';
                 }else if(data == 'Barra'){
-                    img = 'http://192.168.11.3/storage/Archivos/Barra.png';
+                    img = nuPath+'/Archivos/Barra.png';
                 }else{
-                    img = 'http://192.168.11.3/storage/Archivos/Combinado.png';
+                    img = nuPath+'/Archivos/Combinado.png';
                 }
                 return img;
             },
@@ -2722,7 +2728,7 @@
                 var datos = {'departamento_id': this.S_Area}
                 var nuArr = await axios.post('ReportesPro/ConGrafi', datos)
                 this.GrafGua = nuArr.data;
-                //console.log(nuArr.data)
+                console.log(nuArr.data)
             },
             async elimiGrafi(data) {
                 //console.log(data)

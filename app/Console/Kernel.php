@@ -35,8 +35,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('test:task')
         ->timezone('America/Mexico_City')
-        ->dailyAt('01:00');
-        //->everyMinute();
+        //->dailyAt('01:00');
+        ->everyMinute();
 
         //Invierno equipos apertura
         $schedule->command('CTurnos:General')

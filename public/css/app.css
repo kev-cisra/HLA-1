@@ -20901,6 +20901,10 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(94, 234, 212, var(--tw-text-opacity));
 }
+.tw-text-blue-600 {
+	--tw-text-opacity: 1;
+	color: rgba(37, 99, 235, var(--tw-text-opacity));
+}
 .tw-underline {
 	text-decoration: underline;
 }

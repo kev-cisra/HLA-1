@@ -18,7 +18,9 @@ createApp({
     .mixin({
         data(){
             return{
+                URLactual: window.location,
                 path: 'https://intranethlangeles.com/storage/app/public/',
+                path2: 'https://intranethlangeles.com/storage',
                 showModal: false,
                 español: {
                     processing: "Procesando...",

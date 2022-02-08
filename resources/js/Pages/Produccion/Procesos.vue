@@ -126,9 +126,9 @@
                                     <jet-label><span class="required">*</span>Tipo de Carga</jet-label>
                                     <select class="InputSelect" v-model="form.tipo_carga">
                                         <option value="">Selecciona</option>
-                                        <!-- <option value="ent">Entregas</option> -->
                                         <option value="pro">Principales para Lider/Operador</option>
                                         <option value="pro-cor">Principales para Coordinador/Encargado</option>
+                                        <option value="merma">Mermas</option>
                                         <option value="entre">Entregas</option>
                                         <option value="for">Formulas</option>
                                     </select>
