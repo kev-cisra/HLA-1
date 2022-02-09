@@ -28,23 +28,39 @@ class IncidenciasDptoController extends Controller
 
         //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
         $ObtenJefe = JefesArea::where('IdEmp', '=', $SessionIdEmp)->first('id','IdEmp');
-        $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
+        if(isset($ObtenJefe->id)){
+            $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
 
-        //Consulta para obtener los datos de los trabajadores pertenecientes al id de la session
-        $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', $IdJefe)
-        ->with([
-            'PerfilPuesto' => function($puesto) { //Relacion 1 a 1 De puestos
-                $puesto->select('id', 'Nombre');
-            },
-            'PerfilDepartamento' => function($departamento) { //Relacion 1 a 1 De Departamento
-                $departamento->select('id', 'Nombre');
-            },
-            'PerfilJefe' => function($jefe) { //Relacion 1 a 1 De Jefe
-                $jefe->select('id', 'IdEmp',  'Nombre');
-                // $jefe->where('IdEmp', '=', 5310);
-            }
-        ])
-        ->get(['id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id', 'Empresa']); //datos de Perfiles
+            //Consulta para obtener los datos de los trabajadores pertenecientes al id de la session
+            $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', $IdJefe)
+            ->with([
+                'PerfilPuesto' => function($puesto) { //Relacion 1 a 1 De puestos
+                    $puesto->select('id', 'Nombre');
+                },
+                'PerfilDepartamento' => function($departamento) { //Relacion 1 a 1 De Departamento
+                    $departamento->select('id', 'Nombre');
+                },
+                'PerfilJefe' => function($jefe) { //Relacion 1 a 1 De Jefe
+                    $jefe->select('id', 'IdEmp',  'Nombre');
+                    // $jefe->where('IdEmp', '=', 5310);
+                }
+            ])
+            ->get(['id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id', 'Empresa']); //datos de Perfiles
+        }else{
+            $PerfilesUsuarios = PerfilesUsuarios::with([
+                'PerfilPuesto' => function($puesto) { //Relacion 1 a 1 De puestos
+                    $puesto->select('id', 'Nombre');
+                },
+                'PerfilDepartamento' => function($departamento) { //Relacion 1 a 1 De Departamento
+                    $departamento->select('id', 'Nombre');
+                },
+                'PerfilJefe' => function($jefe) { //Relacion 1 a 1 De Jefe
+                    $jefe->select('id', 'IdEmp',  'Nombre');
+                    // $jefe->where('IdEmp', '=', 5310);
+                }
+            ])
+            ->get(['id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id', 'Empresa']); //datos de Perfiles
+        }
 
         $Session = Auth::user();
         $Jefes = JefesArea::get(['id','Nombre']);
@@ -56,9 +72,9 @@ class IncidenciasDptoController extends Controller
         if(!empty($request->busca)){
             $Incidencias = Incidencias::where('IdEmp', '=', $request->busca)
             ->whereYear('Fecha', '=', $anio)
-            ->get(['id', 'IdUser', 'IdEmp', 'TipoMotivo', 'Fecha', 'Comentarios', 'perfiles_usuarios_id']);
+            ->get(['id', 'IdUser', 'IdEmp', 'TipoMotivo', 'Fecha', 'FechaFin', 'Comentarios', 'perfiles_usuarios_id']);
         }else{
-            $Incidencias = Incidencias::get(['id', 'IdUser', 'IdEmp', 'TipoMotivo', 'Fecha', 'Comentarios', 'perfiles_usuarios_id']);
+            $Incidencias = Incidencias::get(['id', 'IdUser', 'IdEmp', 'TipoMotivo', 'Fecha', 'FechaFin', 'Comentarios', 'perfiles_usuarios_id']);
         }
 
         return Inertia::render('RecursosHumanos/Incidencias/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session', 'Incidencias'));
@@ -81,6 +97,7 @@ class IncidenciasDptoController extends Controller
             'IdEmp' => $request->IdEmp,
             'TipoMotivo' => $request->Tipo,
             'Fecha' => $request->Fecha,
+            'FechaFin' => $request->FechaFin,
             'Comentarios' => $request->Comentarios,
             'perfiles_usuarios_id' => $request->id,
         ]);

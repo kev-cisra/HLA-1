@@ -114,6 +114,12 @@
                                 <small v-if="errors.Tipo" class="validation-alert">{{errors.Tipo}}</small>
                             </div>
                         </div>
+                        <div class="tw-mb-6 md:tw-flex" v-if="form.Tipo == 'INCAPACIDAD'">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                                <jet-label>Fecha de la Incidencia</jet-label>
+                                <jet-input type="date" v-model="form.FechaFin"></jet-input>
+                            </div>
+                        </div>
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Comentarios</jet-label>
@@ -138,7 +144,7 @@
                 <div class="DetailsHeader">
                 <div class="tw-text-lg">
                     <div class="ModalHeader">
-                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Historico Vacaciones</h3>
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Historico Incidencias</h3>
                     </div>
                 </div>
                 </div>
@@ -149,6 +155,7 @@
                             <th class="columna">Num Control</th>
                             <th class="columna">Motivo</th>
                             <th class="columna">Fecha</th>
+                            <th class="columna">Fin</th>
                             <th class="columna">Comentarios</th>
                         </template>
 
@@ -157,6 +164,7 @@
                                 <td class="tw-p-2">{{ dato.IdEmp }}</td>
                                 <td class="tw-p-2">{{ dato.TipoMotivo }}</td>
                                 <td class="tw-p-2">{{ dato.Fecha }}</td>
+                                <td class="tw-p-2">{{ dato.FechaFin }}</td>
                                 <td class="tw-p-2">{{ dato.Comentarios }}</td>
                             </tr>
                         </template>
@@ -234,6 +242,7 @@ export default {
                 IdUser: this.Session.id,
                 IdEmp: null,
                 Fecha: null,
+                FechaFin: null,
                 Tipo: null,
                 Comentarios:null,
             },
@@ -306,6 +315,7 @@ export default {
                 IdUser: this.Session.id,
                 IdEmp: null,
                 Fecha: null,
+                FechaFin: '',
                 Tipo: null,
                 Comentarios:null,
             };
