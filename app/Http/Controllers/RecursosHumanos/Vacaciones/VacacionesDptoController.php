@@ -27,23 +27,41 @@ class VacacionesDptoController extends Controller
 
         //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
         $ObtenJefe = JefesArea::where('IdEmp', '=', $SessionIdEmp)->first('id','IdEmp');
-        $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
+        if(isset($ObtenJefe->id)){
+            $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
 
-        //Consulta para obtener los datos de los trabajadores pertenecientes al id de la session
-        $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', $IdJefe)
-        ->with([
-            'PerfilPuesto' => function($puesto) { //Relacion 1 a 1 De puestos
-                $puesto->select('id', 'Nombre');
-            },
-            'PerfilDepartamento' => function($departamento) { //Relacion 1 a 1 De Departamento
-                $departamento->select('id', 'Nombre');
-            },
-            'PerfilJefe' => function($jefe) { //Relacion 1 a 1 De Jefe
-                $jefe->select('id', 'IdEmp',  'Nombre');
-                // $jefe->where('IdEmp', '=', 5310);
-            }
-        ])
-        ->get(['IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id', 'Empresa']); //datos de Perfiles
+            //Consulta para obtener los datos de los trabajadores pertenecientes al id de la session
+            $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', $IdJefe)
+            ->with([
+                'PerfilPuesto' => function($puesto) { //Relacion 1 a 1 De puestos
+                    $puesto->select('id', 'Nombre');
+                },
+                'PerfilDepartamento' => function($departamento) { //Relacion 1 a 1 De Departamento
+                    $departamento->select('id', 'Nombre');
+                },
+                'PerfilJefe' => function($jefe) { //Relacion 1 a 1 De Jefe
+                    $jefe->select('id', 'IdEmp',  'Nombre');
+                    // $jefe->where('IdEmp', '=', 5310);
+                }
+            ])
+            ->get(['IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id', 'Empresa']); //datos de Perfiles
+
+        }else{
+            $PerfilesUsuarios = PerfilesUsuarios::with([
+                'PerfilPuesto' => function($puesto) { //Relacion 1 a 1 De puestos
+                    $puesto->select('id', 'Nombre');
+                },
+                'PerfilDepartamento' => function($departamento) { //Relacion 1 a 1 De Departamento
+                    $departamento->select('id', 'Nombre');
+                },
+                'PerfilJefe' => function($jefe) { //Relacion 1 a 1 De Jefe
+                    $jefe->select('id', 'IdEmp',  'Nombre');
+                    // $jefe->where('IdEmp', '=', 5310);
+                }
+            ])
+            ->get(['IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id', 'Empresa']); //datos de Perfiles
+        }
+
 
 
         if(!empty($request->busca)){

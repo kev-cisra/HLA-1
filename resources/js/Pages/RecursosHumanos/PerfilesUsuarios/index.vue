@@ -35,7 +35,6 @@
                         <th class="columna">Dias Vac.</th>
                         <th class="columna">Puesto</th>
                         <th class="columna">Departamento</th>
-                        <th class="columna">Jefe</th>
                         <th class="columna">Acciones</th>
                     </template>
 
@@ -56,7 +55,6 @@
                             <td class="tw-p-2">{{ datos.DiasVac }}</td>
                             <td class="tw-p-2">{{ datos.perfil_puesto.Nombre }}</td>
                             <td class="tw-p-2">{{ datos.perfil_departamento.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.perfil_jefe.Nombre }}</td>
                             <td class="fila">
                                 <div class="columnaIconos">
                                     <div class="iconoDetails" @click="show(datos)" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -175,14 +173,13 @@
                                 <small v-if="errors.Telefono" class="validation-alert">{{errors.Telefono}}</small>
                             </div>
                             <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Fecha Cumpleaños</jet-label>
-                                <jet-input type="date" v-model="form.Cumpleaños" @change="FechaMayor($event)"></jet-input>
-                                <small v-if="errors.Cumpleaños" class="validation-alert">{{errors.Cumpleaños}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                                 <jet-label><span class="required">*</span>Fecha Ingreso</jet-label>
                                 <jet-input type="date" v-model="form.FecIng" @change="FechaMayor($event)"></jet-input>
                                 <small v-if="errors.FecIng" class="validation-alert">{{errors.FecIng}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                                <jet-label><span class="required">*</span>DIAS VAC</jet-label>
+                                <jet-input type="text" v-model="form.DiasVac"></jet-input>
                             </div>
                         </div>
 
@@ -540,6 +537,7 @@ export default {
         },
 
         edit: function (data) {
+            console.log(data);
             this.form = Object.assign({}, data);
             this.editMode = true;
             this.chageClose();
