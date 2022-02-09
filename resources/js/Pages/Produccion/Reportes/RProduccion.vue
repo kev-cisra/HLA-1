@@ -1488,7 +1488,7 @@
             },
             imgGrafi(data){
                 //var URLactual = window.location;
-                var nuPath = this.URLactual.host == '192.168.11.3' ? this.path : 'http://192.168.11.3/storage/';
+                var nuPath = this.URLactual.host != '192.168.11.3' ? this.path : 'http://192.168.11.3/storage/';
 
                 console.log(nuPath);
                 console.log(this.URLactual.host)
