@@ -1472,7 +1472,7 @@
                 return dife <= 3;
             },
             global(){
-                this.descarga = this.URLactual == '192.168.11.3' ? this.path+'Archivos/FormatosExcel/Carga_Masiva.xlsx' : 'http://192.168.11.3/storage/Archivos/FormatosExcel/Carga_Masiva.xlsx';
+                this.descarga = this.URLactual.host != '192.168.11.3' ? this.path+'Archivos/FormatosExcel/Carga_Masiva.xlsx' : 'http://192.168.11.3/storage/Archivos/FormatosExcel/Carga_Masiva.xlsx';
                 if (this.usuario.dep_pers.length == 0) {
                     this.S_Area = 7;
                 }else{
