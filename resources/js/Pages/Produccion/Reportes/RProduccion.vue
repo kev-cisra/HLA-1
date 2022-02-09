@@ -1488,10 +1488,10 @@
             },
             imgGrafi(data){
                 //var URLactual = window.location;
-                var nuPath = this.URLactual == '192.168.11.3' ? this.path : 'http://192.168.11.3/storage/';
+                var nuPath = this.URLactual.host == '192.168.11.3' ? this.path : 'http://192.168.11.3/storage/';
 
                 console.log(nuPath);
-                console.log(this.URLactual)
+                console.log(this.URLactual.host)
 
                 var img = nuPath+'Archivos/Pastel.png'
                 if (data == 'Pastel') {
