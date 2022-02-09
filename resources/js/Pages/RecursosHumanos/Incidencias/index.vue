@@ -107,7 +107,9 @@
                                     <option value="PERMISO C/GOCE DE SUELDO">PERMISO S/GOCE DE SUELDO</option>
                                     <option value="PERMISO C/GOCE DE SUELDO">PERMISO C/GOCE DE SUELDO</option>
                                     <option value="INCAPACIDAD">INCAPACIDAD</option>
-                                    <option value="OTROS">OTROS</option>
+                                    <option value="PERMISO PARCIAL C/GOCE DE SUELDO">PERMISO S/GOCE DE SUELDO</option>
+                                    <option value="PERMISO PARCIAL C/GOCE DE SUELDO">PERMISO C/GOCE DE SUELDO</option>
+                                    <option value="FALTA">FALTA</option>
                                 </select>
                                 <small v-if="errors.Tipo" class="validation-alert">{{errors.Tipo}}</small>
                             </div>
