@@ -88,6 +88,10 @@
         </div>
     </div>
 
+    <pre>
+        {{ jefe }}
+    </pre>
+
     <modal :show="showModal" @close="chageClose" :maxWidth="tam">
         <form>
             <div class="tw-px-4 tw-py-4">
@@ -386,6 +390,7 @@ export default {
         Jefes: Object,
         Puestos: Object,
         Departamentos: Object,
+        jefe: Object,
     },
 
     methods: {

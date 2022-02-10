@@ -29,17 +29,21 @@ class PerfilesUsuariosController extends Controller{
         $Puestos = Puestos::get(['id','Nombre']);
         $Departamentos = Departamentos::get(['id','Nombre']);
 
+        $jefe = PerfilesUsuarios::where('id', '=', 1)
+        ->with([
+            'jefe_perfiles'])
+        ->get();
+
         //retorno de la vista retorno de la consulta de perfiles y sus filtros
-        return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session'));
+        return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session', 'jefe'));
     }
 
     public function store(Request $request){
 
         /* return $request->Empresa; */
-
         $Session = auth()->user();
 
-        Validator::make($request->all(), [
+/*         Validator::make($request->all(), [
             'IdUser' => ['required'],
             'IdEmp' => ['required'],
             'jefes_areas_id' => ['required'],
@@ -57,7 +61,7 @@ class PerfilesUsuariosController extends Controller{
             'Puesto_id' => ['required'],
             'Departamento_id' => ['required'],
         ])->validate();
-
+ */
         $Departamento = Departamentos::where('id', '=', $request->Departamento_id)->first();
 
         $Nick = User::create([
@@ -67,6 +71,7 @@ class PerfilesUsuariosController extends Controller{
             'Departamento' => $Departamento->Nombre,
             'password' => bcrypt($request->IdEmp)
         ]);
+
 
         PerfilesUsuarios::create([
             'IdUser' => $Session->id,
