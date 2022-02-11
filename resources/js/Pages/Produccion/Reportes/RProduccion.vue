@@ -254,17 +254,19 @@
                     <!------------------------------------------- formulario para grafica de linea ------------------------------------->
                     <div v-if="tip == 'Linea'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-green-700 tw-p-10">
                         <!-- titulo y botones -->
-                        <div class="tw-flex tw-m-5">
+                        <div class="sm:tw-flex lg:tw-m-5">
                             <!-- titulo -->
-                            <div class="tw-w-1/2 tw-text-2xl tw-text-center">
+                            <div class="tw-w-full lg:tw-w-1/2 tw-text-2xl tw-text-center">
                                 <h1 class="tw-text-white">Gráfica Lineal</h1>
                             </div>
                             <!-- boton -->
-                            <div class="tw-flex tw-w-1/2">
-                                <a class="btn btn-info " href="#chart1" @click="GraLinea(gLinea)">Generar gráfica</a>
-                                <button class="btn btn-success" v-if="!gLinea.update" @click="saveLine(gLinea, 'Linea')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
-                                <button class="btn btn-primary" v-else @click="updateLine(gLinea)" tooltip="Actualizar gráfica" flow="right"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger " @click="resetLinea()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            <div class="lg:tw-flex tw-w-full lg:tw-w-1/2">
+                                <div class="sm:tw-flex tw-w-1/2 tw-m-auto">
+                                    <a class="btn btn-info " href="#chart1" @click="GraLinea(gLinea)">Generar gráfica</a>
+                                    <button class="btn btn-success" v-if="!gLinea.update" @click="saveLine(gLinea, 'Linea')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                    <button class="btn btn-primary" v-else @click="updateLine(gLinea)" tooltip="Actualizar gráfica" flow="right"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger " @click="resetLinea()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                                </div>
                             </div>
                         </div>
 
@@ -385,17 +387,19 @@
                     <!------------------------------------------- formulario para grafica de barra ------------------------------------->
                     <div v-if="tip == 'Barra'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-yellow-700 tw-p-10">
                         <!-- titulo y botones -->
-                        <div class="tw-flex tw-m-5">
+                        <div class="sm:tw-flex lg:tw-m-5">
                             <!-- titulo -->
-                            <div class="tw-w-1/2 tw-text-2xl tw-text-center">
+                            <div class="tw-w-full lg:tw-w-1/2 tw-text-2xl tw-text-center">
                                 <h1 class="tw-text-white">Gráfica de Barra</h1>
                             </div>
                             <!-- boton -->
-                            <div class="tw-flex tw-w-1/2">
-                                <a class="btn btn-info " href="#chart2" @click="GraBarra(gBarra)">Generar gráfica</a>
-                                <button class="btn btn-success" v-if="!gBarra.update" @click="saveLine(gBarra, 'Barra')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
-                                <button class="btn btn-primary" v-else @click="updateLine(gBarra)" tooltip="Actualizar gráfica" flow="right"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger " @click="resetBarra()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            <div class="lg:tw-flex tw-w-full lg:tw-w-1/2">
+                                <div class="sm:tw-flex tw-w-1/2 tw-m-auto">
+                                    <a class="btn btn-info " href="#chart2" @click="GraBarra(gBarra)">Generar gráfica</a>
+                                    <button class="btn btn-success" v-if="!gBarra.update" @click="saveLine(gBarra, 'Barra')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                    <button class="btn btn-primary" v-else @click="updateLine(gBarra)" tooltip="Actualizar gráfica" flow="right"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger " @click="resetBarra()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                                </div>
                             </div>
                         </div>
 
@@ -516,17 +520,19 @@
                     <!------------------------------------------- formulario para grafica combinada ------------------------------------->
                     <div v-if="tip == 'Combinado'" class="tw-mb-6 lg:tw-flex tw-flex-col tw-rounded-xl tw-border-8 tw-border-red-700 tw-p-10">
                         <!-- titulo y botones -->
-                        <div class="tw-flex tw-m-5">
+                        <div class="sm:tw-flex lg:tw-m-5">
                             <!-- titulo -->
-                            <div class="tw-w-1/2 tw-text-2xl tw-text-center">
+                            <div class="tw-w-full lg:tw-w-1/2 tw-text-2xl tw-text-center">
                                 <h1 class="tw-text-white">Gráfica Combinada</h1>
                             </div>
                             <!-- boton -->
-                            <div class="tw-w-1/2">
-                                <a class="btn btn-info " href="#chart3" @click="GraBaLi(gBaLi)">Generar gráfica</a>
-                                <button class="btn btn-success" v-if="!gBaLi.update" @click="saveCom(gBaLi, 'Combinado')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
-                                <button class="btn btn-primary" v-else @click="updateCom(gBaLi)" tooltip="Actualizar gráfica" flow="right"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger " @click="resetBaLi()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                            <div class="lg:tw-flex tw-w-full lg:tw-w-1/2">
+                                <div class="sm:tw-flex tw-w-1/2 tw-m-auto">
+                                    <a class="btn btn-info " href="#chart3" @click="GraBaLi(gBaLi)">Generar gráfica</a>
+                                    <button class="btn btn-success" v-if="!gBaLi.update" @click="saveCom(gBaLi, 'Combinado')" tooltip="Guardar gráfica" flow="right"><i class="fas fa-save"></i></button>
+                                    <button class="btn btn-primary" v-else @click="updateCom(gBaLi)" tooltip="Actualizar gráfica" flow="right"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger " @click="resetBaLi()" tooltip="Borrar gráfica" flow="right"><i class="fas fa-trash-alt"></i></button>
+                                </div>
                             </div>
                         </div>
 
@@ -877,7 +883,6 @@
                     <div class="ModalHeader">
                         <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Carga Masiva</h3>
                     </div>
-                    {{ this.descarga }}
                 </div>
 
                 <div class="tw-mt-4">
@@ -1823,7 +1828,7 @@
                         data._method = 'DELETE';
                         this.limpPro = false;
                         this.$inertia.post('/Produccion/ReportesPro/' + data.elimiMasi[0], data, {
-                            onSuccess: () => { this.alertDelete(), this.deli.elimiMasi = [], this.arrProdu() },
+                            onSuccess: () => { this.arrProdu(), this.alertDelete(), this.deli.elimiMasi = [] },
                             onError: () => {},
                             preserveState: true
                         });

@@ -10,7 +10,7 @@
         </Header>
         <Accions>
             <template  v-slot:SelectB v-if="usuario.dep_pers.length != 1">
-                <select class="InputSelect sm:tw-w-full" @change="verTabla()" v-model="S_Area">
+                <select class="InputSelect sm:tw-w-full" v-model="S_Area">
                     <option value="" disabled>Selecciona un departamento</option>
                     <option v-for="o in opc" :key="o.value" :value="o.value">{{o.text}}</option>
                 </select>
@@ -336,7 +336,7 @@
                     <th></th>
                 </template>
                 <template v-slot:TableFooter >
-                    <tr v-for="ca in v" :key="ca.id"  class="fila">
+                    <tr v-for="ca in cargas" :key="ca.id"  class="fila">
                         <td class="tw-text-center"> {{ ca.id }} </td>
                         <td>{{ca.fecha}}</td>
                         <td class="">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
@@ -403,6 +403,98 @@
                     <th></th>
                 </template>
             </Table>
+        </div>
+
+        <!------------------------------------- Carga de paquetes Norma, Claves y partida -------------------------------->
+        <div class="offcanvas offcanvas-end sm:tw-w-9/12 lg:tw-w-6/12"  data-bs-scroll="true" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
+            <div class="offcanvas-header tw-bg-cyan-700">
+                <h3 class="offcanvas-title tw-text-xl tw-text-blueGray-50" id="pacNormaLabel">Paquetes para Normas, Claves y Partidas</h3>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <!-------------------------------- formularia y tabla ------------------------------------------------------->
+            <div class="offcanvas-body">
+                <!---------------------------- Formulario de paquete para normas, claves y partida ---------------------->
+                <div class="m-5 tw-p-6 tw-bg-cyan-600 tw-rounded-3xl tw-shadow-xl">
+                    <!-- Proceso proncipal, sub procesos, operador -->
+                    <div class="tw-mb-6 lg:tw-flex tw-justify-center">
+                        <!-- Select Normas -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Norma</jet-label>
+                            <select class="InputSelect" v-model="form.norma" :disabled="editMode">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
+                            </select>
+                            <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
+                        </div>
+                        <!-- Inout partida -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                            <jet-label>Partida</jet-label>
+                            <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
+                            <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                        </div>
+                    </div>
+
+                    <div class="tw-mb-6 lg:tw-flex tw-justify-center">
+                        <!-- select Clave -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                            <jet-label><span class="required">*</span>Clave</jet-label>
+                            <Select2 v-model="form.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCL" />
+                            <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
+                        </div>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
+                        <div v-show="btnOff">
+                            <jet-button type="button" @click="savePN(form)">Guardar</jet-button>
+                        </div>
+
+                        <div v-show="!btnOff">
+                            <jet-button type="button" class="tw-mx-auto" disabled>
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                Guardando...
+                            </jet-button>
+                        </div>
+                    </div>
+
+                </div>
+                <!---------------------------- Datatable de paquetes ---------------------------------------------------->
+                <div>
+                    <TableCyan id="t_pn" style="width:100%">
+                        <template v-slot:TableHeader>
+                            <th class="columna">Índice</th>
+                            <th class="columna">Norma</th>
+                            <th class="columna">Clave</th>
+                            <th class="columna">Descripcion</th>
+                            <th class="columna">Partida</th>
+                            <th class="columna"><button class="btn btn-danger" v-show="formPacNor.ElMaPN.length > 0" @click="deletePN(formPacNor)">Eliminar</button></th>
+                        </template>
+                        <template v-slot:TableFooter>
+                            <tr v-for="pNor in paqnor" :key="pNor" class="fila">
+                                <td class="tw-text-center">
+                                    <input type="checkbox" :value="pNor.id" v-model="formPacNor.ElMaPN" class="tw-rounded-xl tw-bg-coolGray-300" :id="'idPN'+pNor.id"/>
+                                    <label :for="'idPN'+pNor.id" class=" tw-px-3">{{ pNor.id }}</label>
+                                </td>
+                                <td> {{pNor.dep_mat.materiales.nommat}}</td>
+                                <td >{{pNor.clave.CVE_ART}}</td>
+                                <td > {{pNor.clave.DESCR}}</td>
+                                <td > {{pNor.partida}} </td>
+                                <td >
+                                    <div class="columnaIconos">
+                                        <div class="iconoDelete" @click="deletePN(pNor)">
+                                            <span tooltip="Eliminar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </TableCyan>
+                </div>
+            </div>
         </div>
 
         <!------------------------------------- Carga de paquetes de operativos ------------------------------------------>
@@ -524,98 +616,6 @@
             </div>
         </div>
 
-        <!------------------------------------- Carga de paquetes Norma, Claves y partida -------------------------------->
-        <div class="offcanvas offcanvas-end sm:tw-w-9/12 lg:tw-w-6/12"  data-bs-scroll="true" tabindex="-1" id="pacNorma" aria-labelledby="pacNormaLabel">
-            <div class="offcanvas-header tw-bg-cyan-700">
-                <h3 class="offcanvas-title tw-text-xl tw-text-blueGray-50" id="pacNormaLabel">Paquetes para Normas, Claves y Partidas</h3>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <!-------------------------------- formularia y tabla ------------------------------------------------------->
-            <div class="offcanvas-body">
-                <!---------------------------- Formulario de paquete para normas, claves y partida ---------------------->
-                <div class="m-5 tw-p-6 tw-bg-cyan-600 tw-rounded-3xl tw-shadow-xl">
-                    <!-- Proceso proncipal, sub procesos, operador -->
-                    <div class="tw-mb-6 lg:tw-flex tw-justify-center">
-                        <!-- Select Normas -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>Norma</jet-label>
-                            <select class="InputSelect" v-model="form.norma" :disabled="editMode">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
-                            </select>
-                            <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
-                        </div>
-                        <!-- Inout partida -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                            <jet-label>Partida</jet-label>
-                            <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
-                            <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
-                        </div>
-                    </div>
-
-                    <div class="tw-mb-6 lg:tw-flex tw-justify-center">
-                        <!-- select Clave -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                            <jet-label><span class="required">*</span>Clave</jet-label>
-                            <Select2 v-model="form.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCL" />
-                            <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
-                        </div>
-                    </div>
-
-                    <!-- Botones -->
-                    <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                        <div v-show="btnOff">
-                            <jet-button type="button" @click="savePN(form)">Guardar</jet-button>
-                        </div>
-
-                        <div v-show="!btnOff">
-                            <jet-button type="button" class="tw-mx-auto" disabled>
-                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                Guardando...
-                            </jet-button>
-                        </div>
-                    </div>
-
-                </div>
-                <!---------------------------- Datatable de paquetes ---------------------------------------------------->
-                <div>
-                    <TableCyan id="t_pn" style="width:100%">
-                        <template v-slot:TableHeader>
-                            <th class="columna">Índice</th>
-                            <th class="columna">Norma</th>
-                            <th class="columna">Clave</th>
-                            <th class="columna">Descripcion</th>
-                            <th class="columna">Partida</th>
-                            <th class="columna"><button class="btn btn-danger" v-show="formPacNor.ElMaPN.length > 0" @click="deletePN(formPacNor)">Eliminar</button></th>
-                        </template>
-                        <template v-slot:TableFooter>
-                            <tr v-for="pNor in paqnor" :key="pNor" class="fila">
-                                <td class="tw-text-center">
-                                    <input type="checkbox" :value="pNor.id" v-model="formPacNor.ElMaPN" class="tw-rounded-xl tw-bg-coolGray-300" :id="'idPN'+pNor.id"/>
-                                    <label :for="'idPN'+pNor.id" class=" tw-px-3">{{ pNor.id }}</label>
-                                </td>
-                                <td> {{pNor.dep_mat.materiales.nommat}}</td>
-                                <td >{{pNor.clave.CVE_ART}}</td>
-                                <td > {{pNor.clave.DESCR}}</td>
-                                <td > {{pNor.partida}} </td>
-                                <td >
-                                    <div class="columnaIconos">
-                                        <div class="iconoDelete" @click="deletePN(pNor)">
-                                            <span tooltip="Eliminar" flow="left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </template>
-                    </TableCyan>
-                </div>
-            </div>
-        </div>
-
         <!------------------------------------- Carga de paquetes Objetivos -------------------------------->
         <div class="offcanvas offcanvas-bottom tw-h-3/4" data-bs-scroll="true" tabindex="-1" id="paqCor" aria-labelledby="paqCorLabel">
             <div class="offcanvas-header tw-bg-blue-700">
@@ -717,7 +717,7 @@
                                 <td class="tw-text-center"> {{ obje.pro_hora }} </td>
                                 <td class="tw-text-center">
                                     <div class="columnaIconos">
-                                        <!-- editar objetivos
+                                        <!-- editar objetivos -->
                                         <a class="iconoEdit" @click="editOB(obje)" href="#Fobje">
                                             <span tooltip="Editar" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -731,7 +731,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
                                             </span>
-                                        </div> -->
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -764,22 +764,12 @@
 
     import moment from 'moment';
     import 'moment/locale/es';
-import axios from 'axios';
-
-    //
+    import axios from 'axios';
 
     export default {
         props: [
-            'turnos',
             'usuario',
-            'paqope',
-            'paqnor',
-            'objetivos',
             'depa',
-            'cargas',
-            'procesos',
-            'materiales',
-            'personal',
             'errors'
         ],
         components: {
@@ -801,6 +791,14 @@ import axios from 'axios';
             return {
                 color: "tw-bg-blue-600",
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
+                procesos: [],
+                materiales: [],
+                cargas: [],
+                turnos: [],
+                paqope: [],
+                paqnor: [],
+                objetivos: [],
+                personal: [],
                 S_Area: '',
                 noCor: '',
                 calcuObje: '',
@@ -809,7 +807,6 @@ import axios from 'axios';
                 paqNorma: '',
                 paqObjetivo: '',
                 btnOff: true,
-                v: [],
                 calcu: '',
                 idDep: '',
                 limp: 1,
@@ -864,19 +861,76 @@ import axios from 'axios';
         },
         mounted() {
             this.global();
-            /* this.tabla(); */
-            this.reCarga();
+            //this.reCarga();
         },
         methods: {
-            //consulta para generar datos de la tabla
-            verTabla(event){
-                $('#t_op').DataTable().clear();
-                $('#t_pn').DataTable().clear();
+            /************************************ Consulta de produccion ************************************/
+            //Produccion
+            async ConProduccion(){
+                var datos = {'departamento_id': this.S_Area, 'modulo': 'carPro'};
+
                 $('#t_carg').DataTable().clear();
+                let ve = await axios.post('Carga/CarProdu', datos)//.then((eve) => {ve = eve.data});
+                //console.log(ve.data)
+                ve.data.forEach(ca => {
+                    if (ca.dep_perf != null){
+                        if (this.usuario.dep_pers.length != 0) {
+                            if (this.noCor != 'cor' & this.noCor != 'enc') {
+                                if (ca.proceso.tipo != 2) {
+                                    this.cargas.push(ca);
+                                }
+                            }else{
+                                this.cargas.push(ca);
+                            }
+                        }else{
+                            this.cargas.push(ca)
+                        }
+                    }
+                })
+
+                $('#t_carg').DataTable().destroy();
+                this.tabla()
+            },
+            //Paquetes Normas
+            async ConPacNorma(){
+                var datos = {'departamento_id': this.S_Area, 'modulo': 'carPro'};
+
+                $('#t_pn').DataTable().clear();
+                let ve = await axios.post('Carga/CarNorma', datos)//.then((eve) => {ve = eve.data});
+                //console.log(ve.data)
+                this.paqnor = ve.data;
+
+                $('#t_pn').DataTable().destroy();
+                this.tablaNor()
+            },
+            //Paquetes personal
+            async ConPacPerso(){
+                var datos = {'departamento_id': this.S_Area, 'modulo': 'carPro'};
+
+                $('#t_op').DataTable().clear();
+                let ve = await axios.post('Carga/CarOperador', datos)//.then((eve) => {ve = eve.data});
+                //console.log(ve.data)
+                this.paqope = ve.data;
+
+                $('#t_op').DataTable().destroy();
+                this.tablaOpe()
+            },
+            async ConObjeti(lim = false){
+                var datos = {'departamento_id': this.S_Area, 'modulo': 'carPro'};
+                if (lim) {
+                    $('#t_ob').DataTable().clear();
+                }
+                let ve = await axios.post('Carga/CarObje', datos);
+                //console.log(ve.data)
+                this.objetivos = ve.data;
+
+                $('#t_ob').DataTable().destroy();
+                this.tablaObje()
             },
             /****************************** Globales **********************************************************/
             global(){
                 this.form.fecha = this.hoy;
+                this.ConProduccion();
                 if (this.usuario.dep_pers.length == 0) {
                     this.S_Area = 7;
                 }else{
@@ -892,40 +946,6 @@ import axios from 'axios';
                     })
 
                 }
-            },
-            /****************************** Selects de muestra ************************************************/
-            //equipo y turno
-            eq_tu(event){
-                this.personal.forEach(sp => {
-                    if (sp.id == event.target.value) {
-                        /* console.log(sp) */
-                        this.form.equipo_id = sp.equipo == null ? '' : sp.equipo.id;
-                        this.form.vacio = sp.equipo == null ? 'N/A' : sp.equipo.turnos.nomtur;
-                        this.form.turno_id = sp.equipo == null ? '' : sp.equipo.turno_id;
-                    }
-                })
-            },
-            //reordana los datos para mostrar la información en el datatable
-            reCarga(){
-                this.v = [];
-                this.cargas.forEach(ca => {
-                    if (ca.dep_perf != null){
-                        if (this.usuario.dep_pers.length != 0) {
-                            if (this.noCor != 'cor' & this.noCor != 'enc') {
-                                if (ca.proceso.tipo != 2) {
-                                    this.v.push(ca);
-                                }
-                            }else{
-                                this.v.push(ca);
-                            }
-                        }else{
-                            this.v.push(ca)
-                        }
-                    }
-
-
-                })
-                //console.log(this.v)
             },
             /****************************** datatables ********************************************************/
             //datatable de carga
@@ -1002,9 +1022,9 @@ import axios from 'axios';
                     $('#t_pn').DataTable( {
                         "language": this.español,
                         "scrollX": true,
-                        scrollY:        '50vh',
+                        scrollY: '50vh',
                         scrollCollapse: true,
-                        paging:         false
+                        paging: false
                     } );
                 })
             },
@@ -1014,14 +1034,26 @@ import axios from 'axios';
                     $('#t_ob').DataTable( {
                         "language": this.español,
                         "scrollX": true,
-                        scrollY:        '50vh',
+                        scrollY: '50vh',
                         scrollCollapse: true,
-                        paging:         false
+                        paging: false
                     } );
                 })
             },
+            /****************************** Selects de muestra ************************************************/
+            //equipo y turno
+            eq_tu(event){
+                this.personal.forEach(sp => {
+                    if (sp.id == event.target.value) {
+                        /* console.log(sp) */
+                        this.form.equipo_id = sp.equipo == null ? '' : sp.equipo.id;
+                        this.form.vacio = sp.equipo == null ? 'N/A' : sp.equipo.turnos.nomtur;
+                        this.form.turno_id = sp.equipo == null ? '' : sp.equipo.turno_id;
+                    }
+                })
+            },
             /****************************** carga de carga de datos ******************************************/
-            saveCA(form){
+            async saveCA(form){
                 //form.fecha = form.fecha;
                 form.semana = moment(form.fecha).format("GGGG-[W]WW");
                 this.form.departamento_id = this.S_Area;
@@ -1055,9 +1087,9 @@ import axios from 'axios';
                             this.btnOff = true
                         }else{
                             //$('#t_carg').DataTable().clear();
-                            $('#t_carg').DataTable().destroy();
-                            this.$inertia.post('/Produccion/Carga', form, {
-                                onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.tabla(), this.btnOff = true}, preserveState: true
+                            //$('#t_carg').DataTable().destroy();
+                            await this.$inertia.post('/Produccion/Carga', form, {
+                                onSuccess: (v) => { $('#agPer').removeClass("show"), this.ConProduccion(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.btnOff = true}, preserveState: true
                             });
                         }
                     }
@@ -1065,9 +1097,9 @@ import axios from 'axios';
                     //si el carga el dato pasa de lo contraro verifica
                     if (this.idDep == form.dep_perf_id) {
                         //$('#t_carg').DataTable().clear();
-                        $('#t_carg').DataTable().destroy();
-                        this.$inertia.post('/Produccion/Carga', form, {
-                            onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.tabla(), this.btnOff = true}, preserveState: true
+                        //$('#t_carg').DataTable().destroy();
+                        await this.$inertia.post('/Produccion/Carga', form, {
+                            onSuccess: (v) => { $('#agPer').removeClass("show"), this.ConProduccion(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.btnOff = true}, preserveState: true
                         });
                     }else{
                         //revisa si tienen equipo
@@ -1095,15 +1127,15 @@ import axios from 'axios';
                                 this.btnOff = true
                             }else{
                                 //$('#t_carg').DataTable().clear();
-                                $('#t_carg').DataTable().destroy();
-                                this.$inertia.post('/Produccion/Carga', form, {
-                                    onSuccess: (v) => { this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.tabla(), this.btnOff = true}, preserveState: true
+                                //$('#t_carg').DataTable().destroy();
+                                await this.$inertia.post('/Produccion/Carga', form, {
+                                    onSuccess: (v) => { $('#agPer').removeClass("show"), this.ConProduccion(), this.resetCA(), this.alertSucces(), this.btnOff = true},
+                                    onError: (e) => { this.btnOff = true}, preserveState: true
                                 });
                             }
                         }
                     }
                 }
-
                 //console.log(form);
             },
             resetCA(){
@@ -1171,26 +1203,23 @@ import axios from 'axios';
                 this.nAnte = form.notas.length == 0 ? '' : `<label class="tw-text-base tw-w-full tw-text-black">Fecha: ${form.notas[0].fecha}</label><label class="tw-text-base tw-w-full tw-text-black tw-capitalize"> ${form.notas[0].nota}</label>`;
                 $('#agPer').addClass('show')
             },
-            updateCA(data){
+            async updateCA(data){
                 //console.log(data)
                 this.btnOff = false;
-                if (data.nota != '' & data.clave_id != '' & data.valor != '') {
+                /* if (data.nota != '' & data.clave_id != '' & data.valor != '') {
                     //$('#t_carg').DataTable().clear();
                     $('#t_carg').DataTable().destroy();
-                }
-                this.$inertia.put('/Produccion/Carga/' + data.id, data, {
-                    onSuccess: () => {this.reCarga(), this.tabla(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: () => {this.tabla(), this.btnOff = true}
+                } */
+                await this.$inertia.put('/Produccion/Carga/' + data.id, data, {
+                    onSuccess: () => { $('#agPer').removeClass("show"), this.ConProduccion(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: () => { this.btnOff = true}
                 });
             },
             //***************************** Carga de paquetes de operativos **********************************/
-            savePO(form){
+            async savePO(form){
                 this.btnOff = false;
-                //formPacOpe.departamento_id = this.S_Area;
-                //console.log(form)
-                //$('#t_op').DataTable().clear();
-                $('#t_op').DataTable().destroy();
-                this.$inertia.post('/Produccion/CarOpe', form, {
-                    onSuccess: (v) => { this.tablaOpe(), this.resetPO(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.tablaOpe(), this.btnOff = true}, preserveState: true
+                await this.$inertia.post('/Produccion/CarOpe', form, {
+                    onSuccess: (v) => { this.ConPacPerso(), this.resetPO(), this.alertSucces(), this.btnOff = true},
+                    onError: (e) => { this.ConPacPerso(), this.btnOff = true}, preserveState: true
                 });
             },
             resetPO(){
@@ -1222,11 +1251,9 @@ import axios from 'axios';
                         data._method = 'DELETE';
                         var id = data.id ? data.id : data.ElMaOP[0];
                         //console.log(id)
-                        $('#t_op').DataTable().clear();
-                        $('#t_op').DataTable().destroy()
                         this.$inertia.post('/Produccion/CarOpe/' + id, data, {
-                            onSuccess: () => { this.tablaOpe(), this.alertDelete() },
-                            onError: () => {this.tablaOpe()},
+                            onSuccess: () => { this.ConPacPerso(), this.alertDelete() },
+                            onError: () => {this.ConPacPerso()},
                             preserveState: true
                         });
                     }
@@ -1241,23 +1268,22 @@ import axios from 'axios';
                 this.formPacOpe.dep_perf_id = form.dep_perf_id;
                 this.formPacOpe.maq_pro_id = form.maq_pro_id;
             },
-            updatePO(data){
+            async updatePO(data){
                 this.btnOff = false;
                 //console.log(data)
-                $('#t_op').DataTable().destroy();
-                this.$inertia.put('/Produccion/CarOpe/' + data.id, data, {
-                    onSuccess: () => {this.reCarga(), this.tablaOpe(), this.resetPO(), this.alertSucces(), this.btnOff = true}, onError: () => {this.tablaOpe(), this.btnOff = true}
+                await this.$inertia.put('/Produccion/CarOpe/' + data.id, data, {
+                    onSuccess: () => {this.ConPacPerso(), this.resetPO(), this.alertSucces(), this.btnOff = true},
+                    onError: () => {this.ConPacPerso(), this.btnOff = true}
                 });
             },
             /***************************** Carga de paquetes de norma, claves y partida *********************/
-            savePN(form){
+            async savePN(form){
                 this.btnOff = false;
                 //console.log(form)
                 form.departamento_id = this.S_Area;
-                //$('#t_pn').DataTable().clear();
-                $('#t_pn').DataTable().destroy();
-                this.$inertia.post('/Produccion/CarNor', form, {
-                    onSuccess: (v) => { this.tablaNor(), this.resetCA(), this.alertSucces(), this.btnOff = true}, onError: (e) => { this.tablaNor(), this.btnOff = true}, preserveState: true
+                await this.$inertia.post('/Produccion/CarNor', form, {
+                    onSuccess: (v) => { this.ConPacNorma(), this.resetCA(), this.alertSucces(), this.btnOff = true},
+                    onError: (e) => { this.ConPacNorma(), this.btnOff = true}, preserveState: true
                 });
             },
             deletePN(data){
@@ -1280,10 +1306,9 @@ import axios from 'axios';
                         var id = !data.ElMaPN ? data.id : data.ElMaPN[0];
                         /* console.log(data)
                         console.log(id) */
-                        $('#t_pn').DataTable().clear();
-                        $('#t_pn').DataTable().destroy()
                         this.$inertia.post('/Produccion/CarNor/' + id, data, {
-                            onSuccess: () => { this.tablaNor(), this.alertDelete() }, onError: () => {this.tablaNor()}, preserveState: true
+                            onSuccess: () => { this.ConPacNorma(), this.alertDelete() },
+                            onError: () => {this.ConPacNorma()}, preserveState: true
                         });
                     }
                 })
@@ -1291,7 +1316,7 @@ import axios from 'axios';
             /****************************** Carga de notas *************************************************/
             notaCA(form){
                 //console.log(form)
-                this.resetCA();
+                this.ConProduccion();
                 this.form.id = form.id;
                 this.form.agNot = 1;
                 this.form.notaPen = 2;
@@ -1300,29 +1325,26 @@ import axios from 'axios';
 
             },
             notaOB(form){
-                this.resetCA();
+                this.ConProduccion();
                 this.form.id = form.id;
                 this.form.agNot = 1;
                 this.form.notaPen = 2;
                 this.form.nota = '';
                 $('#agObjec').addClass('show')
             },
-            saveNot(data){
+            async saveNot(data){
                 this.btnOff = false;
-                $('#t_carg').DataTable().clear();
-                $('#t_carg').DataTable().destroy();
-                this.$inertia.put('/Produccion/Nota/' + data.id, data, {
-                    onSuccess: () => {this.reCarga(), this.resetCA(), this.tabla(), this.alertSucces(), this.btnOff = true}, onError: () => {this.tabla(), this.btnOff = true},
+                await this.$inertia.put('/Produccion/Nota/' + data.id, data, {
+                    onSuccess: () => {this.ConProduccion(), this.resetCA(), this.alertSucces(), this.btnOff = true},
+                    onError: () => {this.ConProduccion(), this.btnOff = true},
                 });
             },
             /****************************** Carga de paquetes para objetivos *******************************/
-            savePObje(form){
+            async savePObje(form){
                 this.btnOff = false;
-                $('#t_ob').DataTable().destroy();
-                this.$inertia.post('/Produccion/ObjeCordi', form, {
-                    onSuccess: (v) => { this.resetOB(), this.alertSucces(), this.btnOff = true, this.tablaObje()},
-                    onError: (e) => { this.btnOff = true, this.tablaObje()},
-                    preserveState: true
+                await this.$inertia.post('/Produccion/ObjeCordi', form, {
+                    onSuccess: (v) => { this.ConObjeti(), this.resetOB(), this.alertSucces(), this.btnOff = true},
+                    onError: (e) => { this.ConObjeti(), this.btnOff = true}, preserveState: true
                 });
             },
             resetOB(){
@@ -1347,22 +1369,19 @@ import axios from 'axios';
                 this.formObje.clave_id = form.clave_id;
                 this.formObje.pro_hora = form.pro_hora;
             },
-            updateOB(data){
+            async updateOB(data){
                 //console.log(data)
-                $('#t_ob').DataTable().destroy();
                 this.btnOff = false;
-                this.$inertia.put('/Produccion/ObjeCordi/' + data.id, data, {
-                    onSuccess: (v) => { this.resetOB(), this.alertSucces(), this.tablaObje(), this.btnOff = true},
-                    onError: (e) => { this.tablaObje(), this.btnOff = true},
+                await this.$inertia.put('/Produccion/ObjeCordi/' + data.id, data, {
+                    onSuccess: (v) => { this.resetOB(), this.alertSucces(), this.ConObjeti(), this.btnOff = true},
+                    onError: (e) => { this.ConObjeti(), this.btnOff = true},
                     preserveState: true
                 });
             },
             deleteOB(data){
-                //console.log(data)
-                $('#t_ob').DataTable().destroy();
                 data._method = 'DELETE';
                 this.$inertia.post('/Produccion/ObjeCordi/' + data.id, data, {
-                    onSuccess: () => { this.tablaObje(), this.alertDelete() }, onError: () => {this.tablaObje()}, preserveState: true
+                    onSuccess: () => { this.ConObjeti(), this.alertDelete() }, onError: () => {this.ConObjeti()}, preserveState: true
                 });
             }
         },
@@ -1576,20 +1595,30 @@ import axios from 'axios';
             }
         },
         watch: {
-            S_Area: function(b){
-                $('#t_op').DataTable().destroy();
-                $('#t_pn').DataTable().destroy();
-                $('#t_carg').DataTable().destroy();
-                $('#t_ob').DataTable().destroy();
-                this.resetCA();
-                this.resetOB();
-                this.proc_prin = '';
-                /* await axios.get('/Produccion/Carga',{ busca: b })
-                .then(() => { this.reCarga(), this.tabla(), this.tablaOpe(), this.tablaNor(), this.tablaObje() })
-                .catch(err => { this.tabla(), this.tablaOpe(), this.tablaNor(), this.tablaObje() }) */
-                this.$inertia.get('/Produccion/Carga',{ busca: b }, {
-                    onSuccess: () => { this.reCarga(), this.tabla(), this.tablaOpe(), this.tablaNor(), this.tablaObje() }, onError: () => {this.tabla(), this.tablaOpe(), this.tablaNor(), this.tablaObje()  }, preserveState: true
-                });
+            S_Area: async function(b){
+
+                var datos = {'departamento_id': this.S_Area, 'modulo': 'carPro'};
+
+                this.ConProduccion();
+                this.ConPacNorma();
+                this.ConPacPerso();
+                this.ConObjeti();
+
+                //Personal
+                let per = await axios.post('General/ConPerso', datos);
+                this.personal = per.data;
+
+                //Turnos
+                let tur = await axios.post('General/ConTurno', datos)
+                this.turnos = tur.data;
+
+                //Produccion
+                let produ = await axios.post('General/ConProduccion', datos)
+                this.procesos = produ.data;
+
+                //Materiales
+                let mate = await axios.post('General/ConMateriales', datos)
+                this.materiales = mate.data
             },
             proc_prin: function(v) {
                 //cuando no se edita

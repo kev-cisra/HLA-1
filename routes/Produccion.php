@@ -33,12 +33,20 @@ Route::get('', [MenuProducccionController::class,'index'])->name('Produccion');
 
 /************************************** Consultas Generales ****************************************************/
 //maquinas
-Route::post('General/ConMaquina', [GeneralController::class, 'ConMaqui'])->name('GConMaqui');
+Route::post('General/ConMaquina', [GeneralController::class, 'ConMaqui'])->name('GConMaqui')
+->middleware(['auth:sanctum', 'verified']);
 //procesos
-Route::post('General/ConProduccion', [GeneralController::class, 'ConProdu'])->name('GConProdu');
+Route::post('General/ConProduccion', [GeneralController::class, 'ConProdu'])->name('GConProdu')
+->middleware(['auth:sanctum', 'verified']);
 //materiales
-Route::post('General/ConMateriales', [GeneralController::class, 'ConMate'])->name('GConMate');
-
+Route::post('General/ConMateriales', [GeneralController::class, 'ConMate'])->name('GConMate')
+->middleware(['auth:sanctum', 'verified']);
+//turnos
+Route::post('General/ConTurno', [GeneralController::class, 'ConTurno'])->name('ConsuTurno')
+->middleware(['auth:sanctum', 'verified']);
+//personal
+Route::post('General/ConPerso', [GeneralController::class, 'ConPerso'])->name('ConPersonal')
+->middleware(['auth:sanctum', 'verified']);
 /************************************** Fin de consultas generales ********************************************/
 
 Route::resource('Personal', PersonalController::class)
@@ -95,27 +103,50 @@ Route::resource('CarNor', CarNormController::class)
 Route::resource('ReportesPro', RepoProController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
-Route::post('ReportesPro/ConPro', [RepoProController::class, 'ConProdu'])->name('ConPro');
+Route::post('ReportesPro/ConPro', [RepoProController::class, 'ConProdu'])->name('ConPro')
+->middleware(['auth:sanctum', 'verified']);
 
-Route::post('ReportesPro/ConParo', [RepoProController::class, 'ConParo'])->name('ConParo');
+Route::post('ReportesPro/ConParo', [RepoProController::class, 'ConParo'])->name('ConParo')
+->middleware(['auth:sanctum', 'verified']);
 
-Route::post('ReportesPro/ConGrafi', [RepoProController::class, 'ConGrafi'])->name('ConGraficas');
+Route::post('ReportesPro/ConGrafi', [RepoProController::class, 'ConGrafi'])->name('ConGraficas')
+->middleware(['auth:sanctum', 'verified']);
 
-Route::post('ReportesPro/ElimiGra', [RepoProController::class, 'ElimiGra'])->name('ElimiGraficas');
+Route::post('ReportesPro/ElimiGra', [RepoProController::class, 'ElimiGra'])->name('ElimiGraficas')
+->middleware(['auth:sanctum', 'verified']);
 
-Route::post('ReportesPro/PaiGrafi', [RepoProController::class, 'PaiGrafi'])->name('PaiGrafica');
-Route::post('ReportesPro/PrPaiGrafi', [RepoProController::class, 'PrPaiGrafi'])->name('PrPaiGrafica');
-Route::post('ReportesPro/PaiGrafiRan', [RepoProController::class, 'PaiGrafiRan'])->name('PaiGraficaRan');
+Route::post('ReportesPro/PaiGrafi', [RepoProController::class, 'PaiGrafi'])->name('PaiGrafica')
+->middleware(['auth:sanctum', 'verified']);
+Route::post('ReportesPro/PrPaiGrafi', [RepoProController::class, 'PrPaiGrafi'])->name('PrPaiGrafica')
+->middleware(['auth:sanctum', 'verified']);
+Route::post('ReportesPro/PaiGrafiRan', [RepoProController::class, 'PaiGrafiRan'])->name('PaiGraficaRan')
+->middleware(['auth:sanctum', 'verified']);
 
-Route::post('ReportesPro/LinGrafi', [RepoProController::class, 'LinGrafi'])->name('LinGrafica');
+Route::post('ReportesPro/LinGrafi', [RepoProController::class, 'LinGrafi'])->name('LinGrafica')
+->middleware(['auth:sanctum', 'verified']);
 
-Route::post('ReportesPro/SaveGra', [RepoProController::class, 'SaveGrafi'])->name('SaveGrafica');
+Route::post('ReportesPro/SaveGra', [RepoProController::class, 'SaveGrafi'])->name('SaveGrafica')
+->middleware(['auth:sanctum', 'verified']);
 
-Route::post('ReportesPro/UpdateGrafi', [RepoProController::class, 'UpdateGrafi'])->name('UpdateGrafica');
+Route::post('ReportesPro/UpdateGrafi', [RepoProController::class, 'UpdateGrafi'])->name('UpdateGrafica')
+->middleware(['auth:sanctum', 'verified']);
 
 //Fin de reporte de rpoduccion
 
+//Carga de produccion y objetivos
+Route::post('Carga/CarProdu', [CargaController::class, 'CarProdu'])->name('CarProduccion')
+->middleware(['auth:sanctum', 'verified']);
 
+Route::post('Carga/CarNorma', [CargaController::class, 'CarNorma'])->name('CargaNorma')
+->middleware(['auth:sanctum', 'verified']);
+
+Route::post('Carga/CarOperador', [CargaController::class, 'CarOperador'])->name('CargaOperador')
+->middleware(['auth:sanctum', 'verified']);
+
+Route::post('Carga/CarObje', [CargaController::class, 'CarObje'])->name('CarObjetivo')
+->middleware(['auth:sanctum', 'verified']);
+
+//Fin carga de produccion y objetivos
 
 Route::resource('CargaExcel', CargarExcelController::class)
     ->middleware(['auth:sanctum', 'verified']);
