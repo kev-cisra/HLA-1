@@ -98,7 +98,8 @@
 /*Form fields*/
 .dataTables_wrapper select,
 .dataTables_wrapper .dataTables_filter input {
-    color: #4a5568; 			/*text-gray-700*/
+    color: #4a5568;
+    margin-right: 10px;			/*text-gray-700*/
     padding-left: 1rem; 		/*pl-4*/
     padding-right: 1rem; 		/*pl-4*/
     padding-top: .5rem; 		/*pl-2*/
@@ -109,6 +110,10 @@
     border-color: #9bcdff; 		/*border-gray-200*/
     background-color: #e5e7eb;	/*bg-gray-200*/
     border-radius: 25px;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    width: 96%;
 }
 
 .dataTables_wrapper select,

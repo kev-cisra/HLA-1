@@ -25,7 +25,7 @@ class PerfilesUsuariosController extends Controller{
         // $Session = Auth::user();
         $Session = auth()->user();
 
-        $Jefes = JefesArea::get(['id','Nombre']);
+        $Jefes = JefesArea::get(['IdEmp','Nombre']);
         $Puestos = Puestos::get(['id','Nombre']);
         $Departamentos = Departamentos::get(['id','Nombre']);
 
@@ -35,34 +35,31 @@ class PerfilesUsuariosController extends Controller{
         ->get();
 
         //retorno de la vista retorno de la consulta de perfiles y sus filtros
-        return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session', 'jefe'));
+        return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session'));
     }
 
     public function store(Request $request){
 
-        /* return $request->Empresa; */
         $Session = auth()->user();
 
-/*         Validator::make($request->all(), [
+        Validator::make($request->all(), [
             'IdUser' => ['required'],
-            'IdEmp' => ['required'],
+            'IdEmp' => ['required','unique:users','unique:perfiles_usuarios'],
             'jefes_areas_id' => ['required'],
             'Empresa' => ['required'],
             'Nombre' => ['required'],
             'ApPat' => ['required'],
             'ApMat' => ['required'],
-            'Curp' => ['required'],
-            'Rfc' => ['required'],
-            'Nss' => ['required'],
-            'Direccion' => ['required'],
-            'Telefono' => ['required'],
-            'Cumpleaños' => ['required'],
             'FecIng' => ['required'],
             'Puesto_id' => ['required'],
             'Departamento_id' => ['required'],
         ])->validate();
- */
+
         $Departamento = Departamentos::where('id', '=', $request->Departamento_id)->first();
+        //Busco al jefe por medio de su numero de empleado para registrar su recursividad en la tabla perfiles
+        $jefe_id = PerfilesUsuarios::where('IdEmp','=', $request->jefes_areas_id)->first();
+
+        $TablaJefe = JefesArea::where('IdEmp', '=', $request->jefes_areas_id)->first();
 
         $Nick = User::create([
             'IdEmp' => $request->IdEmp,
@@ -71,7 +68,6 @@ class PerfilesUsuariosController extends Controller{
             'Departamento' => $Departamento->Nombre,
             'password' => bcrypt($request->IdEmp)
         ]);
-
 
         PerfilesUsuarios::create([
             'IdUser' => $Session->id,
@@ -89,11 +85,11 @@ class PerfilesUsuariosController extends Controller{
             'FecIng' => $request->FecIng,
             'Antiguedad' => $request->Antiguedad,
             'DiasVac' => $request->DiasVac,
-            'jefe_id' => $request->jefe_id,
+            'jefe_id' => $jefe_id->id,
             'user_id' => $Nick->id,
             'Puesto_id' => $request->Puesto_id,
             'Departamento_id' => $request->Departamento_id,
-            'jefes_areas_id' => $request->jefes_areas_id,
+            'jefes_areas_id' => $TablaJefe->id,
         ]);
 
         return redirect()->back();
