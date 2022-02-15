@@ -83,7 +83,8 @@ Route::resource('Nota', notascargaController::class)
 Route::resource('Paros', ParosController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
-Route::post('Paros/ParCar', [ParosController::class, 'ParoCarga'])->name('ParoCarga');
+Route::post('Paros/ParCar', [ParosController::class, 'ParoCarga'])->name('ParoCarga')
+->middleware(['auth:sanctum', 'verified']);
 
 //fin modulo paros
 
@@ -117,8 +118,10 @@ Route::post('ReportesPro/ElimiGra', [RepoProController::class, 'ElimiGra'])->nam
 
 Route::post('ReportesPro/PaiGrafi', [RepoProController::class, 'PaiGrafi'])->name('PaiGrafica')
 ->middleware(['auth:sanctum', 'verified']);
+
 Route::post('ReportesPro/PrPaiGrafi', [RepoProController::class, 'PrPaiGrafi'])->name('PrPaiGrafica')
 ->middleware(['auth:sanctum', 'verified']);
+
 Route::post('ReportesPro/PaiGrafiRan', [RepoProController::class, 'PaiGrafiRan'])->name('PaiGraficaRan')
 ->middleware(['auth:sanctum', 'verified']);
 
@@ -151,5 +154,7 @@ Route::post('Carga/CarObje', [CargaController::class, 'CarObje'])->name('CarObje
 Route::resource('CargaExcel', CargarExcelController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
+
+/**************************************************** Carga de objetivos ************************************************/
 Route::resource('ObjeCordi', ObjeCordiController::class)
     ->middleware(['auth:sanctum', 'verified']);

@@ -896,7 +896,7 @@
                 var datos = {'departamento_id': this.S_Area, 'modulo': 'carPro'};
 
                 $('#t_pn').DataTable().clear();
-                let ve = await axios.post('Carga/CarNorma', datos)//.then((eve) => {ve = eve.data});
+                let ve = await axios.post('Carga/CarNorma', datos)
                 //console.log(ve.data)
                 this.paqnor = ve.data;
 
@@ -1602,7 +1602,7 @@
                 this.ConProduccion();
                 this.ConPacNorma();
                 this.ConPacPerso();
-                this.ConObjeti();
+                this.ConObjeti(true);
 
                 //Personal
                 let per = await axios.post('General/ConPerso', datos);

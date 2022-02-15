@@ -54,45 +54,49 @@ class PerfilesUsuariosController extends Controller{
             'Puesto_id' => ['required'],
             'Departamento_id' => ['required'],
         ])->validate();
-
+        // return $request;
         $Departamento = Departamentos::where('id', '=', $request->Departamento_id)->first();
         //Busco al jefe por medio de su numero de empleado para registrar su recursividad en la tabla perfiles
         $jefe_id = PerfilesUsuarios::where('IdEmp','=', $request->jefes_areas_id)->first();
-
         $TablaJefe = JefesArea::where('IdEmp', '=', $request->jefes_areas_id)->first();
 
-        $Nick = User::create([
-            'IdEmp' => $request->IdEmp,
-            'name' => $request->Nombre.' '.$request->ApPat.' '.$request->ApMat,
-            'Empresa' => $request->Empresa,
-            'Departamento' => $Departamento->Nombre,
-            'password' => bcrypt($request->IdEmp)
-        ]);
+        if(isset($jefe_id)){
 
-        PerfilesUsuarios::create([
-            'IdUser' => $Session->id,
-            'IdEmp' => $request->IdEmp,
-            'Empresa' => $request->Empresa,
-            'Nombre' => $request->Nombre,
-            'ApPat' => $request->ApPat,
-            'ApMat' => $request->ApMat,
-            'Curp' => $request->Curp,
-            'Rfc' => $request->Rfc,
-            'Nss' => $request->Nss,
-            'Direccion' => $request->Direccion,
-            'Telefono' => $request->Telefono,
-            'Cumpleaños' => $request->Cumpleaños,
-            'FecIng' => $request->FecIng,
-            'Antiguedad' => $request->Antiguedad,
-            'DiasVac' => $request->DiasVac,
-            'jefe_id' => $jefe_id->id,
-            'user_id' => $Nick->id,
-            'Puesto_id' => $request->Puesto_id,
-            'Departamento_id' => $request->Departamento_id,
-            'jefes_areas_id' => $TablaJefe->id,
-        ]);
+            $Nick = User::create([
+                'IdEmp' => $request->IdEmp,
+                'name' => $request->Nombre.' '.$request->ApPat.' '.$request->ApMat,
+                'Empresa' => $request->Empresa,
+                'Departamento' => $Departamento->Nombre,
+                'password' => bcrypt($request->IdEmp)
+            ]);
 
-        return redirect()->back();
+            PerfilesUsuarios::create([
+                'IdUser' => $Session->id,
+                'IdEmp' => $request->IdEmp,
+                'Empresa' => $request->Empresa,
+                'Nombre' => $request->Nombre,
+                'ApPat' => $request->ApPat,
+                'ApMat' => $request->ApMat,
+                'Curp' => $request->Curp,
+                'Rfc' => $request->Rfc,
+                'Nss' => $request->Nss,
+                'Direccion' => $request->Direccion,
+                'Telefono' => $request->Telefono,
+                'Cumpleaños' => $request->Cumpleaños,
+                'FecIng' => $request->FecIng,
+                'Antiguedad' => $request->Antiguedad,
+                'DiasVac' => $request->DiasVac,
+                'jefe_id' => $jefe_id->id,
+                'user_id' => $Nick->id,
+                'Puesto_id' => $request->Puesto_id,
+                'Departamento_id' => $request->Departamento_id,
+                'jefes_areas_id' => $TablaJefe->id,
+            ]);
+
+            return redirect()->back();
+        }else{
+            return "Ocurrio un error";
+        }
     }
 
     public function update(Request $request, $id){

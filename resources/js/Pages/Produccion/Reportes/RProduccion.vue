@@ -117,16 +117,16 @@
                     <label  class="tw-text-white"><span class="required">*</span>Tipo de gráfica: </label>
                     <div class="tw-px-3 tw-mb-6 tw-gap-3 tw-flex">
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="Pastel" id="Pastel"> <label for="Pastel" class="tw-text-white">Gráfica de pastel</label>
+                            <input type="checkbox" v-model="graTipo" value="Pastel" id="Pastel"> <label for="Pastel" class="tw-text-white"><i class="fas fa-chart-pie"></i> Gráfica de pastel</label>
                         </div>
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="Linea" id="Linea"> <label for="Linea" class="tw-text-white">Gráfica lineal</label>
+                            <input type="checkbox" v-model="graTipo" value="Linea" id="Linea"> <label for="Linea" class="tw-text-white"><i class="fas fa-chart-line"></i> Gráfica lineal</label>
                         </div>
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="Barra" id="Barra"> <label for="Barra" class="tw-text-white">Gráfica de barra</label>
+                            <input type="checkbox" v-model="graTipo" value="Barra" id="Barra"> <label for="Barra" class="tw-text-white"><i class="fas fa-chart-bar"></i> Gráfica de barra</label>
                         </div>
                         <div>
-                            <input type="checkbox" v-model="graTipo" value="Combinado" id="Combinado"> <label for="Combinado" class="tw-text-white">Gráfica de barrar y punto</label>
+                            <input type="checkbox" v-model="graTipo" value="Combinado" id="Combinado"> <label for="Combinado" class="tw-text-white"><i class="fas fa-chart-area"></i> Gráfica de barrar y punto</label>
                         </div>
                     </div>
                     <button class="btn btn-warning" @click="ConGra()" data-bs-toggle="offcanvas" data-bs-target="#grafiGuar" aria-controls="grafiGuar">Graficas guardadas</button>
@@ -139,7 +139,7 @@
                         <!-- titulo y botones -->
                         <div class="sm:tw-flex lg:tw-m-5">
                             <div class="tw-w-full lg:tw-w-1/2 tw-text-2xl tw-text-center">
-                                <h1 class="tw-text-white">Gráfica de Pastel</h1>
+                                <h1 class="tw-text-white"><i class="fas fa-chart-pie"></i> Gráfica de Pastel</h1>
                             </div>
 
                             <div class="lg:tw-flex tw-w-full lg:tw-w-1/2">
@@ -257,7 +257,7 @@
                         <div class="sm:tw-flex lg:tw-m-5">
                             <!-- titulo -->
                             <div class="tw-w-full lg:tw-w-1/2 tw-text-2xl tw-text-center">
-                                <h1 class="tw-text-white">Gráfica Lineal</h1>
+                                <h1 class="tw-text-white"><i class="fas fa-chart-line"></i> Gráfica Lineal</h1>
                             </div>
                             <!-- boton -->
                             <div class="lg:tw-flex tw-w-full lg:tw-w-1/2">
@@ -390,7 +390,7 @@
                         <div class="sm:tw-flex lg:tw-m-5">
                             <!-- titulo -->
                             <div class="tw-w-full lg:tw-w-1/2 tw-text-2xl tw-text-center">
-                                <h1 class="tw-text-white">Gráfica de Barra</h1>
+                                <h1 class="tw-text-white"><i class="fas fa-chart-bar"></i> Gráfica de Barra</h1>
                             </div>
                             <!-- boton -->
                             <div class="lg:tw-flex tw-w-full lg:tw-w-1/2">
@@ -523,7 +523,7 @@
                         <div class="sm:tw-flex lg:tw-m-5">
                             <!-- titulo -->
                             <div class="tw-w-full lg:tw-w-1/2 tw-text-2xl tw-text-center">
-                                <h1 class="tw-text-white">Gráfica Combinada</h1>
+                                <h1 class="tw-text-white"><i class="fas fa-chart-area"></i> Gráfica Combinada</h1>
                             </div>
                             <!-- boton -->
                             <div class="lg:tw-flex tw-w-full lg:tw-w-1/2">
@@ -564,15 +564,15 @@
                                 <div class="lg:tw-flex tw-gap-5">
                                     <div class="tw-w-full">
                                         <div v-if="gBaLi.tipo == 'efiTur' | gBaLi.tipo == 'efiDia' | gBaLi.tipo == 'generalTot'">
-                                            <jet-label class="tw-text-white"><span class="required">*</span>Proceso para Barra</jet-label>
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Proceso para Barra <i class="fas fa-chart-bar"></i></jet-label>
                                             <Select2 v-model="gBaLi.procesosBar" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
-                                            <jet-label class="tw-text-white"><span class="required">*</span>Proceso para Linea</jet-label>
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Proceso para Linea <i class="fas fa-chart-line"></i></jet-label>
                                             <Select2 v-model="gBaLi.procesosLin" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="proGrafi" />
                                         </div>
                                         <div v-else>
-                                            <jet-label class="tw-text-white"><span class="required">*</span>Maquinas para Barra</jet-label>
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Maquinas para Barra <i class="fas fa-chart-bar"></i></jet-label>
                                             <Select2 v-model="gBaLi.maquinasBar" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
-                                            <jet-label class="tw-text-white"><span class="required">*</span>Maquinas para Linea</jet-label>
+                                            <jet-label class="tw-text-white"><span class="required">*</span>Maquinas para Linea <i class="fas fa-chart-line"></i></jet-label>
                                             <Select2 v-model="gBaLi.maquinasLin" class="InputSelect" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMaq" />
                                         </div>
                                     </div>
@@ -2918,10 +2918,6 @@
                 this.arrParo();
 
                 var datos = {'departamento_id': this.S_Area, 'modulo': 'repoPro'};
-
-                //Maquinas
-                /* let maqui = await axios.post('General/ConMaquina', datos)
-                this.maquinas = maqui.data */
 
                 //Produccion
                 let produ = await axios.post('General/ConProduccion', datos)
