@@ -235,7 +235,7 @@
             <div class="tw-px-4 tw-py-4">
                 <div class="tw-text-lg">
                     <div class="ModalHeader">
-                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Carga Masiva</h3>
+                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Carga de Objetivos</h3>
                     </div>
                 </div>
                 <div class="tw-mt-4">
@@ -254,6 +254,13 @@
                                 <jet-label class=""><span class="required">*</span>Horas a trabajar</jet-label>
                                 <jet-input v-model="calcuObje" type="number" min="0" max="12" step=".5"></jet-input>
                             </div>
+                            <!-- tiempo punta -->
+                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-show="S_Area == 7">
+                                <jet-label class=""><span class="required">*</span>Horas a trabajar punta</jet-label>
+                                <jet-input v-model="calcuPunta" type="number" min="0" max="12" step=".5"></jet-input>
+                            </div>
+                        </div>
+                        <div class="tw-mb-6 lg:tw-flex">
                             <!-- select operador -->
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="usuario.dep_pers.length == 0">
                                 <jet-label class=""><span class="required">*</span>Operador</jet-label>
@@ -263,8 +270,6 @@
                                 </select>
                                 <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
                             </div>
-                        </div>
-                        <div class="tw-mb-6 lg:tw-flex" v-on:keyup.enter="saveCA(form)">
                             <!-- select turno -->
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" >
                                 <jet-label class=""><span class="required">*</span>Turnos</jet-label>
@@ -283,48 +288,49 @@
                                 </select>
                                 <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                             </div>
-                            <!-- Inout partida -->
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                <jet-label class="">Partida</jet-label>
-                                <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
-                                <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
-                            </div>
                         </div>
                         <div v-if="calcuObje">
                             <!-- boton para agregar maquinas -->
                             <div class="tw-flex tw-justify-center">
-                                <button type="button" class="btn btn-success tw-w-1/3 " @click="addRow()">Agregar Máquina</button>
+                                <button type="button" class="btn btn-success tw-w-1/3 " @click="addRow()">Agregar Objetivo</button>
                             </div>
-                            <div class="lg:tw-flex" v-for="(f, index) in form.paquet" :key="index">
-                                <!-- paquete de objetivos -->
-                                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                    <jet-label class=""><span class="required">*</span>Paquete Objetivos</jet-label>
-                                    <Select2 v-model="f.paqObjetivo" class="InputSelect" :settings="{width: '100%'}" :options="opcPaOb"/>
-                                </div>
-                                <!-- Input kilogramos -->
-                                <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/2 lg:tw-mb-0">
-                                    <jet-label class=""><span class="required">*</span>{{ uni_me }}</jet-label>
-                                    <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="f.valor" disabled></jet-input>
-                                    <!-- <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small> -->
+                            <!-- recorrido para carga de objetivos -->
+                            <div class="tw-overflow-auto" style="height: 30rem">
+                                <div v-for="(f, index) in form.paquet" :key="index" class="tw-m-5 tw-border tw-border-4 tw-border-gray-600 tw-rounded-md tw-p-5" >
+                                    <div class="lg:tw-flex">
+                                        <!-- paquete de objetivos -->
+                                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                            <jet-label class=""><span class="required">*</span>Paquete Objetivos</jet-label>
+                                            <Select2 v-model="f.paqObjetivo" class="InputSelect" @select="calObje()" :settings="{width: '100%'}" :options="opcPaOb"/>
+                                        </div>
+                                        <!-- Input kilogramos -->
+                                        <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
+                                            <jet-label class=""><span class="required">*</span>{{ uni_me }}</jet-label>
+                                            <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="f.valor" disabled></jet-input>
+                                        </div>
+                                        <!-- Input kilogramos punta -->
+                                        <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0" v-show="S_Area == 7">
+                                            <jet-label class=""><span class="required">*</span>{{ uni_me }} horario punta</jet-label>
+                                            <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="f.valorP" disabled></jet-input>
+                                        </div>
+                                    </div>
+                                    <div class="lg:tw-flex">
+                                        <!-- Input partida -->
+                                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                                            <jet-label class=""><span class="required">*</span>Partida</jet-label>
+                                            <jet-input class="InputSelect" v-model="f.partida" @input="(val) => (f.partida = f.partida.toUpperCase())"></jet-input>
+                                        </div>
+                                        <div class="tw-m-auto">
+                                            <button class="btn btn-block btn-outline-danger" @click="removeRow(index)">Quitar</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- <div class="lg:tw-flex">
-                                paquete de objetivos
-                                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                    <jet-label class=""><span class="required">*</span>Paquete Objetivos</jet-label>
-                                    <Select2 v-model="paqObjetivo" class="InputSelect" :settings="{width: '100%'}" :options="opcPaOb"/>
-                                </div> -->
-                                <!-- Input kilogramos
-                                <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/2 lg:tw-mb-0">
-                                    <jet-label class=""><span class="required">*</span>{{ uni_me }}</jet-label>
-                                    <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor" disabled></jet-input>
-                                    <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
-                                </div>
-                            </div> -->
+
                         </div>
-                        <pre>
-                            {{ form }}
-                        </pre>
+                        <div class="m-auto">
+                            <button class="btn btn-success" @click="saveOB(form)">Guardar</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -397,6 +403,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 objetivos: [],
                 cargas: [],
                 calcuObje: 0,
+                calcuPunta: 12,
                 proc_prin: '',
                 editMode: false,
                 editModeOB: false,
@@ -413,15 +420,11 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                     departamento_id: this.S_Area,
                     usu: this.usuario.id,
                     per_carga: this.usuario.id,
-                    //proceso_id: '',
                     dep_perf_id: '',
-                    //maq_pro_id: '',
-                    partida: '',
+                    //partida: '',
                     valor: '',
-                    //norma: '',
                     equipo_id: '',
-                    //clave_id: '',
-                    paquet: [],
+                    paquet: [{ paqObjetivo: "", valor: 0, valorP: 0, partida: "" }],
                     turno_id: '',
                     notaPen: 1,
                     nota: '',
@@ -439,7 +442,6 @@ import AppLayout from '@/Layouts/AppLayout.vue';
             }
         },
 
-
         mounted() {
             this.global();
         },
@@ -452,7 +454,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 
                 $('#t_carg').DataTable().clear();
                 let ve = await axios.post('Carga/CarProdu', datos)//.then((eve) => {ve = eve.data});
-                console.log(ve.data)
+                //console.log(ve.data)
                 ve.data.forEach(ca => {
                     if (ca.dep_perf != null){
                         if (ca.proceso.tipo == 2) {
@@ -569,6 +571,17 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 })
             },
             /************************************* Opciones modal *******************************************/
+            //calcula los objetivos
+            calObje(){
+                this.limp = 2;
+                this.form.paquet.forEach(eve => {
+                    if(eve.paqObjetivo){
+                        const resu = this.objetivos.find(obje => obje.id == eve.paqObjetivo);
+                        eve.valor = resu.pro_hora * this.calcuObje;
+                        eve.valorP = resu.pro_hora * (parseFloat(this.calcuObje, 10) + parseFloat(this.calcuPunta, 10));
+                    }
+                })
+            },
             //abrir modal
             openModal(){
                 this.chageClose();
@@ -579,7 +592,8 @@ import AppLayout from '@/Layouts/AppLayout.vue';
             },
             resetCO(){
                 this.limp = 1;
-                this.calcuObje = '';
+                this.calcuObje = 0;
+                this.calcuPunta = 12;
                 this.paqObjetivo = '';
                 this.paqOpera = '';
                 this.paqNorma = '';
@@ -596,6 +610,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 this.form.nota = '';
                 this.form.usu = this.usuario.id;
                 this.form.departamento_id = this.S_Area;
+                this.form.paquet = [{ paqObjetivo: "", valor: 0, valorP: 0, partida: "" }]
 
                 if (this.usuario.dep_pers.length != 0) {
                     this.usuario.dep_pers.forEach(v => {
@@ -616,7 +631,14 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 }
             },
             addRow(){
-                this.form.paquet.push({paqObjetivo: '', valor: 0})
+                this.form.paquet.push({paqObjetivo: '', valor: 0, valorP: 0, partida: ""})
+            },
+            removeRow(row){
+                this.form.paquet.splice(row,1);
+            },
+            /************************************* Carga de objetivos **************************************/
+            async saveOB(data){
+                console.log(data)
             },
             /****************************** Carga de paquetes para objetivos *******************************/
             async savePObje(form){
@@ -789,7 +811,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
             //unidad de medida de las claves
             uni_me: function() {
                 var uni = '--';
-                if (this.form.clave_id != '') {
+                /* if (this.form.clave_id != '') {
                     this.materiales.forEach(cl => {
                         if (this.form.norma == cl.id) {
                             cl.claves.forEach(c => {
@@ -797,7 +819,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                             })
                         }
                     })
-                }
+                } */
                 return uni;
             }
         },
@@ -826,38 +848,40 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 let mate = await axios.post('General/ConMateriales', datos)
                 this.materiales = mate.data
             },
-            /* paqObjetivo: function(paOb){
-                if (paOb == '') {
-                    this.form.proceso_id = '';
-                    this.form.maq_pro_id = '';
-                    this.form.norma = '';
-                    this.form.clave_id = '';
-                }else{
-                    //this.calcuObje = 0;
-                    const resu = this.objetivos.find(obje => obje.id == this.paqObjetivo);
-                    this.limp = 2;
-                    this.form.valor = resu.pro_hora * this.calcuObje;
-                    this.form.departamento_id = this.S_Area;
-                    this.form.proceso_id = resu.proceso_id;
-                    this.form.maq_pro_id = resu.maq_pro_id;
-                    this.form.norma = resu.norma;
-                    this.form.clave_id = resu.clave_id;
-                }
-            }, */
             calcuObje: function(calObj) {
+                let nu = 12;
+                this.calcuPunta = nu - calObj;
                 if (calObj <= 0 || calObj > 12) {
                     this.form.valor = 0;
                     this.calcuObje = 0;
                 }
                 if (this.form.paquet.length != 0) {
                     this.form.paquet.forEach(eve => {
-                        const resu = this.objetivos.find(obje => obje.id == eve.paqObjetivo);
-                        eve.valor = resu.pro_hora * calObj;
+                        if(eve.paqObjetivo){
+                            const resu = this.objetivos.find(obje => obje.id == eve.paqObjetivo);
+                            eve.valor = resu.pro_hora * calObj;
+                            //console.log(parseFloat(calObj, 10) + parseFloat(this.calcuPunta,10))
+                            eve.valorP = resu.pro_hora * (parseFloat(calObj, 10) + parseFloat(this.calcuPunta,10));
+                        }
                     })
-                    //console.log(this.form.valor)
                 }
+            },
+            calcuPunta: function(cal) {
+                this.form.paquet.forEach(eve => {
+                    let nu = 12 - this.calcuObje;
+                    if (cal <    0 || cal > nu) {
+                        this.calcuPunta = nu
+                    }
+                    //console.log(nu)
+                    if(eve.paqObjetivo){
+                        const resu = this.objetivos.find(obje => obje.id == eve.paqObjetivo);
+                        eve.valor = resu.pro_hora * this.calcuObje;
+                        //console.log(parseFloat(calObj, 10) + parseFloat(this.calcuPunta,10))
+                        eve.valorP = resu.pro_hora * (parseFloat(this.calcuObje, 10) + parseFloat(cal,10));
+
+                    }
+                })
             }
         }
-
     }
 </script>
