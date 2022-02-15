@@ -153,15 +153,15 @@
 }
 
 .ModalHeader{
-    @apply tw-text-lg tw-m-3 tw-text-center tw-text-white tw-bg-gray-600 tw-rounded;
+    @apply tw-text-lg tw-m-4 tw-text-center tw-text-white tw-bg-gray-600 tw-rounded;
 }
 
 .ModalForm{
-    @apply tw-flex tw-flex-col tw-rounded;
+    @apply tw-flex tw-flex-col tw-rounded tw-m-4;
 }
 
 .ModalFooter{
-    @apply tw-space-x-4 tw-px-6 tw-py-4 tw-bg-gray-100 tw-text-right;
+    @apply tw-space-x-4 tw-px-4 tw-py-4 tw-bg-gray-100 tw-text-right;
 }
 
 .DetailsHeader{

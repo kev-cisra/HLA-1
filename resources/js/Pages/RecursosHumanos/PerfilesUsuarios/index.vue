@@ -1,6 +1,6 @@
 <template>
     <app-layout>
-        <section class="uppercase tw-mx-4">
+        <section class="tw-uppercase tw-mx-4">
             <Header :class="[color, style]">
                 <slot>
                     <h3 class="tw-p-2">
@@ -62,15 +62,22 @@
                         <td>{{data.perfil_departamento.Nombre}}</td>
                         <td>
                             <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
-                                <div class="iconoEdit" @click="edit(datos)">
+                                <div class="iconoEdit" @click="edit(data)">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoDelete" @click="deleteRow(datos)">
-                                    <span tooltip="Eliminar" flow="left">
+                                <div class="iconoCyan" @click="Vacaciones(data)">
+                                    <span tooltip="Actualizar Vacaciones" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoDelete" @click="deleteRow(data)">
+                                    <span tooltip="Dar de Baja" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                         </svg>
@@ -82,7 +89,6 @@
                 </template>
             </Table>
         </section>
-
          <!-- **************************************************** MODALES ****************************************************** -->
         <modal :show="showModal" @close="chageClose" :maxWidth="tam">
             <div class="ModalHeader">
@@ -100,7 +106,7 @@
                         <jet-label><span class="required">*</span>EMPRESA</jet-label>
                         <select class="InputSelect" v-model="form.Empresa">
                             <option value="HILATURAS">HILATURAS</option>
-                            <option value="SERGES">SERGES</option>
+                            <option value="SHIELDTEX">SHIELDTEX</option>
                         </select>
                         <small v-if="errors.Empresa" class="validation-alert">{{errors.Empresa}}</small>
                     </div>
@@ -172,6 +178,26 @@
             </div>
         </modal>
 
+        <modal :show="showDiasVac" @close="chageDiasVac" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>REGISTRO DE INFORMACIÓN</h3>
+            </div>
+
+            <div class="ModalForm">
+                <div class="tw-mb-6 tw-flex tw-gap-4 md:tw-flex">
+                    <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>VACACIONES</jet-label>
+                        <jet-input type="text" v-model="form.DiasVac"></jet-input>
+                        <small v-if="errors.DiasVac" class="validation-alert">{{errors.DiasVac}}</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="save(form)">Guardar</jet-button>
+                <jet-CancelButton @click="chageDiasVac">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
     </app-layout>
 </template>
 
@@ -203,6 +229,7 @@ import 'moment/locale/es';
 export default {
     data() {
         return {
+            showDiasVac: false,
             now: moment().format("YYYY-MM-DD"),
             tam: "4xl",
             color: "tw-bg-green-600",
@@ -417,7 +444,6 @@ export default {
         },
 
         edit: function (data) {
-            console.log(data);
             this.form = Object.assign({}, data);
             this.editMode = true;
             this.chageClose();
@@ -425,11 +451,20 @@ export default {
 
         update(data) {
         data._method = "PUT";
-        this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
-            onSuccess: () => {
-            this.reset(), this.chageClose(), this.alertSucces();
-            },
-        });
+            this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
+                onSuccess: () => {
+                this.reset(), this.chageClose(), this.alertSucces();
+                },
+            });
+        },
+
+        chageDiasVac() {
+            this.showDiasVac = !this.showDiasVac;
+        },
+
+        Vacaciones(data){
+            this.chageDiasVac();
+            this.form = Object.assign({}, data);
         },
 
         deleteRow: function (data) {
@@ -460,7 +495,7 @@ export default {
 
         show: function (data) {
             this.form = Object.assign({}, data);
-            },
+        },
     },
 
     watch: {
