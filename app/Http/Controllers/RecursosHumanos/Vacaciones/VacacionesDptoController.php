@@ -31,8 +31,7 @@ class VacacionesDptoController extends Controller
             $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
 
             //Consulta para obtener los datos de los trabajadores pertenecientes al id de la session
-            $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', $IdJefe)
-            ->with([
+            $PerfilesUsuarios = PerfilesUsuarios::with([
                 'PerfilPuesto' => function($puesto) { //Relacion 1 a 1 De puestos
                     $puesto->select('id', 'Nombre');
                 },
@@ -62,7 +61,9 @@ class VacacionesDptoController extends Controller
             ->get(['IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id', 'Empresa']); //datos de Perfiles
         }
 
-
+        $PerfilesUsuariosJefe = PerfilesUsuarios::where('id', '=', 1)
+        ->with(['jefe_perfiles', 'PerfilPuesto', 'PerfilDepartamento'])
+        ->get();
 
         if(!empty($request->busca)){
             $Vacaciones = Vacaciones::where('IdEmp', '=', $request->busca)
@@ -78,7 +79,7 @@ class VacacionesDptoController extends Controller
         $Departamentos = Departamentos::get(['id','Nombre']);
 
         //retorno de la vista retorno de la consulta de perfiles y sus filtros
-        return Inertia::render('RecursosHumanos/Vacaciones/index', compact('PerfilesUsuarios', 'Session', 'Vacaciones'));
+        return Inertia::render('RecursosHumanos/Vacaciones/index', compact('PerfilesUsuarios', 'Session', 'Vacaciones', 'PerfilesUsuariosJefe'));
     }
 
 

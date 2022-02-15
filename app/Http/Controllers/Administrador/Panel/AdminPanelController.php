@@ -33,15 +33,16 @@ class AdminPanelController extends Controller{
 
         switch ($request->Tipo) {
             case 1:
-                return $request;
-                $role = Role::create(['guard_name' => 'web', 'name' => $request->NombreRol]);
+              /*   return $request; */
+                $permission = Permission::create(['guard_name' => 'web', 'name' => $request->NombreRol]);
+                /* $role = Role::create(['guard_name' => 'web', 'name' => $request->NombreRol]); */
                 break;
 
             case 2:
-                return $request;
+                //return $request;
                 $role = Role::find(16);
                 $role->givePermissionTo(22);
-                // $permission = Permission::create(['guard_name' => 'web', 'name' => $request->NombrePermiso]);
+                $permission = Permission::create(['guard_name' => 'web', 'name' => $request->NombrePermiso]);
                 break;
         }
 

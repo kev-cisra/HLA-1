@@ -219,7 +219,6 @@
         </div>
     </div>
 
-
     <div class="modal fade" id="Cancelacion" tabindex="-1" aria-labelledby="Cancelacion" aria-hidden="true" v-show="ModalCancelacion">
         <div class="modal-dialog modal-lg">
             <div class="modal-content tw-bg-blueGray-50 tw-my-4">
@@ -244,7 +243,9 @@
             </div>
         </div>
     </div>
-
+    <pre>
+        {{ arreglo }}
+    </pre>
   </app-layout>
 </template>
 
@@ -261,6 +262,7 @@ import JetCancelButton from "@/Components/CancelButton";
 import Modal from "@/Jetstream/Modal";
 import Pagination from "@/Components/pagination";
 import JetInput from "@/Components/Input";
+import JetLabel from '@/Jetstream/Label';
 import JetSelect from "@/Components/Select";
 import Alert from "@/Components/Alert";
 //imports de datatables
@@ -293,12 +295,8 @@ export default {
                 IdEmp: null,
                 Motivo: null,
                 Dias: null,
-            }
+            },
         };
-    },
-
-    mounted() {
-        this.tabla();
     },
 
     components: {
@@ -314,6 +312,7 @@ export default {
         Modal,
         Pagination,
         JetInput,
+        JetLabel,
         JetSelect,
         JetTextArea,
     },
@@ -324,6 +323,12 @@ export default {
         errors: Object,
         Perfil: Object,
         Vacaciones: Object,
+        PerfilesUsuariosJefe: Object,
+    },
+
+    mounted() {
+        this.tabla();
+        console.log(this.arreglo);
     },
 
     methods: {
@@ -490,5 +495,22 @@ export default {
             this.form2.Dias = data.DiasTomados + data.DiasRestantes;
         }
     },
+
+    computed:{
+        arreglo: function () {
+            const Perfiles = [];
+            this.PerfilesUsuariosJefe.forEach(element => {
+                element.jefe_perfiles.forEach( el => {
+                    Perfiles.push(el)
+                    el.perfiles_jefe.forEach(e => {
+                        Perfiles.push(e)
+                    })
+                })
+            });
+
+            return Perfiles;
+
+        }
+    }
 };
 </script>

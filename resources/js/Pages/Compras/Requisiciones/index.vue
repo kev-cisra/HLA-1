@@ -385,6 +385,10 @@
                 </Table>
             </div>
         </div>
+
+        <pre>
+            {{ Requisiciones }}
+        </pre>
     </div>
 
     <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
