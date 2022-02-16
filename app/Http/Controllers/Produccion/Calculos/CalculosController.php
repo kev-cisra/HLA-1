@@ -58,7 +58,7 @@ class CalculosController extends Controller
         foreach ($calcula as $ope) {
             //dependiendo del tipo de operacion
             switch ($ope->operacion) {
-                /* case 'sm_d':
+                case 'sm_d':
                     $this->sm_d($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_dc':
@@ -90,14 +90,14 @@ class CalculosController extends Controller
                     break;
                 case 'efi_sem':
                     $this->efi_sem($ope, $request->depa, $fechas, $perf);
-                    break; */
-                case 'efi_pun_dia':
-                    $this->efi_pun_dia($ope, $request->depa, $fechas, $perf);
                     break;
+                /* case 'efi_pun_dia':
+                    $this->efi_pun_dia($ope, $request->depa, $fechas, $perf);
+                    break; */
             }
         }
 
-        return 'Listo';
+        //return 'Listo';
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
