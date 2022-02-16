@@ -90,13 +90,13 @@
             </div>
 
             <div class="ModalForm">
-                <div class="tw-mb-6 tw-flex tw-gap-4 md:tw-flex">
+                <div class="FormSection">
                     <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>NÚMERO EMPLEADO</jet-label>
                         <jet-input type="text" v-model="form.IdEmp"></jet-input>
                         <small v-if="errors.IdEmp" class="validation-alert">{{errors.IdEmp}}</small>
                     </div>
-                    <div class="ttw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>EMPRESA</jet-label>
                         <select class="InputSelect" v-model="form.Empresa">
                             <option value="HILATURAS">HILATURAS</option>
@@ -104,7 +104,7 @@
                         </select>
                         <small v-if="errors.Empresa" class="validation-alert">{{errors.Empresa}}</small>
                     </div>
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode">
+                    <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode">
                         <jet-label><span class="required">*</span>JEFE</jet-label>
                         <select class="InputSelect" v-model="form.jefes_areas_id">
                             <option v-for="jefe in Jefes" :key="jefe.IdEmp" :value="jefe.IdEmp" > {{ jefe.Nombre }}</option>
@@ -112,7 +112,7 @@
                         <small v-if="errors.jefes_areas_id" class="validation-alert">{{errors.jefes_areas_id}}</small>
                     </div>
                 </div>
-                <div class="tw-mb-6 tw-flex tw-gap-4 md:tw-flex">
+                <div class="FormSection">
                     <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>NOMBRE</jet-label>
                         <jet-input type="text" v-model="form.Nombre"></jet-input>
@@ -129,7 +129,7 @@
                         <small v-if="errors.ApMat" class="validation-alert">{{errors.ApMat}}</small>
                     </div>
                 </div>
-                <div class="tw-mb-6 tw-flex tw-gap-4 md:tw-flex">
+                <div class="FormSection">
                     <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label>CURP</jet-label>
                         <jet-input type="text" v-model="form.Curp"></jet-input>
@@ -143,20 +143,20 @@
                         <jet-input type="text" v-model="form.Rfc"></jet-input>
                     </div>
                 </div>
-                <div class="tw-mb-6 tw-flex tw-gap-4 md:tw-flex">
+                <div class="FormSection">
                     <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label>FECHA DE INGRESO</jet-label>
                         <jet-input type="date" v-model="form.FecIng"></jet-input>
                         <small v-if="errors.FecIng" class="validation-alert">{{errors.FecIng}}</small>
                     </div>
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>PUESTO</jet-label>
                         <select class="InputSelect" v-model="form.Puesto_id">
                             <option v-for="puesto in Puestos" :key="puesto.id" :value="puesto.id" > {{ puesto.Nombre }}</option>
                         </select>
                         <small v-if="errors.Puesto_id" class="validation-alert">{{errors.Puesto_id}}</small>
                     </div>
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>DEPARTAMENTO</jet-label>
                         <select class="InputSelect" v-model="form.Departamento_id">
                             <option v-for="dep in Departamentos" :key="dep.id" :value="dep.id" > {{ dep.Nombre }}</option>
@@ -296,7 +296,7 @@ export default {
                 $("#Perfiles").DataTable({
                     destroy      :true,
                     stateSave   : true,
-                    "language": this.español,
+                    language: this.español,
                     paging: true,
                     pageLength : 20,
                     scrollX: true,

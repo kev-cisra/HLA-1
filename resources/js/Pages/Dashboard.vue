@@ -1,80 +1,82 @@
 <template>
     <app-layout>
         <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
-            <!-- For -->
-            <div class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110">
-                <Link href="/Compras/Requisiciones" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i class="fas fa-clipboard-list"></i>
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
+                        <Link href="/Compras/Requisiciones" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Requisiciones</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Requisiciones</h4>
-                        <span class="linea"></span>
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
+                        <Link href="/Compras/RequisicionPapeleria" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-pencil-ruler"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">REQUISICIÓN PAPELERIA</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                </Link>
-            </div>
-
-            <div class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110">
-                <Link href="/Compras/RequisicionPapeleria" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i class="fas fa-pencil-ruler"></i>
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
+                        <Link href="/RecursosHumanos/Vacaciones" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">VACACIONES</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">REQUISICIÓN PAPELERIA</h4>
-                        <span class="linea"></span>
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
+                        <Link href="/RecursosHumanos/Incidencias" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">INCIDENCIAS</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                </Link>
-            </div>
-
-            <div class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110">
-                <Link href="/RecursosHumanos/Vacaciones" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i class="fas fa-calendar-check"></i>
+                    <!--------------------------- Produccion -------------------->
+                    <!-- modulo cargas -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10" v-if="hasAnyPermission(['admin.index', 'Produccion.carga.index'])">
+                        <Link href="Produccion/Carga" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-pallet"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">CARGA DE PRODUCCIÓN</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">VACACIONES</h4>
-                        <span class="linea"></span>
+                    <!-- modulo Paros -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10" v-if="hasAnyPermission(['admin.index', 'Produccion.paros.index'])">
+                        <Link href="Produccion/Paros" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-business-time"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">PAROS</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                </Link>
-            </div>
-
-            <div class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110">
-                <Link href="/RecursosHumanos/Incidencias" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">INCIDENCIAS</h4>
-                        <span class="linea"></span>
-                    </div>
-                </Link>
-            </div>
-            <!-- Fin for -->
-
-            <!-- Produccion -->
-            <!-- modulo cargas -->
-            <div class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110" v-if="hasAnyPermission(['admin.index', 'Produccion.carga.index'])">
-                <Link href="Produccion/Carga" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i class="fas fa-pallet"></i>
-                    </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">CARGA DE PRODUCCIÓN</h4>
-                        <span class="linea"></span>
-                    </div>
-                </Link>
-            </div>
-            <!-- modulo Paros -->
-            <div class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110" v-if="hasAnyPermission(['admin.index', 'Produccion.paros.index'])">
-                <Link href="Produccion/Paros" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i class="fas fa-business-time"></i>
-                    </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">PAROS</h4>
-                        <span class="linea"></span>
-                    </div>
-                </Link>
+                </div>
             </div>
         </section>
     </app-layout>

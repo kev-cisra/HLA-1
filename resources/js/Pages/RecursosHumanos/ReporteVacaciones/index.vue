@@ -1,165 +1,97 @@
 <template>
-  <app-layout>
-    <div class="uppercase tw-mx-4">
-        <Header :class="[color, style]">
-            <slot>
-                <h3 class="tw-p-2">
-                    <i class="fas fa-user tw-ml-3 tw-mr-3"></i>
-                        Reporte Vacaciones
-                </h3>
-            </slot>
-        </Header>
+    <app-layout>
+        <section class="tw-uppercase tw-mx-4">
+            <Header :class="[color, style]">
+                <slot>
+                    <h3 class="tw-p-2"><i class="fas fa-user tw-ml-3 tw-mr-3"></i>Reporte Vacaciones</h3>
+                </slot>
+            </Header>
+        </section>
 
-        <div class="tw-mt-8">
-            <div class="tw-flex tw-justify-center tw-gap-4 tw-border-b-2 tw-pb-2 tw-mb-2">
-                <div>
-                    <jet-label>Fecha Inicio</jet-label>
-                    <jet-input type="date" v-model="params.ini"></jet-input>
-                </div>
-                <div>
-                    <jet-label>Fecha Fin</jet-label>
-                    <jet-input type="date" v-model="params.fin"></jet-input>
-                </div>
-                <div class="tw-mt-6">
-                    <jet-button type="button" @click="reset()">Limpiar Filtros</jet-button>
-                </div>
+        <!-- ****************************************** FILTROS ********************************************* -->
+        <section class="tw-m-4 tw-flex tw-justify-center tw-gap-4 tw-border-b tw-p-2">
+            <div>
+                <jet-label>Fecha Inicio</jet-label>
+                <jet-input type="date" v-model="params.ini"></jet-input>
             </div>
-
-            <div class="tw-overflow-x-auto tw-mx-4 tw-mt-4">
-                <Table id="vacaciones">
-                    <template v-slot:TableHeader>
-                        <th class="columna">Núm. Empleado</th>
-                        <th class="columna">Empresa</th>
-                        <th class="columna">Nombre</th>
-                        <th class="columna">Paterno</th>
-                        <th class="columna">Materno</th>
-                        <th class="columna">Puesto</th>
-                        <th class="columna">Dias Sol</th>
-                        <th class="columna">Fecha Inicio</th>
-                        <th class="columna">Fecha Fin</th>
-                        <th class="columna">Dias Rest</th>
-                    </template>
-
-                    <template v-slot:TableFooter>
-                        <tr class="fila" v-for="datos in Vacaciones" :key="datos.id">
-                            <td class="tw-p-2">{{ datos.IdEmp }}</td>
-                            <td class="tw-p-2">{{ datos.Empresa }}</td>
-                            <td class="tw-p-2">{{ datos.Nombre }}</td>
-                            <td class="tw-p-2">{{ datos.ApPat }}</td>
-                            <td class="tw-p-2">{{ datos.ApMat }}</td>
-                            <td class="tw-p-2">{{ datos.Puesto }}</td>
-                            <td class="tw-p-2">{{ datos.DiasTomados }}</td>
-                            <td class="tw-p-2">{{ datos.FechaInicio }}</td>
-                            <td class="tw-p-2">{{ datos.FechaFin }}</td>
-                            <td class="tw-p-2">{{ datos.DiasVac }}</td>
-                        </tr>
-                    </template>
-                </Table>
+            <div>
+                <jet-label>Fecha Fin</jet-label>
+                <jet-input type="date" v-model="params.fin"></jet-input>
             </div>
-        </div>
+            <div class="tw-mt-6">
+                <jet-button type="button" @click="reset()">Limpiar Filtros</jet-button>
+            </div>
+        </section>
+        <!-- ****************************************** TABLAS ********************************************* -->
+        <section class="tw-mx-4 tw-my-4">
+            <Table id="vacaciones">
+                <template v-slot:TableHeader>
+                    <th class="columna">Núm. Empleado</th>
+                    <th class="columna">Empresa</th>
+                    <th class="columna">Nombre</th>
+                    <th class="columna">Paterno</th>
+                    <th class="columna">Materno</th>
+                    <th class="columna">Puesto</th>
+                    <th class="columna">Dias Sol</th>
+                    <th class="columna">Fecha Inicio</th>
+                    <th class="columna">Fecha Fin</th>
+                    <th class="columna">Dias Rest Actuales</th>
+                </template>
 
-        <modal :show="showModal" @close="chageClose" :maxWidth="tam">
-            <form>
-                <div class="tw-px-4 tw-py-4">
-                    <div class="tw-text-lg">
-                        <div class="ModalHeader">
-                            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Reporte Vacaciones</h3>
-                        </div>
-                    </div>
-
-                    <div class="tw-mt-4">
-                        <div class="ModalForm">
-                            <div class="tw-mb-6 md:tw-flex">
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Empresa</jet-label>
-                                    <select id="Empresa" v-model="form.Empresa" class="InputSelect">
-                                        <option value="HILATURAS">HILATURAS</option>
-                                        <option value="SERGES">SERGES</option>
-                                    </select>
-                                </div>
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                                    <jet-label><span class="required">*</span>Departamento</jet-label>
-                                    <select id="Jefe" v-model="form.Departamento_id" class="InputSelect">
-                                        <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ModalFooter">
-                    <jet-button type="button" @click="save(form)" v-show="!editMode">Genera Reporte</jet-button>
-                    <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
-                    <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
-                </div>
-            </form>
-        </modal>
-
-    </div>
-
-  </app-layout>
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="datos in Vacaciones" :key="datos.id">
+                        <td class="tw-text-center">{{ datos.IdEmp }}</td>
+                        <td class="tw-text-center">{{ datos.Empresa }}</td>
+                        <td>{{ datos.Nombre }}</td>
+                        <td>{{ datos.ApPat }}</td>
+                        <td>{{ datos.ApMat }}</td>
+                        <td>{{ datos.Puesto }}</td>
+                        <td class="tw-text-center">{{ datos.DiasTomados }} días</td>
+                        <td class="tw-text-center">{{ datos.FechaInicio }}</td>
+                        <td class="tw-text-center">{{ datos.FechaFin }}</td>
+                        <td class="tw-text-center">{{ datos.DiasVac }} días</td>
+                    </tr>
+                </template>
+            </Table>
+        </section>
+    </app-layout>
 </template>
 
 <script>
+require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
+require( 'datatables.net-buttons/js/buttons.html5' );
+require ( 'datatables.net-buttons/js/buttons.colVis' );
+
 import AppLayout from "@/Layouts/AppLayout";
 import Welcome from "@/Jetstream/Welcome";
 import Header from "@/Components/Header";
 import Accions from "@/Components/Accions";
 import Table from "@/Components/TableGreen";
 import JetButton from "@/Components/Button";
+import JetTextArea from "@/Components/Textarea";
 import JetCancelButton from "@/Components/CancelButton";
 import Modal from "@/Jetstream/Modal";
 import Pagination from "@/Components/pagination";
 import JetInput from "@/Components/Input";
+import JetLabel from '@/Jetstream/Label';
 import JetSelect from "@/Components/Select";
+import Alert from "@/Components/Alert";
 import throttle from 'lodash/throttle'
 //imports de datatables
-import datatable from 'datatables.net-bs5';
+import datatable from "datatables.net-bs5";
+import $ from "jquery";
+import moment from 'moment';
+import 'moment/locale/es';
+
+//Items de datatables
 import print from 'datatables.net-buttons/js/buttons.print';
 import jszip from 'jszip/dist/jszip';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import $ from 'jquery';
-
-require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
-require( 'datatables.net-buttons/js/buttons.html5' );
-require ( 'datatables.net-buttons/js/buttons.colVis' );
-
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 window.JSZip = jszip
 
-import moment from 'moment';
-import 'moment/locale/es';
-
 export default {
-    mounted() {
-        this.tabla();
-    },
-
-    data() {
-        return {
-            color: "tw-bg-green-600",
-            style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
-            now: moment().format("YYYY-MM-DD"),
-            tam: "4xl",
-            showModal: false,
-            form: {
-                IdUser: this.Session.id,
-                IdEmp: null,
-                Empresa: null,
-                Departamento_id: null,
-            },
-            rows: [
-                {name: ""}
-            ],
-            params:{
-                ini: null,
-                fin: null,
-            },
-        };
-    },
-
     components: {
         AppLayout,
         Welcome,
@@ -171,14 +103,34 @@ export default {
         Modal,
         Pagination,
         JetInput,
+        JetLabel,
         JetSelect,
     },
 
     props: {
         Session: Object,
-        PerfilesUsuarios: Object,
         Vacaciones: Object,
-        Departamentos: Object,
+    },
+
+    data() {
+        return {
+            color: "tw-bg-green-600",
+            style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
+            now: moment().format("YYYY-MM-DD"),
+            tam: "4xl",
+            showModal: false,
+            form: {
+                IdUser: this.Session.id,
+                IdEmp: this.Session.IdEmp,
+            },
+            rows: [
+                {name: ""}
+            ],
+            params:{
+                ini: '',
+                fin: '',
+            },
+        };
     },
 
     mounted() {
@@ -186,94 +138,21 @@ export default {
     },
 
     methods: {
-        alertSucces() {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 1000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-            },
-        });
-
-        Toast.fire({
-            icon: "success",
-            title: "Operación Exitosa!",
-            // background: '#99F6E4',
-        });
-        },
-
-        alertDelete() {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 1000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-            },
-        });
-
-        Toast.fire({
-            icon: "success",
-            title: "Registro Eliminado Correctamente",
-            // background: '#99F6E4',
-        });
-        },
-
-        alertWarning() {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "center",
-                showConfirmButton: false,
-                timer: 1500,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-            });
-
-            Toast.fire({
-                icon: "warning",
-                title: "Formato Incorrecto",
-                // background: '#FDBA74',
-            });
-        },
-
-        reset() {
-            this.form = {
-                IdUser: this.Session.id,
-            };
-            this.$inertia.get("/RecursosHumanos/ReporteVacaciones",{ onSuccess: () => {
-                this.params = {
-                    ini: null,
-                    fin: null,
-                },
-                this.tabla();
-                },});
-        },
-
-        openModal() {
-            this.chageClose();
-            this.reset();
-            this.editMode = false;
-        },
-
-        chageClose() {
-            this.showModal = !this.showModal;
-        },
-
-        //datatable
+        //Generacion de Datatable
         tabla() {
             this.$nextTick(() => {
                 $("#vacaciones").DataTable({
+                    destroy      :true,
+                    stateSave   : true,
                     language: this.español,
+                    paging: true,
+                    pageLength : 20,
+                    "scrollX": true,
+                    scrollY:  '40vh',
+                    "order": [0, 'desc'],
+                    "columnDefs": [
+                        { "width": "5%", "targets": [0] },
+                    ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -368,20 +247,21 @@ export default {
                 });
             });
         },
-        //consulta para generar datos de la tabla
-        verTabla(event) {
-            $("#vacaciones").DataTable().destroy();
-            this.$inertia.get("/RecursosHumanos/ReporteVacaciones", { busca: event.target.value },{ onSuccess: () => { this.tabla(); },});
-        },
 
-        save(data) {
-            this.$inertia.post("/RecursosHumanos/ReporteVacaciones", data, {
-                onSuccess: () => {
-                this.reset(), this.chageClose(), this.alertSucces();
+        reset() {
+            this.form = {
+                IdUser: this.Session.id,
+            };
+            this.$inertia.get("/RecursosHumanos/ReporteVacaciones",{ onSuccess: () => {
+                this.params = {
+                    ini: '',
+                    fin: '',
                 },
-            });
+                this.tabla();
+                },});
         },
     },
+
     watch: { //Metodo escucha
         params: {  //escucha de arreglo de parametros
         deep: true,

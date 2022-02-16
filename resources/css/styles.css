@@ -160,6 +160,10 @@
     @apply tw-flex tw-flex-col tw-rounded tw-m-4;
 }
 
+.FormSection{
+    @apply tw-mb-2 md:tw-mb-6 tw-gap-4 md:tw-flex;
+}
+
 .ModalFooter{
     @apply tw-space-x-4 tw-px-4 tw-py-4 tw-bg-gray-100 tw-text-right;
 }

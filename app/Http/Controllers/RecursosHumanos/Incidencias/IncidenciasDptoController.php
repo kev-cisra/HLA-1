@@ -80,9 +80,6 @@ class IncidenciasDptoController extends Controller
         return Inertia::render('RecursosHumanos/Incidencias/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session', 'Incidencias'));
     }
 
-    public function create(){
-
-    }
 
     public function store(Request $request){
 
@@ -102,53 +99,7 @@ class IncidenciasDptoController extends Controller
             'perfiles_usuarios_id' => $request->id,
         ]);
 
-        // return $request;
-
         return redirect()->back()->with('message', 'Exito');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

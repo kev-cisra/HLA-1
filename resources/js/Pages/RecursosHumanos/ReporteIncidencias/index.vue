@@ -104,11 +104,14 @@ import Header from "@/Components/Header";
 import Accions from "@/Components/Accions";
 import Table from "@/Components/TableGreen";
 import JetButton from "@/Components/Button";
+import JetTextArea from "@/Components/Textarea";
 import JetCancelButton from "@/Components/CancelButton";
 import Modal from "@/Jetstream/Modal";
 import Pagination from "@/Components/pagination";
 import JetInput from "@/Components/Input";
+import JetLabel from '@/Jetstream/Label';
 import JetSelect from "@/Components/Select";
+import Alert from "@/Components/Alert";
 import throttle from 'lodash/throttle'
 //imports de datatables
 import datatable from 'datatables.net-bs5';
@@ -129,10 +132,6 @@ import moment from 'moment';
 import 'moment/locale/es';
 
 export default {
-    mounted() {
-        this.tabla();
-    },
-
     data() {
         return {
             tam: "4xl",
@@ -166,6 +165,7 @@ export default {
         Modal,
         Pagination,
         JetInput,
+        JetLabel,
         JetSelect,
     },
 
@@ -326,6 +326,7 @@ export default {
             });
         },
     },
+
     watch: { //Metodo escucha
         params: {  //escucha de arreglo de parametros
         deep: true,

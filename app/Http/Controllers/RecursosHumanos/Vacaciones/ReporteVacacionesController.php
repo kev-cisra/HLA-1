@@ -19,24 +19,6 @@ class ReporteVacacionesController extends Controller
 {
     public function index(Request $request){
         $Session = Auth::user();
-        $Departamentos = Departamentos::get(['id','Nombre']);
-
-        //Consulta para obtener los datos de los trabajadores pertenecientes al id de la session
-        $PerfilesUsuarios = PerfilesUsuarios::with([
-            'PerfilPuesto' => function($puesto) { //Relacion 1 a 1 De puestos
-                $puesto->select('id', 'Nombre');
-            },
-            'PerfilDepartamento' => function($departamento) { //Relacion 1 a 1 De Departamento
-                $departamento->select('id', 'Nombre');
-            },
-            'PerfilJefe' => function($jefe) { //Relacion 1 a 1 De Jefe
-                $jefe->select('id', 'IdEmp',  'Nombre');
-                // $jefe->where('IdEmp', '=', 5310);
-            }
-        ])
-        ->orderBy('IdEmp')
-        ->get(['IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id', 'Empresa']); //datos de Perfiles
-
 
         if($request->ini == '' && $request->fin == ''){
             $Vacaciones = PerfilesUsuarios::select(
@@ -75,8 +57,7 @@ class ReporteVacacionesController extends Controller
                 ->get();
         }
 
-
-        return Inertia::render('RecursosHumanos/ReporteVacaciones/index', compact('Session', 'PerfilesUsuarios','Vacaciones', 'Departamentos'));
+        return Inertia::render('RecursosHumanos/ReporteVacaciones/index', compact('Session','Vacaciones'));
     }
 
     public function store(Request $request){
