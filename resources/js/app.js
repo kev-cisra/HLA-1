@@ -22,6 +22,7 @@ createApp({
                 path: 'https://intranethlangeles.com/storage/app/public/',
                 path2: 'https://intranethlangeles.com/storage',
                 showModal: false,
+                editMode: false,
                 español: {
                     processing: "Procesando...",
                     lengthMenu: "Mostrar _MENU_ registros",

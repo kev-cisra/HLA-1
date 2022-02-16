@@ -100,28 +100,34 @@ class PerfilesUsuariosController extends Controller{
     }
 
     public function update(Request $request, $id){
+
         Validator::make($request->all(), [
             'IdUser' => ['required'],
-            'IdEmp' => ['required'],
             'jefes_areas_id' => ['required'],
             'Empresa' => ['required'],
             'Nombre' => ['required'],
             'ApPat' => ['required'],
             'ApMat' => ['required'],
-            'Curp' => ['required'],
-            'Rfc' => ['required'],
-            'Nss' => ['required'],
-            'Direccion' => ['required'],
-            'Telefono' => ['required'],
-            'Cumpleaños' => ['required'],
             'FecIng' => ['required'],
             'Puesto_id' => ['required'],
             'Departamento_id' => ['required'],
         ])->validate();
 
         if ($request->has('id')) {
-            PerfilesUsuarios::find($request->input('id'))->update($request->all());
-            return redirect()->back();
+            switch ($request->metodo) {
+                case 1:
+                        PerfilesUsuarios::find($request->input('id'))->update($request->all());
+                        return redirect()->back();
+                    break;
+
+                case 2:
+                    PerfilesUsuarios::where('id', '=', $request->id)->update([
+                        'DiasVac' => $request->DiasVac,
+                    ]);
+                    return redirect()->back();
+                    break;
+            }
+
         }
     }
 

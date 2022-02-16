@@ -13,13 +13,7 @@
         <!-- ******************************* FILTROS ********************************************* -->
         <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-my-8 tw-mx-2">
             <div class="tw-flex tw-gap-4 tw-mx-2">
-                <div>
-                    <jet-label class="tw-text-center">EMPRESA</jet-label>
-                    <select class="InputSelect" v-model="params.TipoEmpresa" @change="TipoEmpresa">
-                        <option value="SHIELDTEX">SHIELDTEX</option>
-                        <option value="SERGES">SERGES</option>
-                    </select>
-                </div>
+
             </div>
             <div>
                 <jet-button @click="openModal" class="BtnNuevo">NUEVA INFORMACIÓN</jet-button>
@@ -110,7 +104,7 @@
                         </select>
                         <small v-if="errors.Empresa" class="validation-alert">{{errors.Empresa}}</small>
                     </div>
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode">
                         <jet-label><span class="required">*</span>JEFE</jet-label>
                         <select class="InputSelect" v-model="form.jefes_areas_id">
                             <option v-for="jefe in Jefes" :key="jefe.IdEmp" :value="jefe.IdEmp" > {{ jefe.Nombre }}</option>
@@ -174,18 +168,25 @@
 
             <div class="ModalFooter">
                 <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
+                <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
                 <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
             </div>
         </modal>
 
-        <modal :show="showDiasVac" @close="chageDiasVac" :maxWidth="tam">
+        <modal :show="showDiasVac" @close="chageDiasVac" maxWidth="xl">
             <div class="ModalHeader">
-                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>REGISTRO DE INFORMACIÓN</h3>
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>ACTUALIZA VACACIONES</h3>
+            </div>
+
+            <div class="tw-flex tw-flex-col tw-my-2 tw-p-2 tw-uppercase tw-bg-blueGray-50 tw-border-teal-500 tw-border-t-2 tw-border-b-2">
+                <div class="tw-flex tw-justify-center"><p class="tw-font-bold tw-text-lg">{{form.IdEmp}} - {{form.Nombre}} {{form.ApPat}} {{form.ApMat}}</p></div>
+                <div class="tw-flex tw-justify-center"><p class="tw-font-bold tw-text-xs">Días de vacaciones restantes: <span class="tw-font-bold tw-text-base tw-text-teal-600">{{form.DiasVac}}</span></p></div>
+                <div class="tw-flex tw-justify-center"><p class="tw-font-bold tw-text-xs">Fecha Ingreso: <span class="tw-font-bold tw-text-base tw-text-teal-600">{{form.FecIng}}</span></p></div>
             </div>
 
             <div class="ModalForm">
-                <div class="tw-mb-6 tw-flex tw-gap-4 md:tw-flex">
-                    <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                <div class="tw-mb-6 tw-flex tw-justify-center tw-gap-4 md:tw-flex">
+                    <div class="tw-mb-6 md:tw-w-2xl md:tw-mb-0">
                         <jet-label><span class="required">*</span>VACACIONES</jet-label>
                         <jet-input type="text" v-model="form.DiasVac"></jet-input>
                         <small v-if="errors.DiasVac" class="validation-alert">{{errors.DiasVac}}</small>
@@ -194,7 +195,7 @@
             </div>
 
             <div class="ModalFooter">
-                <jet-button type="button" @click="save(form)">Guardar</jet-button>
+                <jet-button type="button" @click="ActualizaVac(form)">Guardar</jet-button>
                 <jet-CancelButton @click="chageDiasVac">Cerrar</jet-CancelButton>
             </div>
         </modal>
@@ -450,7 +451,8 @@ export default {
         },
 
         update(data) {
-        data._method = "PUT";
+            data.metodo = 1;
+            data._method = "PUT";
             this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
                 onSuccess: () => {
                 this.reset(), this.chageClose(), this.alertSucces();
@@ -496,6 +498,18 @@ export default {
         show: function (data) {
             this.form = Object.assign({}, data);
         },
+
+        ActualizaVac(data){
+            data.metodo = 2;
+            data._method = "PUT";
+            this.$inertia.post("/RecursosHumanos/PerfilesUsuarios/" + data.id, data, {
+                onSuccess: () => {
+                    this.reset(),
+                    this.chageDiasVac(),
+                    this.alertSucces();
+                },
+            });
+        }
     },
 
     watch: {
