@@ -1407,7 +1407,7 @@
             async calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
                     this.limpPro = false;
-                    this.vCal = false;
+                    //this.vCal = false;
 
                     await this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {

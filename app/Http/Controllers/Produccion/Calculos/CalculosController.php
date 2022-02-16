@@ -29,12 +29,12 @@ class CalculosController extends Controller
         $perf = PerfilesUsuarios::where('user_id','=',$usuario)
             ->first('id');
         //pone la hora de inicio y fin para consultar
-        $hIni = ' 07:00:00';
+        /* $hIni = ' 07:00:00';
         if ($request->depa == 7 & !empty(Carbon::createFromDate($request->fecha)->isDST())) {
             $hIni = ' 09:00:00';
         }else if($request->depa == 7 & empty(Carbon::createFromDate($request->fecha)->isDST())) {
             $hIni = ' 08:00:00';
-        }
+        } */
 
 
         //dias para consultar
@@ -58,7 +58,7 @@ class CalculosController extends Controller
         foreach ($calcula as $ope) {
             //dependiendo del tipo de operacion
             switch ($ope->operacion) {
-                case 'sm_d':
+                /* case 'sm_d':
                     $this->sm_d($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_dc':
@@ -85,16 +85,19 @@ class CalculosController extends Controller
                 case 'efi_dia':
                     $this->efi_dia($ope, $request->depa, $fechas, $perf);
                     break;
-                case 'efi_tur':
-                    $this->efi_tur($ope, $request->depa, $fechas, $perf);
+                case 'efi_cla':
+                    $this->efi_cla($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'efi_sem':
                     $this->efi_sem($ope, $request->depa, $fechas, $perf);
+                    break; */
+                case 'efi_pun_dia':
+                    $this->efi_pun_dia($ope, $request->depa, $fechas, $perf);
                     break;
             }
         }
 
-        //return 'Listo';
+        return 'Listo';
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
@@ -577,60 +580,49 @@ class CalculosController extends Controller
 
     //operacion eficiencia dia
     public function efi_dia($val, $dep, $fechas, $usuario){
-        $claves = carga::where('departamento_id', '=', $dep)
-        ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
-        ->distinct()
-        ->get(['norma','clave_id']);
-        //Primer recorrido para claves
-        //foreach ($claves as $cla) {
-            //Contador y suma final
-            $fs = 0;
-            //Contador y suma de produccion
-            $fsP = 0;
-            //Contador y suma de objetivos
-            $fsO = 0;
-            //Segundo recorrido para procesos
-            foreach ($val->formulas as $formu) {
-                //La clave tiene que ser difeente de nulo
-                //if (!empty($cla->clave_id)) {
-                    //si su tipo es de produccion realiza la suma
-                    if ($formu->proc_relas->tipo == 1) {
-                        $proce_id = $formu->proceso_id;
-                        $maq_id = $formu->maq_pros_id;
+        //Contador y suma final
+        $fs = 0;
+        //Contador y suma de produccion
+        $fsP = 0;
+        //Contador y suma de objetivos
+        $fsO = 0;
+        //Segundo recorrido para procesos
+        foreach ($val->formulas as $formu) {
+            //si su tipo es de produccion realiza la suma
+            if ($formu->proc_relas->tipo == 1) {
+                $proce_id = $formu->proceso_id;
+                $maq_id = $formu->maq_pros_id;
 
-                        //suma
-                        $suma = carga::where('departamento_id', '=', $dep)
-                            ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
-                            -> where('maq_pro_id', '=', $formu->maq_pros_id)
-                            ->sum('valor');
+                //suma
+                $suma = carga::where('departamento_id', '=', $dep)
+                    ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                    -> where('maq_pro_id', '=', $formu->maq_pros_id)
+                    ->sum('valor');
 
-                        //resultado
-                        $fsP += $suma;
-                    }else{
-                        //suma
-                        $suma = carga::where('departamento_id', '=', $dep)
-                            ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
-                            -> where('maq_pro_id', '=', $formu->maq_pros_id)
-                            ->sum('valor');
+                //resultado
+                $fsP += $suma;
+            }else{
+                //suma
+                $suma = carga::where('departamento_id', '=', $dep)
+                    ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
+                    -> where('maq_pro_id', '=', $formu->maq_pros_id)
+                    ->sum('valor');
 
-                        //resultado
-                        $fsO += $suma;
-                    }
-                //}
+                //resultado
+                $fsO += $suma;
             }
+        }
 
-            if ($fsP != 0 & $fsO != 0) {
-                $fs = ($fsP*100)/$fsO;
-                $data = ['proceso_id' => $proce_id, 'suma' => round($fs, '2'), 'equipo_id' => null, 'turno_id' => null, 'cantidad' => '% ', 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
-                $this->gua_act($fechas, $data);
-            }
-
-        //}
+        if ($fsP != 0 & $fsO != 0) {
+            $fs = ($fsP*100)/$fsO;
+            $data = ['proceso_id' => $proce_id, 'suma' => round($fs, '2'), 'equipo_id' => null, 'turno_id' => null, 'cantidad' => '% ', 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
+            $this->gua_act($fechas, $data);
+        }
         print ' fin eficiencia clave dia //////// ';
     }
 
     //operacion eficiencia turno
-    public function efi_tur($val, $dep, $fechas, $usuario){
+    public function efi_cla($val, $dep, $fechas, $usuario){
         //se consultan los turnos que existe menos el turno vacio
         $turnos = turnos::where('departamento_id', '=', $dep)
         ->with([
@@ -743,5 +735,58 @@ class CalculosController extends Controller
             $this->gua_act_sem($fechas, $data);
         }
         //return $data;
+    }
+
+    //operacion eficiencia puta diario
+    public function efi_pun_dia($val, $dep, $fechas, $usuario){
+        //Contador y suma final
+        $fs = 0;
+        //Contador y suma de produccion
+        $fsP = 0;
+        //Contador y suma de objetivos
+        $fsO = 0;
+        $nfec = $fechas['fecha']." 07:00:00";
+        $onfec = date("Y-m-d H:i:s", strtotime($nfec."+ 1 days" ));
+        //echo $nfec.' - '.$onfec;
+        //Segundo recorrido para procesos
+        foreach ($val->formulas as $formu) {
+            //si su tipo es de produccion realiza la suma
+            if ($formu->proc_relas->tipo == 1) {
+                $proce_id = $formu->proceso_id;
+                $maq_id = $formu->maq_pros_id;
+
+                //suma
+                $suma = carga::where('departamento_id', '=', $dep)
+                    ->whereBetween('fecha', [$nfec, $onfec])
+                    -> where('maq_pro_id', '=', $formu->maq_pros_id)
+                    ->get();
+
+                //echo($suma." - ");
+                    //->sum('valor');
+
+                //resultado
+                //$fsP += $suma;
+            }else{
+                //suma
+                $suma = carga::where('departamento_id', '=', $dep)
+                    ->whereBetween('fecha', [$nfec, $onfec])
+                    -> where('maq_pro_id', '=', $formu->maq_pros_id)
+                    ->with('objetivopunta')
+                    ->get();
+
+                echo($suma." - ");
+                    //->sum('valor');
+
+                //resultado
+                //$fsO += $suma;
+            }
+        }
+
+        //$fs = ($fsP*100)/$fsO;
+        if ($fsP != 0 & $fsO != 0) {
+            $data = ['proceso_id' => $proce_id, 'suma' => round($fs, '2'), 'equipo_id' => null, 'turno_id' => null, 'cantidad' => '% ', 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
+            //$this->gua_act($fechas, $data);
+        }
+        //print ' fin eficiencia clave dia //////// ';
     }
 }

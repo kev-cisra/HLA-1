@@ -16,8 +16,14 @@ class carga extends Model
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
 
+    //relacion uno a uchos
     public function notas(){
         return $this->hasMany(notasCarga::class, 'carga_id');
+    }
+
+    //relacion 1 a 1
+    public function objetivopunta(){
+        return $this->hasOne(ObjetivoPuntas::class, 'carga_id');
     }
 
     //Relacion 1 a muchos inversa

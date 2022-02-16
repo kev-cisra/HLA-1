@@ -21,7 +21,7 @@ class procesos extends Model
     use SoftCascadeTrait;
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
-    protected $softCascade = ['maq_pros', 'formulas', 'formu_proc', 'carOpes', 'paroscargas', 'grafi_arrs', 'grafi_arrs_linea']; //eliminar en cascada
+    protected $softCascade = ['maq_pros', 'formulas', 'formu_proc', 'carOpes', 'grafi_arrs', 'grafi_arrs_linea']; //eliminar en cascada
 
     const Principal = 0;
     const Encargado = 1;

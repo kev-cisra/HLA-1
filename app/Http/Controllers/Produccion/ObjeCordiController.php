@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\obje_cordi;
+use App\Models\Produccion\carga;
+use App\Models\Produccion\ObjetivoPuntas;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
@@ -62,6 +64,50 @@ class ObjeCordiController extends Controller
         }
 
         return Inertia::render('Produccion/ObjeCordi', ['usuario' => $perf, 'depa' => $depa]);
+    }
+
+    public function storeProObje(Request $request){
+        Validator::make($request->all(), [
+            'equipo_id' => ['required'],
+            'dep_perf_id' => ['required'],
+            'turno_id' => ['required']
+        ])->validate();
+
+        foreach ($request->paquet as $value) {
+            if (!empty($value['paqObjetivo'])) {
+                $cosu = obje_cordi::where('id', '=', $value['paqObjetivo'])
+                ->first();
+
+                $carga = carga::create([
+                    'fecha' => $request->fecha,
+                    'semana' => $request->semana,
+                    'per_carga' => $request->per_carga,
+                    'proceso_id' => $cosu->proceso_id,
+                    'dep_perf_id' => $request->dep_perf_id,
+                    'maq_pro_id' => $cosu->maq_pro_id,
+                    'partida' => $value['partida'],
+                    'valor' => $value['valor'],
+                    'norma' => $cosu->norma,
+                    'equipo_id' => $request->equipo_id,
+                    'clave_id' => $cosu->clave_id,
+                    'turno_id' => $request->turno_id,
+                    'departamento_id' => $request->departamento_id,
+                    'VerInv' => $request->calcuObje
+                ]);
+
+                if($request->departamento_id == 7){
+                    ObjetivoPuntas::create([
+                        'horas' => $request->calcuPunta,
+                        'valorPu' => $value['valorP'],
+                        'carga_id' => $carga->id
+                    ]);
+                }
+            }
+        }
+
+
+        return $request;
+
     }
 
     /**

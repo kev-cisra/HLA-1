@@ -158,3 +158,6 @@ Route::resource('CargaExcel', CargarExcelController::class)
 /**************************************************** Carga de objetivos ************************************************/
 Route::resource('ObjeCordi', ObjeCordiController::class)
     ->middleware(['auth:sanctum', 'verified']);
+
+Route::post('ObjeCordi/storeProObje', [ObjeCordiController::class, 'storeProObje'])->name('storeObjetivo')
+    ->middleware(['auth:sanctum', 'verified']);

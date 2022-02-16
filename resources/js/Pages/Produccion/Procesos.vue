@@ -147,10 +147,13 @@
                                         <option value="sem_sm">SUMA SEMANAL</option>
                                         <!-- <option value="mes_sm">SUMA MENSUAL</option> -->
                                         <option value="efi_dia">EFICIENCIA DIARIA</option>
-                                        <option value="efi_tur">EFICIENCIA DEL TURNO</option>
+                                        <option value="efi_cla">EFICIENCIA POR CLAVE</option>
                                         <option value="efi_sem">EFICIENCIA POR SEMANA</option>
                                         <option value="efi_mes">EFICIENCIA POR MES</option>
                                         <option value="efi_ano">EFICIENCIA ANUAL</option>
+                                        <option value="efi_pun_dia" v-if="S_Area == 7">EFICIENCIA PUNTA DIARIA</option>
+                                        <option value="efi_pun_sem" v-if="S_Area == 7">EFICIENCIA PUNTA SEMANAL</option>
+                                        <option value="efi_pun_mes" v-if="S_Area == 7">EFICIENCIA PUNTA MENSUAL</option>
                                         <!-- <option value="ano_sm">SUMA ANUAL</option> -->
                                     </select>
                                     <small v-if="errors.operacion" class="validation-alert">{{errors.operacion}}</small>

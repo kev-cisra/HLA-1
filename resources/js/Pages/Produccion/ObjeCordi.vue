@@ -231,7 +231,7 @@
         </div>
 
         <!-- abrir modal de carga de objetivos -->
-        <modal :show="showModal" @close="chageClose">
+        <modal :show="showModal" @close="chageClose" maxWidth="5xl">
             <div class="tw-px-4 tw-py-4">
                 <div class="tw-text-lg">
                     <div class="ModalHeader">
@@ -277,7 +277,7 @@
                                     <option value="" disabled>SELECCIONA</option>
                                     <option v-for="tu in opcTur" :key="tu.value" :value="tu.value">{{tu.text}}</option>
                                 </select>
-                                <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                                <small v-if="errors.turno_id" class="validation-alert">{{errors.turno_id}}</small>
                             </div>
                             <!-- select equipo -->
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
@@ -286,13 +286,13 @@
                                     <option value="" disabled>SELECCIONA</option>
                                     <option v-for="eq in opcEqu" :key="eq.value" :value="eq.value">{{eq.text}}</option>
                                 </select>
-                                <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
+                                <small v-if="errors.equipo_id" class="validation-alert">{{errors.equipo_id}}</small>
                             </div>
                         </div>
                         <div v-if="calcuObje">
                             <!-- boton para agregar maquinas -->
                             <div class="tw-flex tw-justify-center">
-                                <button type="button" class="btn btn-success tw-w-1/3 " @click="addRow()">Agregar Objetivo</button>
+                                <button type="button" class="btn btn-info tw-w-1/3 " @click="addRow()">Agregar Nuevo Objetivo</button>
                             </div>
                             <!-- recorrido para carga de objetivos -->
                             <div class="tw-overflow-auto" style="height: 30rem">
@@ -305,12 +305,12 @@
                                         </div>
                                         <!-- Input kilogramos -->
                                         <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
-                                            <jet-label class=""><span class="required">*</span>{{ uni_me }}</jet-label>
+                                            <jet-label class=""><span class="required">*</span>Producción horas laborales</jet-label>
                                             <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="f.valor" disabled></jet-input>
                                         </div>
                                         <!-- Input kilogramos punta -->
                                         <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0" v-show="S_Area == 7">
-                                            <jet-label class=""><span class="required">*</span>{{ uni_me }} horario punta</jet-label>
+                                            <jet-label class=""><span class="required">*</span>Producción horario punta</jet-label>
                                             <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="f.valorP" disabled></jet-input>
                                         </div>
                                     </div>
@@ -374,8 +374,8 @@ import AppLayout from '@/Layouts/AppLayout.vue';
     export default {
         props: [
             'usuario',
-            'depa',
-            'errors'
+            'depa'
+            //'errors'
         ],
 
         components: {
@@ -402,6 +402,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 materiales: [],
                 objetivos: [],
                 cargas: [],
+                errors: [],
                 calcuObje: 0,
                 calcuPunta: 12,
                 proc_prin: '',
@@ -421,10 +422,8 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                     usu: this.usuario.id,
                     per_carga: this.usuario.id,
                     dep_perf_id: '',
-                    //partida: '',
-                    valor: '',
                     equipo_id: '',
-                    paquet: [{ paqObjetivo: "", valor: 0, valorP: 0, partida: "" }],
+                    paquet: [{ paqObjetivo: "", valor: 0, valorP: 0, partida: null }],
                     turno_id: '',
                     notaPen: 1,
                     nota: '',
@@ -565,7 +564,6 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                     if (sp.id == event.target.value) {
                         /* console.log(sp) */
                         this.form.equipo_id = sp.equipo == null ? '' : sp.equipo.id;
-                        this.form.vacio = sp.equipo == null ? 'N/A' : sp.equipo.turnos.nomtur;
                         this.form.turno_id = sp.equipo == null ? '' : sp.equipo.turno_id;
                     }
                 })
@@ -600,17 +598,13 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 this.proc_prin = '';
                 this.editMode = false;
                 this.form.fecha = this.hoy;
-                this.form.valor = '';
-                //this.form.norma = '';
-                this.form.partida = '';
-                //this.form.maq_pro_id = '';
-                //this.form.clave_id = '';
                 this.form.agNot = 0;
                 this.form.notaPen = 1;
                 this.form.nota = '';
                 this.form.usu = this.usuario.id;
                 this.form.departamento_id = this.S_Area;
-                this.form.paquet = [{ paqObjetivo: "", valor: 0, valorP: 0, partida: "" }]
+                this.form.paquet = [{ paqObjetivo: "", valor: 0, valorP: 0, partida: null }]
+                this.errors = [];
 
                 if (this.usuario.dep_pers.length != 0) {
                     this.usuario.dep_pers.forEach(v => {
@@ -631,14 +625,37 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 }
             },
             addRow(){
-                this.form.paquet.push({paqObjetivo: '', valor: 0, valorP: 0, partida: ""})
+                this.form.paquet.push({paqObjetivo: '', valor: 0, valorP: 0, partida: null})
             },
             removeRow(row){
                 this.form.paquet.splice(row,1);
             },
             /************************************* Carga de objetivos **************************************/
             async saveOB(data){
-                console.log(data)
+                data.calcuObje = this.calcuObje;
+                data.calcuPunta = this.calcuPunta;
+                data.semana = moment(data.fecha).format("GGGG-[W]WW");
+
+                const reco =  this.form.paquet.find(ele => {
+                    return ele.partida == null;
+                })
+
+                //console.log(reco);
+
+                if (reco == undefined) {
+                    await axios.post('ObjeCordi/storeProObje', data)
+                    .then(eve => {this.ConProduccion(), this.openModal()})
+                    .catch(error => {this.errors = error.response.data.errors});
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Aun no se han llenado todas las partidas!!',
+                    })
+                }
+
+
+                //console.log(ve)
             },
             /****************************** Carga de paquetes para objetivos *******************************/
             async savePObje(form){
