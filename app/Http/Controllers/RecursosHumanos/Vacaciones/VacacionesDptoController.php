@@ -14,11 +14,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use stdClass;
+
+use function PHPUnit\Framework\isNull;
 
 class VacacionesDptoController extends Controller
 {
     public function index(Request $request){
-
 
         $hoy= Carbon::now();
         $mes = $hoy->format('n');
@@ -35,6 +37,10 @@ class VacacionesDptoController extends Controller
         $Autorizado = $User->hasAnyRole(['ONEPIECE', 'RecursosHumanos']); //Busco si el suaurio tiene alguno de los siguientes Roles
 
         $PerfilSession = PerfilesUsuarios::find($Session->id);
+
+        $EsJefe = JefesArea::where('IdEmp', '=', $Session->IdEmp)->first();
+
+        $EsJefe = [] ? $JefeDepto = false :  $JefeDepto = true;
 
         //Generacion de Consulta de Perfiles
         if($Autorizado == true){
@@ -58,11 +64,11 @@ class VacacionesDptoController extends Controller
             $Vacaciones = Vacaciones::where('IdEmp', '=', $request->IdEmp)
             ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
         }else{
-            $Vacaciones = 1;
+            $Vacaciones = new stdClass();
         }
 
         //retorno de la vista retorno de la consulta de perfiles y sus filtros
-        return Inertia::render('RecursosHumanos/Vacaciones/index', compact('Session','Autorizado', 'PerfilesUsuarios', 'PerfilSession', 'Vacaciones'));
+        return Inertia::render('RecursosHumanos/Vacaciones/index', compact('Session','Autorizado', 'JefeDepto', 'PerfilesUsuarios', 'PerfilSession', 'Vacaciones'));
     }
 
     public function store(Request $request){
@@ -85,7 +91,7 @@ class VacacionesDptoController extends Controller
             'DiasRestantes' => $request->DiasRestantes,
         ]);
 
-        PerfilesUsuarios::where('IdEmp', $request->IdEmp)->update([
+        PerfilesUsuarios::where('IdEmp', $request->IdEmp)->where('Empresa', '=', $request->Empresa)->update([
             'IdUser' => $request->IdUser,
             'DiasVac' => $request->DiasRestantes
         ]);
@@ -106,6 +112,5 @@ class VacacionesDptoController extends Controller
     }
 
     public function destroy($id){
-
     }
 }
