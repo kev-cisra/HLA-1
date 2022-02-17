@@ -58,8 +58,8 @@ class VacacionesDptoController extends Controller
         }
 
         //Historico de Vacaciones
-        if($request->IdEmp){
-            $Vacaciones = Vacaciones::where('IdEmp', '=', $request->IdEmp)
+        if($request->id){
+            $Vacaciones = Vacaciones::where('Perfil_id', '=', $request->id)
             ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
         }else{
             $Vacaciones = new stdClass();
@@ -77,6 +77,8 @@ class VacacionesDptoController extends Controller
             'DiasTomados' => ['required'],
         ])->validate();
 
+        $Perfil_id = PerfilesUsuarios::where('IdEmp', '=', $request->IdEmp)->where('Empresa', '=', $request->Empresa)->first();
+
         Vacaciones::create([
             'IdUser' => $request->IdUser,
             'IdEmp' => $request->IdEmp,
@@ -87,6 +89,7 @@ class VacacionesDptoController extends Controller
             'Estatus' => 1,
             'DiasTomados' => $request->DiasTomados,
             'DiasRestantes' => $request->DiasRestantes,
+            'Perfil_id' => $Perfil_id->id,
         ]);
 
         PerfilesUsuarios::where('IdEmp', $request->IdEmp)->where('Empresa', '=', $request->Empresa)->update([

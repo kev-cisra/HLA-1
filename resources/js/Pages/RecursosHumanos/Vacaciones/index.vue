@@ -447,7 +447,7 @@ export default {
         },
 
         Historico: function (data) {
-            this.$inertia.get('/RecursosHumanos/Vacaciones',{ IdEmp: data.IdEmp }, {
+            this.$inertia.get('/RecursosHumanos/Vacaciones',{ id: data.id }, {
                 onSuccess: () => {
                     this.chageHistoricoVacaciones();
                 }, preserveState: true

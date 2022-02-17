@@ -207,7 +207,7 @@ export default {
     props: {
         Session: Object,
         errors: Object,
-        Autorizado: Object,
+        Autorizado: Boolean,
         PerfilesUsuarios: Object,
         Perfil: Object,
         Incidencias: Object,
@@ -347,7 +347,7 @@ export default {
 
         //Consulta de historico de incidencias por perfil
         Historico: function (data) {
-            this.$inertia.get('/RecursosHumanos/Incidencias',{ busca: data.IdEmp }, {
+            this.$inertia.get('/RecursosHumanos/Incidencias',{ id: data.id }, {
                 onSuccess: () => {
                     this.chageHistoricoIncidencias();
                 }, preserveState: true
