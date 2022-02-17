@@ -22489,6 +22489,9 @@ select {
 .tw-prose > :last-child {
 	margin-bottom: 0;
 }
+.tw-invisible {
+	visibility: hidden;
+}
 .tw-fixed {
 	position: fixed;
 }
@@ -23525,6 +23528,10 @@ select {
 .tw-bg-emerald-200 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(167, 243, 208, var(--tw-bg-opacity));
+}
+.tw-bg-gray-900 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(17, 24, 39, var(--tw-bg-opacity));
 }
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
