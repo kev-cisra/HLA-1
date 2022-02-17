@@ -37,9 +37,7 @@ class VacacionesDptoController extends Controller
         $Autorizado = $User->hasAnyRole(['ONEPIECE', 'RecursosHumanos']); //Busco si el suaurio tiene alguno de los siguientes Roles
 
         $PerfilSession = PerfilesUsuarios::find($Session->id);
-
         $EsJefe = JefesArea::where('IdEmp', '=', $Session->IdEmp)->first();
-
         $EsJefe = [] ? $JefeDepto = false :  $JefeDepto = true;
 
         //Generacion de Consulta de Perfiles
