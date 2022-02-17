@@ -43,7 +43,6 @@ class IncidenciasDptoController extends Controller
                 ->where('id', '>', 10)
                 ->get();
             }
-
         }else{
             $PerfilesUsuarios = PerfilesUsuarios::with(['jefe_perfiles','PerfilDepartamento', 'PerfilPuesto', 'jefe_perfiles.PerfilDepartamento', 'jefe_perfiles.PerfilPuesto', 'jefe_perfiles.perfiles_jefe.PerfilDepartamento', 'jefe_perfiles.perfiles_jefe.PerfilPuesto'])
             ->where('id', $Session->id)
@@ -51,8 +50,8 @@ class IncidenciasDptoController extends Controller
         }
 
 
-        if(!empty($request->busca)){
-            $Incidencias = Incidencias::where('IdEmp', '=', $request->busca)
+        if(!empty($request->id)){
+            $Incidencias = Incidencias::where('perfiles_usuarios_id', '=', $request->id)
             ->whereYear('Fecha', '=', $anio)
             ->get(['id', 'IdUser', 'IdEmp', 'TipoMotivo', 'Fecha', 'FechaFin', 'Comentarios', 'perfiles_usuarios_id']);
         }else{
