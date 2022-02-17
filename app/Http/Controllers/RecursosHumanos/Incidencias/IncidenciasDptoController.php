@@ -9,6 +9,7 @@ use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Catalogos\Puestos;
 use App\Models\RecursosHumanos\Incidencias\Incidencias;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -22,52 +23,33 @@ class IncidenciasDptoController extends Controller
         $mes = $hoy->format('n');
         $anio = $hoy->format('Y');
 
-        //Cosnulta para obtener el Numero de empleado de la session
-        $Session = Auth::user();
-        $SessionIdEmp = $Session->IdEmp;
-
-        //Consulta pra obtener el id de Jefe de acuerdo al numero de empleado del trabajador
-        $ObtenJefe = JefesArea::where('IdEmp', '=', $SessionIdEmp)->first('id','IdEmp');
-        if(isset($ObtenJefe->id)){
-            $IdJefe = $ObtenJefe->id; //Obtengo el id de trabajador de acuerdo al idEmpleado de la session
-
-            //Consulta para obtener los datos de los trabajadores pertenecientes al id de la session
-            $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', $IdJefe)
-            ->with([
-                'PerfilPuesto' => function($puesto) { //Relacion 1 a 1 De puestos
-                    $puesto->select('id', 'Nombre');
-                },
-                'PerfilDepartamento' => function($departamento) { //Relacion 1 a 1 De Departamento
-                    $departamento->select('id', 'Nombre');
-                },
-                'PerfilJefe' => function($jefe) { //Relacion 1 a 1 De Jefe
-                    $jefe->select('id', 'IdEmp',  'Nombre');
-                    // $jefe->where('IdEmp', '=', 5310);
-                }
-            ])
-            ->get(['id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id', 'Empresa']); //datos de Perfiles
-        }else{
-            $PerfilesUsuarios = PerfilesUsuarios::with([
-                'PerfilPuesto' => function($puesto) { //Relacion 1 a 1 De puestos
-                    $puesto->select('id', 'Nombre');
-                },
-                'PerfilDepartamento' => function($departamento) { //Relacion 1 a 1 De Departamento
-                    $departamento->select('id', 'Nombre');
-                },
-                'PerfilJefe' => function($jefe) { //Relacion 1 a 1 De Jefe
-                    $jefe->select('id', 'IdEmp',  'Nombre');
-                    // $jefe->where('IdEmp', '=', 5310);
-                }
-            ])
-            ->get(['id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat', 'DiasVac', 'Departamento_id', 'Puesto_id', 'jefes_areas_id', 'Empresa']); //datos de Perfiles
-        }
-
-        $Session = Auth::user();
+        //Catalogos
         $Jefes = JefesArea::get(['id','Nombre']);
         $Puestos = Puestos::get(['id','Nombre']);
         $Departamentos = Departamentos::get(['id','Nombre']);
 
+        //Consulta para obtener el Numero de empleado de la session
         $Session = Auth::user();
+        $User = User::find($Session->id); //Accedo a los datos del usuario logueado
+        $Autorizado = $User->hasAnyRole(['ONEPIECE', 'RecursosHumanos']); //Busco si el suaurio tiene alguno de los siguientes Roles
+
+        //Generacion de Consulta de Perfiles
+        if($Autorizado == true){
+            if($User->hasRole('ONEPIECE') == true){ //Admin
+                $PerfilesUsuarios = PerfilesUsuarios::with(['PerfilDepartamento', 'PerfilPuesto'])
+                ->get();
+            }else{ //RecursoHumanos
+                $PerfilesUsuarios = PerfilesUsuarios::with(['PerfilDepartamento', 'PerfilPuesto'])
+                ->where('id', '>', 10)
+                ->get();
+            }
+
+        }else{
+            $PerfilesUsuarios = PerfilesUsuarios::with(['jefe_perfiles','PerfilDepartamento', 'PerfilPuesto', 'jefe_perfiles.PerfilDepartamento', 'jefe_perfiles.PerfilPuesto', 'jefe_perfiles.perfiles_jefe.PerfilDepartamento', 'jefe_perfiles.perfiles_jefe.PerfilPuesto'])
+            ->where('id', $Session->id)
+            ->get();
+        }
+
 
         if(!empty($request->busca)){
             $Incidencias = Incidencias::where('IdEmp', '=', $request->busca)
@@ -79,7 +61,6 @@ class IncidenciasDptoController extends Controller
 
         return Inertia::render('RecursosHumanos/Incidencias/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session', 'Incidencias'));
     }
-
 
     public function store(Request $request){
 

@@ -25,14 +25,11 @@ class PerfilesUsuariosController extends Controller{
         // $Session = Auth::user();
         $Session = auth()->user();
 
-        $Jefes = JefesArea::get(['IdEmp','Nombre']);
+        $Jefes = JefesArea::get(['id','Nombre']);
         $Puestos = Puestos::get(['id','Nombre']);
         $Departamentos = Departamentos::get(['id','Nombre']);
 
-        $jefe = PerfilesUsuarios::where('id', '=', 1)
-        ->with([
-            'jefe_perfiles'])
-        ->get();
+        $jefe = PerfilesUsuarios::where('id', '=', 1)->with(['jefe_perfiles'])->get();
 
         //retorno de la vista retorno de la consulta de perfiles y sus filtros
         return Inertia::render('RecursosHumanos/PerfilesUsuarios/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session'));
@@ -54,13 +51,13 @@ class PerfilesUsuariosController extends Controller{
             'Puesto_id' => ['required'],
             'Departamento_id' => ['required'],
         ])->validate();
-        // return $request;
+
         $Departamento = Departamentos::where('id', '=', $request->Departamento_id)->first();
         //Busco al jefe por medio de su numero de empleado para registrar su recursividad en la tabla perfiles
-        $jefe_id = PerfilesUsuarios::where('IdEmp','=', $request->jefes_areas_id)->first();
-        $TablaJefe = JefesArea::where('IdEmp', '=', $request->jefes_areas_id)->first();
+        $TablaJefe = JefesArea::where('id', '=', $request->jefes_areas_id)->first();
+        $PerfilId = PerfilesUsuarios::where('IdEmp', '=', $TablaJefe->IdEmp)->first();
 
-        if(isset($jefe_id)){
+        if(isset($request)){
 
             $Nick = User::create([
                 'IdEmp' => $request->IdEmp,
@@ -86,11 +83,11 @@ class PerfilesUsuariosController extends Controller{
                 'FecIng' => $request->FecIng,
                 'Antiguedad' => $request->Antiguedad,
                 'DiasVac' => $request->DiasVac,
-                'jefe_id' => $jefe_id->id,
+                'jefe_id' => $PerfilId->id,
                 'user_id' => $Nick->id,
                 'Puesto_id' => $request->Puesto_id,
                 'Departamento_id' => $request->Departamento_id,
-                'jefes_areas_id' => $TablaJefe->id,
+                'jefes_areas_id' => $request->jefes_areas_id,
             ]);
 
             return redirect()->back();
@@ -116,7 +113,26 @@ class PerfilesUsuariosController extends Controller{
         if ($request->has('id')) {
             switch ($request->metodo) {
                 case 1:
-                        PerfilesUsuarios::find($request->input('id'))->update($request->all());
+                        //Busco al jefe por medio de su numero de empleado para registrar su recursividad en la tabla perfiles
+                        $TablaJefe = JefesArea::where('id', '=', $request->jefes_areas_id)->first();
+                        $PerfilId = PerfilesUsuarios::where('IdEmp', '=', $TablaJefe->IdEmp)->first();
+
+                        PerfilesUsuarios::find($request->input('id'))->update([
+                            'Empresa' => $request->Empresa,
+                            'Nombre' => $request->Nombre,
+                            'ApPat' => $request->ApPat,
+                            'ApMat' => $request->ApMat,
+                            'Curp' => $request->Curp,
+                            'Rfc' => $request->Rfc,
+                            'Nss' => $request->Nss,
+                            'FecIng' => $request->FecIng,
+                            'jefe_id' => $PerfilId->id,
+                            'user_id' => $request->user_id,
+                            'Puesto_id' => $request->Puesto_id,
+                            'Departamento_id' => $request->Departamento_id,
+                            'jefes_areas_id' => $request->jefes_areas_id,
+                        ]);
+
                         return redirect()->back();
                     break;
 

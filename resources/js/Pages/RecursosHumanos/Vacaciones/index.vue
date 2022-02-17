@@ -13,7 +13,7 @@
             <div><p>Días de Vacaciones: <span class="tw-font-bold tw-text-lg">{{PerfilSession.DiasVac}} </span></p></div>
         </section>
         <!-- ****************************************** TABLAS ********************************************* -->
-        <section class="tw-mx-4 tw-my-4">
+        <section class="tw-mx-20 tw-my-4">
             <Table id="Perfiles">
                 <template v-slot:TableHeader>
                         <th class="columna">Empresa</th>
@@ -324,14 +324,12 @@ export default {
                     language: this.español,
                     paging: true,
                     pageLength : 20,
-                    scrollX: true,
-                    scrollY:  '40vh',
+                    // scrollX: true,
+                    // scrollY:  '40vh',
                     order: [0, 'desc'],
-                    columnDefs: [
-                        { "width": "5%", "targets": [0,8] },
-                        { "width": "10%", "targets": [2,3,4,5,6] },
-                        { "width": "6%", "targets": [7,] },
-                    ],
+                    // columnDefs: [
+                    //     { "width": "5%", "targets": [0,8] },
+                    // ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",

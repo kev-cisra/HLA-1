@@ -9,20 +9,20 @@
         </section>
 
         <!-- **************************************************** TABLAS ************************************************** -->
-        <section class="tw-mx-4 tw-my-4">
+        <section class="tw-mx-16 tw-my-4">
             <Table id="perfiles">
                 <template v-slot:TableHeader>
                     <th class="columna">Num Control</th>
                     <th class="columna">Nombre</th>
                     <th class="columna">Apellido Paterno</th>
                     <th class="columna">Apellido Materno</th>
-                    <th class="columna">Departamento</th>
                     <th class="columna">Puesto</th>
+                    <th class="columna">Departamento</th>
                     <th class="columna">Acciones</th>
                 </template>
 
                 <template v-slot:TableFooter>
-                    <tr class="fila" v-for="datos in PerfilesUsuarios" :key="datos.id">
+                    <tr class="fila" v-for="datos in Perfiles" :key="datos.id">
                         <td class="tw-text-center">{{ datos.IdEmp }}</td>
                         <td>{{ datos.Nombre }}</td>
                         <td>{{ datos.ApPat }}</td>
@@ -74,10 +74,10 @@
                         <select class="InputSelect focus:outline-none focus:shadow-outline" v-model="form.Tipo">
                             <option value="">-- SELECCIONA UNA TIPO --</option>
                             <option value="CAMBIO DE TURNO">CAMBIO DE TURNO</option>
-                            <option value="PERMISO C/GOCE DE SUELDO">PERMISO S/GOCE DE SUELDO</option>
+                            <option value="PERMISO S/GOCE DE SUELDO">PERMISO S/GOCE DE SUELDO</option>
                             <option value="PERMISO C/GOCE DE SUELDO">PERMISO C/GOCE DE SUELDO</option>
                             <option value="INCAPACIDAD">INCAPACIDAD</option>
-                            <option value="PERMISO PARCIAL C/GOCE DE SUELDO">PERMISO PARCIAL S/GOCE DE SUELDO</option>
+                            <option value="PERMISO PARCIAL S/GOCE DE SUELDO">PERMISO PARCIAL S/GOCE DE SUELDO</option>
                             <option value="PERMISO PARCIAL C/GOCE DE SUELDO">PERMISO PARCIAL C/GOCE DE SUELDO</option>
                             <option value="FALTA">FALTA</option>
                         </select>
@@ -176,13 +176,13 @@ export default {
             tam: "xl",
             showModal: false,
             form: {
-                id: null,
+                id: '',
                 IdUser: this.Session.id,
-                IdEmp: null,
-                Fecha: null,
-                FechaFin: null,
-                Tipo: null,
-                Comentarios:null,
+                IdEmp: '',
+                Fecha: '',
+                FechaFin: '',
+                Tipo: '',
+                Comentarios:'',
             },
         };
     },
@@ -206,8 +206,9 @@ export default {
 
     props: {
         Session: Object,
-        PerfilesUsuarios: Object,
         errors: Object,
+        Autorizado: Object,
+        PerfilesUsuarios: Object,
         Perfil: Object,
         Incidencias: Object,
     },
@@ -353,5 +354,28 @@ export default {
             });
         },
     },
+
+    computed:{
+        Perfiles: function () {
+            const PerfilesDependientes = []; //Declaracion d enuevo arreglo
+            if(this.Autorizado == true){
+                this.PerfilesUsuarios.forEach(element => {
+                    PerfilesDependientes.push(element)
+                });
+            }else{
+                this.PerfilesUsuarios.forEach(element => {
+                    element.jefe_perfiles.forEach( el => {
+                        PerfilesDependientes.push(el)
+                        // el.perfiles_jefe.forEach(e => {
+                        //     PerfilesDependientes.push(e)
+                        // })
+                    })
+                });
+            }
+
+            return PerfilesDependientes;
+
+        }
+    }
 };
 </script>

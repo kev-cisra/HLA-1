@@ -91,12 +91,12 @@
 
             <div class="ModalForm">
                 <div class="FormSection">
-                    <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <div class="tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
                         <jet-label><span class="required">*</span>NÚMERO EMPLEADO</jet-label>
                         <jet-input type="text" v-model="form.IdEmp"></jet-input>
                         <small v-if="errors.IdEmp" class="validation-alert">{{errors.IdEmp}}</small>
                     </div>
-                    <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                    <div class="tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
                         <jet-label><span class="required">*</span>EMPRESA</jet-label>
                         <select class="InputSelect" v-model="form.Empresa">
                             <option value="HILATURAS">HILATURAS</option>
@@ -104,10 +104,10 @@
                         </select>
                         <small v-if="errors.Empresa" class="validation-alert">{{errors.Empresa}}</small>
                     </div>
-                    <div class="tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="!editMode">
+                    <div class="tw-mb-6 md:tw-w-3/4 md:tw-mb-0">
                         <jet-label><span class="required">*</span>JEFE</jet-label>
                         <select class="InputSelect" v-model="form.jefes_areas_id">
-                            <option v-for="jefe in Jefes" :key="jefe.IdEmp" :value="jefe.IdEmp" > {{ jefe.Nombre }}</option>
+                            <option v-for="jefe in Jefes" :key="jefe.id" :value="jefe.id" > {{ jefe.Nombre }}</option>
                         </select>
                         <small v-if="errors.jefes_areas_id" class="validation-alert">{{errors.jefes_areas_id}}</small>
                     </div>
@@ -199,6 +199,7 @@
                 <jet-CancelButton @click="chageDiasVac">Cerrar</jet-CancelButton>
             </div>
         </modal>
+
     </app-layout>
 </template>
 
