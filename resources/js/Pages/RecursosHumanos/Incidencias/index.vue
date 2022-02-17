@@ -106,7 +106,7 @@
             </div>
 
         </modal>
-
+        <!-- Modal Historico Incidencias -->
         <modal :show="showHistoricoIncidencias" @close="chageHistoricoIncidencias" maxWidth="3xl">
             <div class="ModalHeader">
                 <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Historico Incidencias</h3>

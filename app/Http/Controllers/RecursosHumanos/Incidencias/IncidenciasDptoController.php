@@ -59,7 +59,7 @@ class IncidenciasDptoController extends Controller
             $Incidencias = Incidencias::get(['id', 'IdUser', 'IdEmp', 'TipoMotivo', 'Fecha', 'FechaFin', 'Comentarios', 'perfiles_usuarios_id']);
         }
 
-        return Inertia::render('RecursosHumanos/Incidencias/index', compact('PerfilesUsuarios', 'Jefes', 'Puestos', 'Departamentos', 'Session', 'Incidencias'));
+        return Inertia::render('RecursosHumanos/Incidencias/index', compact('PerfilesUsuarios', 'Autorizado', 'Jefes', 'Puestos', 'Departamentos', 'Session', 'Incidencias'));
     }
 
     public function store(Request $request){
