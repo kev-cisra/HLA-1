@@ -1,5 +1,6 @@
 <template>
     <app-layout>
+        <!-- ****************************************** TITULO ********************************************* -->
         <section class="tw-uppercase tw-mx-4">
             <Header :class="[color, style]">
                 <slot>
@@ -7,13 +8,25 @@
                 </slot>
             </Header>
         </section>
-        <!-- ****************************************** FILTROS ********************************************* -->
-        <section class="tw-m-4 tw-flex tw-justify-center tw-gap-4">
-            <div><p> Usuario: <span class="tw-font-bold tw-text-lg"> {{PerfilSession.Nombre}} {{PerfilSession.ApPat}} {{PerfilSession.ApMat}}</span></p> </div>
-            <div><p>Días de Vacaciones: <span class="tw-font-bold tw-text-lg">{{PerfilSession.DiasVac}} </span></p></div>
+        <pre></pre>
+        <!-- ****************************************** Subtitulo ********************************************* -->
+        <section class="tw-m-4 tw-flex tw-justify-center tw-gap-4 tw-p-2">
+            <div><span class="tw-font-bold tw-text-lg"> {{PerfilSession.Nombre}} {{PerfilSession.ApPat}} {{PerfilSession.ApMat}}</span></div>
+            <div><span class="tw-font-bold tw-text-lg">{{PerfilSession.DiasVac}} Días</span></div>
+            <div class="IconAproved" @click="vacaciones(data, 1)" v-if="PerfilSession.DiasVac > 0">
+                <span tooltip="Solicita de Vacaciones" flow="right">
+                    <i class="tw-text-xl fa-solid fa-plane"></i>
+                </span>
+            </div>
+            <div class="IconDenied" v-else>
+                <span tooltip="No Cuentas con días disponibles" flow="right">
+                    <i class="tw-text-xl fa-solid fa-plane-slash"></i>
+                </span>
+            </div>
         </section>
+
         <!-- ****************************************** TABLAS ********************************************* -->
-        <section class="tw-mx-20 tw-my-4">
+        <section class="tw-mx-20 tw-my-4" v-if="JefeDepto == true">
             <Table id="Perfiles">
                 <template v-slot:TableHeader>
                         <th class="columna">Empresa</th>
@@ -39,7 +52,7 @@
                         <td class="tw-text-center">{{data.DiasVac}}</td>
                         <td class="fila tw-center">
                             <div class="tw-flex tw-justify-center tw-items-center">
-                                <div class="iconoEdit" @click="vacaciones(data)">
+                                <div class="iconoEdit" @click="vacaciones(data, 2)">
                                     <span tooltip="Captura de Vacaciones" flow="left">
                                         <i class="fas fa-user-plus"></i>
                                     </span>
@@ -58,13 +71,66 @@
                 </template>
             </Table>
         </section>
+        <!-- --------------------------- Tabla de vacaciones Individuales ------------------------------ -->
+        <section class="tw-mx-20 tw-my-4">
+            <Table id="Vacaciones">
+                <template v-slot:TableHeader>
+                    <th class="columna">Num Control</th>
+                    <th class="columna">Fecha Inicio</th>
+                    <th class="columna">Fecha Fin</th>
+                    <th class="columna">Comentarios</th>
+                    <th class="columna">Dias Tomados</th>
+                    <th class="columna">Dias Restantes</th>
+                    <th class="columna">Estatus</th>
+                </template>
+
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="dato in MisVacaciones" :key="dato.id">
+                        <td class="tw-text-center">{{ dato.IdEmp }}</td>
+                        <td class="tw-text-center">{{ dato.FechaInicio }}</td>
+                        <td class="tw-text-center">{{ dato.FechaFin }}</td>
+                        <td>{{ dato.Comentarios }}</td>
+                        <td class="tw-text-center">{{ dato.DiasTomados }}</td>
+                        <td class="tw-text-center">{{ dato.DiasRestantes }}</td>
+                        <td class="tw-text-center">
+                            <div v-if="dato.Estatus == 0">
+                                <span tooltip="Vacaciones Solicitadas" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">EN ESPERA</span>
+                                </span>
+                            </div>
+                            <div v-else-if="dato.Estatus == 1">
+                                <span tooltip="Vacaciones Aprovadas" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">AUTORIZADA</span>
+                                </span>
+                            </div>
+                            <div v-else-if="dato.Estatus == 2">
+                                <span tooltip="En espera de autorizacion por RH" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-yellow-600 tw-rounded-full">EN CANCELACION</span>
+                                </span>
+                            </div>
+                            <div v-else-if="dato.Estatus == 3">
+                                <span tooltip="Vacaciones Canceladas por RH" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-600 tw-rounded-full">CANCELADA</span>
+                                </span>
+                            </div>
+                            <div v-else-if="dato.Estatus == 4">
+                                <span tooltip="Solicitud de Cancelacion Rechazada" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZADA</span>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+            </Table>
+        </section>
+
         <!-- **************************************************** MODALES ****************************************************** -->
         <modal :show="showModal" @close="chageClose" :maxWidth="tam">
             <div class="ModalHeader">
                 <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Registro de Vacaciones</h3>
             </div>
 
-            <div class="tw-flex tw-flex-col tw-my-2 tw-p-2 tw-uppercase tw-bg-blueGray-50 tw-border-teal-500 tw-border-t-2 tw-border-b-2">
+            <div class="InfoVac" v-if="TipoRegistro == 2">
                 <div class="tw-flex tw-justify-center"><p class="tw-font-bold tw-text-lg">{{form.IdEmp}} - {{form.Nombre}} {{form.ApPat}} {{form.ApMat}}</p></div>
                 <div class="tw-flex tw-justify-center"><p class="tw-font-bold tw-text-xs">Días de vacaciones restantes: <span class="tw-font-bold tw-text-base tw-text-teal-600">{{form.DiasVac}}</span></p></div>
                 <div class="tw-flex tw-justify-center"><p class="tw-font-bold tw-text-xs">Fecha Ingreso: <span class="tw-font-bold tw-text-base tw-text-teal-600">{{form.FecIng}}</span></p></div>
@@ -92,10 +158,15 @@
                 </div>
             </div>
 
-            <div class="ModalFooter">
+            <div class="ModalFooter" v-if="TipoRegistro == 2">
                 <jet-button type="button" @click="save(form)" v-if="form.DiasVac > 0">Autorizar Vacaciones</jet-button>
                 <jet-CancelButton @click="chageClose" v-if="form.DiasVac > 0">Cerrar</jet-CancelButton>
                 <jet-CancelButton type="button" @click="chageClose" v-else>Aún no se pueden Solicitar Vacaciones</jet-CancelButton>
+            </div>
+
+            <div class="ModalFooter" v-else>
+                <jet-button type="button" @click="SolicitaVacaciones(form)">Solicitar Vacaciones</jet-button>
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
             </div>
         </modal>
         <!-- ----------- modal vacaciones --------------- -->
@@ -227,7 +298,9 @@ export default {
             ModalCancelacion: false,
             showHistoricoVacaciones: false,
             showCancela: false,
+            TipoRegistro: 1,
             color: "tw-bg-green-600",
+            color2: "tw-bg-green-700",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             now: moment().format("YYYY-MM-DD"),
             tam: "2xl",
@@ -276,10 +349,12 @@ export default {
         Autorizado: Boolean,
         PerfilSession: Object,
         Vacaciones: Object,
+        MisVacaciones: Object,
     },
 
     mounted() {
         this.tabla();
+        this.tablaVacaciones();
         this.tablaHistorico();
     },
 
@@ -320,16 +395,37 @@ export default {
             this.$nextTick(() => {
                 $("#Perfiles").DataTable({
                     destroy: true,
-                    stateSave: true,
                     language: this.español,
                     paging: true,
-                    pageLength : 20,
+                    pageLength : 10,
                     // scrollX: true,
-                    // scrollY:  '40vh',
+                    // scrollY:  '30vh',
                     order: [0, 'desc'],
                     // columnDefs: [
                     //     { "width": "5%", "targets": [0,8] },
                     // ],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                    ]
+                }).draw();
+            });
+        },
+
+        tablaVacaciones(){
+            this.$nextTick(() => {
+                $("#Vacaciones").DataTable({
+                    destroy: true,
+                    language: this.español,
+                    paging: true,
+                    pageLength : 5,
+                    // scrollX: true,
+                    // scrollY:  '30vh',
+                    order: [0, 'desc'],
+                    columnDefs: [
+                        { "width": "10%", "targets": [0,6] },
+                    ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -351,14 +447,106 @@ export default {
             });
         },
 
-        vacaciones: function (data) { //Visualiza Modal para solicitar Vacaciones y asigna datos
+        vacaciones: function (data, tipo) { //Visualiza Modal para solicitar Vacaciones y asigna datos
+            this.TipoRegistro = tipo;
             this.form = Object.assign({}, data);
             this.chageClose();
+        },
+
+        SolicitaVacaciones(data){   //Solicitud Individual de Vacaciones
+            data.IdUser = this.Session.id;
+            data.IdEmp = this.Session.IdEmp;
+            data.Empresa = this.PerfilSession.Empresa;
+            data.Nombre = this.PerfilSession.Nombre;
+            data.ApPat = this.PerfilSession.ApPat;
+            data.ApMat = this.PerfilSession.ApMat;
+            data.Estatus = 0;
+
+            var DiasRestantes = 0;
+            //Conversion de fechas a momment Js
+            var fecha1 = moment(data.FechaInicio);
+            var fecha2 = moment(data.FechaFin);
+            var dias = 0;
+            //calculo que existe al menos 1 dia solicitado de vacaciones
+            var DiasSolicitados = fecha2.diff(fecha1, 'days');
+            DiasSolicitados = data.DiasTomados = data.DiasTomados = DiasSolicitados+1;
+
+            if(DiasSolicitados > 0){ //Minimo se solicito un dia de vacaciones
+                //Proceso para verifica que no pidan vacaciones con 1 mes de anticipacion
+                var hoy = moment();
+                //Verifico si pasaron mas de 30 dias entre la fecha actual y la peticion de vacaciones
+                var FechaValida = fecha1.diff(hoy, 'days');
+                //Comprobar que la fecha solicitada para vacaciones no sea mayor a 30 dias naturales
+                if(FechaValida < 30 ){
+
+                    if(data.Empresa == 'SERGES' || data.Empresa == 'SHIELDTEX'){ //En caso de ser SERGES no contar los fines de semana
+                        // DiasSolicitados -=1;
+                        //Descuendo de fines de semana
+                        var from = moment(fecha1, 'DD/MM/YYY'),
+                            to = moment(fecha2, 'DD/MM/YYY');
+
+                        while (!from.isAfter(to)) {
+                                // Si no es sabado ni domingo
+                                if (from.isoWeekday() !== 6 && from.isoWeekday() !== 7) {
+                                    dias++;
+                                }
+                                from.add(1, 'days');
+                            }
+
+                            if(dias <= this.PerfilSession.DiasVac){ //(Cambio Individual)
+                                //Verificacion de dias de vacaciones disponibles no sean mayores a los solicitados
+                                data.DiasTomados = dias;
+                                data.DiasRestantes = this.PerfilSession.DiasVac - data.DiasTomados;
+                                // Guardado de la informacion
+                                this.$inertia.post("/RecursosHumanos/Vacaciones", data, {
+                                    onSuccess: () => {
+                                        this.reset(), this.chageClose(), this.alertSucces();
+                                    },
+                                });
+                            }else{
+                                this.alertWarningDias();
+                            }
+
+                    }else{ //En caso de ser Hilaturas se cuentan los fines de semana
+                        var dias = fecha2.diff(fecha1, 'days');
+                        data.DiasTomados = data.DiasTomados = dias+1;
+                        data.DiasRestantes = data.DiasVac - data.DiasTomados;
+
+                        //Verificacion de dias de vacaciones disponibles no sean mayores a los solicitados caso de hilaturas
+                        if(data.DiasRestantes >= 0){
+                            // Guardado de la informacion
+                            this.$inertia.post("/RecursosHumanos/Vacaciones", data, {
+                                onSuccess: () => {
+                                    this.reset(), this.chageClose(), this.alertSucces();
+                                },
+                            });
+                        }else{
+                            this.alertWarningDias();
+                        }
+
+                    }
+
+                }else{
+                    Swal.fire(
+                    'Fecha de solicitud excedida',
+                    'Fecha de solicitud de vacaciones excede los 30 días de anticipacion',
+                    'info'
+                    )
+                }
+            }else{
+                //En caso contrario no se solicitaron dias de vacaciones
+                    Swal.fire(
+                    'Fecha Invalidas',
+                    'Verifica las fechas de Inicio y termino de vacaciones',
+                    'info'
+                    )
+            }
         },
 
         save(data) { //Gaurdado de solicitud de Vacaciones
             //assigno el Id se session
             data.IdUser = this.Session.id;
+            data.Estatus = 1;
             var DiasRestantes = 0;
             //Conversion de fechas a momment Js
             var fecha1 = moment(data.FechaInicio);

@@ -37,8 +37,7 @@ class VacacionesDptoController extends Controller
         $Autorizado = $User->hasAnyRole(['ONEPIECE', 'RecursosHumanos']); //Busco si el suaurio tiene alguno de los siguientes Roles
 
         $PerfilSession = PerfilesUsuarios::find($Session->id);
-        $EsJefe = JefesArea::where('IdEmp', '=', $Session->IdEmp)->first();
-        $EsJefe = [] ? $JefeDepto = false :  $JefeDepto = true;
+
 
         //Generacion de Consulta de Perfiles
         if($Autorizado == true){
@@ -51,13 +50,21 @@ class VacacionesDptoController extends Controller
                 ->get();
             }
 
+            $JefeDepto = true;
+
         }else{
+            //Verifico si esta registrado en la tabla de jefes
+            $EsJefe = JefesArea::where('IdEmp', '=', $Session->IdEmp)->first();
+            $EsJefe != '' ? $JefeDepto = true :  $JefeDepto = false;
             $PerfilesUsuarios = PerfilesUsuarios::with(['jefe_perfiles','PerfilDepartamento', 'PerfilPuesto', 'jefe_perfiles.PerfilDepartamento', 'jefe_perfiles.PerfilPuesto', 'jefe_perfiles.perfiles_jefe.PerfilDepartamento', 'jefe_perfiles.perfiles_jefe.PerfilPuesto'])
             ->where('id', $Session->id)
             ->get();
         }
 
         //Historico de Vacaciones
+        $MisVacaciones = Vacaciones::where('Perfil_id', '=', $Session->id)
+        ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
+        //Consulta de vacaciones por empleado
         if($request->id){
             $Vacaciones = Vacaciones::where('Perfil_id', '=', $request->id)
             ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
@@ -66,7 +73,7 @@ class VacacionesDptoController extends Controller
         }
 
         //retorno de la vista retorno de la consulta de perfiles y sus filtros
-        return Inertia::render('RecursosHumanos/Vacaciones/index', compact('Session','Autorizado', 'JefeDepto', 'PerfilesUsuarios', 'PerfilSession', 'Vacaciones'));
+        return Inertia::render('RecursosHumanos/Vacaciones/index', compact('Session','Autorizado', 'JefeDepto', 'PerfilesUsuarios', 'PerfilSession', 'MisVacaciones' ,'Vacaciones'));
     }
 
     public function store(Request $request){
@@ -86,7 +93,7 @@ class VacacionesDptoController extends Controller
             'FechaInicio' => $request->FechaInicio,
             'FechaFin' => $request->FechaFin,
             'Comentarios' => $request->Comentarios,
-            'Estatus' => 1,
+            'Estatus' => $request->Estatus,
             'DiasTomados' => $request->DiasTomados,
             'DiasRestantes' => $request->DiasRestantes,
             'Perfil_id' => $Perfil_id->id,

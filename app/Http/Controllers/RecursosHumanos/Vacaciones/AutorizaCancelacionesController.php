@@ -51,7 +51,14 @@ class AutorizaCancelacionesController extends Controller{
 
 
         switch($request->metodo){
-            case 1: //Caso 1 Cancelacion de vacaciones aprovada
+            case 1:
+                // return $request;
+                Vacaciones::where('id', '=' ,$request->id)->update([
+                    'Estatus' => 1,
+                ]);
+                return redirect()->back()->with('message', 'Perfil y Usuario Creados Correctamente');
+                break;
+            case 2: //Caso 1 Cancelacion de vacaciones aprovada
                 //Regresa los dias de vacaciones correspondietes al perfil
                 PerfilesUsuarios::find($Perfil->id)->update([
                     'DiasVac' => $Perfil->DiasVac + $request->DiasTomados,
@@ -66,7 +73,7 @@ class AutorizaCancelacionesController extends Controller{
                 return redirect()->back()->with('message', 'Perfil y Usuario Creados Correctamente');
                 break;
 
-            case 2:
+            case 3:
                 Vacaciones::find($request->id)->update([
                     'Estatus' => 4,
                 ]);

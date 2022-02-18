@@ -24,7 +24,9 @@
                         <th class="columna">Fecha Fin</th>
                         <th class="columna">Dias Sol</th>
                         <th class="columna">Motivo Cancelacion</th>
+                        <th class="columna">Estatus</th>
                         <th class="columna">Autorizar</th>
+                        <th class="columna">Cancelar</th>
                     </template>
 
                     <template v-slot:TableFooter>
@@ -39,6 +41,44 @@
                             <td class="tw-p-2">{{ datos.FechaFin }}</td>
                             <td class="tw-p-2">{{ datos.DiasTomados }}</td>
                             <td class="tw-p-2">{{ datos.MotivoCancelacion }}</td>
+                            <td class="tw-text-center">
+                                <div v-if="datos.Estatus == 0">
+                                    <span tooltip="Autoriza Vacaciones" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">SOLICITADA</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 1">
+                                    <span tooltip="Vacaciones Aprovadas" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">AUTORIZADA</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 2">
+                                    <span tooltip="En espera de autorizacion por RH" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-yellow-600 tw-rounded-full">PETICION DE CANCELACIÓN</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 3">
+                                    <span tooltip="Vacaciones Canceladas por RH" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-600 tw-rounded-full">CANCELADA</span>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="fila">
+                                <div class="columnaIconos" v-if="datos.Estatus == 0">
+                                    <div class="iconoDetails"  @click="AutorizaVacaciones(datos)">
+                                        <span tooltip="Autoriza Vacaciones" flow="left">
+                                            <i class="fas fa-user-check"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="columnaIconos" v-else>
+                                    <div class="iconoDetails">
+                                        <span tooltip="Vacaciones Canceladas" flow="left">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
                             <td class="fila">
                                 <div class="columnaIconos" v-if="datos.Estatus != 3">
                                     <div class="iconoDetails"  @click="AutorizaCancelacion(datos)">
@@ -154,6 +194,16 @@ export default {
             );
         },
 
+        AutorizaVacaciones(data){
+            data._method = "PUT";
+            data.metodo = 1;
+            this.$inertia.post("/RecursosHumanos/CancelaVacaciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
+        },
+
         AutorizaCancelacion(data) {
             Swal.fire({
             title: 'Confirma esta Acción',
@@ -167,7 +217,7 @@ export default {
             }).then((result) => {
                 if (result.isConfirmed) {
                     data._method = "PUT";
-                    data.metodo = 1;
+                    data.metodo = 2;
                     this.$inertia.post("/RecursosHumanos/CancelaVacaciones/" + data.id, data, {
                         onSuccess: () => {
                             this.alertSucces();
@@ -190,7 +240,7 @@ export default {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         data._method = "PUT";
-                        data.metodo = 2;
+                        data.metodo = 3;
                         this.$inertia.post("/RecursosHumanos/CancelaVacaciones/" + data.id, data, {
                             onSuccess: () => {
                                 this.alertSucces();

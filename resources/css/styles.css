@@ -80,6 +80,18 @@
     @apply tw-w-4 tw-mr-2 tw-transform tw-text-red-500 hover:tw-scale-110;
 }
 
+.IconAproved{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-teal-500  hover:tw-text-sky-600 hover:tw-scale-125;
+}
+
+.IconWait{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-orange-500  hover:tw-text-sky-600 hover:tw-scale-125;
+}
+
+.IconDenied{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-red-500  hover:tw-text-sky-600 hover:tw-scale-125;
+}
+
 .btn-row{
     @apply tw-block tw-w-full tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none;
 }
@@ -324,3 +336,6 @@
     @apply tw-w-full tw-rounded-t-2xl hover:tw-bg-cyan-200 active:tw-bg-cyan-300 tw-p-5 tw-cursor-pointer tw-mt-3;
 }
 
+.InfoVac{
+    @apply tw-flex tw-flex-col tw-my-2 tw-p-2 tw-uppercase tw-bg-blueGray-50 tw-border-teal-500 tw-border-t-2 tw-border-b-2;
+}
