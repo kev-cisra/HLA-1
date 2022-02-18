@@ -460,7 +460,7 @@ export default {
             data.Nombre = this.PerfilSession.Nombre;
             data.ApPat = this.PerfilSession.ApPat;
             data.ApMat = this.PerfilSession.ApMat;
-            data.Estatus = 0;
+            data.Estatus = 1;
 
             var DiasRestantes = 0;
             //Conversion de fechas a momment Js
