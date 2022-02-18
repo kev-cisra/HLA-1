@@ -71,6 +71,9 @@
                 </div>
             </div>
         </div>
+                        <div class="tw-p-2 tw-h-64 tw-h-64">
+                    <div class="qrcode-style" id="qrcode"></div>
+                </div>
     </app-layout>
 </template>
 
@@ -92,6 +95,8 @@ import datatable from "datatables.net-bs5";
 import $ from "jquery";
 import moment from 'moment';
 import 'moment/locale/es';
+
+import QRCode from "qrcodejs2";
 
 export default {
 
@@ -135,9 +140,20 @@ export default {
 
     mounted(){
         this.tabla();
+        this.qrcode();
     },
 
     methods: {
+        qrcode() {
+            let qrcode = new QRCode("qrcode", {
+                ancho: 200, // establece el ancho en píxeles
+                height: 200, // establece la altura en píxeles
+                text: "https://intranethlangeles.com/Compras/Requisiciones?Year=2022&Month=2&Status=0&View=1&Req=", // Establezca el contenido del código QR o la dirección de redireccionamiento,
+                colorDark : "#64748B",
+                colorLight : "#ffffff",
+            });
+        },
+
         reset(){
             this.form = {
                 NombreRol: '',
