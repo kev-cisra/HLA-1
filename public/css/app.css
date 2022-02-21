@@ -22759,6 +22759,9 @@ select {
 .tw-h-1\/6 {
 	height: 16.666667%;
 }
+.tw-h-64 {
+	height: 16rem;
+}
 .tw-h-20 {
 	height: 5rem;
 }
@@ -22776,9 +22779,6 @@ select {
 }
 .tw-h-3 {
 	height: 0.75rem;
-}
-.tw-h-64 {
-	height: 16rem;
 }
 .tw-h-24 {
 	height: 6rem;
@@ -25926,6 +25926,10 @@ select {
 
 	.md\:tw-mb-0 {
 		margin-bottom: 0px;
+	}
+
+	.md\:tw-mb-6 {
+		margin-bottom: 1.5rem;
 	}
 
 	.md\:tw-flex {
