@@ -41,8 +41,8 @@ class Kernel extends ConsoleKernel
         //ca,bio de turnos y equipos
         $schedule->command('CTurnos:General')
         ->timezone('America/Mexico_City')
-        //->dailyAt('07:00');
-        ->everyMinute();
+        ->dailyAt('07:00');
+        //->everyMinute();
 
         //Invierno equipos apertura
         $schedule->command('Invierno:Equipos')

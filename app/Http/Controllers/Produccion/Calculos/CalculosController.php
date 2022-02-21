@@ -94,7 +94,7 @@ class CalculosController extends Controller
                 case 'efi_pun_dia':
                     $this->efi_pun_dia($ope, $request->depa, $fechas, $perf);
                     break;
-                case 'efi_pun_sem':
+                /* case 'efi_pun_sem':
                     $this->efi_pun_sem($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'efi_pun_mes':
@@ -108,7 +108,7 @@ class CalculosController extends Controller
                     break;
                 case 'mes_pun_sm':
                     $this->mes_pun_sm($ope, $request->depa, $fechas, $perf);
-                    break;
+                    break; */
             }
         }
 
