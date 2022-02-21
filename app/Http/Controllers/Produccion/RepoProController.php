@@ -116,6 +116,9 @@ class RepoProController extends Controller
                     $mat ->withTrashed()
                     -> select('id', 'idmat', 'nommat');
                 },
+                'objetivopunta'=> function($op){
+                    $op->select('id', 'horas', 'valorPu', 'carga_id');
+                },
                 'clave' => function($cla){
                     $cla ->withTrashed()
                     -> select('id', 'CVE_ART', 'DESCR');

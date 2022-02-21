@@ -58,7 +58,7 @@ class CalculosController extends Controller
         foreach ($calcula as $ope) {
             //dependiendo del tipo de operacion
             switch ($ope->operacion) {
-                case 'sm_d':
+                /* case 'sm_d':
                     $this->sm_d($ope, $request->depa, $fechas, $perf);
                     break;
                 case 'sm_dc':
@@ -91,13 +91,28 @@ class CalculosController extends Controller
                 case 'efi_sem':
                     $this->efi_sem($ope, $request->depa, $fechas, $perf);
                     break;
-                /* case 'efi_pun_dia':
+                case 'efi_pun_dia':
                     $this->efi_pun_dia($ope, $request->depa, $fechas, $perf);
                     break; */
+                case 'efi_pun_sem':
+                    $this->efi_pun_sem($ope, $request->depa, $fechas, $perf);
+                    break;
+                case 'efi_pun_mes':
+                    $this->efi_pun_mes($ope, $request->depa, $fechas, $perf);
+                    break;
+                case 'sm_pun_d':
+                    $this->sm_pun_d($ope, $request->depa, $fechas, $perf);
+                    break;
+                case 'sem_pun_sm':
+                    $this->sem_pun_sm($ope, $request->depa, $fechas, $perf);
+                    break;
+                case 'mes_pun_sm':
+                    $this->mes_pun_sm($ope, $request->depa, $fechas, $perf);
+                    break;
             }
         }
 
-        //return 'Listo';
+        return 'Listo';
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
@@ -737,17 +752,29 @@ class CalculosController extends Controller
         //return $data;
     }
 
+    /************************** Operaciones Horario punta ****************************************/
+
+    //suma diaria horario punta
+    public function sm_pun_d(){}
+
+    //suma semanal horario punta
+    public function sem_pun_sm(){}
+
+    //suma mensual horario punta
+    public function mes_pun_sm(){}
+
     //operacion eficiencia puta diario
     public function efi_pun_dia($val, $dep, $fechas, $usuario){
         //Contador y suma final
         $fs = 0;
         //Contador y suma de produccion
         $fsP = 0;
-        //Contador y suma de objetivos
-        $fsO = 0;
+        //nuevos arreglos
+        $obje = [];
+
         $nfec = $fechas['fecha']." 07:00:00";
         $onfec = date("Y-m-d H:i:s", strtotime($nfec."+ 1 days" ));
-        //echo $nfec.' - '.$onfec;
+
         //Segundo recorrido para procesos
         foreach ($val->formulas as $formu) {
             //si su tipo es de produccion realiza la suma
@@ -759,34 +786,64 @@ class CalculosController extends Controller
                 $suma = carga::where('departamento_id', '=', $dep)
                     ->whereBetween('fecha', [$nfec, $onfec])
                     -> where('maq_pro_id', '=', $formu->maq_pros_id)
-                    ->get();
-
-                //echo($suma." - ");
-                    //->sum('valor');
+                    ->sum('valor');
 
                 //resultado
-                //$fsP += $suma;
+                $fsP += $suma;
             }else{
-                //suma
-                $suma = carga::where('departamento_id', '=', $dep)
-                    ->whereBetween('fecha', [$nfec, $onfec])
-                    -> where('maq_pro_id', '=', $formu->maq_pros_id)
-                    ->with('objetivopunta')
-                    ->get();
-
-                echo($suma." - ");
-                    //->sum('valor');
-
-                //resultado
-                //$fsO += $suma;
+                array_push($obje, $formu->maq_pros_id);
             }
         }
 
-        //$fs = ($fsP*100)/$fsO;
-        if ($fsP != 0 & $fsO != 0) {
+        $nusumO = carga::join('objetivo_puntas', 'objetivo_puntas.carga_id', '=', 'cargas.id')
+            ->where('cargas.departamento_id', '=', $dep)
+            ->whereBetween('cargas.fecha', [$nfec, $onfec])
+            ->whereIn('maq_pro_id', $obje)
+            ->selectRaw('SUM(objetivo_puntas.valorPu) AS valor')
+            ->first();
+
+        $fs = ($fsP*100)/$nusumO->valor;
+
+        if ($fs != 0) {
             $data = ['proceso_id' => $proce_id, 'suma' => round($fs, '2'), 'equipo_id' => null, 'turno_id' => null, 'cantidad' => '% ', 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
-            //$this->gua_act($fechas, $data);
+            $this->gua_act($fechas, $data);
         }
         //print ' fin eficiencia clave dia //////// ';
+    }
+
+    //Operacion eficiencia semanal
+    public function efi_pun_sem($val, $dep, $fechas, $usuario){
+        //
+        $semana = date("Y", strtotime($fechas['fecha'])).'-W'.date("W", strtotime($fechas['fecha']));
+        $proce = [];
+        $obje = [];
+
+        foreach ($val->formulas as $formu) {
+            //si su tipo es de produccion realiza la suma
+            if ($formu->proc_relas->tipo == 1) {
+                array_push($proce, $formu->maq_pros_id);
+            }
+            else{
+                array_push($obje, $formu->maq_pros_id);
+            }
+        }
+        $suma = carga::where('departamento_id', '=', $dep)
+        ->where('semana', '=', $semana)
+        ->whereIn('maq_pro_id', $proce)
+        ->selectRaw('SUM(valor) AS valor')
+        ->first();
+
+        $sumaO = carga::join('objetivo_puntas', 'objetivo_puntas.carga_id', '=', 'cargas.id')
+        ->where('cargas.departamento_id', '=', $dep)
+        ->where('semana', '=', $semana)
+        ->whereIn('maq_pro_id', $obje)
+        ->selectRaw('SUM(objetivo_puntas.valorPu) AS valor')
+        ->first();
+        print($sumaO);
+    }
+
+    //Operacion eficiencia mensual
+    public function efi_pun_mes($val, $dep, $fechas, $usuario){
+        //
     }
 }

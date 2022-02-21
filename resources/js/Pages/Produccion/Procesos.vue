@@ -138,23 +138,32 @@
                                     <jet-label><span class="required">*</span>Tipo de formula</jet-label>
                                     <select class="InputSelect" v-model="form.operacion">
                                         <option value="">Selecciona una operación</option>
-                                        <option value="sm_d">SUMA DIARIA</option>
-                                        <option value="sm_dc">SUMA DIARIA POR CLAVE</option>
-                                        <option value="sm_dp">SUMA DIARIA POR PARTIDA</option>
-                                        <option value="sm_t">SUMA TURNO</option>
-                                        <option value="sm_tc">SUMA TURNO POR CLAVE</option>
-                                        <option value="sm_tp">SUMA TURNO POR PARTIDA</option>
-                                        <option value="sem_sm">SUMA SEMANAL</option>
-                                        <!-- <option value="mes_sm">SUMA MENSUAL</option> -->
-                                        <option value="efi_dia">EFICIENCIA DIARIA</option>
-                                        <option value="efi_cla">EFICIENCIA POR CLAVE</option>
-                                        <option value="efi_sem">EFICIENCIA POR SEMANA</option>
-                                        <option value="efi_mes">EFICIENCIA POR MES</option>
-                                        <option value="efi_ano">EFICIENCIA ANUAL</option>
-                                        <option value="efi_pun_dia" v-if="S_Area == 7">EFICIENCIA PUNTA DIARIA</option>
-                                        <option value="efi_pun_sem" v-if="S_Area == 7">EFICIENCIA PUNTA SEMANAL</option>
-                                        <option value="efi_pun_mes" v-if="S_Area == 7">EFICIENCIA PUNTA MENSUAL</option>
+                                        <optgroup label="Sumas Generales">
+                                            <option value="sm_d">SUMA DIARIA</option>
+                                            <option value="sm_dc">SUMA DIARIA POR CLAVE</option>
+                                            <option value="sm_dp">SUMA DIARIA POR PARTIDA</option>
+                                            <option value="sm_t">SUMA TURNO</option>
+                                            <option value="sm_tc">SUMA TURNO POR CLAVE</option>
+                                            <option value="sm_tp">SUMA TURNO POR PARTIDA</option>
+                                            <option value="sem_sm">SUMA SEMANAL</option>
+                                            <option value="mes_sm">SUMA MENSUAL</option>
                                         <!-- <option value="ano_sm">SUMA ANUAL</option> -->
+                                        </optgroup>
+                                        <optgroup label="Eficiencias">
+                                            <option value="efi_dia">EFICIENCIA DIARIA</option>
+                                            <option value="efi_cla">EFICIENCIA POR CLAVE</option>
+                                            <option value="efi_sem">EFICIENCIA POR SEMANA</option>
+                                            <option value="efi_mes">EFICIENCIA POR MES</option>
+                                            <option value="efi_ano">EFICIENCIA ANUAL</option>
+                                        </optgroup>
+                                        <optgroup v-if="S_Area == 7" label="Operaciones horario punta">
+                                            <option value="sm_pun_d">SUMA DIARIA PUNTA</option>
+                                            <option value="sem_pun_sm">SUMA SEMANAL PUNTA</option>
+                                            <option value="mes_pun_sm">SUMA MENSUAL PUNTA</option>
+                                            <option value="efi_pun_dia">EFICIENCIA PUNTA DIARIA</option>
+                                            <option value="efi_pun_sem">EFICIENCIA PUNTA SEMANAL</option>
+                                            <option value="efi_pun_mes">EFICIENCIA PUNTA MENSUAL</option>
+                                        </optgroup>
                                     </select>
                                     <small v-if="errors.operacion" class="validation-alert">{{errors.operacion}}</small>
                                 </div>

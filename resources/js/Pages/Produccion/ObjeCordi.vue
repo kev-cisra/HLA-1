@@ -154,7 +154,7 @@
                             <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                         </div>
                         <!-- select Clave -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0" v-if="S_Area == 7">
                             <jet-label class="tw-text-white"><span class="required">*</span>Clave</jet-label>
                             <Select2 v-model="formObje.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCLO" />
                             <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>

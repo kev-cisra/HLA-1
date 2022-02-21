@@ -52,6 +52,7 @@ class TurnosEquipos extends Command
                 $eq->select('id', 'nombre', 'turno_id', 'cue_dia', 'max_dia', 'departamento_id');
             }
         ])
+        ->orderBy('departamento_id')
         ->get(['id', 'nomtur', 'departamento_id']);
 
         //se hace el recorrido de los turnos
@@ -59,28 +60,32 @@ class TurnosEquipos extends Command
             //si existe algun dato en el equipo
             if(count($tur->equipos) != 0){
                 foreach ($tur->equipos as $equi) {
-                    $txt .= $hoy.' || ';
-
+                    //$txt .= $hoy.' || ';
                     if(!empty($equi->max_dia)){
                         if($tur->nomtur == 'Turno 1'){
                             $cuenta = $equi->cue_dia+1;
                             if($cuenta <= $equi->max_dia){
+                                $txt .= "Igual - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
                                 equipos::find($equi->id)->update(['cue_dia' => $cuenta]);
                             }else{
+                                $txt .= "Cambia a Vacío - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
                                 $idtur = turnos::where('departamento_id', '=', $equi->departamento_id)->where('nomtur', '=', 'Vacío')->first();
                                 equipos::find($equi->id)->update(['cue_dia' => 1, 'max_dia' => 2, 'turno_id' => $idtur->id]);
                             }
                         }elseif($tur->nomtur == 'Turno 2'){
                             $cuenta = $equi->cue_dia+1;
                             if($cuenta <= $equi->max_dia){
+                                $txt .= "Igual - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
                                 equipos::find($equi->id)->update(['cue_dia' => $cuenta]);
                             }else{
+                                $txt .= "Cambio a Vacío - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
                                 $idtur = turnos::where('departamento_id', '=', $equi->departamento_id)->where('nomtur', '=', 'Vacío')->first();
                                 equipos::find($equi->id)->update(['cue_dia' => 1, 'max_dia' => 3, 'turno_id' => $idtur->id]);
                             }
                         }else{
                             $cuenta = $equi->cue_dia+1;
                             if($cuenta <= $equi->max_dia){
+                                $txt .= "Igual - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
                                 equipos::find($equi->id)->update(['cue_dia' => $cuenta]);
                             }else{
                                 if ($equi->max_dia == 2) {
@@ -88,6 +93,7 @@ class TurnosEquipos extends Command
                                 }else{
                                     $nomtur = 'Turno 1';
                                 }
+                                $txt .= "Cambio a ".$nomtur." - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
                                 $idtur = turnos::where('departamento_id', '=', $equi->departamento_id)->where('nomtur', '=', $nomtur)->first();
                                 equipos::find($equi->id)->update(['cue_dia' => 1, 'max_dia' => 5, 'turno_id' => $idtur->id]);
                             }
@@ -98,7 +104,7 @@ class TurnosEquipos extends Command
         }
 
 
-        //Storage::disk('local')->put('EquipoGeneral.txt', $txt);
+        Storage::disk('local')->put('EquipoGeneral.txt', $txt);
         return Command::SUCCESS;
     }
 }
