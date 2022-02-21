@@ -7,16 +7,33 @@
         </template>
 
         <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
-            <div v-for="modulo in modulos" :key="modulo.id" class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110">
-                <Link :href="modulo.Ruta" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i :class="modulo.Icono"></i>
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10" v-if="hasAnyPermission(['admin.index', 'Produccion.personal.index'])">
+                        <Link href="/Contabilidad/CostosEmpaques" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fas fa-boxes"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Costos Empaques</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">{{ modulo.NombreModulo }}</h4>
-                        <span class="linea"></span>
+                    <!-- Modulo -->
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.procesos.index'])">
+                        <Link href="/Contabilidad/CostosRequisiciones" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                            <div class="tw-flex tw-justify-center tw-mb-4">
+                                <i class="fa-solid fa-file-invoice-dollar"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Costos Requisiciones</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
                     </div>
-                </Link>
+                </div>
             </div>
         </section>
     </app-layout>
