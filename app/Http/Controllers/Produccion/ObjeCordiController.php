@@ -67,16 +67,19 @@ class ObjeCordiController extends Controller
     }
 
     public function storeProObje(Request $request){
-        Validator::make($request->all(), [
+
+        /* Validator::make($request->all(), [
             'equipo_id' => ['required'],
             'dep_perf_id' => ['required'],
             'turno_id' => ['required']
-        ])->validate();
+        ])->validate(); */
 
         foreach ($request->paquet as $value) {
             if (!empty($value['paqObjetivo'])) {
-                $cosu = obje_cordi::where('id', '=', $value['paqObjetivo'])
-                ->first();
+                $cosu = obje_cordi::where('id', '=', $value['paqObjetivo'])->first();
+
+                $clave = isset($cosu->clave_id) ? $cosu->clave_id : $value['clave_id'];
+                $calcu = isset($request->calcuObje) ? $request->calcuObje : $request->calcuObje2;
 
                 $carga = carga::create([
                     'fecha' => $request->fecha,
@@ -89,10 +92,10 @@ class ObjeCordiController extends Controller
                     'valor' => $value['valor'],
                     'norma' => $cosu->norma,
                     'equipo_id' => $request->equipo_id,
-                    'clave_id' => $cosu->clave_id,
+                    'clave_id' => $clave,
                     'turno_id' => $request->turno_id,
                     'departamento_id' => $request->departamento_id,
-                    'VerInv' => $request->calcuObje
+                    'VerInv' => $calcu
                 ]);
 
                 if($request->departamento_id == 7){
@@ -105,8 +108,8 @@ class ObjeCordiController extends Controller
             }
         }
 
-
-        return $request;
+/*
+        return $request; */
 
     }
 

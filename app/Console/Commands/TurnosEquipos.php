@@ -65,27 +65,27 @@ class TurnosEquipos extends Command
                         if($tur->nomtur == 'Turno 1'){
                             $cuenta = $equi->cue_dia+1;
                             if($cuenta <= $equi->max_dia){
-                                $txt .= "Igual - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
+                                //$txt .= "Igual - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
                                 equipos::find($equi->id)->update(['cue_dia' => $cuenta]);
                             }else{
-                                $txt .= "Cambia a Vacío - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
+                                //$txt .= "Cambia a Vacío - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
                                 $idtur = turnos::where('departamento_id', '=', $equi->departamento_id)->where('nomtur', '=', 'Vacío')->first();
                                 equipos::find($equi->id)->update(['cue_dia' => 1, 'max_dia' => 2, 'turno_id' => $idtur->id]);
                             }
                         }elseif($tur->nomtur == 'Turno 2'){
                             $cuenta = $equi->cue_dia+1;
                             if($cuenta <= $equi->max_dia){
-                                $txt .= "Igual - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
+                                //$txt .= "Igual - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
                                 equipos::find($equi->id)->update(['cue_dia' => $cuenta]);
                             }else{
-                                $txt .= "Cambio a Vacío - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
+                                //$txt .= "Cambio a Vacío - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
                                 $idtur = turnos::where('departamento_id', '=', $equi->departamento_id)->where('nomtur', '=', 'Vacío')->first();
                                 equipos::find($equi->id)->update(['cue_dia' => 1, 'max_dia' => 3, 'turno_id' => $idtur->id]);
                             }
                         }else{
                             $cuenta = $equi->cue_dia+1;
                             if($cuenta <= $equi->max_dia){
-                                $txt .= "Igual - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
+                                //$txt .= "Igual - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
                                 equipos::find($equi->id)->update(['cue_dia' => $cuenta]);
                             }else{
                                 if ($equi->max_dia == 2) {
@@ -93,7 +93,7 @@ class TurnosEquipos extends Command
                                 }else{
                                     $nomtur = 'Turno 1';
                                 }
-                                $txt .= "Cambio a ".$nomtur." - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
+                                //$txt .= "Cambio a ".$nomtur." - ".$tur->nomtur.' - '.$equi->nombre." - ".$cuenta." - ".$equi->max_dia." - ".$equi->departamento_id." / ";
                                 $idtur = turnos::where('departamento_id', '=', $equi->departamento_id)->where('nomtur', '=', $nomtur)->first();
                                 equipos::find($equi->id)->update(['cue_dia' => 1, 'max_dia' => 5, 'turno_id' => $idtur->id]);
                             }
@@ -104,7 +104,7 @@ class TurnosEquipos extends Command
         }
 
 
-        Storage::disk('local')->put('EquipoGeneral.txt', $txt);
+        //Storage::disk('local')->put('EquipoGeneral.txt', $txt);
         return Command::SUCCESS;
     }
 }

@@ -21,18 +21,18 @@
                     <div class="tw-m-3" v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
                         <button class="btn tw-bg-teal-600 hover:tw-bg-teal-700 tw-text-white hover:tw-text-white tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacOpe" aria-controls="pacOpe" @click="resetPO()">Paquete de operativos</button>
                     </div>
-                    <!-- BTN Paquetes de Coordiandor -->
+                    <!-- BTN Paquetes de Coordiandor
                     <div class="tw-m-3" v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
                         <button class="btn btn-primary tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetOB()">Paquetes Objetivos</button>
-                    </div>
+                    </div> -->
                     <!-- BTN Paquetes de normas -->
                     <div class="tw-m-3" v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc' | noCor == 'lid'">
                         <button class="btn tw-bg-cyan-600 hover:tw-bg-cyan-700 tw-w-full tw-text-white hover:tw-text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#pacNorma" aria-controls="pacNorma" @click="resetCA()">Paquete de Normas</button>
                     </div>
-                    <!-- BTN Carga Objetivos -->
+                    <!-- BTN Carga Objetivos
                     <div class="tw-m-3" v-if="usuario.dep_pers.length == 0 | noCor == 'cor' | noCor == 'enc'">
                         <button class="btn btn-warning tw-w-full" data-bs-toggle="collapse" data-bs-target="#agObjec" aria-expanded="false" aria-controls="agObjec" @click="resetCA()">Carga de Objetivos</button>
-                    </div>
+                    </div> -->
                     <!-- BTN Carga de produccion -->
                     <div class="tw-m-3">
                         <button class="btn btn-success tw-w-full" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="resetCA()">Carga de Produccion</button>
