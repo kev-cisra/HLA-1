@@ -35,7 +35,7 @@
                     <th class="columna">Dias Sol</th>
                     <th class="columna">Fecha Inicio</th>
                     <th class="columna">Fecha Fin</th>
-                    <th class="columna">Dias Rest Actuales</th>
+                    <th class="columna">Dias Rest</th>
                 </template>
 
                 <template v-slot:TableFooter>
@@ -49,7 +49,7 @@
                         <td class="tw-text-center">{{ datos.DiasTomados }} días</td>
                         <td class="tw-text-center">{{ datos.FechaInicio }}</td>
                         <td class="tw-text-center">{{ datos.FechaFin }}</td>
-                        <td class="tw-text-center">{{ datos.DiasVac }} días</td>
+                        <td class="tw-text-center">{{ datos.DiasRestantes }} días</td>
                     </tr>
                 </template>
             </Table>

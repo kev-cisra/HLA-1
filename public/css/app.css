@@ -23366,6 +23366,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(13, 148, 136, var(--tw-bg-opacity));
 }
+.tw-bg-violet-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
+}
 .tw-bg-black {
 	--tw-bg-opacity: 1;
 	background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
@@ -23385,10 +23389,6 @@ select {
 .tw-bg-teal-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(20, 184, 166, var(--tw-bg-opacity));
-}
-.tw-bg-violet-600 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
 }
 .tw-bg-sky-500 {
 	--tw-bg-opacity: 1;
@@ -26188,10 +26188,6 @@ select {
 
 	.xl\:tw-mt-10 {
 		margin-top: 2.5rem;
-	}
-
-	.xl\:tw-mt-8 {
-		margin-top: 2rem;
 	}
 
 	.xl\:tw-flex {
