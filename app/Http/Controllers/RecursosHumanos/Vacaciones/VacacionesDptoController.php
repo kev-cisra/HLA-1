@@ -18,8 +18,8 @@ use stdClass;
 
 use function PHPUnit\Framework\isNull;
 
-class VacacionesDptoController extends Controller
-{
+class VacacionesDptoController extends Controller{
+
     public function index(Request $request){
 
         $hoy= Carbon::now();
@@ -36,8 +36,7 @@ class VacacionesDptoController extends Controller
         $User = User::find($Session->id); //Accedo a los datos del usuario logueado
         $Autorizado = $User->hasAnyRole(['ONEPIECE', 'RecursosHumanos']); //Busco si el suaurio tiene alguno de los siguientes Roles
 
-        $PerfilSession = PerfilesUsuarios::find($Session->id);
-
+        $PerfilSession = PerfilesUsuarios::where('user_id', '=',$Session->id)->first();
 
         //Generacion de Consulta de Perfiles
         if($Autorizado == true){
