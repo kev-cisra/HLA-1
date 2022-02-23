@@ -10,15 +10,26 @@
                     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
                     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
                 </div>
-                <div class="carousel-inner fullHeight">
-                    <div class="h-full carousel-item active" data-bs-interval="3500">
-                    <img src="img/anuncios/Anuncio1.png" class="d-block w-100 fullHeight" alt="...">
+                <div class="carousel-inner fullHeight" v-if="verAlert == true">
+                    <div class="h-full carousel-item active" data-bs-interval="2500">
+                        <img src="https://picsum.photos/950" class="d-block w-100 fullHeight" alt="...">
                     </div>
-                    <div class="carousel-item fullHeight" data-bs-interval="3500">
-                    <img src="img/anuncios/Anuncio2.png" class="d-block w-100 fullHeight" alt="...">
+                    <div class="carousel-item fullHeight" data-bs-interval="2500">
+                        <img src="https://picsum.photos/900/800" class="d-block w-100 fullHeight" alt="...">
                     </div>
-                    <div class="carousel-item fullHeight" data-bs-interval="3500">
-                    <img src="img/anuncios/Plantilla3.png" class="d-block w-100 fullHeight" alt="...">
+                    <div class="carousel-item fullHeight" data-bs-interval="2500">
+                        <img src="img/anuncios/DinoWallpaper.png" class="d-block w-100 fullHeight" alt="...">
+                    </div>
+                </div>
+                <div class="carousel-inner fullHeight" v-else>
+                    <div class="h-full carousel-item active" data-bs-interval="2500">
+                        <img src="img/anuncios/HLA.png" class="d-block w-100 fullHeight" alt="...">
+                    </div>
+                    <div class="carousel-item fullHeight" data-bs-interval="2500">
+                        <img src="img/anuncios/Anuncio2.png" class="d-block w-100 fullHeight" alt="...">
+                    </div>
+                    <div class="carousel-item fullHeight" data-bs-interval="2500">
+                        <img src="img/anuncios/Anuncio3.png" class="d-block w-100 fullHeight" alt="...">
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
