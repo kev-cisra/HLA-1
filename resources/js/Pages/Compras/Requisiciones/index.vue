@@ -1102,10 +1102,8 @@ export default {
             const valores = [];
 
             let EstatusReq = await axios.post('Requisiciones/RequisicionesMes');
-            console.log(EstatusReq.data);
 
             Object.entries(EstatusReq.data).forEach(([key, value]) => {
-                console.log(key + '=>'+value);
                 valores.push({name: key, y: value});
             });
 
@@ -1167,7 +1165,7 @@ export default {
             this.loading = true;
             $('#Requisiciones').DataTable().clear();
             $('#Requisiciones').DataTable().destroy();
-            this.$inertia.get('/Compras/Requisiciones', this.params , { //envio de variables por url
+            this.$inertia.get('/Compras/Requisiciones' + this.params , { //envio de variables por url
                 onSuccess: () => {
                     this.loading = false;
                     this.tabla();

@@ -43,7 +43,7 @@
                 <div>
                     <jet-label class="tw-text-center">Departamento</jet-label>
                     <select class="InputSelect" v-model="params.Dpto">
-                        <option v-for="Dpto in Departamento" :key="Dpto.id" :value="Dpto.id"> {{ Dpto.Nombre }}</option>
+                        <option v-for="Dpto in Departamentos" :key="Dpto.id" :value="Dpto.id"> {{ Dpto.Nombre }}</option>
                     </select>
                 </div>
             </div>
@@ -56,104 +56,85 @@
                 </jet-button>
             </div>
         </section>
+        <!-- ****************************************** TABLAS ********************************************* -->
+        <section class="tw-mx-4 tw-my-4">
+            <Table id="Precios">
+                <template v-slot:TableHeader>
+                    <th class="columna">Fecha</th>
+                    <th class="columna">NumReq</th>
+                    <th class="columna">O.C</th>
+                    <th class="columna">Departamento</th>
+                    <th class="columna">Maquina</th>
+                    <th class="columna">Cantidad</th>
+                    <th class="columna">Unidad</th>
+                    <th class="columna">Descripcion</th>
+                    <th class="columna">Precio</th>
+                    <th class="columna">Total</th>
+                    <th class="columna">Moneda</th>
+                    <th class="columna">Proveedor</th>
+                </template>
 
-LUIS RAMIREZ JUAREZ     	683
-CRISTIAN JESUS ORTIZ FUENTES 	1007
-JUAN JESUS CEREZO DIAZ 	935
-JOSE DANIEL CRUZ HERNANDEZ	684
-OCTAVIO ROBLES PACHECO 	1082
-JOSÉ DANIEL OLMEDO ROJAS 	1079
-OSCAR ARTURO SALDAÑA SANCHEZ	1205
-JAIME HERNANDEZ HERNANDEZ	1120
-DAVID ANTONIO VERA GONZALEZ	1208
-CRISTIAN BERNALDINO HERNANDEZ	1226
-JOSE LUIS ALVARADO LOPEZ 	938
-DAVID HERRERA CORTEZ 	865
-VACANTE	VACANTE
-IGNACIO SANCHEZ HERNANDEZ 	1074
-GREGORIO GUZMAN MARTINEZ 	773
-JOSE DE JESUS MINOR SALAS 	898
-FERMIN TORRES REYES	932
-JONATHAN SAENZ HERNANDEZ	1352
-FERNANDO GONZALEZ DOMINGUEZ	1156
-HECTOR GARCIA CASTRO 	1280
-VACANTE	VACANTE
-MIGUEL ANTONIO SANCHEZ PEREZ	1357
-GERARDO OMAR PEREZ CEREZO 	1341
-FRANCISCO TORRES FLORES	1231
-ARTURO ROJAS ROJAS 	163
-JORGE CRUZ CERVANTES	393
-ADRIAN ASAEL HERNANDEZ SANCHEZ	1117
-EDUARDO SALGADO CHEPE 	1094
-HUGO ARROYO TORRES	1114
-RICARDO ROSALES ROSETE 	1036
-JOEL RAMIREZ SALAZAR	167
-IVAN MENA PEREZ	756
-IVAN MENDEZ HERNANDEZ 	972
-VACANTE	VACANTE
-JORGE URIEL AGUILAR CARO   	774
-JORGE PEREZ GONZALEZ	1000
-BRYAN EDUARDO LEON LOPEZ	1209
-NERI ROJAS SALOMON MARCOS	1369
-JUAN MANUEL CARRILLO VIVAS
-JESUS  MUÑOZ XICOTENCATL     	861
-FERNANDO YONATAN ZAMORA HERNANDEZ	1228
-VICTOR ESTEBAN HERNANDEZ 	1013
-JOSÉ ISRAEL RAMOS JUAREZ
-JORGE ALI CABALLERO 	1269
-JORGE IBAÑEZ AGUILAR
-OSCAR ALVARADO TEPOXTECATL 	954
-VACANTE	VACANTE
-FRANCISCO SOSA CASTAÑEDA	1264
-JOSE EDUARDO NERI ROJAS     	821
-JULIO CESAR MUÑOZ MUÑOZ   	854
-DAVID CAMACHO GARCÍA	1016
-RICARDO SOLIS LOPEZ	1037
-FRANCISCO ZAMORA RODRIGUEZ     	868
-JUAN CARLOS GARCÍA RAMOS 	1015
-ALBERTO HERNANDEZ RAMIREZ	571
-ARMANDO PALETA CARVENTE 	903
-RAYMUNDO PEREZ VERGARA 	1014
-ALEJANDRO HUERTA MARTINEZ	1115
-JOSÉ FRANCISCO DE LUNA	1123
-RAÚL BONILLA MENDOZA	897
-ISRAEL MUÑOZ SAUCEDO	1223
-JUAN CARLOS BONILLA DE LA CRUZ	1001
-CARMELO VALENCIA ROJAS	1130
-MIGUEL CARRILLO GUEVARA	1151
-JONATHAN HERNANDEZ CUEVAS	1202
-VACANTE	VACANTE
-RIGOBERTO ANGEL CARRERA	1282
-ALBERTO HERNANDEZ MICHIHUA 	1334
-LUIS GUSTAVO PEREZ ROJAS 	1372
-ISRAEL HUITZIL ORTEGA	1305
-VACANTE	VACANTE
-VICTOR REYES FLORES	466
-LUIS ENRIQUE RODRIGUEZ CABRERA 	1229
-
+                <template v-slot:TableFooter>
+                    <tr class="fila" v-for="datos in PreciosRequisiciones" :key="datos.id">
+                        <td class="tw-text-center">{{ datos.precios_articulo.articulos_requisicion.Fecha }}</td>
+                        <td class="tw-text-center">{{ datos.precios_articulo.articulos_requisicion.NumReq }}</td>
+                        <td class="tw-text-center">{{ datos.precios_articulo.articulos_requisicion.OrdenCompra }}</td>
+                        <td>{{ datos.precios_articulo.articulos_requisicion.requisicion_departamento.Nombre }}</td>
+                        <td>{{ datos.precios_articulo.articulos_requisicion.requisicion_maquina.Nombre }}</td>
+                        <td class="tw-text-center">{{ datos.precios_articulo.Cantidad }}</td>
+                        <td class="tw-text-center">{{ datos.precios_articulo.Unidad }}</td>
+                        <td>{{ datos.precios_articulo.Descripcion }}</td>
+                        <td class="tw-text-center">{{ datos.Precio }}</td>
+                        <td class="tw-text-center">{{ datos.Total }}</td>
+                        <td class="tw-text-center">{{ datos.Moneda }}</td>
+                        <td class="tw-text-center" >
+                            <div v-if="datos.precio_proveedor.Nombre != ''">{{ datos.precio_proveedor.Nombre }}</div>
+                            <div v-else>SIN PROVEEDOR</div></td>
+                    </tr>
+                </template>
+            </Table>
+        </section>
     </app-layout>
 </template>
 
 <script>
+
+/* --------- Imports Librerias para Datatables ------------- */
+require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
+require( 'datatables.net-buttons/js/buttons.html5' );
+require ( 'datatables.net-buttons/js/buttons.colVis' );
+
+/* -------------- Import de Datatables ---------------- */
+import print from 'datatables.net-buttons/js/buttons.print';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import pdfMake from 'pdfmake/build/pdfmake';
+import jszip from 'jszip/dist/jszip';
+import datatable from 'datatables.net-bs5';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+window.JSZip = jszip
+
+/*  ------- Moment Js ------------ */
+import moment from 'moment';
+import 'moment/locale/es';
+import throttle from 'lodash/throttle'
+/* ------- Imports -------- */
+import $ from 'jquery';
+import axios from 'axios';
+/* ----- Componentes de Inertia ------ */
 import AppLayout from "@/Layouts/AppLayout";
+import NProgress from 'nprogress';
+import { Inertia } from '@inertiajs/inertia';
 import Welcome from "@/Jetstream/Welcome";
 import Header from "@/Components/Header";
 import Accions from "@/Components/Accions";
-import Table from "@/Components/TableGreen";
+import Table from "@/Components/TableViolet";
 import JetButton from "@/Components/Button";
-import JetTextArea from "@/Components/Textarea";
 import JetCancelButton from "@/Components/CancelButton";
 import Modal from "@/Jetstream/Modal";
 import Pagination from "@/Components/pagination";
-import JetInput from "@/Components/Input";
 import JetLabel from '@/Jetstream/Label';
+import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
-import Alert from "@/Components/Alert";
-//imports de datatables
-import datatable from "datatables.net-bs5";
-import $ from "jquery";
-import moment from 'moment';
-import 'moment/locale/es';
 
 export default {
     data() {
@@ -163,8 +144,9 @@ export default {
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             loading: false,
             params: {
-                Year: 0,
-                Month: 0,
+                Year: moment().format("YYYY"),
+                Month: moment().format("M"),
+                Dpto: 0,
             },
         };
     },
@@ -175,7 +157,6 @@ export default {
         Header,
         Accions,
         Table,
-        Alert,
         JetButton,
         JetCancelButton,
         Modal,
@@ -183,7 +164,6 @@ export default {
         JetInput,
         JetLabel,
         JetSelect,
-        JetTextArea,
     },
 
     props: {
@@ -194,12 +174,72 @@ export default {
     },
 
     mounted() {
+        this.tabla();
+
+        var query  = window.location.search.substring(1);
+        var vars = query.split("&");
+            for (var i=0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == 'Year') {
+                    this.params.Year = pair[1];
+                }
+                if(pair[0] == 'Month') {
+                    this.params.Month = pair[1];
+                }
+                if(pair[0] == 'Dpto') {
+                    this.params.Dpto = pair[1];
+                }
+        }
     },
 
     methods: {
+        tabla(){ //Generacion de tabla con Datatables
+            this.$nextTick(() => {
+                $("#Precios").DataTable({
+                    destroy: true,
+                    stateSave: true,
+                    language: this.español,
+                    paging: true,
+                    pageLength : 20,
+                    bInfo: false,
+                    scrollX: true,
+                    scrollY:  '40vh',
+                    order: [0, 'desc'],
+                    columnDefs: [
+                        { "width": "3%", "targets": [0] },
+                    ],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
+                }).draw();
+            });
+        },
+
         Filtros(){
             console.log(this.params);
-        }
+            $('#Requisiciones').DataTable().clear();
+            $('#Requisiciones').DataTable().destroy();
+            this.$inertia.get('/Contabilidad/CostosRequisiciones', this.params , { //envio de variables por url
+                onSuccess: () => {
+                console.log(this.params);
+                }, preserveState: true})
+        },
+
     },
 
     computed:{
