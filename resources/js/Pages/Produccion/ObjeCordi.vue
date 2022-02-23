@@ -508,9 +508,6 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 objetivos: [],
                 cargas: [],
                 errors: [],
-                //calcuObje: 0,
-                //calcuObje2: 0,
-                //calcuPunta: 12,
                 proc_prin: '',
                 editMode: false,
                 editModeOB: false,
@@ -698,17 +695,24 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 caO.valor = resu.pro_hora * caO.calcuObje;
                 caO.valorP = resu.pro_hora * (parseFloat(caO.calcuObje, 10) + parseFloat(caO.calcuPunta, 10));
             },
+            //horarios apertura
             inputHoraObje(obje){
                 obje.calcuPunta = 12 - parseFloat(obje.calcuObje, 10);
+                if(obje.calcuObje <= 0 || obje.calcuObje > 12){
+                    obje.calcuObje = 0;
+                    obje.calcuPunta = 12
+                }
                 if(obje.paqObjetivo){
                     const resu = this.objetivos.find(obj => obj.id == obje.paqObjetivo);
                     obje.valor = resu.pro_hora * parseFloat(obje.calcuObje, 10)
                     obje.valorP = resu.pro_hora * (parseFloat(obje.calcuObje, 10) + parseFloat(obje.calcuPunta, 10));
                 }
             },
+            //horario externo punta
             inputHoraPunta(pun){
                 let nu = 12 - pun.calcuObje;
                 if (pun.calcuPunta < 0 || pun.calcuPunta > nu) {
+                    pun.calcuObje = 0;
                     pun.calcuPunta = nu;
                 }
                 //console.log(pun)
@@ -718,11 +722,12 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                     pun.valorP = resu.pro_hora * (parseFloat(pun.calcuObje, 10) + parseFloat(pun.calcuPunta, 10));
                 }
             },
+            //Horarios generales
             inputHoraObjeGene(obje){
-                if (obje.calObje2 <= 0 || obje.calObje2 > 12) {
+                if (obje.calcuObje2 <= 0 || obje.calcuObje2 > 12) {
                     obje.calcuObje2 = 0;
                 }
-                console.log(obje)
+                //console.log(obje)
                 if(obje.paqObjetivo){
                     const resu = this.objetivos.find(obj => obj.id == obje.paqObjetivo);
                     obje.valor = resu.pro_hora * parseFloat(obje.calcuObje2, 10)
@@ -1140,7 +1145,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 
                     }
                 })
-            }, */
+            },
             calcuObje2: function(caloj2){
                 if (caloj2 <= 0 || caloj2 > 12) {
                     this.calcuObje2 = 0;
@@ -1153,7 +1158,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                         }
                     })
                 }
-            }
+            } */
         }
     }
 </script>

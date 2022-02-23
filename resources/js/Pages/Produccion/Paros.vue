@@ -40,7 +40,7 @@
                 </div>
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                     <jet-label><span class="required">*</span>Maquinas</jet-label>
-                    <Select2 v-model="form.maq_pro_id"  class="InputSelect" :options="opcMQ"  :settings="{width: '100%'}"/>
+                    <Select2 v-model="form.maq_pro_id"  class="InputSelect" :options="opcMQ"  :settings="{width: '100%', multiple: true, allowClear: true}"/>
                     <!-- <select class="InputSelect" v-model="form.maq_pro_id" :disabled="editMode">
                         <option value="" disabled>SELECCIONA</option>
                         <option v-for="mq in opcMQ" :key="mq.value" :value="mq.value">{{mq.text}}</option>
@@ -374,7 +374,7 @@ export default {
                 }
             }
             await axios.post('/Produccion/Paros', data)
-            .then(resp => {this.reset(), this.alertSucces()})
+            .then(resp => {this.reset(), this.alertSucces(), console.log(resp)})
             .catch(e => {
                 Swal.fire({
                     position: 'top-end',
