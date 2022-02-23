@@ -79,7 +79,7 @@ class ObjeCordiController extends Controller
                 $cosu = obje_cordi::where('id', '=', $value['paqObjetivo'])->first();
 
                 $clave = isset($cosu->clave_id) ? $cosu->clave_id : $value['clave_id'];
-                $calcu = isset($request->calcuObje) ? $request->calcuObje : $request->calcuObje2;
+                $calcu = isset($value["calcuObje2"]) ? $value["calcuObje2"] : $value["calcuObje"];
 
                 $carga = carga::create([
                     'fecha' => $request->fecha,
@@ -100,7 +100,7 @@ class ObjeCordiController extends Controller
 
                 if($request->departamento_id == 7){
                     ObjetivoPuntas::create([
-                        'horas' => $request->calcuPunta,
+                        'horas' => $value["calcuPunta"],
                         'valorPu' => $value['valorP'],
                         'carga_id' => $carga->id
                     ]);

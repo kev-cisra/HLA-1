@@ -251,6 +251,26 @@ createApp({
             });
         },
 
+        alertError() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "center",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+            });
+
+            Toast.fire({
+                icon: "warning",
+                title: "Ocurrio un problema",
+                // background: '#FDBA74',
+            });
+        },
+
         clean(obj) {
             for (var propName in obj) {
                 if (obj[propName] === null || obj[propName] === undefined) {
