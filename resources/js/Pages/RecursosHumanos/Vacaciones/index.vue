@@ -12,7 +12,7 @@
         <!-- ****************************************** Subtitulo ********************************************* -->
         <section class="tw-m-4 tw-flex tw-justify-center tw-gap-4 tw-p-2">
             <div><span class="tw-font-bold tw-text-lg"> {{PerfilSession.Nombre}} {{PerfilSession.ApPat}} {{PerfilSession.ApMat}}</span></div>
-            <div><span class="tw-font-bold tw-text-lg">Renovacion: {{ PerfilSession.FecIng.substr(5) }} => {{PerfilSession.DiasVac}} Días</span></div>
+            <div><span class="tw-font-bold tw-text-lg">Renovacion: {{ PerfilSession.FecIng.substr(5) }} - Dias Restantes: {{PerfilSession.DiasVac}}</span></div>
             <div class="IconAproved" @click="vacaciones(data, 1)" v-if="PerfilSession.DiasVac > 0">
                 <span tooltip="Solicita de Vacaciones" flow="right">
                     <i class="tw-text-xl fa-solid fa-plane"></i>

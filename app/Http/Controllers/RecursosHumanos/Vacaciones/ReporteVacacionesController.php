@@ -15,8 +15,8 @@ use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 
-class ReporteVacacionesController extends Controller
-{
+class ReporteVacacionesController extends Controller{
+
     public function index(Request $request){
         $Session = Auth::user();
 
