@@ -19,6 +19,9 @@
             </template>
             <template v-slot:BtnNuevo v-if="S_Area">
                 <div class="md:tw-flex tw-gap-3">
+                    <!-- <div class="tw-m-3">
+                        <button class="btn btn-primary tw-w-full" type="button" @click="openTemp()">Carga matriz</button>
+                    </div> -->
                     <!-- BTN Paquetes de Coordiandor -->
                     <div class="tw-m-3">
                         <button class="btn btn-primary tw-w-full" type="button" data-bs-toggle="offcanvas" data-bs-target="#paqCor" aria-controls="paqCor" @click="resetOB()">Paquetes Objetivos</button>
@@ -141,10 +144,11 @@
                         <!-- select Maquinas -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
                             <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
-                            <select class="InputSelect" v-model="formObje.maq_pro_id" :disabled="editMode">
+                            <Select2 v-model="formObje.maq_pro_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcMQO" />
+                            <!-- <select class="InputSelect" v-model="formObje.maq_pro_id" :disabled="editMode">
                                 <option value="" disabled>SELECCIONA</option>
-                                <option v-for="mq in opcMQO" :key="mq.value" :value="mq.value">{{mq.text}}</option>
-                            </select>
+                                <option v-for="mq in opcMQO" :key="mq.id" :value="mq.value">{{mq.text}}</option>
+                            </select> -->
                             <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                         </div>
                         <!-- Select Normas -->
@@ -156,11 +160,47 @@
                             </select>
                             <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                         </div>
+                        <!-- Select Tipo de carga -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Tipo de carga</jet-label>
+                            <select v-model="formObje.tc" class="InputSelect" @change="limpTC">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option value="cla">Clave</option>
+                                <option value="tit">Título</option>
+                                <option value="col">Color</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="tw-mb-6 lg:tw-flex">
                         <!-- select Clave -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0" v-if="S_Area == 7">
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0" v-if="formObje.tc == 'cla'">
                             <jet-label class="tw-text-white"><span class="required">*</span>Clave</jet-label>
-                            <Select2 v-model="formObje.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCLO" />
+                            <Select2 v-model="formObje.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', multiple: true, allowClear: true}" :options="opcCLO" />
                             <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0" v-if="formObje.tc == 'tit'">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Título</jet-label>
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0" v-if="formObje.tc == 'col'">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Color</jet-label>
+                        </div>
+                        <!-- Tipo -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Tipo de Maquina</jet-label>
+                            <select v-model="formObje.tipo" class="InputSelect tw-w-full">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option value="esti">Estiradores</option>
+                                <option value="car">Cardas</option>
+                                <option value="oe">Open End</option>
+                                <option value="vel">Veloz</option>
+                                <option value="troc">Trocil</option>
+                                <option value="con">Coneras</option>
+                                <option value="tor">Torzales</option>
+                                <option value="dob">Dobladoras</option>
+                                <option value="vap">Vaporizador</option>
+                                <option value="empa">Empaque</option>
+                            </select>
                         </div>
                         <!-- input produccion -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
@@ -233,7 +273,7 @@
             </div>
         </div>
 
-        <!-- abrir modal de carga de objetivos Apertura -->
+        <!------------------------------------- abrir modal de carga de objetivos Apertura -->
         <modal :show="showModal" @close="chageClose" maxWidth="5xl">
             <div class="tw-px-4 tw-py-4">
                 <div class="tw-text-lg">
@@ -342,7 +382,7 @@
             </div>
         </modal>
 
-        <!-- abrir modal de carga de objetivos -->
+        <!------------------------------------- abrir modal de carga de objetivos -->
         <modal :show="showModal2" @close="chageClose2" maxWidth="5xl">
             <div class="tw-px-4 tw-py-4">
                 <div class="tw-text-lg">
@@ -444,7 +484,7 @@
     </app-layout>
 </template>
 <script>
-import AppLayout from '@/Layouts/AppLayout.vue';
+    import AppLayout from '@/Layouts/AppLayout.vue';
     import Header from '@/Components/Header'
     import Accions from '@/Components/Accions'
     import Table from '@/Components/Table';
@@ -552,9 +592,13 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                     id: null,
                     departamento_id: this.S_Area,
                     proceso_id: '',
-                    maq_pro_id: '',
+                    maq_pro_id: [],
                     norma: '',
-                    clave_id: '',
+                    clave_id: [],
+                    titulo: [],
+                    color: [],
+                    tipo: "",
+                    tc: "",
                     pro_hora: null
                 },
             }
@@ -815,14 +859,16 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 });
             },
             resetOB(){
-                this.limp = 1;
+                //this.limp = 1;
                 this.editModeOB = false;
                 this.formObje.id = null;
                 this.formObje.departamento_id = this.S_Area;
                 this.formObje.proceso_id = '';
-                this.formObje.maq_pro_id = '';
+                this.formObje.maq_pro_id = [];
                 this.formObje.norma = '';
-                this.formObje.clave_id = '';
+                this.formObje.clave_id = [];
+                this.formObje.titulo = [];
+                this.formObje.color = [];
                 this.formObje.pro_hora = null;
             },
             editOB(form){
@@ -850,6 +896,28 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 this.$inertia.post('/Produccion/ObjeCordi/' + data.id, data, {
                     onSuccess: () => { this.ConObjeti(), this.alertDelete() }, onError: () => {this.ConObjeti()}, preserveState: true
                 });
+            },
+            limpTC(event){
+                //console.log(event.target.value)
+                if (event.target.value == "cla") {
+                    this.formObje.titulo = []
+                    this.formObje.color = []
+                }else if(event.target.value == "tit"){
+                    this.formObje.clave_id = []
+                    this.formObje.color = []
+                }else{
+                    this.formObje.clave_id = []
+                    this.formObje.titulo = []
+                }
+            },
+            // opciones de titulo
+            opTitu(event){
+                if (this.formObje.norma != '') {
+                    let ti = [];
+                    const datos = {departamento_id: this.S_Area, norma: this.formObje.norma}
+
+                    ti = axios.post('ObjeCordi/claTitu', datos).then(eve => {console.log(eve.data)})
+                }
             },
             /************************************* Opciones modal General *******************************************/
             //calcula los objetivos
@@ -997,16 +1065,20 @@ import AppLayout from '@/Layouts/AppLayout.vue';
             },
             //Opciones maquinas Objetivos
             opcMQO: function() {
-                this.limp == 1 ? this.formObje.maq_pro_id = '' : '';
+                /* if (this.limp == 1) {
+                    this.formObje.maq_pro_id = []
+                } */
                 const mq = [];
                 var mar = '';
+                var maqui = '';
                 if (this.formObje.proceso_id != '') {
                     this.procesos.forEach(pm => {
                         if (this.formObje.proceso_id == pm.id) {
                             //console.log(pm.maq_pros.length)
                             pm.maq_pros.forEach(mp => {
                                 mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
-                                mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
+                                maqui = mp.id+' - '+mp.maquinas.Nombre + ' ' + mar
+                                mq.push({id: mp.id, text: maqui});
                             })
                         }
                     })
@@ -1111,54 +1183,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 //Materiales
                 let mate = await axios.post('General/ConMateriales', datos)
                 this.materiales = mate.data
-            },
-            /* calcuObje: function(calObj) {
-                let nu = 12;
-                this.calcuPunta = nu - calObj;
-                if (calObj <= 0 || calObj > 12) {
-                    //this.form.valor = 0;
-                    this.calcuObje = 0;
-                }
-                if (this.form.paquet.length != 0) {
-                    this.form.paquet.forEach(eve => {
-                        if(eve.paqObjetivo){
-                            const resu = this.objetivos.find(obje => obje.id == eve.paqObjetivo);
-                            eve.valor = resu.pro_hora * calObj;
-                            //console.log(parseFloat(calObj, 10) + parseFloat(this.calcuPunta,10))
-                            eve.valorP = resu.pro_hora * (parseFloat(calObj, 10) + parseFloat(this.calcuPunta,10));
-                        }
-                    })
-                }
-            },
-            calcuPunta: function(cal) {
-                this.form.paquet.forEach(eve => {
-                    let nu = 12 - this.calcuObje;
-                    if (cal <    0 || cal > nu) {
-                        this.calcuPunta = nu
-                    }
-                    //console.log(nu)
-                    if(eve.paqObjetivo){
-                        const resu = this.objetivos.find(obje => obje.id == eve.paqObjetivo);
-                        eve.valor = resu.pro_hora * this.calcuObje;
-                        //console.log(parseFloat(calObj, 10) + parseFloat(this.calcuPunta,10))
-                        eve.valorP = resu.pro_hora * (parseFloat(this.calcuObje, 10) + parseFloat(cal,10));
-
-                    }
-                })
-            },
-            calcuObje2: function(caloj2){
-                if (caloj2 <= 0 || caloj2 > 12) {
-                    this.calcuObje2 = 0;
-                }
-                if (this.form2.paquet.length != 0) {
-                    this.form2.paquet.forEach(eve => {
-                        if(eve.paqObjetivo){
-                            const resu = this.objetivos.find(obje => obje.id == eve.paqObjetivo);
-                            eve.valor = resu.pro_hora * caloj2;
-                        }
-                    })
-                }
-            } */
+            }
         }
     }
 </script>
