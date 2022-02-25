@@ -1,150 +1,173 @@
 <template>
     <app-layout>
-        <div>
-        <Header :class="[color, style]">
-            <slot>
-                <h3 class="tw-p-2">
-                    <i class="fas fa-calendar-check tw-ml-3 tw-mr-3"></i>
-                    USUARIOS DEL SISTEMA
-                </h3>
-            </slot>
-        </Header>
+        <!-- ****************************************** TITULO ********************************************* -->
+        <section class="tw-uppercase tw-mx-4">
+            <Header :class="[color, style]">
+                <slot>
+                    <h3 class="tw-p-2"><i class="fas fa-diagnoses tw-ml-3 tw-mr-3"></i>ROLES DE USUARIOS</h3>
+                </slot>
+            </Header>
+        </section>
 
-        <Accions>
-            <template v-slot:paginate>
-                <select v-model="params.paginate" class="paginate">
-                    <option>5</option>
-                    <option>10</option>
-                    <option>25</option>
-                    <option>35</option>
-                    <option>50</option>
-                </select>
-            </template>
-
-            <template v-slot:SelectB>
-                <select class="InputSelectFilter" v-model="params.column">
-                    <option value="id" selected>Id</option>
-                    <option value="name">Nombre</option>
-                    <option value="email">Departamento</option>
-                </select>
-            </template>
-
-            <template v-slot:InputBusqueda>
-                <input type="text" :placeholder="'Filtro por '+params.column" class="InputSearch" v-model="params.search">
-            </template>
-
-            <template v-slot:BtnNuevo>
-            </template>
-
-        </Accions>
-
-        <div class="tw-mx-8">
-            <Table>
+        <!-- ****************************************** CONTENIDO ********************************************* -->
+        <section class="tw-my-4 tw-mx-4">
+            <Table id="TablaRoles">
                 <template v-slot:TableHeader>
-                    <th class="columna" @click="sort('id')">Id
-                        <i v-if="params.field === 'id' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'id' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('name')">Nombre
-                        <i v-if="params.field === 'name' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'name' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna" @click="sort('Departamento')">Departamento
-                        <i v-if="params.field === 'Departamento' && params.direction === 'asc'" class="float-right fas fa-sort-alpha-up-alt"></i>
-                        <i v-if="params.field === 'Departamento' && params.direction === 'desc'" class="float-right fas fa-sort-alpha-down-alt"></i>
-                    </th>
-                    <th class="columna tw-text-center">Acciones</th>
+                    <th class="columna">Id</th>
+                    <th class="columna">IdEmp</th>
+                    <th class="columna">Empresa</th>
+                    <th class="columna">Nombre</th>
+                    <th class="columna">Acciones</th>
                 </template>
 
                 <template v-slot:TableFooter>
-                    <tr class="fila" v-for="user in Users.data" :key="user.id">
-                        <td class="tw-p-2">{{ user.id }}</td>
-                        <td class="tw-p-2">{{ user.name }}</td>
-                        <td class="tw-p-2">{{ user.Departamento }}</td>
-                        <td class="tw-p-2">
-                            <div class="columnaIconos">
-                                <div class="iconoEdit">
-                                    <a :href="route('admin.users.edit', user.id)">
-                                        <span tooltip="Editar" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                            </svg>
-                                        </span>
-                                    </a>
+                    <tr class="fila tw-text-sm" v-for="data in Users" :key="data.id">
+                        <td class="tw-text-center">{{data.id}}</td>
+                        <td class="tw-text-center">{{data.IdEmp}}</td>
+                        <td class="tw-text-center">{{data.Empresa}}</td>
+                        <td>{{data.name}}</td>
+                        <td>
+                            <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
+                                <div class="iconoEdit" @click="RolesSpatie(data)">
+                                    <span tooltip="Modifica Rol" flow="left">
+                                        <i class="fas fa-user-shield"></i>
+                                    </span>
                                 </div>
                             </div>
                         </td>
                     </tr>
                 </template>
             </Table>
-            <pagination class="tw-mt-6 tw-ml-4" :links="Users.links" />
-        </div>
-        </div>
+        </section>
+
+        <!-- **************************************************** MODALES ****************************************************** -->
+        <modal :show="showModal" @close="chageClose" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Roles</h3>
+            </div>
+
+            <div class="ModalForm">
+                <div class="overflow-auto tw-h-96">
+                    <div v-for="rol in Roles" :key="rol" class="tw-p-1 hover:tw-bg-gradient-to-r hover:tw-from-teal-500">
+                            <input type="checkbox" :id="rol.id" v-model="form.RolesUsu" :value="rol.id" class="checbox-teal">
+                        <label :for="rol.id" class="tw-font-bold">
+                            {{ rol.name }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="save(form)">Guardar</jet-button>
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
     </app-layout>
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
-    import Welcome from '@/Jetstream/Welcome'
-    import Header from '@/Components/Header'
-    import Accions from '@/Components/Accions'
-    import Table from '@/Components/TableGreen'
-    import JetButton from '@/Jetstream/Button'
-    import Pagination from '@/Components/pagination'
-    import pickBy from 'lodash/pickBy'
-    import throttle from 'lodash/throttle'
+import AppLayout from "@/Layouts/AppLayout";
+import Welcome from "@/Jetstream/Welcome";
+import Header from "@/Components/Header";
+import Accions from "@/Components/Accions";
+import Table from "@/Components/TableDark";
+import JetButton from "@/Components/Button";
+import JetCancelButton from "@/Components/CancelButton";
+import Modal from "@/Jetstream/Modal";
+import Pagination from "@/Components/pagination";
+import JetLabel from '@/Jetstream/Label';
+import JetInput from "@/Components/Input";
+import JetSelect from "@/Components/Select";
+//imports de datatables
+import datatable from "datatables.net-bs5";
+import $ from "jquery";
+import moment from 'moment';
+import 'moment/locale/es';
 
-    export default {
-        components: {
-            AppLayout,
-            Welcome,
-            Header,
-            Accions,
-            Table,
-            JetButton,
-            Pagination,
+
+export default {
+
+    data() {
+        return {
+            tam: "xl",
+            color: "tw-bg-black",
+            style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
+            form: {
+                User_id: 0,
+                RolesUsu: [],
+            },
+        };
+    },
+
+    components: {
+        AppLayout,
+        Welcome,
+        Header,
+        Accions,
+        JetLabel,
+        JetInput,
+        JetSelect,
+        JetButton,
+        JetCancelButton,
+        Table,
+        Modal,
+        Pagination,
+    },
+
+    props: {
+        Users: Object,
+        Roles: Object,
+    },
+
+    mounted(){
+        this.tabla();
+    },
+
+    methods: {
+        tabla(){
+            this.$nextTick(() => {
+                $("#TablaRoles").DataTable({
+                    destroy: true,
+                    language: this.español,
+                    paging: false,
+                    pageLength : 20,
+                    scrollY:  '55vh',
+                    order: [0, 'asc'],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                    ]
+                }).draw();
+            });
         },
 
-        props: {
-            Session: Object,
-            filters: Object,
-            Users: Object,
-            Roles: Object,
+        RolesSpatie(data){
+            this.chageClose();
+            this.form.User_id = data.id;
+
+            data.roles.forEach(element => {
+                this.form.RolesUsu.push(element.id);
+            });
         },
 
-        data(){
-            return{
-                tam: "4xl",
-                color: "tw-bg-green-600",
-                style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
-                params:{
-                    search: this.filters.search,
-                    column: 'id',
-                    paginate: 5,
-                    field: 'id',
-                    direction: 'desc'
-                },
+        reset(){
+            this.form = {
+                User_id: 0,
+                RolesUsu: [],
             };
         },
 
-        methods:{
-            sort(field){
-                // this.params.paginate = paginate;
-                this.params.field = field;
-                this.params.direction = this.params.direction === 'asc' ? 'desc' : 'asc';
-            }
-        },
+        save(data){
 
-        watch: {
-            params: {
-            deep: true,
-                handler: throttle(function() {
-                    this.$inertia.get('/Admin/RolesUsuarios', this.params , { replace: true, preserveState: true })
-                    // this.$inertia.get(this.route('/Admin/Usuarios'), pickBy(this.params), { preserveState: true })
-                }, 150),
-            },
-        },
-    };
+            this.$inertia.post("/Admin/RolesUsuarios", data, {
+                onSuccess: () => {
+                    this.reset(),
+                    this.chageClose(),
+                    this.alertSucces();
+                },
+            });
+        }
+    },
+};
 </script>
-
-

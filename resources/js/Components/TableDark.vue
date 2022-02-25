@@ -23,10 +23,10 @@
 <script>
 
 export default {
-  data: function () {
-    return {
-      color: 'tw-bg-black'
-    }
-  },
+    data: function () {
+        return {
+        color: 'tw-bg-black'
+        }
+    },
 }
 </script>

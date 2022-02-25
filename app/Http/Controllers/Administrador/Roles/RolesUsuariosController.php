@@ -15,18 +15,19 @@ class RolesUsuariosController extends Controller{
 
     public function index(Request $request){
 
+        $Users = User::with('roles')->get();
+        $Roles = Role::get(['id', 'name']);
+
+        return Inertia::render('Administrador/Roles/RolesUsuarios', compact('Users', 'Roles'));
     }
 
+    public function store(Request $request){
 
-    public function create()
-    {
-        //
-    }
+        $user = User::find($request->User_id);
+        // return $request;
+        $user->roles()->sync($request->RolesUsu);
 
-
-    public function store(Request $request)
-    {
-        //
+        return redirect()->back()->with('Roles Asignados Correctamente');
     }
 
 
