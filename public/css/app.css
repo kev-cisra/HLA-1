@@ -22758,6 +22758,9 @@ select {
 .tw-h-40 {
 	height: 10rem;
 }
+.tw-h-96 {
+	height: 24rem;
+}
 .tw-h-2 {
 	height: 0.5rem;
 }
@@ -22769,12 +22772,6 @@ select {
 }
 .tw-h-24 {
 	height: 6rem;
-}
-.tw-h-80 {
-	height: 20rem;
-}
-.tw-h-96 {
-	height: 24rem;
 }
 .tw-min-h-screen {
 	min-height: 100vh;
@@ -25549,27 +25546,9 @@ select {
 .hover\:tw-bg-gradient-to-r:hover {
 	background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }
-.hover\:tw-from-indigo-500:hover {
-	--tw-gradient-from: #6366f1;
-	--tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(99, 102, 241, 0));
-}
 .hover\:tw-from-teal-500:hover {
 	--tw-gradient-from: #14B8A6;
 	--tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(20, 184, 166, 0));
-}
-.hover\:tw-from-cyan-500:hover {
-	--tw-gradient-from: #06B6D4;
-	--tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(6, 182, 212, 0));
-}
-.hover\:tw-from-teal-600:hover {
-	--tw-gradient-from: #0D9488;
-	--tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(13, 148, 136, 0));
-}
-.hover\:tw-to-indigo-400:hover {
-	--tw-gradient-to: #818cf8;
-}
-.hover\:tw-to-indigo-200:hover {
-	--tw-gradient-to: #c7d2fe;
 }
 .hover\:tw-text-lg:hover {
 	font-size: 1.125rem;

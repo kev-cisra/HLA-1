@@ -62,11 +62,11 @@ class VacacionesDptoController extends Controller{
 
         //Historico de Vacaciones
         $MisVacaciones = Vacaciones::where('Perfil_id', '=', $Session->id)
-        ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
+        ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion', 'Perfil_id']);
         //Consulta de vacaciones por empleado
         if($request->id){
             $Vacaciones = Vacaciones::where('Perfil_id', '=', $request->id)
-            ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
+            ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion', 'Perfil_id']);
         }else{
             $Vacaciones = new stdClass();
         }
@@ -107,15 +107,34 @@ class VacacionesDptoController extends Controller{
     }
 
     public function update(Request $request, $id){
-        Validator::make($request->all(), [
-            'Motivo' => ['required'],
-        ])->validate();
+        switch ($request->Tipo) {
+            case 1:
+                Vacaciones::find($request->id)->update([
+                    'Estatus' => 1, //Autorizada
+                ]);
+                return redirect()->back();
+                break;
 
-        Vacaciones::find($request->id)->update([
-            'MotivoCancelacion' => $request->Motivo,
-            'Estatus' => 2,
-        ]);
-        return redirect()->back();
+            case 2:
+                return $request;
+                Vacaciones::find($request->id)->update([
+                    'Estatus' => 2, //Rechazada
+                ]);
+                return redirect()->back();
+                break;
+
+            case 3:
+                Validator::make($request->all(), [
+                    'Motivo' => ['required'],
+                ])->validate();
+
+                Vacaciones::find($request->id)->update([
+                    'MotivoCancelacion' => $request->Motivo,
+                    'Estatus' => 3, //En proceso de Cancelacion
+                ]);
+                return redirect()->back();
+                break;
+        }
     }
 
     public function destroy($id){
