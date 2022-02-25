@@ -125,6 +125,7 @@
     </div>
 
     <div class="tw-mx-4">
+
         <p class="tw-text-center tw-text-coolGray-400">VISUALIZACIÓN POR {{Visualizacion}}</p>
         <div v-if="Vista == 1">
             <Table id="Requisiciones">
@@ -235,6 +236,7 @@
                     </tr>
                 </template>
             </Table>
+
         </div>
 
         <div v-else>
