@@ -1,79 +1,90 @@
 <template>
     <app-layout>
-        <div class="tw-grid tw-grid-cols-6">
-            <div class="tw-col-span-1">
-                <nav class="tw-flex tw-flex-col tw-bg-black tw-min-h-screen tw-px-4 tw-tex-gray-900">
-                    <div class="tw-flex tw-flex-wrap tw-mt-8">
-                    <div class="tw-w-1/2">
-                        <img src="https://ih1.redbubble.net/image.2809246254.3188/poster,504x498,f8f8f8-pad,600x600,f8f8f8.jpg" class="tw-mx-auto tw-w-12 tw-h-12 tw-rounded-full"/>
-                    </div>
-                    <div class="tw-w-1/2">
-                        <span class="tw-font-bold tw-text-white">{{ Session.name }}</span>
-                        <h4 class="tw-font-semibold tw-text-teal-500">{{Session.roles[0].name}}</h4>
-                    </div>
-                    </div>
-                    <div class="tw-mt-10 tw-mb-4">
-                        <ul class="tw-ml-4">
-                            <li @click="Vista(1)" class="tw-cursor-pointer tw-mb-2 tw-px-2 tw-py-2 tw-font-bold tw-text-teal-500 tw-flex tw-flex-row  tw-border-teal-300 hover:tw-text-white hover:tw-bg-teal-500 tw-rounded-lg">
-                                <span><svg class="tw-fill-current tw-h-5 tw-w-5 " viewBox="0 0 24 24"><path d="M16 20h4v-4h-4m0-2h4v-4h-4m-6-2h4V4h-4m6 4h4V4h-4m-6 10h4v-4h-4m-6 4h4v-4H4m0 10h4v-4H4m6 4h4v-4h-4M4 8h4V4H4v4z"></path></svg></span>
-                                <span class="tw-ml-2">ROLES</span>
-                            </li>
-                            <li @click="Vista(2)" class="tw-cursor-pointer tw-mb-2 tw-px-2 tw-py-2 tw-font-bold tw-text-teal-500 tw-flex tw-flex-row  tw-border-teal-300 hover:tw-text-white hover:tw-bg-teal-500 tw-rounded-lg">
-                                <span><svg class="tw-fill-current tw-h-5 tw-w-5 " viewBox="0 0 24 24"><path d="M16 20h4v-4h-4m0-2h4v-4h-4m-6-2h4V4h-4m6 4h4V4h-4m-6 10h4v-4h-4m-6 4h4v-4H4m0 10h4v-4H4m6 4h4v-4h-4M4 8h4V4H4v4z"></path></svg></span>
-                                <span class="tw-ml-2">PERMISOS</span>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-            <div class="tw-col-span-5 tw-mx-4">
-                <h2 class="tw-p-2 tw-bg-teal-600 tw-text-white tw-text-center tw-rounded-lg tw-my-2 tw-mx-24 tw-shadow">Lorem ipsum dolor sit amet.</h2>
-                <div class="tw-flex tw-items-center tw-justify-between tw-mx-80 tw-my-4 tw-p-4 tw-border-8">
-                    <div><jet-label>NOMBRE {{vistaNombre}}</jet-label><jet-input type="text" v-model="form.NombreRol"></jet-input></div>
-                    <div><jet-button type="button" @click="NuevoRol(form)">Guardar</jet-button></div>
+        <!-- ****************************************** TITULO ********************************************* -->
+        <section class="tw-uppercase tw-mx-4">
+            <Header :class="[color, style]">
+                <slot>
+                    <h3 class="tw-p-2"><i class="fas fa-calendar-check tw-ml-3 tw-mr-3"></i>ROLES Y PERMISOS</h3>
+                </slot>
+            </Header>
+        </section>
+        <!-- ****************************************** GUARDADO ********************************************* -->
+        <section class="tw-grid tw-grid-cols-2 tw-gap-8 tw-my-4 tw-mx-28">
+            <div class="tw-flex tw-items-center tw-justify-between tw-my-4 tw-p-4 tw-border-8 tw-gap-8">
+                <div>
+                    <jet-label>NOMBRE ROL</jet-label>
+                    <jet-input type="text" v-model="form.NombreRol"></jet-input>
                 </div>
-                <div class="tw-grid tw-grid-cols-3 tw-gap-4">
-                    <div class="tw-col-span-2">
-                        <Table id="datos">
-                            <template v-slot:TableHeader>
-                                <th class="columna">NOMBRE {{vistaNombre}}</th>
-                                <th class="columna">ACCIONES</th>
-                            </template>
+                <div>
+                    <jet-button type="button" @click="NuevoRol(form)">Guardar</jet-button>
+                </div>
+            </div>
+            <div class="tw-flex tw-items-center tw-justify-between tw-my-4 tw-p-4 tw-border-8 tw-gap-8">
+                <div>
+                    <jet-label>NOMBRE PERMISO</jet-label>
+                    <jet-input type="text" v-model="form.NombrePermiso"></jet-input>
+                </div>
+                <div>
+                    <jet-button type="button" @click="NuevoPermiso(form)">Guardar</jet-button>
+                </div>
+            </div>
+        </section>
+        <!-- ****************************************** CONTENIDO ********************************************* -->
+        <section class="tw-mx-28 tw-grid tw-grid-cols-2 tw-my-4 tw-gap-8">
+            <div>
+                <Table id="Roles">
+                    <template v-slot:TableHeader>
+                        <th class="columna">ROL</th>
+                        <th class="columna">ACCIONES</th>
+                    </template>
 
-                            <template v-slot:TableFooter>
-                                <tr class="fila" v-for="rol in Roles" :key="rol.id">
-                                    <td class="tw-p-2">{{rol.name}}</td>
-                                    <td>
-                                        <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
-                                            <div class="iconoEdit" @click="edit(datos)">
-                                                <span tooltip="Editar" flow="left">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-6 tw-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                            <div class="iconoDelete" @click="deleteRow(datos)">
-                                                <span tooltip="Eliminar" flow="left">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-6 tw-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </Table>
-                    </div>
-                    <div class="tw-col-span-1">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo aut rerum nesciunt ipsum porro voluptatum!</p>
-                    </div>
-                </div>
+                    <template v-slot:TableFooter>
+                        <tr class="fila tw-text-sm" v-for="rol in Roles" :key="rol.id">
+                            <td class="tw-p-2">{{rol.name}}</td>
+                            <td>
+                                <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
+                                    <div class="iconoEdit" @click="PermisosRol(rol)">
+                                        <span tooltip="Editar" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-6 tw-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="iconoDelete" @click="deleteRow(rol)">
+                                        <span tooltip="Eliminar" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-6 tw-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </Table>
             </div>
-        </div>
-                        <div class="tw-p-2 tw-h-64 tw-h-64">
-                    <div class="qrcode-style" id="qrcode"></div>
-                </div>
+            <div>
+                <Table id="Permisos">
+                    <template v-slot:TableHeader>
+                        <th class="columna">PERMISOS</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr class="fila tw-text-base" v-for="per in Permisos" :key="per">
+                            <td>
+                                <input type="checkbox" :id="per.id" v-model="form.permissions" :value="per.id" class="tw-form-checkbox tw-h-5 tw-w-5 tw-text-teal-600">
+                                <label :for="per.id" class="tw-ml-2 tw-text-gray-700">
+                                    {{ per.name }}
+                                </label>
+                            </td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
+        </section>
+        <section class="tw-mx-28 tw-flex tw-justify-center tw-mt-8">
+            <jet-button type="button"  @click="Sincroniza(form)">Guarda Cambios</jet-button>
+        </section>
     </app-layout>
 </template>
 
@@ -82,7 +93,7 @@ import AppLayout from "@/Layouts/AppLayout";
 import Welcome from "@/Jetstream/Welcome";
 import Header from "@/Components/Header";
 import Accions from "@/Components/Accions";
-import Table from "@/Components/TableTeal";
+import Table from "@/Components/TableDark";
 import JetButton from "@/Components/Button";
 import JetCancelButton from "@/Components/CancelButton";
 import Modal from "@/Jetstream/Modal";
@@ -103,11 +114,12 @@ export default {
     data() {
         return {
             tam: "3xl",
-            color: "tw-bg-cyan-600",
+            color: "tw-bg-black",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             form: {
                 NombreRol: '',
                 NombrePermiso: '',
+                Rol_id: '',
                 Tipo: '',
                 permissions: [],
             },
@@ -139,19 +151,20 @@ export default {
     },
 
     mounted(){
-        this.tabla();
         this.qrcode();
+        this.tablaRoles();
+        this.tablaPermisos();
     },
 
     methods: {
         qrcode() {
-            let qrcode = new QRCode("qrcode", {
-                ancho: 200, // establece el ancho en píxeles
-                height: 200, // establece la altura en píxeles
-                text: "https://intranethlangeles.com/Compras/Requisiciones?Year=2022&Month=2&Status=0&View=1&Req=", // Establezca el contenido del código QR o la dirección de redireccionamiento,
-                colorDark : "#64748B",
-                colorLight : "#ffffff",
-            });
+            // let qrcode = new QRCode("qrcode", {
+            //     ancho: 200, // establece el ancho en píxeles
+            //     height: 200, // establece la altura en píxeles
+            //     text: "https://intranethlangeles.com/Compras/Requisiciones?Year=2022&Month=2&Status=0&View=1&Req=", // Establezca el contenido del código QR o la dirección de redireccionamiento,
+            //     colorDark : "#64748B",
+            //     colorLight : "#ffffff",
+            // });
         },
 
         reset(){
@@ -175,16 +188,43 @@ export default {
             }
         },
 
-        //Generacion de Tabla con Datatables
-        tabla(){
+        tablaRoles(){
             this.$nextTick(() => {
-                $("#datos").DataTable({
-                    "language": this.español,
-                    pageLength :10,
-                    scrollY: '40vh',
+                $("#Roles").DataTable({
+                    destroy: true,
+                    language: this.español,
                     paging: false,
-                    scrollCollapse: true,
-                });
+                    pageLength : 10,
+                    bInfo: false,
+                    searching: false,
+                    scrollY:  '55vh',
+                    order: [0, 'desc'],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                    ]
+                }).draw();
+            });
+        },
+
+        tablaPermisos(){
+            this.$nextTick(() => {
+                $("#Permisos").DataTable({
+                    destroy: true,
+                    language: this.español,
+                    paging: false,
+                    pageLength : 10,
+                    bInfo: false,
+                    searching: false,
+                    scrollY:  '55vh',
+                    order: [0, 'desc'],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                    ]
+                }).draw();
             });
         },
 
@@ -210,16 +250,26 @@ export default {
             });
         },
 
-        RevisaPermisos(data){
+        PermisosRol(data){
+            this.form.Rol_id = data.id;
+            this.form.permissions = [];
             this.$inertia.get('/Admin/AdminPanel', data, { //envio de variables por url
                 onSuccess: () => {
-                    console.log(this.RolPermisos)
+                    this.RolPermisos.permissions.forEach(element => {
+                        this.form.permissions.push(element.id);
+                    });
                 }, preserveState: true})
         },
 
-        MustraPermiso(data){
-            console.log(data)
-        }
+        Sincroniza(data){
+            data.metodo = 1;
+            data._method = "PUT";
+            this.$inertia.post("/Admin/AdminPanel/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
+        },
     },
 };
 </script>
