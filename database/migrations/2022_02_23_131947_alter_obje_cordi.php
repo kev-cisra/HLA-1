@@ -17,7 +17,7 @@ class AlterObjeCordi extends Migration
             //
             $table->string('tipo')->nullable()->after('estatus');
             $table->string('tiempo')->nullable()->after('pro_hora');
-            $table->string('eficiencia')->after('tiempo');
+            $table->string('eficiencia')->nullable()->after('tiempo');
             $table->string('velocidad')->nullable()->after('eficiencia');
             $table->string('constante')->nullable()->after('velocidad');
             $table->string('cabos')->nullable()->after('constante');
