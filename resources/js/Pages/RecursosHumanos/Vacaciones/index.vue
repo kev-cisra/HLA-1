@@ -188,7 +188,6 @@
                             <th class="columna">Dias Restantes</th>
                             <th class="columna">Estatus</th>
                             <th class="columna">Acciones</th>
-                            <th class="columna">Cancela Vacaciones</th>
                         </template>
 
                         <template v-slot:TableFooter>
@@ -226,9 +225,14 @@
                                             <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-600 tw-rounded-full">CANCELADA</span>
                                         </span>
                                     </div>
+                                    <div v-else-if="dato.Estatus == 5">
+                                        <span tooltip="Peticion de cancelacion Rechazada" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-600 tw-rounded-full">PETICION RECHAZADA</span>
+                                        </span>
+                                    </div>
                                 </td>
                                 <td class="fila">
-                                    <div class="columnaIconos">
+                                    <div class="columnaIconos" v-if="dato.Estatus == 0">
                                         <div class="iconoTeal" @click="AutorizaVacaciones(dato)">
                                             <span tooltip="Autoriza Vacaciones" flow="left">
                                                 <i class="fa-solid fa-check"></i>
@@ -240,18 +244,28 @@
                                             </span>
                                         </div>
                                     </div>
-                                </td>
-                                <td class="fila">
-                                    <div class="tw-flex tw-justify-center tw-items-center" v-if="dato.Estatus == 1">
+                                    <div class="columnaIconos" v-else-if="dato.Estatus == 1">
                                         <div class="iconoDetails" @click="PeticionCancelacion(dato)">
                                             <span tooltip="Solicita una cancelacion de vacaciones" flow="left">
                                                 <i class="fas fa-paper-plane tw-w-3 tw-h-3"></i>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="tw-flex tw-justify-center tw-items-center" v-else>
+                                    <div class="columnaIconos" v-else-if="dato.Estatus == 3">
+                                        <div class="iconoDetails" @click="PeticionCancelacion(dato)">
+                                            <span tooltip="En proceso de autorizacion por RH" flow="left">
+                                                <i class="fa-solid fa-spinner tw-w-3 tw-h-3"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="dato.Estatus == 5">
+                                        <span tooltip="Peticion rechazada" flow="left">
+                                            <i class="fa-solid fa-ban"></i>
+                                        </span>
+                                    </div>
+                                    <div class="columnaIconos" v-else>
                                         <div class="iconoDetails">
-                                            <span tooltip="En espera de Autorización por RH" flow="left">
+                                            <span tooltip="Vacaciones" flow="left">
                                                 <i class="fas fa-thumbs-up"></i>
                                             </span>
                                         </div>

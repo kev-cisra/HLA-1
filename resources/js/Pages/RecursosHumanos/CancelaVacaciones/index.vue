@@ -25,8 +25,7 @@
                         <th class="columna">Dias Sol</th>
                         <th class="columna">Motivo Cancelacion</th>
                         <th class="columna">Estatus</th>
-                        <th class="columna">Autorizar</th>
-                        <th class="columna">Cancelar</th>
+                        <th class="columna">Acciones</th>
                     </template>
 
                     <template v-slot:TableFooter>
@@ -43,59 +42,70 @@
                             <td class="tw-p-2">{{ datos.MotivoCancelacion }}</td>
                             <td class="tw-text-center">
                                 <div v-if="datos.Estatus == 0">
-                                    <span tooltip="Autoriza Vacaciones" flow="left">
+                                    <span tooltip="Vacaciones Solicitadas" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">SOLICITADA</span>
                                     </span>
                                 </div>
-                                <div v-else-if="datos.Estatus == 1">
+                                <div v-if="datos.Estatus == 1">
                                     <span tooltip="Vacaciones Aprovadas" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">AUTORIZADA</span>
                                     </span>
                                 </div>
                                 <div v-else-if="datos.Estatus == 2">
-                                    <span tooltip="En espera de autorizacion por RH" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-yellow-600 tw-rounded-full">PETICION DE CANCELACIÓN</span>
+                                    <span tooltip="Solicitud Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-yellow-600 tw-rounded-full">RECHAZADA</span>
                                     </span>
                                 </div>
                                 <div v-else-if="datos.Estatus == 3">
-                                    <span tooltip="Vacaciones Canceladas por RH" flow="left">
+                                    <span tooltip="En espera de devolucion de días por RH" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN CANCELACION</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 4">
+                                    <span tooltip="Vacaciones Canceladas (Días devueltos)" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-600 tw-rounded-full">CANCELADA</span>
+                                    </span>
+                                </div>
+                                <div v-else-if="datos.Estatus == 5">
+                                    <span tooltip="Peticion de vacaciones canceladas" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-600 tw-rounded-full">PETICION CANCELADA</span>
                                     </span>
                                 </div>
                             </td>
                             <td class="fila">
                                 <div class="columnaIconos" v-if="datos.Estatus == 0">
-                                    <div class="iconoDetails"  @click="AutorizaVacaciones(datos)">
+                                    <div class="iconoTeal" @click="AutorizaVacaciones(dato)">
                                         <span tooltip="Autoriza Vacaciones" flow="left">
-                                            <i class="fas fa-user-check"></i>
+                                            <i class="fa-solid fa-check"></i>
+                                        </span>
+                                    </div>
+                                    <div class="iconoDelete" @click="RechazaVacaciones(dato)">
+                                        <span tooltip="Rechaza Vacaciones" flow="left">
+                                            <i class="fa-solid fa-ban"></i>
                                         </span>
                                     </div>
                                 </div>
-                                <div class="columnaIconos" v-else>
-                                    <div class="iconoDetails">
-                                        <span tooltip="Vacaciones Canceladas" flow="left">
-                                            <i class="fas fa-check-circle"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="fila">
-                                <div class="columnaIconos" v-if="datos.Estatus != 3">
-                                    <div class="iconoDetails"  @click="AutorizaCancelacion(datos)">
+                                <div class="columnaIconos" v-else-if="datos.Estatus == 3">
+                                    <div class="iconoDetails" @click="AutorizaCancelacion(datos)" >
                                         <span tooltip="Autoriza la cancelacion" flow="left">
                                             <i class="fas fa-user-check"></i>
                                         </span>
                                     </div>
-                                    <div class="iconoDetails" v-if="datos.Estatus != 3" @click="RechazaCancelacion(datos, 2)">
-                                        <span tooltip="Autoriza la cancelacion" flow="left">
+                                    <div class="iconoDetails" @click="RechazaCancelacion(datos, 2)">
+                                        <span tooltip="Rechaza la cancelacion" flow="left">
                                             <i class="fas fa-times-circle"></i>
                                         </span>
                                     </div>
                                 </div>
+                                <div class="columnaIconos" v-else-if="datos.Estatus == 5">
+                                    <span tooltip="Rechaza la cancelacion" flow="left">
+                                        <i class="fa-solid fa-ban"></i>
+                                    </span>
+                                </div>
                                 <div class="columnaIconos" v-else>
                                     <div class="iconoDetails">
-                                        <span tooltip="Vacaciones Canceladas" flow="left">
-                                            <i class="fas fa-check-circle"></i>
+                                        <span tooltip="Vacaciones" flow="left">
+                                            <i class="fas fa-thumbs-up"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -249,7 +259,6 @@ export default {
                     }
                 })
         }
-
 
     },
 };

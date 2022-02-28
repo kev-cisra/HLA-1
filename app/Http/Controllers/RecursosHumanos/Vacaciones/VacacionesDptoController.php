@@ -20,6 +20,14 @@ use function PHPUnit\Framework\isNull;
 
 class VacacionesDptoController extends Controller{
 
+    //Estatus Vacaciones
+    // 0 -> Solicitadas
+    // 1 -> Autorizadas
+    // 2 -> Rechazadas (Se regresn los dias solicitados)
+    // 3 -> Peticion de cancelacion
+    // 4 -> Vacaciones canceladas (Se regresan los dias)
+    // 5 -> Peticion de cancelacio Rechazada
+
     public function index(Request $request){
 
         $hoy= Carbon::now();
@@ -108,22 +116,30 @@ class VacacionesDptoController extends Controller{
 
     public function update(Request $request, $id){
         switch ($request->Tipo) {
-            case 1:
+            case 1: //Autoriza Vacaciones
                 Vacaciones::find($request->id)->update([
                     'Estatus' => 1, //Autorizada
                 ]);
                 return redirect()->back();
                 break;
 
-            case 2:
-                return $request;
+            case 2: //Rechaza vacaciones
+
                 Vacaciones::find($request->id)->update([
                     'Estatus' => 2, //Rechazada
                 ]);
+
+                $Vacaciones = PerfilesUsuarios::where('id', '=', $request->Perfil_id)->first('DiasVac');
+                //Devuelven los dias tomados
+                PerfilesUsuarios::where('id', '=', $request->Perfil_id)->update([
+                    'DiasVac' => $Vacaciones->DiasVac + $request->DiasTomados,
+                ]);
+
                 return redirect()->back();
                 break;
 
-            case 3:
+            case 3: //Envia peticion de Devolucion de dias
+                // return $request;
                 Validator::make($request->all(), [
                     'Motivo' => ['required'],
                 ])->validate();
