@@ -22848,6 +22848,15 @@ select {
 .tw-w-14 {
 	width: 3.5rem;
 }
+.tw-w-80 {
+	width: 20rem;
+}
+.tw-w-10\/12 {
+	width: 83.333333%;
+}
+.tw-w-11\/12 {
+	width: 91.666667%;
+}
 .tw-min-w-0 {
 	min-width: 0px;
 }
