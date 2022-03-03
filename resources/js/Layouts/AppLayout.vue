@@ -23,7 +23,7 @@
                             </div>
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index'])">
                                 <jet-nav-link :href="route('Admin')" :active="route().current('Admin')">
-                                    <i class="tw-mr-2 fas fa-laptop-code tw-text-gray-600"></i>Administrador
+                                    <i class="tw-mr-2 fa-solid fa-user-secret tw-text-gray-600"></i>Administrador
                                 </jet-nav-link>
                             </div>
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'RecursosHumanos.index'])">
@@ -49,6 +49,11 @@
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
                                 <jet-nav-link :href="route('Supply')" :active="route().current('Supply')">
                                     <i class="tw-mr-2 fas fa-warehouse tw-text-gray-600"></i>Supply
+                                </jet-nav-link>
+                            </div>
+                            <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex">
+                                <jet-nav-link :href="route('Sistemas')" :active="route().current('Sistemas')">
+                                    <i class="tw-mr-2 fa-solid fa-laptop-code tw-text-gray-600"></i>Sistemas
                                 </jet-nav-link>
                             </div>
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex"  v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">
@@ -127,9 +132,9 @@
                             <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i> INICIO
                         </jet-responsive-nav-link>
                     </div>
-                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'RecursosHumanos.index'])">
+                    <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index'])">
                         <jet-responsive-nav-link :href="route('Admin')" :active="route().current('Admin')">
-                            <i class="tw-mr-2 fas fa-laptop-code tw-text-gray-600"></i> ADMINISTRADOR
+                            <i class="tw-mr-2 fa-brands fa-solid fa-user-secret tw-text-gray-600"></i> ADMINISTRADOR
                         </jet-responsive-nav-link>
                     </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'RecursosHumanos.index'])">
@@ -155,6 +160,11 @@
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Supply.index'])">
                         <jet-responsive-nav-link :href="route('Supply')" :active="route().current('Supply')">
                             <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i> SUPPLY
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <jet-responsive-nav-link :href="route('Supply')" :active="route().current('sISTEMAS')">
+                            <i class="tw-mr-2 fa-solid fa-laptop-code tw-text-gray-600"></i> SISTEMAS
                         </jet-responsive-nav-link>
                     </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">

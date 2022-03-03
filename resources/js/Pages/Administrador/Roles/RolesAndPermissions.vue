@@ -85,6 +85,7 @@
         <section class="tw-flex tw-my-8 tw-mx-4 tw-justify-center md:tw-mx-28">
             <jet-button type="button"  @click="Sincroniza(form)">Guarda Cambios</jet-button>
         </section>
+
     </app-layout>
 </template>
 
@@ -154,6 +155,7 @@ export default {
         this.qrcode();
         this.tablaRoles();
         this.tablaPermisos();
+        this.Calendario();
     },
 
     methods: {
@@ -165,6 +167,18 @@ export default {
             //     colorDark : "#64748B",
             //     colorLight : "#ffffff",
             // });
+        },
+
+        Calendario(){
+            var calendar = new window.Calendar($('#calendar').get(0), {
+            plugins: [window.interaction, window.dayGridPlugin, window.timeGridPlugin, window.listPlugin],
+            selectable: true,
+            initialView: 'dayGridMonth',
+            eventBorderColor: 'white',
+
+            });
+
+            calendar.render();
         },
 
         reset(){

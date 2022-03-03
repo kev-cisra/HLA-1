@@ -82,10 +82,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/Almacen.php'));
 
-            // Route::middleware('web','auth')
-            //     ->prefix('Sistemas')
-            //     ->namespace($this->namespace)
-            //     ->group(base_path('routes/Sistemas.php'));
+            Route::middleware('web','auth')
+                ->prefix('Sistemas')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/Sistemas.php'));
 
             Route::middleware('web','auth')
                 ->prefix('Direccion')
