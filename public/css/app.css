@@ -22809,6 +22809,9 @@ select {
 .tw-w-1\/6 {
 	width: 16.666667%;
 }
+.tw-w-11\/12 {
+	width: 91.666667%;
+}
 .tw-w-40 {
 	width: 10rem;
 }
@@ -22847,15 +22850,6 @@ select {
 }
 .tw-w-14 {
 	width: 3.5rem;
-}
-.tw-w-80 {
-	width: 20rem;
-}
-.tw-w-10\/12 {
-	width: 83.333333%;
-}
-.tw-w-11\/12 {
-	width: 91.666667%;
 }
 .tw-min-w-0 {
 	min-width: 0px;
@@ -25536,6 +25530,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(67, 56, 202, var(--tw-bg-opacity));
 }
+.hover\:tw-bg-green-700:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgba(21, 128, 61, var(--tw-bg-opacity));
+}
 .hover\:tw-bg-teal-700:hover {
 	--tw-bg-opacity: 1;
 	background-color: rgba(15, 118, 110, var(--tw-bg-opacity));
@@ -25547,10 +25545,6 @@ select {
 .hover\:tw-bg-sky-600:hover {
 	--tw-bg-opacity: 1;
 	background-color: rgba(2, 132, 199, var(--tw-bg-opacity));
-}
-.hover\:tw-bg-green-700:hover {
-	--tw-bg-opacity: 1;
-	background-color: rgba(21, 128, 61, var(--tw-bg-opacity));
 }
 .hover\:tw-bg-gradient-to-r:hover {
 	background-image: linear-gradient(to right, var(--tw-gradient-stops));

@@ -1,10 +1,11 @@
 require('./bootstrap');
-
+// require('./calendar');
 // Import modules...
 import { createApp, h } from 'vue';
 import { App as InertiaApp, plugin as InertiaPlugin } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
 import 'bootstrap';
+
 
 const el = document.getElementById('app');
 
@@ -23,6 +24,7 @@ createApp({
                 path2: 'https://intranethlangeles.com/storage',
                 showModal: false,
                 editMode: false,
+                now: moment().format('Y-M-d H:mm:ss'),
                 español: {
                     processing: "Procesando...",
                     lengthMenu: "Mostrar _MENU_ registros",
