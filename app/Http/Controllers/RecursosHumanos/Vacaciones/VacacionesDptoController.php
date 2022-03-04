@@ -52,9 +52,17 @@ class VacacionesDptoController extends Controller{
                 $PerfilesUsuarios = PerfilesUsuarios::with(['PerfilDepartamento', 'PerfilPuesto'])
                 ->get();
             }else{ //RecursoHumanos
-                $PerfilesUsuarios = PerfilesUsuarios::with(['PerfilDepartamento', 'PerfilPuesto'])
-                ->where('id', '>', 10)
-                ->get();
+                if($Session->id == 13){ //pPedro Asencion
+
+                    $PerfilesUsuarios = PerfilesUsuarios::with(['jefe_perfiles','PerfilDepartamento', 'PerfilPuesto', 'jefe_perfiles.PerfilDepartamento', 'jefe_perfiles.PerfilPuesto', 'jefe_perfiles.perfiles_jefe.PerfilDepartamento', 'jefe_perfiles.perfiles_jefe.PerfilPuesto'])
+                    ->where('Empresa', 'HILATURAS')
+                    ->get();
+
+                }else{
+                    $PerfilesUsuarios = PerfilesUsuarios::with(['PerfilDepartamento', 'PerfilPuesto'])
+                    ->where('id', '>', 10)
+                    ->get();
+                }
             }
 
             $JefeDepto = true;
