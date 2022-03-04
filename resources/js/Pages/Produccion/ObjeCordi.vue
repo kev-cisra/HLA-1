@@ -924,7 +924,7 @@
             },
             /************************************* Carga de objetivos 2 **************************************/
             async saveOB2(data){
-            /*     console.log(data); */
+                /* console.log(data); */
                 //data.calcuObje2 = this.calcuObje2;
                 data.semana = moment(data.fecha).format("GGGG-[W]WW");
 

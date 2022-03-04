@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Produccion\ExcelImport\CargarExcelController;
 use App\Http\Controllers\Menus\MenuProducccionController;
+use App\Http\Controllers\Produccion\AbasteEntreController;
 use App\Http\Controllers\Produccion\Calculos\CalculosController;
 use App\Http\Controllers\Produccion\CargaController;
 use App\Http\Controllers\Produccion\CarNormController;
@@ -154,6 +155,9 @@ Route::post('Carga/CarObje', [CargaController::class, 'CarObje'])->name('CarObje
 Route::resource('CargaExcel', CargarExcelController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
+Route::post('impoMatriz', [CargarExcelController::class, 'impoMatriz'])->name('importaMatriz')
+->middleware(['auth:sanctum', 'verified']);
+
 
 /**************************************************** Carga de objetivos ************************************************/
 Route::resource('ObjeCordi', ObjeCordiController::class)
@@ -163,4 +167,11 @@ Route::post('ObjeCordi/storeProObje', [ObjeCordiController::class, 'storeProObje
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::post('ObjeCordi/claTitu', [ObjeCordiController::class, 'claTitu'])->name('claTitulo')
+    ->middleware(['auth:sanctum', 'verified']);
+
+/***************************************************** Abastos Entregas *************************************************/
+Route::resource('AbaEntre', AbasteEntreController::class)
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::post('AbaEntre/Carga', [AbasteEntreController::class, 'Carga'])->name('Cargas')
     ->middleware(['auth:sanctum', 'verified']);

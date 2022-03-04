@@ -41,102 +41,6 @@
             </template>
         </Accions>
 
-        <!------------------------------------ Carga de objetivos -------------------------------------------------->
-        <div class="collapse tw-p-6 tw-bg-blueGray-500 tw-border tw-border-yellow-500 tw-border-8 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 lg:tw-mx-14 lg:tw-w-11/12 tw-w-full" id="agObjec">
-            <!-- Formulas -->
-            <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode">
-                <!-- Fecha -->
-                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                    <!--  :min="hoy" -->
-                    <jet-label class="tw-text-white"><span class="required">*</span>Fecha</jet-label>
-                    <input type="datetime-local" class="InputSelect" v-model="form.fecha" :min="hoy" :max="treDia">
-                    <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
-                </div>
-                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                    <jet-label class="tw-text-white"><span class="required">*</span>Paquete Objetivos</jet-label>
-                    <Select2 v-model="paqObjetivo" class="InputSelect" :settings="{width: '100%'}" :options="opcPaOb"/>
-                </div>
-                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                    <jet-label class="tw-text-white"><span class="required">*</span>Horas a trabajar</jet-label>
-                    <jet-input v-model="calcuObje" type="number" min="0" max="12" step=".5"></jet-input>
-                </div>
-                <!-- select operador -->
-                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="usuario.dep_pers.length == 0">
-                    <jet-label class="tw-text-white"><span class="required">*</span>Operador</jet-label>
-                    <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id">
-                        <option value="" disabled>SELECCIONA</option>
-                        <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
-                    </select>
-                    <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
-                </div>
-                <!-- select turno -->
-                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" >
-                    <jet-label class="tw-text-white"><span class="required">*</span>Turnos</jet-label>
-                    <select class="InputSelect" v-model="form.turno_id">
-                        <option value="" disabled>SELECCIONA</option>
-                        <option v-for="tu in opcTur" :key="tu.value" :value="tu.value">{{tu.text}}</option>
-                    </select>
-                    <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
-                </div>
-            </div>
-            <div class="tw-mb-6 lg:tw-flex" v-if="(form.notaPen == 1 & !editMode )| editMode" v-on:keyup.enter="saveCA(form)">
-                <!-- select equipo -->
-                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                    <jet-label class="tw-text-white"><span class="required">*</span>Equipo</jet-label>
-                    <select class="InputSelect" v-model="form.equipo_id">
-                        <option value="" disabled>SELECCIONA</option>
-                        <option v-for="eq in opcEqu" :key="eq.value" :value="eq.value">{{eq.text}}</option>
-                    </select>
-                    <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
-                </div>
-                <!-- Inout partida -->
-                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                    <jet-label class="tw-text-white">Partida</jet-label>
-                    <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
-                    <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
-                </div>
-                <!-- Input kilogramos -->
-                <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/2 lg:tw-mb-0">
-                    <jet-label class="tw-text-white"><span class="required">*</span>{{ uni_me }}</jet-label>
-                    <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="form.valor" disabled></jet-input>
-                    <small v-if="errors.valor" class="validation-alert">{{errors.valor}}</small>
-                </div>
-            </div>
-            <!-- Notas -->
-            <div class="tw-mb-6 lg:tw-flex" v-if="form.notaPen == 2">
-                <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 tw-text-center tw-mx-auto lg:tw-mb-0 tw-bg-emerald-700 tw-bg-opacity-50 tw-rounded-lg" v-if="editMode">
-                    <jet-label class="tw-text-white">Nota anterior</jet-label>
-                    <jet-label v-html="nAnte"></jet-label>
-                </div>
-                <div class="tw-px-3 tw-mb-6 lg:tw-w-2/3 tw-text-center tw-mx-auto lg:tw-mb-0">
-                    <jet-label class="tw-text-white"><span class="required">*</span>Nota</jet-label>
-                    <textarea class="InputSelect" v-model="form.nota" maxlength="250" @input="(val) => (form.nota = form.nota.toUpperCase())" placeholder="Maximo 250 caracteres"></textarea>
-                    <small v-if="errors.nota" class="validation-alert">{{errors.nota}}</small>
-                </div>
-            </div>
-            <!-- Botones -->
-            <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                <div>
-                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 2 & !editMode" v-show="btnOff" @click="saveNot(form)">Agregar</jet-button>
-                </div>
-                <div>
-                    <jet-button type="button" class="tw-mx-auto" v-if="form.notaPen == 1 & !editMode" v-show="btnOff" @click="saveCA(form)">Guardar</jet-button>
-                </div>
-                <div v-show="!btnOff">
-                    <jet-button type="button" class="tw-mx-auto" disabled>
-                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                        Guardando...
-                    </jet-button>
-                </div>
-                <!-- <div>
-                    <jet-button type="button" class="tw-mx-auto" v-if="editMode" @click="updateCA(form)">Actualizar</jet-button>
-                </div> -->
-                <div>
-                    <jet-button class="tw-bg-red-700 hover:tw-bg-red-500" data-bs-toggle="collapse" data-bs-target="#agObjec" aria-expanded="false" aria-controls="agObjec" @click="resetCA()" v-if="editMode">CANCELAR</jet-button>
-                </div>
-            </div>
-        </div>
-
         <!------------------------------------ carga de datos de produccion ---------------------------------------->
         <div class="collapse tw-p-6 tw-bg-blueGray-500 tw-border tw-border-green-700 tw-border-8 tw-rounded-3xl tw-shadow-xl tw-absolute tw-z-10 lg:tw-mx-14 lg:tw-w-11/12 tw-w-full" id="agPer">
             <!-------------------------------------------- Paquetes ---------------------------------------------->
@@ -616,131 +520,6 @@
             </div>
         </div>
 
-        <!------------------------------------- Carga de paquetes Objetivos -------------------------------->
-        <div class="offcanvas offcanvas-bottom tw-h-3/4" data-bs-scroll="true" tabindex="-1" id="paqCor" aria-labelledby="paqCorLabel">
-            <div class="offcanvas-header tw-bg-blue-700">
-                <h3 class="offcanvas-title tw-text-xl tw-text-blueGray-50" id="offcanvasBottomLabel">Paquetes para coordinador</h3>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <!-- Body -->
-            <div class="offcanvas-body small" >
-                <div id="Fobje"></div>
-                <!----------------------------- Formulario para coordinador ------------------------------------------->
-                <div class="m-5 tw-p-6 tw-bg-blue-600 tw-rounded-3xl tw-shadow-xl">
-                    <div class="tw-mb-6 lg:tw-flex">
-                        <!-- Select proceso principal -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
-                            <jet-label class="tw-text-white"><span class="required">*</span>Proceso proncipal</jet-label>
-                            <select class="InputSelect" v-model="proc_prin">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="pp in opcPPO" :key="pp" :value="pp.value" >{{pp.text}}</option>
-                            </select>
-                            <small v-if="errors.proc_prin" class="validation-alert">{{errors.proc_prin}}</small>
-                        </div>
-                        <!-- select Sub proceso -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0" v-if="opcSP">
-                            <jet-label class="tw-text-white"><span class="required">*</span>Sub proceso </jet-label>
-                            <select class="InputSelect" v-model="formObje.proceso_id">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="sp in opcSP" :key="sp" :value="sp.id">{{sp.text}}</option>
-                            </select>
-                            <small v-if="errors.proceso_id" class="validation-alert">{{errors.proceso_id}}</small>
-                        </div>
-                        <!-- select Maquinas -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
-                            <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
-                            <select class="InputSelect" v-model="formObje.maq_pro_id" :disabled="editMode">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="mq in opcMQO" :key="mq.value" :value="mq.value">{{mq.text}}</option>
-                            </select>
-                            <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
-                        </div>
-                        <!-- Select Normas -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
-                            <jet-label class="tw-text-white"><span class="required">*</span>Norma</jet-label>
-                            <select class="InputSelect" v-model="formObje.norma" :disabled="editMode">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
-                            </select>
-                            <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
-                        </div>
-                        <!-- select Clave -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
-                            <jet-label class="tw-text-white"><span class="required">*</span>Clave</jet-label>
-                            <Select2 v-model="formObje.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCLO" />
-                            <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
-                        </div>
-                        <!-- input produccion -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
-                            <jet-label class="tw-text-white"><span class="required">*</span>Produccion por hora</jet-label>
-                            <jet-input type="number" v-model="formObje.pro_hora"></jet-input>
-                            <small v-if="errors.pro_hora" class="validation-alert">{{errors.pro_hora}}</small>
-                        </div>
-                    </div>
-                    <!-- Botones -->
-                    <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
-                        <div v-if="btnOff & !editModeOB">
-                            <button type="button" class="btn btn-success" @click="savePObje(formObje)">Guardar</button>
-                            <!-- <jet-button type="button" @click="savePObje(form)">Guardar</jet-button> -->
-                        </div>
-                        <div v-if="btnOff & editModeOB">
-                            <button type="button" class="btn btn-success" @click="updateOB(formObje)">Actualizar</button>
-                            <!-- <jet-button type="button" @click="savePObje(form)">Guardar</jet-button> -->
-                        </div>
-                        <div v-show="!btnOff">
-                            <button type="button" class="btn btn-success tw-mx-auto" disabled>
-                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                Guardando...
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!----------------------------- Data Table ------------------------------------------------------------>
-                <div>
-                    <TableBlue id="t_ob" style="width:100%">
-                        <template v-slot:TableHeader>
-                            <th class="columna">Índice</th>
-                            <th class="columna tw-text-center">Proceso</th>
-                            <th class="columna tw-text-center">Maquina</th>
-                            <th class="columna tw-text-center">Norma</th>
-                            <th class="columna tw-text-center">Clave</th>
-                            <th class="columna tw-text-center">Producción/Hora</th>
-                            <th class="columna tw-text-center"></th>
-                        </template>
-                        <template v-slot:TableFooter>
-                            <tr class="fila" v-for="obje in objetivos" :key="obje.id">
-                                <td class="tw-text-center"> {{ obje.id }} </td>
-                                <td class="tw-text-center"> {{ obje.proceso.nompro }} </td>
-                                <td class="tw-text-center"> {{ obje.maq_pro.maquinas.Nombre }} {{ obje.maq_pro.maquinas.marca.Nombre }} </td>
-                                <td class="tw-text-center"> {{ obje.dep_mat.materiales.idmat }} - {{ obje.dep_mat.materiales.nommat }} </td>
-                                <td class="tw-text-center"> {{ obje.clave_id == null ? '' : obje.clave.CVE_ART }} - {{ obje.clave_id == null ? '' : obje.clave.DESCR }} </td>
-                                <td class="tw-text-center"> {{ obje.pro_hora }} </td>
-                                <td class="tw-text-center">
-                                    <div class="columnaIconos">
-                                        <!-- editar objetivos -->
-                                        <a class="iconoEdit" @click="editOB(obje)" href="#Fobje">
-                                            <span tooltip="Editar" flow="left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                </svg>
-                                            </span>
-                                        </a>
-                                        <div class="iconoDelete" @click="deleteOB(obje)">
-                                            <span tooltip="Eliminar" flow="left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </template>
-                    </TableBlue>
-                </div>
-            </div>
-        </div>
-
     </app-layout>
 </template>
 
@@ -916,7 +695,7 @@
                 this.tablaOpe()
             },
             //paquetes objetivos
-            async ConObjeti(lim = false){
+            /* async ConObjeti(lim = false){
                 var datos = {'departamento_id': this.S_Area, 'modulo': 'carPro'};
                 if (lim) {
                     $('#t_ob').DataTable().clear();
@@ -927,7 +706,7 @@
 
                 $('#t_ob').DataTable().destroy();
                 this.tablaObje()
-            },
+            }, */
             /****************************** Globales **********************************************************/
             global(){
                 this.form.fecha = this.hoy;
@@ -1340,7 +1119,7 @@
                     onError: () => {this.ConProduccion(), this.btnOff = true},
                 });
             },
-            /****************************** Carga de paquetes para objetivos *******************************/
+            /****************************** Carga de paquetes para objetivos
             async savePObje(form){
                 this.btnOff = false;
                 await this.$inertia.post('/Produccion/ObjeCordi', form, {
@@ -1385,6 +1164,7 @@
                     onSuccess: () => { this.ConObjeti(), this.alertDelete() }, onError: () => {this.ConObjeti()}, preserveState: true
                 });
             }
+            *******************************/
         },
         computed: {
             //Opciones departamento
@@ -1472,7 +1252,7 @@
                 return mq;
             },
             //Opciones maquinas Objetivos
-            opcMQO: function() {
+            /* opcMQO: function() {
                 this.limp == 1 ? this.formObje.maq_pro_id = '' : '';
                 const mq = [];
                 var mar = '';
@@ -1488,7 +1268,7 @@
                     })
                 }
                 return mq;
-            },
+            }, */
             //Opciones Claves
             opcCL: function() {
                 const scl = [];
@@ -1506,9 +1286,8 @@
                 return scl;
             },
             //Opciones Claves Objetivos
-            opcCLO: function() {
+            /* opcCLO: function() {
                 const scl = [];
-                /* this.form.clave_id = ''; */
                 if (this.formObje.norma != '') {
                     this.materiales.forEach(cl => {
                         if (this.formObje.norma == cl.id) {
@@ -1520,7 +1299,7 @@
                     })
                 }
                 return scl;
-            },
+            }, */
             //opciones Paquetes Operador
             opcPaOp: function() {
                 const po = [];
@@ -1549,7 +1328,7 @@
                 return no;
             },
             //opciones Paquetes Objetivos
-            opcPaOb: function() {
+            /* opcPaOb: function() {
                 const ob = [];
                 var clave = '';
                 this.objetivos.forEach(po => {
@@ -1559,7 +1338,7 @@
                     }
                 })
                 return ob;
-            },
+            }, */
             //opciones de turnos
             opcTur: function() {
                 const tur = [];
@@ -1603,7 +1382,7 @@
                 this.ConProduccion();
                 this.ConPacNorma();
                 this.ConPacPerso();
-                this.ConObjeti(true);
+                //this.ConObjeti(true);
 
                 //Personal
                 let per = await axios.post('General/ConPerso', datos);
@@ -1664,7 +1443,7 @@
                     })
                 }
             },
-            paqObjetivo: function(paOb){
+            /* paqObjetivo: function(paOb){
                 if (paOb == '') {
                     this.form.proceso_id = '';
                     this.form.maq_pro_id = '';
@@ -1692,7 +1471,7 @@
                     this.form.valor = resu.pro_hora * calObj;
                     //console.log(this.form.valor)
                 }
-            }
+            } */
         }
     }
 </script>

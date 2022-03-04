@@ -889,7 +889,7 @@
                     <div class="ModalForm">
                         <div class="tw-mt-10 tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0 tw-justify-center">
-                                <!-- <jet-label><span class="required">*</span>Fecha de inicio de carga</jet-label> -->
+                                <jet-label><span class="required">*</span>Carga masiva Producción</jet-label>
                                 <input type="file" class="" @input="docu.file = $event.target.files[0]" ref="file" accept=".xlsx">
                                 <br>
                                 <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
@@ -899,9 +899,23 @@
                             </div>
                         </div>
 
+                        <!------------------------------- Carga masiva
+
+                        <div class="tw-mt-10 tw-mb-6 md:tw-flex">
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0 tw-justify-center">
+                                <jet-label><span class="required">*</span>Carga masiva Matriz objetivo</jet-label>
+                                <input type="file" class="" @input="docu2.file = $event.target.files[0]" ref="file" accept=".xlsx">
+                                <br>
+                                <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
+                            </div>
+                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                                <BotonCarga :verBot="vMasi" :textoV="'Guardar'" :textoOC="'Guardando...'" :class="'btn-primary'" @click="carMatriObje()"></BotonCarga>
+                            </div>
+                        </div>  -------------------------------->
+
                         <div class="tw-mt-6 tw-mb-6 md:tw-flex tw-m-auto">
                             <div class="tw-px-3 tw-mb-6 md:tw-mb-0">
-                                <a target="_blank" class="tw-text-blue-600 tw-text-xl" :href="descarga" download="Carga Masiva.xlsx">Descargar Archivo</a>
+                                <a target="_blank" class="tw-text-blue-600 tw-text-xl" :href="descarga" download="Carga Masiva.xlsx">Descargar Archivo Producción</a>
                             </div>
                         </div>
                     </div>
@@ -1119,6 +1133,9 @@
                     elimiMasi: []
                 },
                 docu: {
+                    file: null
+                },
+                docu2: {
                     file: null
                 },
                 FoFiltro: {
@@ -1395,19 +1412,27 @@
                 })
             },
             /***************************** Carga Masiva ************************************/
-            carMasi(){
+            async carMasi(){
+                this.vMasi = false;
                 const form = this.docu;
-                this.$inertia.post('/Produccion/CargaExcel', form, {
+                await this.$inertia.post('/Produccion/CargaExcel', form, {
                     onSuccess: (v) => { this.openModalC(), this.resetC(), this.alertSucces(), this.vMasi = true, this.arrProdu() },
                     onError: (e) => { this.vMasi = true },
                     preserveState: true
                 });
             },
+            /**************************** Carga Matriz Objetivos *****************************/
+            async carMatriObje(){
+                const form = this.docu2;
+                await axios.post('/Produccion/impoMatriz', form)
+                .then(eve => {console.log(eve.data)})
+                .catch(err => {console.log(err)});
+            },
             /***************************** Calculos ******************************************/
             async calcula(form) {
                 if (this.calcu != '' & this.S_Area != '') {
                     this.limpPro = false;
-                    //this.vCal = false;
+                    this.vCal = false;
 
                     await this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {
@@ -1666,6 +1691,7 @@
             //reset de file
             resetC(){
                 this.docu.file = null
+                this.docu2.file = null
             },
             /***************************** Datos de procesos *******************************************/
             //Limpia los inputs de fechas
