@@ -2,3 +2,9 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import 'styles.css';
+
+/* Fullcalendar */
+@fullcalendar/core/main.css;
+@fullcalendar/daygrid/main.css;
+@fullcalendar/timegrid/main.css;
+@fullcalendar/list/main.css;

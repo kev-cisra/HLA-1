@@ -1,21 +1,18 @@
 import { Calendar } from '@fullcalendar/core';
+window.Calendar = Calendar;
+
+import interaction from '@fullcalendar/interaction';
+window.interaction = interaction;
+
 import dayGridPlugin from '@fullcalendar/daygrid';
+window.dayGridPlugin = dayGridPlugin;
+
 import timeGridPlugin from '@fullcalendar/timegrid';
+window.timeGridPlugin = timeGridPlugin;
+
 import listPlugin from '@fullcalendar/list';
-import itLocale from '@fullcalendar/core/locales/it'; //italian language and config
+window.listPlugin = listPlugin;
 
-    let calendar = new Calendar(calendarEl, {
-        locale: itLocale,
-        plugins: [ dayGridPlugin, timeGridPlugin, listPlugin ],
-        initialView: 'dayGridMonth',
-        headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,listWeek'
-        },
-        // go ahead with other parameters
-    });
 
-    calendar.render();
 
 

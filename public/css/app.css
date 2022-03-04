@@ -22773,9 +22773,6 @@ select {
 .tw-h-24 {
 	height: 6rem;
 }
-.tw-h-1\/2 {
-	height: 50%;
-}
 .tw-min-h-screen {
 	min-height: 100vh;
 }
@@ -25463,6 +25460,11 @@ select {
 	padding: 0.5rem;
 	text-transform: uppercase;
 }
+/* Fullcalendar */
+@fullcalendar/core/main.css;
+@fullcalendar/daygrid/main.css;
+@fullcalendar/timegrid/main.css;
+@fullcalendar/list/main.css;
 .hover\:tw--translate-y-1:hover {
 	--tw-translate-y: -0.25rem;
 	transform: var(--tw-transform);

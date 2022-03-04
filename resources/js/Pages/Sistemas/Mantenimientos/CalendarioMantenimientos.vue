@@ -8,12 +8,38 @@
                 </slot>
             </Header>
         </section>
-        <!-- ****************************************** CONTENIDO ********************************************* -->
-        <section class="tw-flex tw-justify-center tw-mx-4">
-            <div class="tw-w-1/2 tw-h-1/2">
-                <div id="calendar"></div>
+                <!-- ******************************* FILTROS ********************************************* -->
+        <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-1 tw-my-8 tw-mx-8">
+            <div class="tw-flex tw-gap-4 tw-mx-2">
+
+            </div>
+            <div>
+                <jet-button @click="openModal" class="BtnNuevo">NUEVA INFORMACIÓN</jet-button>
             </div>
         </section>
+        <!-- ****************************************** CONTENIDO ********************************************* -->
+        <section class="tw-flex tw-justify-center tw-mx-8 tw-my-8 tw-uppercase">
+            <div id="calendar"></div>
+        </section>
+
+         <!-- **************************************************** MODALES ****************************************************** -->
+        <modal :show="showModal" @close="chageClose" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>REGISTRO DE INFORMACIÓN</h3>
+            </div>
+
+            <div class="ModalForm">
+                <div class="FormSection">
+
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="save(form)">Guardar</jet-button>
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
+
     </app-layout>
 </template>
 
@@ -36,12 +62,18 @@ import $ from "jquery";
 import moment from 'moment';
 import 'moment/locale/es';
 
+import esLocale from "@fullcalendar/core/locales/es";
 export default {
 
     data() {
         return {
+            tam: "3xl",
             color: "tw-bg-sky-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
+            showModal: false,
+            form: {
+
+            }
         };
     },
 
@@ -65,23 +97,60 @@ export default {
     },
 
     mounted(){
-
         this.Calendario();
     },
 
     methods: {
+
         Calendario(){
             var calendar = new window.Calendar($('#calendar').get(0), {
             plugins: [window.interaction, window.dayGridPlugin, window.timeGridPlugin, window.listPlugin],
+            locale: esLocale,
             selectable: true,
-            initialView: 'dayGridMonth',
+            height: "auto",
+            initialView: 'timeGridWeek',
+            allDaySlot: false,
+            slotMinTime: "10:00:00",
+            slotMaxTime: "16:00:00",
+            headerToolbar: {
+                left: 'prev,next,today',
+                center: 'title',
+                right: 'timeGridWeek,dayGridMonth,listWeek'
+            },
+            titleFormat: {
+                year: 'numeric', month: 'long', day: 'numeric',
+            },
+            customButtons:{
+                AgregaEvento:{
+                    text: "Nuevo Mantenimiento",
+                    click: function () {
+                        console.log("Modal");
+                    }
+                }
+            },
             eventBorderColor: 'white',
+                eventClick: info => {
+                    console.log('evenClik');
+                },
+                dateClick: info => {
+                    console.log('dateClick');
+                    this.showModal = true;
+                },
+                select: info => {
+                    console.log('select');
+                },
 
+                events: [
+                ]
             });
-
+            // calendar.setOption('locale', 'es');
             calendar.render();
         },
 
+        reset() {
+            this.form = {
+            };
+        },
     },
 };
 </script>
