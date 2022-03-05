@@ -65,15 +65,76 @@ class AbasteEntreController extends Controller
 
     public function Carga(Request $request){
         $pro = procesos::where('departamento_id', '=', $request->departamento_id)
-        ->where('tipo_carga', '=', 'entre')
-        ->with('sub__proceso')
+        ->where('tipo', '=', "4")
+        ->whereNotNull('proceso_id')
+        ->selectRaw('*')
         ->get();
+        /* procesos::where('departamento_id', '=', $request->departamento_id)
+        ->where('tipo_carga', '=', 'entre')
+        ->with([
+            'sub_proceso' => function($sp) {
+                $sp->select('id', 'nompro', 'proceso_id');
+            }
+        ])
+        ->first(); */
 
-        /* $car = carga::where('departamento_id', '=', $request->departamento_id)
-        ->join('procesos', 'procesos.id', '=', 'cargas.proceso_id')
-        ->where('procesos.tipo_carga', '=', 'entre')
-        //->with('sub__proceso')
-        ->get(); */
+        $car = carga::where('departamento_id', '=', $request->departamento_id)
+        ->whereIn('proceso_id', [42])
+        ->with([
+            'dep_perf' => function($dp) {
+                $dp ->withTrashed()
+                    ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
+            },
+            'dep_perf.perfiles' => function($perfi){
+                $perfi->withTrashed()
+                ->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
+            },
+            'dep_perf.departamentos' => function($dp_de){
+                $dp_de ->withTrashed()
+                -> select('id', 'Nombre', 'departamento_id');
+            },
+            'equipo' => function($eq){
+                $eq ->withTrashed()
+                -> select('id', 'nombre');
+            },
+            'turno' => function($tu){
+                $tu ->withTrashed()
+                ->select('id', 'nomtur');
+            },
+            'maq_pro' => function($mp){
+                $mp ->withTrashed()
+                ->select('id', 'proceso_id', 'maquina_id');
+            },
+            'maq_pro.maquinas' => function($ma){
+                $ma ->withTrashed()
+                -> select('id', 'Nombre');
+            },
+            'proceso' => function($pr){
+                $pr ->withTrashed()
+                -> select('id', 'nompro', 'tipo', 'operacion', 'proceso_id');
+            },
+            'dep_mat' => function($dp){
+                $dp ->withTrashed()
+                -> select('id', 'material_id');
+            },
+            'dep_mat.materiales' => function($mat){
+                $mat ->withTrashed()
+                -> select('id', 'idmat', 'nommat');
+            },
+            'objetivopunta'=> function($op){
+                $op->select('id', 'horas', 'valorPu', 'carga_id');
+            },
+            'clave' => function($cla){
+                $cla ->withTrashed()
+                -> select('id', 'CVE_ART', 'DESCR');
+            },
+            'notas' => function($not){
+                $not ->withTrashed()
+                -> latest()
+                -> select('id', 'fecha', 'nota', 'carga_id');
+            }
+        ])
+        ->get();
         return $pro;
     }
 }

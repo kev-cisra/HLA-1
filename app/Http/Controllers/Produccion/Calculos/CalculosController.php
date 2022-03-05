@@ -45,6 +45,7 @@ class CalculosController extends Controller
 
         $calcula = procesos::where('departamento_id', '=', $request->depa)
             ->where('tipo', '=', '3')
+            ->orWhere('tipo', '=', '4')
             ->with([
                 'formulas' => function($fo){
                     $fo -> select('id', 'proc_rela', 'maq_pros_id', 'proceso_id');
@@ -802,9 +803,9 @@ class CalculosController extends Controller
             ->selectRaw('SUM(objetivo_puntas.valorPu) AS valor')
             ->first();
 
-        $fs = ($fsP*100)/$nusumO->valor;
 
         if ($fs != 0) {
+            $fs = ($fsP*100)/$nusumO->valor;
             $data = ['proceso_id' => $proce_id, 'suma' => round($fs, '2'), 'equipo_id' => null, 'turno_id' => null, 'cantidad' => '% ', 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
             $this->gua_act($fechas, $data);
         }

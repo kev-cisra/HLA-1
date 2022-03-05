@@ -114,7 +114,7 @@
                                         <option value="1">Carga para Lider / Operador</option>
                                         <option value="2">Carga para Coordinador</option>
                                         <option value="5">Merma</option>
-                                        <!-- <option value="4">Entregas</option> -->
+                                        <option value="4">Entregas</option>
                                         <option value="3">Formulas</option>
                                     </select>
                                     <small v-if="errors.tipo" class="validation-alert">{{errors.tipo}}</small>
