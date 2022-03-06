@@ -444,7 +444,7 @@
     </app-layout>
 </template>
 <script>
-import AppLayout from '@/Layouts/AppLayout.vue';
+    import AppLayout from '@/Layouts/AppLayout.vue';
     import Header from '@/Components/Header'
     import Accions from '@/Components/Accions'
     import Table from '@/Components/Table';
@@ -1036,7 +1036,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 this.objetivos.forEach(po => {
                     if (po.departamento_id == this.S_Area) {
                         clave = po.clave_id == null ? 'N/A' : po.clave.CVE_ART
-                        ob.push({id: po.id, text: po.proceso.nompro+' || '+po.maq_pro.maquinas.Nombre+' '+po.maq_pro.maquinas.marca.Nombre+' || '+po.dep_mat.materiales.idmat+' || '+clave})
+                        ob.push({id: po.id, text: po.maq_pro.maquinas.Nombre+' '+po.maq_pro.maquinas.marca.Nombre+' - '+clave})
                     }
                 })
                 return ob;
@@ -1112,53 +1112,6 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                 let mate = await axios.post('General/ConMateriales', datos)
                 this.materiales = mate.data
             },
-            /* calcuObje: function(calObj) {
-                let nu = 12;
-                this.calcuPunta = nu - calObj;
-                if (calObj <= 0 || calObj > 12) {
-                    //this.form.valor = 0;
-                    this.calcuObje = 0;
-                }
-                if (this.form.paquet.length != 0) {
-                    this.form.paquet.forEach(eve => {
-                        if(eve.paqObjetivo){
-                            const resu = this.objetivos.find(obje => obje.id == eve.paqObjetivo);
-                            eve.valor = resu.pro_hora * calObj;
-                            //console.log(parseFloat(calObj, 10) + parseFloat(this.calcuPunta,10))
-                            eve.valorP = resu.pro_hora * (parseFloat(calObj, 10) + parseFloat(this.calcuPunta,10));
-                        }
-                    })
-                }
-            },
-            calcuPunta: function(cal) {
-                this.form.paquet.forEach(eve => {
-                    let nu = 12 - this.calcuObje;
-                    if (cal <    0 || cal > nu) {
-                        this.calcuPunta = nu
-                    }
-                    //console.log(nu)
-                    if(eve.paqObjetivo){
-                        const resu = this.objetivos.find(obje => obje.id == eve.paqObjetivo);
-                        eve.valor = resu.pro_hora * this.calcuObje;
-                        //console.log(parseFloat(calObj, 10) + parseFloat(this.calcuPunta,10))
-                        eve.valorP = resu.pro_hora * (parseFloat(this.calcuObje, 10) + parseFloat(cal,10));
-
-                    }
-                })
-            },
-            calcuObje2: function(caloj2){
-                if (caloj2 <= 0 || caloj2 > 12) {
-                    this.calcuObje2 = 0;
-                }
-                if (this.form2.paquet.length != 0) {
-                    this.form2.paquet.forEach(eve => {
-                        if(eve.paqObjetivo){
-                            const resu = this.objetivos.find(obje => obje.id == eve.paqObjetivo);
-                            eve.valor = resu.pro_hora * caloj2;
-                        }
-                    })
-                }
-            } */
         }
     }
 </script>

@@ -19,6 +19,7 @@ class AutorizaCancelacionesController extends Controller{
         $Session = Auth::user();
 
         $Vacaciones = PerfilesUsuarios::select(
+            'perfiles_usuarios.id AS PerfilId',
             'perfiles_usuarios.IdEmp AS IdEmp',
             'perfiles_usuarios.Nombre AS Nombre',
             'perfiles_usuarios.ApPat AS ApPat',
@@ -33,10 +34,12 @@ class AutorizaCancelacionesController extends Controller{
             'vacaciones.DiasTomados AS DiasTomados',
             'vacaciones.DiasRestantes AS DiasRestantes',
             'vacaciones.MotivoCancelacion AS MotivoCancelacion',
-            'vacaciones.Estatus AS Estatus')
-            ->where('vacaciones.Estatus', '!=', 1)
+            'vacaciones.Estatus AS Estatus',
+            'vacaciones.Perfil_id AS Perfil_id')
+            ->where('vacaciones.Estatus', '=', 0)
+            ->orWhere('vacaciones.Estatus', '=', 3)
             ->join('puestos', 'perfiles_usuarios.Puesto_id', '=', 'puestos.id')
-            ->join('vacaciones', 'perfiles_usuarios.IdEmp', '=', 'vacaciones.IdEmp')
+            ->join('vacaciones', 'perfiles_usuarios.id', '=', 'vacaciones.Perfil_id')
             ->get();
 
         return Inertia::render('RecursosHumanos/CancelaVacaciones/index', compact('Vacaciones'));
@@ -51,14 +54,14 @@ class AutorizaCancelacionesController extends Controller{
 
 
         switch($request->metodo){
-            case 1:
+            case 1: //Autoriza Vacaciones
                 // return $request;
                 Vacaciones::where('id', '=' ,$request->id)->update([
                     'Estatus' => 1,
                 ]);
-                return redirect()->back()->with('message', 'Perfil y Usuario Creados Correctamente');
+                return redirect()->back()->with('message', 'Vacaciones Autorizadas');
                 break;
-            case 2: //Caso 1 Cancelacion de vacaciones aprovada
+            case 2: //Caso 2 Cancelacion de vacaciones aprovadas
                 //Regresa los dias de vacaciones correspondietes al perfil
                 PerfilesUsuarios::find($Perfil->id)->update([
                     'DiasVac' => $Perfil->DiasVac + $request->DiasTomados,
@@ -67,18 +70,18 @@ class AutorizaCancelacionesController extends Controller{
                 //Regresa los dias de vacaciones correspondientes al historico de vacaciones
                 Vacaciones::find($request->id)->update([
                     'DiasRestantes' => $DiasRest->DiasRestantes + $request->DiasTomados,
-                    'Estatus' => 3,
+                    'Estatus' => 4,
                 ]);
 
                 return redirect()->back()->with('message', 'Perfil y Usuario Creados Correctamente');
                 break;
 
-            case 3:
+            case 3: //Peticion de canlecacion rechazada
                 Vacaciones::find($request->id)->update([
-                    'Estatus' => 4,
+                    'Estatus' => 5,
                 ]);
 
-                return redirect()->back()->with('message', 'Perfil y Usuario Creados Correctamente');
+                return redirect()->back()->with('message', 'Peticion rechazada');
                 break;
         }
 

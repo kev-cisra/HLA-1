@@ -161,3 +161,6 @@ Route::resource('ObjeCordi', ObjeCordiController::class)
 
 Route::post('ObjeCordi/storeProObje', [ObjeCordiController::class, 'storeProObje'])->name('storeObjetivo')
     ->middleware(['auth:sanctum', 'verified']);
+
+Route::post('ObjeCordi/claTitu', [ObjeCordiController::class, 'claTitu'])->name('claTitulo')
+    ->middleware(['auth:sanctum', 'verified']);

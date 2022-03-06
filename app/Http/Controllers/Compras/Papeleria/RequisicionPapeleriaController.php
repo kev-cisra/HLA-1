@@ -25,6 +25,7 @@ class RequisicionPapeleriaController extends Controller{
 
         $Session = auth()->user();
         $IdEmp = $Session->id;
+        $SessionId = $Session->id;
 
         $Material = MaterialPapeleria::all();
         $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
@@ -32,9 +33,6 @@ class RequisicionPapeleriaController extends Controller{
         if($anio != 0 && $mes != 0){
 
             $Papeleria = ArticulosPapeleriaRequisicion::with([
-                'ArticulosPapeleria' => function($Art) {
-                    $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
-                },
                 'ArticuloMaterial' => function($Art) {
                     $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
                 },
@@ -44,9 +42,10 @@ class RequisicionPapeleriaController extends Controller{
                 'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
                     $Art->select('id', 'IdUser', 'Nombre');
                 },
-            ])
-            ->where('IdEmp', '=', $Session->IdEmp)
-            ->whereYear('created_at', $anio)
+            ])->whereHas('ArticulosPapeleria', function($query) use($SessionId){
+                $query->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                $query->where('Perfil_id', '=', $SessionId);
+            })->whereYear('created_at', $anio)
             ->whereMonth('created_at', $mes)
             ->orderBy('id', 'desc')
             ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
@@ -54,9 +53,6 @@ class RequisicionPapeleriaController extends Controller{
         }elseif($anio == 0 && $mes != 0){
 
             $Papeleria = ArticulosPapeleriaRequisicion::with([
-                'ArticulosPapeleria' => function($Art) {
-                    $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
-                },
                 'ArticuloMaterial' => function($Art) {
                     $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
                 },
@@ -66,17 +62,15 @@ class RequisicionPapeleriaController extends Controller{
                 'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
                     $Art->select('id', 'IdUser', 'Nombre');
                 },
-            ])
-            ->where('IdEmp', '=', $Session->IdEmp)
-            ->whereMonth('created_at', $mes)
+            ])->whereHas('ArticulosPapeleria', function($query) use($SessionId){
+                $query->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                $query->where('Perfil_id', '=', $SessionId);
+            })->whereMonth('created_at', $mes)
             ->orderBy('id', 'desc')
             ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
 
         }elseif ($anio != 0 && $mes == 0) {
             $Papeleria = ArticulosPapeleriaRequisicion::with([
-                'ArticulosPapeleria' => function($Art) {
-                    $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
-                },
                 'ArticuloMaterial' => function($Art) {
                     $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
                 },
@@ -86,16 +80,15 @@ class RequisicionPapeleriaController extends Controller{
                 'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
                     $Art->select('id', 'IdUser', 'Nombre');
                 },
-            ])
-            ->where('IdEmp', '=', $Session->IdEmp)
-            ->whereYear('created_at', $anio)
+            ])->whereHas('ArticulosPapeleria', function($query) use($SessionId){
+                $query->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                $query->where('Perfil_id', '=', $SessionId);
+            })->whereYear('created_at', $anio)
             ->orderBy('id', 'desc')
             ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
+
         }elseif ($anio == 0 && $mes == 0) {
             $Papeleria = ArticulosPapeleriaRequisicion::with([
-                'ArticulosPapeleria' => function($Art) {
-                    $Art->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
-                },
                 'ArticuloMaterial' => function($Art) {
                     $Art->select('id', 'IdUser', 'Nombre', 'Unidad');
                 },
@@ -105,11 +98,14 @@ class RequisicionPapeleriaController extends Controller{
                 'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
                     $Art->select('id', 'IdUser', 'Nombre');
                 },
-            ])
-            ->where('IdEmp', '=', $Session->IdEmp)
+            ])->whereHas('ArticulosPapeleria', function($query) use($SessionId){
+                $query->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
+                $query->where('Perfil_id', '=', $SessionId);
+            })
             ->orderBy('id', 'desc')
             ->get(['id', 'Cantidad', 'material_id', 'papeleria_id', 'Estatus']);
         }
+
         return Inertia::render('Compras/Papeleria/RequisicionPapeleria', compact('Session', 'Departamentos' , 'Material', 'Papeleria', 'anio','mes'));
     }
 

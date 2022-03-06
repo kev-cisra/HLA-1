@@ -19488,15 +19488,6 @@ select {
 .tw-z-20 {
 	z-index: 20;
 }
-.tw-col-span-1 {
-	grid-column: span 1 / span 1;
-}
-.tw-col-span-5 {
-	grid-column: span 5 / span 5;
-}
-.tw-col-span-2 {
-	grid-column: span 2 / span 2;
-}
 .tw-col-span-6 {
 	grid-column: span 6 / span 6;
 }
@@ -19543,17 +19534,13 @@ select {
 	margin-left: 0.5rem;
 	margin-right: 0.5rem;
 }
-.tw-mx-24 {
-	margin-left: 6rem;
-	margin-right: 6rem;
-}
-.tw-mx-80 {
-	margin-left: 20rem;
-	margin-right: 20rem;
-}
 .tw-my-4 {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
+}
+.tw-mx-28 {
+	margin-left: 7rem;
+	margin-right: 7rem;
 }
 .tw-mx-8 {
 	margin-left: 2rem;
@@ -19648,11 +19635,11 @@ select {
 .tw-mb-4 {
 	margin-bottom: 1rem;
 }
-.tw-mt-10 {
-	margin-top: 2.5rem;
-}
 .tw-ml-4 {
 	margin-left: 1rem;
+}
+.tw-mt-10 {
+	margin-top: 2.5rem;
 }
 .tw-ml-6 {
 	margin-left: 1.5rem;
@@ -19714,9 +19701,6 @@ select {
 .tw-h-1\/6 {
 	height: 16.666667%;
 }
-.tw-h-64 {
-	height: 16rem;
-}
 .tw-h-20 {
 	height: 5rem;
 }
@@ -19729,11 +19713,17 @@ select {
 .tw-h-40 {
 	height: 10rem;
 }
+.tw-h-96 {
+	height: 24rem;
+}
 .tw-h-2 {
 	height: 0.5rem;
 }
 .tw-h-3 {
 	height: 0.75rem;
+}
+.tw-h-64 {
+	height: 16rem;
 }
 .tw-h-24 {
 	height: 6rem;
@@ -19771,9 +19761,6 @@ select {
 .tw-w-10 {
 	width: 2.5rem;
 }
-.tw-w-1\/2 {
-	width: 50%;
-}
 .tw-w-1\/6 {
 	width: 16.666667%;
 }
@@ -19809,6 +19796,9 @@ select {
 }
 .tw-w-2\/3 {
 	width: 66.666667%;
+}
+.tw-w-1\/2 {
+	width: 50%;
 }
 .tw-w-14 {
 	width: 3.5rem;
@@ -19921,14 +19911,11 @@ select {
 .tw-grid-cols-6 {
 	grid-template-columns: repeat(6, minmax(0, 1fr));
 }
-.tw-grid-cols-3 {
-	grid-template-columns: repeat(3, minmax(0, 1fr));
+.tw-grid-cols-2 {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .tw-grid-cols-1 {
 	grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-.tw-flex-row {
-	flex-direction: row;
 }
 .tw-flex-col {
 	flex-direction: column;
@@ -19957,6 +19944,9 @@ select {
 .tw-gap-6 {
 	gap: 1.5rem;
 }
+.tw-gap-8 {
+	gap: 2rem;
+}
 .tw-gap-3 {
 	gap: 0.75rem;
 }
@@ -19966,14 +19956,14 @@ select {
 .tw-gap-2 {
 	gap: 0.5rem;
 }
-.tw-gap-8 {
-	gap: 2rem;
-}
 .tw-gap-5 {
 	gap: 1.25rem;
 }
 .tw-gap-y-10 {
 	row-gap: 2.5rem;
+}
+.tw-gap-y-4 {
+	row-gap: 1rem;
 }
 .tw-gap-x-5 {
 	-moz-column-gap: 1.25rem;
@@ -20153,10 +20143,6 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(243, 244, 246, var(--tw-border-opacity));
 }
-.tw-border-teal-300 {
-	--tw-border-opacity: 1;
-	border-color: rgba(94, 234, 212, var(--tw-border-opacity));
-}
 .tw-border-yellow-500 {
 	--tw-border-opacity: 1;
 	border-color: rgba(234, 179, 8, var(--tw-border-opacity));
@@ -20313,6 +20299,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(8, 145, 178, var(--tw-bg-opacity));
 }
+.tw-bg-black {
+	--tw-bg-opacity: 1;
+	background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
+}
 .tw-bg-sky-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(2, 132, 199, var(--tw-bg-opacity));
@@ -20324,10 +20314,6 @@ select {
 .tw-bg-violet-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(124, 58, 237, var(--tw-bg-opacity));
-}
-.tw-bg-black {
-	--tw-bg-opacity: 1;
-	background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
 }
 .tw-bg-red-700 {
 	--tw-bg-opacity: 1;
@@ -20562,13 +20548,13 @@ select {
 	padding-top: 2rem;
 	padding-bottom: 2rem;
 }
-.tw-px-2 {
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
-}
 .tw-py-10 {
 	padding-top: 2.5rem;
 	padding-bottom: 2.5rem;
+}
+.tw-px-2 {
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
 }
 .tw-px-5 {
 	padding-left: 1.25rem;
@@ -20755,9 +20741,9 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(17, 24, 39, var(--tw-text-opacity));
 }
-.tw-text-teal-500 {
+.tw-text-teal-600 {
 	--tw-text-opacity: 1;
-	color: rgba(20, 184, 166, var(--tw-text-opacity));
+	color: rgba(13, 148, 136, var(--tw-text-opacity));
 }
 .tw-text-blueGray-100 {
 	--tw-text-opacity: 1;
@@ -20795,6 +20781,10 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(129, 140, 248, var(--tw-text-opacity));
 }
+.tw-text-teal-500 {
+	--tw-text-opacity: 1;
+	color: rgba(20, 184, 166, var(--tw-text-opacity));
+}
 .tw-text-sky-900 {
 	--tw-text-opacity: 1;
 	color: rgba(12, 74, 110, var(--tw-text-opacity));
@@ -20802,10 +20792,6 @@ select {
 .tw-text-blue-600 {
 	--tw-text-opacity: 1;
 	color: rgba(37, 99, 235, var(--tw-text-opacity));
-}
-.tw-text-teal-600 {
-	--tw-text-opacity: 1;
-	color: rgba(13, 148, 136, var(--tw-text-opacity));
 }
 .tw-text-pink-600 {
 	--tw-text-opacity: 1;
@@ -21345,6 +21331,24 @@ select {
 .BtnFiltros:hover {
 	--tw-bg-opacity: 1;
 	background-color: rgba(14, 165, 233, var(--tw-bg-opacity));
+}
+.checbox-teal {
+	margin-right: 0.5rem;
+	height: 1.25rem;
+	width: 1.25rem;
+	border-radius: 0.25rem;
+	border-width: 2px;
+	--tw-border-opacity: 1;
+	border-color: rgba(156, 163, 175, var(--tw-border-opacity));
+	--tw-bg-opacity: 1;
+	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+	--tw-text-opacity: 1;
+	color: rgba(13, 148, 136, var(--tw-text-opacity));
+}
+.checbox-teal:active {
+	border-style: none;
+	outline: 2px solid transparent;
+	outline-offset: 2px;
 }
 .input-search {
 	display: block;
@@ -22408,6 +22412,11 @@ select {
 	padding: 0.5rem;
 	text-transform: uppercase;
 }
+/* Fullcalendar */
+@fullcalendar/core/main.css;
+@fullcalendar/daygrid/main.css;
+@fullcalendar/timegrid/main.css;
+@fullcalendar/list/main.css;
 .hover\:tw--translate-y-1:hover {
 	--tw-translate-y: -0.25rem;
 	transform: var(--tw-transform);
@@ -22474,10 +22483,6 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(59, 130, 246, var(--tw-bg-opacity));
 }
-.hover\:tw-bg-teal-500:hover {
-	--tw-bg-opacity: 1;
-	background-color: rgba(20, 184, 166, var(--tw-bg-opacity));
-}
 .hover\:tw-bg-indigo-700:hover {
 	--tw-bg-opacity: 1;
 	background-color: rgba(67, 56, 202, var(--tw-bg-opacity));
@@ -22497,6 +22502,13 @@ select {
 .hover\:tw-bg-green-700:hover {
 	--tw-bg-opacity: 1;
 	background-color: rgba(21, 128, 61, var(--tw-bg-opacity));
+}
+.hover\:tw-bg-gradient-to-r:hover {
+	background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+.hover\:tw-from-teal-500:hover {
+	--tw-gradient-from: #14B8A6;
+	--tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(20, 184, 166, 0));
 }
 .hover\:tw-text-lg:hover {
 	font-size: 1.125rem;
@@ -22870,6 +22882,16 @@ select {
 		grid-column: span 1 / span 1;
 	}
 
+	.md\:tw-my-4 {
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.md\:tw-mx-28 {
+		margin-left: 7rem;
+		margin-right: 7rem;
+	}
+
 	.md\:tw-mx-4 {
 		margin-left: 1rem;
 		margin-right: 1rem;
@@ -22967,12 +22989,32 @@ select {
 		flex-wrap: wrap;
 	}
 
+	.md\:tw-items-center {
+		align-items: center;
+	}
+
+	.md\:tw-justify-between {
+		justify-content: space-between;
+	}
+
 	.md\:tw-gap-4 {
 		gap: 1rem;
 	}
 
 	.md\:tw-gap-6 {
 		gap: 1.5rem;
+	}
+
+	.md\:tw-gap-8 {
+		gap: 2rem;
+	}
+
+	.md\:tw-border-8 {
+		border-width: 8px;
+	}
+
+	.md\:tw-p-4 {
+		padding: 1rem;
 	}
 
 	.md\:tw-text-8xl {
@@ -23143,10 +23185,6 @@ select {
 
 	.xl\:tw-mt-10 {
 		margin-top: 2.5rem;
-	}
-
-	.xl\:tw-mt-8 {
-		margin-top: 2rem;
 	}
 
 	.xl\:tw-flex {

@@ -20,6 +20,14 @@ use function PHPUnit\Framework\isNull;
 
 class VacacionesDptoController extends Controller{
 
+    //Estatus Vacaciones
+    // 0 -> Solicitadas
+    // 1 -> Autorizadas
+    // 2 -> Rechazadas (Se regresn los dias solicitados)
+    // 3 -> Peticion de cancelacion
+    // 4 -> Vacaciones canceladas (Se regresan los dias)
+    // 5 -> Peticion de cancelacio Rechazada
+
     public function index(Request $request){
 
         $hoy= Carbon::now();
@@ -44,9 +52,17 @@ class VacacionesDptoController extends Controller{
                 $PerfilesUsuarios = PerfilesUsuarios::with(['PerfilDepartamento', 'PerfilPuesto'])
                 ->get();
             }else{ //RecursoHumanos
-                $PerfilesUsuarios = PerfilesUsuarios::with(['PerfilDepartamento', 'PerfilPuesto'])
-                ->where('id', '>', 10)
-                ->get();
+                if($Session->id == 13){ //pPedro Asencion
+
+                    $PerfilesUsuarios = PerfilesUsuarios::with(['jefe_perfiles','PerfilDepartamento', 'PerfilPuesto', 'jefe_perfiles.PerfilDepartamento', 'jefe_perfiles.PerfilPuesto', 'jefe_perfiles.perfiles_jefe.PerfilDepartamento', 'jefe_perfiles.perfiles_jefe.PerfilPuesto'])
+                    ->where('Empresa', 'HILATURAS')
+                    ->get();
+
+                }else{
+                    $PerfilesUsuarios = PerfilesUsuarios::with(['PerfilDepartamento', 'PerfilPuesto'])
+                    ->where('id', '>', 10)
+                    ->get();
+                }
             }
 
             $JefeDepto = true;
@@ -62,11 +78,11 @@ class VacacionesDptoController extends Controller{
 
         //Historico de Vacaciones
         $MisVacaciones = Vacaciones::where('Perfil_id', '=', $Session->id)
-        ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
+        ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion', 'Perfil_id']);
         //Consulta de vacaciones por empleado
         if($request->id){
             $Vacaciones = Vacaciones::where('Perfil_id', '=', $request->id)
-            ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion']);
+            ->get(['id', 'IdUser', 'IdEmp', 'Nombre', 'FechaInicio', 'FechaFin', 'Comentarios', 'Estatus', 'DiasTomados', 'DiasRestantes', 'MotivoCancelacion', 'Perfil_id']);
         }else{
             $Vacaciones = new stdClass();
         }
@@ -107,15 +123,42 @@ class VacacionesDptoController extends Controller{
     }
 
     public function update(Request $request, $id){
-        Validator::make($request->all(), [
-            'Motivo' => ['required'],
-        ])->validate();
+        switch ($request->Tipo) {
+            case 1: //Autoriza Vacaciones
+                Vacaciones::find($request->id)->update([
+                    'Estatus' => 1, //Autorizada
+                ]);
+                return redirect()->back();
+                break;
 
-        Vacaciones::find($request->id)->update([
-            'MotivoCancelacion' => $request->Motivo,
-            'Estatus' => 2,
-        ]);
-        return redirect()->back();
+            case 2: //Rechaza vacaciones
+
+                Vacaciones::find($request->id)->update([
+                    'Estatus' => 2, //Rechazada
+                ]);
+
+                $Vacaciones = PerfilesUsuarios::where('id', '=', $request->Perfil_id)->first('DiasVac');
+                //Devuelven los dias tomados
+                PerfilesUsuarios::where('id', '=', $request->Perfil_id)->update([
+                    'DiasVac' => $Vacaciones->DiasVac + $request->DiasTomados,
+                ]);
+
+                return redirect()->back();
+                break;
+
+            case 3: //Envia peticion de Devolucion de dias
+                // return $request;
+                Validator::make($request->all(), [
+                    'Motivo' => ['required'],
+                ])->validate();
+
+                Vacaciones::find($request->id)->update([
+                    'MotivoCancelacion' => $request->Motivo,
+                    'Estatus' => 3, //En proceso de Cancelacion
+                ]);
+                return redirect()->back();
+                break;
+        }
     }
 
     public function destroy($id){

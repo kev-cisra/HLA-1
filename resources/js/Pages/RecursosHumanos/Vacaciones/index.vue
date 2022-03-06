@@ -12,7 +12,7 @@
         <!-- ****************************************** Subtitulo ********************************************* -->
         <section class="tw-m-4 tw-flex tw-justify-center tw-gap-4 tw-p-2">
             <div><span class="tw-font-bold tw-text-lg"> {{PerfilSession.Nombre}} {{PerfilSession.ApPat}} {{PerfilSession.ApMat}}</span></div>
-            <div><span class="tw-font-bold tw-text-lg">Renovacion: {{ PerfilSession.FecIng.substr(5) }} => {{PerfilSession.DiasVac}} Días</span></div>
+            <div><span class="tw-font-bold tw-text-lg">Renovacion: {{ PerfilSession.FecIng.substr(5) }} - Dias Restantes: {{PerfilSession.DiasVac}}</span></div>
             <div class="IconAproved" @click="vacaciones(data, 1)" v-if="PerfilSession.DiasVac > 0">
                 <span tooltip="Solicita de Vacaciones" flow="right">
                     <i class="tw-text-xl fa-solid fa-plane"></i>
@@ -187,7 +187,7 @@
                             <th class="columna">Dias Tomados</th>
                             <th class="columna">Dias Restantes</th>
                             <th class="columna">Estatus</th>
-                            <th class="columna">Cancela Vacaciones</th>
+                            <th class="columna">Acciones</th>
                         </template>
 
                         <template v-slot:TableFooter>
@@ -200,38 +200,72 @@
                                 <td class="tw-text-center">{{ dato.DiasTomados }}</td>
                                 <td class="tw-text-center">{{ dato.DiasRestantes }}</td>
                                 <td>
+                                    <div v-if="dato.Estatus == 0">
+                                        <span tooltip="Vacaciones Solicitadas" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">SOLICITADA</span>
+                                        </span>
+                                    </div>
                                     <div v-if="dato.Estatus == 1">
                                         <span tooltip="Vacaciones Aprovadas" flow="left">
                                             <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-green-600 tw-rounded-full">AUTORIZADA</span>
                                         </span>
                                     </div>
                                     <div v-else-if="dato.Estatus == 2">
-                                        <span tooltip="En espera de autorizacion por RH" flow="left">
-                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-yellow-600 tw-rounded-full">EN CANCELACION</span>
+                                        <span tooltip="Solicitud Rechazada" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-yellow-600 tw-rounded-full">RECHAZADA</span>
                                         </span>
                                     </div>
                                     <div v-else-if="dato.Estatus == 3">
-                                        <span tooltip="Vacaciones Canceladas por RH" flow="left">
-                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-600 tw-rounded-full">CANCELADA</span>
+                                        <span tooltip="En espera de devolucion de días por RH" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">EN CANCELACION</span>
                                         </span>
                                     </div>
                                     <div v-else-if="dato.Estatus == 4">
-                                        <span tooltip="Solicitud de Cancelacion Rechazada" flow="left">
-                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-600 tw-rounded-full">AUTORIZADA</span>
+                                        <span tooltip="Vacaciones Canceladas (Días devueltos)" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-600 tw-rounded-full">CANCELADA</span>
+                                        </span>
+                                    </div>
+                                    <div v-else-if="dato.Estatus == 5">
+                                        <span tooltip="Peticion de cancelacion Rechazada" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-600 tw-rounded-full">PETICION RECHAZADA</span>
                                         </span>
                                     </div>
                                 </td>
-                                <td class="fila tw-center">
-                                    <div class="tw-flex tw-justify-center tw-items-center" v-if="dato.Estatus == 1">
+                                <td class="fila">
+                                    <div class="columnaIconos" v-if="dato.Estatus == 0">
+                                        <div class="iconoTeal" @click="AutorizaVacaciones(dato)">
+                                            <span tooltip="Autoriza Vacaciones" flow="left">
+                                                <i class="fa-solid fa-check"></i>
+                                            </span>
+                                        </div>
+                                        <div class="iconoDelete" @click="RechazaVacaciones(dato)">
+                                            <span tooltip="Rechaza Vacaciones" flow="left">
+                                                <i class="fa-solid fa-ban"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="dato.Estatus == 1">
                                         <div class="iconoDetails" @click="PeticionCancelacion(dato)">
                                             <span tooltip="Solicita una cancelacion de vacaciones" flow="left">
                                                 <i class="fas fa-paper-plane tw-w-3 tw-h-3"></i>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="tw-flex tw-justify-center tw-items-center" v-else>
+                                    <div class="columnaIconos" v-else-if="dato.Estatus == 3">
+                                        <div class="iconoDetails" @click="PeticionCancelacion(dato)">
+                                            <span tooltip="En proceso de autorizacion por RH" flow="left">
+                                                <i class="fa-solid fa-spinner tw-w-3 tw-h-3"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="columnaIconos" v-else-if="dato.Estatus == 5">
+                                        <span tooltip="Peticion rechazada" flow="left">
+                                            <i class="fa-solid fa-ban"></i>
+                                        </span>
+                                    </div>
+                                    <div class="columnaIconos" v-else>
                                         <div class="iconoDetails">
-                                            <span tooltip="En espera de Autorización por RH" flow="left">
+                                            <span tooltip="Vacaciones" flow="left">
                                                 <i class="fas fa-thumbs-up"></i>
                                             </span>
                                         </div>
@@ -454,13 +488,14 @@ export default {
         },
 
         SolicitaVacaciones(data){   //Solicitud Individual de Vacaciones
+            data.Tipo = 2;
             data.IdUser = this.Session.id;
             data.IdEmp = this.Session.IdEmp;
             data.Empresa = this.PerfilSession.Empresa;
             data.Nombre = this.PerfilSession.Nombre;
             data.ApPat = this.PerfilSession.ApPat;
             data.ApMat = this.PerfilSession.ApMat;
-            data.Estatus = 1;
+            data.Estatus = 0;
 
             var DiasRestantes = 0;
             //Conversion de fechas a momment Js
@@ -544,6 +579,7 @@ export default {
         },
 
         save(data) { //Gaurdado de solicitud de Vacaciones
+            data.Tipo = 2;
             //assigno el Id se session
             data.IdUser = this.Session.id;
             data.Estatus = 1;
@@ -642,6 +678,26 @@ export default {
             });
         },
 
+        AutorizaVacaciones(data){
+            data.Tipo = 1;
+            data._method = "PUT";
+            this.$inertia.post("/RecursosHumanos/Vacaciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
+        },
+
+        RechazaVacaciones(data){
+            data.Tipo = 2;
+            data._method = "PUT";
+            this.$inertia.post("/RecursosHumanos/Vacaciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
+        },
+
         chageCancela() {
             this.showCancela = !this.showCancela;
         },
@@ -654,7 +710,7 @@ export default {
         },
 
         update(data) { //Crea la peticion de Cancelacion
-            console.log(data);
+            data.Tipo = 3;
             data._method = "PUT";
             this.$inertia.post("/RecursosHumanos/Vacaciones/" + data.id, data, {
                 onSuccess: () => {

@@ -41,7 +41,7 @@ class RequisicionesController extends Controller{
         //Asigno el mes actual o uno recibido por request
         $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
         $request->Year == '' ? $anio = $hoy->format('Y') : $anio = $request->Year;
-        $request->View == '' ? $Vista = 1 : $Vista = $request->View;
+        $request->View == '' ? $Vista = 1 : $Vista = intval($request->View);
 
         $Session = auth()->user(); //Obtengo el Usuario logueado
         $SessionIdEmp = $Session->IdEmp;

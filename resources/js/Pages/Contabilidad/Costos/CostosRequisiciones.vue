@@ -243,16 +243,6 @@ export default {
     },
 
     computed:{
-        Departamento: function () {
-            const Areas = []; //Declaracion del nuevo arreglo
-                this.Departamentos.forEach(element => {
-                    element.sub__departamentos.forEach( el => {
-                        Areas.push(el)
-                    })
-                });
-            return Areas;
-        },
-
     }
 };
 </script>

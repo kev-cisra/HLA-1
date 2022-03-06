@@ -10,94 +10,45 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use Spatie\Permission\Models\Role;
+
 class RolesUsuariosController extends Controller{
 
     public function index(Request $request){
 
-        request()->validate([
-            'direction' => ['in:asc,desc'],
-            'field' => ['in:id,name,email']
-        ]);
+        $Users = User::with('roles')->get();
+        $Roles = Role::get(['id', 'name']);
 
-        $query = User::query();
-        $Roles = Role::get();
-
-        if(request('search')){
-            $query->where(request('column'), 'LIKE', '%'.request('search'). '%');
-        }
-
-        if(request()->has(['field', 'direction'])){
-            $query->orderBy(request('field'), request('direction'));
-        }
-
-        return Inertia::render('Administrador/Roles/RolesUsuarios',[
-            'Roles' => $Roles,
-            'Users' => $query->paginate(request('paginate')),
-            'filters' => request()->all(['search','field', 'direction'])
-        ]);
+        return Inertia::render('Administrador/Roles/RolesUsuarios', compact('Users', 'Roles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function store(Request $request){
+
+        $user = User::find($request->User_id);
+        // return $request;
+        $user->roles()->sync($request->RolesUsu);
+
+        return redirect()->back()->with('Roles Asignados Correctamente');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         //

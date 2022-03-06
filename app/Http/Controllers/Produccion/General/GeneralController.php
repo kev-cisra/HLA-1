@@ -93,7 +93,7 @@ class GeneralController extends Controller
                 $mat->select('id','idmat', 'nommat');
             },
             'claves' => function($cla){
-                $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
+                $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'categoria', 'torsion', 'color', 'calibre', 'dep_mat_id');
             }
         ])
         ->get();

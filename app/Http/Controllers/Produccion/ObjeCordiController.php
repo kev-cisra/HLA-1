@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Produccion;
 use App\Http\Controllers\Controller;
 use App\Models\obje_cordi;
 use App\Models\Produccion\carga;
+use App\Models\Produccion\catalogos\materiales;
+use App\Models\Produccion\dep_mat;
 use App\Models\Produccion\ObjetivoPuntas;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
@@ -68,11 +70,11 @@ class ObjeCordiController extends Controller
 
     public function storeProObje(Request $request){
 
-        /* Validator::make($request->all(), [
+        Validator::make($request->all(), [
             'equipo_id' => ['required'],
             'dep_perf_id' => ['required'],
             'turno_id' => ['required']
-        ])->validate(); */
+        ])->validate();
 
         foreach ($request->paquet as $value) {
             if (!empty($value['paqObjetivo'])) {
@@ -108,9 +110,17 @@ class ObjeCordiController extends Controller
             }
         }
 
-/*
-        return $request; */
+    }
 
+    public function claTitu(Request $request){
+        $titulo = dep_mat::join('materiales', 'materiales.id', '=', 'dep_mats.material_id')
+            ->join('claves', 'claves.dep_mat_id', '=', 'dep_mats.id')
+            ->where('dep_mats.departamento_id', '=', $request->departamento_id)
+            ->where('dep_mats.id', '=', $request->norma)
+            ->selectRaw('claves.calibre')
+            ->groupBy('calibre')
+            ->get();
+        return $titulo;
     }
 
     /**

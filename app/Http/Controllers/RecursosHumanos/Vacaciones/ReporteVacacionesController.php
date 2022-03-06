@@ -15,13 +15,14 @@ use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 
-class ReporteVacacionesController extends Controller
-{
+class ReporteVacacionesController extends Controller{
+
     public function index(Request $request){
         $Session = Auth::user();
 
         if($request->ini == '' && $request->fin == ''){
             $Vacaciones = PerfilesUsuarios::select(
+                'perfiles_usuarios.id AS PerfilId',
                 'perfiles_usuarios.IdEmp AS IdEmp',
                 'perfiles_usuarios.Nombre AS Nombre',
                 'perfiles_usuarios.ApPat AS ApPat',
@@ -33,9 +34,10 @@ class ReporteVacacionesController extends Controller
                 'vacaciones.FechaFin AS FechaFin',
                 'vacaciones.Comentarios AS Comentarios',
                 'vacaciones.DiasTomados AS DiasTomados',
-                'vacaciones.DiasRestantes AS DiasRestantes')
+                'vacaciones.DiasRestantes AS DiasRestantes',
+                'vacaciones.Perfil_id AS Perfil_id')
                 ->join('puestos', 'perfiles_usuarios.Puesto_id', '=', 'puestos.id')
-                ->join('vacaciones', 'perfiles_usuarios.IdEmp', '=', 'vacaciones.IdEmp')
+                ->join('vacaciones', 'perfiles_usuarios.id', '=', 'vacaciones.Perfil_id')
                 ->get();
         }else{
             $Vacaciones = PerfilesUsuarios::select(

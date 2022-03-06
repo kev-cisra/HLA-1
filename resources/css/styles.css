@@ -124,6 +124,10 @@
     @apply tw-bg-sky-500;
 }
 
+.checbox-teal{
+    @apply tw-bg-white tw-border-2 tw-rounded tw-border-gray-400 tw-h-5 tw-w-5 tw-mr-2 tw-text-teal-600 active:tw-border-none active:tw-outline-none;
+}
+
 .input-search{
     @apply tw-block tw-w-11/12 tw-py-2 tw-pl-8 tw-pr-6 tw-text-sm tw-font-semibold tw-text-gray-700 tw-placeholder-gray-400 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none;
 }
