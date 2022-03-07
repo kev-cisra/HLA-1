@@ -59,6 +59,14 @@ class Departamentos extends Model
         return $this->hasMany(obje_cordi::class);
     }
 
+    public function aba_entre_entregado(){
+        return $this->hasMany(AbaEntregas::class, 'depa_entrega');
+    }
+
+    public function aba_entre_recibe(){
+        return $this->hasMany(AbaEntregas::class, 'depa_recibe');
+    }
+
     // Relaciones recursiva
     public function Departamentos_sub() {
         return $this->hasMany(Departamentos::class, 'departamento_id');

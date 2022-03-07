@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\Sistemas;
+namespace App\Models\Sistemas\Hardware;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
 
-class EquiposComputoAsignados extends Model{
+class HardwareSistemas extends Model{
 
     use HasFactory;
     use SoftDeletes; //Implementamos

@@ -80,6 +80,12 @@ class PerfilesUsuarios extends Model
         return $this->hasOne(JefesArea::class, 'id', 'jefes_areas_id');
     }
 
+    //Relacion 1 a mucho Equipo computo asignado
+    public function EquiposComputoAsignado() {
+        return $this->hasMany(PerfilesUsuarios::class, 'id');
+    }
+
+
     public function parocargas_ini(){
         return $this->hasMany(parosCarga::class, 'perfil_ini_id');
     }
@@ -87,4 +93,5 @@ class PerfilesUsuarios extends Model
     public function parocargas_fin(){
         return $this->hasMany(parosCarga::class, 'perfil_fin_id');
     }
+
 }

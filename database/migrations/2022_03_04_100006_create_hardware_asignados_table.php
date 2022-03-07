@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEquiposComputoAsignadosTable extends Migration
+class CreateHardwareAsignadosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateEquiposComputoAsignadosTable extends Migration
      */
     public function up()
     {
-        Schema::create('equipos_computo_asignados', function (Blueprint $table) {
+        Schema::create('hardware_asignados', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('IdUser'); //Id de Session
             $table->date('FechaAsignacion');
@@ -22,8 +22,8 @@ class CreateEquiposComputoAsignadosTable extends Migration
             $table->text('Comentarios')->nullable();
             $table->integer('Estatus')->default(0);
 
-            $table->unsignedBigInteger('EquipoComputo_id');
-            $table->foreign("EquipoComputo_id")->references("id")->on("equipos_computos")
+            $table->unsignedBigInteger('Hardware_id');
+            $table->foreign("Hardware_id")->references("id")->on("hardware_sistemas")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
@@ -44,6 +44,6 @@ class CreateEquiposComputoAsignadosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('equipos_computo_asignados');
+        Schema::dropIfExists('hardware_asignados');
     }
 }

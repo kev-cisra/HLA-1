@@ -12,4 +12,9 @@ class RequisicionesSistemas extends Model{
     use SoftDeletes; //Implementamos
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id', 'created_at','updated_at'];
+
+    //Relacion de Requisicion a Precios
+    public function Perfil() {
+        return $this->hasOne(PerfilesUsuarios::class, 'id', 'Perfil_id');
+    }
 }

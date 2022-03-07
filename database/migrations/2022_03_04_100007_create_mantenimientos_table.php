@@ -24,8 +24,8 @@ class CreateMantenimientosTable extends Migration
             $table->integer('Estatus')->default(0);
             $table->text('Comentarios')->nullable();
 
-            $table->unsignedBigInteger('EquipoComputo_id');
-            $table->foreign("EquipoComputo_id")->references("id")->on("equipos_computos")
+            $table->unsignedBigInteger('Hardware_id');
+            $table->foreign("Hardware_id")->references("id")->on("hardware_sistemas")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 

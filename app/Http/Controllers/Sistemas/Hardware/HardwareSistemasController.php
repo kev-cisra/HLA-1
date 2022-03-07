@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Sistemas\Equipos;
+namespace App\Http\Controllers\Sistemas\Hardware;
 
 use App\Http\Controllers\Controller;
-use App\Models\Sistemas\EquiposComputo;
+use App\Models\Sistemas\Hardware\HardwareSistemas;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-class EquiposComputoController extends Controller{
+
+class HardwareSistemasController extends Controller{
 
     public function index(){
         $Session = auth()->user();
-        $EquiposComputo = EquiposComputo::get();
+        $EquiposComputo = HardwareSistemas::get();
         return Inertia::render('Sistemas/Equipos/EquiposComputo', compact('Session','EquiposComputo'));
     }
 
-
     public function store(Request $request){
-        EquiposComputo::create($request->all());
+        HardwareSistemas::create($request->all());
         return redirect()->back();
     }
 
     public function update(Request $request, $id){
 
         if ($request->has('id')) {
-            EquiposComputo::find($request->id)->update($request->all());
+            HardwareSistemas::find($request->id)->update($request->all());
         }
         return redirect()->back();
     }
