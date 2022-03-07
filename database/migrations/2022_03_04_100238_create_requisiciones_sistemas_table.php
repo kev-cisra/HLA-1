@@ -20,7 +20,7 @@ class CreateRequisicionesSistemasTable extends Migration
             $table->integer('Folio');
             $table->integer('Estatus')->default(0);
 
-            $table->unsignedBigInteger('Perfil_id')->after('MotivoCancelacion')->nullable();
+            $table->unsignedBigInteger('Perfil_id')->nullable();
             $table->foreign("Perfil_id")->references("id")->on("perfiles_usuarios")
             ->onDelete("cascade")
             ->onUpdate("cascade");

@@ -17,6 +17,7 @@ class CreateProveedoresSistemasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('IdUser')->nullable(); //Id de Session
             $table->string('Nombre',65);
+
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });
