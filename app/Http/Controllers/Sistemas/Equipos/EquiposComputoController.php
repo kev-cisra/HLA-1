@@ -3,68 +3,29 @@
 namespace App\Http\Controllers\Sistemas\Equipos;
 
 use App\Http\Controllers\Controller;
+use App\Models\Sistemas\EquiposComputo;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 class EquiposComputoController extends Controller{
 
     public function index(){
-
-        return Inertia::render('Sistemas/Equipos/EquiposComputo');
+        $Session = auth()->user();
+        $EquiposComputo = EquiposComputo::get();
+        return Inertia::render('Sistemas/Equipos/EquiposComputo', compact('Session','EquiposComputo'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+
+    public function store(Request $request){
+        EquiposComputo::create($request->all());
+        return redirect()->back();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function update(Request $request, $id){
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        if ($request->has('id')) {
+            EquiposComputo::find($request->id)->update($request->all());
+        }
+        return redirect()->back();
     }
 
     /**
