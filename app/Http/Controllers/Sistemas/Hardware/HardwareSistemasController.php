@@ -21,19 +21,12 @@ class HardwareSistemasController extends Controller{
     }
 
     public function update(Request $request, $id){
-
         if ($request->has('id')) {
             HardwareSistemas::find($request->id)->update($request->all());
         }
         return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

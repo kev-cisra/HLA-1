@@ -1,22 +1,23 @@
 <?php
 
 use App\Http\Controllers\Menus\MenuSistemasController;
-use App\Http\Controllers\Sistemas\Equipos\EquiposAsignadosController;
-use App\Http\Controllers\Sistemas\Equipos\EquiposComputoController;
+use App\Http\Controllers\Sistemas\Hardware\EquiposAsignadosController;
+use App\Http\Controllers\Sistemas\Hardware\HardwareSistemasController;
 use App\Http\Controllers\Sistemas\Mantenimientos\CalendarioController;
 use App\Http\Controllers\Sistemas\Requisiciones\CotizacionesSistemasController;
 use App\Http\Controllers\Sistemas\Requisiciones\RequisicionesSistemasController;
+use App\Models\Sistemas\Hardware\HardwareSistemas;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('', [MenuSistemasController::class,'index'])->name('Sistemas');
 
-Route::resource('EquiposComputo', EquiposComputoController::class)
+Route::resource('EquiposComputo', HardwareSistemasController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('EquiposComputo');
 
-Route::resource('EquiposComputoAsignado', EquiposAsignadosController::class)
-    ->middleware(['auth:sanctum', 'verified'])->names('EquiposComputoAsignado');
+Route::resource('EquiposAsignados', EquiposAsignadosController::class)
+    ->middleware(['auth:sanctum', 'verified'])->names('EquiposAsignados');
 
 Route::resource('CalendarioMantenimientos', CalendarioController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('CalendarioMantenimientos');

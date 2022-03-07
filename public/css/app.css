@@ -22521,6 +22521,9 @@ select {
 .tw-top-0 {
 	top: 0px;
 }
+.tw-top-3 {
+	top: 0.75rem;
+}
 .tw-z-40 {
 	z-index: 40;
 }
@@ -22532,6 +22535,9 @@ select {
 }
 .tw-z-20 {
 	z-index: 20;
+}
+.tw-z-0 {
+	z-index: 0;
 }
 .tw-col-span-6 {
 	grid-column: span 6 / span 6;
@@ -22698,6 +22704,9 @@ select {
 .tw-mb-3 {
 	margin-bottom: 0.75rem;
 }
+.tw-ml-8 {
+	margin-left: 2rem;
+}
 .tw-block {
 	display: block;
 }
@@ -22851,6 +22860,12 @@ select {
 .tw-w-14 {
 	width: 3.5rem;
 }
+.tw-w-96 {
+	width: 24rem;
+}
+.tw-w-auto {
+	width: auto;
+}
 .tw-min-w-0 {
 	min-width: 0px;
 }
@@ -22887,6 +22902,9 @@ select {
 .tw-origin-top {
 	transform-origin: top;
 }
+.tw-origin-\[0\] {
+	transform-origin: 0;
+}
 .tw-translate-y-4 {
 	--tw-translate-y: 1rem;
 	transform: var(--tw-transform);
@@ -22903,6 +22921,11 @@ select {
 .tw-scale-100 {
 	--tw-scale-x: 1;
 	--tw-scale-y: 1;
+	transform: var(--tw-transform);
+}
+.tw-scale-75 {
+	--tw-scale-x: .75;
+	--tw-scale-y: .75;
 	transform: var(--tw-transform);
 }
 .tw-transform {
@@ -23122,6 +23145,9 @@ select {
 }
 .tw-border-8 {
 	border-width: 8px;
+}
+.tw-border-0 {
+	border-width: 0px;
 }
 .tw-border-b-2 {
 	border-bottom-width: 2px;
@@ -23515,6 +23541,9 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(167, 243, 208, var(--tw-bg-opacity));
 }
+.tw-bg-transparent {
+	background-color: transparent;
+}
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
 }
@@ -23603,6 +23632,14 @@ select {
 .tw-px-5 {
 	padding-left: 1.25rem;
 	padding-right: 1.25rem;
+}
+.tw-py-2\.5 {
+	padding-top: 0.625rem;
+	padding-bottom: 0.625rem;
+}
+.tw-px-0 {
+	padding-left: 0px;
+	padding-right: 0px;
 }
 .tw-pl-4 {
 	padding-left: 1rem;
@@ -25609,6 +25646,10 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(99, 102, 241, var(--tw-border-opacity));
 }
+.focus\:tw-border-blue-600:focus {
+	--tw-border-opacity: 1;
+	border-color: rgba(37, 99, 235, var(--tw-border-opacity));
+}
 .focus\:tw-bg-indigo-600:focus {
 	--tw-bg-opacity: 1;
 	background-color: rgba(79, 70, 229, var(--tw-bg-opacity));
@@ -25675,6 +25716,11 @@ select {
 	--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
 	box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
+.focus\:tw-ring-0:focus {
+	--tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+	--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+	box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
 .focus\:tw-ring-gray-300:focus {
 	--tw-ring-opacity: 1;
 	--tw-ring-color: rgba(209, 213, 219, var(--tw-ring-opacity));
@@ -25735,6 +25781,44 @@ select {
 .tw-group:hover .group-hover\:tw-text-indigo-600 {
 	--tw-text-opacity: 1;
 	color: rgba(79, 70, 229, var(--tw-text-opacity));
+}
+.tw-peer:-moz-placeholder-shown ~ .peer-placeholder-shown\:tw-translate-y-0 {
+	--tw-translate-y: 0px;
+	transform: var(--tw-transform);
+}
+.tw-peer:-ms-input-placeholder ~ .peer-placeholder-shown\:tw-translate-y-0 {
+	--tw-translate-y: 0px;
+	transform: var(--tw-transform);
+}
+.tw-peer:placeholder-shown ~ .peer-placeholder-shown\:tw-translate-y-0 {
+	--tw-translate-y: 0px;
+	transform: var(--tw-transform);
+}
+.tw-peer:-moz-placeholder-shown ~ .peer-placeholder-shown\:tw-scale-100 {
+	--tw-scale-x: 1;
+	--tw-scale-y: 1;
+	transform: var(--tw-transform);
+}
+.tw-peer:-ms-input-placeholder ~ .peer-placeholder-shown\:tw-scale-100 {
+	--tw-scale-x: 1;
+	--tw-scale-y: 1;
+	transform: var(--tw-transform);
+}
+.tw-peer:placeholder-shown ~ .peer-placeholder-shown\:tw-scale-100 {
+	--tw-scale-x: 1;
+	--tw-scale-y: 1;
+	transform: var(--tw-transform);
+}
+.tw-peer:focus ~ .peer-focus\:tw-left-0 {
+	left: 0px;
+}
+.tw-peer:focus ~ .peer-focus\:tw--translate-y-6 {
+	--tw-translate-y: -1.5rem;
+	transform: var(--tw-transform);
+}
+.tw-peer:focus ~ .peer-focus\:tw-text-blue-600 {
+	--tw-text-opacity: 1;
+	color: rgba(37, 99, 235, var(--tw-text-opacity));
 }
 @media (min-width: 640px) {
 
