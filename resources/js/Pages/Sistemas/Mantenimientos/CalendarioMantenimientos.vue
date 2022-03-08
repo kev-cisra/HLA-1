@@ -30,7 +30,20 @@
 
             <div class="ModalForm">
                 <div class="FormSection">
-
+                    <div class="tw-mb-6 md:tw-flex">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>FECHA FIN</jet-label>
+                            <input type="datetime-local" v-model="form.Inicio">
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-3/4 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>FECHA FIN</jet-label>
+                            <input type="datetime-local" v-model="form.Fin">
+                        </div>
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-3/4 md:tw-mb-0">
+                            <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
+                            <jet-input type="text" v-model="form.Comentario" @input="(val) => (form.Comentario = form.Comentario.toUpperCase())"></jet-input>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -72,7 +85,9 @@ export default {
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             showModal: false,
             form: {
-
+                Inicio: '',
+                Fin: '',
+                Comentario: '',
             }
         };
     },
@@ -108,7 +123,7 @@ export default {
             locale: esLocale,
             selectable: true,
             height: "auto",
-            initialView: 'timeGridWeek',
+            initialView: 'dayGridMonth',
             allDaySlot: false,
             slotMinTime: "10:00:00",
             slotMaxTime: "16:00:00",
@@ -140,7 +155,22 @@ export default {
                     console.log('select');
                 },
 
-                events: [
+            events: [
+                {
+                    title: 'EVENTO 1',
+                    start: '2022-03-03',
+                    end: '2022-03-03'
+                },
+                {
+                    title: 'EVENTO 2',
+                    start: '2022-03-07T10:00:00',
+                    end: '2022-03-07T11:00:00'
+                },
+                {
+                    title: 'EVENTO 3',
+                    start: '2022-03-08T10:00:00',
+                    end: '2022-03-08T11:00:00'
+                },
                 ]
             });
             // calendar.setOption('locale', 'es');
@@ -150,6 +180,32 @@ export default {
         reset() {
             this.form = {
             };
+        },
+
+        save(data){
+            this.$inertia.post("/Sistemas/CalendarioMantenimientos", data, {
+                onSuccess: () => {
+                    this.reset(),
+                    this.chageClose(),
+                    this.alertSucces();
+                },
+            });
+        },
+
+        edit: function (data) {
+            this.form = Object.assign({}, data);
+            this.editMode = true;
+            this.chageClose();
+        },
+
+        update(data) {
+            data.metodo = 1;
+            data._method = "PUT";
+            this.$inertia.post("/Sistemas/EquiposAsignados/" + data.id, data, {
+                onSuccess: () => {
+                this.reset(), this.chageClose(), this.alertSucces();
+                },
+            });
         },
     },
 };

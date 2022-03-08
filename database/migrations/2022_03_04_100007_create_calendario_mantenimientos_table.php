@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMantenimientosTable extends Migration
+class CreateCalendarioMantenimientosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateMantenimientosTable extends Migration
      */
     public function up()
     {
-        Schema::create('mantenimientos', function (Blueprint $table) {
+        Schema::create('calendario_mantenimientos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('IdUser'); //Id de Session
-            $table->timestamp('FechaProgramada');
+            $table->timestamp('FechaInicio')->nullable();
+            $table->timestamp('FechaFin')->nullable();
             $table->timestamp('FechaReal')->nullable();
             $table->double('Diferencia')->nullable();
             $table->string('Periodo',10);
@@ -41,6 +42,6 @@ class CreateMantenimientosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mantenimientos');
+        Schema::dropIfExists('calendario_mantenimientos');
     }
 }

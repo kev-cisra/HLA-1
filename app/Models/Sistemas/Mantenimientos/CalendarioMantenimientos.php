@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
 
-class Mantenimientos extends Model{
+class CalendarioMantenimientos extends Model{
 
     use HasFactory;
     use SoftDeletes; //Implementamos
