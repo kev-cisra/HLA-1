@@ -28,21 +28,40 @@
                 <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>REGISTRO DE INFORMACIÓN</h3>
             </div>
 
+
             <div class="ModalForm">
                 <div class="FormSection">
-                    <div class="tw-mb-6 md:tw-flex">
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>FECHA FIN</jet-label>
-                            <input type="datetime-local" v-model="form.Inicio">
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-3/4 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>FECHA FIN</jet-label>
-                            <input type="datetime-local" v-model="form.Fin">
-                        </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-3/4 md:tw-mb-0">
-                            <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
-                            <jet-input type="text" v-model="form.Comentario" @input="(val) => (form.Comentario = form.Comentario.toUpperCase())"></jet-input>
-                        </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>FECHA INICIO</jet-label>
+                        <jet-input type="datetime-local" v-model="form.start"></jet-input>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>DURACION</jet-label>
+                        <select class="InputSelect" v-model="form.Tiempo">
+                            <option value="1">1 HORA</option>
+                            <option value="2">2 HORAS</option>
+                        </select>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>PERIODO</jet-label>
+                        <select class="InputSelect" v-model="form.Periodo">
+                            <option value="1">1 MES</option>
+                            <option value="6">6 MESES</option>
+                            <option value="12">1 AÑO</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>EQUIPO ASIGNADO</jet-label>
+                        <select class="InputSelect" v-model="form.Equipo">
+                            <option v-for="Equ in EquiposAsignados" :key="Equ.id" :value="Equ" >
+                                {{Equ.hardware.Nombre }} -
+                                {{Equ.perfil.Nombre}}
+                                {{Equ.perfil.ApPat}}
+                                {{Equ.perfil.ApMat}}
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -84,10 +103,22 @@ export default {
             color: "tw-bg-sky-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             showModal: false,
+            EventosCalendario: Object,
             form: {
-                Inicio: '',
-                Fin: '',
-                Comentario: '',
+                IdUser: this.Session.id,
+                Equipo: '',
+                title: '',
+                start: '',
+                end: '',
+                textColor: '',
+                backgroundColor: '',
+                FechaReal: '',
+                Diferencia: '',
+                Periodo: 1,
+                Tiempo: 1,
+                Estatus: '',
+                Comentarios: '',
+                Hardware_id: '',
             }
         };
     },
@@ -108,7 +139,9 @@ export default {
     },
 
     props: {
-
+        Session: Object,
+        EquiposAsignados: Object,
+        FechaMantenimientos: Object,
     },
 
     mounted(){
@@ -116,12 +149,14 @@ export default {
     },
 
     methods: {
-
         Calendario(){
             var calendar = new window.Calendar($('#calendar').get(0), {
             plugins: [window.interaction, window.dayGridPlugin, window.timeGridPlugin, window.listPlugin],
-            locale: esLocale,
+            buttonText: { today: 'Hoy', month: 'Mes', week: 'Semana', day: 'Día', list: 'Lista'},
             selectable: true,
+            droppable: true,
+            editable: true,
+            hiddenDays: [0, 6],
             height: "auto",
             initialView: 'dayGridMonth',
             allDaySlot: false,
@@ -143,48 +178,55 @@ export default {
                     }
                 }
             },
-            eventBorderColor: 'white',
-                eventClick: info => {
-                    console.log('evenClik');
-                },
-                dateClick: info => {
-                    console.log('dateClick');
-                    this.showModal = true;
-                },
-                select: info => {
-                    console.log('select');
-                },
+            events: this.FechaMantenimientos, //Visualizacion de la informacion
+            displayEventEnd: true,
+            eventClick: info => {
+                console.log(info);
+            },
+            dateClick: info => {
+                console.log('dateClick');
+                this.showModal = true;
+            },
+            select: info => {
+                console.log('select');
+            },
 
-            events: [
-                {
-                    title: 'EVENTO 1',
-                    start: '2022-03-03',
-                    end: '2022-03-03'
-                },
-                {
-                    title: 'EVENTO 2',
-                    start: '2022-03-07T10:00:00',
-                    end: '2022-03-07T11:00:00'
-                },
-                {
-                    title: 'EVENTO 3',
-                    start: '2022-03-08T10:00:00',
-                    end: '2022-03-08T11:00:00'
-                },
-                ]
             });
-            // calendar.setOption('locale', 'es');
+            calendar.setOption('locale', 'es');
             calendar.render();
         },
 
         reset() {
             this.form = {
+                IdUser: this.Session.id,
+                Equipo: '',
+                title: '',
+                start: '',
+                end: '',
+                textColor: '',
+                backgroundColor: '',
+                FechaReal: '',
+                Diferencia: '',
+                Periodo: 1,
+                Tiempo: 1,
+                Estatus: '',
+                Comentarios: '',
+                Hardware_id: '',
             };
         },
 
         save(data){
+            var FechaIni = moment(data.start);
+            data.start = FechaIni.format('YYYY-MM-DD HH:MM:SS');
+            var FechaFin = FechaIni.add(data.Tiempo, 'h');
+            data.end = FechaFin.format('YYYY-MM-DD HH:MM:SS');
+            data.backgroundColor = this.colours[Math.floor(Math.random() * this.colours.length)];
+            data.Hardware_id = data.Equipo.id;
+            data.Estatus = 0;
+            data.title = data.Equipo.hardware.Nombre +' - '+ data.Equipo.perfil.Nombre + ' ' +data.Equipo.perfil.ApPat;
             this.$inertia.post("/Sistemas/CalendarioMantenimientos", data, {
                 onSuccess: () => {
+                    this.Calendario();
                     this.reset(),
                     this.chageClose(),
                     this.alertSucces();
@@ -207,6 +249,9 @@ export default {
                 },
             });
         },
+    },
+    computed: {
+
     },
 };
 </script>

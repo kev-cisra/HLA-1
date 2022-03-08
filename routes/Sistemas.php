@@ -4,6 +4,7 @@ use App\Http\Controllers\Menus\MenuSistemasController;
 use App\Http\Controllers\Sistemas\Hardware\EquiposAsignadosController;
 use App\Http\Controllers\Sistemas\Hardware\HardwareSistemasController;
 use App\Http\Controllers\Sistemas\Mantenimientos\CalendarioController;
+use App\Http\Controllers\Sistemas\Mantenimientos\MantenimientosSistemasController;
 use App\Http\Controllers\Sistemas\Requisiciones\CotizacionesSistemasController;
 use App\Http\Controllers\Sistemas\Requisiciones\RequisicionesSistemasController;
 use App\Models\Sistemas\Hardware\HardwareSistemas;
@@ -19,7 +20,7 @@ Route::resource('EquiposComputo', HardwareSistemasController::class)
 Route::resource('EquiposAsignados', EquiposAsignadosController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('EquiposAsignados');
 
-Route::resource('CalendarioMantenimientos', CalendarioController::class)
+Route::resource('CalendarioMantenimientos', MantenimientosSistemasController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('CalendarioMantenimientos');
 
 Route::resource('RequisicionSistemas', RequisicionesSistemasController::class)

@@ -57,8 +57,6 @@
             <div class="ModalHeader">
                 <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Equipos Computo</h3>
             </div>
-
-
             <div class="ModalForm">
                 <div class="tw-mb-6 md:tw-flex">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
