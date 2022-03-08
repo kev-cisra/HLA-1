@@ -9,6 +9,7 @@ use App\Models\Produccion\dep_mat;
 use App\Models\Produccion\dep_per;
 use App\Models\Produccion\parosCarga;
 use App\Models\Produccion\turnos;
+use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -136,5 +137,12 @@ class GeneralController extends Controller
         ])
         ->get(['id', 'nomtur', 'departamento_id']);
         return $turnos;
+    }
+
+    //Consulta departamentos
+    public function ConDepa(Request $request){
+        $depa = Departamentos::whereNotNull('departamento_id')
+        ->get();
+        return $depa;
     }
 }

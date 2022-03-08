@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
+use App\Models\Produccion\AbaEntregas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class AbasteEntreController extends Controller
@@ -67,7 +69,7 @@ class AbasteEntreController extends Controller
         $pro = procesos::where('departamento_id', '=', $request->departamento_id)
         ->where('tipo', '=', "4")
         ->whereNotNull('proceso_id')
-        ->selectRaw('*')
+        ->selectRaw('id')
         ->get();
         /* procesos::where('departamento_id', '=', $request->departamento_id)
         ->where('tipo_carga', '=', 'entre')
@@ -135,6 +137,24 @@ class AbasteEntreController extends Controller
             }
         ])
         ->get();
-        return $pro;
+        return $car;
+    }
+
+    public function entregaInsert(Request $request){
+        Validator::make($request->all(), [
+            'folio' => ['required'],
+            'banco' => ['required'],
+            'total' => ['required', 'numeric', 'min:1'],
+            'depa_entrega' => ['required']
+        ])->validate();
+
+        AbaEntregas::create([
+            'folio' => $request->folio,
+            'banco' => $request->banco,
+            'total' => $request->total,
+            'depa_recibe' => $request->depa_recibe,
+            'depa_entrega' => $request->depa_entrega
+        ]);
+        return $request;
     }
 }

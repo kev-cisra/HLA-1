@@ -1442,36 +1442,7 @@
                         }
                     })
                 }
-            },
-            /* paqObjetivo: function(paOb){
-                if (paOb == '') {
-                    this.form.proceso_id = '';
-                    this.form.maq_pro_id = '';
-                    this.form.norma = '';
-                    this.form.clave_id = '';
-                }else{
-                    this.calcuObje = 0;
-                    this.form.valor = '';
-                    const resu = this.objetivos.find(obje => obje.id == paOb);
-                    this.limp = 2;
-                    this.form.departamento_id = this.S_Area;
-                    this.form.proceso_id = resu.proceso_id;
-                    this.form.maq_pro_id = resu.maq_pro_id;
-                    this.form.norma = resu.norma;
-                    this.form.clave_id = resu.clave_id;
-                }
-            },
-            calcuObje: function(calObj) {
-                if (calObj <= 0 || calObj > 12) {
-                    this.form.valor = '';
-                    this.calcuObje = '';
-                }
-                if (this.paqObjetivo != '' & calObj != '') {
-                    const resu = this.objetivos.find(obje => obje.id == this.paqObjetivo);
-                    this.form.valor = resu.pro_hora * calObj;
-                    //console.log(this.form.valor)
-                }
-            } */
+            }
         }
     }
 </script>

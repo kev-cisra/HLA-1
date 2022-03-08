@@ -793,7 +793,7 @@
 
                 if (reco == undefined) {
                     await axios.post('ObjeCordi/storeProObje', data)
-                    .then(eve => {this.ConProduccion(), this.openModal(), console.log(eve)})
+                    .then(eve => {this.ConProduccion(), this.openModal()})
                     .catch(error => {this.errors = error.response.data.errors});
                 } else {
                     Swal.fire({

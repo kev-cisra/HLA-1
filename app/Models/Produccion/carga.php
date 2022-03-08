@@ -21,6 +21,10 @@ class carga extends Model
         return $this->hasMany(notasCarga::class, 'carga_id');
     }
 
+    public function rela_aba_entre(){
+        return $this->hasMany(rela_aba_carga::class, 'carga_id');
+    }
+
     //relacion 1 a 1
     public function objetivopunta(){
         return $this->hasOne(ObjetivoPuntas::class, 'carga_id');
