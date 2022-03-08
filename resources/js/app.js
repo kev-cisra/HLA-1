@@ -24,6 +24,11 @@ createApp({
                 showModal: false,
                 editMode: false,
                 now: moment().format('Y-M-d H:mm:ss'),
+                colours: ["#84CC16", "#65A30D", "#4D7C0F", "#22C55E", "#16A34A", "15803D",
+                "#10B981", "#059669", "#047857", "#14B8A6","#0D9488","#0F766E","#06B6D4","#0891B2","#0E7490",
+                "#0EA5E9","#0284C7","#0369A1","#3B82F6","#2563EB","#1D4ED8","#6366F1","#4F46E5","#4338CA",
+                "#8B5CF6","#7C3AED","#6D28D9","#A855F7", "#9333EA","#7E22CE","#D946EF","#C026D3","#A21CAF",
+                "#EC4899","#DB2777","#BE185D","#F43F5E","#E11D48","#BE123C"],
                 español: {
                     processing: "Procesando...",
                     lengthMenu: "Mostrar _MENU_ registros",
