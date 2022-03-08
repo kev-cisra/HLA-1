@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion;
 
+use App\Models\Produccion\catalogos\claves;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

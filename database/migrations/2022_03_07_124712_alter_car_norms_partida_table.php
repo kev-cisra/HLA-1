@@ -15,7 +15,7 @@ class AlterCarNormsPartidaTable extends Migration
     {
         Schema::table('car_norms', function (Blueprint $table) {
             //
-            $table->unsignedBigInteger('partida_id')->nullable();
+            $table->unsignedBigInteger('partida_id')->nullable()->after('clave_id');
             $table->foreign('partida_id')->references("id")->on("aba_entregas")
             ->onUpdate("cascade");
         });

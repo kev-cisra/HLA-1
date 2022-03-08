@@ -321,6 +321,16 @@
                 <div class="m-5 tw-p-6 tw-bg-cyan-600 tw-rounded-3xl tw-shadow-xl">
                     <!-- Proceso proncipal, sub procesos, operador -->
                     <div class="tw-mb-6 lg:tw-flex tw-justify-center">
+                        <!-- Inout partida -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                            <jet-label>Partida</jet-label>
+                            <select class="InputSelect" v-model="form.partida" @change="parSele">
+                                <option value="">SELECCIONA</option>
+                                <option v-for="op in opcPar" :key="op" :value="op.id"> {{ op.text }} </option>
+                            </select>
+                            <!-- <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input> -->
+                            <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                        </div>
                         <!-- Select Normas -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                             <jet-label><span class="required">*</span>Norma</jet-label>
@@ -329,12 +339,6 @@
                                 <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
                             </select>
                             <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
-                        </div>
-                        <!-- Inout partida -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                            <jet-label>Partida</jet-label>
-                            <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
-                            <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
                         </div>
                     </div>
 
@@ -578,6 +582,7 @@
                 paqnor: [],
                 objetivos: [],
                 personal: [],
+                partida: [],
                 S_Area: '',
                 noCor: '',
                 calcuObje: '',
@@ -726,6 +731,11 @@
                     })
 
                 }
+            },
+            parSele(event){
+                let par = this.partida.find(ele => {return ele.id == event.target.value})
+                this.form.norma = par.norma_id;
+                this.form.clave_id = par.clave_id;
             },
             /****************************** datatables ********************************************************/
             //datatable de carga
@@ -1119,52 +1129,6 @@
                     onError: () => {this.ConProduccion(), this.btnOff = true},
                 });
             },
-            /****************************** Carga de paquetes para objetivos
-            async savePObje(form){
-                this.btnOff = false;
-                await this.$inertia.post('/Produccion/ObjeCordi', form, {
-                    onSuccess: (v) => { this.ConObjeti(), this.resetOB(), this.alertSucces(), this.btnOff = true},
-                    onError: (e) => { this.ConObjeti(), this.btnOff = true}, preserveState: true
-                });
-            },
-            resetOB(){
-                this.limp = 1;
-                this.editModeOB = false;
-                this.formObje.id = null;
-                this.formObje.departamento_id = this.S_Area;
-                this.formObje.proceso_id = '';
-                this.formObje.maq_pro_id = '';
-                this.formObje.norma = '';
-                this.formObje.clave_id = '';
-                this.formObje.pro_hora = null;
-            },
-            editOB(form){
-                this.limp = 2;
-                this.editModeOB = true;
-                this.formObje.id = form.id;
-                this.proc_prin = form.proceso.proceso_id;
-                this.formObje.proceso_id = form.proceso_id;
-                this.formObje.maq_pro_id = form.maq_pro_id;
-                this.formObje.norma = form.norma;
-                this.formObje.clave_id = form.clave_id;
-                this.formObje.pro_hora = form.pro_hora;
-            },
-            async updateOB(data){
-                //console.log(data)
-                this.btnOff = false;
-                await this.$inertia.put('/Produccion/ObjeCordi/' + data.id, data, {
-                    onSuccess: (v) => { this.resetOB(), this.alertSucces(), this.ConObjeti(), this.btnOff = true},
-                    onError: (e) => { this.ConObjeti(), this.btnOff = true},
-                    preserveState: true
-                });
-            },
-            deleteOB(data){
-                data._method = 'DELETE';
-                this.$inertia.post('/Produccion/ObjeCordi/' + data.id, data, {
-                    onSuccess: () => { this.ConObjeti(), this.alertDelete() }, onError: () => {this.ConObjeti()}, preserveState: true
-                });
-            }
-            *******************************/
         },
         computed: {
             //Opciones departamento
@@ -1251,24 +1215,6 @@
                 }
                 return mq;
             },
-            //Opciones maquinas Objetivos
-            /* opcMQO: function() {
-                this.limp == 1 ? this.formObje.maq_pro_id = '' : '';
-                const mq = [];
-                var mar = '';
-                if (this.formObje.proceso_id != '') {
-                    this.procesos.forEach(pm => {
-                        if (this.formObje.proceso_id == pm.id) {
-                            //console.log(pm.maq_pros.length)
-                            pm.maq_pros.forEach(mp => {
-                                mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
-                                mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
-                            })
-                        }
-                    })
-                }
-                return mq;
-            }, */
             //Opciones Claves
             opcCL: function() {
                 const scl = [];
@@ -1285,21 +1231,14 @@
                 }
                 return scl;
             },
-            //Opciones Claves Objetivos
-            /* opcCLO: function() {
-                const scl = [];
-                if (this.formObje.norma != '') {
-                    this.materiales.forEach(cl => {
-                        if (this.formObje.norma == cl.id) {
-                            //console.log(cl.claves)
-                            cl.claves.forEach(c => {
-                                scl.push({id: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
-                            })
-                        }
-                    })
-                }
-                return scl;
-            }, */
+            //Opciones Partida
+            opcPar: function() {
+                const par = [];
+                this.partida.forEach(p => {
+                    par.push({id: p.id, text: p.partida})
+                })
+                return par;
+            },
             //opciones Paquetes Operador
             opcPaOp: function() {
                 const po = [];
@@ -1327,18 +1266,6 @@
                 })
                 return no;
             },
-            //opciones Paquetes Objetivos
-            /* opcPaOb: function() {
-                const ob = [];
-                var clave = '';
-                this.objetivos.forEach(po => {
-                    if (po.departamento_id == this.S_Area) {
-                        clave = po.clave_id == null ? 'N/A' : po.clave.CVE_ART
-                        ob.push({id: po.id, text: po.proceso.nompro+' || '+po.maq_pro.maquinas.Nombre+' '+po.maq_pro.maquinas.marca.Nombre+' || '+po.dep_mat.materiales.idmat+' || '+clave})
-                    }
-                })
-                return ob;
-            }, */
             //opciones de turnos
             opcTur: function() {
                 const tur = [];
@@ -1399,6 +1326,10 @@
                 //Materiales
                 let mate = await axios.post('General/ConMateriales', datos)
                 this.materiales = mate.data
+
+                //Partida
+                let par = await axios.post('General/ConParti', datos);
+                this.partida = par.data;
             },
             proc_prin: function(v) {
                 //cuando no se edita

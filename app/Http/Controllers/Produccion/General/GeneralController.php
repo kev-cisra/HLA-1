@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Produccion\General;
 
 use App\Http\Controllers\Controller;
 use App\Models\Catalogos\Maquinas;
+use App\Models\Produccion\AbaEntregas;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
 use App\Models\Produccion\dep_per;
@@ -144,5 +145,14 @@ class GeneralController extends Controller
         $depa = Departamentos::whereNotNull('departamento_id')
         ->get();
         return $depa;
+    }
+
+    //Consulta partida
+    public function ConParti(Request $request){
+        $par = AbaEntregas::where('depa_entrega', '=', $request->departamento_id)
+        ->where('esta_final', '=', 'Activo')
+        ->get();
+
+        return $par;
     }
 }

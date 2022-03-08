@@ -65,6 +65,33 @@ class AbasteEntreController extends Controller
         return Inertia::render('Produccion/AbaEntre', ['usuario' => $perf, 'depa' => $depa, 'depaT' => $depaTo]);
     }
 
+    public function ConAbaEntre(Request $request){
+        $aba = AbaEntregas::where('depa_entrega', '=', $request->departamento_id)
+            ->whereIn('esta_final', ['Activo', 'En espera', 'Desactivado'])
+            ->orderByRaw("concat(esta_final, ' ', norma_id) desc")
+            ->with(['norma', 'norma.materiales', 'clave', 'depa_entregas', 'depa_recibe'])
+            ->get();
+        return $aba;
+    }
+
+    public function updeAbas(Request $request){
+        Validator::make($request->all(), [
+            'esta_final' => ['required'],
+            'norma' => ['required'],
+            'clave' => ['required'],
+            'partida' => ['required']
+        ])->validate();
+
+        AbaEntregas::find($request->input('id'))
+        ->update([
+            'partida' => $request->partida,
+            'esta_inicio' => 'Aceptado',
+            'esta_final' => $request->esta_final,
+            'norma_id' => $request->norma,
+            'clave_id' => $request->clave
+        ]);
+    }
+
     public function Carga(Request $request){
         $pro = procesos::where('departamento_id', '=', $request->departamento_id)
         ->where('tipo', '=', "4")
@@ -152,6 +179,7 @@ class AbasteEntreController extends Controller
             'folio' => $request->folio,
             'banco' => $request->banco,
             'total' => $request->total,
+            'esta_inicio' => $request->esta_inicio,
             'depa_recibe' => $request->depa_recibe,
             'depa_entrega' => $request->depa_entrega
         ]);

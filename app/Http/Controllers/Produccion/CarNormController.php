@@ -27,14 +27,17 @@ class CarNormController extends Controller
         ])->validate();
 
         $bus = carNorm::where('clave_id', '=', $request->clave_id)
-        ->where('partida', '=', $request->partida)
+        ->where('partida_id', '=', $request->partida)
+        ->orWhere('partida', '=', $request->partida)
         ->where('norma', '=', $request->norma)
+        ->where('clave_id', '=', $request->clave_id)
         ->where('departamento_id', '=', $request->departamento_id)
         ->first();
 
         if (empty($bus->id)) {
             carNorm::create([
                 'partida' => $request->partida,
+                'partida_id' => $request->partida,
                 'norma' => $request->norma,
                 'clave_id' => $request->clave_id,
                 'departamento_id' => $request->departamento_id
