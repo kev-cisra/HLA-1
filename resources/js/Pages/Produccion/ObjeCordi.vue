@@ -312,7 +312,11 @@
                                         <!-- Input partida -->
                                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                             <jet-label class=""><span class="required">*</span>Partida</jet-label>
-                                            <jet-input class="InputSelect" v-model="f.partida" @input="(val) => (f.partida = f.partida.toUpperCase())"></jet-input>
+                                            <select class="InputSelect" v-model="f.partida" @change="parSele">
+                                                <option value="">SELECCIONA</option>
+                                                <option v-for="op in opcPar" :key="op" :value="op.id"> {{ op.text }} </option>
+                                            </select>
+                                            <!-- <jet-input class="InputSelect" v-model="f.partida" @input="(val) => (f.partida = f.partida.toUpperCase())"></jet-input> -->
                                         </div>
                                         <!-- Input kilogramos -->
                                         <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/4 lg:tw-mb-0">
@@ -414,7 +418,11 @@
                                         <!-- Input partida -->
                                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                             <jet-label class=""><span class="required">*</span>Partida</jet-label>
-                                            <jet-input class="InputSelect" v-model="f.partida" @input="(val) => (f.partida = f.partida.toUpperCase())"></jet-input>
+                                            <select class="InputSelect" v-model="form.partida" @change="parSele">
+                                                <option value="">SELECCIONA</option>
+                                                <option v-for="op in opcPar" :key="op" :value="op.id"> {{ op.text }} </option>
+                                            </select>
+                                            <!-- <jet-input class="InputSelect" v-model="f.partida" @input="(val) => (f.partida = f.partida.toUpperCase())"></jet-input> -->
                                         </div>
                                         <!-- tiempo -->
                                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
@@ -508,6 +516,7 @@
                 objetivos: [],
                 cargas: [],
                 errors: [],
+                partida: [],
                 proc_prin: '',
                 editMode: false,
                 editModeOB: false,
@@ -1072,6 +1081,14 @@
                 })
                 return ssp;
             },
+            //Opciones Partida
+            opcPar: function() {
+                const par = [];
+                this.partida.forEach(p => {
+                    par.push({id: p.id, text: p.partida})
+                })
+                return par;
+            },
             //unidad de medida de las claves
             uni_me: function() {
                 var uni = '--';
@@ -1111,6 +1128,10 @@
                 //Materiales
                 let mate = await axios.post('General/ConMateriales', datos)
                 this.materiales = mate.data
+
+                //Partida
+                let par = await axios.post('General/ConParti', datos);
+                this.partida = par.data;
             },
         }
     }

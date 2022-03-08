@@ -15,7 +15,7 @@ class AlterCargasPartidaTable extends Migration
     {
         Schema::table('cargas', function (Blueprint $table) {
             //
-            $table->unsignedBigInteger('partida_id')->nullable();
+            $table->unsignedBigInteger('partida_id')->nullable()->after('proceso_id');
             $table->foreign('partida_id')->references("id")->on("aba_entregas")
             ->onUpdate("cascade");
         });

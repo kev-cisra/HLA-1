@@ -171,7 +171,7 @@
                         <!-- Partida -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                             <jet-label>Partida</jet-label>
-                            <jet-input class="InputSelect" v-model="formAba.partida" :disabled="vrPar"></jet-input>
+                            <jet-input class="InputSelect" v-model="formAba.partida"  @input="(val) => (formAba.partida = formAba.partida.toUpperCase())" :disabled="vrPar"></jet-input>
                             <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
                         </div>
                     </div>
