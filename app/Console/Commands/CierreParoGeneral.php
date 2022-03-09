@@ -84,6 +84,6 @@ class CierreParoGeneral extends Command
                 $up = parosCarga::find($parUp->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 7]);
             }
         }
-        Storage::disk('local')->put('pruebaParo.txt', $txt);
+        //Storage::disk('local')->put('pruebaParo.txt', $txt);
     }
 }

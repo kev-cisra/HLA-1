@@ -96,7 +96,7 @@ class ActualizaVacaciones extends Command
 
         $texto = "[".date('Y-m-d: H:i:s')."]: Actualizacion de Dias de vacaciones";
 
-        Storage::disk('local')->put('archivo.txt', $texto);
+        //Storage::disk('local')->put('archivo.txt', $texto);
         // Storage::disk('local')->append('archivo.txt', $texto, null);
         // Storage::append("archivo.txt", $texto);
     }
