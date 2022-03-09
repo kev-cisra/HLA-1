@@ -150,6 +150,7 @@ class GeneralController extends Controller
     //Consulta partida
     public function ConParti(Request $request){
         $par = AbaEntregas::where('depa_entrega', '=', $request->departamento_id)
+        ->with('clave')
         ->where('esta_final', '=', 'Activo')
         ->get();
 

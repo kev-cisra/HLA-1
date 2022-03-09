@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\obje_cordi;
+use App\Models\Produccion\AbaEntregas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
 use App\Models\Produccion\carOpe;
@@ -183,8 +184,20 @@ class CargaController extends Controller
     }
 
     public function CarObje(Request $request){
+        $par = AbaEntregas::where('depa_entrega', '=', $request->departamento_id)
+        ->where('esta_final', '=', 'Activo')
+        ->get();
+
+        $nu = [];
+        if (!empty($par)) {
+            foreach ($par as $p) {
+                array_push($nu, $p->clave_id);
+            }
+        }
+
         //Paquetes Objetivos
         $objetivos = obje_cordi::where('departamento_id', '=', $request->departamento_id)
+        ->whereIn('clave_id', $nu)
         ->with([
             'proceso' => function($pro) {
                 $pro -> select('id', 'nompro', 'proceso_id');

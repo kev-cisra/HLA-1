@@ -31,7 +31,7 @@
                     <!-- cuerpo tarjeta -->
                     <div class="card tw-w-11/12 md:tw-w-9/12 lg:tw-w-5/12 tw-shadow-xl" v-for="ae in abaentre" :key="ae">
                         <!-- info tarjeta -->
-                        <div class="card-body">
+                        <div :class="'card-body '+color(ae)">
                             <!-- <h5 class="card-title tw-text-2xl"></h5> -->
                             <table>
                                 <tr>
@@ -250,7 +250,29 @@
             }
         },
 
+        mounted() {
+            this.global();
+        },
+
         methods: {
+            /************************************* Globales ************************************/
+            color(data){
+                if (data.esta_final == 'Activo') {
+                    return 'tw-bg-green-50';
+                } else if(data.esta_final == 'Desactivado') {
+                    return 'tw-bg-red-50';
+                }else {
+                    return 'tw-bg-blue-50';
+                }
+            },
+            global(){
+                if (this.usuario.dep_pers.length == 0) {
+                    this.S_Area = 7;
+                }else{
+                    //Asigna el primer departamento
+                    this.S_Area = this.usuario.dep_pers[0].departamento_id;
+                }
+            },
             /************************************* Entregas guardar y pasar a otro departamento */
             async saveEntre(data){
                 data.depa_recibe = this.S_Area;

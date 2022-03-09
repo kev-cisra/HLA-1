@@ -58,7 +58,7 @@ class AbasteEntreController extends Controller
                 ->get(['id', 'IdUser', 'Nombre', 'departamento_id']);
         }
 
-        $depaTo = Departamentos::where('departamento_id', '=', $iddeppro->id)
+        $depaTo = Departamentos::where('departamento_id', '=', '2')
             ->with('sub_Departamentos')
             ->get(['id', 'IdUser', 'Nombre', 'departamento_id']);
 
@@ -68,7 +68,7 @@ class AbasteEntreController extends Controller
     public function ConAbaEntre(Request $request){
         $aba = AbaEntregas::where('depa_entrega', '=', $request->departamento_id)
             ->whereIn('esta_final', ['Activo', 'En espera', 'Desactivado'])
-            ->orderByRaw("concat(esta_final, ' ', norma_id) desc")
+            ->orderByRaw("norma_id - esta_final desc")
             ->with(['norma', 'norma.materiales', 'clave', 'depa_entregas', 'depa_recibe'])
             ->get();
         return $aba;
@@ -180,6 +180,7 @@ class AbasteEntreController extends Controller
             'banco' => $request->banco,
             'total' => $request->total,
             'esta_inicio' => $request->esta_inicio,
+            'esta_final' => $request->esta_final,
             'depa_recibe' => $request->depa_recibe,
             'depa_entrega' => $request->depa_entrega
         ]);
