@@ -51,14 +51,14 @@ class VacacionesDptoController extends Controller{
             if($User->hasRole('ONEPIECE') == true){ //Admin
                 $PerfilesUsuarios = PerfilesUsuarios::with(['PerfilDepartamento', 'PerfilPuesto'])
                 ->get();
-            }else{ //RecursoHumanos
-                if($Session->id == 13){ //pPedro Asencion
+            }else{
+                if($Session->id == 13){ //Pedro Asencion
 
                     $PerfilesUsuarios = PerfilesUsuarios::with(['jefe_perfiles','PerfilDepartamento', 'PerfilPuesto', 'jefe_perfiles.PerfilDepartamento', 'jefe_perfiles.PerfilPuesto', 'jefe_perfiles.perfiles_jefe.PerfilDepartamento', 'jefe_perfiles.perfiles_jefe.PerfilPuesto'])
                     ->where('Empresa', 'HILATURAS')
                     ->get();
 
-                }else{
+                }else{//RecursoHumanos
                     $PerfilesUsuarios = PerfilesUsuarios::with(['PerfilDepartamento', 'PerfilPuesto'])
                     ->where('id', '>', 10)
                     ->get();
@@ -71,8 +71,11 @@ class VacacionesDptoController extends Controller{
             //Verifico si esta registrado en la tabla de jefes
             $EsJefe = JefesArea::where('IdEmp', '=', $Session->IdEmp)->first();
             $EsJefe != '' ? $JefeDepto = true :  $JefeDepto = false;
+            //Obtengo el id de acuerdo al id de session logueado
+            $PerfilId = PerfilesUsuarios::where('user_id', '=',  $Session->id)->first(['id']);
+            //Obtengo los perfiles de acuerdo a su jefe asignado
             $PerfilesUsuarios = PerfilesUsuarios::with(['jefe_perfiles','PerfilDepartamento', 'PerfilPuesto', 'jefe_perfiles.PerfilDepartamento', 'jefe_perfiles.PerfilPuesto', 'jefe_perfiles.perfiles_jefe.PerfilDepartamento', 'jefe_perfiles.perfiles_jefe.PerfilPuesto'])
-            ->where('id', $Session->id)
+            ->where('id', '=' , $PerfilId->id)
             ->get();
         }
 
