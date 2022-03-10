@@ -179,11 +179,47 @@ class AbasteEntreController extends Controller
             'folio' => $request->folio,
             'banco' => $request->banco,
             'total' => $request->total,
-            'esta_inicio' => $request->esta_inicio,
-            'esta_final' => $request->esta_final,
+            //'esta_inicio' => $request->esta_inicio,
+            //'esta_final' => $request->esta_final,
             'depa_recibe' => $request->depa_recibe,
-            'depa_entrega' => $request->depa_entrega
+            'depa_entrega' => $request->depa_entrega,
+            //*********************************** */
+            'partida' => $request->partida,
+            'esta_inicio' => 'Aceptado',
+            'esta_final' => $request->esta_final,
+            'norma_id' => $request->norma,
+            'clave_id' => $request->clave
         ]);
         return $request;
+    }
+
+    public function ConAbaPro(Request $request){
+        $ap = carga::join('procesos', 'procesos.id', '=', 'cargas.proceso_id')
+        ->whereIn('procesos.tipo', ['1', '5'])
+        ->where('cargas.partida_id', '=', $request->id)
+        ->selectRaw('cargas.proceso_id, cargas.maq_pro_id, cargas.clave_id, SUM(cargas.valor) AS valor')
+        ->groupBy('proceso_id')
+        ->groupBy('clave_id')
+        ->groupBy('maq_pro_id')
+        ->with([
+            'proceso' => function($pr){
+                $pr ->withTrashed()
+                -> select('id', 'nompro', 'tipo', 'operacion', 'proceso_id');
+            },
+            'maq_pro' => function($mp){
+                $mp ->withTrashed()
+                ->select('id', 'proceso_id', 'maquina_id');
+            },
+            'maq_pro.maquinas' => function($ma){
+                $ma ->withTrashed()
+                -> select('id', 'Nombre');
+            },
+            'clave' => function($cla){
+                $cla ->withTrashed()
+                -> select('id', 'CVE_ART', 'DESCR', 'categoria', 'UNI_MED');
+            },
+        ])
+        ->get();
+        return $ap;
     }
 }

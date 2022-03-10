@@ -313,7 +313,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="tw-w-1/4">
-                                                    <input type="text" class="InputSelect" v-model="f.p_nom">
+                                                    <input type="text" class="InputSelect" v-model="f.p_nom"  @input="(val) => (f.p_nom = f.p_nom.toUpperCase())">
                                                 </div>
                                             </div>
 

@@ -177,9 +177,12 @@ class CargaController extends Controller
             },
             'clave' => function($cla){
                 $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
+            },
+            'abapar' => function($par){
+                $par -> select('id', 'folio', 'banco', 'partida' );
             }
         ])
-        ->get(['id', 'partida', 'estatus', 'norma', 'clave_id', 'departamento_id']);
+        ->get(['id', 'partida', 'estatus', 'norma', 'clave_id', 'partida_id', 'departamento_id']);
         return $carNor;
     }
 
@@ -255,7 +258,8 @@ class CargaController extends Controller
             'proceso_id' => $request->proceso_id,
             'dep_perf_id' => $request->dep_perf_id,
             'maq_pro_id' => $request->maq_pro_id,
-            'partida' => $request->partida,
+            'partida_id' => $request->partida,
+            'partida' => $request->p_nom,
             'valor' => $request->valor,
             'norma' => $request->norma,
             'equipo_id' => $request->equipo_id,

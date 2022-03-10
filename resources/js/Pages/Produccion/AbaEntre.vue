@@ -21,7 +21,7 @@
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true" @click="ConAba()">Abastos</button>
-                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Entregas</button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" @click="resetEntr()" aria-selected="false">Entregas</button>
             </div>
         </nav>
         <div class="tab-content tw-m-5" id="nav-tabContent">
@@ -82,12 +82,24 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" :id="'open2'+ae.id">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#flushTwo'+ae.id" aria-expanded="false" aria-controls="flush-collapseTwo">
-                                    Producción
-                                </button>
+                                    <button class="accordion-button collapsed" type="button" @click="conProdu(ae)" data-bs-toggle="collapse" :data-bs-target="'#flushTwo'+ae.id" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                        Producción
+                                    </button>
                                 </h2>
                                 <div :id="'flushTwo'+ae.id" class="accordion-collapse collapse" :aria-labelledby="'open2'+ae.id" :data-bs-parent="'#accordion'+ae.id">
-                                <div class="accordion-body overflow-auto" style="height: 10rem">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+                                    <div class="tw-flex accordion-body justify-items-end overflow-auto" style="height: 7rem">
+                                        <div class="tw-flex flex-wrap tw-w-full">
+                                            <div class="tw-flex tw-w-1/2 tw-rounded-md hover:tw-border hover:tw-border-4 hover:tw-border-teal-300" v-for="ap in abaPro" :key="ap">
+                                                <div class="tw-w-3/5 tw-m-auto">
+                                                    <strong> {{ ap.proceso.nompro }} {{ ap.maq_pro.maquinas.Nombre }}: </strong>
+                                                </div>
+                                                <div class="tw-w-2/5 tw-m-auto">
+                                                    {{ ap.valor }} {{ ap.clave.UNI_MED }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +138,46 @@
                         <small v-if="errors.total" class="validation-alert">{{errors.total}}</small>
                     </div>
                 </div>
+                <div class="tw-mb-6 lg:tw-flex">
+                    <!-- estatus -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                        <jet-label class=""><span class="required">*</span>Estatus</jet-label>
+                        <select class="InputSelect" v-model="formAba.esta_final">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option value="Activo">Activar</option>
+                            <option value="En espera">En espera</option>
+                            <option value="Fin">Finalizar</option>
+                            <option value="Desactivado">Desactivado</option>
+                        </select>
+                        <small v-if="errors.esta_final" class="validation-alert">{{errors.esta_final}}</small>
+                    </div>
+                    <!-- Norma -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                        <jet-label class=""><span class="required">*</span>Norma</jet-label>
+                        <select class="InputSelect" v-model="formAba.norma">
+                            <option value="" disabled>SELECCIONA</option>
+                            <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
+                        </select>
+                        <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
+                    </div>
+                    <!-- Partida -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                        <jet-label>Partida</jet-label>
+                        <jet-input class="InputSelect" v-model="formAba.partida"  @input="(val) => (formAba.partida = formAba.partida.toUpperCase())"></jet-input>
+                        <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                    </div>
+                    <!-- Clave -->
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                        <jet-label class="tw-text-white"><span class="required">*</span>Clave</jet-label>
+                        <Select2 v-model="formAba.clave" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCL"/>
+                        <small v-if="errors.clave" class="validation-alert">{{errors.clave}}</small>
+                    </div>
+                </div>
                 <div class="lg:tw-flex tw-justify-center" v-if="S_Area != ''">
+                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0 d-grid gap-2">
+                        <button type="button" class="btn btn-success" @click="saveEntre(formAba)">Agregar</button>
+                    </div> -->
+                    <!-- boton -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0 d-grid gap-2">
                         <button type="button" class="btn btn-success" @click="saveEntre(formAba)">Agregar</button>
                     </div>
@@ -228,6 +279,7 @@
                 materiales: [],
                 abaentre: [],
                 departamento: [],
+                abaPro: [],
                 errors: [],
                 showModal: false,
                 vrNor: false,
@@ -255,6 +307,13 @@
         },
 
         methods: {
+            /************************************* Consultas ***********************************/
+            async conProdu(dat){
+                this.abaPro = [];
+                let ab = await axios.post('AbaEntre/ConAbaPro', dat);
+                //console.log(ab)
+                this.abaPro = ab.data;
+            },
             /************************************* Globales ************************************/
             color(data){
                 if (data.esta_final == 'Activo') {
@@ -281,7 +340,7 @@
                 await axios.post('AbaEntre/entIns', data)
                 .then(dat => {this.resetEntr(), this.alertSucces()})
                 .catch(err => {this.errors = err.response.data.errors, this.alertWarning()})
-                //console.log(data)
+                console.log(data)
             },
             resetEntr(){
                 this.errors = [];

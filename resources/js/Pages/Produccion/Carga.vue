@@ -170,10 +170,6 @@
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label class="tw-text-white"><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
                         <Select2 v-model="paqNorma" class="InputSelect" :options="opcPaNo"  :settings="{width: '100%'}"/>
-                        <!-- <select class="InputSelect" v-model="paqNorma">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="no in opcPaNo" :key="no.id" :value="no.value">{{no.text}}</option>
-                        </select> -->
                     </div>
                     <!-- Input kilogramos -->
                     <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
@@ -324,11 +320,17 @@
                         <!-- Inout partida -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                             <jet-label>Partida</jet-label>
-                            <select class="InputSelect" v-model="form.partida" @change="parSele">
-                                <option value="">SELECCIONA</option>
-                                <option v-for="op in opcPar" :key="op" :value="op.id"> {{ op.text }} </option>
-                            </select>
-                            <!-- <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input> -->
+                            <div class="tw-flex">
+                                <div class="tw-w-3/5 ">
+                                    <select class="InputSelect" v-model="form.partida" @change="parSele">
+                                        <option value="">SELECCIONA</option>
+                                        <option v-for="op in opcPar" :key="op" :value="op.id"> {{ op.text }} </option>
+                                    </select>
+                                </div>
+                                <div class="tw-w-2/5">
+                                    <jet-input class="InputSelect" v-model="form.p_nom" @input="(val) => (form.p_nom = form.p_nom.toUpperCase())"></jet-input>
+                                </div>
+                            </div>
                             <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
                         </div>
                         <!-- Select Normas -->
@@ -632,6 +634,7 @@
                     dep_perf_id: '',
                     maq_pro_id: '',
                     partida: '',
+                    p_nom: '',
                     valor: '',
                     norma: '',
                     equipo_id: '',
@@ -945,6 +948,7 @@
                 this.form.agNot = 0;
                 this.form.notaPen = 1;
                 this.form.nota = '';
+                this.form.p_nom = '';
                 this.form.usu = this.usuario.id;
                 this.form.departamento_id = this.S_Area;
                 this.formPacNor.ElMaPN = [];
@@ -1069,7 +1073,6 @@
             /***************************** Carga de paquetes de norma, claves y partida *********************/
             async savePN(form){
                 this.btnOff = false;
-                //console.log(form)
                 form.departamento_id = this.S_Area;
                 await this.$inertia.post('/Produccion/CarNor', form, {
                     onSuccess: (v) => { this.ConPacNorma(), this.resetCA(), this.alertSucces(), this.btnOff = true},
@@ -1346,10 +1349,12 @@
                     this.form.partida = '';
                     this.form.norma = '';
                     this.form.clave_id = '';
+                    this.form.p_nom = '';
                 }else{
                     this.paqnor.forEach(pn => {
                         if (pn.id == paN) {
-                            this.form.partida = pn.partida;
+                            this.form.partida = pn.partida_id;
+                            this.form.p_nom = pn.partida;
                             this.form.norma = pn.norma;
                             this.form.clave_id = pn.clave_id;
                         }

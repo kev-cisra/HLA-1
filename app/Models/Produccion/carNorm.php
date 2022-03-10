@@ -26,4 +26,8 @@ class carNorm extends Model
     public function departamento() {
         return $this->belongsTo(Departamentos::class, 'departamento_id');
     }
+
+    public function abapar() {
+        return $this->belongsTo(AbaEntregas::class, 'partida_id');
+    }
 }

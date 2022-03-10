@@ -191,3 +191,6 @@ Route::post('AbaEntre/conabaent', [AbasteEntreController::class, 'ConAbaEntre'])
 
 Route::post('AbaEntre/updeAbas', [AbasteEntreController::class, 'updeAbas'])->name('updeAbastos')
     ->middleware(['auth:sanctum', 'verified']);
+
+Route::post('AbaEntre/ConAbaPro', [AbasteEntreController::class, 'ConAbaPro'])->name('ConAbaProduccion')
+    ->middleware(['auth:sanctum', 'verified']);

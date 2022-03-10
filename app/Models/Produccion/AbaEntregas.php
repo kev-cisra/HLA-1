@@ -20,6 +20,10 @@ class AbaEntregas extends Model
         return $this->hasMany(rela_aba_carga::class, 'aba_entre_id');
     }
 
+    public function car_norms(){
+        return $this->hasMany(carNorm::class, 'partida_id');
+    }
+
     //relacion uno a muchos inversa
     public function norma(){
         return $this->belongsTo(dep_mat::class, 'norma_id');
