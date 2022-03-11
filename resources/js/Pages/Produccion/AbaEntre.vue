@@ -56,7 +56,7 @@
                                 </tr>
                                 <tr>
                                     <th>Clave:</th>
-                                    <td>{{ ae.clave_id ? ae.clave.DESCR : '--' }}</td>
+                                    <td>{{ ae.clave_id ? ae.clave.CVE_ART+" - "+ae.clave.DESCR : '--' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Partida:</th>
