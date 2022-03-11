@@ -57,6 +57,7 @@
         "select2": "^4.1.0-rc.0",
         "sign-canvas": "^1.1.4",
         "signature_pad": "^3.0.0-beta.4",
+        "tooltip": "^1.6.1",
         "vue-canvas-nest": "^2.0.0",
         "vue-easytable": "^2.12.3",
         "vue-qart": "^2.2.0",

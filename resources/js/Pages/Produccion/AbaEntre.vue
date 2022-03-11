@@ -141,7 +141,7 @@
                 <div class="tw-mb-6 lg:tw-flex">
                     <!-- estatus -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                        <jet-label class=""><span class="required">*</span>Estatus</jet-label>
+                        <jet-label class="">Estatus</jet-label>
                         <select class="InputSelect" v-model="formAba.esta_final">
                             <option value="" disabled>SELECCIONA</option>
                             <option value="Activo">Activar</option>
@@ -153,7 +153,7 @@
                     </div>
                     <!-- Norma -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                        <jet-label class=""><span class="required">*</span>Norma</jet-label>
+                        <jet-label class="">Norma</jet-label>
                         <select class="InputSelect" v-model="formAba.norma">
                             <option value="" disabled>SELECCIONA</option>
                             <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
@@ -335,8 +335,8 @@
             /************************************* Entregas guardar y pasar a otro departamento */
             async saveEntre(data){
                 data.depa_recibe = this.S_Area;
-                data.esta_inicio = 'Revisando';
-                data.esta_final = 'Desactivado';
+                /* data.esta_inicio = 'Revisando';
+                data.esta_final = 'Desactivado'; */
                 await axios.post('AbaEntre/entIns', data)
                 .then(dat => {this.resetEntr(), this.alertSucces()})
                 .catch(err => {this.errors = err.response.data.errors, this.alertWarning()})
