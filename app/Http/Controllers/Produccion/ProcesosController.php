@@ -134,7 +134,7 @@ class ProcesosController extends Controller
                     ]);
                 }
             }
-        }elseif($request->tipo == 3){
+        }elseif($request->tipo == 3 || $request->tipo == 4){
             Validator::make($request->all(), [
                 'operacion' => ['required']
             ])->validate();
@@ -268,7 +268,7 @@ class ProcesosController extends Controller
 
         }
         //Editar operaciones
-        else if($request->tipo == 3){
+        else if($request->tipo == 3 || $request->tipo == 4){
             //Elimina la formula completa
             foreach ($request->Nformulas as $for) {
                 if (!in_array($for, $request->formulas)) {

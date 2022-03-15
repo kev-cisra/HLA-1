@@ -203,13 +203,12 @@
                             <tr class="fila" v-for="obje in objetivos" :key="obje.id">
                                 <td class="tw-text-center"> {{ obje.id }} </td>
                                 <td class="tw-text-center"> {{ obje.proceso.nompro }} </td>
-                                <td class="tw-text-center"> {{ obje.maq_pro.maquinas.Nombre }} {{ obje.maq_pro.maquinas.marca.Nombre }} </td>
+                                <td class="tw-text-center"> {{ obje.maq_pro.maquinas.Nombre }} {{ obje.maq_pro.maquinas.marca ? obje.maq_pro.maquinas.marca.Nombre : 'N/A' }} </td>
                                 <td class="tw-text-center"> {{ obje.dep_mat.materiales.idmat }} - {{ obje.dep_mat.materiales.nommat }} </td>
                                 <td class="tw-text-center"> {{ obje.clave_id == null ? '' : obje.clave.CVE_ART }} - {{ obje.clave_id == null ? '' : obje.clave.DESCR }} </td>
                                 <td class="tw-text-center"> {{ obje.pro_hora }} </td>
                                 <td class="tw-text-center">
                                     <div class="columnaIconos" v-if="this.usuario.dep_pers.length == 0">
-                                        <!-- editar objetivos -->
                                         <a class="iconoEdit" @click="editOB(obje)" href="#Fobje">
                                             <span tooltip="Editar" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -295,6 +294,15 @@
                                         <li class="list-group-item"><strong> Partida: </strong> {{ pa.partida }} </li>
                                         <li class="list-group-item"><strong> Folio: </strong> {{ pa.folio }} </li>
                                         <li class="list-group-item"><strong> Total: </strong> {{ pa.total }} </li>
+                                        <li class="list-group-item">
+                                            <select class="tw-rounded tw-rounded-md tw-bg-transparent tw-border-transparent tw-w-full" v-model="pa.esta_final" @change="CamEsta(pa)">
+                                                <option value="" disabled>SELECCIONA</option>
+                                                <option value="Activo">Activo</option>
+                                                <option value="En espera">En espera</option>
+                                                <option value="Fin">Finalizado</option>
+                                                <option value="Desactivado">Desactivado</option>
+                                            </select>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -363,7 +371,7 @@
             </div>
         </modal>
 
-        <!-- abrir modal de carga de objetivos -->
+        <!-- abrir modal de carga de objetivos
         <modal :show="showModal2" @close="chageClose2" maxWidth="5xl">
             <div class="tw-px-4 tw-py-4">
                 <div class="tw-text-lg">
@@ -373,15 +381,12 @@
                 </div>
                 <div class="tw-mt-4">
                     <div class="ModalForm">
-                        <!-- Formulas -->
                         <div class="tw-mb-6 lg:tw-flex">
-                            <!-- Fecha -->
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                 <jet-label class=""><span class="required">*</span>Fecha</jet-label>
                                 <input type="datetime-local" class="InputSelect" v-model="form2.fecha" :min="hoy" :max="treDia">
                                 <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
                             </div>
-                            <!-- select turno -->
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" >
                                 <jet-label class=""><span class="required">*</span>Turnos</jet-label>
                                 <select class="InputSelect" v-model="form2.turno_id">
@@ -390,7 +395,6 @@
                                 </select>
                                 <small v-if="errors.turno_id" class="validation-alert">{{errors.turno_id}}</small>
                             </div>
-                            <!-- select equipo -->
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                 <jet-label class=""><span class="required">*</span>Equipo</jet-label>
                                 <select class="InputSelect" v-model="form2.equipo_id">
@@ -401,7 +405,6 @@
                             </div>
                         </div>
                         <div class="tw-mb-6 lg:tw-flex">
-                            <!-- select operador -->
                             <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="usuario.dep_pers.length == 0">
                                 <jet-label class=""><span class="required">*</span>Operador</jet-label>
                                 <select class="InputSelect" @change="eq_tu" v-model="form2.dep_perf_id">
@@ -412,41 +415,33 @@
                             </div>
                         </div>
                         <div>
-                            <!-- boton para agregar maquinas -->
                             <div class="tw-flex tw-justify-center">
                                 <button type="button" class="btn btn-info tw-w-1/3 " @click="addRow2()">Agregar Nuevo Objetivo</button>
                             </div>
-                            <!-- recorrido para carga de objetivos -->
                             <div class="tw-overflow-auto" style="height: 30rem">
                                 <div v-for="(f, index) in form2.paquet" :key="index" class="tw-m-5 tw-shadow-lg tw-rounded-md tw-p-5" >
                                     <div class="lg:tw-flex">
-                                        <!-- paquete de objetivos -->
                                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                             <jet-label class=""><span class="required">*</span>Paquete Objetivos</jet-label>
                                             <Select2 v-model="f.paqObjetivo" class="InputSelect" @select="calObje2(f)" :settings="{width: '100%'}" :options="opcPaOb"/>
                                         </div>
-                                        <!-- Claves -->
                                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                             <jet-label class=""><span class="required">*</span>Claves</jet-label>
                                             <Select2 v-model="f.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="recoClave(f.paqObjetivo)" />
                                         </div>
                                     </div>
                                     <div class="lg:tw-flex">
-                                        <!-- Input partida -->
                                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                             <jet-label class=""><span class="required">*</span>Partida</jet-label>
                                             <select class="InputSelect" v-model="form.partida" @change="parSele">
                                                 <option value="">SELECCIONA</option>
                                                 <option v-for="op in opcPar" :key="op" :value="op.id"> {{ op.text }} </option>
                                             </select>
-                                            <!-- <jet-input class="InputSelect" v-model="f.partida" @input="(val) => (f.partida = f.partida.toUpperCase())"></jet-input> -->
                                         </div>
-                                        <!-- tiempo -->
                                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                             <jet-label class=""><span class="required">*</span>Horas a trabajar</jet-label>
                                             <jet-input v-model="f.calcuObje2" @change="inputHoraObjeGene(f)" type="number" min="0" max="12" step=".5"></jet-input>
                                         </div>
-                                        <!-- Input kilogramos -->
                                         <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
                                             <jet-label class=""><span class="required">*</span>Producción horas laborales</jet-label>
                                             <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="f.valor" disabled></jet-input>
@@ -465,7 +460,7 @@
                     </div>
                 </div>
             </div>
-        </modal>
+        </modal> -->
     </app-layout>
 </template>
 <script>
@@ -583,6 +578,10 @@
                     clave_id: '',
                     pro_hora: null
                 },
+                formAba:{
+                    id: '',
+                    esta: ''
+                }
             }
         },
 
@@ -618,9 +617,16 @@
                 }
                 let ve = await axios.post('Carga/CarObje', datos);
                 this.objetivos = ve.data;
+                //console.log(ve.data)
 
                 $('#t_ob').DataTable().destroy();
                 this.tablaObje()
+            },
+            async ConParti(){
+                var datos = {'departamento_id': this.S_Area, 'modulo': 'carPro'};
+                //Partida
+                let par = await axios.post('General/ConParti', datos);
+                this.partida = par.data;
             },
             /****************************** Globales **********************************************************/
             global(){
@@ -629,7 +635,6 @@
                 }else{
                     //Asigna el primer departamento
                     this.S_Area = this.usuario.dep_pers[0].departamento_id;
-
                 }
             },
             /****************************** datatables ********************************************************/
@@ -711,6 +716,13 @@
                         this.form.turno_id = sp.equipo == null ? '' : sp.equipo.turno_id;
                     }
                 })
+            },
+            //cambiar estatus
+            CamEsta(data){
+                axios.post('AbaEntre/UpdeEstatus', data)
+                .then(eve => {this.ConParti(), this.alertSucces()})
+                .catch(err => {})
+                //console.log(data)
             },
             /************************************* Opciones modal Apertura *******************************************/
             //calcula los objetivos select paquetes
@@ -941,12 +953,14 @@
             opcPaOb(dat){
                 const ob = [];
                 var clave = '';
+                var marca = '';
                 if (dat.partida) {
                     var par = this.partida.find(eve => {return eve.id == dat.partida})
                     this.objetivos.forEach(po => {
                         if (po.departamento_id == this.S_Area & po.clave_id == par.clave_id) {
                             clave = po.clave_id == null ? 'N/A' : po.clave.CVE_ART
-                            ob.push({id: po.id, text: po.maq_pro.maquinas.Nombre+' '+po.maq_pro.maquinas.marca.Nombre+' - '+clave})
+                            marca = po.maq_pro.maquinas.marca == null ? 'N/A' : po.maq_pro.maquinas.marca.Nombre;
+                            ob.push({id: po.id, text: po.maq_pro.maquinas.Nombre+' '+marca+' - '+clave})
                         }
                     })
                 }
@@ -966,7 +980,7 @@
 
                 if (reco == undefined) {
                     await axios.post('ObjeCordi/storeProObje', data)
-                    .then(eve => {this.ConProduccion(), this.openModal2(), console.log(eve.data)})
+                    .then(eve => {this.ConProduccion(), this.openModal2(), this.alertSucces()})
                     .catch(error => {this.errors = error.response.data.errors});
                 } else {
                     Swal.fire({
@@ -1119,6 +1133,7 @@
 
                 this.ConObjeti(true);
                 this.ConProduccion();
+                this.ConParti();
 
                 var datos = {'departamento_id': this.S_Area, 'modulo': 'repoPro'};
 
@@ -1137,11 +1152,6 @@
                 //Materiales
                 let mate = await axios.post('General/ConMateriales', datos)
                 this.materiales = mate.data
-
-                //Partida
-                let par = await axios.post('General/ConParti', datos);
-                console.log(par.data)
-                this.partida = par.data;
             },
         }
     }

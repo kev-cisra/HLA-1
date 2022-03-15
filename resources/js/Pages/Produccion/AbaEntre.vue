@@ -33,34 +33,58 @@
                         <!-- info tarjeta -->
                         <div :class="'card-body '+color(ae)">
                             <!-- <h5 class="card-title tw-text-2xl"></h5> -->
-                            <table>
+                            <table class="tw-w-full">
                                 <tr>
                                     <th>{{ ae.folio }} - {{ ae.banco }}</th>
-                                    <td> <button class="btn btn-success" @click="ediAbas(ae)">Actualizar</button> </td>
+                                    <!-- <td> <button class="btn btn-success" @click="ediAbas(ae)">Actualizar</button> </td> -->
                                 </tr>
                                 <tr>
                                     <th>Estatus de entrega:</th>
                                     <td>{{ ae.esta_inicio }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Estatus producción:</th>
-                                    <td>{{ ae.esta_final }}</td>
-                                </tr>
-                                <tr>
                                     <th>Total enviado:</th>
                                     <td>{{ ae.total }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Estatus producción:</th>
+                                    <td>
+                                        <select class="tw-rounded tw-rounded-md tw-bg-transparent tw-w-full" v-model="ae.esta_final">
+                                            <option value="" disabled>SELECCIONA</option>
+                                            <option value="Activo">Activar</option>
+                                            <option value="En espera">En espera</option>
+                                            <option value="Fin">Finalizar</option>
+                                            <option value="Desactivado">Desactivado</option>
+                                        </select>
+                                        <small v-if="errors.esta_final" class="validation-alert">{{errors.esta_final}}</small>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>Norma:</th>
-                                    <td> {{ ae.norma_id ? ae.norma.materiales.nommat : '--' }}</td>
+                                    <td> <!-- {{ ae.norma_id ? ae.norma.materiales.nommat : '--' }} -->
+                                        <select class="tw-rounded tw-rounded-md tw-bg-transparent tw-w-full" v-model="ae.norma_id">
+                                            <option value="" disabled>SELECCIONA</option>
+                                            <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
+                                        </select>
+                                        <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Clave:</th>
-                                    <td>{{ ae.clave_id ? ae.clave.CVE_ART+" - "+ae.clave.DESCR : '--' }}</td>
+                                    <td><!-- {{ ae.clave_id ? ae.clave.CVE_ART+" - "+ae.clave.DESCR : '--' }} -->
+                                        <Select2 v-model="ae.clave_id" class="tw-rounded tw-rounded-md tw-bg-transparent tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCL(ae)"/>
+                                        <small v-if="errors.clave" class="validation-alert">{{errors.clave}}</small>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Partida:</th>
-                                    <td>{{ ae.partida }}</td>
+                                    <td><!-- {{ ae.partida }} -->
+                                        <jet-input class="tw-rounded tw-rounded-md tw-bg-transparent tw-w-full" v-model="ae.partida"  @input="(val) => (ae.partida = ae.partida.toUpperCase())" :disabled="vrPar"></jet-input>
+                                        <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><button class="btn btn-success m-auto" @click="updaAbas(ae)">Guardar</button></td>
                                 </tr>
                             </table>
                         </div>
@@ -81,24 +105,34 @@
                                 </div>
                             </div>
                             <div class="accordion-item">
-                                <h2 class="accordion-header" :id="'open2'+ae.id">
+                                <h2 class="accordion-header" :id="'open2'+ae.id" v-if="ae.esta_final != 'Desactivado'">
                                     <button class="accordion-button collapsed" type="button" @click="conProdu(ae)" data-bs-toggle="collapse" :data-bs-target="'#flushTwo'+ae.id" aria-expanded="false" aria-controls="flush-collapseTwo">
                                         Producción
                                     </button>
                                 </h2>
                                 <div :id="'flushTwo'+ae.id" class="accordion-collapse collapse" :aria-labelledby="'open2'+ae.id" :data-bs-parent="'#accordion'+ae.id">
-                                    <div class="tw-flex accordion-body justify-items-end overflow-auto" style="height: 7rem">
+                                    <!-- recorrido maquinas produccion -->
+                                    <div class="tw-flex accordion-body justify-items-end overflow-auto" style="height: 12rem">
                                         <div class="tw-flex flex-wrap tw-w-full">
                                             <div class="tw-flex tw-w-1/2 tw-rounded-md hover:tw-border hover:tw-border-4 hover:tw-border-teal-300" v-for="ap in abaPro" :key="ap">
                                                 <div class="tw-w-3/5 tw-m-auto">
-                                                    <strong> {{ ap.proceso.nompro }} {{ ap.maq_pro.maquinas.Nombre }}: </strong>
+                                                    <strong> {{ ap.proceso.nompro }} {{ ap.maq_pro ? ap.maq_pro.maquinas.Nombre : 'N/A' }}: </strong>
                                                 </div>
                                                 <div class="tw-w-2/5 tw-m-auto">
-                                                    {{ ap.valor }} {{ ap.clave.UNI_MED }}
+                                                    {{ ap.valor.toFixed(2) }} {{ ap.clave.UNI_MED }}
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <!-- restante abasto -->
+                                    <div class="tw-z-10">
+                                        <div class="tw-m-auto tw-text-xl">
+                                            <strong>Abasto restante: </strong>
+                                            <label>
+                                                {{ resProdu(ae, abaPro) }}
+                                            </label>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -138,49 +172,14 @@
                         <small v-if="errors.total" class="validation-alert">{{errors.total}}</small>
                     </div>
                 </div>
-                <div class="tw-mb-6 lg:tw-flex">
-                    <!-- estatus -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                        <jet-label class="">Estatus</jet-label>
-                        <select class="InputSelect" v-model="formAba.esta_final">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option value="Activo">Activar</option>
-                            <option value="En espera">En espera</option>
-                            <option value="Fin">Finalizar</option>
-                            <option value="Desactivado">Desactivado</option>
-                        </select>
-                        <small v-if="errors.esta_final" class="validation-alert">{{errors.esta_final}}</small>
-                    </div>
-                    <!-- Norma -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                        <jet-label class="">Norma</jet-label>
-                        <select class="InputSelect" v-model="formAba.norma">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
-                        </select>
-                        <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
-                    </div>
-                    <!-- Partida -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                        <jet-label>Partida</jet-label>
-                        <jet-input class="InputSelect" v-model="formAba.partida"  @input="(val) => (formAba.partida = formAba.partida.toUpperCase())"></jet-input>
-                        <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
-                    </div>
-                    <!-- Clave -->
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                        <jet-label class="tw-text-white"><span class="required">*</span>Clave</jet-label>
-                        <Select2 v-model="formAba.clave" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCL"/>
-                        <small v-if="errors.clave" class="validation-alert">{{errors.clave}}</small>
-                    </div>
-                </div>
                 <div class="lg:tw-flex tw-justify-center" v-if="S_Area != ''">
-                    <!-- <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0 d-grid gap-2">
-                        <button type="button" class="btn btn-success" @click="saveEntre(formAba)">Agregar</button>
-                    </div> -->
-                    <!-- boton -->
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0 d-grid gap-2">
                         <button type="button" class="btn btn-success" @click="saveEntre(formAba)">Agregar</button>
                     </div>
+                    <!-- boton
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0 d-grid gap-2">
+                        <button type="button" class="btn btn-success" @click="saveEntre(formAba)">Agregar</button>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -311,8 +310,20 @@
             async conProdu(dat){
                 this.abaPro = [];
                 let ab = await axios.post('AbaEntre/ConAbaPro', dat);
-                //console.log(ab)
+                //console.log(ab.data)
                 this.abaPro = ab.data;
+            },
+            resProdu(aba, res){
+                let sum = 0;
+                res.forEach(resu => {
+                    if(resu.proceso.tipo != 1){
+                        //console.log(resu)
+                        sum += resu.valor
+                    }
+                })
+                let resta = aba.total-sum;
+
+                return aba.total+'Kg - '+sum.toFixed(2)+'Kg = '+resta.toFixed(2)+'Kg';
             },
             /************************************* Globales ************************************/
             color(data){
@@ -332,15 +343,31 @@
                     this.S_Area = this.usuario.dep_pers[0].departamento_id;
                 }
             },
+            /************************************* Opciones ************************************/
+            opcCL(da){
+                //console.log(da)
+                const scl = [];
+                if (da.norma_id != '') {
+                    this.materiales.forEach(cl => {
+                        if (da.norma_id == cl.id) {
+                            //console.log(cl.claves)
+                            cl.claves.forEach(c => {
+                                scl.push({id: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
+                            })
+                        }
+                    })
+                }
+                return scl;
+            },
             /************************************* Entregas guardar y pasar a otro departamento */
             async saveEntre(data){
                 data.depa_recibe = this.S_Area;
-                /* data.esta_inicio = 'Revisando';
-                data.esta_final = 'Desactivado'; */
+                data.esta_inicio = 'Revisando';
+                data.esta_final = 'Desactivado';
                 await axios.post('AbaEntre/entIns', data)
                 .then(dat => {this.resetEntr(), this.alertSucces()})
                 .catch(err => {this.errors = err.response.data.errors, this.alertWarning()})
-                console.log(data)
+                //console.log(data)
             },
             resetEntr(){
                 this.errors = [];
@@ -394,8 +421,9 @@
             },
             //actualizar información
             async updaAbas(data){
+                //console.log(data)
                 await axios.post('AbaEntre/updeAbas', data)
-                .then(eve => {this.ConAba(), this.openModal(), this.ConAba(), this.alertSucces()})
+                .then(eve => {this.ConAba(), /* this.openModal(), */ this.alertSucces()})
                 .catch(err => {this.errors = err.response.data.errors, this.alertWarning()})
             }
 
@@ -427,7 +455,7 @@
                 return nm;
             },
             //Opciones Claves
-            opcCL: function() {
+            /* opcCL: function() {
                 const scl = [];
                 if (this.formAba.norma != '') {
                     this.materiales.forEach(cl => {
@@ -440,7 +468,7 @@
                     })
                 }
                 return scl;
-            },
+            }, */
             opcDep: function() {
                 const dep = [];
                 this.depaT.forEach(val => {

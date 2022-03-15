@@ -198,6 +198,8 @@ class CargaController extends Controller
             }
         }
 
+        //return $par;
+
         //Paquetes Objetivos
         $objetivos = obje_cordi::where('departamento_id', '=', $request->departamento_id)
         ->whereIn('clave_id', $nu)

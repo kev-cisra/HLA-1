@@ -18,7 +18,7 @@ class CargarExcelController extends Controller
         Validator::make($request->all(), [
             'file' => ['required']
         ])->validate();
-        //$impo = Excel::import(new CargasImport, $request->file("file"));
+        $impo = Excel::import(new CargasImport, $request->file("file"));
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
     }
@@ -28,7 +28,7 @@ class CargarExcelController extends Controller
         Validator::make($request->all(), [
             'file' => ['required']
         ])->validate();
-        return $request;
+        //return $request;
 
         //Excel::import(new MatrizObjeImport, $request->file("file"));
         Excel::import(new CargasOpenImport, $request->file("file"));

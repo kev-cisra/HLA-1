@@ -45,6 +45,7 @@
         "datatables.net-bs5": "^1.11.3",
         "datatables.net-buttons-bs5": "^1.7.1",
         "datatables.net-buttons-dt": "^1.7.1",
+        "fullcalendar-year-view": "^0.0.3",
         "highcharts": "^9.3.2",
         "jq-signature": "^2.0.0",
         "jquery": "^3.6.0",

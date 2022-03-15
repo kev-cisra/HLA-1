@@ -69,7 +69,23 @@ class AbasteEntreController extends Controller
         $aba = AbaEntregas::where('depa_entrega', '=', $request->departamento_id)
             ->whereIn('esta_final', ['Activo', 'En espera', 'Desactivado'])
             ->orderByRaw("norma_id - esta_final desc")
-            ->with(['norma', 'norma.materiales', 'clave', 'depa_entregas', 'depa_recibe'])
+            ->with([
+                'norma' => function($no){
+                    $no->select('id', 'departamento_id', 'material_id');
+                },
+                'norma.materiales' => function($ma){
+                    $ma->select('id', 'idmat', 'nommat', 'estatus');
+                },
+                'clave' => function($cl){
+                    $cl->select('id', 'CVE_ART', 'CVE_ART');
+                },
+                'depa_entregas' => function($de){
+                    $de->select('id', 'Nombre', 'departamento_id');
+                },
+                'depa_recibe' => function($dr){
+                    $dr->select('id', 'Nombre', 'departamento_id');
+                }
+            ])
             ->get();
         return $aba;
     }
@@ -77,8 +93,8 @@ class AbasteEntreController extends Controller
     public function updeAbas(Request $request){
         Validator::make($request->all(), [
             'esta_final' => ['required'],
-            'norma' => ['required'],
-            'clave' => ['required'],
+            'norma_id' => ['required'],
+            'clave_id' => ['required'],
             'partida' => ['required']
         ])->validate();
 
@@ -87,8 +103,8 @@ class AbasteEntreController extends Controller
             'partida' => $request->partida,
             'esta_inicio' => 'Aceptado',
             'esta_final' => $request->esta_final,
-            'norma_id' => $request->norma,
-            'clave_id' => $request->clave
+            'norma_id' => $request->norma_id,
+            'clave_id' => $request->clave_id
         ]);
     }
 
@@ -170,7 +186,6 @@ class AbasteEntreController extends Controller
     public function entregaInsert(Request $request){
         Validator::make($request->all(), [
             'folio' => ['required'],
-            'banco' => ['required'],
             'total' => ['required', 'numeric', 'min:1'],
             'depa_entrega' => ['required']
         ])->validate();
@@ -179,23 +194,17 @@ class AbasteEntreController extends Controller
             'folio' => $request->folio,
             'banco' => $request->banco,
             'total' => $request->total,
-            //'esta_inicio' => $request->esta_inicio,
-            //'esta_final' => $request->esta_final,
-            'depa_recibe' => $request->depa_recibe,
-            'depa_entrega' => $request->depa_entrega,
-            //*********************************** */
-            'partida' => $request->partida,
-            'esta_inicio' => 'Aceptado',
+            'esta_inicio' => $request->esta_inicio,
             'esta_final' => $request->esta_final,
-            'norma_id' => $request->norma,
-            'clave_id' => $request->clave
+            'depa_recibe' => $request->depa_recibe,
+            'depa_entrega' => $request->depa_entrega
         ]);
         return $request;
     }
 
     public function ConAbaPro(Request $request){
         $ap = carga::join('procesos', 'procesos.id', '=', 'cargas.proceso_id')
-        ->whereIn('procesos.tipo', ['1', '5'])
+        ->whereIn('procesos.tipo', ['1', '4', '5'])
         ->where('cargas.partida_id', '=', $request->id)
         ->selectRaw('cargas.proceso_id, cargas.maq_pro_id, cargas.clave_id, SUM(cargas.valor) AS valor')
         ->groupBy('proceso_id')
@@ -221,5 +230,10 @@ class AbasteEntreController extends Controller
         ])
         ->get();
         return $ap;
+    }
+
+    public function UpdeEstatus(Request $request){
+        $ab = AbaEntregas::find($request->id)->update($request->all());
+        return $ab;
     }
 }
