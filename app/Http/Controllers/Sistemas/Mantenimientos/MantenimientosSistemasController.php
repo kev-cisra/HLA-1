@@ -31,7 +31,7 @@ class MantenimientosSistemasController extends Controller{
 
     public function store(Request $request){
         $request->start = Carbon::parse($request->start)->format('Y-m-d H:i');
-        $Minutos = ($request->Tiempo * 60)+14;
+        $Minutos = ($request->Tiempo * 60)+4;
         $request->end = Carbon::parse($request->start)->addMinutes($Minutos)->format('Y-m-d H:i');
 
         $Reservaciones = CalendarioMantenimientos::whereDate('start',Carbon::parse($request->start)->format('Y-m-d'))
@@ -85,7 +85,6 @@ class MantenimientosSistemasController extends Controller{
                 'Estatus' => 0,
                 'Comentarios' => $request->Comentarios,
                 'Hardware_id' => $request->Hardware_id,
-                'Perfil_id' => $request->Perfil_id,
             ]);
             return redirect()->back();
         }

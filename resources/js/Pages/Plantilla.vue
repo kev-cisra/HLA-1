@@ -74,7 +74,7 @@
         </div>
 
         <div class="ModalForm">
-<!--             <div class="tw-mb-6 md:tw-flex">
+<!--             <div class="FormSection">
                 <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                     <jet-label><span class="required">*</span>VARIABLE</jet-label>
                     <select class="InputSelect">
@@ -97,7 +97,7 @@
                     <jet-input type="date"></jet-input>
                 </div>
             </div>
-            <div class="tw-mb-6 md:tw-flex">
+            <div class="FormSection">
                 <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                     <jet-label><span class="required">*</span>TEXTO</jet-label>
                     <textarea name="" id="" cols="2" @input="(val) => (form.variable = form.variable.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>

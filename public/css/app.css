@@ -22819,9 +22819,6 @@ select {
 .tw-w-11\/12 {
 	width: 91.666667%;
 }
-.tw-w-auto {
-	width: auto;
-}
 .tw-w-1\/2 {
 	width: 50%;
 }
@@ -24043,6 +24040,10 @@ select {
 	background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
 	--tw-text-opacity: 1;
 	color: rgba(0, 0, 0, var(--tw-text-opacity));
+}
+.FlexCenter {
+	display: flex;
+	justify-content: center;
 }
 .columnaIconos {
 	display: flex;
@@ -26066,6 +26067,14 @@ select {
 
 	.md\:tw-w-3\/4 {
 		width: 75%;
+	}
+
+	.md\:tw-w-3\/12 {
+		width: 25%;
+	}
+
+	.md\:tw-w-6\/12 {
+		width: 50%;
 	}
 
 	.md\:tw-w-2\/4 {
