@@ -24,6 +24,7 @@ createApp({
                 showModal: false,
                 editMode: false,
                 now: moment().format('Y-M-d H:mm:ss'),
+                Today: moment().format('Y-M-d'),
                 colours: ["#84CC16", "#65A30D", "#4D7C0F", "#22C55E", "#16A34A", "15803D",
                 "#10B981", "#059669", "#047857", "#14B8A6","#0D9488","#0F766E","#06B6D4","#0891B2","#0E7490",
                 "#0EA5E9","#0284C7","#0369A1","#3B82F6","#2563EB","#1D4ED8","#6366F1","#4F46E5","#4338CA",
@@ -214,6 +215,25 @@ createApp({
                 icon: "success",
                 title: "Operación Exitosa!",
                 // background: '#99F6E4',
+            });
+        },
+
+        alertInfo(message){
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-center",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+            });
+
+            Toast.fire({
+                icon: "info",
+                title: message,
             });
         },
 

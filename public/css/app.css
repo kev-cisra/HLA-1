@@ -22819,6 +22819,9 @@ select {
 .tw-w-11\/12 {
 	width: 91.666667%;
 }
+.tw-w-auto {
+	width: auto;
+}
 .tw-w-1\/2 {
 	width: 50%;
 }
@@ -23393,6 +23396,9 @@ select {
 .tw-bg-sky-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(14, 165, 233, var(--tw-bg-opacity));
+}
+.tw-bg-transparent {
+	background-color: transparent;
 }
 .tw-bg-green-50 {
 	--tw-bg-opacity: 1;

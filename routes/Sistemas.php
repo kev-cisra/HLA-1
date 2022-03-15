@@ -23,6 +23,9 @@ Route::resource('EquiposAsignados', EquiposAsignadosController::class)
 Route::resource('CalendarioMantenimientos', MantenimientosSistemasController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('CalendarioMantenimientos');
 
+    Route::post('CalendarioMantenimientos/Eventos', [CalendarioController::class, 'Eventos'])->name('Eventos')
+    ->middleware(['auth:sanctum', 'verified']);
+
 Route::resource('RequisicionSistemas', RequisicionesSistemasController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('RequisicionSistemas');
 

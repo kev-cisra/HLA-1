@@ -13,4 +13,13 @@ class CalendarioMantenimientos extends Model{
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id', 'created_at','updated_at'];
 
+    //relacion uno a uno con Modelo Perfiles
+    public function Perfil() {
+        return $this->belongsTo(PerfilesUsuarios::class, 'Perfil_id');
+    }
+
+    //relacion uno a uno con Modelo HardwareSistemas
+    public function Hardware() {
+        return $this->belongsTo(HardwareSistemas::class, 'Hardware_id');
+    }
 }

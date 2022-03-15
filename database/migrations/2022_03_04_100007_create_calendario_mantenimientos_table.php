@@ -16,8 +16,11 @@ class CreateCalendarioMantenimientosTable extends Migration
         Schema::create('calendario_mantenimientos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('IdUser'); //Id de Session
-            $table->timestamp('FechaInicio')->nullable();
-            $table->timestamp('FechaFin')->nullable();
+            $table->text('title',65);
+            $table->timestamp('start')->nullable();
+            $table->timestamp('end')->nullable();
+            $table->text('textColor',15)->nullable();
+            $table->text('backgroundColor',15)->nullable();
             $table->timestamp('FechaReal')->nullable();
             $table->double('Diferencia')->nullable();
             $table->string('Periodo',10);
@@ -27,6 +30,11 @@ class CreateCalendarioMantenimientosTable extends Migration
 
             $table->unsignedBigInteger('Hardware_id');
             $table->foreign("Hardware_id")->references("id")->on("hardware_sistemas")
+            ->onDelete("cascade")
+            ->onUpdate("cascade");
+
+            $table->unsignedBigInteger('Perfil_id')->nullable();
+            $table->foreign("Perfil_id")->references("id")->on("perfiles_usuarios")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 

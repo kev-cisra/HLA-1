@@ -22,18 +22,18 @@
             <div id="calendar"></div>
         </section>
 
-         <!-- **************************************************** MODALES ****************************************************** -->
+        <!-- **************************************************** MODALES ****************************************************** -->
+        <!-- -------- MODAL EVENTOS ----------- -->
         <modal :show="showModal" @close="chageClose" :maxWidth="tam">
             <div class="ModalHeader">
                 <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>REGISTRO DE INFORMACIÓN</h3>
             </div>
 
-
             <div class="ModalForm">
                 <div class="FormSection">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>FECHA INICIO</jet-label>
-                        <jet-input type="datetime-local" v-model="form.start"></jet-input>
+                        <jet-input type="datetime-local" :min="min" v-model="form.start"></jet-input>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>DURACION</jet-label>
@@ -72,6 +72,62 @@
             </div>
         </modal>
 
+        <!-- -------- MODAL MANTENIMIENTO ----------- -->
+        <modal :show="showInfo" @close="chageInfo" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>MANTENIMIENTOS PROGRAMADOS</h3>
+            </div>
+
+            <div class="ModalForm">
+                <div v-if="evento == false">
+                <Table id="Roles">
+                    <template v-slot:TableHeader>
+                        <th class="columna">MANTENIMEINTO</th>
+                        <th class="columna">FECHA INICIO</th>
+                        <th class="columna">FECHA FIN</th>
+                        <th class="columna">PERIODO</th>
+                        <th class="columna">COMENTARIO</th>
+                        <th class="columna">ESTATUS</th>
+                        <th class="columna">ACCIONES</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr class="fila" v-for="event in EventosCalendario.data" :key="event.id">
+                            <td>{{event.title}}</td>
+                            <td>{{event.start}}</td>
+                            <td>{{event.end}}</td>
+                            <td>{{event.Periodo}} MES</td>
+                            <td>{{event.Comentarios}}</td>
+                            <td>{{event.Estatus}}</td>
+                            <td>
+                                <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
+                                    <div class="iconoEdit" @click="edit(event)">
+                                        <span tooltip="Editar" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-4 tw-w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </Table>
+                </div>
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0" v-if="evento == true">
+                        <jet-label><span class="required">*</span>FECHA INICIO</jet-label>
+                        <jet-input type="datetime-local" v-model="form.start"></jet-input>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="update(form)" v-if="evento == true">Actualizar</jet-button>
+                <jet-CancelButton @click="chageInfo">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
+
     </app-layout>
 </template>
 
@@ -80,7 +136,7 @@ import AppLayout from "@/Layouts/AppLayout";
 import Welcome from "@/Jetstream/Welcome";
 import Header from "@/Components/Header";
 import Accions from "@/Components/Accions";
-import Table from "@/Components/TableDark";
+import Table from "@/Components/TableSky";
 import JetButton from "@/Components/Button";
 import JetCancelButton from "@/Components/CancelButton";
 import Modal from "@/Jetstream/Modal";
@@ -91,7 +147,8 @@ import JetSelect from "@/Components/Select";
 //imports de datatables
 import datatable from "datatables.net-bs5";
 import $ from "jquery";
-import moment from 'moment';
+import moment, { now } from 'moment';
+import axios from 'axios';
 import 'moment/locale/es';
 
 import esLocale from "@fullcalendar/core/locales/es";
@@ -103,9 +160,13 @@ export default {
             color: "tw-bg-sky-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             showModal: false,
+            showInfo: false,
+            evento: false,
+            min: moment().format("YYYY-MM-DD"),
             EventosCalendario: Object,
             form: {
                 IdUser: this.Session.id,
+                id: '',
                 Equipo: '',
                 title: '',
                 start: '',
@@ -119,7 +180,8 @@ export default {
                 Estatus: '',
                 Comentarios: '',
                 Hardware_id: '',
-            }
+                Perfil_id: '',
+            },
         };
     },
 
@@ -142,6 +204,7 @@ export default {
         Session: Object,
         EquiposAsignados: Object,
         FechaMantenimientos: Object,
+        busca: Number,
     },
 
     mounted(){
@@ -149,11 +212,12 @@ export default {
     },
 
     methods: {
-        Calendario(){
+
+        async Calendario(){
             var calendar = new window.Calendar($('#calendar').get(0), {
             plugins: [window.interaction, window.dayGridPlugin, window.timeGridPlugin, window.listPlugin],
             buttonText: { today: 'Hoy', month: 'Mes', week: 'Semana', day: 'Día', list: 'Lista'},
-            selectable: true,
+            selectable: false,
             droppable: true,
             editable: true,
             hiddenDays: [0, 6],
@@ -170,25 +234,48 @@ export default {
             titleFormat: {
                 year: 'numeric', month: 'long', day: 'numeric',
             },
-            customButtons:{
-                AgregaEvento:{
-                    text: "Nuevo Mantenimiento",
-                    click: function () {
-                        console.log("Modal");
-                    }
-                }
-            },
             events: this.FechaMantenimientos, //Visualizacion de la informacion
             displayEventEnd: true,
+
             eventClick: info => {
-                console.log(info);
+                this.evento = false;
+                this.form.id = info.event._def.publicId;
+                var id = info.event._def.extendedProps.Hardware_id;
+                this.form.title = info.event.title;
+                this.form.start = moment(info.event.start).format('YYYY-MM-DD HH:MM:SS');
+                this.form.end = moment(info.event.end).format('YYYY-MM-DD HH:MM:SS');
+
+                let promesa = axios.post('CalendarioMantenimientos/Eventos', { busca: id }).then(promesa => {
+                    this.EventosCalendario = promesa;
+
+                    this.chageInfo();
+                }).catch(e => {
+                    alert('Mensaje del sistema: Ocurrio una excepción');
+                });
             },
-            dateClick: info => {
-                console.log('dateClick');
-                this.showModal = true;
-            },
-            select: info => {
-                console.log('select');
+            eventDrop: info =>{
+                console.log(info.event._def.extendedProps.Perfil_id )
+                console.log(this.form.IdUser)
+                if(info.event._def.extendedProps.Perfil_id == this.form.IdUser){
+                    this.evento = true;
+                    var id = info.event._def.publicId;
+                    var today = moment(new Date()).format('YYYY-MM-DD');
+                    this.form.id = id;
+                    this.form.start = moment(info.event.start).format('YYYY-MM-DD HH:mm');
+                    this.form.end = moment(info.event.end).format('YYYY-MM-DD HH:mm');
+
+
+                    if (this.form.start >= today) { //Valido fecha posterior
+                        var FechaValida = moment(info.event.start).diff(moment(new Date()), 'days');
+                        if(FechaValida < 20){ //Validacion de dias posteriores
+                            this.chageInfo();
+                        }else{
+                            this.alertFecha('Seleccione un dia anterior a 20 dias naturales');
+                        }
+                    }else{
+                        this.alertFecha('Selecciona una fecha posterior');
+                    }
+                }
             },
 
             });
@@ -199,6 +286,7 @@ export default {
         reset() {
             this.form = {
                 IdUser: this.Session.id,
+                id: '',
                 Equipo: '',
                 title: '',
                 start: '',
@@ -212,44 +300,101 @@ export default {
                 Estatus: '',
                 Comentarios: '',
                 Hardware_id: '',
+                Perfil_id: '',
             };
         },
 
         save(data){
-            var FechaIni = moment(data.start);
-            data.start = FechaIni.format('YYYY-MM-DD HH:MM:SS');
-            var FechaFin = FechaIni.add(data.Tiempo, 'h');
-            data.end = FechaFin.format('YYYY-MM-DD HH:MM:SS');
+            //Asigno un color aleatoriamente
+            this.form.Perfil_id = data.Equipo.perfil.id;
             data.backgroundColor = this.colours[Math.floor(Math.random() * this.colours.length)];
-            data.Hardware_id = data.Equipo.id;
-            data.Estatus = 0;
+            data.Hardware_id = data.Equipo.id; //Asigno el equipo
             data.title = data.Equipo.hardware.Nombre +' - '+ data.Equipo.perfil.Nombre + ' ' +data.Equipo.perfil.ApPat;
             this.$inertia.post("/Sistemas/CalendarioMantenimientos", data, {
                 onSuccess: () => {
+                    if(this.$attrs.jetstream.flash.type == 'Warning'){
+                        this.alertInfo(this.$attrs.jetstream.flash.message);
+                    }else{
+                        this.alertSucces();
+                    }
                     this.Calendario();
-                    this.reset(),
-                    this.chageClose(),
-                    this.alertSucces();
+                    this.reset();
+                    this.chageClose();
                 },
             });
+        },
+
+        chageInfo() {
+            this.showInfo = !this.showInfo;
         },
 
         edit: function (data) {
             this.form = Object.assign({}, data);
-            this.editMode = true;
-            this.chageClose();
+            this.evento = true;
+        },
+
+        dateCompare(time1,time2) {
+            var t1 = new Date();
+            var parts = time1.split(":");
+            t1.setHours(parts[0],parts[1],parts[2],0);
+            var t2 = new Date();
+            parts = time2.split(":");
+            t2.setHours(parts[0],parts[1],parts[2],0);
+
+            // returns 1 if greater, -1 if less and 0 if the same
+            if (t1.getTime()>=t2.getTime()){
+                return 1;
+            } else{
+                return 0;
+            }
         },
 
         update(data) {
-            data.metodo = 1;
             data._method = "PUT";
-            this.$inertia.post("/Sistemas/EquiposAsignados/" + data.id, data, {
-                onSuccess: () => {
-                this.reset(), this.chageClose(), this.alertSucces();
+            var HoraIni = moment(data.start).format("HH:mm:ss")
+            let Ini = this.dateCompare(HoraIni,"09:00:00");
+            let Fin = this.dateCompare("16:45:00", HoraIni);
+
+            if(Ini == 0 || Fin == 0){
+                this.alertInfo('Hoario valido es de 9 a 16:30');
+            }else{
+                this.$inertia.post("/Sistemas/CalendarioMantenimientos/" + data.id, data, {
+                    onSuccess: () => {
+                        if(this.$attrs.jetstream.flash.type == 'Warning'){
+                            this.alertInfo(this.$attrs.jetstream.flash.message);
+                        }else{
+                            this.alertSucces();
+                        }
+                        this.editEvent = false;
+                        this.chageInfo();
+                        this.Calendario();
+                    },
+                });
+            }
+
+        },
+
+        alertFecha(Text) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-center",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
                 },
+            });
+
+            Toast.fire({
+                icon: "info",
+                title: Text,
+                // background: '#99F6E4',
             });
         },
     },
+
     computed: {
 
     },
