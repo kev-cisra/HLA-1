@@ -96,10 +96,28 @@ class RequisicionesSistemasController extends Controller{
     public function update(Request $request, $id){
 
         switch ($request->Metodo) {
-            case 1:
+            case 1: //Actualizacion de estatuz a Confirmado
                 RequisicionesSistemas::find($request->id)->update([
                     'Estatus' => 1,
                 ]);
+                return redirect()->back();
+                break;
+            case 2: //Edicion de Partida
+
+                RequisicionesSistemas::find($request->requisicion_sistemas_id)->update([
+                    'Fecha' => $request->Fecha,
+                    'Departamento_id' => $request->Departamento_id,
+                ]);
+
+                foreach ($request->Partida as $value) {
+
+                    ArticulosRequisicionesSistemas::where('requisicion_sistemas_id', '=', $request->requisicion_sistemas_id)->update([
+                        'IdUser' => $request->IdUser,
+                        'Cantidad' => $value['Cantidad'],
+                        'Unidad' => $value['Unidad'],
+                        'Hardware_id' => $value['Hardware_id'],
+                    ]);
+                }
                 return redirect()->back();
                 break;
         }

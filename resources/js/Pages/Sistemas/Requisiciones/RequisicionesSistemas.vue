@@ -117,11 +117,11 @@
             </div>
 
             <div class="ModalFooter">
-                <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
+                <jet-button type="button" @click="save(form)">Guardar</jet-button>
                 <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
             </div>
         </modal>
-
+        <!-- --------------------- Modal para ver partidas -------------------------- -->
         <modal :show="showDetalle" @close="chageDetalle" maxWidth="xl">
             <div class="ModalHeader">
                 <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>REQUISICIÓN RSIS-0{{form.Folio}}</h3>
@@ -143,10 +143,17 @@
                             <td class="tw-text-center">{{data.hardware.Nombre}} </td>
                             <td>
                                 <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
-                                    <div class="iconoEdit" @click="edit(data)">
+                                    <div class="iconoEdit" @click="edit(data)" v-if="form.Estatus == 0">
                                         <span tooltip="Editar" flow="left">
                                             <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="IconAproved" v-else-if="form.Estatus == 1">
+                                        <span tooltip="Aprovado" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </span>
                                     </div>
@@ -158,8 +165,53 @@
             </div>
 
             <div class="ModalFooter">
-                <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
                 <jet-CancelButton @click="chageDetalle">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
+        <!-- --------------------- Modal para editar partida -------------------------- -->
+        <modal :show="showCreate" @close="chageCreate" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>NUEVA REQUISICIÓN</h3>
+            </div>
+
+            <div class="ModalForm">
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>FECHA</jet-label>
+                        <jet-input type="date" :min="Today" v-model="form.Fecha"></jet-input>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>DEPARTAMENTO</jet-label>
+                        <select class="InputSelect" v-model="form.Departamento_id">
+                            <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="FormSection" v-for="(form) in form.Partida" :key="form.id">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>CANTIDAD</jet-label>
+                        <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-3/12 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>UNIDAD</jet-label>
+                        <select id="Unidad" v-model="form.Unidad" class="InputSelect">
+                            <option value="PZ">PIEZAS</option>
+                            <option value="MT">METROS</option>
+                            <option value="CAJA">CAJA</option>
+                        </select>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-6/12 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>MATERIAL</jet-label>
+                        <select class="InputSelect" v-model="form.Hardware_id">
+                            <option v-for="hard in Hardware" :key="hard.id" :value="hard.id" > {{ hard.Nombre }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="update(form)">Actualizar</jet-button>
+                <jet-CancelButton @click="chageCreate">Cerrar</jet-CancelButton>
             </div>
         </modal>
     </app-layout>
@@ -193,17 +245,20 @@ export default {
             tam: "4xl",
             color: "tw-bg-sky-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
+            showCreate: false,
             showDetalle: false,
             form: {
                 IdUser: this.Session.id,
                 Fecha: '',
                 Folio: '',
                 Departamento_id: '',
+                Estatus: '',
                 Partida: [{
                     Cantidad: '',
                     Unidad: '',
                     Hardware_id: '',
                 }],
+                requisicion_sistemas_id: '',
             },
             ArticulosReq: [],
             params: {
@@ -247,11 +302,13 @@ export default {
                 Fecha: '',
                 Folio: '',
                 Departamento_id: '',
+                Estatus: '',
                 Partida: [{
                     Cantidad: '',
                     Unidad: '',
                     Hardware_id: '',
                 }],
+                requisicion_sistemas_id: '',
             };
         },
 
@@ -265,7 +322,11 @@ export default {
             this.form.Partida.splice(row,1);
         },
 
-        save(data){
+        chageCreate(){
+            this.showCreate = !this.showCreate;
+        },
+
+        save(data){ //Funcion de guardado de requisicion
             data.Estatus = 0;
             this.$inertia.post("/Sistemas/RequisicionSistemas", data, {
                 onSuccess: () => {
@@ -296,10 +357,35 @@ export default {
 
         view(data){
             this.chageDetalle();
-            console.log(data);
             this.form.Folio = data.Folio;
+            this.form.Fecha = data.Fecha;
+            this.form.Departamento_id = data.Departamento_id;
             this.ArticulosReq = data.articulos;
-        }
+            this.form.Estatus = data.Estatus;
+        },
+
+        edit(data){
+            this.editMode = true;
+            this.form.requisicion_sistemas_id = data.requisicion_sistemas_id;
+            this.form.Partida[0].Cantidad = data.Cantidad;
+            this.form.Partida[0].Unidad = data.Unidad;
+            this.form.Partida[0].Hardware_id = data.hardware.id;
+            this.chageDetalle();
+            this.chageCreate();
+        },
+
+        update(data){
+            data.Metodo = 2;
+            data._method = "PUT";
+            this.$inertia.post("/Sistemas/RequisicionSistemas/" + data.id, data, {
+                onSuccess: () => {
+                    this.editMode = false;
+                    this.reset(),
+                    this.chageCreate();
+                    this.alertSucces();
+                },
+            });
+        },
     },
 
     watch: {
