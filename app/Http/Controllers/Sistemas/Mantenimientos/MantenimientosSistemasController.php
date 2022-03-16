@@ -85,6 +85,7 @@ class MantenimientosSistemasController extends Controller{
                 'Estatus' => 0,
                 'Comentarios' => $request->Comentarios,
                 'Hardware_id' => $request->Hardware_id,
+                'Perfil_id' => $request->Perfil_id,
             ]);
             return redirect()->back();
         }
