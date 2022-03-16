@@ -254,6 +254,7 @@ export default {
                 });
             },
             eventDrop: info =>{
+                console.log(info.event._def.extendedProps);
                 console.log(info.event._def.extendedProps.Perfil_id )
                 console.log(this.form.IdUser)
                 if(info.event._def.extendedProps.Perfil_id == this.form.IdUser){

@@ -909,10 +909,11 @@
                         </div>
 
                         <!------------------------------- Carga masiva -------------------------------->
-                        <div v-else>
+                        <div>
                             <!-- Input formulario -->
                             <div class="tw-mt-10 tw-mb-6 md:tw-flex">
                                 <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0 tw-justify-center">
+                                    temporal
                                     <jet-label><span class="required">*</span>Carga masiva Producción</jet-label>
                                     <input type="file" class="" @input="docu2.file = $event.target.files[0]" ref="file" accept=".xlsx">
                                     <br>
