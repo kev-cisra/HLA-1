@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\obje_cordi;
+use App\Models\Produccion\AbaEntregas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\materiales;
 use App\Models\Produccion\dep_mat;
@@ -80,6 +81,9 @@ class ObjeCordiController extends Controller
             if (!empty($value['paqObjetivo'])) {
                 $cosu = obje_cordi::where('id', '=', $value['paqObjetivo'])->first();
 
+                $par = AbaEntregas::where('id', '=', $value['partida'])->first();
+                $parnom  = $par->partida.$value['p_nom'];
+
                 $clave = isset($cosu->clave_id) ? $cosu->clave_id : $value['clave_id'];
                 $calcu = isset($value["calcuObje2"]) ? $value["calcuObje2"] : $value["calcuObje"];
 
@@ -90,7 +94,8 @@ class ObjeCordiController extends Controller
                     'proceso_id' => $cosu->proceso_id,
                     'dep_perf_id' => $request->dep_perf_id,
                     'maq_pro_id' => $cosu->maq_pro_id,
-                    'partida' => $value['partida'],
+                    'partida' => $parnom,
+                    'partida_id' => $value['partida'],
                     'valor' => $value['valor'],
                     'norma' => $cosu->norma,
                     'equipo_id' => $request->equipo_id,
@@ -109,6 +114,7 @@ class ObjeCordiController extends Controller
                 }
             }
         }
+        return $request;
 
     }
 

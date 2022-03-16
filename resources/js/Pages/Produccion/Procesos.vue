@@ -134,29 +134,29 @@
                                     </select>
                                     <small v-if="errors.tipo_carga" class="validation-alert">{{errors.tipo_carga}}</small>
                                 </div>
-                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="form.tipo == 3">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-show="form.tipo == 3 | form.tipo == 4">
                                     <jet-label><span class="required">*</span>Tipo de formula</jet-label>
                                     <select class="InputSelect" v-model="form.operacion">
                                         <option value="">Selecciona una operación</option>
                                         <optgroup label="Sumas Generales">
-                                            <option value="sm_d">SUMA DIARIA</option>
-                                            <option value="sm_dc">SUMA DIARIA POR CLAVE</option>
+                                            <option value="sm_d" v-show="form.tipo == 3">SUMA DIARIA</option>
+                                            <option value="sm_dc" v-show="form.tipo == 3">SUMA DIARIA POR CLAVE</option>
                                             <option value="sm_dp">SUMA DIARIA POR PARTIDA</option>
-                                            <option value="sm_t">SUMA TURNO</option>
-                                            <option value="sm_tc">SUMA TURNO POR CLAVE</option>
-                                            <option value="sm_tp">SUMA TURNO POR PARTIDA</option>
-                                            <option value="sem_sm">SUMA SEMANAL</option>
-                                            <option value="mes_sm">SUMA MENSUAL</option>
+                                            <option value="sm_t" v-show="form.tipo == 3">SUMA TURNO</option>
+                                            <option value="sm_tc" v-show="form.tipo == 3">SUMA TURNO POR CLAVE</option>
+                                            <option value="sm_tp" v-show="form.tipo == 3">SUMA TURNO POR PARTIDA</option>
+                                            <option value="sem_sm" v-show="form.tipo == 3">SUMA SEMANAL</option>
+                                            <option value="mes_sm" v-show="form.tipo == 3">SUMA MENSUAL</option>
                                         <!-- <option value="ano_sm">SUMA ANUAL</option> -->
                                         </optgroup>
-                                        <optgroup label="Eficiencias">
+                                        <optgroup label="Eficiencias" v-show="form.tipo == 3">
                                             <option value="efi_dia">EFICIENCIA DIARIA</option>
                                             <option value="efi_cla">EFICIENCIA POR CLAVE</option>
                                             <option value="efi_sem">EFICIENCIA POR SEMANA</option>
                                             <option value="efi_mes">EFICIENCIA POR MES</option>
                                             <option value="efi_ano">EFICIENCIA ANUAL</option>
                                         </optgroup>
-                                        <optgroup v-if="S_Area == 7" label="Operaciones horario punta">
+                                        <optgroup v-if="S_Area == 7 & form.tipo == 3" label="Operaciones horario punta">
                                             <option value="sm_pun_d">SUMA DIARIA PUNTA</option>
                                             <option value="sem_pun_sm">SUMA SEMANAL PUNTA</option>
                                             <option value="mes_pun_sm">SUMA MENSUAL PUNTA</option>
@@ -218,7 +218,7 @@
                     </div>
                 </div>
                 <!-------------------------------- FORMULAS --------------------------------------->
-                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 3">
+                <div class="tw-px-4 tw-py-4" v-show="form.tipo == 3 | form.tipo == 4">
                     <div class="tw-text-lg">
                         <div class="ModalHeader">
                             <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Alta de Formulas</h3>

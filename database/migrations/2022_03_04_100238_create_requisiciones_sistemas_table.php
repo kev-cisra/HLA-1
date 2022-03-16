@@ -30,6 +30,8 @@ class CreateRequisicionesSistemasTable extends Migration
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
+            $table->string('Comentarios')->nullable();
+
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
         });

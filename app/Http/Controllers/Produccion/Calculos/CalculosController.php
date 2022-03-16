@@ -144,7 +144,8 @@ class CalculosController extends Controller
                 'norma' => $data['norma'],
                 'clave_id' => $data['clave_id'],
                 'turno_id' => $data['turno_id'],
-                'departamento_id' => $data['departamento_id']
+                'departamento_id' => $data['departamento_id'],
+                'partida_id' => $data['partida_id']
             ]);
         }else {
             carga::find($existe->id)->update([
@@ -155,7 +156,8 @@ class CalculosController extends Controller
                 'proceso_id' => $data['proceso_id'],
                 'norma' => $data['norma'],
                 'clave_id' => $data['clave_id'],
-                'turno_id' => $data['turno_id']
+                'turno_id' => $data['turno_id'],
+                'partida_id' => $data['partida_id']
             ]);
         }
     }
@@ -262,7 +264,7 @@ class CalculosController extends Controller
             $fc += $cuenta;
             //print($fs.' | '.$cuenta.' / ');
         }
-        $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep];
+        $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep, 'partida_id' => null];
         //echo $data['proceso_id'].' | '.$data['suma'].' | '.$data['cantidad'].'  fin suma dia || ';
         if ($fc != 0) {
             $this->gua_act($fechas, $data);
@@ -305,7 +307,7 @@ class CalculosController extends Controller
                     $fs += $suma;
                     $fc += $cuenta;
                 }
-                $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => $cl->norma, 'clave_id' => $cl->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
+                $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => $cl->norma, 'clave_id' => $cl->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id, 'partida_id' => null];
                 if ($fc != 0) {
                     //print($val->nompro.' | '.$cl->clave->CVE_ART.' | '.$fs.' | '.$fc.' - ');
                     $this->gua_act($fechas, $data);
@@ -323,9 +325,9 @@ class CalculosController extends Controller
         $partida = carga::where('departamento_id', '=', $dep)
         ->whereBetween('fecha', [$fechas['hoy'], $fechas['mañana']])
         ->distinct()
-        ->get(['partida','norma','clave_id']);
+        ->get(['partida','norma','clave_id', 'partida_id']);
         foreach ($partida as $pr) {
-            //print_r($pr['partida'].' /');
+            //print_r($pr['partida_id'].' /');
             if ($pr['partida'] != 'N/A') {
                 # code...
                 $fs = 0;
@@ -353,9 +355,9 @@ class CalculosController extends Controller
                     $fs += $suma;
                     $fc += $cuenta;
                 }
-                $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => $pr->partida, 'norma' => $pr->norma, 'clave_id' => $pr->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
-                if ($fc != 0) {
-                    //print_r($proce_id.' -/ '.$fc.' \- '.$pr->partida.' || ');
+                $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => null, 'turno_id' => null, 'cantidad' => $fc, 'partida' => $pr->partida, 'norma' => $pr->norma, 'clave_id' => $pr->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id, 'partida_id' => $pr->partida_id];
+                if ($fc != 0 & !empty($pr->partida_id)) {
+                    //print_r($data);
                     $this->gua_act($fechas, $data);
                 }
             }
@@ -400,7 +402,7 @@ class CalculosController extends Controller
                 $fs += $suma;
                 $fc += $cuenta;
                 //print( $val->nompro.' | '.$tur->nomtur.' | '.$fs.' | '.$fc.' / ');
-                $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => $tur->equipos[0]->id, 'turno_id' => $tur->id, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
+                $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => $tur->equipos[0]->id, 'turno_id' => $tur->id, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id, 'partida_id' => null];
                 if ($fc != 0) {
                     $this->gua_act($fechas, $data);
                 }
@@ -462,7 +464,7 @@ class CalculosController extends Controller
                     //resultado
                     $fs += $suma;
                     $fc += $cuenta;
-                    $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => $tur->equipos[0]->id, 'turno_id' => $tur->id, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => $cl->norma, 'clave_id' => $cl->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep, 'maq_pro_id' => $maq_id];
+                    $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => $tur->equipos[0]->id, 'turno_id' => $tur->id, 'cantidad' => $fc, 'partida' => 'N/A', 'norma' => $cl->norma, 'clave_id' => $cl->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep, 'maq_pro_id' => $maq_id, 'partida_id' => null];
                     if ($fc != 0) {
                         //print_r($data);
                         $this->gua_act($fechas, $data);
@@ -521,7 +523,7 @@ class CalculosController extends Controller
                         $fs += $suma;
                         $fc += $cuenta;
                     }
-                    $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => $tur->equipos[0]->id, 'turno_id' => $tur->id, 'cantidad' => $fc, 'partida' => $pr->partida, 'norma' => $pr->norma, 'clave_id' => $pr->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
+                    $data = ['proceso_id' => $proce_id, 'suma' => $fs, 'equipo_id' => $tur->equipos[0]->id, 'turno_id' => $tur->id, 'cantidad' => $fc, 'partida' => $pr->partida, 'norma' => $pr->norma, 'clave_id' => $pr->clave_id, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id, 'partida_id' => null];
                     if ($fc != 0) {
                         //print_r($proce_id.' -/ '.$fc.' \- '.$pr->partida.' || ');
                         $this->gua_act($fechas, $data);
@@ -631,7 +633,7 @@ class CalculosController extends Controller
 
         if ($fsP != 0 & $fsO != 0) {
             $fs = ($fsP*100)/$fsO;
-            $data = ['proceso_id' => $proce_id, 'suma' => round($fs, '2'), 'equipo_id' => null, 'turno_id' => null, 'cantidad' => '% ', 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
+            $data = ['proceso_id' => $proce_id, 'suma' => round($fs, '2'), 'equipo_id' => null, 'turno_id' => null, 'cantidad' => '% ', 'partida' => 'N/A', 'norma' => null, 'clave_id' => null, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id, 'partida_id' => null];
             $this->gua_act($fechas, $data);
         }
         print ' fin eficiencia clave dia //////// ';
@@ -699,7 +701,7 @@ class CalculosController extends Controller
                 }
                 if ($fsP != 0 & $fsO != 0) {
                     $fs = ($fsP*100)/$fsO;
-                    $data = ['proceso_id' => $proce_id, 'suma' => round($fs, '2'), 'equipo_id' => $tur->equipos[0]->id, 'turno_id' => $tur->id, 'cantidad' => '%', 'partida' => 'N/A', 'norma' => $norma, 'clave_id' => $clave, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id];
+                    $data = ['proceso_id' => $proce_id, 'suma' => round($fs, '2'), 'equipo_id' => $tur->equipos[0]->id, 'turno_id' => $tur->id, 'cantidad' => '%', 'partida' => 'N/A', 'norma' => $norma, 'clave_id' => $clave, 'per_carga' => $usuario->id, 'departamento_id' => $dep,'maq_pro_id' => $maq_id, 'partida_id' => null];
                     //print($val->nompro.' | '.$cla->clave->CVE_ART.' | '.$fsP.' - '.' | '.$fsO.' - '.' | '.round($fs, '2').' // ');
                     $this->gua_act($fechas, $data);
                 }

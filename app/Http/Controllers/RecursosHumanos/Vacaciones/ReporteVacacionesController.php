@@ -38,6 +38,7 @@ class ReporteVacacionesController extends Controller{
                 'vacaciones.Perfil_id AS Perfil_id')
                 ->join('puestos', 'perfiles_usuarios.Puesto_id', '=', 'puestos.id')
                 ->join('vacaciones', 'perfiles_usuarios.id', '=', 'vacaciones.Perfil_id')
+                ->where('vacaciones.Estatus', '=', '1')
                 ->get();
         }else{
             $Vacaciones = PerfilesUsuarios::select(
@@ -55,6 +56,7 @@ class ReporteVacacionesController extends Controller{
                 'vacaciones.DiasRestantes AS DiasRestantes')
                 ->join('puestos', 'perfiles_usuarios.Puesto_id', '=', 'puestos.id')
                 ->join('vacaciones', 'perfiles_usuarios.IdEmp', '=', 'vacaciones.IdEmp')
+                ->where('vacaciones.Estatus', '=', '1')
                 ->whereBetween('vacaciones.FechaInicio', [$request->ini, $request->fin])
                 ->get();
         }

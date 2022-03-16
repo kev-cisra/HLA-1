@@ -36,6 +36,10 @@ class dep_mat extends Model
         return $this->hasMany(obje_cordi::class, 'norma');
     }
 
+    public function aba_entrgas(){
+        return $this->hasMany(AbaEntregas::class, 'norma_id');
+    }
+
     // Relaciones inversas 1 a muchos
     public function departamentos() {
         return $this->belongsTo(Departamentos::class, 'departamento_id');

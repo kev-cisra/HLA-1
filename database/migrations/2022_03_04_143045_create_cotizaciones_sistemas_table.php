@@ -19,7 +19,7 @@ class CreateCotizacionesSistemasTable extends Migration
             $table->float('Precio');
             $table->string('Marca',35);
             $table->float('Total');
-            $table->String('TipoPago');
+            $table->string('TipoPago',15);
             $table->integer('Aprovado')->default(0);
 
             $table->unsignedBigInteger('art_req_sistemas_id')->nullable();

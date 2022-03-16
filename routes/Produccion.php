@@ -48,6 +48,13 @@ Route::post('General/ConTurno', [GeneralController::class, 'ConTurno'])->name('C
 //personal
 Route::post('General/ConPerso', [GeneralController::class, 'ConPerso'])->name('ConPersonal')
 ->middleware(['auth:sanctum', 'verified']);
+//departamento
+Route::post('General/ConDepartamento', [GeneralController::class, 'ConDepa'])->name('ConDeparta')
+->middleware(['auth:sanctum', 'verified']);
+//partida
+Route::post('General/ConParti', [GeneralController::class, 'ConParti'])->name('ConPartida')
+->middleware(['auth:sanctum', 'verified']);
+
 /************************************** Fin de consultas generales ********************************************/
 
 Route::resource('Personal', PersonalController::class)
@@ -174,4 +181,19 @@ Route::resource('AbaEntre', AbasteEntreController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::post('AbaEntre/Carga', [AbasteEntreController::class, 'Carga'])->name('Cargas')
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::post('AbaEntre/entIns', [AbasteEntreController::class, 'entregaInsert'])->name('entInser')
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::post('AbaEntre/conabaent', [AbasteEntreController::class, 'ConAbaEntre'])->name('conAbaEntre')
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::post('AbaEntre/updeAbas', [AbasteEntreController::class, 'updeAbas'])->name('updeAbastos')
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::post('AbaEntre/ConAbaPro', [AbasteEntreController::class, 'ConAbaPro'])->name('ConAbaProduccion')
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::post('AbaEntre/UpdeEstatus', [AbasteEntreController::class, 'UpdeEstatus'])->name('UpdeEsta')
     ->middleware(['auth:sanctum', 'verified']);

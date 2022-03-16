@@ -307,15 +307,12 @@ export default {
         //consulta para generar datos de la tabla
         verTabla(event) {
         $("#incidencias").DataTable().destroy();
-            this.$inertia.get(
-                "/RecursosHumanos/ReporteVacaciones",
-                { busca: event.target.value },
-                {
+            this.$inertia.get("/RecursosHumanos/ReporteVacaciones",{ busca: event.target.value },
+            {
                 onSuccess: () => {
                     this.tabla();
                 },
-                }
-            );
+            });
         },
 
         save(data) {

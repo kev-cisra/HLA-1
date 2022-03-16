@@ -72,6 +72,7 @@
                     <th class="columna">Total</th>
                     <th class="columna">Moneda</th>
                     <th class="columna">Proveedor</th>
+                    <th class="columna">TipoPago</th>
                 </template>
 
                 <template v-slot:TableFooter>
@@ -89,7 +90,9 @@
                         <td class="tw-text-center">{{ datos.Moneda }}</td>
                         <td class="tw-text-center" >
                             <div v-if="datos.precio_proveedor.Nombre != ''">{{ datos.precio_proveedor.Nombre }}</div>
-                            <div v-else>SIN PROVEEDOR</div></td>
+                            <div v-else>SIN PROVEEDOR</div>
+                        </td>
+                        <td>{{ datos.precio_proveedor.TipoPago }}</td>
                     </tr>
                 </template>
             </Table>

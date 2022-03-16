@@ -33,7 +33,7 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         ])
         ->first(['id', 'proceso_id', 'dep_perf_id', 'maq_pro_id', 'departamento_id']);
 
-        $pn = carNorm::where('id', '=', $row['paquete_norma'])->withTrashed()->first(['id', 'partida', 'norma', 'clave_id', 'departamento_id']);
+        $pn = carNorm::where('id', '=', $row['paquete_norma'])->withTrashed()->first(['id', 'partida', 'partida_id', 'norma', 'clave_id', 'departamento_id']);
 
         //consulta para mostrar el equipo y el turno
         $tur = turnos::where('nomtur', 'like', '%'.$row['turno'].'%')->where('departamento_id', '=', $dp->departamento_id)->first(['id']);
@@ -43,6 +43,7 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'semana' => date("Y", strtotime($this->transformDateTime($row['fecha']))).'-W'.date("W", strtotime($this->transformDateTime($row['fecha']))),
             'valor' => $row['peso'],
             'partida' => $pn->partida,
+            'partida_id' => $pn->partida_id,
             'equipo_id' => $dp->dep_per->equipo_id,
             'dep_perf_id' => $dp->dep_perf_id,
             'norma' => $pn->norma,

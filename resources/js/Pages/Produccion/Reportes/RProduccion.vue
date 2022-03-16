@@ -887,37 +887,53 @@
 
                 <div class="tw-mt-4">
                     <div class="ModalForm">
-                        <div class="tw-mt-10 tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0 tw-justify-center">
-                                <jet-label><span class="required">*</span>Carga masiva Producción</jet-label>
-                                <input type="file" class="" @input="docu.file = $event.target.files[0]" ref="file" accept=".xlsx">
-                                <br>
-                                <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
+                        <div v-if="S_Area == 7">
+                            <!-- Input formulario -->
+                            <div class="tw-mt-10 tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0 tw-justify-center">
+                                    <jet-label><span class="required">*</span>Carga masiva Producción</jet-label>
+                                    <input type="file" class="" @input="docu.file = $event.target.files[0]" ref="file" accept=".xlsx">
+                                    <br>
+                                    <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                                    <BotonCarga :verBot="vMasi" :textoV="'Guardar'" :textoOC="'Guardando...'" :class="'btn-primary'" @click="carMasi()"></BotonCarga>
+                                </div>
                             </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
-                                <BotonCarga :verBot="vMasi" :textoV="'Guardar'" :textoOC="'Guardando...'" :class="'btn-primary'" @click="carMasi()"></BotonCarga>
+                            <!-- archivo de descarga -->
+                            <div class="tw-w-full tw-mt-6 tw-mb-6 md:tw-flex tw-m-auto">
+                                <div class="tw-px-3 tw-mb-6 md:tw-mb-0">
+                                    <a target="_blank" class="tw-text-blue-600 tw-text-xl" :href="descarga" download="Carga Masiva.xlsx">Descargar Archivo Producción</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!------------------------------- Carga masiva -------------------------------->
+                        <div>
+                            <!-- Input formulario -->
+                            <div class="tw-mt-10 tw-mb-6 md:tw-flex">
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0 tw-justify-center">
+                                    temporal
+                                    <jet-label><span class="required">*</span>Carga masiva Producción</jet-label>
+                                    <input type="file" class="" @input="docu2.file = $event.target.files[0]" ref="file" accept=".xlsx">
+                                    <br>
+                                    <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
+                                </div>
+                                <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                                    <BotonCarga :verBot="vMasi" :textoV="'Guardar'" :textoOC="'Guardando...'" :class="'btn-primary'" @click="carMatriObje()"></BotonCarga>
+                                </div>
+                            </div>
+                            <!-- archivo de descarga -->
+                            <div class="tw-w-full tw-mt-6 tw-mb-6 md:tw-flex tw-m-auto">
+                                <div class="tw-px-3 tw-mb-6 md:tw-mb-0">
+                                    <a target="_blank" class="tw-text-blue-600 tw-text-xl" :href="descarga2" download="Carga Masiva OE.xlsx">Descargar Archivo Producción</a>
+                                </div>
                             </div>
                         </div>
 
-                        <!------------------------------- Carga masiva
 
-                        <div class="tw-mt-10 tw-mb-6 md:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0 tw-justify-center">
-                                <jet-label><span class="required">*</span>Carga masiva Matriz objetivo</jet-label>
-                                <input type="file" class="" @input="docu2.file = $event.target.files[0]" ref="file" accept=".xlsx">
-                                <br>
-                                <small v-if="errors.file" class="validation-alert">{{errors.file}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
-                                <BotonCarga :verBot="vMasi" :textoV="'Guardar'" :textoOC="'Guardando...'" :class="'btn-primary'" @click="carMatriObje()"></BotonCarga>
-                            </div>
-                        </div>  -------------------------------->
 
-                        <div class="tw-mt-6 tw-mb-6 md:tw-flex tw-m-auto">
-                            <div class="tw-px-3 tw-mb-6 md:tw-mb-0">
-                                <a target="_blank" class="tw-text-blue-600 tw-text-xl" :href="descarga" download="Carga Masiva.xlsx">Descargar Archivo Producción</a>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -1113,6 +1129,7 @@
             return {
                 color: "tw-bg-blue-600",
                 descarga: "",
+                descarga2: "",
                 style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
                 S_Area: '',
                 procesos: [],
@@ -1423,10 +1440,15 @@
             },
             /**************************** Carga Matriz Objetivos *****************************/
             async carMatriObje(){
-                const form = this.docu2;
-                await axios.post('/Produccion/impoMatriz', form)
+                let form = this.docu2;
+                await this.$inertia.post('/Produccion/impoMatriz', form, {
+                    onSuccess: (v) => { this.openModalC(), this.resetC(), this.alertSucces(), this.arrProdu() },
+                    onError: (e) => { this.vMasi = true },
+                    preserveState: true
+                });
+                /* await axios.post('/Produccion/impoMatriz', this.docu)
                 .then(eve => {console.log(eve.data)})
-                .catch(err => {console.log(err)});
+                .catch(err => {console.log(err.response.data.errors)}); */
             },
             /***************************** Calculos ******************************************/
             async calcula(form) {
@@ -1503,6 +1525,7 @@
             },
             global(){
                 this.descarga = this.URLactual.host != '192.168.11.3' ? this.path+'Archivos/FormatosExcel/Carga_Masiva.xlsx' : 'http://192.168.11.3/storage/Archivos/FormatosExcel/Carga_Masiva.xlsx';
+                this.descarga2 = this.URLactual.host != '192.168.11.3' ? this.path+'Archivos/FormatosExcel/Carga_Masiva_OE.xlsx' : 'http://192.168.11.3/storage/Archivos/FormatosExcel/Carga_Masiva_OE.xlsx';
                 if (this.usuario.dep_pers.length == 0) {
                     this.S_Area = 7;
                 }else{
@@ -1690,7 +1713,7 @@
             },
             //reset de file
             resetC(){
-                this.docu.file = null
+                this.docu.file = null;
                 this.docu2.file = null
             },
             /***************************** Datos de procesos *******************************************/

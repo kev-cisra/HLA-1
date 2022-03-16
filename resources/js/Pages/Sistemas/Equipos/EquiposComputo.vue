@@ -18,13 +18,25 @@
         <section class="tw-mx-2">
             <Table id="datos">
                 <template v-slot:TableHeader>
+                    <th class="columna">CANTIDAD</th>
                     <th class="columna">NOMBRE</th>
+                    <th class="columna">MARCA</th>
+                    <th class="columna">MODELO</th>
+                    <th class="columna">NUM SERIE</th>
+                    <th class="columna">COMENTARIOS</th>
+                    <th class="columna">ESTATUS</th>
                     <th class="columna">ACCIONES</th>
                 </template>
 
                 <template v-slot:TableFooter>
-                    <tr class="fila" v-for="data in Objeto" :key="data.id">
-                        <td class="tw-p-2">{{data.var}}</td>
+                    <tr class="fila" v-for="data in EquiposComputo" :key="data.id">
+                        <td class="tw-p-2">{{data.Cantidad}}</td>
+                        <td class="tw-p-2">{{data.Nombre}}</td>
+                        <td class="tw-p-2">{{data.Marca}}</td>
+                        <td class="tw-p-2">{{data.Modelo}}</td>
+                        <td class="tw-p-2">{{data.NumeroSerie}}</td>
+                        <td class="tw-p-2">{{data.Comentarios}}</td>
+                        <td class="tw-p-2">{{data.Estatus}}</td>
                         <td>
                             <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
                                 <div class="iconoEdit" @click="edit(data)">
@@ -34,28 +46,57 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoDelete" @click="delte(data)">
-                                    <span tooltip="Eliminar" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                        </svg>
-                                    </span>
-                                </div>
-                                <div class="iconoDetails" @click="view(data)" data-bs-toggle="modal" data-bs-target="#exampleModal" >
-                                        <span tooltip="Historico Vacaciones" >
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </span>
-                                    </div>
                             </div>
                         </td>
                     </tr>
                 </template>
             </Table>
         </section>
+        <!-- **************************************************** MODALES ****************************************************** -->
+        <modal :show="showModal" @close="chageClose" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Equipos Computo</h3>
+            </div>
 
+            <div class="ModalForm">
+                <div class="tw-mb-6 md:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>CANTIDAD</jet-label>
+                        <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-3/4 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>NOMBRE</jet-label>
+                        <jet-input type="text" v-model="form.Nombre" @input="(val) => (form.Nombre = form.Nombre.toUpperCase())"></jet-input>
+                    </div>
+                </div>
+                <div class="tw-mb-6 md:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label>MARCA</jet-label>
+                        <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label>MODELO</jet-label>
+                        <jet-input type="text" v-model="form.Modelo" @input="(val) => (form.Modelo = form.Modelo.toUpperCase())"></jet-input>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label>NUM SERIE</jet-label>
+                        <jet-input type="text" v-model="form.NumeroSerie" @input="(val) => (form.NumeroSerie = form.NumeroSerie.toUpperCase())"></jet-input>
+                    </div>
+                </div>
+                <div class="tw-mb-6 md:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label>COMENTARIOS</jet-label>
+                        <textarea cols="2" v-model="form.Comentarios" @input="(val) => (form.Comentarios = form.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="save(form)" v-show="!editMode">Guardar</jet-button>
+                <jet-button type="button" @click="update(form)" v-show="editMode">Actualizar</jet-button>
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
     </app-layout>
 </template>
 
@@ -64,7 +105,7 @@ import AppLayout from "@/Layouts/AppLayout";
 import Welcome from "@/Jetstream/Welcome";
 import Header from "@/Components/Header";
 import Accions from "@/Components/Accions";
-import Table from "@/Components/TableDark";
+import Table from "@/Components/TableSky";
 import JetButton from "@/Components/Button";
 import JetCancelButton from "@/Components/CancelButton";
 import Modal from "@/Jetstream/Modal";
@@ -83,10 +124,17 @@ export default {
 
     data() {
         return {
-            tam: "3xl",
+            tam: "2xl",
             color: "tw-bg-sky-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             form: {
+                IdUser: this.Session.id,
+                Cantidad: '',
+                Nombre: '',
+                Marca: '',
+                Modelo: '',
+                NumeroSerie: '',
+                Comentarios: '',
             },
 
         };
@@ -108,13 +156,51 @@ export default {
     },
 
     props: {
-
+        EquiposComputo: Object,
+        Session: Object,
     },
 
     mounted(){
     },
 
     methods: {
+        reset() {
+            this.form = {
+                IdUser: this.Session.id,
+                Cantidad: '',
+                Nombre: '',
+                Marca: '',
+                Modelo: '',
+                NumeroSerie: '',
+                Comentarios: '',
+            };
+        },
+
+        save(data){
+            this.$inertia.post("/Sistemas/EquiposComputo", data, {
+                onSuccess: () => {
+                    this.reset(),
+                    this.chageClose(),
+                    this.alertSucces();
+                },
+            });
+        },
+
+        edit: function (data) {
+            this.form = Object.assign({}, data);
+            this.editMode = true;
+            this.chageClose();
+        },
+
+        update(data) {
+            data.metodo = 1;
+            data._method = "PUT";
+            this.$inertia.post("/Sistemas/EquiposComputo/" + data.id, data, {
+                onSuccess: () => {
+                this.reset(), this.chageClose(), this.alertSucces();
+                },
+            });
+        },
     },
 };
 </script>

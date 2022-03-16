@@ -30,6 +30,10 @@ class claves extends Model
         return $this->hasMany(obje_cordi::class, 'clave_id');
     }
 
+    public function aba_entrgas(){
+        return $this->hasMany(AbaEntregas::class, 'clave_id');
+    }
+
     //relacion 1 a muchos inversa
     public function dep_mat(){
         return $this->belongsTo(dep_mat::class, 'dep_mat_id');

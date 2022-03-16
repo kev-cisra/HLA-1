@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\obje_cordi;
+use App\Models\Produccion\AbaEntregas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
 use App\Models\Produccion\carOpe;
@@ -176,15 +177,32 @@ class CargaController extends Controller
             },
             'clave' => function($cla){
                 $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
+            },
+            'abapar' => function($par){
+                $par -> select('id', 'folio', 'banco', 'partida' );
             }
         ])
-        ->get(['id', 'partida', 'estatus', 'norma', 'clave_id', 'departamento_id']);
+        ->get(['id', 'partida', 'estatus', 'norma', 'clave_id', 'partida_id', 'departamento_id']);
         return $carNor;
     }
 
     public function CarObje(Request $request){
+        $par = AbaEntregas::where('depa_entrega', '=', $request->departamento_id)
+        ->where('esta_final', '=', 'Activo')
+        ->get();
+
+        $nu = [];
+        if (!empty($par)) {
+            foreach ($par as $p) {
+                array_push($nu, $p->clave_id);
+            }
+        }
+
+        //return $par;
+
         //Paquetes Objetivos
         $objetivos = obje_cordi::where('departamento_id', '=', $request->departamento_id)
+        ->whereIn('clave_id', $nu)
         ->with([
             'proceso' => function($pro) {
                 $pro -> select('id', 'nompro', 'proceso_id');
@@ -242,7 +260,8 @@ class CargaController extends Controller
             'proceso_id' => $request->proceso_id,
             'dep_perf_id' => $request->dep_perf_id,
             'maq_pro_id' => $request->maq_pro_id,
-            'partida' => $request->partida,
+            'partida_id' => $request->partida,
+            'partida' => $request->p_nom,
             'valor' => $request->valor,
             'norma' => $request->norma,
             'equipo_id' => $request->equipo_id,

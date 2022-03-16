@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
+use App\Models\Produccion\AbaEntregas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
 use App\Models\Produccion\notasCarga;
@@ -26,20 +27,16 @@ class CarNormController extends Controller
             'clave_id' => ['required'],
         ])->validate();
 
-        $bus = carNorm::where('clave_id', '=', $request->clave_id)
-        ->where('partida', '=', $request->partida)
-        ->where('norma', '=', $request->norma)
-        ->where('departamento_id', '=', $request->departamento_id)
-        ->first();
+        $par = AbaEntregas::where('id', '=', $request->partida)->first();
+        $parnom  = $par->partida.$request->p_nom;
 
-        if (empty($bus->id)) {
-            carNorm::create([
-                'partida' => $request->partida,
-                'norma' => $request->norma,
-                'clave_id' => $request->clave_id,
-                'departamento_id' => $request->departamento_id
-            ]);
-        }
+        carNorm::create([
+            'partida' => $parnom,
+            'partida_id' => $request->partida,
+            'norma' => $request->norma,
+            'clave_id' => $request->clave_id,
+            'departamento_id' => $request->departamento_id
+        ]);
 
 
         return redirect()->back()

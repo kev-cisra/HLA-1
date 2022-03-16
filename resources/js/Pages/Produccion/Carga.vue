@@ -170,10 +170,6 @@
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/3 lg:tw-mb-0">
                         <jet-label class="tw-text-white"><span class="required">*</span>Paquete de Norma, partida y clave</jet-label>
                         <Select2 v-model="paqNorma" class="InputSelect" :options="opcPaNo"  :settings="{width: '100%'}"/>
-                        <!-- <select class="InputSelect" v-model="paqNorma">
-                            <option value="" disabled>SELECCIONA</option>
-                            <option v-for="no in opcPaNo" :key="no.id" :value="no.value">{{no.text}}</option>
-                        </select> -->
                     </div>
                     <!-- Input kilogramos -->
                     <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
@@ -321,6 +317,22 @@
                 <div class="m-5 tw-p-6 tw-bg-cyan-600 tw-rounded-3xl tw-shadow-xl">
                     <!-- Proceso proncipal, sub procesos, operador -->
                     <div class="tw-mb-6 lg:tw-flex tw-justify-center">
+                        <!-- Inout partida -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
+                            <jet-label>Partida</jet-label>
+                            <div class="tw-flex">
+                                <div class="tw-w-3/5 ">
+                                    <select class="InputSelect" v-model="form.partida" @change="parSele">
+                                        <option value="">SELECCIONA</option>
+                                        <option v-for="op in opcPar" :key="op" :value="op.id"> {{ op.text }} </option>
+                                    </select>
+                                </div>
+                                <div class="tw-w-2/5">
+                                    <jet-input class="InputSelect" v-model="form.p_nom" @input="(val) => (form.p_nom = form.p_nom.toUpperCase())"></jet-input>
+                                </div>
+                            </div>
+                            <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                        </div>
                         <!-- Select Normas -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                             <jet-label><span class="required">*</span>Norma</jet-label>
@@ -329,12 +341,6 @@
                                 <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
                             </select>
                             <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
-                        </div>
-                        <!-- Inout partida -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                            <jet-label>Partida</jet-label>
-                            <jet-input class="InputSelect" v-model="form.partida" @input="(val) => (form.partida = form.partida.toUpperCase())"></jet-input>
-                            <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
                         </div>
                     </div>
 
@@ -578,6 +584,7 @@
                 paqnor: [],
                 objetivos: [],
                 personal: [],
+                partida: [],
                 S_Area: '',
                 noCor: '',
                 calcuObje: '',
@@ -627,6 +634,7 @@
                     dep_perf_id: '',
                     maq_pro_id: '',
                     partida: '',
+                    p_nom: '',
                     valor: '',
                     norma: '',
                     equipo_id: '',
@@ -726,6 +734,11 @@
                     })
 
                 }
+            },
+            parSele(event){
+                let par = this.partida.find(ele => {return ele.id == event.target.value})
+                this.form.norma = par.norma_id;
+                this.form.clave_id = par.clave_id;
             },
             /****************************** datatables ********************************************************/
             //datatable de carga
@@ -935,6 +948,7 @@
                 this.form.agNot = 0;
                 this.form.notaPen = 1;
                 this.form.nota = '';
+                this.form.p_nom = '';
                 this.form.usu = this.usuario.id;
                 this.form.departamento_id = this.S_Area;
                 this.formPacNor.ElMaPN = [];
@@ -1059,7 +1073,6 @@
             /***************************** Carga de paquetes de norma, claves y partida *********************/
             async savePN(form){
                 this.btnOff = false;
-                //console.log(form)
                 form.departamento_id = this.S_Area;
                 await this.$inertia.post('/Produccion/CarNor', form, {
                     onSuccess: (v) => { this.ConPacNorma(), this.resetCA(), this.alertSucces(), this.btnOff = true},
@@ -1119,52 +1132,6 @@
                     onError: () => {this.ConProduccion(), this.btnOff = true},
                 });
             },
-            /****************************** Carga de paquetes para objetivos
-            async savePObje(form){
-                this.btnOff = false;
-                await this.$inertia.post('/Produccion/ObjeCordi', form, {
-                    onSuccess: (v) => { this.ConObjeti(), this.resetOB(), this.alertSucces(), this.btnOff = true},
-                    onError: (e) => { this.ConObjeti(), this.btnOff = true}, preserveState: true
-                });
-            },
-            resetOB(){
-                this.limp = 1;
-                this.editModeOB = false;
-                this.formObje.id = null;
-                this.formObje.departamento_id = this.S_Area;
-                this.formObje.proceso_id = '';
-                this.formObje.maq_pro_id = '';
-                this.formObje.norma = '';
-                this.formObje.clave_id = '';
-                this.formObje.pro_hora = null;
-            },
-            editOB(form){
-                this.limp = 2;
-                this.editModeOB = true;
-                this.formObje.id = form.id;
-                this.proc_prin = form.proceso.proceso_id;
-                this.formObje.proceso_id = form.proceso_id;
-                this.formObje.maq_pro_id = form.maq_pro_id;
-                this.formObje.norma = form.norma;
-                this.formObje.clave_id = form.clave_id;
-                this.formObje.pro_hora = form.pro_hora;
-            },
-            async updateOB(data){
-                //console.log(data)
-                this.btnOff = false;
-                await this.$inertia.put('/Produccion/ObjeCordi/' + data.id, data, {
-                    onSuccess: (v) => { this.resetOB(), this.alertSucces(), this.ConObjeti(), this.btnOff = true},
-                    onError: (e) => { this.ConObjeti(), this.btnOff = true},
-                    preserveState: true
-                });
-            },
-            deleteOB(data){
-                data._method = 'DELETE';
-                this.$inertia.post('/Produccion/ObjeCordi/' + data.id, data, {
-                    onSuccess: () => { this.ConObjeti(), this.alertDelete() }, onError: () => {this.ConObjeti()}, preserveState: true
-                });
-            }
-            *******************************/
         },
         computed: {
             //Opciones departamento
@@ -1251,24 +1218,6 @@
                 }
                 return mq;
             },
-            //Opciones maquinas Objetivos
-            /* opcMQO: function() {
-                this.limp == 1 ? this.formObje.maq_pro_id = '' : '';
-                const mq = [];
-                var mar = '';
-                if (this.formObje.proceso_id != '') {
-                    this.procesos.forEach(pm => {
-                        if (this.formObje.proceso_id == pm.id) {
-                            //console.log(pm.maq_pros.length)
-                            pm.maq_pros.forEach(mp => {
-                                mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
-                                mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
-                            })
-                        }
-                    })
-                }
-                return mq;
-            }, */
             //Opciones Claves
             opcCL: function() {
                 const scl = [];
@@ -1285,21 +1234,14 @@
                 }
                 return scl;
             },
-            //Opciones Claves Objetivos
-            /* opcCLO: function() {
-                const scl = [];
-                if (this.formObje.norma != '') {
-                    this.materiales.forEach(cl => {
-                        if (this.formObje.norma == cl.id) {
-                            //console.log(cl.claves)
-                            cl.claves.forEach(c => {
-                                scl.push({id: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
-                            })
-                        }
-                    })
-                }
-                return scl;
-            }, */
+            //Opciones Partida
+            opcPar: function() {
+                const par = [];
+                this.partida.forEach(p => {
+                    par.push({id: p.id, text: p.partida})
+                })
+                return par;
+            },
             //opciones Paquetes Operador
             opcPaOp: function() {
                 const po = [];
@@ -1327,18 +1269,6 @@
                 })
                 return no;
             },
-            //opciones Paquetes Objetivos
-            /* opcPaOb: function() {
-                const ob = [];
-                var clave = '';
-                this.objetivos.forEach(po => {
-                    if (po.departamento_id == this.S_Area) {
-                        clave = po.clave_id == null ? 'N/A' : po.clave.CVE_ART
-                        ob.push({id: po.id, text: po.proceso.nompro+' || '+po.maq_pro.maquinas.Nombre+' '+po.maq_pro.maquinas.marca.Nombre+' || '+po.dep_mat.materiales.idmat+' || '+clave})
-                    }
-                })
-                return ob;
-            }, */
             //opciones de turnos
             opcTur: function() {
                 const tur = [];
@@ -1399,6 +1329,10 @@
                 //Materiales
                 let mate = await axios.post('General/ConMateriales', datos)
                 this.materiales = mate.data
+
+                //Partida
+                let par = await axios.post('General/ConParti', datos);
+                this.partida = par.data;
             },
             proc_prin: function(v) {
                 //cuando no se edita
@@ -1415,10 +1349,12 @@
                     this.form.partida = '';
                     this.form.norma = '';
                     this.form.clave_id = '';
+                    this.form.p_nom = '';
                 }else{
                     this.paqnor.forEach(pn => {
                         if (pn.id == paN) {
-                            this.form.partida = pn.partida;
+                            this.form.partida = pn.partida_id;
+                            this.form.p_nom = pn.partida;
                             this.form.norma = pn.norma;
                             this.form.clave_id = pn.clave_id;
                         }
@@ -1442,36 +1378,7 @@
                         }
                     })
                 }
-            },
-            /* paqObjetivo: function(paOb){
-                if (paOb == '') {
-                    this.form.proceso_id = '';
-                    this.form.maq_pro_id = '';
-                    this.form.norma = '';
-                    this.form.clave_id = '';
-                }else{
-                    this.calcuObje = 0;
-                    this.form.valor = '';
-                    const resu = this.objetivos.find(obje => obje.id == paOb);
-                    this.limp = 2;
-                    this.form.departamento_id = this.S_Area;
-                    this.form.proceso_id = resu.proceso_id;
-                    this.form.maq_pro_id = resu.maq_pro_id;
-                    this.form.norma = resu.norma;
-                    this.form.clave_id = resu.clave_id;
-                }
-            },
-            calcuObje: function(calObj) {
-                if (calObj <= 0 || calObj > 12) {
-                    this.form.valor = '';
-                    this.calcuObje = '';
-                }
-                if (this.paqObjetivo != '' & calObj != '') {
-                    const resu = this.objetivos.find(obje => obje.id == this.paqObjetivo);
-                    this.form.valor = resu.pro_hora * calObj;
-                    //console.log(this.form.valor)
-                }
-            } */
+            }
         }
     }
 </script>

@@ -19,8 +19,8 @@ class CreateArticulosRequisicionesSistemasTable extends Migration
             $table->integer('Cantidad');
             $table->string('Unidad',5);
 
-            $table->unsignedBigInteger('EquipoComputo_id');
-            $table->foreign("EquipoComputo_id")->references("id")->on("equipos_computos")
+            $table->unsignedBigInteger('Hardware_id');
+            $table->foreign("Hardware_id")->references("id")->on("hardware_sistemas")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 

@@ -29,7 +29,7 @@ class CostosRequisiciones extends Controller{
         if($mes != 0 && $dpto == 0){ //Consulta Inicial (Mes especifico con todos los departamentos)
             $PreciosRequisiciones = PreciosCotizaciones::with([
                 'PrecioProveedor' => function($prov) { //Relacion 1 a 1 De puestos
-                    $prov->select('id', 'Nombre');
+                    $prov->select('id', 'Nombre', 'TipoPago');
                 },
                 'PreciosArticulo' => function($articulo) { //Relacion 1 a 1 De puestos
                     $articulo->select('id', 'Fecha', 'IdEmp', 'Cantidad', 'Unidad', 'Descripcion', 'requisicion_id');
@@ -51,7 +51,7 @@ class CostosRequisiciones extends Controller{
         }elseif ($mes == 0 && $dpto == 0) { //Informacion de todo el año
             $PreciosRequisiciones = PreciosCotizaciones::with([
                 'PrecioProveedor' => function($prov) { //Relacion 1 a 1 De puestos
-                    $prov->select('id', 'Nombre');
+                    $prov->select('id', 'Nombre', 'TipoPago');
                 },
                 'PreciosArticulo' => function($articulo) { //Relacion 1 a 1 De puestos
                     $articulo->select('id', 'Fecha', 'IdEmp', 'Cantidad', 'Unidad', 'Descripcion', 'requisicion_id');
@@ -72,7 +72,7 @@ class CostosRequisiciones extends Controller{
         }elseif($mes == 0 && $dpto != 0) { //Departamento especifico
             $PreciosRequisiciones = PreciosCotizaciones::with([
                 'PrecioProveedor' => function($prov) { //Relacion 1 a 1 De puestos
-                    $prov->select('id', 'Nombre');
+                    $prov->select('id', 'Nombre', 'TipoPago');
                 },
                 'PreciosArticulo' => function($articulo) { //Relacion 1 a 1 De puestos
                     $articulo->select('id', 'Fecha', 'IdEmp', 'Cantidad', 'Unidad', 'Descripcion', 'requisicion_id');
@@ -94,7 +94,7 @@ class CostosRequisiciones extends Controller{
         }elseif ($mes != 0 && $dpto != 0) {
             $PreciosRequisiciones = PreciosCotizaciones::with([
                 'PrecioProveedor' => function($prov) { //Relacion 1 a 1 De puestos
-                    $prov->select('id', 'Nombre');
+                    $prov->select('id', 'Nombre', 'TipoPago');
                 },
                 'PreciosArticulo' => function($articulo) { //Relacion 1 a 1 De puestos
                     $articulo->select('id', 'Fecha', 'IdEmp', 'Cantidad', 'Unidad', 'Descripcion', 'requisicion_id');
