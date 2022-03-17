@@ -31,8 +31,8 @@ class CargarExcelController extends Controller
         ])->validate();
         //return $request;
 
-        Excel::import(new MatrizObjeImport, $request->file("file"));
-        //Excel::import(new CargasOpenImport, $request->file("file"));
+        //Excel::import(new MatrizObjeImport, $request->file("file"));
+        Excel::import(new CargasOpenImport, $request->file("file"));
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
     }

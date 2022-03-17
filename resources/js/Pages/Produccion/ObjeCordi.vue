@@ -73,7 +73,7 @@
                         <td class="">{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
                         <td class="">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
                         <td class="">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
-                        <td class="">{{ca.valor}}</td>
+                        <td class="">{{ca.valor.toFixed(2)}}</td>
                         <td class="">
                             <div class="columnaIconos">
                                 <!-- nota objetivos -->

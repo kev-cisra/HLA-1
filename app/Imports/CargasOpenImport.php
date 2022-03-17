@@ -42,7 +42,7 @@ class CargasOpenImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'fecha' => $this->transformDateTime($row['fecha']),
             'semana' => date("Y", strtotime($this->transformDateTime($row['fecha']))).'-W'.date("W", strtotime($this->transformDateTime($row['fecha']))),
             'valor' => $row['peso'],
-            'partida' => $row['partida'].$row['Com_part'],
+            'partida' => $row['partida'].'.'.$row['com_part'],
             'partida_id' => $par->id,
             'equipo_id' => $dp->dep_per->equipo_id,
             'dep_perf_id' => $dp->dep_perf_id,
