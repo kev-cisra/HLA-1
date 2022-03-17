@@ -23,4 +23,5 @@ class ArticulosRequisicionesSistemas extends Model{
     public function Hardware() {
         return $this->belongsTo(HardwareSistemas::class, 'Hardware_id');
     }
+
 }

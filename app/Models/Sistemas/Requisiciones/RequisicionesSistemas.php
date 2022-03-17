@@ -30,4 +30,9 @@ class RequisicionesSistemas extends Model{
     public function Articulos() {
         return $this->hasMany(ArticulosRequisicionesSistemas::class, 'requisicion_sistemas_id');
     }
+
+    //relacion uno a muchos con CotizacionesSistemas
+    public function Cotizacion() {
+        return $this->hasMany(CotizacionesSistemas::class, 'requisicion_sistemas_id');
+    }
 }

@@ -140,6 +140,12 @@
     @apply tw-block tw-w-full tw-px-4 tw-py-2 tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-lg tw-appearance-none;
 }
 
+.InputDinamico{
+    @apply tw-bg-gray-200 tw-text-gray-500 tw-font-semibold tw-border tw-border-gray-300 tw-rounded-lg tw-block tw-w-full tw-appearance-none tw-shadow-sm;
+    focus:tw-outline-none;
+    focus:tw-shadow-outline;
+}
+
 .Select2{
     @apply tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-lg tw-appearance-none;
 }
