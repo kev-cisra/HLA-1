@@ -7,6 +7,7 @@ use App\Models\Produccion\carNorm;
 use App\Models\Produccion\carOpe;
 use App\Models\Produccion\catalogos\claves;
 use App\Models\Produccion\turnos;
+use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Carbon\Carbon;
@@ -38,6 +39,8 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         //consulta para mostrar el equipo y el turno
         $tur = turnos::where('nomtur', 'like', '%'.$row['turno'].'%')->where('departamento_id', '=', $dp->departamento_id)->first(['id']);
 
+        $per = PerfilesUsuarios::where('user_id', '=', Auth::id())->first();
+
         return new carga([
             'fecha' => $this->transformDateTime($row['fecha']),
             'semana' => date("Y", strtotime($this->transformDateTime($row['fecha']))).'-W'.date("W", strtotime($this->transformDateTime($row['fecha']))),
@@ -52,7 +55,7 @@ class CargasImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'clave_id' => $pn->clave_id,
             'turno_id' => $tur->id,
             'departamento_id' => $dp->departamento_id,
-            'per_carga' => Auth::id(),
+            'per_carga' => $per->id,
             'VerInv' => 1,
         ]);
     }

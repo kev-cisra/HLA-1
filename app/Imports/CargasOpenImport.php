@@ -7,6 +7,7 @@ use App\Models\Produccion\carga;
 use App\Models\Produccion\carOpe;
 use App\Models\Produccion\catalogos\claves;
 use App\Models\Produccion\turnos;
+use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -38,6 +39,8 @@ class CargasOpenImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 
         $cla = claves::where('CVE_ART', '=', $row['clave'])->first();
 
+        $per = PerfilesUsuarios::where('user_id', '=', Auth::id())->first();
+
         return new carga([
             'fecha' => $this->transformDateTime($row['fecha']),
             'semana' => date("Y", strtotime($this->transformDateTime($row['fecha']))).'-W'.date("W", strtotime($this->transformDateTime($row['fecha']))),
@@ -51,8 +54,8 @@ class CargasOpenImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'maq_pro_id' => $dp->maq_pro_id,
             'clave_id' => $cla->id,
             'turno_id' => $tur->id,
-            'departamento_id' => $dp->departamento_id,
-            'per_carga' => Auth::id(),
+            'departamento_id' => $par->depa_entrega,
+            'per_carga' => $per->id,
             'VerInv' => 1,
         ]);
     }

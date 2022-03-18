@@ -4,6 +4,7 @@ namespace App\Models\RecursosHumanos\Catalogos;
 
 use App\Models\Catalogos\Maquinas;
 use App\Models\obje_cordi;
+use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
 use App\Models\Produccion\carOpe;
 use App\Models\Produccion\catalogos\procesos;
@@ -65,6 +66,10 @@ class Departamentos extends Model
 
     public function aba_entre_recibe(){
         return $this->hasMany(AbaEntregas::class, 'depa_recibe');
+    }
+
+    public function cargas() {
+        return $this->hasMany(carga::class, 'departamento_id');
     }
 
     // Relaciones recursiva

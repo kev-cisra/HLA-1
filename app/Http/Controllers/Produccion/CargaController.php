@@ -80,6 +80,9 @@ class CargaController extends Controller
             ->where('notaPen', '=', '2');
         })
         ->with([
+            'departamento' => function($dep){
+                $dep -> select('id', 'Nombre');
+            },
             'dep_perf' => function($dp){
                 $dp -> withTrashed()
                     ->select('id', 'perfiles_usuarios_id', 'ope_puesto', 'departamento_id');
@@ -125,7 +128,7 @@ class CargaController extends Controller
                 -> select('id', 'fecha', 'nota', 'carga_id');
             }
         ])
-        ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id']);
+        ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id', 'departamento_id']);
         return $carga;
     }
 

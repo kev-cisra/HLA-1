@@ -77,7 +77,7 @@ class AbasteEntreController extends Controller
                     $ma->select('id', 'idmat', 'nommat', 'estatus');
                 },
                 'clave' => function($cl){
-                    $cl->select('id', 'CVE_ART', 'CVE_ART');
+                    $cl->select('id', 'CVE_ART', 'DESCR');
                 },
                 'depa_entregas' => function($de){
                     $de->select('id', 'Nombre', 'departamento_id');
@@ -235,5 +235,30 @@ class AbasteEntreController extends Controller
     public function UpdeEstatus(Request $request){
         $ab = AbaEntregas::find($request->id)->update($request->all());
         return $ab;
+    }
+
+    public function ConAbaFin(Request $request){
+        $aba = AbaEntregas::where('depa_entrega', '=', $request->departamento)
+        ->whereBetween('created_at', [$request->fechaini, $request->fechafin])
+        ->where('esta_final', '=', 'Fin')
+        ->with([
+            'norma' => function($no){
+                $no->select('id', 'departamento_id', 'material_id');
+            },
+            'norma.materiales' => function($ma){
+                $ma->select('id', 'idmat', 'nommat', 'estatus');
+            },
+            'clave' => function($cl){
+                $cl->select('id', 'CVE_ART', 'DESCR');
+            },
+            'depa_entregas' => function($de){
+                $de->select('id', 'Nombre', 'departamento_id');
+            },
+            'depa_recibe' => function($dr){
+                $dr->select('id', 'Nombre', 'departamento_id');
+            }
+        ])
+        ->get();
+        return $aba;
     }
 }

@@ -22,6 +22,7 @@
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true" @click="ConAba()">Abastos</button>
                 <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" @click="resetEntr()" aria-selected="false">Entregas</button>
+                <button class="nav-link" id="nav-aba-fin-tab" data-bs-toggle="tab" data-bs-target="#nav-abafin" type="button" role="tab" aria-controls="nav-abafin" aria-selected="false" @click="resetAbaFin()">Abastos Finalizados</button>
             </div>
         </nav>
         <div class="tab-content tw-m-5" id="nav-tabContent">
@@ -106,7 +107,7 @@
                             </div>
                             <div class="accordion-item">
                                 <h2 class="accordion-header" :id="'open2'+ae.id" v-if="ae.esta_final != 'Desactivado'">
-                                    <button class="accordion-button collapsed" type="button" @click="conProdu(ae)" data-bs-toggle="collapse" :data-bs-target="'#flushTwo'+ae.id" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                    <button class="accordion-button collapsed" :id="'bo'+ae.id" type="button" @click="conProdu(ae)" data-bs-toggle="collapse" :data-bs-target="'#flushTwo'+ae.id" aria-expanded="false" aria-controls="flush-collapseTwo">
                                         Producción
                                     </button>
                                 </h2>
@@ -161,7 +162,7 @@
                     </div>
                     <!-- input Banco -->
                     <div class="tw-px-3 lg:tw-w-1/2 lg:tw-mb-0">
-                        <jet-label><span class="required">*</span>Banco</jet-label>
+                        <jet-label>Banco</jet-label>
                         <jet-input class="InputSelect" v-model="formAba.banco" @input="(val) => (formAba.banco = formAba.banco.toUpperCase())"></jet-input>
                         <small v-if="errors.banco" class="validation-alert">{{errors.banco}}</small>
                     </div>
@@ -180,6 +181,50 @@
                     <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0 d-grid gap-2">
                         <button type="button" class="btn btn-success" @click="saveEntre(formAba)">Agregar</button>
                     </div> -->
+                </div>
+            </div>
+            <!-- abastos finalizados -->
+            <div class="tab-pane fade" id="nav-abafin" role="tabpanel" aria-labelledby="nav-aba-fin-tab">
+                <div class="tw-w-full">
+                    <label class=" tw-text-lg" for="fechas">Buscar Abastos</label>
+                    <div class="lg:tw-flex tw-content-end" id="fechas">
+                        <div class="tw-m-5">
+                            <label for="ini"><span class="required">*</span>Inicio:</label>
+                            <input type="date" id="ini" class="InputSelect" v-model="formBus.fechaini">
+                        </div>
+                        <div class="tw-m-5">
+                            <label for="fin"><span class="required">*</span>Final:</label>
+                            <input type="date" id="fin" class="InputSelect" v-model="formBus.fechafin">
+                        </div>
+                        <div class="tw-my-auto">
+                            <button class="btn btn-success" @click="buscaAbas(formBus)">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- tabla -->
+                <div class="tw-w-full">
+                    <TableGreen id="abfin">
+                        <template v-slot:TableHeader>
+                            <th>Folio</th>
+                            <th>Banco</th>
+                            <th>Partida</th>
+                            <th>Norma</th>
+                            <th>Clave</th>
+                            <th>Descrición</th>
+                            <th>Total enviado</th>
+                        </template>
+                        <template  v-slot:TableFooter>
+                            <tr v-for="af in abafin" :key="af">
+                                <td>{{ af.folio }}</td>
+                                <td> {{ af.banco ? af.banco : 'N/A' }} </td>
+                                <td> {{ af.partida }} </td>
+                                <td> {{ af.norma.materiales.nommat }} </td>
+                                <td> {{ af.clave.CVE_ART }} </td>
+                                <td> {{ af.clave.DESCR }} </td>
+                                <td> {{ af.total }} </td>
+                            </tr>
+                        </template>
+                    </TableGreen>
                 </div>
             </div>
         </div>
@@ -247,12 +292,27 @@
     import AppLayout from '@/Layouts/AppLayout.vue';
     import Header from '@/Components/Header';
     import Accions from '@/Components/Accions';
-    import Table from '@/Components/Table';
+    import TableGreen from '@/Components/TableTeal';
     import JetLabel from '@/Jetstream/Label';
     import JetInput from '@/Components/Input';
     import Select2 from 'vue3-select2-component';
     import Modal from '@/Jetstream/Modal';
     import axios from 'axios';
+    import Table from '@/Components/Table';
+    //datatable
+    import datatable from 'datatables.net-bs5';
+    require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
+
+    require( 'datatables.net-buttons/js/buttons.html5' );
+    require ( 'datatables.net-buttons/js/buttons.colVis' );
+    import print from 'datatables.net-buttons/js/buttons.print';
+    import jszip from 'jszip/dist/jszip';
+    import pdfMake from 'pdfmake/build/pdfmake';
+    import pdfFonts from 'pdfmake/build/vfs_fonts';
+    import $ from 'jquery';
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    window.JSZip = jszip;
 
     export default {
         props: [
@@ -264,7 +324,7 @@
             AppLayout,
             Header,
             Accions,
-            Table,
+            TableGreen,
             JetLabel,
             JetInput,
             Select2,
@@ -280,6 +340,7 @@
                 departamento: [],
                 abaPro: [],
                 errors: [],
+                abafin: [],
                 showModal: false,
                 vrNor: false,
                 vrCla: false,
@@ -297,18 +358,32 @@
                     esta_final: '',
                     depa_entrega: '',
                     depa_recibe: null
+                },
+                formBus:{
+                    fechaini: '',
+                    fechafin: '',
+                    departamento: ''
                 }
             }
         },
 
         mounted() {
             this.global();
+            //this.tabla();
         },
 
         methods: {
             /************************************* Consultas ***********************************/
             async conProdu(dat){
                 this.abaPro = [];
+                this.abaentre.forEach(re => {
+                    if(re.id != dat.id){
+                        $('#bo'+re.id).addClass('collapsed');
+                        $('#flushTwo'+re.id).removeClass('show');
+                        $('#bo'+re.id).attr('aria-expanded', false);
+                    }
+                })
+                //console.log(dat)
                 let ab = await axios.post('AbaEntre/ConAbaPro', dat);
                 //console.log(ab.data)
                 this.abaPro = ab.data;
@@ -324,6 +399,36 @@
                 let resta = aba.total-sum;
 
                 return aba.total+'Kg - '+sum.toFixed(2)+'Kg = '+resta.toFixed(2)+'Kg';
+            },
+            /****************************** datatables ********************************************************/
+            //datatable de carga
+            tabla() {
+                this.$nextTick(() => {
+                    $('#abfin').DataTable({
+                        "language": this.español,
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            'colvis'
+                        ],
+                    })
+                })
             },
             /************************************* Globales ************************************/
             color(data){
@@ -425,6 +530,33 @@
                 await axios.post('AbaEntre/updeAbas', data)
                 .then(eve => {this.ConAba(), /* this.openModal(), */ this.alertSucces()})
                 .catch(err => {this.errors = err.response.data.errors, this.alertWarning()})
+            },
+            /************************************ Abastos finalizados *********************************/
+            async buscaAbas(dat){
+                //console.log(dat)
+                if(dat.fechaini != '' & dat.fechafin != ''){
+                    $('#abfin').DataTable().clear();
+                    $('#abfin').DataTable().destroy();
+                    dat.departamento = this.S_Area
+                    let confin = axios.post('AbaEntre/ConAbaFin', dat)
+                    .then(res => {
+                        //console.log(res.data)
+                        this.abafin = res.data
+                        this.tabla()
+                    })
+                    .catch(err => {
+                        this.abafin = []
+                        this.tabla()
+                    })
+                }else{
+                    Swal.fire('Las fechas de busqueda son obligatorias')
+                }
+            },
+            resetAbaFin(){
+                this.formBus.fechaini = '';
+                this.formBus.fechafin = '';
+                this.formBus.departamento = this.S_Area;
+                this.abafin = [];
             }
 
         },
@@ -482,6 +614,10 @@
             S_Area: async function(b){
 
                 var datos = {'departamento_id': this.S_Area, 'modulo': 'abaEntre'};
+                $('#abfin').DataTable().clear();
+                $('#abfin').DataTable().destroy();
+                this.tabla()
+                this.abafin = []
 
                 //Produccion
                 let car = await axios.post('AbaEntre/Carga', datos)

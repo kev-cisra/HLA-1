@@ -4,6 +4,7 @@ namespace App\Models\Produccion;
 
 use App\Models\Produccion\catalogos\claves;
 use App\Models\Produccion\catalogos\procesos;
+use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,7 @@ class carga extends Model
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
 
-    //relacion uno a uchos
+    //relacion uno a muchos
     public function notas(){
         return $this->hasMany(notasCarga::class, 'carga_id');
     }
@@ -61,5 +62,9 @@ class carga extends Model
 
     public function perfil(){
         return $this->belongsTo(PerfilesUsuarios::class, 'per_carga');
+    }
+
+    public function departamento(){
+        return $this->belongsTo(Departamentos::class, 'departamento_id');
     }
 }

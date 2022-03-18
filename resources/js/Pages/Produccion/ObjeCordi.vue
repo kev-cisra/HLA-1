@@ -58,7 +58,7 @@
                         <td class="tw-text-center"> {{ ca.id }} </td>
                         <td>{{ca.fecha}}</td>
                         <td class="">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
-                        <td class="">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
+                        <td class="">{{ca.departamento.Nombre}}</td>
                         <td class="">{{ca.proceso.nompro}}</td>
                         <td class=" tw-w-40">
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-emerald-600 tw-rounded-full" v-if="ca.notaPen == 2 & ca.proceso.tipo == 2">NOTA COORDINADOR</div>
