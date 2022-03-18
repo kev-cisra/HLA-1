@@ -54,8 +54,8 @@ class AutorizaRequisicionesSistemasController extends Controller{
                 break;
 
             case 2:
-                    //Actualiza el estauts de la requisicion
-                    RequisicionesSistemas::where('id', $request->requisicion_sistemas_id)->update(['Estatus' => 4]);
+                    //Actualiza el estauts de la requisicion rechazada
+                    RequisicionesSistemas::where('id', $request->requisicion_sistemas_id)->update(['Estatus' => 10]);
                     //Rechaza la cotizacion seleccionada
                     CotizacionesSistemas::where('id', $request->id)->update(['Aprobado' => 0]);
                 return redirect()->back();

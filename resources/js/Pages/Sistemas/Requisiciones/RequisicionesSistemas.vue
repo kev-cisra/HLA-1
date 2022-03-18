@@ -23,6 +23,7 @@
                     <th class="columna">FOLIO</th>
                     <th class="columna">SOLICITANTE</th>
                     <th class="columna">DEPARTAMENTO</th>
+                    <th class="columna">MATERIAL</th>
                     <th class="columna">ESTATUS</th>
                     <th class="columna">ACCIONES</th>
                 </template>
@@ -33,26 +34,48 @@
                         <td>RSIS-0{{data.Folio}}</td>
                         <td>{{data.perfil.Nombre}} {{data.perfil.ApPat}} {{data.perfil.ApMat}} </td>
                         <td>{{data.departamento.Nombre}}</td>
-                        <td class="FlexCenter">
-                            <div v-if="data.Estatus == 0">
-                                <span tooltip="Confirmar Solicitud" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">SOLICITADO</span>
-                                </span>
-                            </div>
-                            <div v-if="data.Estatus == 1">
-                                <span tooltip="Solicitado" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">COTIZAR</span>
-                                </span>
-                            </div>
-                            <div v-if="data.Estatus == 2">
-                                <span tooltip="Cotizado" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-500 tw-rounded-full">COTIZADO</span>
-                                </span>
-                            </div>
-                            <div v-if="data.Estatus == 3">
-                                <span tooltip="Cotizado" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">AUTORIZACIÓN</span>
-                                </span>
+                        <td>
+                            <p v-for="art in data.articulos" :key="art.id">
+                                -{{art.hardware.Cantidad }} {{art.hardware.Unidad }} {{art.hardware.Nombre }}
+                            </p>
+                        </td>
+                        <td>
+                            <div class="FlexCenter">
+                                <div v-if="data.Estatus == 0">
+                                    <span tooltip="Confirmar Solicitud" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">SOLICITADO</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 1">
+                                    <span tooltip="Solicitado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">COTIZAR</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 2">
+                                    <span tooltip="Cotizado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-500 tw-rounded-full">COTIZADO</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 3">
+                                    <span tooltip="En Autorización" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">AUTORIZACIÓN</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 4">
+                                    <span tooltip="Autorizado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-500 tw-rounded-full">APROBADO</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 5">
+                                    <span tooltip="Material Adquirido" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blue-500 tw-rounded-full">STOCK</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 10">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-rose-500 tw-rounded-full">RECHAZADA</span>
+                                    </span>
+                                </div>
                             </div>
                         </td>
                         <td>

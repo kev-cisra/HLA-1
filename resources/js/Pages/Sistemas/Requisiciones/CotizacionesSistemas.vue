@@ -22,6 +22,7 @@
                     <th class="columna">FOLIO</th>
                     <th class="columna">SOLICITANTE</th>
                     <th class="columna">DEPARTAMENTO</th>
+                    <th class="columna">MATERIAL</th>
                     <th class="columna">ESTATUS</th>
                     <th class="columna">ACCIONES</th>
                 </template>
@@ -32,26 +33,48 @@
                         <td>{{data.Folio}}</td>
                         <td>{{data.perfil.Nombre}} {{data.perfil.ApPat}} {{data.perfil.ApMat}} </td>
                         <td>{{data.departamento.Nombre}}</td>
-                        <td class="FlexCenter">
-                            <div v-if="data.Estatus == 0">
-                                <span tooltip="Confirmar Solicitud" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">SOLICITADO</span>
-                                </span>
-                            </div>
-                            <div v-if="data.Estatus == 1">
-                                <span tooltip="Solicitado" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">COTIZAR</span>
-                                </span>
-                            </div>
-                            <div v-if="data.Estatus == 2">
-                                <span tooltip="Cotizado" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-500 tw-rounded-full">COTIZADO</span>
-                                </span>
-                            </div>
-                            <div v-if="data.Estatus == 3">
-                                <span tooltip="Cotizado" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">AUTORIZACIÓN</span>
-                                </span>
+                        <td>
+                            <p v-for="art in data.articulos" :key="art.id">
+                                -{{art.hardware.Cantidad }} {{art.hardware.Unidad }} {{art.hardware.Nombre }}
+                            </p>
+                        </td>
+                        <td>
+                            <div class="FlexCenter">
+                                <div v-if="data.Estatus == 0">
+                                    <span tooltip="Confirmar Solicitud" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">SOLICITADO</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 1">
+                                    <span tooltip="Solicitado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">COTIZAR</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 2">
+                                    <span tooltip="Cotizado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-500 tw-rounded-full">COTIZADO</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 3">
+                                    <span tooltip="En Autorización" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">AUTORIZACIÓN</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 4">
+                                    <span tooltip="Autorizado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-500 tw-rounded-full">APROBADO</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 5">
+                                    <span tooltip="Material Adquirido" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blue-500 tw-rounded-full">STOCK</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 10">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-rose-500 tw-rounded-full">RECHAZADA</span>
+                                    </span>
+                                </div>
                             </div>
                         </td>
                         <td>
@@ -61,7 +84,12 @@
                                         <i class="fas fa-file-invoice-dollar"></i>
                                     </span>
                                 </div>
-                                <div class="iconoTeal" @click="ConfirmaCotizacion(data)" v-else-if="data.Estatus == 2">
+                                <div class="iconoGreen" @click="ConfirmaMaterial(data)" v-if="data.Estatus == 1 || data.Estatus == 4">
+                                    <span tooltip="Confirma Material" flow="left">
+                                        <i class="fa-solid fa-box-open"></i>
+                                    </span>
+                                </div>
+                                <div class="iconoTeal" @click="ConfirmaCotizacion(data)" v-else-if="data.Estatus == 2 || data.Estatus == 10">
                                     <span tooltip="Confirma Cotizacion" flow="left">
                                         <i class="fa-solid fa-circle-check"></i>
                                     </span>
@@ -210,8 +238,8 @@
                                 <td class="tw-text-center">{{data.TipoPago}}</td>
                                 <td class="tw-text-center">{{data.Moneda}}</td>
                                 <td class="tw-text-center">{{data.TipoCambio}}</td>
-                                <td class="FlexCenter">
-                                    <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
+                                <td>
+                                    <div class="FlexCenter">
                                         <div class="IconAproved"  v-if="data.Aprobado == 1">
                                             <span tooltip="APROBADO" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -247,15 +275,15 @@
                                 <td class="tw-text-center">{{pre.Precio}}</td>
                                 <td class="tw-text-center">{{pre.Total}}</td>
                                 <td>
-                                    <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
-                                        <div class="iconoEdit" @click="edit(data)" v-if="Estatus == 2">
+                                    <div class="FlexCenter">
+                                        <div class="iconoEdit" @click="edit(data)" v-if="Estatus == 2 || Estatus == 10">
                                             <span tooltip="Editar" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                                                 </svg>
                                             </span>
                                         </div>
-                                        <div class="IconProcess" v-if="Estatus >= 3">
+                                        <div class="IconProcess" v-if="Estatus >= 3 && Estatus < 10">
                                             <span tooltip="En proceso ..." flow="left">
                                                 <i class="fa-solid fa-spinner"></i>
                                             </span>
@@ -327,7 +355,6 @@ export default {
     },
 
     mounted() {
-
     },
 
     components: {
@@ -415,8 +442,19 @@ export default {
             });
         },
 
-        ConfirmaCotizacion(data){
+        ConfirmaCotizacion(data){ //Envia la cotizacion para autorizacion
             data.Metodo = 1;
+            data._method = "PUT";
+            this.$inertia.post("/Sistemas/CotizacionSistemas/" + data.id, data, {
+                onSuccess: () => {
+                    this.reset();
+                    this.alertSucces();
+                },
+            });
+        },
+
+        ConfirmaMaterial(data){ //Confirma que existe el material
+            data.Metodo = 2;
             data._method = "PUT";
             this.$inertia.post("/Sistemas/CotizacionSistemas/" + data.id, data, {
                 onSuccess: () => {
@@ -463,7 +501,7 @@ export default {
         },
 
         EditaCotizacion(data){
-            data.Metodo = 2;
+            data.Metodo = 3;
             data._method = "PUT";
             this.$inertia.post("/Sistemas/CotizacionSistemas/" + data.id, data, {
                 onSuccess: () => {

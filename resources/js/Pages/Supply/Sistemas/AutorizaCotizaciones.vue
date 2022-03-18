@@ -32,16 +32,28 @@
                         <td>{{data.Folio}}</td>
                         <td>{{data.perfil.Nombre}} {{data.perfil.ApPat}} {{data.perfil.ApMat}} </td>
                         <td>{{data.departamento.Nombre}}</td>
-                        <td class="FlexCenter">
-                            <div v-if="data.Estatus == 3">
-                                <span tooltip="Cotizado" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">AUTORIZA</span>
-                                </span>
-                            </div>
-                            <div v-if="data.Estatus == 4">
-                                <span tooltip="Cotizado" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-500 tw-rounded-full">AUTORIZADO</span>
-                                </span>
+                        <td>
+                            <div class="FlexCenter">
+                                <div v-if="data.Estatus == 3">
+                                    <span tooltip="Cotizado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">AUTORIZA</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 4">
+                                    <span tooltip="Autorizado" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-500 tw-rounded-full">APROBADA</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 5">
+                                    <span tooltip="Material Adquirido" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blue-500 tw-rounded-full">STOCK</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 10">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-rose-500 tw-rounded-full">RECHAZADA</span>
+                                    </span>
+                                </div>
                             </div>
                         </td>
                         <td>

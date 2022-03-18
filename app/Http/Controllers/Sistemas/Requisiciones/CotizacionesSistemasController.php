@@ -34,7 +34,6 @@ class CotizacionesSistemasController extends Controller{
 
         if($request->Req){
             $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Precios.Articulos.Hardware'])->where('id', '=', $request->Req)->first();
-
         }else{
             $RequisicionSistemas = new stdClass();
         }
@@ -95,6 +94,11 @@ class CotizacionesSistemasController extends Controller{
                 break;
 
             case 2:
+                RequisicionesSistemas::where('id', $request->id)->update(['Estatus' => 5]);
+                return redirect()->back();
+                break;
+
+            case 3: //Atualizacion de la cotizacion
                 if(isset($request->archivo)){ //Valido envio de Archivo
                     $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
 

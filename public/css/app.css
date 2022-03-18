@@ -23594,6 +23594,14 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(153, 246, 228, var(--tw-bg-opacity));
 }
+.tw-bg-blue-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(59, 130, 246, var(--tw-bg-opacity));
+}
+.tw-bg-rose-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(244, 63, 94, var(--tw-bg-opacity));
+}
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
 }
