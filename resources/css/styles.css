@@ -96,6 +96,10 @@
     @apply tw-w-4 tw-mr-2 tw-transform tw-text-red-500  hover:tw-text-sky-600 hover:tw-scale-125;
 }
 
+.IconProcess{
+    @apply tw-w-4 tw-mr-2 tw-transform tw-text-blueGray-400 hover:tw-text-blueGray-400 hover:tw-scale-125;
+}
+
 .btn-row{
     @apply tw-block tw-w-full tw-font-semibold tw-text-gray-500 tw-bg-gray-200 tw-border tw-border-gray-300 tw-rounded-full tw-appearance-none;
 }

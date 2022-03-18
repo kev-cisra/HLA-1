@@ -34,13 +34,13 @@
                         <td>{{data.departamento.Nombre}}</td>
                         <td class="FlexCenter">
                             <div v-if="data.Estatus == 0">
-                                <span tooltip="Confirmar Solicitud de Papeleria" flow="left">
+                                <span tooltip="Confirmar Solicitud" flow="left">
                                     <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">SOLICITADO</span>
                                 </span>
                             </div>
                             <div v-if="data.Estatus == 1">
                                 <span tooltip="Solicitado" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">EN COMPRA</span>
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">COTIZAR</span>
                                 </span>
                             </div>
                             <div v-if="data.Estatus == 2">
@@ -48,17 +48,25 @@
                                     <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-500 tw-rounded-full">COTIZADO</span>
                                 </span>
                             </div>
+                            <div v-if="data.Estatus == 3">
+                                <span tooltip="Cotizado" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">AUTORIZACIÓN</span>
+                                </span>
+                            </div>
                         </td>
                         <td>
-                            <div class="tw-flex tw-justify-center tw-items-center tw-gap-4" v-if="data.Estatus == 1">
-                                <div class="iconoPurple" @click="CotizarReq(data)">
+                            <div class="tw-flex tw-justify-center tw-items-center" >
+                                <div class="iconoPurple" @click="CotizarReq(data)" v-if="data.Estatus == 1">
                                     <span tooltip="Realizar Cotizacion" flow="left">
                                         <i class="fas fa-file-invoice-dollar"></i>
                                     </span>
                                 </div>
-                            </div>
-                            <div class="tw-flex tw-justify-center tw-items-center tw-gap-4" v-else-if="data.Estatus == 2">
-                                <div class="iconoCyan" @click="VisualizaCotizacion(data)">
+                                <div class="iconoTeal" @click="ConfirmaCotizacion(data)" v-else-if="data.Estatus == 2">
+                                    <span tooltip="Confirma Cotizacion" flow="left">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                    </span>
+                                </div>
+                                <div class="iconoCyan" @click="VisualizaCotizacion(data)" v-if="data.Estatus > 1">
                                     <span tooltip="Realizar Cotizacion" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -144,14 +152,18 @@
                             <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
                             </label>
                         </div>
-                        <span v-if="form.ImagenServidor != null">{{form.archivo}}</span>
-                        <!-- <small v-if="errors.archivo" class="validation-alert">{{errors.archivo}}</small> -->
+                        <div v-if="form.archivo != null">
+                            <!-- <iframe :src="path + form.archivo" title="description" ></iframe> -->
+                            <span class="tw-text-green-600">{{form.archivo}}</span>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
             <div class="ModalFooter">
-                <jet-button type="button" @click="RealizaCotizacion(form)" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
+                <jet-button type="button" @click="RealizaCotizacion(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
+                <jet-button type="button" @click="EditaCotizacion(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button>
                 <jet-CancelButton @click="chageDetalle">Cerrar</jet-CancelButton>
             </div>
         </modal>
@@ -162,6 +174,7 @@
             </div>
 
             <div class="ModalForm">
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Requisición --</p>
                 <Table>
                     <template v-slot:TableHeader>
                         <th class="columna">FECHA</th>
@@ -182,7 +195,7 @@
                     </template>
                 </Table>
                 <div v-for="data in RequisicionSistemas.cotizacion" :key="data.id">
-
+                    <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Cotización --</p>
                     <Table>
                         <template v-slot:TableHeader>
                             <th class="columna">TIPO PAGO</th>
@@ -197,7 +210,24 @@
                                 <td class="tw-text-center">{{data.TipoPago}}</td>
                                 <td class="tw-text-center">{{data.Moneda}}</td>
                                 <td class="tw-text-center">{{data.TipoCambio}}</td>
-                                <td class="tw-text-center">{{data.Aprobado}}</td>
+                                <td class="FlexCenter">
+                                    <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
+                                        <div class="IconAproved"  v-if="data.Aprobado == 1">
+                                            <span tooltip="APROBADO" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="IconDenied" v-else>
+                                            <span tooltip="DENEGADO" flow="left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
+                                            </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td class="tw-text-center">{{data.Comentario}}</td>
                             </tr>
                         </template>
@@ -208,6 +238,7 @@
                             <th class="columna">MARCA</th>
                             <th class="columna">PRECIO</th>
                             <th class="columna">TOTAL</th>
+                            <th class="columna">ACCIONES</th>
                         </template>
 
                         <template v-slot:TableFooter>
@@ -215,6 +246,22 @@
                                 <td class="tw-text-center">{{pre.Marca}}</td>
                                 <td class="tw-text-center">{{pre.Precio}}</td>
                                 <td class="tw-text-center">{{pre.Total}}</td>
+                                <td>
+                                    <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
+                                        <div class="iconoEdit" @click="edit(data)" v-if="Estatus == 2">
+                                            <span tooltip="Editar" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="IconProcess" v-if="Estatus >= 3">
+                                            <span tooltip="En proceso ..." flow="left">
+                                                <i class="fa-solid fa-spinner"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </template>
                     </Table>
@@ -222,7 +269,6 @@
             </div>
 
             <div class="ModalFooter">
-                <jet-button type="button" @click="RealizaCotizacion(form)" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
                 <jet-CancelButton @click="chageCotizacion">Cerrar</jet-CancelButton>
             </div>
         </modal>
@@ -260,9 +306,12 @@ export default {
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             showDetalle: false,
             showCotizacion: false,
+            showEdit: false,
+            Estatus: 0,
             form: {
                 IdUser: this.Session.id,
                 requisicion_sistemas_id: '',
+                Cotizacion_id: '',
                 Folio: '',
                 Fecha: '',
                 Departamento_id: '',
@@ -311,12 +360,13 @@ export default {
             this.form = {
                 IdUser: this.Session.id,
                 requisicion_sistemas_id: '',
+                Cotizacion_id: '',
                 Folio: '',
                 Fecha: '',
                 Departamento_id: '',
                 Estatus: '',
                 Moneda: '',
-                TipoCambio: 0,
+                TipoCambio: 1,
                 TipoPago: '',
                 Comentario: '',
                 archivo: '',
@@ -324,15 +374,12 @@ export default {
             };
         },
 
-        chageCreate(){
-            this.showCreate = !this.showCreate;
-        },
-
         chageDetalle(){
             this.showDetalle  = !this.showDetalle;
         },
 
         CotizarReq(data){
+            this.reset();
             this.chageDetalle();
             this.form.requisicion_sistemas_id = data.id;
             this.form.Folio = data.Folio;
@@ -368,6 +415,17 @@ export default {
             });
         },
 
+        ConfirmaCotizacion(data){
+            data.Metodo = 1;
+            data._method = "PUT";
+            this.$inertia.post("/Sistemas/CotizacionSistemas/" + data.id, data, {
+                onSuccess: () => {
+                    this.reset();
+                    this.alertSucces();
+                },
+            });
+        },
+
         chageCotizacion(){
             this.showCotizacion  = !this.showCotizacion;
         },
@@ -376,24 +434,50 @@ export default {
                 this.$inertia.get('/Sistemas/CotizacionSistemas', { Req: data.id }, { //envio de variables por url
                 onSuccess: () => {
                     this.chageCotizacion();
-                    console.log(this.RequisicionSistemas);
-                    console.log(this.RequisicionSistemas.cotizacion);
-                    this.RequisicionSistemas;
+                    this.Estatus = this.RequisicionSistemas.Estatus;
             }, preserveState: true })
+        },
+
+        edit(data){
+            this.chageCotizacion();
+            this.chageDetalle();
+            this.editMode = true;
+            this.form.Cotizacion_id = data.id;
+            this.form.Moneda = data.Moneda;
+            this.form.TipoPago = data.TipoPago;
+            this.form.TipoCambio = data.TipoCambio;
+            this.form.Comentario = data.Comentario;
+
+            this.form.DatosCotizacion = []; //Vacio arreglo de inputs
+            data.precios.forEach(Pre => { //Generacion de inputs apartir del objeto a recorrer
+                this.form.DatosCotizacion.push({ //Añado mas campos a visualizar
+                    Cot_id: Pre.id,
+                    id: Pre.id,
+                    Marca: Pre.Marca,
+                    PrecioUnitario: Pre.Precio,
+                    Cantidad: Pre.articulos.Cantidad,
+                    Unidad: Pre.articulos.Unidad,
+                    Hardware_id: Pre.articulos.hardware.Nombre,
+                })
+            })
+        },
+
+        EditaCotizacion(data){
+            data.Metodo = 2;
+            data._method = "PUT";
+            this.$inertia.post("/Sistemas/CotizacionSistemas/" + data.id, data, {
+                onSuccess: () => {
+                    this.editMode = false;
+                    this.chageDetalle();
+                    this.reset();
+                    this.alertSucces();
+                },
+            });
         },
 
     },
 
     computed:{
-        Cotizacion: function () {
-            const Cotizacion = []; //Declaracion d enuevo arreglo
-
-            this.RequisicionSistemas.cotizacion.forEach(cotizacion => {
-                Cotizacion.push(cotizacion.TipoPago)
-            });
-
-            return Cotizacion;
-        }
     },
 
     watch: {

@@ -35,13 +35,23 @@
                         <td>{{data.departamento.Nombre}}</td>
                         <td class="FlexCenter">
                             <div v-if="data.Estatus == 0">
-                                <span tooltip="Confirmar Solicitud de Papeleria" flow="left">
+                                <span tooltip="Confirmar Solicitud" flow="left">
                                     <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">SOLICITADO</span>
                                 </span>
                             </div>
                             <div v-if="data.Estatus == 1">
-                                <span tooltip="Entrega Material" flow="left">
-                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">EN COMPRA</span>
+                                <span tooltip="Solicitado" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">COTIZAR</span>
+                                </span>
+                            </div>
+                            <div v-if="data.Estatus == 2">
+                                <span tooltip="Cotizado" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-500 tw-rounded-full">COTIZADO</span>
+                                </span>
+                            </div>
+                            <div v-if="data.Estatus == 3">
+                                <span tooltip="Cotizado" flow="left">
+                                    <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">AUTORIZACIÓN</span>
                                 </span>
                             </div>
                         </td>

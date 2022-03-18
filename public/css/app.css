@@ -22615,6 +22615,10 @@ select {
 	margin-left: 5rem;
 	margin-right: 5rem;
 }
+.tw-my-auto {
+	margin-top: auto;
+	margin-bottom: auto;
+}
 .tw-ml-2 {
 	margin-left: 0.5rem;
 }
@@ -22867,6 +22871,12 @@ select {
 .tw-w-14 {
 	width: 3.5rem;
 }
+.tw-w-80 {
+	width: 20rem;
+}
+.tw-w-96 {
+	width: 24rem;
+}
 .tw-min-w-0 {
 	min-width: 0px;
 }
@@ -22958,6 +22968,22 @@ select {
 	-webkit-animation: tw-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 	        animation: tw-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+@-webkit-keyframes tw-spin {
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes tw-spin {
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+.tw-animate-spin {
+	-webkit-animation: tw-spin 1s linear infinite;
+	        animation: tw-spin 1s linear infinite;
+}
 .tw-cursor-pointer {
 	cursor: pointer;
 }
@@ -22992,6 +23018,9 @@ select {
 }
 .tw-content-center {
 	align-content: center;
+}
+.tw-content-end {
+	align-content: flex-end;
 }
 .tw-items-center {
 	align-items: center;
@@ -24268,6 +24297,20 @@ select {
 	transform: var(--tw-transform);
 	--tw-text-opacity: 1;
 	color: rgba(2, 132, 199, var(--tw-text-opacity));
+}
+.IconProcess {
+	margin-right: 0.5rem;
+	width: 1rem;
+	transform: var(--tw-transform);
+	--tw-text-opacity: 1;
+	color: rgba(148, 163, 184, var(--tw-text-opacity));
+}
+.IconProcess:hover {
+	--tw-scale-x: 1.25;
+	--tw-scale-y: 1.25;
+	transform: var(--tw-transform);
+	--tw-text-opacity: 1;
+	color: rgba(148, 163, 184, var(--tw-text-opacity));
 }
 .btn-row {
 	display: block;
@@ -26260,6 +26303,10 @@ select {
 
 	.lg\:tw-w-full {
 		width: 100%;
+	}
+
+	.lg\:tw-w-3\/4 {
+		width: 75%;
 	}
 
 	.lg\:tw-flex-row {

@@ -33,7 +33,7 @@ class CotizacionesSistemasController extends Controller{
         ])->where('Estatus', '>', 0)->get();
 
         if($request->Req){
-            $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
+            $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Precios.Articulos.Hardware'])->where('id', '=', $request->Req)->first();
 
         }else{
             $RequisicionSistemas = new stdClass();
@@ -86,38 +86,46 @@ class CotizacionesSistemasController extends Controller{
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    public function update(Request $request, $id){
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        switch ($request->Metodo) {
+            case 1:
+                RequisicionesSistemas::where('id', $request->id)->update(['Estatus' => 3]);
+                return redirect()->back();
+                break;
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+            case 2:
+                if(isset($request->archivo)){ //Valido envio de Archivo
+                    $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
+
+                    //Guardado de Imagen en la carpeta Public/Storage.. (Uso del disco Public pora la restriccion de los archivos)
+                    $url = $request->archivo->storePubliclyAs('Archivos/Sistemas/Requisiciones/Cotizaciones',  $file, 'public');
+
+                    }else{
+                        $url = 'Archivos/FileNotFound404.jpg';
+                    }
+
+                    $Cotizacion = CotizacionesSistemas::where('id', $request->Cotizacion_id)->update([
+                        'IdUser' => $request->IdUser,
+                        'TipoPago' => $request->TipoPago,
+                        'Moneda' => $request->Moneda,
+                        'TipoCambio' => $request->TipoCambio,
+                        'Comentario' => $request->Comentario,
+                        'Archivo' => $url,
+                    ]);
+
+                    foreach ($request->DatosCotizacion as $value) {
+
+                        $PrecioCotizacion = PreciosCotizacionesSistemas::where('id', $value['Cot_id'])->update([
+                            'Marca' => $value['Marca'],
+                            'Precio' => $value['PrecioUnitario'],
+                            'Total' => ($value['PrecioUnitario'] * $request->TipoCambio) * $value['Cantidad'],
+                        ]);
+                    }
+
+                    return redirect()->back();
+                break;
+        }
     }
 
     /**
