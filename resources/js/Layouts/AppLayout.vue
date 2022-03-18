@@ -134,7 +134,7 @@
                     </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index'])">
                         <jet-responsive-nav-link :href="route('Admin')" :active="route().current('Admin')">
-                            <i class="tw-mr-2 fa-brands fa-solid fa-user-secret tw-text-gray-600"></i> ADMINISTRADOR
+                            <i class="tw-mr-2 fa-solid fa-user-secret tw-text-gray-600"></i> ADMINISTRADOR
                         </jet-responsive-nav-link>
                     </div>
                     <div class="pt-2 pb-3 space-y-1" v-if="hasAnyPermission(['admin.index', 'RecursosHumanos.index'])">

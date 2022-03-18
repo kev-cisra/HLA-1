@@ -16,7 +16,7 @@
         </section>
         <!-- ********************************* TABLAS ********************************************* -->
         <section class="tw-mx-8">
-            <Table id="datos">
+            <Table id="Requisiciones">
                 <template v-slot:TableHeader>
                     <th class="columna">FECHA</th>
                     <th class="columna">FOLIO</th>
@@ -116,8 +116,8 @@
                                     <td class="tw-text-center">{{data.Moneda}}</td>
                                     <td class="tw-text-center">{{data.TipoCambio}}</td>
                                     <td class="tw-text-center">{{data.Comentario}}</td>
-                                    <td class="FlexCenter">
-                                        <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
+                                    <td>
+                                        <div class="FlexCenter">
                                             <div class="IconAproved"  v-if="data.Aprobado == 1">
                                                 <span tooltip="APROBADO" flow="left">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -216,10 +216,6 @@ export default {
         };
     },
 
-    mounted() {
-
-    },
-
     components: {
         AppLayout,
         Welcome,
@@ -241,9 +237,46 @@ export default {
         RequisicionSistemas: Object, //Requisicion con Cotizacion
     },
 
+    mounted() {
+        this.tabla();
+    },
+
     methods: {
-        //Datatables
-        tabla() {
+       //Generacion de Tabla con Datatables
+        tabla(){
+            this.$nextTick(() => {
+                $("#Requisiciones").DataTable({
+                    destroy: true,
+                    stateSave: true,
+                    language: this.español,
+                    paging: true,
+                    pageLength : 20,
+                    scrollX: true,
+                    scrollY:  '40vh',
+                    order: [0, 'desc'],
+                    columnDefs: [
+                        { "width": "3%", "targets": [0] },
+                    ],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
+                }).draw();
+            });
         },
 
         reset() {

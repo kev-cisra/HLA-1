@@ -15,8 +15,8 @@
             </div>
         </section>
         <!-- ****************************************** CONTENIDO ********************************************* -->
-        <section class="tw-mx-2">
-            <Table id="datos">
+        <section class="tw-mx-4">
+            <Table id="Hardware">
                 <template v-slot:TableHeader>
                     <th class="columna">CANTIDAD</th>
                     <th class="columna">NOMBRE</th>
@@ -161,9 +161,47 @@ export default {
     },
 
     mounted(){
+        this.tabla();
     },
 
     methods: {
+       //Generacion de Tabla con Datatables
+        tabla(){
+            this.$nextTick(() => {
+                $("#Hardware").DataTable({
+                    destroy: true,
+                    stateSave: true,
+                    language: this.español,
+                    paging: true,
+                    pageLength : 20,
+                    scrollX: true,
+                    scrollY:  '40vh',
+                    order: [0, 'desc'],
+                    columnDefs: [
+                        { "width": "3%", "targets": [0] },
+                    ],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
+                }).draw();
+            });
+        },
+
         reset() {
             this.form = {
                 IdUser: this.Session.id,

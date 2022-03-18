@@ -16,7 +16,7 @@
         </section>
         <!-- ********************************* TABLAS ********************************************* -->
         <section class="tw-mx-8">
-            <Table id="datos">
+            <Table id="Requisiciones">
                 <template v-slot:TableHeader>
                     <th class="columna">FECHA</th>
                     <th class="columna">FOLIO</th>
@@ -224,75 +224,77 @@
                 </Table>
                 <div v-for="data in RequisicionSistemas.cotizacion" :key="data.id">
                     <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Cotización --</p>
-                    <Table>
-                        <template v-slot:TableHeader>
-                            <th class="columna">TIPO PAGO</th>
-                            <th class="columna">MONEDA</th>
-                            <th class="columna">TIPO CAMBIO</th>
-                            <th class="columna">APROVADO</th>
-                            <th class="columna">COMENTARIOS</th>
-                        </template>
+                    <div :class="{ 'tw-p-2 tw-border-4 tw-border-teal-700 tw-bg-teal-600': data.Aprobado == 1}">
+                        <Table>
+                            <template v-slot:TableHeader>
+                                <th class="columna">TIPO PAGO</th>
+                                <th class="columna">MONEDA</th>
+                                <th class="columna">TIPO CAMBIO</th>
+                                <th class="columna">APROVADO</th>
+                                <th class="columna">COMENTARIOS</th>
+                            </template>
 
-                        <template v-slot:TableFooter>
-                            <tr class="fila" >
-                                <td class="tw-text-center">{{data.TipoPago}}</td>
-                                <td class="tw-text-center">{{data.Moneda}}</td>
-                                <td class="tw-text-center">{{data.TipoCambio}}</td>
-                                <td>
-                                    <div class="FlexCenter">
-                                        <div class="IconAproved"  v-if="data.Aprobado == 1">
-                                            <span tooltip="APROBADO" flow="left">
+                            <template v-slot:TableFooter>
+                                <tr class="fila" >
+                                    <td class="tw-text-center">{{data.TipoPago}}</td>
+                                    <td class="tw-text-center">{{data.Moneda}}</td>
+                                    <td class="tw-text-center">{{data.TipoCambio}}</td>
+                                    <td>
+                                        <div class="FlexCenter">
+                                            <div class="IconAproved"  v-if="data.Aprobado == 1">
+                                                <span tooltip="APROBADO" flow="left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="IconDenied" v-else>
+                                                <span tooltip="DENEGADO" flow="left">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                                    <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
                                                 </svg>
-                                            </span>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="IconDenied" v-else>
-                                            <span tooltip="DENEGADO" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
-                                            </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="tw-text-center">{{data.Comentario}}</td>
-                            </tr>
-                        </template>
-                    </Table>
+                                    </td>
+                                    <td class="tw-text-center">{{data.Comentario}}</td>
+                                </tr>
+                            </template>
+                        </Table>
 
-                    <Table>
-                        <template v-slot:TableHeader>
-                            <th class="columna">MARCA</th>
-                            <th class="columna">PRECIO</th>
-                            <th class="columna">TOTAL</th>
-                            <th class="columna">ACCIONES</th>
-                        </template>
+                        <Table>
+                            <template v-slot:TableHeader>
+                                <th class="columna">MARCA</th>
+                                <th class="columna">PRECIO</th>
+                                <th class="columna">TOTAL</th>
+                                <th class="columna">ACCIONES</th>
+                            </template>
 
-                        <template v-slot:TableFooter>
-                            <tr class="fila" v-for="pre in data.precios" :key="pre.id">
-                                <td class="tw-text-center">{{pre.Marca}}</td>
-                                <td class="tw-text-center">{{pre.Precio}}</td>
-                                <td class="tw-text-center">{{pre.Total}}</td>
-                                <td>
-                                    <div class="FlexCenter">
-                                        <div class="iconoEdit" @click="edit(data)" v-if="Estatus == 2 || Estatus == 10">
-                                            <span tooltip="Editar" flow="left">
-                                                <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                                </svg>
-                                            </span>
+                            <template v-slot:TableFooter>
+                                <tr class="fila" v-for="pre in data.precios" :key="pre.id">
+                                    <td class="tw-text-center">{{pre.Marca}}</td>
+                                    <td class="tw-text-center">{{pre.Precio}}</td>
+                                    <td class="tw-text-center">{{pre.Total}}</td>
+                                    <td>
+                                        <div class="FlexCenter">
+                                            <div class="iconoEdit" @click="edit(data)" v-if="Estatus == 2 || Estatus == 10">
+                                                <span tooltip="Editar" flow="left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="IconProcess" v-if="Estatus >= 3 && Estatus < 10">
+                                                <span tooltip="En proceso ..." flow="left">
+                                                    <i class="fa-solid fa-spinner"></i>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="IconProcess" v-if="Estatus >= 3 && Estatus < 10">
-                                            <span tooltip="En proceso ..." flow="left">
-                                                <i class="fa-solid fa-spinner"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </template>
-                    </Table>
+                                    </td>
+                                </tr>
+                            </template>
+                        </Table>
+                    </div>
                 </div>
             </div>
 
@@ -354,9 +356,6 @@ export default {
         };
     },
 
-    mounted() {
-    },
-
     components: {
         AppLayout,
         Welcome,
@@ -378,9 +377,46 @@ export default {
         RequisicionSistemas: Object, //Requisicion con Cotizacion
     },
 
+    mounted() {
+        this.tabla();
+    },
+
     methods: {
-        //Datatables
-        tabla() {
+       //Generacion de Tabla con Datatables
+        tabla(){
+            this.$nextTick(() => {
+                $("#Requisiciones").DataTable({
+                    destroy: true,
+                    stateSave: true,
+                    language: this.español,
+                    paging: true,
+                    pageLength : 20,
+                    scrollX: true,
+                    scrollY:  '40vh',
+                    order: [0, 'desc'],
+                    columnDefs: [
+                        { "width": "3%", "targets": [0] },
+                    ],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
+                }).draw();
+            });
         },
 
         reset() {
