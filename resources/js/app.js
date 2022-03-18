@@ -21,6 +21,7 @@ createApp({
                 URLactual: window.location,
                 path: 'https://intranethlangeles.com/storage/app/public/',
                 path2: 'https://intranethlangeles.com/storage',
+                pathDev: '192.168.11.3/storage/app/public/',
                 showModal: false,
                 editMode: false,
                 now: moment().format('Y-M-d H:mm:ss'),

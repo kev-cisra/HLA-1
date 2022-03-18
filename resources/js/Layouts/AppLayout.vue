@@ -163,7 +163,7 @@
                         </jet-responsive-nav-link>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <jet-responsive-nav-link :href="route('Supply')" :active="route().current('sISTEMAS')">
+                        <jet-responsive-nav-link :href="route('Sistemas')" :active="route().current('Sistemas')">
                             <i class="tw-mr-2 fa-solid fa-laptop-code tw-text-gray-600"></i> SISTEMAS
                         </jet-responsive-nav-link>
                     </div>
