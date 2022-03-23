@@ -408,7 +408,7 @@
         </div>
 
         <!------------------------------------- Carga de paquetes de operativos ------------------------------------------>
-        <div class="offcanvas offcanvas-start sm:tw-w-9/12 lg:tw-w-6/12" tabindex="-1" id="pacOpe" aria-labelledby="pacOpeLabel">
+        <div class="offcanvas offcanvas-start sm:tw-w-9/12 lg:tw-w-6/12" data-bs-scroll="true" tabindex="-1" id="pacOpe" aria-labelledby="pacOpeLabel">
             <div class="offcanvas-header tw-bg-teal-700">
                 <h3 class="offcanvas-title tw-text-xl tw-text-blueGray-50" id="pacOpeLabel">Paquetes de Operativos</h3>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -443,10 +443,11 @@
                         <!-- select operador -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                             <jet-label><span class="required">*</span>Operador</jet-label>
-                            <select class="InputSelect" @change="eq_tu" v-model="formPacOpe.dep_perf_id" :disabled="editMode">
+                            <!-- <select class="InputSelect" @change="eq_tu" v-model="formPacOpe.dep_perf_id" :disabled="editMode">
                                 <option value="" disabled>SELECCIONA</option>
-                                <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
-                            </select>
+                                <option v-for="pe in opcPE" :key="pe" :value="pe.id">{{pe.text}}</option>
+                            </select> -->
+                            <Select2 v-model="formPacOpe.dep_perf_id" @change="eq_tu" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcPE" />
                             <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
                         </div>
                         <!-- select Maquinas -->
@@ -1175,7 +1176,7 @@
                 const spe = [];
                 //asignacion de select personal
                 this.personal.forEach(pe => {
-                    spe.push({value: pe.id, text: pe.perfiles.IdEmp +' - '+ pe.perfiles.Nombre+' '+pe.perfiles.ApPat+' '+pe.perfiles.ApMat});
+                    spe.push({id: pe.id, text: pe.perfiles.IdEmp +' - '+ pe.perfiles.Nombre+' '+pe.perfiles.ApPat+' '+pe.perfiles.ApMat});
                 })
                 return spe;
             },

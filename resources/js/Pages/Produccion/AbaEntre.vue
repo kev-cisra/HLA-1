@@ -25,10 +25,10 @@
                 <button class="nav-link" id="nav-aba-fin-tab" data-bs-toggle="tab" data-bs-target="#nav-abafin" type="button" role="tab" aria-controls="nav-abafin" aria-selected="false" @click="resetAbaFin()">Abastos Finalizados</button>
             </div>
         </nav>
-        <div class="tab-content tw-m-5" id="nav-tabContent">
+        <div class="tab-content" id="nav-tabContent">
             <!-- Abastos -->
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                <div class="overflow-auto tw-gap-3 tw-flex tw-flex-wrap tw-justify-center" style="height: 25rem">
+            <div class="tab-pane fade show active overflow-auto" style="height: 70vh" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="tw-gap-3 tw-flex tw-flex-wrap tw-justify-center">
                     <!-- cuerpo tarjeta -->
                     <div class="card tw-w-11/12 md:tw-w-9/12 lg:tw-w-5/12 tw-shadow-xl" v-for="ae in abaentre" :key="ae">
                         <!-- info tarjeta -->
@@ -73,7 +73,7 @@
                                 <tr>
                                     <th>Clave:</th>
                                     <td><!-- {{ ae.clave_id ? ae.clave.CVE_ART+" - "+ae.clave.DESCR : '--' }} -->
-                                        <Select2 v-model="ae.clave_id" class="tw-rounded tw-rounded-md tw-bg-transparent tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCL(ae)"/>
+                                        <Select2 v-model="ae.clave_id" class="tw-rounded tw-rounded-md tw-bg-transparent" :settings="{width: '31vw', allowClear: true}" :options="opcCL(ae)"/>
                                         <small v-if="errors.clave" class="validation-alert">{{errors.clave}}</small>
                                     </td>
                                 </tr>
@@ -202,9 +202,10 @@
                     </div>
                 </div>
                 <!-- tabla -->
-                <div class="tw-w-full">
+                <div class="tw-m-auto" style="width: 98%">
                     <TableGreen id="abfin">
                         <template v-slot:TableHeader>
+                            <th>Fecha de Entrega</th>
                             <th>Folio</th>
                             <th>Banco</th>
                             <th>Partida</th>
@@ -212,9 +213,11 @@
                             <th>Clave</th>
                             <th>Descrición</th>
                             <th>Total enviado</th>
+                            <th></th>
                         </template>
                         <template  v-slot:TableFooter>
                             <tr v-for="af in abafin" :key="af">
+                                <td> {{ fecha(af.created_at) }} </td>
                                 <td>{{ af.folio }}</td>
                                 <td> {{ af.banco ? af.banco : 'N/A' }} </td>
                                 <td> {{ af.partida }} </td>
@@ -222,6 +225,18 @@
                                 <td> {{ af.clave.CVE_ART }} </td>
                                 <td> {{ af.clave.DESCR }} </td>
                                 <td> {{ af.total }} </td>
+                                <td>
+                                    <div class="columnaIconos">
+                                        <div class="iconoDetails" data-bs-toggle="modal" data-bs-target="#tabla_clave" @click="ediAbas(af)">
+                                            <span tooltip="Detalles" flow="left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </template>
                     </TableGreen>
@@ -240,46 +255,17 @@
             </div>
             <div class="tw-mt-4">
                 <div class="ModalForm">
-                    <!-- Formulas -->
-                    <div class="tw-mb-6 lg:tw-flex">
-                        <!-- estatus -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                            <jet-label class=""><span class="required">*</span>Estatus</jet-label>
-                            <select class="InputSelect" v-model="formAba.esta_final">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option value="Activo">Activar</option>
-                                <option value="En espera">En espera</option>
-                                <option value="Fin">Finalizar</option>
-                                <option value="Desactivado">Desactivado</option>
-                            </select>
-                            <small v-if="errors.esta_final" class="validation-alert">{{errors.esta_final}}</small>
-                        </div>
-                        <!-- Norma -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                            <jet-label class=""><span class="required">*</span>Norma</jet-label>
-                            <select class="InputSelect" v-model="formAba.norma" :disabled="formAba.norma" :disable="vrNor">
-                                <option value="" disabled>SELECCIONA</option>
-                                <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
-                            </select>
-                            <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
-                        </div>
-                        <!-- Partida -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                            <jet-label>Partida</jet-label>
-                            <jet-input class="InputSelect" v-model="formAba.partida"  @input="(val) => (formAba.partida = formAba.partida.toUpperCase())" :disabled="vrPar"></jet-input>
-                            <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
-                        </div>
-                    </div>
-                    <div class="tw-mb-6 lg:tw-flex">
-                        <!-- Clave -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                            <jet-label class="tw-text-white"><span class="required">*</span>Clave</jet-label>
-                            <Select2 v-model="formAba.clave" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true, disabled: vrCla}" :options="opcCL"/>
-                            <small v-if="errors.clave" class="validation-alert">{{errors.clave}}</small>
-                        </div>
-                        <!-- boton -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                            <button class="btn btn-success m-auto" @click="updaAbas(formAba)">Guardar</button>
+                    <!-- recorrido maquinas produccion -->
+                    <div class="tw-flex accordion-body justify-items-end overflow-auto" style="height: 12rem">
+                        <div class="tw-flex flex-wrap tw-w-full">
+                            <div class="tw-flex tw-w-full tw-rounded-md hover:tw-border hover:tw-border-4 hover:tw-border-teal-300" v-for="ap in abaPro" :key="ap">
+                                <div class="tw-w-3/5 tw-m-auto">
+                                    <strong> {{ ap.proceso.nompro }} {{ ap.maq_pro ? ap.maq_pro.maquinas.Nombre : 'N/A' }}: </strong>
+                                </div>
+                                <div class="tw-w-2/5 tw-m-auto">
+                                    {{ ap.valor.toFixed(2) }} {{ ap.clave.UNI_MED }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -298,6 +284,8 @@
     import Select2 from 'vue3-select2-component';
     import Modal from '@/Jetstream/Modal';
     import axios from 'axios';
+    import moment from 'moment';
+    import 'moment/locale/es';
     import Table from '@/Components/Table';
     //datatable
     import datatable from 'datatables.net-bs5';
@@ -385,7 +373,7 @@
                 })
                 //console.log(dat)
                 let ab = await axios.post('AbaEntre/ConAbaPro', dat);
-                //console.log(ab.data)
+                console.log(ab.data)
                 this.abaPro = ab.data;
             },
             resProdu(aba, res){
@@ -406,6 +394,11 @@
                 this.$nextTick(() => {
                     $('#abfin').DataTable({
                         "language": this.español,
+                        "scrollX": true,
+                        "columnDefs": [
+                            { "width": "5%", "targets": [1,2,7] },
+                            { "width": "15%", "targets": [0,3,4,5,6] },
+                        ],
                         buttons: [
                             {
                                 extend: 'copyHtml5',
@@ -447,6 +440,9 @@
                     //Asigna el primer departamento
                     this.S_Area = this.usuario.dep_pers[0].departamento_id;
                 }
+            },
+            fecha(fec){
+                return moment(fec).format('DD/MM/YYYY HH:mm:ss')
             },
             /************************************* Opciones ************************************/
             opcCL(da){
@@ -503,23 +499,14 @@
             //editar formulario
             ediAbas(data){
                 this.openModal()
-                this.vrNor = data.norma ? true : false;
-                this.vrCla = data.clave_id ? true : false;
-                this.vrPar = data.partida ? true : false;
-                this.formAba.id = data.id;
-                this.formAba.partida = data.partida;
-                this.formAba.folio = data.folio;
-                this.formAba.folio2 = data.folio2;
-                this.formAba.banco = data.banco;
-                this.formAba.total = data.total;
-                this.formAba.norma = data.norma_id;
-                this.formAba.clave = data.clave_id;
-                this.formAba.esta_final = data.esta_final;
+                this.conProdu(data)
+                //console.log(data)
+                this.resProdu(data, this.abafin)
             },
             //abrir modal
             openModal(){
                 this.chageClose();
-                this.resetEntr();
+                //this.resetEntr();
             },
             chageClose(){
                 this.showModal = !this.showModal;
