@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sistemas\Hardware;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\Sistemas\Hardware\HardwareAsignado;
 use App\Models\Sistemas\Hardware\HardwareSistemas;
@@ -33,11 +34,31 @@ class EquiposAsignadosController extends Controller{
     }
 
     public function store(Request $request){
+
+        Validator::make($request->all(), [
+            'IdUser' => ['required'],
+            'FechaAsignacion' => ['required','date'],
+            'SubArea' => ['required'],
+            'Ubicacion' => ['required'],
+            'Perfil_id' => ['required'],
+            'Hardware_id' => ['required'],
+        ])->validate();
+
         HardwareAsignado::create($request->all());
         return redirect()->back();
     }
 
     public function update(Request $request, $id){
+
+        Validator::make($request->all(), [
+            'IdUser' => ['required'],
+            'FechaAsignacion' => ['required','date'],
+            'SubArea' => ['required'],
+            'Ubicacion' => ['required'],
+            'Perfil_id' => ['required'],
+            'Hardware_id' => ['required'],
+        ])->validate();
+
         if ($request->has('id')) {
             HardwareAsignado::find($request->id)->update($request->all());
         }

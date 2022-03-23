@@ -60,27 +60,27 @@
 
             <div class="ModalForm">
                 <div class="tw-mb-6 md:tw-flex">
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
-                        <jet-label><span class="required">*</span>CANTIDAD</jet-label>
-                        <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
-                    </div>
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-3/4 md:tw-mb-0">
-                        <jet-label><span class="required">*</span>NOMBRE</jet-label>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>NOMBRE DISPOSITIVO</jet-label>
                         <jet-input type="text" v-model="form.Nombre" @input="(val) => (form.Nombre = form.Nombre.toUpperCase())"></jet-input>
+                        <small v-if="errors.Nombre" class="validation-alert">{{errors.Nombre}}</small>
                     </div>
                 </div>
                 <div class="tw-mb-6 md:tw-flex">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label>MARCA</jet-label>
                         <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
+                        <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label>MODELO</jet-label>
                         <jet-input type="text" v-model="form.Modelo" @input="(val) => (form.Modelo = form.Modelo.toUpperCase())"></jet-input>
+                        <small v-if="errors.Modelo" class="validation-alert">{{errors.Modelo}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label>NUM SERIE</jet-label>
                         <jet-input type="text" v-model="form.NumeroSerie" @input="(val) => (form.NumeroSerie = form.NumeroSerie.toUpperCase())"></jet-input>
+                        <small v-if="errors.NumeroSerie" class="validation-alert">{{errors.NumeroSerie}}</small>
                     </div>
                 </div>
                 <div class="tw-mb-6 md:tw-flex">
@@ -156,6 +156,7 @@ export default {
     },
 
     props: {
+        errors: Object,
         EquiposComputo: Object,
         Session: Object,
     },
@@ -215,6 +216,7 @@ export default {
         },
 
         save(data){
+            data.Cantidad = 1;
             this.$inertia.post("/Sistemas/EquiposComputo", data, {
                 onSuccess: () => {
                     this.reset(),
@@ -225,6 +227,7 @@ export default {
         },
 
         edit: function (data) {
+            data.Cantidad = 1;
             this.form = Object.assign({}, data);
             this.editMode = true;
             this.chageClose();

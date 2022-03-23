@@ -11,7 +11,7 @@
                 <!-- ******************************* FILTROS ********************************************* -->
         <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-1 tw-my-8 tw-mx-8">
             <div class="tw-flex tw-gap-4 tw-mx-2">
-
+                <jet-button @click="Historico" class="BtnNuevo">MIS MANTENIMIENTOS</jet-button>
             </div>
             <div>
                 <jet-button @click="openModal" class="BtnNuevo">NUEVA INFORMACIÓN</jet-button>
@@ -34,6 +34,7 @@
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>FECHA INICIO</jet-label>
                         <jet-input type="datetime-local" :min="min" v-model="form.start"></jet-input>
+                        <small v-if="errors.start" class="validation-alert">{{errors.start}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>DURACION</jet-label>
@@ -41,14 +42,17 @@
                             <option value="1">1 HORA</option>
                             <option value="2">2 HORAS</option>
                         </select>
+                        <small v-if="errors.Tiempo" class="validation-alert">{{errors.Tiempo}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>PERIODO</jet-label>
                         <select class="InputSelect" v-model="form.Periodo">
                             <option value="1">1 MES</option>
                             <option value="6">6 MESES</option>
-                            <option value="12">1 AÑO</option>
+                            <option value="4">4 MESES</option>
+                            <option value="12">12 MESES</option>
                         </select>
+                        <small v-if="errors.Periodo" class="validation-alert">{{errors.Periodo}}</small>
                     </div>
                 </div>
                 <div class="FormSection">
@@ -62,6 +66,7 @@
                                 {{Equ.perfil.ApMat}}
                             </option>
                         </select>
+                        <small v-if="errors.Equipo" class="validation-alert">{{errors.Equipo}}</small>
                     </div>
                 </div>
             </div>
@@ -80,7 +85,7 @@
 
             <div class="ModalForm">
                 <div v-if="evento == false">
-                <Table id="Roles">
+                <Table>
                     <template v-slot:TableHeader>
                         <th class="columna">MANTENIMEINTO</th>
                         <th class="columna">FECHA INICIO</th>
@@ -98,14 +103,47 @@
                             <td>{{event.end}}</td>
                             <td>{{event.Periodo}} MES</td>
                             <td>{{event.Comentarios}}</td>
-                            <td>{{event.Estatus}}</td>
+                            <td>
+                                <div class="FlexCenter">
+                                    <div v-if="event.Estatus == 0">
+                                        <span tooltip="Confirmar Solicitud" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-400 tw-rounded-full">SOLICITADO</span>
+                                        </span>
+                                    </div>
+                                    <div v-if="event.Estatus == 1">
+                                        <span tooltip="Confirmar Solicitud" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">EN ESPERA</span>
+                                        </span>
+                                    </div>
+                                    <div v-if="event.Estatus == 2">
+                                        <span tooltip="Confirmar Solicitud" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-sky-400 tw-rounded-full">REALIZADO</span>
+                                        </span>
+                                    </div>
+                                    <div v-if="event.Estatus == 3">
+                                        <span tooltip="Confirmar Solicitud" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-teal-400 tw-rounded-full">CONFORME</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
                             <td>
                                 <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
                                     <div class="iconoEdit" @click="edit(event)">
                                         <span tooltip="Editar" flow="left">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-4 tw-w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                                             </svg>
+                                        </span>
+                                    </div>
+                                    <div class="iconoTeal" @click="Confirma(event)" v-if="Autorizado == true && event.Estatus == 1">
+                                        <span tooltip="Confirmar Mantenimiento" flow="left">
+                                            <i class="fa-solid fa-check"></i>
+                                        </span>
+                                    </div>
+                                    <div class="iconoTeal" @click="Conformidad(event)" v-if="event.Estatus == 2">
+                                        <span tooltip="Confirmar Mantenimiento" flow="left">
+                                            <i class="fa-regular fa-circle-check"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -123,8 +161,30 @@
             </div>
 
             <div class="ModalFooter">
+                <jet-CancelButton @click="Atras()" v-if="evento == true">Atras</jet-CancelButton>
                 <jet-button type="button" @click="update(form)" v-if="evento == true">Actualizar</jet-button>
                 <jet-CancelButton @click="chageInfo">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
+
+        <modal :show="showComentario" @close="chageComentario" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>COMENTARIOS</h3>
+            </div>
+
+            <div class="ModalForm">
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>Comentarios deL Mantenimientos</jet-label>
+                        <textarea name="" id="" cols="4" v-model="form.Comentario" @input="(val) => (form.Comentario = form.Comentario.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                        <small v-if="errors.Comentario" class="validation-alert">{{errors.Comentario}}</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="AgregarComentario(form)">Guardar</jet-button>
+                <jet-CancelButton @click="chageComentario">Cerrar</jet-CancelButton>
             </div>
         </modal>
 
@@ -162,6 +222,7 @@ export default {
             showModal: false,
             showInfo: false,
             evento: false,
+            showComentario: false,
             min: moment().format("YYYY-MM-DD"),
             EventosCalendario: Object,
             form: {
@@ -181,6 +242,7 @@ export default {
                 Comentarios: '',
                 Hardware_id: '',
                 Perfil_id: '',
+                Comentario: '',
             },
         };
     },
@@ -202,9 +264,11 @@ export default {
 
     props: {
         Session: Object,
+        errors: Object,
         EquiposAsignados: Object,
         FechaMantenimientos: Object,
         busca: Number,
+        Autorizado: Object,
     },
 
     mounted(){
@@ -238,20 +302,22 @@ export default {
             displayEventEnd: true,
 
             eventClick: info => {
-                this.evento = false;
-                this.form.id = info.event._def.publicId;
-                var id = info.event._def.extendedProps.Hardware_id;
-                this.form.title = info.event.title;
-                this.form.start = moment(info.event.start).format('YYYY-MM-DD HH:MM:SS');
-                this.form.end = moment(info.event.end).format('YYYY-MM-DD HH:MM:SS');
+                if(info.event._def.extendedProps.Perfil_id == this.form.IdUser){
+                    this.evento = false;
+                    this.form.id = info.event._def.publicId;
+                    var id = info.event._def.extendedProps.Hardware_id;
+                    this.form.title = info.event.title;
+                    this.form.start = moment(info.event.start).format('YYYY-MM-DD HH:MM:SS');
+                    this.form.end = moment(info.event.end).format('YYYY-MM-DD HH:MM:SS');
 
-                let promesa = axios.post('CalendarioMantenimientos/Eventos', { busca: id }).then(promesa => {
-                    this.EventosCalendario = promesa;
+                    let promesa = axios.post('CalendarioMantenimientos/Eventos', { busca: id }).then(promesa => {
+                        this.EventosCalendario = promesa;
 
-                    this.chageInfo();
-                }).catch(e => {
-                    alert('Mensaje del sistema: Ocurrio una excepción');
-                });
+                        this.chageInfo();
+                    }).catch(e => {
+                        alert('Mensaje del sistema: Ocurrio una excepción');
+                    });
+                }
             },
             eventDrop: info =>{
                 if(info.event._def.extendedProps.Perfil_id == this.form.IdUser){
@@ -299,7 +365,12 @@ export default {
                 Comentarios: '',
                 Hardware_id: '',
                 Perfil_id: '',
+                Comentario: '',
             };
+        },
+
+        Atras(){
+            this.evento = false;
         },
 
         save(data){
@@ -307,7 +378,7 @@ export default {
             this.form.Perfil_id = data.Equipo.perfil.id;
             data.backgroundColor = this.colours[Math.floor(Math.random() * this.colours.length)];
             data.Hardware_id = data.Equipo.id; //Asigno el equipo
-            data.title = data.Equipo.hardware.Nombre +' - '+ data.Equipo.perfil.Nombre + ' ' +data.Equipo.perfil.ApPat;
+            data.title =  data.Equipo.perfil.Nombre + ' ' +data.Equipo.perfil.ApPat + '-' + data.Equipo.hardware.Nombre;
             this.$inertia.post("/Sistemas/CalendarioMantenimientos", data, {
                 onSuccess: () => {
                     if(this.$attrs.jetstream.flash.type == 'Warning'){
@@ -331,7 +402,7 @@ export default {
             this.evento = true;
         },
 
-        dateCompare(time1,time2) {
+        dateCompare(time1,time2) { //Compara rango de tiempo valido
             var t1 = new Date();
             var parts = time1.split(":");
             t1.setHours(parts[0],parts[1],parts[2],0);
@@ -349,6 +420,7 @@ export default {
 
         update(data) {
             data._method = "PUT";
+            data.metodo = 1;
             var HoraIni = moment(data.start).format("HH:mm:ss")
             let Ini = this.dateCompare(HoraIni,"09:00:00");
             let Fin = this.dateCompare("16:45:00", HoraIni);
@@ -389,6 +461,56 @@ export default {
                 icon: "info",
                 title: Text,
                 // background: '#99F6E4',
+            });
+        },
+
+        Historico(){
+            let promesa = axios.post('CalendarioMantenimientos/Eventos', { busca: this.Session.id }).then(promesa => {
+                this.EventosCalendario = promesa;
+                this.chageInfo();
+            }).catch(e => {
+                alert('Mensaje del sistema: Ocurrio una excepción');
+            });
+        },
+
+        Confirma(data){
+            data._method = "PUT";
+            data.metodo = 2;
+            this.$inertia.post("/Sistemas/CalendarioMantenimientos/" + data.id, data, {
+                onSuccess: () => {
+                        this.alertSucces();
+                        this.chageInfo();
+                },
+            });
+        },
+
+        chageComentario(){
+            this.showComentario = !this.showComentario;
+        },
+
+        Conformidad(data){
+            this.form.id = data.id;
+            data._method = "PUT";
+            data.metodo = 3;
+            this.$inertia.post("/Sistemas/CalendarioMantenimientos/" + data.id, data, {
+                onSuccess: () => {
+                        this.chageComentario();
+                        this.alertSucces();
+                        this.chageInfo();
+                },
+            });
+        },
+
+        AgregarComentario(data){
+            console.log(data);
+            data._method = "PUT";
+            data.metodo = 4;
+            this.$inertia.post("/Sistemas/CalendarioMantenimientos/" + data.id, data, {
+                onSuccess: () => {
+                    this.chageComentario();
+                    this.alertSucces();
+                    this.reset();
+                },
             });
         },
     },

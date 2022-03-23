@@ -25,7 +25,8 @@ class RequisicionPapeleriaController extends Controller{
 
         $Session = auth()->user();
         $IdEmp = $Session->id;
-        $SessionId = $Session->id;
+        $SessionId = PerfilesUsuarios::where('user_id', '=', $Session->id)->first('id');
+        // $Session->id;
 
         $Material = MaterialPapeleria::all();
         $Departamentos = Departamentos::orderBy('Nombre', 'asc')->get(['id','Nombre']);
@@ -44,7 +45,7 @@ class RequisicionPapeleriaController extends Controller{
                 },
             ])->whereHas('ArticulosPapeleria', function($query) use($SessionId){
                 $query->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
-                $query->where('Perfil_id', '=', $SessionId);
+                $query->where('Perfil_id', '=', $SessionId->id);
             })->whereYear('created_at', $anio)
             ->whereMonth('created_at', $mes)
             ->orderBy('id', 'desc')

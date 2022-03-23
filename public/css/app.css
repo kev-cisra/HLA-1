@@ -22536,11 +22536,11 @@ select {
 .tw-col-span-6 {
 	grid-column: span 6 / span 6;
 }
-.tw-m-5 {
-	margin: 1.25rem;
-}
 .tw-m-auto {
 	margin: auto;
+}
+.tw-m-5 {
+	margin: 1.25rem;
 }
 .tw-m-3 {
 	margin: 0.75rem;
@@ -22591,6 +22591,10 @@ select {
 	margin-left: 2rem;
 	margin-right: 2rem;
 }
+.tw-my-auto {
+	margin-top: auto;
+	margin-bottom: auto;
+}
 .tw-my-3 {
 	margin-top: 0.75rem;
 	margin-bottom: 0.75rem;
@@ -22614,10 +22618,6 @@ select {
 .tw-mx-20 {
 	margin-left: 5rem;
 	margin-right: 5rem;
-}
-.tw-my-auto {
-	margin-top: auto;
-	margin-bottom: auto;
 }
 .tw-ml-2 {
 	margin-left: 0.5rem;
@@ -22871,12 +22871,6 @@ select {
 .tw-w-14 {
 	width: 3.5rem;
 }
-.tw-w-80 {
-	width: 20rem;
-}
-.tw-w-96 {
-	width: 24rem;
-}
 .tw-min-w-0 {
 	min-width: 0px;
 }
@@ -22967,22 +22961,6 @@ select {
 .tw-animate-pulse {
 	-webkit-animation: tw-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 	        animation: tw-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-@-webkit-keyframes tw-spin {
-
-	to {
-		transform: rotate(360deg);
-	}
-}
-@keyframes tw-spin {
-
-	to {
-		transform: rotate(360deg);
-	}
-}
-.tw-animate-spin {
-	-webkit-animation: tw-spin 1s linear infinite;
-	        animation: tw-spin 1s linear infinite;
 }
 .tw-cursor-pointer {
 	cursor: pointer;
@@ -23299,6 +23277,10 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(20, 184, 166, var(--tw-border-opacity));
 }
+.tw-border-teal-700 {
+	--tw-border-opacity: 1;
+	border-color: rgba(15, 118, 110, var(--tw-border-opacity));
+}
 .tw-border-emerald-400 {
 	--tw-border-opacity: 1;
 	border-color: rgba(52, 211, 153, var(--tw-border-opacity));
@@ -23314,14 +23296,6 @@ select {
 .tw-border-indigo-600 {
 	--tw-border-opacity: 1;
 	border-color: rgba(79, 70, 229, var(--tw-border-opacity));
-}
-.tw-border-teal-600 {
-	--tw-border-opacity: 1;
-	border-color: rgba(13, 148, 136, var(--tw-border-opacity));
-}
-.tw-border-teal-700 {
-	--tw-border-opacity: 1;
-	border-color: rgba(15, 118, 110, var(--tw-border-opacity));
 }
 .tw-bg-gray-200 {
 	--tw-bg-opacity: 1;
@@ -23403,6 +23377,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(2, 132, 199, var(--tw-bg-opacity));
 }
+.tw-bg-sky-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(14, 165, 233, var(--tw-bg-opacity));
+}
 .tw-bg-teal-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(13, 148, 136, var(--tw-bg-opacity));
@@ -23426,10 +23404,6 @@ select {
 .tw-bg-teal-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(20, 184, 166, var(--tw-bg-opacity));
-}
-.tw-bg-sky-500 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(14, 165, 233, var(--tw-bg-opacity));
 }
 .tw-bg-transparent {
 	background-color: transparent;
@@ -23566,6 +23540,18 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(21, 128, 61, var(--tw-bg-opacity));
 }
+.tw-bg-fuchsia-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(217, 70, 239, var(--tw-bg-opacity));
+}
+.tw-bg-blue-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(59, 130, 246, var(--tw-bg-opacity));
+}
+.tw-bg-rose-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(244, 63, 94, var(--tw-bg-opacity));
+}
 .tw-bg-emerald-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(52, 211, 153, var(--tw-bg-opacity));
@@ -23582,25 +23568,9 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(167, 243, 208, var(--tw-bg-opacity));
 }
-.tw-bg-fuchsia-500 {
+.tw-bg-sky-400 {
 	--tw-bg-opacity: 1;
-	background-color: rgba(217, 70, 239, var(--tw-bg-opacity));
-}
-.tw-bg-teal-300 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(94, 234, 212, var(--tw-bg-opacity));
-}
-.tw-bg-teal-200 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(153, 246, 228, var(--tw-bg-opacity));
-}
-.tw-bg-blue-500 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(59, 130, 246, var(--tw-bg-opacity));
-}
-.tw-bg-rose-500 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(244, 63, 94, var(--tw-bg-opacity));
+	background-color: rgba(56, 189, 248, var(--tw-bg-opacity));
 }
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
@@ -26331,10 +26301,6 @@ select {
 
 	.lg\:tw-w-full {
 		width: 100%;
-	}
-
-	.lg\:tw-w-3\/4 {
-		width: 75%;
 	}
 
 	.lg\:tw-flex-row {
