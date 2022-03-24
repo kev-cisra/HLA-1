@@ -17,7 +17,7 @@ class CreateArticulosRequisicionesSistemasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('IdUser'); //Id de Session
             $table->integer('Cantidad');
-            $table->string('Unidad',5);
+            $table->string('Unidad',8);
             $table->string('Dispositivo', 35);
 
             $table->unsignedBigInteger('requisicion_sistemas_id')->nullable();

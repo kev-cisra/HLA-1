@@ -22,6 +22,8 @@
                     <th class="columna">FOLIO</th>
                     <th class="columna">SOLICITANTE</th>
                     <th class="columna">DEPARTAMENTO</th>
+                    <th class="columna">ARTICULOS</th>
+                    <th class="columna">COMENTARIOS</th>
                     <th class="columna">ESTATUS</th>
                     <th class="columna">ACCIONES</th>
                 </template>
@@ -32,6 +34,12 @@
                         <td>{{data.Folio}}</td>
                         <td>{{data.perfil.Nombre}} {{data.perfil.ApPat}} {{data.perfil.ApMat}} </td>
                         <td>{{data.departamento.Nombre}}</td>
+                        <td>
+                            <p v-for="art in data.articulos" :key="art.id">
+                                -{{art.Cantidad }} {{art.Unidad }} {{art.Dispositivo }}
+                            </p>
+                        </td>
+                        <td>{{data.Comentarios}}</td>
                         <td>
                             <div class="FlexCenter">
                                 <div v-if="data.Estatus == 3">

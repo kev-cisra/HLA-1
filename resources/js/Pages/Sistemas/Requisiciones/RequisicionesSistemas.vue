@@ -24,6 +24,7 @@
                     <th class="columna">SOLICITANTE</th>
                     <th class="columna">DEPARTAMENTO</th>
                     <th class="columna">MATERIAL</th>
+                    <th class="columna">COMENTARIOS</th>
                     <th class="columna">ESTATUS</th>
                     <th class="columna">ACCIONES</th>
                 </template>
@@ -36,9 +37,10 @@
                         <td>{{data.departamento.Nombre}}</td>
                         <td>
                             <p v-for="art in data.articulos" :key="art.id">
-                                -{{art.hardware.Cantidad }} {{art.hardware.Unidad }} {{art.hardware.Nombre }}
+                                -{{art.Cantidad }} {{art.Unidad }} {{art.Dispositivo }}
                             </p>
                         </td>
+                        <td>{{data.Comentarios}}</td>
                         <td>
                             <div class="FlexCenter">
                                 <div v-if="data.Estatus == 0">
@@ -86,7 +88,7 @@
                                     </span>
                                 </div>
                                 <div class="iconoDetails" @click="view(data)" >
-                                    <span tooltip="Historico Vacaciones" >
+                                    <span tooltip="Visualiza Partidas" >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -100,7 +102,7 @@
             </Table>
         </section>
 
-         <!-- **************************************************** MODALES ****************************************************** -->
+        <!-- **************************************************** MODALES ****************************************************** -->
         <modal :show="showModal" @close="chageClose" :maxWidth="tam">
             <div class="ModalHeader">
                 <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>NUEVA REQUISICIÓN</h3>
@@ -111,12 +113,14 @@
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>FECHA</jet-label>
                         <jet-input type="date" :min="Today" v-model="form.Fecha"></jet-input>
+                        <small v-if="errors.Fecha" class="validation-alert">{{errors.Fecha}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                         <jet-label><span class="required">*</span>DEPARTAMENTO</jet-label>
                         <select class="InputSelect" v-model="form.Departamento_id">
                             <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
                         </select>
+                        <small v-if="errors.Departamento_id" class="validation-alert">{{errors.Departamento_id}}</small>
                     </div>
                 </div>
                 <div class="FormSection">
@@ -128,23 +132,31 @@
                     <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
                         <jet-label><span class="required">*</span>CANTIDAD</jet-label>
                         <jet-input type="number" min="1" v-model="form.Cantidad"></jet-input>
+                        <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-3/12 md:tw-mb-0">
                         <jet-label><span class="required">*</span>UNIDAD</jet-label>
                         <select id="Unidad" v-model="form.Unidad" class="InputSelect">
-                            <option value="PZ">PIEZAS</option>
-                            <option value="MT">METROS</option>
+                            <option value="PZ">PIEZA</option>
+                            <option value="SERVICIO">SERVICIO</option>
+                            <option value="MT">METRO</option>
                             <option value="CAJA">CAJA</option>
                         </select>
+                        <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-6/12 md:tw-mb-0">
                         <jet-label><span class="required">*</span>MATERIAL</jet-label>
-                        <select class="InputSelect" v-model="form.Hardware_id">
-                            <option v-for="hard in Hardware" :key="hard.id" :value="hard.id" > {{ hard.Nombre }}</option>
-                        </select>
+                        <jet-input type="text" v-model="form.Dispositivo" @input="(val) => (form.Dispositivo = form.Dispositivo.toUpperCase())"></jet-input>
+                        <small v-if="errors.Dispositivo" class="validation-alert">{{errors.Dispositivo}}</small>
                     </div>
                     <div class="tw-mt-6  md:tw-w-1/12 md:tw-mb-0">
                         <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
+                    </div>
+                </div>
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
+                        <textarea name="" id="" cols="2" v-model="form.Comentarios" @input="(val) => (form.Comentarios = form.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
                     </div>
                 </div>
             </div>
@@ -173,7 +185,7 @@
                         <tr class="fila" v-for="data in ArticulosReq" :key="data.id">
                             <td class="tw-text-center">{{data.Cantidad}}</td>
                             <td class="tw-text-center">{{data.Unidad}}</td>
-                            <td class="tw-text-center">{{data.hardware.Nombre}} </td>
+                            <td class="tw-text-center">{{data.Dispositivo}} </td>
                             <td>
                                 <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
                                     <div class="iconoEdit" @click="edit(data)" v-if="form.Estatus == 0">
@@ -235,9 +247,14 @@
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-6/12 md:tw-mb-0">
                         <jet-label><span class="required">*</span>MATERIAL</jet-label>
-                        <select class="InputSelect" v-model="form.Hardware_id">
-                            <option v-for="hard in Hardware" :key="hard.id" :value="hard.id" > {{ hard.Nombre }}</option>
-                        </select>
+                        <jet-input type="text" v-model="form.Dispositivo" @input="(val) => (form.Dispositivo = form.Dispositivo.toUpperCase())"></jet-input>
+                        <small v-if="errors.Dispositivo" class="validation-alert">{{errors.Dispositivo}}</small>
+                    </div>
+                </div>
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
+                        <textarea name="" id="" cols="2" v-model="form.Comentarios" @input="(val) => (form.Comentarios = form.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
                     </div>
                 </div>
             </div>
@@ -289,9 +306,10 @@ export default {
                 Partida: [{
                     Cantidad: '',
                     Unidad: '',
-                    Hardware_id: '',
+                    Dispositivo: '',
                 }],
                 requisicion_sistemas_id: '',
+                Comentarios: '',
             },
             ArticulosReq: [],
             params: {
@@ -320,6 +338,7 @@ export default {
 
     props: {
         Session: Object,
+        errors: Object,
         Departamentos: Object,
         ReqSistemas: Object,
         Hardware: Object,
@@ -373,8 +392,9 @@ export default {
                 Partida: [{
                     Cantidad: '',
                     Unidad: '',
-                    Hardware_id: '',
+                    Dispositivo: '',
                 }],
+                Comentarios: '',
                 requisicion_sistemas_id: '',
             };
         },
@@ -394,6 +414,7 @@ export default {
         },
 
         save(data){ //Funcion de guardado de requisicion
+        console.log(data);
             data.Estatus = 0;
             this.$inertia.post("/Sistemas/RequisicionSistemas", data, {
                 onSuccess: () => {
@@ -436,7 +457,7 @@ export default {
             this.form.requisicion_sistemas_id = data.requisicion_sistemas_id;
             this.form.Partida[0].Cantidad = data.Cantidad;
             this.form.Partida[0].Unidad = data.Unidad;
-            this.form.Partida[0].Hardware_id = data.hardware.id;
+            this.form.Partida[0].Dispositivo = data.Dispositivo.id;
             this.chageDetalle();
             this.chageCreate();
         },
@@ -456,6 +477,7 @@ export default {
     },
 
     watch: {
+
     }
 };
 </script>

@@ -58,14 +58,7 @@
                 <div class="FormSection">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                         <jet-label><span class="required">*</span>EQUIPO ASIGNADO</jet-label>
-                        <select class="InputSelect" v-model="form.Equipo">
-                            <option v-for="Equ in EquiposAsignados" :key="Equ.id" :value="Equ" >
-                                {{Equ.hardware.Nombre }} -
-                                {{Equ.perfil.Nombre}}
-                                {{Equ.perfil.ApPat}}
-                                {{Equ.perfil.ApMat}}
-                            </option>
-                        </select>
+                        <Select2 v-model="form.Hardware_id" class="InputSelect" :settings="{width: '100%',allowClear: true}" element="background: '#e5e7eb'" :options="BuscaDispositivo" />
                         <small v-if="errors.Equipo" class="validation-alert">{{errors.Equipo}}</small>
                     </div>
                 </div>
@@ -204,6 +197,7 @@ import Pagination from "@/Components/pagination";
 import JetLabel from '@/Jetstream/Label';
 import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
+import Select2 from 'vue3-select2-component';
 //imports de datatables
 import datatable from "datatables.net-bs5";
 import $ from "jquery";
@@ -255,6 +249,7 @@ export default {
         JetLabel,
         JetInput,
         JetSelect,
+        Select2,
         JetButton,
         JetCancelButton,
         Table,
@@ -515,8 +510,17 @@ export default {
         },
     },
 
-    computed: {
+    computed:{
+        //Funcion de buscador
+        BuscaDispositivo: function () {
+            const EquiposAsignados = [];
+            this.EquiposAsignados.forEach(element => {
+                EquiposAsignados.push({id: element.id, text: element.perfil.Nombre +' '+element.perfil.ApPat+' '+element.perfil.ApMat +'-'+ element.hardware.Nombre + ' '+ element.hardware.Marca})
+            });
+            return EquiposAsignados;
+        },
 
-    },
+
+    }
 };
 </script>

@@ -23518,6 +23518,10 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(21, 128, 61, var(--tw-bg-opacity));
 }
+.tw-bg-pink-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(236, 72, 153, var(--tw-bg-opacity));
+}
 .tw-bg-sky-400 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(56, 189, 248, var(--tw-bg-opacity));
@@ -23549,10 +23553,6 @@ select {
 .tw-bg-emerald-200 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(167, 243, 208, var(--tw-bg-opacity));
-}
-.tw-bg-pink-500 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(236, 72, 153, var(--tw-bg-opacity));
 }
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;

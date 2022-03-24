@@ -22,7 +22,8 @@
                     <th class="columna">FOLIO</th>
                     <th class="columna">SOLICITANTE</th>
                     <th class="columna">DEPARTAMENTO</th>
-                    <th class="columna">MATERIAL</th>
+                    <th class="columna">ARTICULOS</th>
+                    <th class="columna">COMENTARIOS</th>
                     <th class="columna">ESTATUS</th>
                     <th class="columna">ACCIONES</th>
                 </template>
@@ -35,9 +36,10 @@
                         <td>{{data.departamento.Nombre}}</td>
                         <td>
                             <p v-for="art in data.articulos" :key="art.id">
-                                -{{art.hardware.Cantidad }} {{art.hardware.Unidad }} {{art.hardware.Nombre }}
+                                -{{art.Cantidad }} {{art.Unidad }} {{art.Dispositivo }}
                             </p>
                         </td>
+                        <td>{{data.Comentarios}}</td>
                         <td>
                             <div class="FlexCenter">
                                 <div v-if="data.Estatus == 0">
@@ -80,7 +82,7 @@
                         <td>
                             <div class="tw-flex tw-justify-center tw-items-center" >
                                 <div class="iconoPurple" @click="CotizarReq(data)" v-if="data.Estatus == 1">
-                                    <span tooltip="Realizar Cotizacion" flow="left">
+                                    <span tooltip="Realizar Cotización" flow="left">
                                         <i class="fas fa-file-invoice-dollar"></i>
                                     </span>
                                 </div>
@@ -90,12 +92,12 @@
                                     </span>
                                 </div>
                                 <div class="iconoTeal" @click="ConfirmaCotizacion(data)" v-else-if="data.Estatus == 2 || data.Estatus == 10">
-                                    <span tooltip="Confirma Cotizacion" flow="left">
+                                    <span tooltip="Confirma Cotización" flow="left">
                                         <i class="fa-solid fa-circle-check"></i>
                                     </span>
                                 </div>
                                 <div class="iconoCyan" @click="VisualizaCotizacion(data)" v-if="data.Estatus > 1">
-                                    <span tooltip="Realizar Cotizacion" flow="left">
+                                    <span tooltip="Visualiza Cotización" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -151,12 +153,12 @@
                         <tr class="fila" v-for="match in form.DatosCotizacion" :key="match">
                             <td class="tw-text-center">{{match.Cantidad}}</td>
                             <td class="tw-text-center">{{match.Unidad}}</td>
-                            <td class="tw-text-center">{{match.Hardware_id}} </td>
+                            <td class="tw-text-center">{{match.Dispositivo}} </td>
                             <td>
                                 <input type="number" min="1" class="InputDinamico" v-model="match.PrecioUnitario">
                             </td>
                             <td>
-                                <input type="text" class="InputDinamico" v-model="match.Marca" @input="(val) => (form.Comentario = form.Comentario.toUpperCase())">
+                                <input type="text" class="InputDinamico" v-model="match.Marca" @input="(val) => (match.Marca = match.Marca.toUpperCase())">
                             </td>
                         </tr>
                     </template>
@@ -457,7 +459,7 @@ export default {
                     id: Art.id,
                     Cantidad: Art.Cantidad,
                     Unidad: Art.Unidad,
-                    Hardware_id: Art.hardware.Nombre,
+                    Dispositivo: Art.Dispositivo,
                     PrecioUnitario: null,
                     Marca: null,
                 })
@@ -531,7 +533,7 @@ export default {
                     PrecioUnitario: Pre.Precio,
                     Cantidad: Pre.articulos.Cantidad,
                     Unidad: Pre.articulos.Unidad,
-                    Hardware_id: Pre.articulos.hardware.Nombre,
+                    Dispositivo: Pre.articulos.Dispositivo
                 })
             })
         },
