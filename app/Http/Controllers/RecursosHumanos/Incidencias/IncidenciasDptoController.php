@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Carbon\Carbon;
-class IncidenciasDptoController extends Controller
-{
+class IncidenciasDptoController extends Controller{
 
     public function index(Request $request){
 
@@ -53,8 +52,11 @@ class IncidenciasDptoController extends Controller
                 }
             }
         }else{
+            //Obtengo el id de acuerdo al id de session logueado
+            $PerfilId = PerfilesUsuarios::where('user_id', '=',  $Session->id)->first(['id']);
+            //Obtengo los perfiles de acuerdo a su jefe asignado
             $PerfilesUsuarios = PerfilesUsuarios::with(['jefe_perfiles','PerfilDepartamento', 'PerfilPuesto', 'jefe_perfiles.PerfilDepartamento', 'jefe_perfiles.PerfilPuesto', 'jefe_perfiles.perfiles_jefe.PerfilDepartamento', 'jefe_perfiles.perfiles_jefe.PerfilPuesto'])
-            ->where('id', $Session->id)
+            ->where('id', $PerfilId->id)
             ->get();
         }
 
