@@ -15,28 +15,41 @@
             </div>
         </section>
         <!-- ****************************************** CONTENIDO ********************************************* -->
-        <section class="tw-mx-2">
+        <section class="tw-mx-4">
             <Table id="EquiposAsignados">
                 <template v-slot:TableHeader>
                     <th class="columna">Fecha Asignacion</th>
                     <th class="columna">SubArea</th>
                     <th class="columna">Ubicacion</th>
-                    <th class="columna">Comentarios</th>
-                    <th class="columna">Estatus</th>
                     <th class="columna">Equipo Asignado</th>
                     <th class="columna">Asignado a</th>
+                    <th class="columna">Comentarios</th>
+                    <th class="columna">Estatus</th>
                     <th class="columna">ACCIONES</th>
                 </template>
 
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="data in EquiposAsignados" :key="data.id">
-                        <td class="tw-p-2">{{data.FechaAsignacion}}</td>
-                        <td class="tw-p-2">{{data.SubArea}}</td>
-                        <td class="tw-p-2">{{data.Ubicacion}}</td>
-                        <td class="tw-p-2">{{data.Comentarios}}</td>
-                        <td class="tw-p-2">{{data.Estatus}}</td>
-                        <td class="tw-p-2">{{data.hardware.Nombre}}</td>
-                        <td class="tw-p-2">{{data.perfil.Nombre}} {{data.perfil.ApPat}} {{data.perfil.ApMat}}</td>
+                        <td>{{data.FechaAsignacion}}</td>
+                        <td>{{data.SubArea}}</td>
+                        <td>{{data.Ubicacion}}</td>
+                        <td>{{data.hardware.Nombre}}</td>
+                        <td>{{data.perfil.Nombre}} {{data.perfil.ApPat}} {{data.perfil.ApMat}}</td>
+                        <td>{{data.Comentarios}}</td>
+                        <td>
+                            <div class="FlexCenter">
+                                <div v-if="data.Estatus == 0">
+                                    <span tooltip="Inactivo" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-pink-500 tw-rounded-full">Inactivo</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 1">
+                                    <span tooltip="Activo" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-teal-500 tw-rounded-full">Activo</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
                         <td>
                             <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
                                 <div class="iconoEdit" @click="edit(data)">
@@ -62,30 +75,31 @@
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
                         <jet-label><span class="required">*</span>FECHA ASIGNACIÓN</jet-label>
                         <jet-input type="date" v-model="form.FechaAsignacion"></jet-input>
+                        <small v-if="errors.FechaAsignacion" class="validation-alert">{{errors.FechaAsignacion}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
                         <jet-label><span class="required">*</span>SUBAREA</jet-label>
                         <jet-input type="text" v-model="form.SubArea" @input="(val) => (form.SubArea = form.SubArea.toUpperCase())"></jet-input>
+                        <small v-if="errors.SubArea" class="validation-alert">{{errors.SubArea}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                        <jet-label>UBICACIÓN</jet-label>
+                        <jet-label><span class="required">*</span>UBICACIÓN</jet-label>
                         <jet-input type="text" v-model="form.Ubicacion" @input="(val) => (form.Ubicacion = form.Ubicacion.toUpperCase())"></jet-input>
+                        <small v-if="errors.Ubicacion" class="validation-alert">{{errors.Ubicacion}}</small>
                     </div>
                 </div>
                 <div class="tw-mb-6 md:tw-flex">
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                        <jet-label><span class="required">*</span>Persona</jet-label>
-                        <select class="InputSelect" v-model="form.Perfil_id">
-                            <option v-for="Perf in Perfiles" :key="Perf.id" :value="Perf.id" > {{ Perf.IdEmp }}-{{ Perf.Nombre }} {{ Perf.ApPat }} {{ Perf.ApMat }}</option>
-                        </select>
-                        <!-- <small v-if="errors.obj" class="validation-alert">{{errors.obj}}</small> -->
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>PERSONA</jet-label>
+                        <Select2 v-model="form.Perfil_id" class="InputSelect" :settings="{width: '100%',allowClear: true}" element="background: '#e5e7eb'" :options="BuscaPerfil" />
+                        <small v-if="errors.Perfil_id" class="validation-alert">{{errors.Perfil_id}}</small>
                     </div>
-                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                    <jet-label><span class="required">*</span>Equipo</jet-label>
-                        <select class="InputSelect" v-model="form.Hardware_id">
-                            <option v-for="Har in Hardware" :key="Har.id" :value="Har.id" > {{ Har.Nombre }}</option>
-                        </select>
-                        <!-- <small v-if="errors.obj" class="validation-alert">{{errors.obj}}</small> -->
+                </div>
+                <div class="tw-mb-6 md:tw-flex">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>DISPOSITIVO</jet-label>
+                        <Select2 v-model="form.Hardware_id" class="InputSelect" :settings="{width: '100%',allowClear: true}" element="background: '#e5e7eb'" :options="BuscaDispositivo" />
+                        <small v-if="errors.Hardware_id" class="validation-alert">{{errors.Hardware_id}}</small>
                     </div>
                 </div>
                 <div class="tw-mb-6 md:tw-flex">
@@ -117,6 +131,7 @@ import Pagination from "@/Components/pagination";
 import JetLabel from '@/Jetstream/Label';
 import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
+import Select2 from 'vue3-select2-component';
 //imports de datatables
 import datatable from "datatables.net-bs5";
 import $ from "jquery";
@@ -128,7 +143,7 @@ export default {
 
     data() {
         return {
-            tam: "4xl",
+            tam: "3xl",
             color: "tw-bg-sky-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             form: {
@@ -152,6 +167,7 @@ export default {
         JetLabel,
         JetInput,
         JetSelect,
+        Select2,
         JetButton,
         JetCancelButton,
         Table,
@@ -161,6 +177,7 @@ export default {
 
     props: {
         Session: Object,
+        errors: Object,
         Hardware: Object,
         Perfiles: Object,
         EquiposAsignados: Object,
@@ -246,5 +263,25 @@ export default {
             });
         },
     },
+
+    computed:{
+        //Funcion de buscador
+        BuscaPerfil: function () {
+            const PerfilesUsu = [];
+            this.Perfiles.forEach(element => {
+                PerfilesUsu.push({id: element.id, text: element.IdEmp + '-'+ element.Nombre+' '+element.ApPat+' '+element.ApMat})
+            });
+            return PerfilesUsu;
+        },
+
+        //Funcion de buscador
+        BuscaDispositivo: function () {
+            const Hardware = [];
+            this.Hardware.forEach(element => {
+                Hardware.push({id: element.id, text: element.Nombre + '-'+ element.Marca+' '+element.Modelo+' '+element.NumeroSerie})
+            });
+            return Hardware;
+        }
+    }
 };
 </script>

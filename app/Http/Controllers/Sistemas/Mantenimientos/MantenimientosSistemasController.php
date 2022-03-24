@@ -24,7 +24,7 @@ class MantenimientosSistemasController extends Controller{
                 $prov->select('id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat');
             },
             'Hardware' => function($articulo) { //Relacion 1 a 1 De puestos
-                $articulo->select('id', 'Nombre');
+                $articulo->select('id', 'Nombre', 'Marca');
             }
         ])->get(['id', 'IdUser', 'FechaAsignacion', 'SubArea', 'Ubicacion', 'Comentarios', 'Estatus', 'Hardware_id', 'Perfil_id']);
 

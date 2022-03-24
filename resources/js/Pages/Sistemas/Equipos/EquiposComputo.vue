@@ -18,7 +18,6 @@
         <section class="tw-mx-4">
             <Table id="Hardware">
                 <template v-slot:TableHeader>
-                    <th class="columna">CANTIDAD</th>
                     <th class="columna">NOMBRE</th>
                     <th class="columna">MARCA</th>
                     <th class="columna">MODELO</th>
@@ -30,13 +29,25 @@
 
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="data in EquiposComputo" :key="data.id">
-                        <td class="tw-p-2">{{data.Cantidad}}</td>
                         <td class="tw-p-2">{{data.Nombre}}</td>
                         <td class="tw-p-2">{{data.Marca}}</td>
                         <td class="tw-p-2">{{data.Modelo}}</td>
                         <td class="tw-p-2">{{data.NumeroSerie}}</td>
                         <td class="tw-p-2">{{data.Comentarios}}</td>
-                        <td class="tw-p-2">{{data.Estatus}}</td>
+                        <td class="tw-p-2">
+                            <div class="FlexCenter">
+                                    <div v-if="data.Estatus == 0">
+                                        <span tooltip="Inactivo" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-pink-500 tw-rounded-full">Inactivo</span>
+                                        </span>
+                                    </div>
+                                    <div v-if="data.Estatus == 1">
+                                        <span tooltip="Activo" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-teal-500 tw-rounded-full">Activo</span>
+                                        </span>
+                                    </div>
+                            </div>
+                        </td>
                         <td>
                             <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
                                 <div class="iconoEdit" @click="edit(data)">
@@ -68,17 +79,17 @@
                 </div>
                 <div class="tw-mb-6 md:tw-flex">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                        <jet-label>MARCA</jet-label>
+                        <jet-label><span class="required">*</span>MARCA</jet-label>
                         <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
                         <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                        <jet-label>MODELO</jet-label>
+                        <jet-label><span class="required">*</span>MODELO</jet-label>
                         <jet-input type="text" v-model="form.Modelo" @input="(val) => (form.Modelo = form.Modelo.toUpperCase())"></jet-input>
                         <small v-if="errors.Modelo" class="validation-alert">{{errors.Modelo}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                        <jet-label>NUM SERIE</jet-label>
+                        <jet-label><span class="required">*</span>NUM SERIE</jet-label>
                         <jet-input type="text" v-model="form.NumeroSerie" @input="(val) => (form.NumeroSerie = form.NumeroSerie.toUpperCase())"></jet-input>
                         <small v-if="errors.NumeroSerie" class="validation-alert">{{errors.NumeroSerie}}</small>
                     </div>
