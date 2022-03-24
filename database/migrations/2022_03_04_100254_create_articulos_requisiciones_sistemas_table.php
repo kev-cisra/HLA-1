@@ -18,11 +18,7 @@ class CreateArticulosRequisicionesSistemasTable extends Migration
             $table->unsignedBigInteger('IdUser'); //Id de Session
             $table->integer('Cantidad');
             $table->string('Unidad',5);
-
-            $table->unsignedBigInteger('Hardware_id');
-            $table->foreign("Hardware_id")->references("id")->on("hardware_sistemas")
-            ->onDelete("cascade")
-            ->onUpdate("cascade");
+            $table->string('Dispositivo', 35);
 
             $table->unsignedBigInteger('requisicion_sistemas_id')->nullable();
             $table->foreign("requisicion_sistemas_id")->references("id")->on("requisiciones_sistemas")

@@ -20,9 +20,9 @@ class CreateHardwareSistemasTable extends Migration
             $table->string('Nombre',35);
             $table->string('Marca',25)->nullable();
             $table->string('Modelo',45)->nullable();
-            $table->string('NumeroSerie',20)->nullable();
+            $table->string('NumeroSerie',30)->nullable();
             $table->text('Comentarios')->nullable();
-            $table->integer('Estatus')->default(0);
+            $table->integer('Estatus')->default(1);
 
             $table->softDeletes(); //Columna para soft delete
             $table->timestamps();
