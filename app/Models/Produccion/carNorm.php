@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion;
 
+use App\Models\Produccion\Abastos\admi_abas;
 use App\Models\Produccion\catalogos\claves;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,6 +29,6 @@ class carNorm extends Model
     }
 
     public function abapar() {
-        return $this->belongsTo(AbaEntregas::class, 'partida_id');
+        return $this->belongsTo(admi_abas::class, 'partida_id');
     }
 }

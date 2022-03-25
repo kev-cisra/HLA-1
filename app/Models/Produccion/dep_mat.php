@@ -3,6 +3,7 @@
 namespace App\Models\Produccion;
 
 use App\Models\obje_cordi;
+use App\Models\Produccion\Abastos\Alma_Abas;
 use App\Models\Produccion\catalogos\claves;
 use App\Models\Produccion\catalogos\materiales;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
@@ -36,8 +37,8 @@ class dep_mat extends Model
         return $this->hasMany(obje_cordi::class, 'norma');
     }
 
-    public function aba_entrgas(){
-        return $this->hasMany(AbaEntregas::class, 'norma_id');
+    public function alma_abas(){
+        return $this->hasMany(Alma_Abas::class, 'norma_id');
     }
 
     // Relaciones inversas 1 a muchos

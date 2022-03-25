@@ -31,6 +31,7 @@ class AlterCarNormsPartidaTable extends Migration
         Schema::table('car_norms', function (Blueprint $table) {
             //
             $table->dropForeign('car_norms_partida_id_foreign');
+            $table->dropColumn("partida_id");
         });
     }
 }

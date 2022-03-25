@@ -3,6 +3,7 @@
 namespace App\Models\Produccion\catalogos;
 
 use App\Models\obje_cordi;
+use App\Models\Produccion\Abastos\Alma_Abas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
 use App\Models\Produccion\dep_mat;
@@ -30,8 +31,8 @@ class claves extends Model
         return $this->hasMany(obje_cordi::class, 'clave_id');
     }
 
-    public function aba_entrgas(){
-        return $this->hasMany(AbaEntregas::class, 'clave_id');
+    public function alma_abas(){
+        return $this->hasMany(Alma_Abas::class, 'clave_id');
     }
 
     //relacion 1 a muchos inversa

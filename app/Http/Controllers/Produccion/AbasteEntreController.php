@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
-use App\Models\Produccion\AbaEntregas;
+use App\Models\Produccion\Abastos\AbaEntregas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
