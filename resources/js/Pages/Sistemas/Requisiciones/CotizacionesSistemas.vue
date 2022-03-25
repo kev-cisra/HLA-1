@@ -127,6 +127,7 @@
                             <option value="USD">USD</option>
                             <option value="EUR">EUR</option>
                         </select>
+                        <small v-if="errors.Moneda" class="validation-alert">{{errors.Moneda}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
                         <jet-label><span class="required">*</span>TIPO CAMBIO</jet-label>
@@ -138,6 +139,7 @@
                             <option value="REM">REMISIÓN</option>
                             <option value="FAC">FACTURADO</option>
                         </select>
+                        <small v-if="errors.TipoPago" class="validation-alert">{{errors.TipoPago}}</small>
                     </div>
                 </div>
                 <Table id="Articulos">
@@ -165,7 +167,7 @@
                 </Table>
                 <div class="FormSection">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                        <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
+                        <jet-label>COMENTARIOS</jet-label>
                         <textarea name="" id="" cols="2" v-model="form.Comentario" @input="(val) => (form.Comentario = form.Comentario.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
                     </div>
                 </div>
@@ -375,6 +377,7 @@ export default {
 
     props: {
         Session: Object,
+        errors: Object,
         RequisicionesSistemas: Object, //Consulta inicial
         RequisicionSistemas: Object, //Requisicion con Cotizacion
     },

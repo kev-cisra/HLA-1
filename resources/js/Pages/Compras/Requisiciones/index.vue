@@ -379,6 +379,7 @@
                     </template>
                 </Table>
         </section>
+
         <!-- ******************************************* MODALES ************************************************ -->
         <!-- --------- Modal Captura ---------- -->
         <modal :show="showModal" @close="chageClose" :maxWidth="tam">

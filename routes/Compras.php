@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Compras\Cotizaciones\CotizacionesController;
-use App\Http\Controllers\Compras\Insumos\RequisicionInsumosController;
 use App\Http\Controllers\Compras\MarcasController;
 use App\Http\Controllers\Compras\Papeleria\AltaMaterialPapeleriaController;
 use App\Http\Controllers\Compras\Papeleria\RequisicionPapeleriaController;
@@ -33,9 +32,6 @@ Route::resource('Proveedores', ProveedoresController::class)
 
 Route::resource('RequisicionPapeleria', RequisicionPapeleriaController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('RequisicionPapeleria');
-
-Route::resource('Insumos', RequisicionInsumosController::class)
-    ->middleware(['auth:sanctum', 'verified'])->names('Insumos');
 
 Route::resource('Papeleria', SolicitudesPapeleriaController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('Papeleria');
