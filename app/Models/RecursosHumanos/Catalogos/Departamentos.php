@@ -4,6 +4,9 @@ namespace App\Models\RecursosHumanos\Catalogos;
 
 use App\Models\Catalogos\Maquinas;
 use App\Models\obje_cordi;
+use App\Models\Produccion\Abastos\AbaEntregas;
+use App\Models\Produccion\Abastos\admi_abas;
+use App\Models\Produccion\Abastos\Soli_Abas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
 use App\Models\Produccion\carOpe;
@@ -61,11 +64,15 @@ class Departamentos extends Model
     }
 
     public function aba_entre_entregado(){
-        return $this->hasMany(AbaEntregas::class, 'depa_entrega');
+        return $this->hasMany(admi_abas::class, 'departamento_id');
     }
 
-    public function aba_entre_recibe(){
-        return $this->hasMany(AbaEntregas::class, 'depa_recibe');
+    public function depa_soli(){
+        return $this->hasMany(Soli_Abas::class, 'depa_solicita');
+    }
+
+    public function depa_entre(){
+        return $this->hasMany(Soli_Abas::class, 'depa_entregar');
     }
 
     public function cargas() {

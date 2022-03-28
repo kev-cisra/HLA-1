@@ -3,6 +3,8 @@
 namespace App\Models\RecursosHumanos\Perfiles;
 
 use App\Models\Compras\Requisiciones\Requisiciones;
+use App\Models\Produccion\Abastos\AbaEntregas;
+use App\Models\Produccion\Abastos\admi_abas;
 use App\Models\Produccion\are_prof;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\dep_per;
@@ -38,6 +40,18 @@ class PerfilesUsuarios extends Model
 
     public function cargas() {
         return $this->hasMany(carga::class, 'per_carga');
+    }
+
+    public function admin_abas() {
+        return $this->hasMany(admi_abas::class, 'perfil_id');
+    }
+
+    public function abaEntre_aba(){
+        return $this->hasMany(AbaEntregas::class, 'perfi_abas');
+    }
+
+    public function abaEntre_entre(){
+        return $this->hasMany(AbaEntregas::class, 'perfi_entrega');
     }
 
     //relacion uno a muchos con Incidencias

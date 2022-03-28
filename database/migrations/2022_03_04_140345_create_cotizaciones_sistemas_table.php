@@ -19,7 +19,7 @@ class CreateCotizacionesSistemasTable extends Migration
             $table->string('TipoPago',15);
             $table->string('Moneda',4)->default('MXN');
             $table->float('TipoCambio')->default(1);
-            $table->integer('Aprobado')->default(0);
+            $table->tinyInteger('Aprobado')->default(0);
             $table->string('Comentario')->default('S/C');
             $table->string('Archivo')->nullable();
 

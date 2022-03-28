@@ -519,8 +519,6 @@ export default {
             });
             return EquiposAsignados;
         },
-
-
     }
 };
 </script>

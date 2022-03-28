@@ -112,7 +112,7 @@
         </section>
 
         <!-- ***************************************** MODALES ****************************************************** -->
-        <!-- --------------------- Modal Cotizacion -------------------------- -->
+        <!-- --------------------- Modal registrar Cotizacion -------------------------- -->
         <modal :show="showDetalle" @close="chageDetalle" maxWidth="3xl">
             <div class="ModalHeader">
                 <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>REQUISICIÓN RSIS-0{{form.Folio}}</h3>
@@ -510,10 +510,10 @@ export default {
         },
 
         VisualizaCotizacion(data){
-                this.$inertia.get('/Sistemas/CotizacionSistemas', { Req: data.id }, { //envio de variables por url
-                onSuccess: () => {
-                    this.chageCotizacion();
-                    this.Estatus = this.RequisicionSistemas.Estatus;
+            this.$inertia.get('/Sistemas/CotizacionSistemas', { Req: data.id }, { //envio de variables por url
+            onSuccess: () => {
+                this.chageCotizacion();
+                this.Estatus = this.RequisicionSistemas.Estatus;
             }, preserveState: true })
         },
 

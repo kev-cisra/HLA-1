@@ -81,7 +81,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
+                            <div class="FlexCenter">
                                 <div class="iconoEdit" @click="Confirma(data)" v-if="data.Estatus == 0">
                                     <span tooltip="Enviar Solicitud a Compra" flow="left">
                                         <i class="fa-solid fa-check"></i>
