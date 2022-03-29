@@ -143,6 +143,7 @@ export default {
         },
 
         RolesSpatie(data){
+            this.reset();
             this.chageClose();
             this.form.User_id = data.id;
 
