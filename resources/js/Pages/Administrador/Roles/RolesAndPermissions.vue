@@ -155,7 +155,6 @@ export default {
         this.qrcode();
         this.tablaRoles();
         this.tablaPermisos();
-        this.Calendario();
     },
 
     methods: {
@@ -167,18 +166,6 @@ export default {
             //     colorDark : "#64748B",
             //     colorLight : "#ffffff",
             // });
-        },
-
-        Calendario(){
-            var calendar = new window.Calendar($('#calendar').get(0), {
-            plugins: [window.interaction, window.dayGridPlugin, window.timeGridPlugin, window.listPlugin],
-            selectable: true,
-            initialView: 'dayGridMonth',
-            eventBorderColor: 'white',
-
-            });
-
-            calendar.render();
         },
 
         reset(){
@@ -272,6 +259,7 @@ export default {
                     this.RolPermisos.permissions.forEach(element => {
                         this.form.permissions.push(element.id);
                     });
+
                 }, preserveState: true})
         },
 
