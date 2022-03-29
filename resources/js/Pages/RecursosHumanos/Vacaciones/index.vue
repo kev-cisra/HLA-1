@@ -488,6 +488,7 @@ export default {
         },
 
         SolicitaVacaciones(data){   //Solicitud Individual de Vacaciones
+        console.log(data);
             data.Tipo = 2;
             data.IdUser = this.Session.id;
             data.IdEmp = this.Session.IdEmp;
@@ -512,7 +513,7 @@ export default {
                 //Verifico si pasaron mas de 30 dias entre la fecha actual y la peticion de vacaciones
                 var FechaValida = fecha1.diff(hoy, 'days');
                 //Comprobar que la fecha solicitada para vacaciones no sea mayor a 30 dias naturales
-                if(FechaValida < 30 ){
+                if(FechaValida < 31 ){
 
                     if(data.Empresa == 'SERGES' || data.Empresa == 'SHIELDTEX'){ //En caso de ser SERGES no contar los fines de semana
                         // DiasSolicitados -=1;
@@ -529,6 +530,7 @@ export default {
                             }
 
                             if(dias <= this.PerfilSession.DiasVac){ //(Cambio Individual)
+
                                 //Verificacion de dias de vacaciones disponibles no sean mayores a los solicitados
                                 data.DiasTomados = dias;
                                 data.DiasRestantes = this.PerfilSession.DiasVac - data.DiasTomados;
@@ -545,8 +547,8 @@ export default {
                     }else{ //En caso de ser Hilaturas se cuentan los fines de semana
                         var dias = fecha2.diff(fecha1, 'days');
                         data.DiasTomados = data.DiasTomados = dias+1;
-                        data.DiasRestantes = data.DiasVac - data.DiasTomados;
-
+                        console.log(data.DiasTomados );
+                        data.DiasRestantes = this.PerfilSession.DiasVac - data.DiasTomados;
                         //Verificacion de dias de vacaciones disponibles no sean mayores a los solicitados caso de hilaturas
                         if(data.DiasRestantes >= 0){
                             // Guardado de la informacion

@@ -461,6 +461,9 @@ class RequisicionesController extends Controller{
             if($Session->Departamento == 11){
                 $Departamentos = Departamentos::get(['id','Nombre']);
                 $Maquinas = Maquinas::where('departamento_id', '!=', 7)->get(['id','Nombre']);
+            }elseif ($Session->Departamento == 7) {
+                $Departamentos = Departamentos::get(['id','Nombre']);
+                $Maquinas = Maquinas::where('departamento_id', '!=', 7)->get(['id','Nombre']);
             }else{
                 $Departamentos = Departamentos::where('id', '=', $Session->Departamento)->orderBy('Nombre', 'asc')->get(['id','Nombre']);
                 $Maquinas = Maquinas::where('departamento_id', '=', $Session->Departamento)->get(['id','Nombre']);

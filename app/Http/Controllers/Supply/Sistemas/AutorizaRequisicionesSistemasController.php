@@ -23,15 +23,12 @@ class AutorizaRequisicionesSistemasController extends Controller{
                 $Departamento->select('id', 'Nombre');
             },
             'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
-                $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Hardware_id', 'requisicion_sistemas_id');
-            },
-            'Articulos.Hardware' => function($Articulos) { //Relacion 1 a 1 De puestos
-                $Articulos->select('id', 'IdUser', 'Cantidad', 'Nombre', 'Marca', 'Modelo');
-            },
+                $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
+            }
         ])->where('Estatus', '>=', 3)->get();
 
         if($request->Req){
-            $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Precios.Articulos.Hardware'])->where('id', '=', $request->Req)->first();
+            $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
 
         }else{
             $RequisicionSistemas = new stdClass();
