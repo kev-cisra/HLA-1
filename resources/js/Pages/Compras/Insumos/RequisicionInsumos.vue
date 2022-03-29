@@ -10,13 +10,13 @@
             </Header>
         </section>
         <!-- ******************************* FILTROS ********************************************* -->
-        <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-my-8 tw-mx-2">
+        <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-my-8 tw-mx-2 md:tw-mx-10">
             <div>
                 <jet-button @click="openModal" class="BtnNuevo">NUEVO PEDIDO</jet-button>
             </div>
         </section>
         <!-- ********************************* TABLAS ********************************************* -->
-        <section class="tw-mx-8">
+        <section class="tw-mx-2 md:tw-mx-10">
             <Table id="Insumos">
                 <template v-slot:TableHeader>
                     <th class="columna">Folio</th>
@@ -94,7 +94,6 @@
                 </template>
             </Table>
         </section>
-
         <!-- **************************************************** MODALES ****************************************************** -->
         <!-- --------------- Modal para guardado de datos ------------ -->
         <modal :show="showModal" @close="chageClose" :maxWidth="tam">
@@ -246,7 +245,8 @@ export default {
                     scrollY:  '40vh',
                     order: [0, 'desc'],
                     columnDefs: [
-                        { "width": "3%", "targets": [0] },
+                        { "width": "5%", "targets": [0,1,5] },
+                        { "width": "10%", "targets": [6] },
                     ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +

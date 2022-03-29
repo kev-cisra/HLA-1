@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Almacen\Insumos;
 
 use App\Http\Controllers\Controller;
+use App\Models\Compras\Insumos\ArticulosRequisicionesInsumos;
 use App\Models\Compras\Insumos\Insumos;
 use App\Models\Compras\Insumos\RequisicionesInsumos;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
@@ -17,140 +18,83 @@ class EntregaInsumosController extends Controller{
     public function index(Request $request){
         $Session = auth()->user();
         $User = User::find($Session->id); //Accedo a los datos del usuario logueado
-        $Autorizado = $User->hasAnyRole(['ONEPIECE', 'ADMINISTRADOR', 'SISTEMAS', 'SUPPLY']); //Busco si el suaurio tiene alguno de los siguientes Roles
 
-        if($Autorizado == true){ //Usuario Admin
-            //Catalogos
-            $Departamentos = Departamentos::whereIn('id', [8, 12, 13, 23, 25])->get(['id', 'Nombre']);
-            $Insumos = Insumos::get();
+        $Departamentos = Departamentos::whereIn('id', [8, 12, 13, 23, 25])->get(['id', 'Nombre']);
+        $Insumos = Insumos::get();
 
-            //Consulta Principal
-            $RequisicionesInsumos = RequisicionesInsumos::with([
-                'Perfil' => function($Perfil) { //Relacion 1 a 1 De puestos
-                    $Perfil->select('id', 'Nombre', 'ApPat', 'ApMat');
-                },
-                'Departamento' => function($Departamento) { //Relacion 1 a 1 De puestos
-                    $Departamento->select('id', 'Nombre');
-                },
-                'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
-                    $Articulos->select('id', 'IdUser', 'Cantidad', 'Estatus', 'insumo_id', 'requisiciones_insumos_id');
-                },
-                'Articulos.Insumo' => function($Articulos) { //Relacion 1 a 1 De puestos
+        //Consulta Principal
+        $RequisicionesInsumos = RequisicionesInsumos::with([
+            'Perfil' => function($Perfil) { //Relacion 1 a 1 De puestos
+                $Perfil->select('id', 'Nombre', 'ApPat', 'ApMat');
+            },
+            'Departamento' => function($Departamento) { //Relacion 1 a 1 De puestos
+                $Departamento->select('id', 'Nombre');
+            },
+            'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
+                $Articulos->select('id', 'IdUser', 'Cantidad', 'Estatus', 'insumo_id', 'requisiciones_insumos_id');
+            },
+            'Articulos.Insumo' => function($Articulos) { //Relacion 1 a 1 De puestos
+                $Articulos->select('id', 'IdUser', 'Clave', 'Nombre', 'Linea', 'Unidad');
+            }
+        ])->where('Estatus', '>', 1)
+        ->get();
+
+        if($request->Req){ //Consulta individual
+            $ArticulosReq = ArticulosRequisicionesInsumos::with([
+                'Insumo' => function($Articulos) { //Relacion 1 a 1 De puestos
                     $Articulos->select('id', 'IdUser', 'Clave', 'Nombre', 'Linea', 'Unidad');
                 }
-            ])->get();
-        }else{
-            //Catalogos
-            $Departamentos = Departamentos::whereIn('id', [8, 12, 13, 23, 25])->get(['id', 'Nombre']);
-            $Insumos = Insumos::get();
-            //Obtengo el id del perfil
-            $Perfil = PerfilesUsuarios::where('user_id', '=', $Session->id)->first('id');
-
-            //Consulta Principal
-            $RequisicionesInsumos = RequisicionesInsumos::with([
-                'Perfil' => function($Perfil) { //Relacion 1 a 1 De puestos
-                    $Perfil->select('id', 'Nombre', 'ApPat', 'ApMat');
-                },
-                'Departamento' => function($Departamento) { //Relacion 1 a 1 De puestos
-                    $Departamento->select('id', 'Nombre');
-                },
-                'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
-                    $Articulos->select('id', 'IdUser', 'Cantidad', 'Estatus', 'insumo_id', 'requisiciones_insumos_id');
-                },
-                'Articulos.Insumo' => function($Articulos) { //Relacion 1 a 1 De puestos
-                    $Articulos->select('id', 'IdUser', 'Clave', 'Nombre', 'Linea', 'Unidad');
-                }
-            ])->where('Perfil_id', '=',$Perfil->id)
-            ->get();
-        }
-
-        if($request->Req){
-
-            $RequisicionInsumo = RequisicionesInsumos::with([
-                'Perfil' => function($Perfil) { //Relacion 1 a 1 De puestos
-                    $Perfil->select('id', 'Nombre', 'ApPat', 'ApMat');
-                },
-                'Departamento' => function($Departamento) { //Relacion 1 a 1 De puestos
-                    $Departamento->select('id', 'Nombre');
-                },
-                'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
-                    $Articulos->select('id', 'IdUser', 'Cantidad', 'Estatus', 'insumo_id', 'requisiciones_insumos_id');
-                },
-                'Articulos.Insumo' => function($Articulos) { //Relacion 1 a 1 De puestos
-                    $Articulos->select('id', 'IdUser', 'Clave', 'Nombre', 'Linea', 'Unidad');
-                }
-            ])->where('id', '=', $request->Req)->first();
+            ])->where('requisiciones_insumos_id', '=', $request->Req)->get();
 
         }else{
-            $RequisicionInsumo = new stdClass();
+            $ArticulosReq = new stdClass();
         }
 
-        return Inertia::render('Almacen/Insumos/', compact('Session', 'Departamentos', 'Insumos', 'RequisicionesInsumos', 'RequisicionInsumo'));
+        return Inertia::render('Almacen/Insumos/EntregasInsumos', compact('Session', 'RequisicionesInsumos', 'ArticulosReq'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function update(Request $request, $id){
+
+        switch ($request->Metodo) {
+
+            case 1: //Caso de entregar producto
+                ArticulosRequisicionesInsumos::where('id', '=', $request->id)->update([
+                    'Estatus' => 3,
+                ]);
+                //Actualizao el estauts
+                $Articulos = ArticulosRequisicionesInsumos::where('requisiciones_insumos_id', $request->requisiciones_insumos_id)
+                ->where('Estatus', '=', 2)->count();
+                //Actualizo el estauts de la requisicion si todos los productos fueron entregados
+                if($Articulos == 0){
+                    RequisicionesInsumos::where('id', $request->requisiciones_insumos_id)->update([
+                        'Estatus' => 3,
+                    ]);
+                }
+                return redirect()->back();
+                break;
+
+            case 2:
+
+                $Session = auth()->user();
+                //Actualizo la cantidad de la partida
+                ArticulosRequisicionesInsumos::where('id', '=', $request->id)->update([
+                    'Cantidad' => $request->CantidadParcial,
+                ]);
+                //Creo unanueva partida con la cantidad faltante
+                ArticulosRequisicionesInsumos::create([
+                    'IdUser' => $Session->id,
+                    'Cantidad' => $request->CantidadRestante,
+                    'Estatus' => 2,
+                    'requisiciones_insumos_id' => $request->requisiciones_insumos_id,
+                    'insumo_id' => $request->insumo_id,
+                ]);
+
+                return redirect()->back();
+                break;
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function destroy($id){
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

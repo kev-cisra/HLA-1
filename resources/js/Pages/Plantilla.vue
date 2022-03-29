@@ -118,7 +118,7 @@ import AppLayout from "@/Layouts/AppLayout";
 import Welcome from "@/Jetstream/Welcome";
 import Header from "@/Components/Header";
 import Accions from "@/Components/Accions";
-import Table from "@/Components/TableGreen";
+import Table from "@/Components/TableDark";
 import JetButton from "@/Components/Button";
 import JetCancelButton from "@/Components/CancelButton";
 import Modal from "@/Jetstream/Modal";

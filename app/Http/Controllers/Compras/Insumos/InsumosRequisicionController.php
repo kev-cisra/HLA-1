@@ -93,6 +93,13 @@ class InsumosRequisicionController extends Controller{
     }
 
     public function store(Request $request){
+
+        Validator::make($request->all(),[
+            'IdUser' => ['required'],
+            'Fecha' => ['required'],
+            'Departamento_id' => ['required'],
+        ])->validate();
+
         $CreaRequi = 0;
         $Session = auth()->user();
         $hoy = Carbon::now();
@@ -149,16 +156,6 @@ class InsumosRequisicionController extends Controller{
             session()->flash('flash.message', 'Por favor Verifique la información capturada');
         }
 
-        // Validator::make($request->all(),[
-        //     'IdUser' => ['required'],
-        //     'Clave' => ['required'],
-        //     'Insumo' => ['required'],
-        //     'Linea' => ['required'],
-        //     'Unidad' => ['required'],
-        //     'Cantidad' => ['required'],
-        //     'Departamento_id' => ['required'],
-        // ])->validate();
-
         return redirect()->back();
     }
 
@@ -178,6 +175,7 @@ class InsumosRequisicionController extends Controller{
                 RequisicionesInsumos::find($request->id)->update([
                     'Estatus' => 2,
                 ]);
+
                 ArticulosRequisicionesInsumos::where('requisiciones_insumos_id', '=', $request->id)->update([
                     'Estatus' => 2,
                 ]);
@@ -187,7 +185,6 @@ class InsumosRequisicionController extends Controller{
 
             case 2:
                 // return $request;
-
                 $Cotizacion = RequisicionesInsumos::where('id', $request->Req_id)->update([
                     'IdUser' => $request->IdUser,
                     'Fecha' => $request->Fecha,
