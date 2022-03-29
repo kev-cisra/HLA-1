@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sistemas\Requisiciones;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\Sistemas\Hardware\HardwareSistemas;
@@ -25,11 +26,8 @@ class RequisicionesSistemasController extends Controller{
                 $Departamento->select('id', 'Nombre');
             },
             'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
-                $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Hardware_id', 'requisicion_sistemas_id');
-            },
-            'Articulos.Hardware' => function($Articulos) { //Relacion 1 a 1 De puestos
-                $Articulos->select('id', 'IdUser', 'Cantidad', 'Nombre', 'Marca', 'Modelo');
-            },
+                $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
+            }
         ])->get();
 
         $Departamentos = Departamentos::where('id', '=', $Session->Departamento)->get(['id', 'Nombre']);
@@ -39,6 +37,17 @@ class RequisicionesSistemasController extends Controller{
     }
 
     public function store(Request $request){
+
+        Validator::make($request->all(), [
+            'IdUser' => ['required'],
+            'Fecha' => ['required','date'],
+            'Estatus' => ['required'],
+            'Departamento_id' => ['required'],
+            'Partida.Cantidad.*' => ['required'],
+            'Partida.Unidad.*' => ['required'],
+            'Partida.Dispositivo.*' => ['required'],
+        ])->validate();
+
         $CreaRequi = 0;
         $Session = auth()->user();
         $Perfil_id = PerfilesUsuarios::where('user_id','=',$request->IdUser)->first('id');
@@ -57,7 +66,7 @@ class RequisicionesSistemasController extends Controller{
         $serial += 1; //Incremento de folio
 
         foreach ($request->Partida as $value) { //Verifico que se envien datos en la partida
-            if( $value['Cantidad'] != '' && $value['Unidad'] != '' && $value['Hardware_id'] != ''){
+            if( $value['Cantidad'] != '' && $value['Unidad'] != '' && $value['Dispositivo'] != ''){
                 $CreaRequi = 1;
             }else{
                 $CreaRequi = 0;
@@ -72,6 +81,7 @@ class RequisicionesSistemasController extends Controller{
                 'Estatus' => $request->Estatus,
                 'Perfil_id' => $Perfil_id->id,
                 'Departamento_id' => $request->Departamento_id,
+                'Comentarios' => $request->Comentarios,
             ]);
             $requisicion_id = $Requisicion->id;
 
@@ -81,7 +91,7 @@ class RequisicionesSistemasController extends Controller{
                     'IdUser' => $request->IdUser,
                     'Cantidad' => $value['Cantidad'],
                     'Unidad' => $value['Unidad'],
-                    'Hardware_id' => $value['Hardware_id'],
+                    'Dispositivo' => $value['Dispositivo'],
                     'requisicion_sistemas_id' => $requisicion_id,
                 ]);
             }
@@ -103,10 +113,10 @@ class RequisicionesSistemasController extends Controller{
                 return redirect()->back();
                 break;
             case 2: //Edicion de Partida
-
                 RequisicionesSistemas::find($request->requisicion_sistemas_id)->update([
                     'Fecha' => $request->Fecha,
                     'Departamento_id' => $request->Departamento_id,
+                    'Comentarios' => $request->Comentarios,
                 ]);
 
                 foreach ($request->Partida as $value) {
@@ -115,7 +125,7 @@ class RequisicionesSistemasController extends Controller{
                         'IdUser' => $request->IdUser,
                         'Cantidad' => $value['Cantidad'],
                         'Unidad' => $value['Unidad'],
-                        'Hardware_id' => $value['Hardware_id'],
+                        'Dispositivo' => $value['Dispositivo'],
                     ]);
                 }
                 return redirect()->back();
@@ -123,14 +133,7 @@ class RequisicionesSistemasController extends Controller{
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id){
+
     }
 }
