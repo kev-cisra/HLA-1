@@ -437,7 +437,7 @@ class CotizacionesController extends Controller{
                 },
             ])
             ->where('requisicion_id', '=', $request->Req)
-            ->where('EstatusArt', '!=', 10)
+            // ->where('EstatusArt', '!=', 10)
             ->get();
 
             $PreciosRequisicion = PreciosCotizaciones::where('requisiciones_id', '=', $request->Req)->get();
@@ -448,7 +448,7 @@ class CotizacionesController extends Controller{
                 $ArticulosCotizar = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->where('EstatusArt', '=', 3)->get();
             }else{
                 //Obtengo los articulos cotizados 1 vez
-                $ArticulosCotizar = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->where('EstatusArt', '=', 4)->get();
+                $ArticulosCotizar = ArticulosRequisiciones::where('requisicion_id','=', $request->Req)->where('EstatusArt', '=', 10)->get();
             }
 
             if($request->Art != ''){

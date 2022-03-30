@@ -182,7 +182,7 @@
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                             <td>{{ datos.Fecha.substr(5) }}</td>
-                            <td>{{ datos.Folio }}</td>
+                            <td>R-{{ datos.articulos_requisicion.Folio }}</td>
                             <td>{{ datos.articulos_requisicion.NumReq }}</td>
                             <td>{{ datos.articulos_requisicion.OrdenCompra }}</td>
                             <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
@@ -262,6 +262,7 @@
                 <Table id="Requisiciones">
                     <template v-slot:TableHeader>
                         <th class="columna">FECHA</th>
+                        <th class="columna">FOLIO</th>
                         <th class="columna">REQ</th>
                         <th class="columna">O.C</th>
                         <th class="columna">DEPARTAMENTO</th>
@@ -279,6 +280,7 @@
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                             <td>{{ datos.Fecha.substr(5) }}</td>
+                            <td>R-{{ datos.Folio }}</td>
                             <td class="tw-text-center">{{ datos.NumReq }}</td>
                             <td class="tw-text-center">{{ datos.OrdenCompra }}</td>
                             <td>{{ datos.requisicion_departamento.Nombre }}</td>
@@ -351,7 +353,6 @@
                 </Table>
             </div>
         </div>
-
     </div>
 
     <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
@@ -682,7 +683,9 @@
             <jet-CancelButton @click="chageCloseComentarios">Cerrar</jet-CancelButton>
         </div>
     </modal>
-
+    <pre>
+        {{ PreciosRequisicion }}
+    </pre>
     </app-layout>
 </template>
 
@@ -1286,6 +1289,7 @@ export default {
         },
 
         RechazaPartida(data){
+            console.log(data);
             data._method = "PUT";
             data.metodo = 3;
             this.$inertia.post("/Supply/AutorizaRequisiciones/" + data.id, data, {

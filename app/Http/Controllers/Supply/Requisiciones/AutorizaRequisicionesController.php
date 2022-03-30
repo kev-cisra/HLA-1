@@ -728,8 +728,9 @@ class AutorizaRequisicionesController extends Controller{
                 break;
 
             case 2: //Rechazo de cotizacion
+
                 ArticulosRequisiciones::where('requisicion_id', '=', $request->requisicion_id)->where('EstatusArt', '=', 5)->update([
-                    'EstatusArt' => 6,
+                    'EstatusArt' => 10,
                     'MotivoCancelacion' => $request->Comentario,
                 ]);
 
@@ -744,7 +745,7 @@ class AutorizaRequisicionesController extends Controller{
             case 3: //Rechazo cotizacion sin Comentario
                 //Actualizo el estatus del articulo
                 ArticulosRequisiciones::where('id', '=', $request->articulos_requisiciones_id)->where('EstatusArt', '=', 5)->update([
-                    'EstatusArt' => 6,
+                    'EstatusArt' => 10,
                 ]);
 
                 //Autorizo el precio seleccionado
@@ -762,9 +763,8 @@ class AutorizaRequisicionesController extends Controller{
                 ->count();
 
                 if($ArticulosAutorizados == 0){
-                    //Todos los articulos de la requisicion se autorizaron y se manda la cotizacion completa como Autorizada
-                    Requisiciones::where('id', '=', $request->requisicion_id)->update([
-                        'Estatus' => 6,
+                    Requisiciones::where('id', '=', $request->requisiciones_id)->update([
+                        'Estatus' => 10,
                     ]);
                 }
 

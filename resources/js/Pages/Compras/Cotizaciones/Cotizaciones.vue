@@ -151,7 +151,7 @@
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                         <td>{{ datos.Fecha.substr(5) }}</td>
-                        <td>{{ datos.Folio }}</td>
+                        <td>R-{{ datos.Folio }}</td>
                         <td>{{ datos.articulos_requisicion.NumReq }}</td>
                         <td>{{ datos.articulos_requisicion.OrdenCompra }}</td>
                         <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
@@ -237,13 +237,13 @@
                     </tr>
                 </template>
             </Table>
-
         </div>
 
         <div v-else>
             <Table id="Requisiciones">
                 <template v-slot:TableHeader>
                     <th class="columna">FECHA</th>
+                    <th class="columna">FOLIO</th>
                     <th class="columna">REQ</th>
                     <th class="columna">O.C</th>
                     <th class="columna">DEPARTAMENTO</th>
@@ -261,6 +261,7 @@
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                         <td>{{ datos.Fecha.substr(5) }}</td>
+                        <td>R-{{ datos.Folio }}</td>
                         <td class="tw-text-center">{{ datos.NumReq }}</td>
                         <td class="tw-text-center">{{ datos.OrdenCompra }}</td>
                         <td>{{ datos.requisicion_departamento.Nombre }}</td>
@@ -405,7 +406,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="columnaIconos" v-else-if="datos.Estatus > 6">
+                            <div class="columnaIconos" v-else-if="datos.Estatus > 6 && datos.Estatus < 10">
                                 <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
                                     <span tooltip="Visualiza Cotizacion" flow="left">
                                         <i class="fas fa-file-invoice-dollar"></i>
@@ -424,6 +425,21 @@
                                             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                                             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                                         </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="columnaIconos" v-else-if="datos.Estatus == 10">
+                                <div class="iconoDetails" @click="VisualizaCotizacion(datos)">
+                                    <span tooltip="Visualiza Cotizacion" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoPurple" @click="CotizarOtraReq(datos)">
+                                    <span tooltip="Realizar Otra Cotizacion" flow="left">
+                                        <i class="fas fa-file-invoice-dollar"></i>
                                     </span>
                                 </div>
                             </div>
@@ -773,7 +789,7 @@
                         <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                             <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
                             <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
-                                <option v-for="select in Proveedores" :key="select.id" :value="select.Nombre" >{{ select.Nombre }}</option>
+                                <option v-for="select in Proveedores" :key="select.id" :value="select.id" >{{ select.Nombre }}</option>
                             </select>
                             <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
                         </div>
@@ -785,7 +801,6 @@
                                 <option value="EUR" >EUR</option>
                             </select>
                         </div>
-
                         <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
                             <jet-label>Tipo Cambio</jet-label>
                             <jet-input type="text" v-model="form.TipoCambio"></jet-input>
@@ -808,7 +823,7 @@
                                     <td class="tw-text-center">{{ match.Unidad }}</td>
                                     <td>{{ match.Descripcion }}</td>
                                     <td class="tw-flex tw-justify-center">
-                                        <input type="number" v-model="match.PrecioUnitario" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-block tw-w-1/2 tw-appearance-none tw-shadow-sm">
+                                        <input type="number" min="1" v-model="match.PrecioUnitario" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-block tw-w-1/2 tw-appearance-none tw-shadow-sm">
                                     </td>
                                 </tr>
                             </template>
@@ -964,7 +979,6 @@
         </div>
 
         <div class="ModalFooter">
-            <jet-button type="button" @click="Editar(form)"  :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Editar</jet-button>
             <jet-CancelButton @click="chagePreciosRequisicion">Cerrar</jet-CancelButton>
         </div>
     </modal>
@@ -1543,6 +1557,7 @@ export default {
         CotizarOtraReq(data){ //Agregar mas cotizaciones
             this.params.Req = data.id;
             this.params.NumCot = 2;
+
             this.$inertia.get('/Compras/Cotizaciones', this.params , {
                 onSuccess: () => {
 
