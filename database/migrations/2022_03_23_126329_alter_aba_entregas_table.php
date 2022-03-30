@@ -81,12 +81,12 @@ class AlterAbaEntregasTable extends Migration
             $table->foreign('clave_id')->references("id")->on("claves")
             ->onUpdate("cascade");
 
-            $table->unsignedBigInteger('depa_entrega');
+            $table->unsignedBigInteger('depa_entrega')->nullable();
             $table->foreign("depa_entrega")->references("id")->on("departamentos")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
-            $table->unsignedBigInteger('depa_recibe');
+            $table->unsignedBigInteger('depa_recibe')->nullable();
             $table->foreign("depa_recibe")->references("id")->on("departamentos")
             ->onDelete("cascade")
             ->onUpdate("cascade");

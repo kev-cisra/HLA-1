@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion;
 
+use App\Models\Produccion\Abastos\admi_abas;
 use App\Models\Produccion\catalogos\claves;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
@@ -66,5 +67,9 @@ class carga extends Model
 
     public function departamento(){
         return $this->belongsTo(Departamentos::class, 'departamento_id');
+    }
+
+    public function admi_aba(){
+        return $this->belongsTo(admi_abas::class, 'partida_id');
     }
 }

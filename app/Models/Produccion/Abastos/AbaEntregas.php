@@ -2,7 +2,6 @@
 
 namespace App\Models\Produccion\Abastos;
 
-use App\Models\Produccion\rela_aba_carga;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +25,7 @@ class AbaEntregas extends Model
     }
 
     public function soli_aba(){
-        return $this->belongsTo(Soli_Abas::class, 'soli_aba_id');
+        return $this->belongsTo(SoliAbas::class, 'soli_aba_id');
     }
 
     public function perfi_aba(){

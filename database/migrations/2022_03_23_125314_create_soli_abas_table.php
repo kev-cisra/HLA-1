@@ -15,7 +15,6 @@ class CreateSoliAbasTable extends Migration
     {
         Schema::create('soli_abas', function (Blueprint $table) {
             $table->id();
-
             $table->string('estatus')->nullable();
             $table->float('total_soli')->nullable()->default(0);
 

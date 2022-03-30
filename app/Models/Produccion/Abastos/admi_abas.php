@@ -2,6 +2,7 @@
 
 namespace App\Models\Produccion\Abastos;
 
+use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
@@ -19,7 +20,7 @@ class admi_abas extends Model
 
     //relacion uno a muchos
     public function soli_abas(){
-        return $this->hasMany(Soli_Abas::class, 'admi_abas_id');
+        return $this->hasMany(SoliAbas::class, 'admi_abas_id');
     }
 
     public function aba_entregas(){
@@ -27,11 +28,15 @@ class admi_abas extends Model
     }
 
     public function proc_final_aba(){
-        return $this->hasMany(Proc_Fin_Abas::class, 'admi_abas_id');
+        return $this->hasMany(ProcFinAbas::class, 'admi_abas_id');
     }
 
     public function car_norms(){
         return $this->hasMany(carNorm::class, 'partida_id');
+    }
+
+    public function cargas(){
+        return $this->hasMany(carga::class, 'partida_id');
     }
 
     //relacion uno a muchos inversa

@@ -16,7 +16,7 @@ class CreateAdmiAbasTable extends Migration
         Schema::create('admi_abas', function (Blueprint $table) {
             $table->id();
 
-            $table->string('partida')->nullable()->unique();
+            $table->string('partida')->nullable();
             $table->string('folio2')->nullable();
             $table->float('total')->nullable()->default(0);
             $table->string('estatus')->nullable();

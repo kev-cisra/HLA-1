@@ -31,6 +31,7 @@ class AlterCargasPartidaTable extends Migration
         Schema::table('cargas', function (Blueprint $table) {
             //
             $table->dropForeign('cargas_partida_id_foreign');
+            $table->dropColumn("partida_id");
         });
     }
 }

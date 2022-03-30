@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class   Soli_Abas extends Model
+class SoliAbas extends Model
 {
     use HasFactory;
     use SoftDeletes; //Implementamos
@@ -17,7 +17,7 @@ class   Soli_Abas extends Model
 
     //relacion uno a muchos
     public function alma_abas(){
-        return $this->hasMany(Alma_Abas::class, 'soli_aba_id');
+        return $this->hasMany(AlmaAbas::class, 'soli_aba_id');
     }
 
     //relacion uno a uno

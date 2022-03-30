@@ -7,6 +7,7 @@ use App\Models\obje_cordi;
 use App\Models\Produccion\Abastos\AbaEntregas;
 use App\Models\Produccion\Abastos\admi_abas;
 use App\Models\Produccion\Abastos\Soli_Abas;
+use App\Models\Produccion\Abastos\SoliAbas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
 use App\Models\Produccion\carOpe;
@@ -68,11 +69,11 @@ class Departamentos extends Model
     }
 
     public function depa_soli(){
-        return $this->hasMany(Soli_Abas::class, 'depa_solicita');
+        return $this->hasMany(SoliAbas::class, 'depa_solicita');
     }
 
     public function depa_entre(){
-        return $this->hasMany(Soli_Abas::class, 'depa_entregar');
+        return $this->hasMany(SoliAbas::class, 'depa_entregar');
     }
 
     public function cargas() {

@@ -4,6 +4,9 @@ namespace App\Models\Produccion;
 
 use App\Models\obje_cordi;
 use App\Models\Produccion\Abastos\Alma_Abas;
+use App\Models\Produccion\Abastos\AlmaAbas;
+use App\Models\Produccion\Abastos\Proc_Fin_Abas;
+use App\Models\Produccion\Abastos\ProcFinAbas;
 use App\Models\Produccion\catalogos\claves;
 use App\Models\Produccion\catalogos\materiales;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
@@ -38,7 +41,11 @@ class dep_mat extends Model
     }
 
     public function alma_abas(){
-        return $this->hasMany(Alma_Abas::class, 'norma_id');
+        return $this->hasMany(AlmaAbas::class, 'norma_id');
+    }
+
+    public function proc_fin_abas(){
+        return $this->hasMany(ProcFinAbas::class, 'norma_id');
     }
 
     // Relaciones inversas 1 a muchos
