@@ -161,6 +161,7 @@
                 <Table id="Requisiciones">
                     <template v-slot:TableHeader>
                         <th class="columna">FECHA</th>
+                        <th class="columna">FOLIO</th>
                         <th class="columna">REQ</th>
                         <th class="columna">O.C</th>
                         <th class="columna">DEPARTAMENTO</th>
@@ -181,6 +182,7 @@
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                             <td>{{ datos.Fecha.substr(5) }}</td>
+                            <td>{{ datos.Folio }}</td>
                             <td>{{ datos.articulos_requisicion.NumReq }}</td>
                             <td>{{ datos.articulos_requisicion.OrdenCompra }}</td>
                             <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>

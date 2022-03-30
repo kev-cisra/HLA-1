@@ -4,8 +4,7 @@
         <Header :class="[color, style]">
             <slot>
                 <h3 class="tw-p-2">
-                    <i class="fas fa-user tw-ml-3 tw-mr-3"></i>
-                        Requisiciones Solicitadas
+                    <i class="fas fa-user tw-ml-3 tw-mr-3"></i>Requisiciones Solicitadas
                 </h3>
             </slot>
         </Header>
@@ -131,6 +130,7 @@
             <Table id="Requisiciones">
                 <template v-slot:TableHeader>
                     <th class="columna">FECHA</th>
+                    <th class="columna">Folio</th>
                     <th class="columna">REQ</th>
                     <th class="columna">O.C</th>
                     <th class="columna">DEPARTAMENTO</th>
@@ -151,6 +151,7 @@
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                         <td>{{ datos.Fecha.substr(5) }}</td>
+                        <td>{{ datos.Folio }}</td>
                         <td>{{ datos.articulos_requisicion.NumReq }}</td>
                         <td>{{ datos.articulos_requisicion.OrdenCompra }}</td>
                         <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>

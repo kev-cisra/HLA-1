@@ -104,7 +104,7 @@ class RequisicionesController extends Controller{
                 ])
                 ->whereYear('Fecha', $anio)
                 ->orderBy('id', 'desc')
-                ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                ->get(['id', 'Fecha', 'Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
 
                 if(isset($request->Year)){
                     if($request->Year == 0){
@@ -850,6 +850,7 @@ class RequisicionesController extends Controller{
     public function store(RequisicionesRequest $request){
 
         $hoy = Carbon::now();
+        $anio = $hoy->format('y');
 
         $Session = auth()->user();
         $SessionIdEmp = $Session->IdEmp;
@@ -866,22 +867,19 @@ class RequisicionesController extends Controller{
         //Genracion de folio automatico
         $Numfolio = Requisiciones::all(['Folio']);
 
-        if($Numfolio->count()){
-            $Nfolio = $Numfolio->last(); //Obtengo el ultimo folio con el metodo last
+        $Nfolio = $Numfolio->last(); //Obtengo el ultimo folio con el metodo last
+        $AnioBd = substr($Nfolio->Folio, 0, 2); //Obtengo el año del folio
 
-            foreach ($Nfolio as $item){
-                $serial = $Nfolio->Folio; //asigno el folio a la variable serial
-            }
-        }else{
-            $serial = 1000; //en caso de no haber registros asigno un folio
-        }
-        $serial += 1; //Incremento de folio
+        $serial = $Nfolio->Folio; //asigno el folio a la variable serial
+        $serial = substr($serial, 2); //Obtengo el folio sin el año
+
+        $AnioBd == $anio ?  $serial += 1 :  $serial = 1;
 
         $Requisicion = Requisiciones::create([
             'IdUser' => $request->IdUser,
             'IdEmp' => $Session->IdEmp,
             'Fecha' => $request->Fecha,
-            'Folio' => $serial,
+            'Folio' => $anio.$serial,
             'NumReq' => $request->NumReq,
             'Departamento_id' => $request->Departamento_id,
             'jefes_areas_id' => $IdJefe,

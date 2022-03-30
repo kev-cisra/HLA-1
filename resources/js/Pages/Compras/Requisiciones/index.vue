@@ -276,6 +276,7 @@
                 <Table id="Requisiciones">
                     <template v-slot:TableHeader>
                         <th class="columna">FECHA</th>
+                        <th class="columna">FOLIO</th>
                         <th class="columna">REQ</th>
                         <th class="columna">O.C</th>
                         <th class="columna">DEPARTAMENTO</th>
@@ -293,6 +294,7 @@
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                             <td>{{ datos.Fecha.substr(5) }}</td>
+                            <td>R-{{ datos.Folio }}</td>
                             <td>{{ datos.NumReq }}</td>
                             <td>{{ datos.OrdenCompra }}</td>
                             <td>{{ datos.requisicion_departamento.Nombre }}</td>
@@ -397,12 +399,12 @@
                         <small v-if="errors.Departamento_id" class="validation-alert">{{errors.Departamento_id}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                        <jet-label><span class="required">*</span>Num Requisicion</jet-label>
+                        <jet-label><span class="required">*</span>NÚM REQUISICIÓN</jet-label>
                         <jet-input type="text" v-model="form.NumReq"></jet-input>
                         <small v-if="errors.NumReq" class="validation-alert">{{errors.NumReq}}</small>
                     </div>
                     <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                        <jet-label><span class="required">*</span>Código</jet-label>
+                        <jet-label><span class="required">*</span>CÓDIGO</jet-label>
                         <select id="Empresa" v-model="form.Codigo" class="InputSelect">
                             <option value="A - EXTRAORDINARIA">A - EXTRAORDINARIA</option>
                             <option value="B - REGULAR">B - REGULAR</option>

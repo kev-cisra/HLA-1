@@ -16,7 +16,7 @@ class RequisicionesRequest extends FormRequest{
             'IdUser' => ['required'],
             'IdEmp' => ['required'],
             'Departamento_id' => ['required'],
-            'NumReq' => ['numeric','required','digits_between:4,7',Rule::unique('requisiciones')->ignore($this->id)],
+            // 'NumReq' => ['numeric',Rule::unique('requisiciones')->ignore($this->id)],
             'Codigo' => ['required'],
             'Fecha' => ['required'],
             'Maquina' => ['required'],
