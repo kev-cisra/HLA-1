@@ -109,16 +109,19 @@ class InsumosRequisicionController extends Controller{
 
         $Numfolio = RequisicionesInsumos::all(['Folio']);
 
-        if($Numfolio->count()){
+        if($Numfolio->count()){ //Verifico que existe al menos un folio
+
             $Nfolio = $Numfolio->last(); //Obtengo el ultimo folio con el metodo last
-            foreach ($Nfolio as $item){
-                $serial = $Nfolio->Folio; //asigno el folio a la variable serial
-            }
+            $AnioBd = substr($Nfolio->Folio, 0, 2); //Obtengo el año del folio
+
+            $serial = $Nfolio->Folio; //asigno el folio a la variable serial
+            $serial = substr($serial, 2); //Obtengo el folio sin el año
+
+            $AnioBd == $anio ?  $serial += 1 :  $serial = 1;
+
         }else{
             $serial = 1; //en caso de no haber registros asigno un folio
         }
-        $serial = substr($serial, 2);
-        $serial += 1; //Incremento de folio
 
         foreach ($request->Partida as $value) { //Verifico que se envien datos en la partida
             if( $value['Cantidad'] != '' && $value['insumo_id'] != ''){
