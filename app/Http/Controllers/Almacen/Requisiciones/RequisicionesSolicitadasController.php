@@ -778,6 +778,8 @@ class RequisicionesSolicitadasController extends Controller {
     }
 
     public function update(Request $request, $id){
+        $Session = auth()->user();
+
         switch ($request->metodo) {
             //CASO DE ENVIAR REQUISICION A COTIZACION
             case 1:
@@ -941,7 +943,7 @@ class RequisicionesSolicitadasController extends Controller {
                 ]);
 
                 $Parcialidad = ArticulosRequisiciones::create([
-                    'IdEmp' => $request->IdEmp,
+                    'IdEmp' => $Session->IdEmp,
                     'Fecha' => $Articulo->Fecha,
                     'Cantidad' => $request->Parcialidad,
                     'Unidad' => $Articulo->Unidad,
