@@ -654,7 +654,7 @@ class CotizacionesController extends Controller{
                 ]);
             }
 
-            case 5:{
+            case 5:{ //Envio de correo a Proveedor
                 //Busco los datos de la requisicion
                 $Requisicion = Requisiciones::where('id', '=', $request->id)->first();
                 //Creo un objeto para asiognar los datos y enviarlo por la funcion de correo

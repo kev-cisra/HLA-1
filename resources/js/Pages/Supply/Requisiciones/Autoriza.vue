@@ -683,9 +683,7 @@
             <jet-CancelButton @click="chageCloseComentarios">Cerrar</jet-CancelButton>
         </div>
     </modal>
-    <pre>
-        {{ PreciosRequisicion }}
-    </pre>
+
     </app-layout>
 </template>
 

@@ -18,8 +18,8 @@ class ContactaProveedorMailable extends Mailable
      *
      * @return void
      */
-    public function __construct($Req)
-    {
+    public function __construct($Req){
+
         $this->Req = $Req;
     }
 

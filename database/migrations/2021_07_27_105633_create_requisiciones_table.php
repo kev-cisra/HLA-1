@@ -19,7 +19,7 @@ class CreateRequisicionesTable extends Migration
             $table->unsignedBigInteger('IdEmp'); //Numero control empleado
             $table->date('Fecha')->nullable();
             $table->integer('Folio')->unique();
-            $table->integer('NumReq');
+            $table->integer('NumReq')->nullable();
             $table->integer('OrdenCompra')->nullable();
             $table->unsignedBigInteger('Departamento_id')->Nullable();
 

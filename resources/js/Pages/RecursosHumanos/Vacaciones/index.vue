@@ -348,6 +348,7 @@ export default {
                 Estatus: 1,
                 DiasTomados: null,
                 DiasRestantes: null,
+                JefeDepto: this.JefeDepto,
             },
             form2: {
                 IdEmp: 0,
@@ -422,6 +423,7 @@ export default {
                 Nombre: null,
                 ApPat: null,
                 ApMat: null,
+                JefeDepto: this.JefeDepto,
             };
         },
 
@@ -488,7 +490,6 @@ export default {
         },
 
         SolicitaVacaciones(data){   //Solicitud Individual de Vacaciones
-        console.log(data);
             data.Tipo = 2;
             data.IdUser = this.Session.id;
             data.IdEmp = this.Session.IdEmp;
@@ -496,6 +497,7 @@ export default {
             data.Nombre = this.PerfilSession.Nombre;
             data.ApPat = this.PerfilSession.ApPat;
             data.ApMat = this.PerfilSession.ApMat;
+            this.form.JefeDepto = this.JefeDepto;
             data.Estatus = 0;
 
             var DiasRestantes = 0;
@@ -537,7 +539,13 @@ export default {
                                 // Guardado de la informacion
                                 this.$inertia.post("/RecursosHumanos/Vacaciones", data, {
                                     onSuccess: () => {
-                                        this.reset(), this.chageClose(), this.alertSucces();
+                                        this.reset();
+                                        this.chageClose();
+                                        if(this.$attrs.jetstream.flash.type == 'Warning'){
+                                            this.alertInfo(this.$attrs.jetstream.flash.message);
+                                        }else if(this.$attrs.jetstream.flash.type == 'Success'){
+                                            this.alertSuccess(this.$attrs.jetstream.flash.message);
+                                        }
                                     },
                                 });
                             }else{
@@ -554,7 +562,13 @@ export default {
                             // Guardado de la informacion
                             this.$inertia.post("/RecursosHumanos/Vacaciones", data, {
                                 onSuccess: () => {
-                                    this.reset(), this.chageClose(), this.alertSucces();
+                                    this.reset();
+                                    this.chageClose();
+                                    if(this.$attrs.jetstream.flash.type == 'Warning'){
+                                        this.alertInfo(this.$attrs.jetstream.flash.message);
+                                    }else if(this.$attrs.jetstream.flash.type == 'Success'){
+                                        this.alertSuccess(this.$attrs.jetstream.flash.message);
+                                    }
                                 },
                             });
                         }else{

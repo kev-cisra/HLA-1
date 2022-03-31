@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\RecursosHumanos\Vacaciones;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RecursosHumanos\SolicitudDeVacacionesMailable;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Catalogos\Puestos;
@@ -11,6 +12,7 @@ use App\Models\RecursosHumanos\Vacaciones\Vacaciones;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
@@ -102,9 +104,11 @@ class VacacionesDptoController extends Controller{
             'DiasTomados' => ['required'],
         ])->validate();
 
-        $Perfil_id = PerfilesUsuarios::where('IdEmp', '=', $request->IdEmp)->where('Empresa', '=', $request->Empresa)->first();
+        $Perfil = PerfilesUsuarios::where('IdEmp', '=', $request->IdEmp)->where('Empresa', '=', $request->Empresa)->first();
 
-        Vacaciones::create([
+        $PerfilJefe = PerfilesUsuarios::where('id', '=', $Perfil->jefe_id)->first(['Nombre','ApPat','Correo']);
+
+        $SolicitudVacaciones = Vacaciones::create([
             'IdUser' => $request->IdUser,
             'IdEmp' => $request->IdEmp,
             'Nombre' => $request->Nombre.' '.$request->ApPat.' '.$request->ApMat,
@@ -114,7 +118,7 @@ class VacacionesDptoController extends Controller{
             'Estatus' => $request->Estatus,
             'DiasTomados' => $request->DiasTomados,
             'DiasRestantes' => $request->DiasRestantes,
-            'Perfil_id' => $Perfil_id->id,
+            'Perfil_id' => $Perfil->id,
         ]);
 
         PerfilesUsuarios::where('IdEmp', $request->IdEmp)->where('Empresa', '=', $request->Empresa)->update([
@@ -122,7 +126,40 @@ class VacacionesDptoController extends Controller{
             'DiasVac' => $request->DiasRestantes
         ]);
 
-        return redirect()->back()->with('message', 'Exito');
+        if($request->JefeDepto == false){
+            $DatosCorreo = new stdClass();
+            //Asigno los valores correspondientes al correo
+            $DatosCorreo->id = $SolicitudVacaciones->id;
+            $DatosCorreo->IdEmp = $request->IdEmp;
+            $DatosCorreo->Nombre = $request->Nombre.' '.$request->ApPat.' '.$request->ApMat;
+            $DatosCorreo->FechaInicio = $request->FechaInicio;
+            $DatosCorreo->FechaFin = $request->FechaFin;
+            $DatosCorreo->DiasTomados = $request->DiasTomados;
+
+            if(isset($PerfilJefe->Correo)){
+                $correo = new SolicitudDeVacacionesMailable($DatosCorreo);
+                Mail::to($PerfilJefe->Correo)
+                ->send($correo);
+
+                $CorreoJefe = '';
+
+                if (Mail::failures()) {
+
+                    session()->flash('flash.type', 'Warning');
+                    session()->flash('flash.message', 'Error al Enviar el correo');
+
+                }else{
+                    session()->flash('flash.type', 'Success');
+                    session()->flash('flash.message', 'Se envio un correo a '.$PerfilJefe->Nombre.' '.$PerfilJefe->ApPat.' para que autorize tus vacaciones');
+                }
+            }else{
+                session()->flash('flash.type', 'Warning');
+                session()->flash('flash.message', 'No se envio Correo al jefe asignado');
+            }
+
+        }
+
+        return redirect()->back();
     }
 
     public function update(Request $request, $id){
