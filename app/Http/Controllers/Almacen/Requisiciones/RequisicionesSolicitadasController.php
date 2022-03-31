@@ -700,6 +700,15 @@ class RequisicionesSolicitadasController extends Controller {
         switch ($request->Accion){
 
             case 1:
+
+                Validator::make($request->all(), [
+                    'Folio' => ['required'],
+                    'Fecha' => ['required','date'],
+                    'NombreProveedor' => ['required'],
+                    'EstatusVale' => ['required'],
+                ])->validate();
+
+
                 ValesSalida::create([
                     'IdUser' => $SessionId,
                     'IdEmp' => $SessionIdEmp,
@@ -741,7 +750,7 @@ class RequisicionesSolicitadasController extends Controller {
 
                 $Requisicion = Requisiciones::create([
                     'IdUser' => $Session->id,
-                    'IdEmp' => $request->IdEmp,
+                    'IdEmp' => $SessionIdEmp,
                     'Fecha' => $request->Fecha,
                     'Folio' => $serial,
                     'NumReq' => $request->NumReq."-A",

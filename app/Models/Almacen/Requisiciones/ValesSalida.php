@@ -2,6 +2,7 @@
 
 namespace App\Models\Almacen\Requisiciones;
 
+use App\Models\Compras\Requisiciones\Requisiciones;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; //línea necesaria para borrado suave
@@ -14,5 +15,9 @@ class ValesSalida extends Model
     use SoftCascadeTrait;
     protected $dates = ['deleted_at']; //Registramos la nueva columna
     protected $guarded = ['id','created_at','updated_at'];
-    protected $softCascade = ['maq_pros', 'marca']; //eliminar en cascada
+
+    //relacion muchos a uno
+    public function Requisicion() {
+        return $this->belongsTo(Requisiciones::class, 'requisiciones_id');
+    }
 }

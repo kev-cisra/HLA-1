@@ -22536,9 +22536,6 @@ select {
 .tw-col-span-6 {
 	grid-column: span 6 / span 6;
 }
-.tw-float-left {
-	float: left;
-}
 .tw-m-3 {
 	margin: 0.75rem;
 }
@@ -22709,9 +22706,6 @@ select {
 .tw-mb-3 {
 	margin-bottom: 0.75rem;
 }
-.tw--ml-10 {
-	margin-left: -2.5rem;
-}
 .tw-block {
 	display: block;
 }
@@ -22873,9 +22867,6 @@ select {
 }
 .tw-w-14 {
 	width: 3.5rem;
-}
-.tw-w-9 {
-	width: 2.25rem;
 }
 .tw-min-w-0 {
 	min-width: 0px;
@@ -23575,18 +23566,8 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(167, 243, 208, var(--tw-bg-opacity));
 }
-.tw-bg-gray-300 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(209, 213, 219, var(--tw-bg-opacity));
-}
 .tw-bg-opacity-50 {
 	--tw-bg-opacity: 0.5;
-}
-.tw-bg-contain {
-	background-size: contain;
-}
-.tw-bg-no-repeat {
-	background-repeat: no-repeat;
 }
 .tw-fill-current {
 	fill: currentColor;
@@ -23715,9 +23696,6 @@ select {
 }
 .tw-text-right {
 	text-align: right;
-}
-.tw-align-top {
-	vertical-align: top;
 }
 .tw-align-middle {
 	vertical-align: middle;
@@ -23878,6 +23856,10 @@ select {
 	--tw-text-opacity: 1;
 	color: rgba(239, 68, 68, var(--tw-text-opacity));
 }
+.tw-text-cyan-600 {
+	--tw-text-opacity: 1;
+	color: rgba(8, 145, 178, var(--tw-text-opacity));
+}
 .tw-text-blueGray-50 {
 	--tw-text-opacity: 1;
 	color: rgba(248, 250, 252, var(--tw-text-opacity));
@@ -23921,22 +23903,6 @@ select {
 .tw-text-emerald-500 {
 	--tw-text-opacity: 1;
 	color: rgba(16, 185, 129, var(--tw-text-opacity));
-}
-.tw-text-teal-800 {
-	--tw-text-opacity: 1;
-	color: rgba(17, 94, 89, var(--tw-text-opacity));
-}
-.tw-text-teal-700 {
-	--tw-text-opacity: 1;
-	color: rgba(15, 118, 110, var(--tw-text-opacity));
-}
-.tw-text-cyan-500 {
-	--tw-text-opacity: 1;
-	color: rgba(6, 182, 212, var(--tw-text-opacity));
-}
-.tw-text-cyan-600 {
-	--tw-text-opacity: 1;
-	color: rgba(8, 145, 178, var(--tw-text-opacity));
 }
 .tw-underline {
 	text-decoration: underline;
@@ -25695,11 +25661,11 @@ select {
 	--tw-gradient-from: #14B8A6;
 	--tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(20, 184, 166, 0));
 }
-.hover\:tw-text-lg:hover {
-	font-size: 1.125rem;
-}
 .hover\:tw-text-xl:hover {
 	font-size: 1.25rem;
+}
+.hover\:tw-text-lg:hover {
+	font-size: 1.125rem;
 }
 .hover\:tw-text-white:hover {
 	--tw-text-opacity: 1;

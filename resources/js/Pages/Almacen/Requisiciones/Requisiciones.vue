@@ -867,47 +867,48 @@
                     <div class="tw-mt-4">
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Folio</jet-label>
+                                <jet-label><span class="required">*</span>FOLIO</jet-label>
                                 <jet-input type="text" :min="min" v-model="ValeSalida.Folio"></jet-input>
                                 <small v-if="errors.Folio" class="validation-alert">{{errors.Folio}}</small>
                             </div>
 
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Fecha Entrega</jet-label>
+                                <jet-label><span class="required">*</span>FECHA SALIDA</jet-label>
                                 <jet-input type="date" v-model="ValeSalida.Fecha"></jet-input>
-                                <small v-if="errors.FechaEn" class="validation-alert">{{errors.FechaEn}}</small>
+                                <small v-if="errors.Fecha" class="validation-alert">{{errors.Fecha}}</small>
                             </div>
                         </div>
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Proveedor</jet-label>
+                                <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
                                 <select id="Jefe" v-model="ValeSalida.NombreProveedor"  class="InputSelect">
                                     <option v-for="select in Proveedores" :key="select.id" :value="select.Nombre" >{{ select.Nombre }}</option>
                                 </select>
+                                <small v-if="errors.NombreProveedor" class="validation-alert">{{errors.NombreProveedor}}</small>
                             </div>
                         </div>
                         <div class="tw-mb-6 md:tw-flex">
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Fecha Entrega</jet-label>
+                                <jet-label><span class="required">*</span>FECHA RECIBIDO</jet-label>
                                 <jet-input type="date" v-model="ValeSalida.Salida"></jet-input>
-                                <small v-if="errors.Salida" class="validation-alert">{{errors.Salida}}</small>
                             </div>
 
                             <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                                <jet-label><span class="required">*</span>Estatus</jet-label>
+                                <jet-label><span class="required">*</span>ESTATUS</jet-label>
                                 <select class="InputSelect" v-model="ValeSalida.EstatusVale">
                                     <option value="ENTREGADO">ENTREGADO</option>
+                                    <option value="RECIBIDO">RECIBIDO</option>
                                     <option value="GARANTIA">GARANTIA</option>
-                                    <option value="N/A">N/A</option>
                                 </select>
+                                <small v-if="errors.EstatusVale" class="validation-alert">{{errors.EstatusVale}}</small>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="ModalFooter">
-                    <jet-button type="button" @click="GuardaProveedor(ValeSalida)" v-if="ValeSalida.Edit == false">Guardar</jet-button>
-                    <jet-button type="button" @click="EditaProveedor(ValeSalida)" v-else>Editar</jet-button>
+                    <jet-button type="button" @click="GuardaProveedor(ValeSalida)">Guardar</jet-button>
+                    <jet-button type="button" @click="EditaProveedor(ValeSalida)">Editar</jet-button>
                     <jet-CancelButton @click="chageProveedor">Cerrar</jet-CancelButton>
                 </div>
             </modal>
