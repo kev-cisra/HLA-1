@@ -9,7 +9,7 @@
         <section class="Contenedor">
             <div class="MenuModulos">
                 <!-- Modulo Asignación Equipos-->
-                <div class="Modulo">
+                <div class="Modulo" v-if="hasAnyPermission(['Sistemas.EquiposComputo'])">
                     <Link href="Sistemas/EquiposComputo" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fa-solid fa-house-laptop"></i>
@@ -21,8 +21,8 @@
                     </Link>
                 </div>
 
-                <!-- Modulo CalendarioMantenimientos-->
-                <div class="Modulo">
+                <!-- Modulo Calendario Mantenimientos-->
+                <div class="Modulo" v-if="hasAnyPermission(['Sistemas.CalendarioMantenimientos'])">
                     <Link href="Sistemas/CalendarioMantenimientos" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fa-solid fa-screwdriver-wrench"></i>
@@ -35,7 +35,7 @@
                 </div>
 
                 <!-- Modulo Requisiciones Sistemas-->
-                <div class="Modulo">
+                <div class="Modulo" v-if="hasAnyPermission(['Sistemas.RequisicionSistemas'])">
                     <Link href="Sistemas/RequisicionSistemas" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fa-solid fa-cart-shopping"></i>
@@ -48,7 +48,7 @@
                 </div>
 
                 <!-- Modulo Cotizaciones Sistemas-->
-                <div class="Modulo">
+                <div class="Modulo" v-if="hasAnyPermission(['Sistemas.CotizacionSistemas'])">
                     <Link href="Sistemas/CotizacionSistemas" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fa-brands fa-amazon-pay"></i>

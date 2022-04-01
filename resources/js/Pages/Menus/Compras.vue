@@ -9,7 +9,7 @@
         <section class="Contenedor">
             <div class="MenuModulos">
                 <!-- Modulo Proveedores-->
-                <div class="Modulo" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index'])">
+                <div class="Modulo" v-if="hasAnyPermission(['Compras.Proveedores'])">
                     <Link href="/Compras/Proveedores" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fas fa-truck"></i>
@@ -22,7 +22,7 @@
                 </div>
 
                 <!-- Modulo Cotizaciones-->
-                <div class="Modulo">
+                <div class="Modulo" v-if="hasAnyPermission(['Compras.Cotizaciones'])">
                     <Link href="/Compras/Cotizaciones" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fas fa-calculator"></i>
@@ -35,7 +35,7 @@
                 </div>
 
                 <!-- Modulo Papeleria-->
-                <div class="Modulo">
+                <div class="Modulo" v-if="hasAnyPermission(['Compras.Papeleria'])">
                     <Link href="/Compras/Papeleria" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fas fa-store"></i>
@@ -48,7 +48,7 @@
                 </div>
 
                 <!-- Modulo Alta Papeleria-->
-                <div class="Modulo">
+                <div class="Modulo" v-if="hasAnyPermission(['Compras.AltaPapeleria'])">
                     <Link href="/Compras/AltaPapeleria" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fas fa-pencil-alt"></i>
@@ -61,26 +61,13 @@
                 </div>
 
                 <!-- Modulo Insumos-->
-                <div class="Modulo">
+                <div class="Modulo" v-if="hasAnyPermission(['Compras.Insumos'])">
                     <Link href="/Compras/Insumos" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fa-solid fa-boxes-stacked"></i>
                         </div>
                         <div>
                             <h4 class="TituloModulo">INSUMOS</h4>
-                            <span class="linea"></span>
-                        </div>
-                    </Link>
-                </div>
-
-                <!-- Modulo Requisicion Insumos-->
-                <div class="Modulo">
-                    <Link href="/Compras/RequisicionesInsumos" class="LinkModulo">
-                        <div class="IconoModulo">
-                            <i class="fa-solid fa-clipboard-list"></i>
-                        </div>
-                        <div>
-                            <h4 class="TituloModulo">REQUISICIÓN INSUMOS</h4>
                             <span class="linea"></span>
                         </div>
                     </Link>

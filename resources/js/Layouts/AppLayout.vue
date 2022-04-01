@@ -52,7 +52,7 @@
                                 </jet-nav-link>
                             </div>
                             <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex">
-                                <jet-nav-link :href="route('Sistemas')" :active="route().current('Sistemas')">
+                                <jet-nav-link :href="route('Sistemas')" :active="route().current('Sistemas')" v-if="hasAnyPermission(['Sistemas.index'])">
                                     <i class="tw-mr-2 fa-solid fa-laptop-code tw-text-gray-600"></i>Sistemas
                                 </jet-nav-link>
                             </div>
