@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Produccion;
 use App\Http\Controllers\Controller;
 use App\Models\obje_cordi;
 use App\Models\Produccion\AbaEntregas;
+use App\Models\Produccion\Abastos\admi_abas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\materiales;
 use App\Models\Produccion\dep_mat;
@@ -81,7 +82,7 @@ class ObjeCordiController extends Controller
             if (!empty($value['paqObjetivo'])) {
                 $cosu = obje_cordi::where('id', '=', $value['paqObjetivo'])->first();
 
-                $par = AbaEntregas::where('id', '=', $value['partida'])->first();
+                $par = admi_abas::where('id', '=', $value['partida'])->first();
                 $parnom  = $par->partida.$value['p_nom'];
 
                 $clave = isset($cosu->clave_id) ? $cosu->clave_id : $value['clave_id'];

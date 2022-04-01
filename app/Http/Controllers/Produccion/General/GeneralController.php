@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Produccion\General;
 use App\Http\Controllers\Controller;
 use App\Models\Catalogos\Maquinas;
 use App\Models\Produccion\AbaEntregas;
+use App\Models\Produccion\Abastos\admi_abas;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\Produccion\dep_mat;
 use App\Models\Produccion\dep_per;
@@ -149,10 +150,32 @@ class GeneralController extends Controller
 
     //Consulta partida
     public function ConParti(Request $request){
-        $par = AbaEntregas::where('depa_entrega', '=', $request->departamento_id)
+        $par = admi_abas::where('departamento_id', '=', $request->departamento_id)
+        ->where('estatus', '=', '1')
+        ->with([
+            'aba_entregas' => function($ae){
+                $ae->select('id', 'folio', 'banco', 'esta_inicio', 'esta_final', 'total', 'perfi_abas', 'perfi_entrega', 'soli_aba_id', 'admi_abas_id');
+            },
+            'proc_final_aba' => function($pfa){
+                $pfa->select('id', 'estatus', 'norma_id', 'clave_id', 'admi_abas_id');
+            },
+            'proc_final_aba.norma' => function($pfan){
+                $pfan->select('id', 'departamento_id', 'material_id');
+            },
+            'proc_final_aba.norma.materiales' => function($pfnm){
+                $pfnm->select('id', 'idmat', 'nommat');
+            },
+            'proc_final_aba.clave' => function($pfac){
+                $pfac->select('id', 'CVE_ART', 'DESCR', 'UNI_MED');
+            }
+        ])
+        ->get();
+
+
+        /* AbaEntregas::where('depa_entrega', '=', $request->departamento_id)
         ->with('clave')
         ->where('esta_final', '=', 'Activo')
-        ->get();
+        ->get(); */
 
         return $par;
     }

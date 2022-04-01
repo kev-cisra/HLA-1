@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produccion\Abastos\AbaEntregas;
+use App\Models\Produccion\Abastos\admi_abas;
+use App\Models\Produccion\Abastos\Proc_Fin_Abas;
+use App\Models\Produccion\Abastos\ProcFinAbas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\procesos;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
@@ -12,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use Illuminate\Validation\Rule;
 
 class AbasteEntreController extends Controller
 {
@@ -66,27 +70,26 @@ class AbasteEntreController extends Controller
     }
 
     public function ConAbaEntre(Request $request){
-        $aba = AbaEntregas::where('depa_entrega', '=', $request->departamento_id)
-            ->whereIn('esta_final', ['Activo', 'En espera', 'Desactivado'])
-            ->orderByRaw("norma_id - esta_final desc")
-            ->with([
-                'norma' => function($no){
-                    $no->select('id', 'departamento_id', 'material_id');
-                },
-                'norma.materiales' => function($ma){
-                    $ma->select('id', 'idmat', 'nommat', 'estatus');
-                },
-                'clave' => function($cl){
-                    $cl->select('id', 'CVE_ART', 'DESCR');
-                },
-                'depa_entregas' => function($de){
-                    $de->select('id', 'Nombre', 'departamento_id');
-                },
-                'depa_recibe' => function($dr){
-                    $dr->select('id', 'Nombre', 'departamento_id');
-                }
-            ])
-            ->get();
+        $aba = admi_abas::where('departamento_id', '=', $request->departamento_id)
+        ->whereIn('estatus', [1,2,3])
+        ->with([
+            'aba_entregas' => function($ae){
+                $ae->select('id', 'folio', 'banco', 'esta_inicio', 'esta_final', 'total', 'perfi_abas', 'perfi_entrega', 'soli_aba_id', 'admi_abas_id');
+            },
+            'proc_final_aba' => function($pfa){
+                $pfa->select('id', 'estatus', 'norma_id', 'clave_id', 'admi_abas_id');
+            },
+            'proc_final_aba.norma' => function($pfan){
+                $pfan->select('id', 'departamento_id', 'material_id');
+            },
+            'proc_final_aba.norma.materiales' => function($pfnm){
+                $pfnm->select('id', 'idmat', 'nommat');
+            },
+            'proc_final_aba.clave' => function($pfac){
+                $pfac->select('id', 'CVE_ART', 'DESCR', 'UNI_MED');
+            }
+        ])
+        ->get();
         return $aba;
     }
 
@@ -186,20 +189,83 @@ class AbasteEntreController extends Controller
     public function entregaInsert(Request $request){
         Validator::make($request->all(), [
             'folio' => ['required'],
+            'partida' => ['required'],
             'total' => ['required', 'numeric', 'min:1'],
-            'depa_entrega' => ['required']
+            'departamento_id' => ['required']
         ])->validate();
 
+        $fol2 = admi_abas::where('departamento_id', '=', $request->departamento_id)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        //crea el folio 2
+        if(empty($fol2->folio2)){
+            $folio2 = date('M/y').'-1';
+            echo '1';
+        }else{
+            $cam = explode("-", $fol2->folio2);
+            $fec = explode("/", $cam[0]);
+            //Verifica el año para reiniciar folio
+            if ($fec[1] != date("y")) {
+                $folio2 = date('M/y').'-1';
+                echo '2-1';
+            }else{
+                $sum = $cam[1]+1;
+                $folio2 = date('M/y').'-'.$sum;
+                echo '2-2';
+            }
+        }
+
+        //return $fol2;
+
+        //Insert administrador abastos
+        if(empty($request->abasExis)){
+            //valida por departamento la partida
+            $cuen = admi_abas::where('partida', '=', $request->partida)
+            ->where('departamento_id', '=', $request->departamento_id)
+            ->count();
+            if ($cuen == 0) {
+                $ad_aba = admi_abas::create([
+                    'partida' => $request->partida,
+                    'folio2' => $folio2,
+                    'total' => $request->total,
+                    'estatus' => '3',
+                    'perfil_id' => $request->perfi_abas,
+                    'departamento_id' => $request->departamento_id
+                ]);
+            }else {
+                Validator::make($request->all(), [
+                    'partida' => ['unique:admi_abas,partida']
+                ])->validate();
+                //return 'listo';
+            }
+        }else{
+            $ad_aba = admi_abas::find($request->partida);
+            admi_abas::find($request->partida)->update(['total' => $request->total+$ad_aba->total]);
+        }
+
+        //insert abastos entregas
         AbaEntregas::create([
             'folio' => $request->folio,
             'banco' => $request->banco,
             'total' => $request->total,
             'esta_inicio' => $request->esta_inicio,
             'esta_final' => $request->esta_final,
-            'depa_recibe' => $request->depa_recibe,
-            'depa_entrega' => $request->depa_entrega
+            'perfi_entrega' => $request->perfi_entrega,
+            'admi_abas_id' => $ad_aba->id
         ]);
-        return $request;
+
+        //insert claves y normas
+        foreach ($request->produ as $nc) {
+            if (!empty($nc['clave'])) {
+                ProcFinAbas::create([
+                    'estatus' => 1,
+                    'norma_id' => $nc['norma'],
+                    'clave_id' => $nc['clave'],
+                    'admi_abas_id' => $ad_aba->id
+                ]);
+            }
+        }
     }
 
     public function ConAbaPro(Request $request){
@@ -233,8 +299,10 @@ class AbasteEntreController extends Controller
     }
 
     public function UpdeEstatus(Request $request){
-        $ab = AbaEntregas::find($request->id)->update($request->all());
-        return $ab;
+        $ab = admi_abas::find($request->id)->update([
+            'estatus' => $request->estatus
+        ]);
+        return 'listo';
     }
 
     public function ConAbaFin(Request $request){
@@ -260,5 +328,20 @@ class AbasteEntreController extends Controller
         ])
         ->get();
         return $aba;
+    }
+
+    public function EstatusParti(Request $request){
+        //return $request;
+        admi_abas::find($request->id)->update([
+            'estatus' => $request->estatus
+        ]);
+        return 'listo';
+    }
+
+    public function EstatusProcFin(Request $request){
+        ProcFinAbas::find($request->id)->update([
+            'estatus' => $request->estatus
+        ]);
+        return 'ok';
     }
 }

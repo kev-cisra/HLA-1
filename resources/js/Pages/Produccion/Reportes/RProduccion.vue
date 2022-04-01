@@ -1753,9 +1753,9 @@
                         var fin = '';
                         if (this.S_Area == 7){
                             if (moment(this.FoFiltro.iniDia).isDST()) {
-                                ini = this.FoFiltro.iniDia+' 09:00:00';
+                                ini = this.FoFiltro.iniDia+' 09:10:00';
                             }else{
-                                ini = this.FoFiltro.iniDia+' 08:00:00';
+                                ini = this.FoFiltro.iniDia+' 08:10:00';
                             }
                         }//consulta por rango
                         else{

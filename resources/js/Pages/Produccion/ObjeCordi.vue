@@ -157,7 +157,7 @@
                             <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
                         </div>
                         <!-- select Clave -->
-                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0" v-if="S_Area == 7">
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
                             <jet-label class="tw-text-white"><span class="required">*</span>Clave</jet-label>
                             <Select2 v-model="formObje.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="opcCLO" />
                             <small v-if="errors.clave_id" class="validation-alert">{{errors.clave_id}}</small>
@@ -289,18 +289,17 @@
                         <div class="lg:tw-flex">
                             <!-- Muestra abastos -->
                             <div class="tw-flex tw-flex-row flex-wrap tw-m-4 tw-overflow-auto tw-h-36 lg:tw-w-3/12 lg:tw-w-87 lg:tw-h-96">
-                                <div class="card tw-shadow-2xl tw-my-3 tw-w-full md:tw-m-3 hover:tw-bg-blue-900" v-for="pa in partida" :key="pa">
+                                <div class="card tw-shadow-2xl tw-my-3 tw-w-full md:tw-m-3 hover:tw-bg-blue-900 tw-p-4" v-for="pa in partida" :key="pa">
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item"><strong> Partida: </strong> {{ pa.partida }} </li>
-                                        <li class="list-group-item"><strong> Folio: </strong> {{ pa.folio }} </li>
+                                        <li class="list-group-item"><strong> Folio: </strong> {{ pa.folio2 }} </li>
                                         <li class="list-group-item"><strong> Total: </strong> {{ pa.total }} </li>
                                         <li class="list-group-item">
-                                            <select class="tw-rounded tw-rounded-md tw-bg-transparent tw-border-transparent tw-w-full" v-model="pa.esta_final" @change="CamEsta(pa)">
-                                                <option value="" disabled>SELECCIONA</option>
-                                                <option value="Activo">Activo</option>
-                                                <option value="En espera">En espera</option>
-                                                <option value="Fin">Finalizado</option>
-                                                <option value="Desactivado">Desactivado</option>
+                                            <select class="tw-rounded tw-rounded-md tw-bg-transparent tw-w-full" v-model="pa.estatus" @change="CamEsta(ae)">
+                                                <option value="1">Activar</option>
+                                                <option value="2">En espera</option>
+                                                <option value="0">Finalizar</option>
+                                                <option value="3" disabled>Desactivado</option>
                                             </select>
                                         </li>
                                     </ul>
@@ -315,7 +314,7 @@
                                             <jet-label class=""><span class="required">*</span>Partida</jet-label>
                                             <div class="tw-flex">
                                                 <div class="tw-w-3/4">
-                                                    <select class="InputSelect" v-model="f.partida" @change="parSele">
+                                                    <select class="InputSelect" v-model="f.partida">
                                                         <option value="">SELECCIONA</option>
                                                         <option v-for="op in opcPar" :key="op" :value="op.id"> {{ op.text }} </option>
                                                     </select>
@@ -370,97 +369,6 @@
                 </div>
             </div>
         </modal>
-
-        <!-- abrir modal de carga de objetivos
-        <modal :show="showModal2" @close="chageClose2" maxWidth="5xl">
-            <div class="tw-px-4 tw-py-4">
-                <div class="tw-text-lg">
-                    <div class="ModalHeader">
-                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Carga de Objetivos</h3>
-                    </div>
-                </div>
-                <div class="tw-mt-4">
-                    <div class="ModalForm">
-                        <div class="tw-mb-6 lg:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                <jet-label class=""><span class="required">*</span>Fecha</jet-label>
-                                <input type="datetime-local" class="InputSelect" v-model="form2.fecha" :min="hoy" :max="treDia">
-                                <small v-if="errors.fecha" class="validation-alert">{{errors.fecha}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" >
-                                <jet-label class=""><span class="required">*</span>Turnos</jet-label>
-                                <select class="InputSelect" v-model="form2.turno_id">
-                                    <option value="" disabled>SELECCIONA</option>
-                                    <option v-for="tu in opcTur" :key="tu.value" :value="tu.value">{{tu.text}}</option>
-                                </select>
-                                <small v-if="errors.turno_id" class="validation-alert">{{errors.turno_id}}</small>
-                            </div>
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                <jet-label class=""><span class="required">*</span>Equipo</jet-label>
-                                <select class="InputSelect" v-model="form2.equipo_id">
-                                    <option value="" disabled>SELECCIONA</option>
-                                    <option v-for="eq in opcEqu" :key="eq.value" :value="eq.value">{{eq.text}}</option>
-                                </select>
-                                <small v-if="errors.equipo_id" class="validation-alert">{{errors.equipo_id}}</small>
-                            </div>
-                        </div>
-                        <div class="tw-mb-6 lg:tw-flex">
-                            <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0" v-if="usuario.dep_pers.length == 0">
-                                <jet-label class=""><span class="required">*</span>Operador</jet-label>
-                                <select class="InputSelect" @change="eq_tu" v-model="form2.dep_perf_id">
-                                    <option value="" disabled>SELECCIONA</option>
-                                    <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
-                                </select>
-                                <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="tw-flex tw-justify-center">
-                                <button type="button" class="btn btn-info tw-w-1/3 " @click="addRow2()">Agregar Nuevo Objetivo</button>
-                            </div>
-                            <div class="tw-overflow-auto" style="height: 30rem">
-                                <div v-for="(f, index) in form2.paquet" :key="index" class="tw-m-5 tw-shadow-lg tw-rounded-md tw-p-5" >
-                                    <div class="lg:tw-flex">
-                                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                            <jet-label class=""><span class="required">*</span>Paquete Objetivos</jet-label>
-                                            <Select2 v-model="f.paqObjetivo" class="InputSelect" @select="calObje2(f)" :settings="{width: '100%'}" :options="opcPaOb"/>
-                                        </div>
-                                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                            <jet-label class=""><span class="required">*</span>Claves</jet-label>
-                                            <Select2 v-model="f.clave_id" class="InputSelect tw-w-full" style="z-index: 1500" :settings="{width: '100%', allowClear: true}" :options="recoClave(f.paqObjetivo)" />
-                                        </div>
-                                    </div>
-                                    <div class="lg:tw-flex">
-                                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                            <jet-label class=""><span class="required">*</span>Partida</jet-label>
-                                            <select class="InputSelect" v-model="form.partida" @change="parSele">
-                                                <option value="">SELECCIONA</option>
-                                                <option v-for="op in opcPar" :key="op" :value="op.id"> {{ op.text }} </option>
-                                            </select>
-                                        </div>
-                                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
-                                            <jet-label class=""><span class="required">*</span>Horas a trabajar</jet-label>
-                                            <jet-input v-model="f.calcuObje2" @change="inputHoraObjeGene(f)" type="number" min="0" max="12" step=".5"></jet-input>
-                                        </div>
-                                        <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/3 lg:tw-mb-0">
-                                            <jet-label class=""><span class="required">*</span>Producción horas laborales</jet-label>
-                                            <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="f.valor" disabled></jet-input>
-                                        </div>
-                                        <div class="tw-m-auto">
-                                            <button class="btn btn-block btn-outline-danger" @click="removeRow2(index)">Quitar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="m-auto">
-                            <button class="btn btn-success" @click="saveOB2(form2)">Guardar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </modal> -->
     </app-layout>
 </template>
 <script>
@@ -627,6 +535,7 @@
                 //Partida
                 let par = await axios.post('General/ConParti', datos);
                 this.partida = par.data;
+                //console.log(this.partida)
             },
             /****************************** Globales **********************************************************/
             global(){
@@ -826,7 +735,7 @@
                     return ele.partida == null;
                 }) */
 
-                console.log(data);
+                //console.log(data);
                 await axios.post('ObjeCordi/storeProObje', data)
                 .then(eve => {this.ConProduccion(), this.openModal(), console.log(eve.data)})
                 .catch(error => {this.errors = error.response.data.errors});
@@ -956,12 +865,15 @@
                 var marca = '';
                 if (dat.partida) {
                     var par = this.partida.find(eve => {return eve.id == dat.partida})
+                    //console.log(par)
                     this.objetivos.forEach(po => {
-                        if (po.departamento_id == this.S_Area & po.clave_id == par.clave_id) {
-                            clave = po.clave_id == null ? 'N/A' : po.clave.CVE_ART
-                            marca = po.maq_pro.maquinas.marca == null ? 'N/A' : po.maq_pro.maquinas.marca.Nombre;
-                            ob.push({id: po.id, text: po.maq_pro.maquinas.Nombre+' '+marca+' - '+clave})
-                        }
+                        par.proc_final_aba.forEach(pc => {
+                            if (po.departamento_id == this.S_Area & po.clave_id == pc.clave_id) {
+                                clave = po.clave_id == null ? 'N/A' : po.clave.CVE_ART
+                                marca = po.maq_pro.maquinas.marca == null ? 'N/A' : po.maq_pro.maquinas.marca.Nombre;
+                                ob.push({id: po.id, text: po.maq_pro.maquinas.Nombre+' '+marca+' - '+clave})
+                            }
+                        })
                     })
                 }
                 return ob;

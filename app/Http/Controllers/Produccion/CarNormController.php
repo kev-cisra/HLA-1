@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Produccion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produccion\AbaEntregas;
+use App\Models\Produccion\Abastos\admi_abas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
 use App\Models\Produccion\notasCarga;
@@ -27,7 +28,7 @@ class CarNormController extends Controller
             'clave_id' => ['required'],
         ])->validate();
 
-        $par = AbaEntregas::where('id', '=', $request->partida)->first();
+        $par = admi_abas::where('id', '=', $request->partida)->first();
         $parnom  = $par->partida.$request->p_nom;
 
         carNorm::create([

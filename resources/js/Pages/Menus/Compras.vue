@@ -6,39 +6,38 @@
             </div>
         </template>
 
-        <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
-            <div class="container-fluid">
-                <div class="row">
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
-                        <Link href="/Compras/Proveedores" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
+        <section class="Contenedor">
+            <div class="MenuModulos">
+                    <!-- Modulo Proveedores-->
+                    <div class="Modulo" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index'])">
+                        <Link href="/Compras/Proveedores" class="LinkModulo">
+                            <div class="IconoModulo">
                                 <i class="fas fa-truck"></i>
                             </div>
                             <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">PROVEEDORES</h4>
+                                <h4 class="TituloModulo">PROVEEDORES</h4>
                                 <span class="linea"></span>
                             </div>
                         </Link>
                     </div>
 
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
-                        <Link href="/Compras/Cotizaciones" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
+                    <!-- Modulo Cotizaciones-->
+                    <div class="Modulo">
+                        <Link href="/Compras/Cotizaciones" class="LinkModulo">
+                            <div class="IconoModulo">
                                 <i class="fas fa-calculator"></i>
                             </div>
                             <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">COTIZACIONES</h4>
+                                <h4 class="TituloModulo">COTIZACIONES</h4>
                                 <span class="linea"></span>
                             </div>
                         </Link>
                     </div>
 
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
-                        <Link href="/Compras/Papeleria" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
+                    <!-- Modulo Papeleria-->
+                    <div class="Modulo">
+                        <Link href="/Compras/Papeleria" class="LinkModulo">
+                            <div class="IconoModulo">
                                 <i class="fas fa-store"></i>
                             </div>
                             <div>
@@ -48,48 +47,127 @@
                         </Link>
                     </div>
 
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
-                        <Link href="/Compras/AltaPapeleria" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
+                    <!-- Modulo Alta Papeleria-->
+                    <div class="Modulo">
+                        <Link href="/Compras/AltaPapeleria" class="LinkModulo">
+                            <div class="IconoModulo">
                                 <i class="fas fa-pencil-alt"></i>
                             </div>
                             <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">ALTA PAPELERÍA</h4>
+                                <h4 class="TituloModulo">ALTA PAPELERÍA</h4>
                                 <span class="linea"></span>
                             </div>
                         </Link>
                     </div>
 
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
-                        <Link href="/Compras/Insumos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
+                    <!-- Modulo Insumos-->
+                    <div class="Modulo">
+                        <Link href="/Compras/Insumos" class="LinkModulo">
+                            <div class="IconoModulo">
                                 <i class="fa-solid fa-boxes-stacked"></i>
                             </div>
                             <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">INSUMOS</h4>
+                                <h4 class="TituloModulo">INSUMOS</h4>
                                 <span class="linea"></span>
                             </div>
                         </Link>
                     </div>
 
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
-                        <Link href="/Compras/RequisicionesInsumos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
+                    <!-- Modulo Requisicion Insumos-->
+                    <div class="Modulo">
+                        <Link href="/Compras/RequisicionesInsumos" class="LinkModulo">
+                            <div class="IconoModulo">
                                 <i class="fa-solid fa-clipboard-list"></i>
                             </div>
                             <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">REQUISICIÓN INSUMOS</h4>
+                                <h4 class="TituloModulo">REQUISICIÓN INSUMOS</h4>
                                 <span class="linea"></span>
                             </div>
                         </Link>
                     </div>
-                </div>
-            </div>
-        </section>
 
+                                        <!-- Modulo Proveedores-->
+                    <div class="Modulo" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index'])">
+                        <Link href="/Compras/Proveedores" class="LinkModulo">
+                            <div class="IconoModulo">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div>
+                                <h4 class="TituloModulo">PROVEEDORES</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
+                    </div>
+
+                    <!-- Modulo Cotizaciones-->
+                    <div class="Modulo">
+                        <Link href="/Compras/Cotizaciones" class="LinkModulo">
+                            <div class="IconoModulo">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <div>
+                                <h4 class="TituloModulo">COTIZACIONES</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
+                    </div>
+
+                    <!-- Modulo Papeleria-->
+                    <div class="Modulo">
+                        <Link href="/Compras/Papeleria" class="LinkModulo">
+                            <div class="IconoModulo">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div>
+                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">PAPELERÍA</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
+                    </div>
+
+                    <!-- Modulo Alta Papeleria-->
+                    <div class="Modulo">
+                        <Link href="/Compras/AltaPapeleria" class="LinkModulo">
+                            <div class="IconoModulo">
+                                <i class="fas fa-pencil-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="TituloModulo">ALTA PAPELERÍA</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
+                    </div>
+
+                    <!-- Modulo Insumos-->
+                    <div class="Modulo">
+                        <Link href="/Compras/Insumos" class="LinkModulo">
+                            <div class="IconoModulo">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </div>
+                            <div>
+                                <h4 class="TituloModulo">INSUMOS</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
+                    </div>
+
+                    <!-- Modulo Requisicion Insumos-->
+                    <div class="Modulo">
+                        <Link href="/Compras/RequisicionesInsumos" class="LinkModulo">
+                            <div class="IconoModulo">
+                                <i class="fa-solid fa-clipboard-list"></i>
+                            </div>
+                            <div>
+                                <h4 class="TituloModulo">REQUISICIÓN INSUMOS</h4>
+                                <span class="linea"></span>
+                            </div>
+                        </Link>
+                    </div>
+
+
+        </div>
+
+        </section>
     </app-layout>
 </template>
 
@@ -99,8 +177,7 @@
 
     export default {
         props: [
-            'usuario',
-            'modulos'
+            'User',
         ],
         components: {
             AppLayout,

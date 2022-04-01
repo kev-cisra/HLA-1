@@ -132,7 +132,7 @@
                         <jet-label class="tw-text-white"><span class="required">*</span>Operador</jet-label>
                         <select class="InputSelect" @change="eq_tu" v-model="form.dep_perf_id">
                             <option value="" disabled>SELECCIONA</option>
-                            <option v-for="pe in opcPE" :key="pe" :value="pe.value">{{pe.text}}</option>
+                            <option v-for="pe in opcPE" :key="pe" :value="pe.id">{{pe.text}}</option>
                         </select>
                         <small v-if="errors.dep_perf_id" class="validation-alert">{{errors.dep_perf_id}}</small>
                     </div>
@@ -737,9 +737,10 @@
                 }
             },
             parSele(event){
+                //console.log(this.partida)
                 let par = this.partida.find(ele => {return ele.id == event.target.value})
-                this.form.norma = par.norma_id;
-                this.form.clave_id = par.clave_id;
+                this.form.norma = par.proc_final_aba[0].norma_id;
+                this.form.clave_id = par.proc_final_aba[0].clave_id;
             },
             /****************************** datatables ********************************************************/
             //datatable de carga
@@ -837,6 +838,7 @@
             /****************************** Selects de muestra ************************************************/
             //equipo y turno
             eq_tu(event){
+                //console.log(event.target.value)
                 this.personal.forEach(sp => {
                     if (sp.id == event.target.value) {
                         /* console.log(sp) */
@@ -854,6 +856,7 @@
                 this.btnOff = false;
                 //Asigna si es horario de verano o no
                 form.VerInv = this.calcuObje != '' ? this.calcuObje : '1';
+                //console.log(form)
                 //revisa si el usuario es lider o operador
                 if (this.noCor == 'lid' | this.noCor == 'ope') {
                     //revisa si tienen equipo

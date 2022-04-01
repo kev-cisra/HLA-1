@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Produccion;
 use App\Http\Controllers\Controller;
 use App\Models\obje_cordi;
 use App\Models\Produccion\AbaEntregas;
+use App\Models\Produccion\Abastos\admi_abas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carNorm;
 use App\Models\Produccion\carOpe;
@@ -182,7 +183,7 @@ class CargaController extends Controller
                 $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
             },
             'abapar' => function($par){
-                $par -> select('id', 'folio', 'banco', 'partida' );
+                $par -> select('id', 'folio2', 'total', 'partida' );
             }
         ])
         ->get(['id', 'partida', 'estatus', 'norma', 'clave_id', 'partida_id', 'departamento_id']);
@@ -190,18 +191,26 @@ class CargaController extends Controller
     }
 
     public function CarObje(Request $request){
-        $par = AbaEntregas::where('depa_entrega', '=', $request->departamento_id)
-        ->where('esta_final', '=', 'Activo')
+        $par = admi_abas::where('departamento_id', '=', $request->departamento_id)
+        ->where('estatus', '=', '1')
+        ->with([
+            'proc_final_aba' => function($pfa){
+                $pfa->where('estatus', '=', '1')
+                ->select('id', 'estatus', 'norma_id', 'clave_id', 'admi_abas_id');
+            }
+        ])
         ->get();
 
         $nu = [];
         if (!empty($par)) {
             foreach ($par as $p) {
-                array_push($nu, $p->clave_id);
+                foreach($p->proc_final_aba as $pf){
+                    array_push($nu, $pf->clave_id);
+                }
             }
         }
 
-        //return $par;
+        //return $nu;
 
         //Paquetes Objetivos
         $objetivos = obje_cordi::where('departamento_id', '=', $request->departamento_id)

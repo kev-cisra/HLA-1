@@ -20,93 +20,105 @@
         </Accions>
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true" @click="ConAba()">Abastos</button>
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true" @click="ConAba(S_Area)">Abastos</button>
                 <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" @click="resetEntr()" aria-selected="false">Entregas</button>
-                <button class="nav-link" id="nav-aba-fin-tab" data-bs-toggle="tab" data-bs-target="#nav-abafin" type="button" role="tab" aria-controls="nav-abafin" aria-selected="false" @click="resetAbaFin()">Abastos Finalizados</button>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
             <!-- Abastos -->
-            <div class="tab-pane fade show active overflow-auto" style="height: 70vh" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                <div class="tw-gap-3 tw-flex tw-flex-wrap tw-justify-center">
+            <div class="tab-pane fade show active tw-p-5 overflow-auto" style="height: 70vh" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="tw-grid tw-gap-x-2 tw-gap-y-4 md:tw-grid-cols-2 lg:tw-grid-cols-3">
                     <!-- cuerpo tarjeta -->
-                    <div class="card tw-w-11/12 md:tw-w-9/12 lg:tw-w-5/12 tw-shadow-xl" v-for="ae in abaentre" :key="ae">
+                    <div class="card tw-shadow-xl" v-for="ae in abaentre" :key="ae">
                         <!-- info tarjeta -->
                         <div :class="'card-body '+color(ae)">
-                            <!-- <h5 class="card-title tw-text-2xl"></h5> -->
                             <table class="tw-w-full">
                                 <tr>
-                                    <th>{{ ae.folio }} - {{ ae.banco }}</th>
-                                    <!-- <td> <button class="btn btn-success" @click="ediAbas(ae)">Actualizar</button> </td> -->
+                                    <th colspan="2" class=" tw-text-center">
+                                        <label class=" tw-text-cyan-600 hover:tw-text-xl">{{ ae.partida }}</label>  /-\
+                                        <label class=" tw-text-teal-600 hover:tw-text-xl">{{ ae.folio2 }}</label>
+                                    </th>
                                 </tr>
                                 <tr>
-                                    <th>Estatus de entrega:</th>
-                                    <td>{{ ae.esta_inicio }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Total enviado:</th>
+                                    <th>Total:</th>
                                     <td>{{ ae.total }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Estatus producción:</th>
+                                    <th>Estatus:</th>
                                     <td>
-                                        <select class="tw-rounded tw-rounded-md tw-bg-transparent tw-w-full" v-model="ae.esta_final">
-                                            <option value="" disabled>SELECCIONA</option>
-                                            <option value="Activo">Activar</option>
-                                            <option value="En espera">En espera</option>
-                                            <option value="Fin">Finalizar</option>
-                                            <option value="Desactivado">Desactivado</option>
+                                        <select class="tw-rounded tw-rounded-md tw-bg-transparent tw-w-full" v-model="ae.estatus" @change="finEstaAbas(ae)">
+                                            <option value="1">Activar</option>
+                                            <option value="2">En espera</option>
+                                            <option value="0">Finalizar</option>
+                                            <option value="3" disabled>Desactivado</option>
                                         </select>
-                                        <small v-if="errors.esta_final" class="validation-alert">{{errors.esta_final}}</small>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <th>Norma:</th>
-                                    <td> <!-- {{ ae.norma_id ? ae.norma.materiales.nommat : '--' }} -->
-                                        <select class="tw-rounded tw-rounded-md tw-bg-transparent tw-w-full" v-model="ae.norma_id">
-                                            <option value="" disabled>SELECCIONA</option>
-                                            <option v-for="nm in opcNM" :key="nm" :value="nm.value">{{nm.text}}</option>
-                                        </select>
-                                        <small v-if="errors.norma" class="validation-alert">{{errors.norma}}</small>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Clave:</th>
-                                    <td><!-- {{ ae.clave_id ? ae.clave.CVE_ART+" - "+ae.clave.DESCR : '--' }} -->
-                                        <Select2 v-model="ae.clave_id" class="tw-rounded tw-rounded-md tw-bg-transparent" :settings="{width: '31vw', allowClear: true}" :options="opcCL(ae)"/>
-                                        <small v-if="errors.clave" class="validation-alert">{{errors.clave}}</small>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Partida:</th>
-                                    <td><!-- {{ ae.partida }} -->
-                                        <jet-input class="tw-rounded tw-rounded-md tw-bg-transparent tw-w-full" v-model="ae.partida"  @input="(val) => (ae.partida = ae.partida.toUpperCase())" :disabled="vrPar"></jet-input>
-                                        <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2"><button class="btn btn-success m-auto" @click="updaAbas(ae)">Guardar</button></td>
                                 </tr>
                             </table>
                         </div>
                         <!-- Acordion -->
                         <div class="accordion accordion-flush" :id="'accordion'+ae.id">
+                            <!-- Claves producto final -->
                             <div class="accordion-item">
-                                <h2 class="accordion-header" :id="'open'+ae.id">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#flushOne'+ae.id" aria-expanded="false" aria-controls="flush-collapseOne">
-                                    Abasto
-                                </button>
+                                <h2 class="accordion-header" :id="'opcla'+ae.id">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#flushCla'+ae.id" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        Producto final
+                                    </button>
                                 </h2>
-                                <div :id="'flushOne'+ae.id" class="accordion-collapse collapse" :aria-labelledby="'open'+ae.id" :data-bs-parent="'#accordion'+ae.id">
+                                <div :id="'flushCla'+ae.id" class="accordion-collapse collapse" :aria-labelledby="'opcla'+ae.id" :data-bs-parent="'#accordion'+ae.id">
                                     <div class="accordion-body overflow-auto" style="height: 10rem">
-                                        Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta quaerat rem sapiente, placeat dolorum ut repellendus obcaecati! Repellat eius voluptatum dolores hic minima distinctio commodi est voluptatibus, unde, optio dolorem?
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet provident sed corporis eligendi voluptate molestias, pariatur aliquid natus repudiandae libero? Eligendi dolorum qui quas magnam tempora excepturi quisquam fuga assumenda?
+                                        <div class="tw-grid tw-gap-x-2 tw-gap-y-4 tw-grid-cols-2">
+                                            <div class="card tw-shadow-xl" v-for="cl in ae.proc_final_aba" :key="cl">
+                                                <div class="tw-w-full">
+                                                    <select v-model="cl.estatus" class="tw-rounded tw-rounded-md tw-bg-transparent tw-w-full" @change="estaProcFin(cl)">
+                                                        <option value="1">Activo</option>
+                                                        <option value="2">Desactivar</option>
+                                                    </select>
+                                                </div>
+                                                <div class="hover:tw-border hover:tw-border-4 hover:tw-border-teal-300">
+                                                    <div class="tw-w-full">
+                                                        <strong>Norma:</strong> {{ cl.norma.materiales.idmat }}
+                                                    </div>
+                                                    <div class="tw-w-full">
+                                                        <strong>Clave:</strong> {{ cl.clave.CVE_ART }}
+                                                    </div>
+                                                    <div class="tw-w-full">
+                                                        <strong>Descripción:</strong> {{ cl.clave.DESCR }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Abastos -->
                             <div class="accordion-item">
-                                <h2 class="accordion-header" :id="'open2'+ae.id" v-if="ae.esta_final != 'Desactivado'">
+                                <h2 class="accordion-header" :id="'open'+ae.id">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#flushOne'+ae.id" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        Abasto
+                                    </button>
+                                </h2>
+                                <div :id="'flushOne'+ae.id" class="accordion-collapse collapse" :aria-labelledby="'open'+ae.id" :data-bs-parent="'#accordion'+ae.id">
+                                    <div class="accordion-body overflow-auto" style="height: 10rem">
+                                        <div class="tw-grid tw-gap-x-2 tw-gap-y-4 tw-grid-cols-2">
+                                            <div class="card tw-shadow-xl hover:tw-border hover:tw-border-4 hover:tw-border-teal-300 tw-cursor-pointer" v-for="ab in ae.aba_entregas" :key="ab">
+                                                <div>
+                                                    <strong>Folio:</strong> {{ ab.folio }}
+                                                </div>
+                                                <div>
+                                                    <strong>Banco:</strong> {{ ab.banco }}
+                                                </div>
+                                                <div>
+                                                    <strong>Total:</strong> {{ ab.total }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Produccion -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" :id="'open2'+ae.id">
                                     <button class="accordion-button collapsed" :id="'bo'+ae.id" type="button" @click="conProdu(ae)" data-bs-toggle="collapse" :data-bs-target="'#flushTwo'+ae.id" aria-expanded="false" aria-controls="flush-collapseTwo">
                                         Producción
                                     </button>
@@ -114,26 +126,11 @@
                                 <div :id="'flushTwo'+ae.id" class="accordion-collapse collapse" :aria-labelledby="'open2'+ae.id" :data-bs-parent="'#accordion'+ae.id">
                                     <!-- recorrido maquinas produccion -->
                                     <div class="tw-flex accordion-body justify-items-end overflow-auto" style="height: 12rem">
-                                        <div class="tw-flex flex-wrap tw-w-full">
-                                            <div class="tw-flex tw-w-1/2 tw-rounded-md hover:tw-border hover:tw-border-4 hover:tw-border-teal-300" v-for="ap in abaPro" :key="ap">
-                                                <div class="tw-w-3/5 tw-m-auto">
-                                                    <strong> {{ ap.proceso.nompro }} {{ ap.maq_pro ? ap.maq_pro.maquinas.Nombre : 'N/A' }}: </strong>
-                                                </div>
-                                                <div class="tw-w-2/5 tw-m-auto">
-                                                    {{ ap.valor.toFixed(2) }} {{ ap.clave.UNI_MED }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- restante abasto -->
-                                    <div class="tw-z-10">
-                                        <div class="tw-m-auto tw-text-xl">
-                                            <strong>Abasto restante: </strong>
-                                            <label>
-                                                {{ resProdu(ae, abaPro) }}
-                                            </label>
-
-                                        </div>
+                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt, quas! Modi sint fugit, rem facere possimus beatae assumenda dicta, natus eligendi, ab nihil veniam ad. Alias autem vel quam animi!
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta tempora ipsum cupiditate, veniam modi nesciunt eum officia molestiae ducimus ratione non culpa ut dicta porro magni perferendis eos consequuntur totam.
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit facilis neque numquam, explicabo autem amet enim rerum officiis doloremque animi distinctio itaque beatae praesentium maxime reprehenderit commodi temporibus dolorum officia.
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed necessitatibus mollitia rerum, vitae explicabo perspiciatis possimus, ea veritatis dolore debitis quod voluptates voluptatibus repellendus hic quaerat nobis! Enim, quibusdam veritatis?
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, repellendus ex saepe neque assumenda consequatur delectus? Blanditiis minima accusantium dolorum, hic vero quod mollitia nihil corporis cum, sapiente voluptates laborum.
                                     </div>
                                 </div>
                             </div>
@@ -143,17 +140,38 @@
             </div>
             <!-- Entregas -->
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                <!-- Proceso proncipal, sub procesos, operador -->
-                <div class="tw-p-6 lg:tw-flex">
+                <!-- select de partidas -->
+                <div class="tw-p-3 lg:tw-flex">
                     <!-- Select Area -->
-                    <div class="tw-px-3 lg:tw-w-1/2 lg:tw-mb-0">
+                    <div class="tw-px-3 lg:tw-w-4/12 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Departamento para entregar</jet-label>
-                        <select class="InputSelect" v-model="formAba.depa_entrega">
+                        <select class="InputSelect" v-model="formAba.departamento_id" @change="buscaNorma">
                             <option value="">SELECCIONA</option>
                             <option v-for="dep in opcDep" :key="dep" :value="dep.id">{{ dep.text }}</option>
                         </select>
-                        <small v-if="errors.depa_entrega" class="validation-alert">{{errors.depa_entrega}}</small>
+                        <small v-if="errors.departamento_id" class="validation-alert">{{errors.departamento_id}}</small>
                     </div>
+                    <!-- partida -->
+                    <div class="tw-px-3 lg:tw-w-4/12 lg:tw-mb-0" v-if="formAba.departamento_id != ''">
+                        <jet-label><span class="required">*</span>Partida</jet-label>
+                        <div class="input-group">
+                            <!-- selector para saber si existe o no la partida -->
+                            <select class="input-group-text tw-w-2/5" id="btnGroupAddon" @click="busPart" v-model="formAba.abasExis">
+                                <option value="">Nueva partida</option>
+                                <option value="1">Partida existente</option>
+                            </select>
+                            <!-- si no existe partida manda input -->
+                            <input v-if="formAba.abasExis == ''" v-model="formAba.partida" @input="(val) => (formAba.partida = formAba.partida.toUpperCase())" type="text" class="form-control" placeholder="Ingresa una partida" aria-label="Input group example" aria-describedby="btnGroupAddon">
+                            <!-- si existe te enlista las partidas activas -->
+                            <select v-else v-model="formAba.partida" class="form-select tw-w-3/5">
+                                <option v-for="ab in opcAbas" :key="ab" :value="ab.id"> {{ ab.text }} </option>
+                            </select>
+                        </div>
+                        <small v-if="errors.partida" class="validation-alert">{{errors.partida}}</small>
+                    </div>
+                </div>
+                <!-- Proceso proncipal, sub procesos, operador -->
+                <div class="tw-p-3 lg:tw-flex">
                     <!-- input Folio -->
                     <div class="tw-px-3 lg:tw-w-1/2 lg:tw-mb-0">
                         <jet-label><span class="required">*</span>Folio</jet-label>
@@ -173,104 +191,41 @@
                         <small v-if="errors.total" class="validation-alert">{{errors.total}}</small>
                     </div>
                 </div>
-                <div class="lg:tw-flex tw-justify-center" v-if="S_Area != ''">
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0 d-grid gap-2">
-                        <button type="button" class="btn btn-success" @click="saveEntre(formAba)">Agregar</button>
+                <!-- normas, claves -->
+                <div class="tw-my-4" v-if="formAba.departamento_id != ''">
+                    <!-- boton para agregar procesos -->
+                    <div class="tw-flex tw-justify-center">
+                        <button type="button" class="btn btn-primary tw-w-1/4" @click="addForRow()"><i class="fas fa-plus"></i></button>
                     </div>
-                    <!-- boton
-                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0 d-grid gap-2">
-                        <button type="button" class="btn btn-success" @click="saveEntre(formAba)">Agregar</button>
-                    </div> -->
-                </div>
-            </div>
-            <!-- abastos finalizados -->
-            <div class="tab-pane fade" id="nav-abafin" role="tabpanel" aria-labelledby="nav-aba-fin-tab">
-                <div class="tw-w-full">
-                    <label class=" tw-text-lg" for="fechas">Buscar Abastos</label>
-                    <div class="lg:tw-flex tw-content-end" id="fechas">
-                        <div class="tw-m-5">
-                            <label for="ini"><span class="required">*</span>Inicio:</label>
-                            <input type="date" id="ini" class="InputSelect" v-model="formBus.fechaini">
-                        </div>
-                        <div class="tw-m-5">
-                            <label for="fin"><span class="required">*</span>Final:</label>
-                            <input type="date" id="fin" class="InputSelect" v-model="formBus.fechafin">
-                        </div>
-                        <div class="tw-my-auto">
-                            <button class="btn btn-success" @click="buscaAbas(formBus)">Buscar</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- tabla -->
-                <div class="tw-m-auto" style="width: 98%">
-                    <TableGreen id="abfin">
-                        <template v-slot:TableHeader>
-                            <th>Fecha de Entrega</th>
-                            <th>Folio</th>
-                            <th>Banco</th>
-                            <th>Partida</th>
-                            <th>Norma</th>
-                            <th>Clave</th>
-                            <th>Descrición</th>
-                            <th>Total enviado</th>
-                            <th></th>
-                        </template>
-                        <template  v-slot:TableFooter>
-                            <tr v-for="af in abafin" :key="af">
-                                <td> {{ fecha(af.created_at) }} </td>
-                                <td>{{ af.folio }}</td>
-                                <td> {{ af.banco ? af.banco : 'N/A' }} </td>
-                                <td> {{ af.partida }} </td>
-                                <td> {{ af.norma.materiales.nommat }} </td>
-                                <td> {{ af.clave.CVE_ART }} </td>
-                                <td> {{ af.clave.DESCR }} </td>
-                                <td> {{ af.total }} </td>
-                                <td>
-                                    <div class="columnaIconos">
-                                        <div class="iconoDetails" data-bs-toggle="modal" data-bs-target="#tabla_clave" @click="ediAbas(af)">
-                                            <span tooltip="Detalles" flow="left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </template>
-                    </TableGreen>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal actualizar abastos -->
-        <modal :show="showModal" @close="chageClose">
-            <div class="tw-px-4 tw-py-4">
-                <div class="tw-text-lg">
-                    <div class="ModalHeader">
-                        <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Abastos</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="tw-mt-4">
-                <div class="ModalForm">
-                    <!-- recorrido maquinas produccion -->
-                    <div class="tw-flex accordion-body justify-items-end overflow-auto" style="height: 12rem">
-                        <div class="tw-flex flex-wrap tw-w-full">
-                            <div class="tw-flex tw-w-full tw-rounded-md hover:tw-border hover:tw-border-4 hover:tw-border-teal-300" v-for="ap in abaPro" :key="ap">
-                                <div class="tw-w-3/5 tw-m-auto">
-                                    <strong> {{ ap.proceso.nompro }} {{ ap.maq_pro ? ap.maq_pro.maquinas.Nombre : 'N/A' }}: </strong>
+                    <!-- recorrido norma claves -->
+                    <div class="tw-grid tw-gap-x-2 tw-gap-y-4 md:tw-grid-cols-2 lg:tw-grid-cols-4 tw-overflow-auto" style="height: 35vh">
+                        <div class="tw-shadow-lg tw-p-4" v-for="(nc, index) in formAba.produ" :key="nc">
+                            <div class="tw-px-3 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Norma</jet-label>
+                                <div class="input-group">
+                                    <select class="tw-rounded tw-rounded-md tw-bg-transparent tw-w-full form-select" id="quitButon" v-model="nc.norma">
+                                        <option value="" disabled>SELECCIONA</option>
+                                        <option v-for="nm in opcNM2" :key="nm" :value="nm.value">{{nm.text}}</option>
+                                    </select>
+                                    <button type="button" class="btn btn-danger input-group-text" aria-describedby="quitButon" @click="removeForRow(index)">Quitar</button>
                                 </div>
-                                <div class="tw-w-2/5 tw-m-auto">
-                                    {{ ap.valor.toFixed(2) }} {{ ap.clave.UNI_MED }}
-                                </div>
+                            </div>
+                            <div class="tw-px-3 lg:tw-mb-0">
+                                <jet-label><span class="required">*</span>Clave</jet-label>
+                                <Select2 v-model="nc.clave" class="tw-rounded tw-rounded-md tw-bg-transparent" :settings="{width: '100%', allowClear: true}" :options="opcCL2(nc)"/>
                             </div>
                         </div>
                     </div>
+
+                </div>
+                <!-- boton deguardado -->
+                <div class="lg:tw-flex tw-justify-center" v-if="S_Area != ''">
+                    <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0 d-grid gap-2">
+                        <button type="button" class="btn btn-success" @click="saveEntre(formAba)">Guardar</button>
+                    </div>
                 </div>
             </div>
-        </modal>
+        </div>
 
     </app-layout>
 </template>
@@ -324,28 +279,28 @@
                 S_Area: '',
                 carga: [],
                 materiales: [],
+                materiales2: [],
                 abaentre: [],
-                departamento: [],
                 abaPro: [],
                 errors: [],
                 abafin: [],
+                optPart: [],
                 showModal: false,
-                vrNor: false,
-                vrCla: false,
-                vrPar: false,
                 formAba: {
                     id: '',
                     partida: '',
                     folio: '',
-                    folio2: '',
                     banco: '',
                     total: 0,
-                    norma: '',
-                    clave: null,
+                    abasExis: '',
+                    perfi_abas: this.usuario.id,
                     esta_inicio: '',
                     esta_final: '',
-                    depa_entrega: '',
-                    depa_recibe: null
+                    departamento_id: '',
+                    produ: [{
+                        norma: '',
+                        clave: null,
+                    }]
                 },
                 formBus:{
                     fechaini: '',
@@ -357,13 +312,12 @@
 
         mounted() {
             this.global();
-            //this.tabla();
         },
 
         methods: {
             /************************************* Consultas ***********************************/
             async conProdu(dat){
-                this.abaPro = [];
+                /* this.abaPro = [];
                 this.abaentre.forEach(re => {
                     if(re.id != dat.id){
                         $('#bo'+re.id).addClass('collapsed');
@@ -374,63 +328,23 @@
                 //console.log(dat)
                 let ab = await axios.post('AbaEntre/ConAbaPro', dat);
                 console.log(ab.data)
-                this.abaPro = ab.data;
+                this.abaPro = ab.data; */
             },
-            resProdu(aba, res){
-                let sum = 0;
-                res.forEach(resu => {
-                    if(resu.proceso.tipo != 1){
-                        //console.log(resu)
-                        sum += resu.valor
-                    }
-                })
-                let resta = aba.total-sum;
-
-                return aba.total+'Kg - '+sum.toFixed(2)+'Kg = '+resta.toFixed(2)+'Kg';
-            },
-            /****************************** datatables ********************************************************/
-            //datatable de carga
-            tabla() {
-                this.$nextTick(() => {
-                    $('#abfin').DataTable({
-                        "language": this.español,
-                        "scrollX": true,
-                        "columnDefs": [
-                            { "width": "5%", "targets": [1,2,7] },
-                            { "width": "15%", "targets": [0,3,4,5,6] },
-                        ],
-                        buttons: [
-                            {
-                                extend: 'copyHtml5',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'excelHtml5',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'pdfHtml5',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            'colvis'
-                        ],
-                    })
-                })
+            //Consulta de abastos
+            async ConAba(depa){
+                var datos = {'departamento_id': depa, 'modulo': 'abaEntre'};
+                //abasto entregas
+                let aba = await axios.post('AbaEntre/conabaent', datos);
+                this.abaentre = aba.data;
             },
             /************************************* Globales ************************************/
             color(data){
-                if (data.esta_final == 'Activo') {
+                if (data.estatus == '1') {
                     return 'tw-bg-green-50';
-                } else if(data.esta_final == 'Desactivado') {
-                    return 'tw-bg-red-50';
-                }else {
+                } else if(data.estatus == '2') {
                     return 'tw-bg-blue-50';
+                }else {
+                    return 'tw-bg-red-50';
                 }
             },
             global(){
@@ -441,16 +355,96 @@
                     this.S_Area = this.usuario.dep_pers[0].departamento_id;
                 }
             },
-            fecha(fec){
-                return moment(fec).format('DD/MM/YYYY HH:mm:ss')
+            /************************************* Entregas guardar y pasar a otro departamento */
+            async saveEntre(data){
+                data.depa_recibe = this.S_Area;
+                data.esta_inicio = 'Revisando';
+                data.esta_final = 'Desactivado';
+                this.errors = []
+                await axios.post('AbaEntre/entIns', data)
+                .then(dat => {this.resetEntr(), this.alertSucces()})
+                .catch(err => {this.errors = err.response.data.errors, this.alertWarning(), console.log(err.response.data.errors)})
+            },
+            resetEntr(){
+                this.errors = [];
+                this.optPart =  []
+                this.formAba.id = '';
+                this.formAba.partida = '';
+                this.formAba.folio = '';
+                this.formAba.banco = '';
+                this.formAba.total = 0;
+                this.formAba.abasExis = '';
+                this.formAba.esta_inicio = '';
+                this.formAba.esta_final = '';
+                this.formAba.departamento_id = '';
+                this.formAba.produ = [{ norma: '', clave: null }];
+            },
+            async buscaNorma(event){
+                this.formAba.produ = [{ norma: '', clave: null }];
+                var datos = {'departamento_id': event.target.value, 'modulo': 'abaEntre'};
+                this.optPart =  [];
+
+                let mate = await axios.post('General/ConMateriales', datos)
+                this.materiales2 = mate.data
+
+                //consulta partidas
+                this.formAba.partida = "";
+                this.ConAba(this.formAba.departamento_id);
+            },
+            async busPart(event){
+                this.formAba.partida = "";
+            },
+            //Cambio de estatus a la partida o admin abasto
+            async estaParti(dat){
+                await axios.post('AbaEntre/EstatusParti', dat)
+                .then(resp => {this.ConAba(this.S_Area)})
+            },
+            finEstaAbas(dat){
+                if (dat.estatus == "0") {
+                    Swal.fire({
+                        title: 'Terminar Abasto?',
+                        text: "Estas seguro de terminar este abasto",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Finalizar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire(
+                            'Actualizado!',
+                            'El registro se actualizo correctamente.',
+                            'success'
+                            )
+                            this.estaParti(dat)
+                        }else{
+                            dat.estatus = "2";
+                            this.estaParti(dat)
+                        }
+                    })
+                }else{
+                    this.estaParti(dat)
+                }
+            },
+            //Cambio de estatus al producto final
+            async estaProcFin(dat){
+                await axios.post('AbaEntre/EstatusProcFin', dat)
+                .then(resp => {})
+            },
+            /************************** agrega inputs a formulas  ************************/
+            addForRow: function () {
+                this.formAba.produ.push({norma: "", clave: null,});
+            },
+            removeForRow: function (row) {
+                this.formAba.produ.splice(row,1);
             },
             /************************************* Opciones ************************************/
-            opcCL(da){
+            opcCL2(da){
                 //console.log(da)
                 const scl = [];
-                if (da.norma_id != '') {
-                    this.materiales.forEach(cl => {
-                        if (da.norma_id == cl.id) {
+                if (da.norma != '') {
+                    this.materiales2.forEach(cl => {
+                        if (da.norma == cl.id) {
                             //console.log(cl.claves)
                             cl.claves.forEach(c => {
                                 scl.push({id: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
@@ -460,92 +454,6 @@
                 }
                 return scl;
             },
-            /************************************* Entregas guardar y pasar a otro departamento */
-            async saveEntre(data){
-                data.depa_recibe = this.S_Area;
-                data.esta_inicio = 'Revisando';
-                data.esta_final = 'Desactivado';
-                await axios.post('AbaEntre/entIns', data)
-                .then(dat => {this.resetEntr(), this.alertSucces()})
-                .catch(err => {this.errors = err.response.data.errors, this.alertWarning()})
-                //console.log(data)
-            },
-            resetEntr(){
-                this.errors = [];
-                this.vrNor = false;
-                this.vrCla = false;
-                this.vrPar = false;
-                this.formAba.id = '';
-                this.formAba.partida = '';
-                this.formAba.folio = '';
-                this.formAba.folio2 = '';
-                this.formAba.banco = '';
-                this.formAba.total = 0;
-                this.formAba.norma = '';
-                this.formAba.clave = null;
-                this.formAba.esta_inicio = '';
-                this.formAba.esta_final = '';
-                this.formAba.depa_entrega = '';
-                this.formAba.depa_recibe = null;
-            },
-            /************************************ Abastos guardar consulta **********************/
-            //Consulta de abastos
-            async ConAba(){
-                var datos = {'departamento_id': this.S_Area, 'modulo': 'abaEntre'};
-                //abasto entregas
-                let aba = await axios.post('AbaEntre/conabaent', datos);
-                this.abaentre = aba.data;
-            },
-            //editar formulario
-            ediAbas(data){
-                this.openModal()
-                this.conProdu(data)
-                //console.log(data)
-                this.resProdu(data, this.abafin)
-            },
-            //abrir modal
-            openModal(){
-                this.chageClose();
-                //this.resetEntr();
-            },
-            chageClose(){
-                this.showModal = !this.showModal;
-            },
-            //actualizar información
-            async updaAbas(data){
-                //console.log(data)
-                await axios.post('AbaEntre/updeAbas', data)
-                .then(eve => {this.ConAba(), /* this.openModal(), */ this.alertSucces()})
-                .catch(err => {this.errors = err.response.data.errors, this.alertWarning()})
-            },
-            /************************************ Abastos finalizados *********************************/
-            async buscaAbas(dat){
-                //console.log(dat)
-                if(dat.fechaini != '' & dat.fechafin != ''){
-                    $('#abfin').DataTable().clear();
-                    $('#abfin').DataTable().destroy();
-                    dat.departamento = this.S_Area
-                    let confin = axios.post('AbaEntre/ConAbaFin', dat)
-                    .then(res => {
-                        //console.log(res.data)
-                        this.abafin = res.data
-                        this.tabla()
-                    })
-                    .catch(err => {
-                        this.abafin = []
-                        this.tabla()
-                    })
-                }else{
-                    Swal.fire('Las fechas de busqueda son obligatorias')
-                }
-            },
-            resetAbaFin(){
-                this.formBus.fechaini = '';
-                this.formBus.fechafin = '';
-                this.formBus.departamento = this.S_Area;
-                this.abafin = [];
-            }
-
         },
 
         computed: {
@@ -565,6 +473,13 @@
                 })
                 return ar;
             },
+            opcDep: function() {
+                const dep = [];
+                this.depaT.forEach(val => {
+                    dep.push({id: val.id, text: val.Nombre})
+                })
+                return dep;
+            },
             //Opciones Normas
             opcNM: function() {
                 const nm = [];
@@ -573,27 +488,21 @@
                 })
                 return nm;
             },
-            //Opciones Claves
-            /* opcCL: function() {
-                const scl = [];
-                if (this.formAba.norma != '') {
-                    this.materiales.forEach(cl => {
-                        if (this.formAba.norma == cl.id) {
-                            //console.log(cl.claves)
-                            cl.claves.forEach(c => {
-                                scl.push({id: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
-                            })
-                        }
-                    })
-                }
-                return scl;
-            }, */
-            opcDep: function() {
-                const dep = [];
-                this.depaT.forEach(val => {
-                    dep.push({id: val.id, text: val.Nombre})
+            //Opciones Normas
+            opcNM2: function() {
+                const nm = [];
+                this.materiales2.forEach(ma => {
+                    nm.push({value: ma.id, text: ma.materiales.idmat+' - '+ma.materiales.nommat});
                 })
-                return dep;
+                return nm;
+            },
+            //Opciones abastos
+            opcAbas: function() {
+                const aba = [];
+                this.abaentre.forEach(ab => {
+                    aba.push({id: ab.id, text: ab.partida});
+                })
+                return aba;
             }
         },
 
@@ -601,18 +510,14 @@
             S_Area: async function(b){
 
                 var datos = {'departamento_id': this.S_Area, 'modulo': 'abaEntre'};
-                $('#abfin').DataTable().clear();
-                $('#abfin').DataTable().destroy();
-                this.tabla()
-                this.abafin = []
 
                 //Produccion
                 let car = await axios.post('AbaEntre/Carga', datos)
                 this.carga = car.data;
 
                 //Materiales
-                let mate = await axios.post('General/ConMateriales', datos)
-                this.materiales = mate.data
+                /* let mate = await axios.post('General/ConMateriales', datos)
+                this.materiales = mate.data */
 
                 //abasto entregas
                 let aba = await axios.post('AbaEntre/conabaent', datos);
