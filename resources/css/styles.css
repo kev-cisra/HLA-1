@@ -1,5 +1,5 @@
 .Contenedor{
-    @apply tw-min-h-screen tw-mt-8 tw-mx-2 md:tw-mx-16;
+    @apply tw-mt-8 tw-mx-2 md:tw-mx-16;
 }
 
 .MenuModulos{

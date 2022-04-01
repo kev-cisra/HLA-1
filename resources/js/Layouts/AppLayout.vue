@@ -2,10 +2,10 @@
     <div>
         <jet-banner />
 
-        <div class="tw-min-h-screen tw-bg-gray-100">
+        <div class=" tw-bg-gray-100 tw-h-screen ">
             <nav class="tw-sticky tw-top-0 tw-z-50 tw-bg-white tw-shadow tw-text-gray-400">
                 <!-- Primary Navigation Menu -->
-                <div class="tw-w-full">
+                <div class="tw-mx-4">
                     <div class="tw-flex tw-justify-between tw-h-16">
                         <div class="tw-flex tw-text-gray-600">
                             <!-- Logo -->

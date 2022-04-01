@@ -22784,6 +22784,9 @@ select {
 .tw-h-24 {
 	height: 6rem;
 }
+.tw-h-screen {
+	height: 100vh;
+}
 .tw-min-h-screen {
 	min-height: 100vh;
 }
@@ -24014,7 +24017,6 @@ select {
 	margin-left: 0.5rem;
 	margin-right: 0.5rem;
 	margin-top: 2rem;
-	min-height: 100vh;
 }
 @media (min-width: 768px) {
 
