@@ -6,69 +6,32 @@
             </div>
         </template>
 
-        <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
-            <div class="container-fluid">
-                <div class="row">
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10" v-if="hasAnyPermission(['admin.index', 'Produccion.personal.index'])">
-                        <Link href="Supply/AutorizaRequisiciones" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
-                                <i class="fas fa-stamp"></i>
-                            </div>
-                            <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">AUTORIZA REQUISICIONES</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.procesos.index'])">
-                        <Link href="Supply/AutorizaReqSistemas" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
-                                <i class="fa-solid fa-credit-card"></i>
-                            </div>
-                            <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">COMPRAS SISTEMAS</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.procesos.index'])">
-                        <Link href="Supply/Presupuestos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
-                                <i class="fas fa-coins"></i>
-                            </div>
-                            <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">DEPURAR PRESUPUESTOS</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.maquinas.index'])">
-                        <Link href="Supply/GastosRequisiciones" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
-                                <i class="fas fa-cash-register"></i>
-                            </div>
-                            <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">DEPURAR GASTOS REQUISICIONES</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.turnos.index'])">
-                        <Link href="Supply/InsumosSolicitados" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
-                                <i class="fas fa-clipboard-check"></i>
-                            </div>
-                            <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">DEPURAR INSUMOS SOLICITADOS</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
+        <section class="Contenedor">
+            <div class="MenuModulos">
+                <!-- Modulo AutorizaRequisiciones-->
+                <div class="Modulo">
+                    <Link href="Supply/AutorizaRequisiciones" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fas fa-stamp"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">AUTORIZA REQUISICIONES</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
+
+                <!-- Modulo Autoriza Sistemas-->
+                <div class="Modulo">
+                    <Link href="Supply/AutorizaReqSistemas" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fa-solid fa-credit-card"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">COMPRAS SISTEMAS</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
                 </div>
             </div>
         </section>

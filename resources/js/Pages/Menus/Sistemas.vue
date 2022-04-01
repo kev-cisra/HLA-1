@@ -6,69 +6,58 @@
             </div>
         </template>
 
-        <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
-            <div class="container-fluid">
-                <div class="row">
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
-                        <Link href="/Sistemas/EquiposComputo" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
-                                <i class="fa-solid fa-desktop"></i>
-                            </div>
-                            <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Equipos Cómputo</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
-                        <Link href="/Sistemas/EquiposAsignados" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
-                                <i class="fa-solid fa-house-laptop"></i>
-                            </div>
-                            <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Asignación Equipos</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
-                        <Link href="/Sistemas/CalendarioMantenimientos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
-                                <i class="fa-solid fa-screwdriver-wrench"></i>
-                            </div>
-                            <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Calendario Mantenimientos</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
-                        <Link href="/Sistemas/RequisicionSistemas" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
-                                <i class="fa-solid fa-cart-shopping"></i>
-                            </div>
-                            <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Requisiciones Sistemas</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-                    <!-- Modulo -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 sm:tw-h-1/4 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10">
-                        <Link href="/Sistemas/CotizacionSistemas" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
-                            <div class="tw-flex tw-justify-center tw-mb-4">
-                                <i class="fa-brands fa-amazon-pay"></i>
-                            </div>
-                            <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Cotizaciones</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
+        <section class="Contenedor">
+            <div class="MenuModulos">
+                <!-- Modulo Asignación Equipos-->
+                <div class="Modulo">
+                    <Link href="Sistemas/EquiposComputo" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fa-solid fa-house-laptop"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">Asignación Equipos</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
+
+                <!-- Modulo CalendarioMantenimientos-->
+                <div class="Modulo">
+                    <Link href="Sistemas/CalendarioMantenimientos" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">Calendario Mantenimientos</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
+
+                <!-- Modulo Requisiciones Sistemas-->
+                <div class="Modulo">
+                    <Link href="Sistemas/RequisicionSistemas" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">Requisiciones Sistemas</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
+
+                <!-- Modulo Cotizaciones Sistemas-->
+                <div class="Modulo">
+                    <Link href="Sistemas/CotizacionSistemas" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fa-brands fa-amazon-pay"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">Cotizaciones</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
                 </div>
             </div>
         </section>

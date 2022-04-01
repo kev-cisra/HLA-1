@@ -6,17 +6,85 @@
             </div>
         </template>
 
-        <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
-            <div v-for="modulo in modulos" :key="modulo.id" class="tw-w-1/6 tw-p-0 tw-mt-2 tw-text-center tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110">
-                <Link :href="modulo.Ruta" class="tw-no-underline icono">
-                    <div class="tw-flex tw-justify-center tw-mb-4">
-                        <i :class="modulo.Icono"></i>
-                    </div>
-                    <div>
-                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">{{ modulo.NombreModulo }}</h4>
-                        <span class="linea"></span>
-                    </div>
-                </Link>
+        <section class="Contenedor">
+            <div class="MenuModulos">
+                <!-- Modulo Perfiles-->
+                <div class="Modulo">
+                    <Link href="/RecursosHumanos/PerfilesUsuarios" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">Perfiles</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
+
+                <!-- Modulo Vacaciones-->
+                <div class="Modulo">
+                    <Link href="/RecursosHumanos/Vacaciones" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">Vacaciones</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
+
+                <!-- Modulo Cancelacion vacaciones-->
+                <div class="Modulo">
+                    <Link href="/RecursosHumanos/CancelaVacaciones" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">Revisión Vacaciones</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
+
+                <!-- Modulo ReporteVacaciones-->
+                <div class="Modulo">
+                    <Link href="/RecursosHumanos/ReporteVacaciones" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">Reporte Vacaciones</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
+
+                <!-- Modulo Incidencias-->
+                <div class="Modulo">
+                    <Link href="/RecursosHumanos/Incidencias" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">Incidencias</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
+
+                <!-- Modulo ReporteIncidencias-->
+                <div class="Modulo">
+                    <Link href="/RecursosHumanos/ReporteIncidencias" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">Reporte Incidencias</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
             </div>
         </section>
     </app-layout>

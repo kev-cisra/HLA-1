@@ -8,163 +8,83 @@
 
         <section class="Contenedor">
             <div class="MenuModulos">
-                    <!-- Modulo Proveedores-->
-                    <div class="Modulo" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index'])">
-                        <Link href="/Compras/Proveedores" class="LinkModulo">
-                            <div class="IconoModulo">
-                                <i class="fas fa-truck"></i>
-                            </div>
-                            <div>
-                                <h4 class="TituloModulo">PROVEEDORES</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
+                <!-- Modulo Proveedores-->
+                <div class="Modulo" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index'])">
+                    <Link href="/Compras/Proveedores" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">PROVEEDORES</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
 
-                    <!-- Modulo Cotizaciones-->
-                    <div class="Modulo">
-                        <Link href="/Compras/Cotizaciones" class="LinkModulo">
-                            <div class="IconoModulo">
-                                <i class="fas fa-calculator"></i>
-                            </div>
-                            <div>
-                                <h4 class="TituloModulo">COTIZACIONES</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
+                <!-- Modulo Cotizaciones-->
+                <div class="Modulo">
+                    <Link href="/Compras/Cotizaciones" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">COTIZACIONES</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
 
-                    <!-- Modulo Papeleria-->
-                    <div class="Modulo">
-                        <Link href="/Compras/Papeleria" class="LinkModulo">
-                            <div class="IconoModulo">
-                                <i class="fas fa-store"></i>
-                            </div>
-                            <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">PAPELERÍA</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
+                <!-- Modulo Papeleria-->
+                <div class="Modulo">
+                    <Link href="/Compras/Papeleria" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">PAPELERÍA</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
 
-                    <!-- Modulo Alta Papeleria-->
-                    <div class="Modulo">
-                        <Link href="/Compras/AltaPapeleria" class="LinkModulo">
-                            <div class="IconoModulo">
-                                <i class="fas fa-pencil-alt"></i>
-                            </div>
-                            <div>
-                                <h4 class="TituloModulo">ALTA PAPELERÍA</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
+                <!-- Modulo Alta Papeleria-->
+                <div class="Modulo">
+                    <Link href="/Compras/AltaPapeleria" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">ALTA PAPELERÍA</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
 
-                    <!-- Modulo Insumos-->
-                    <div class="Modulo">
-                        <Link href="/Compras/Insumos" class="LinkModulo">
-                            <div class="IconoModulo">
-                                <i class="fa-solid fa-boxes-stacked"></i>
-                            </div>
-                            <div>
-                                <h4 class="TituloModulo">INSUMOS</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
+                <!-- Modulo Insumos-->
+                <div class="Modulo">
+                    <Link href="/Compras/Insumos" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">INSUMOS</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
 
-                    <!-- Modulo Requisicion Insumos-->
-                    <div class="Modulo">
-                        <Link href="/Compras/RequisicionesInsumos" class="LinkModulo">
-                            <div class="IconoModulo">
-                                <i class="fa-solid fa-clipboard-list"></i>
-                            </div>
-                            <div>
-                                <h4 class="TituloModulo">REQUISICIÓN INSUMOS</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-
-                                        <!-- Modulo Proveedores-->
-                    <div class="Modulo" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index'])">
-                        <Link href="/Compras/Proveedores" class="LinkModulo">
-                            <div class="IconoModulo">
-                                <i class="fas fa-truck"></i>
-                            </div>
-                            <div>
-                                <h4 class="TituloModulo">PROVEEDORES</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-
-                    <!-- Modulo Cotizaciones-->
-                    <div class="Modulo">
-                        <Link href="/Compras/Cotizaciones" class="LinkModulo">
-                            <div class="IconoModulo">
-                                <i class="fas fa-calculator"></i>
-                            </div>
-                            <div>
-                                <h4 class="TituloModulo">COTIZACIONES</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-
-                    <!-- Modulo Papeleria-->
-                    <div class="Modulo">
-                        <Link href="/Compras/Papeleria" class="LinkModulo">
-                            <div class="IconoModulo">
-                                <i class="fas fa-store"></i>
-                            </div>
-                            <div>
-                                <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">PAPELERÍA</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-
-                    <!-- Modulo Alta Papeleria-->
-                    <div class="Modulo">
-                        <Link href="/Compras/AltaPapeleria" class="LinkModulo">
-                            <div class="IconoModulo">
-                                <i class="fas fa-pencil-alt"></i>
-                            </div>
-                            <div>
-                                <h4 class="TituloModulo">ALTA PAPELERÍA</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-
-                    <!-- Modulo Insumos-->
-                    <div class="Modulo">
-                        <Link href="/Compras/Insumos" class="LinkModulo">
-                            <div class="IconoModulo">
-                                <i class="fa-solid fa-boxes-stacked"></i>
-                            </div>
-                            <div>
-                                <h4 class="TituloModulo">INSUMOS</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-
-                    <!-- Modulo Requisicion Insumos-->
-                    <div class="Modulo">
-                        <Link href="/Compras/RequisicionesInsumos" class="LinkModulo">
-                            <div class="IconoModulo">
-                                <i class="fa-solid fa-clipboard-list"></i>
-                            </div>
-                            <div>
-                                <h4 class="TituloModulo">REQUISICIÓN INSUMOS</h4>
-                                <span class="linea"></span>
-                            </div>
-                        </Link>
-                    </div>
-
-
+                <!-- Modulo Requisicion Insumos-->
+                <div class="Modulo">
+                    <Link href="/Compras/RequisicionesInsumos" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fa-solid fa-clipboard-list"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">REQUISICIÓN INSUMOS</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
         </div>
 
         </section>
