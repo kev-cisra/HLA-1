@@ -24010,6 +24010,110 @@ select {
 .tw-ease-in-out {
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
+.Contenedor {
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+	margin-top: 2rem;
+	min-height: 100vh;
+}
+@media (min-width: 768px) {
+
+	.Contenedor {
+		margin-left: 4rem;
+		margin-right: 4rem;
+	}
+}
+.MenuModulos {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	-moz-column-gap: 1rem;
+	     column-gap: 1rem;
+	row-gap: 4rem;
+}
+@media (min-width: 768px) {
+
+	.MenuModulos {
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+	}
+
+	.MenuModulos {
+		-moz-column-gap: 1.5rem;
+		     column-gap: 1.5rem;
+	}
+
+	.MenuModulos {
+		row-gap: 3.5rem;
+	}
+}
+.Modulo {
+	margin-top: 0.5rem;
+	margin-bottom: 3.5rem;
+	height: 4rem;
+	transform: var(--tw-transform);
+	padding: 0px;
+	text-align: center;
+	transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+	transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+	transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 150ms;
+	transition-duration: 700ms;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+.Modulo:hover {
+	--tw-translate-y: -0.25rem;
+	transform: var(--tw-transform);
+	--tw-scale-x: 1.1;
+	--tw-scale-y: 1.1;
+	transform: var(--tw-transform);
+}
+@media (min-width: 640px) {
+
+	.Modulo {
+		height: 2.5rem;
+	}
+}
+@media (min-width: 1280px) {
+
+	.Modulo {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+
+	.Modulo {
+		margin-top: 2.5rem;
+	}
+}
+.LinkModulo {
+	font-size: 8rem;
+	line-height: 1;
+	--tw-text-opacity: 1;
+	color: rgba(21, 170, 191, var(--tw-text-opacity));
+	text-decoration: none;
+}
+.LinkModulo:hover {
+	--tw-text-opacity: 1;
+	color: rgba(67, 196, 255, var(--tw-text-opacity));
+}
+@media (min-width: 768px) {
+
+	.LinkModulo {
+		font-size: 6rem;
+		line-height: 1;
+	}
+}
+.IconoModulo {
+	margin-bottom: 1rem;
+	display: flex;
+	justify-content: center;
+}
+.TituloModulo {
+	font-size: 1rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	--tw-text-opacity: 1;
+	color: rgba(156, 163, 175, var(--tw-text-opacity));
+}
 .btn {
 	border-radius: 0.25rem;
 	padding-left: 1rem;

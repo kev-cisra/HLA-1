@@ -1,3 +1,27 @@
+.Contenedor{
+    @apply tw-min-h-screen tw-mt-8 tw-mx-2 md:tw-mx-16;
+}
+
+.MenuModulos{
+    @apply tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-16 md:tw-grid-cols-6 md:tw-gap-x-6 md:tw-gap-y-14
+}
+
+.Modulo{
+    @apply tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16 sm:tw-h-10;
+}
+
+.LinkModulo {
+    @apply tw-no-underline tw-text-regal-green hover:tw-text-regal-blue tw-text-9xl md:tw-text-8xl;
+}
+
+.IconoModulo{
+    @apply tw-flex tw-justify-center tw-mb-4;
+}
+
+.TituloModulo{
+    @apply tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase;
+}
+
 .btn {
     @apply tw-px-4 tw-py-2 tw-rounded;
 }

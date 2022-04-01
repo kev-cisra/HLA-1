@@ -185,6 +185,8 @@ module.exports = {
                 'rose-700': '#BE123C',
                 'rose-800': '#9F1239',
                 'rose-900': '#881337',
+                'regal-blue': '#43c4ff',
+                'regal-green': '#15aabf'
             },
             fontSize: {
                 'xxs': '.60rem',

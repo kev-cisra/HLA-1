@@ -11,9 +11,9 @@ class MenuComprasController extends Controller
 {
     public function index() {
 
-        $usuario = Auth::user();
+        $User = Auth::user();
         $modulos = Modulos::where("Area","=","4")->get();
 
-        return Inertia::render('Menus/Compras', ['usuario' => $usuario,'modulos' => $modulos]);
+        return Inertia::render('Menus/Compras',compact('User'));
     }
 }
