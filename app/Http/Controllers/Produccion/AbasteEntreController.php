@@ -72,6 +72,7 @@ class AbasteEntreController extends Controller
     public function ConAbaEntre(Request $request){
         $aba = admi_abas::where('departamento_id', '=', $request->departamento_id)
         ->whereIn('estatus', [1,2,3])
+        ->orderBy('id', 'desc')
         ->with([
             'aba_entregas' => function($ae){
                 $ae->select('id', 'folio', 'banco', 'esta_inicio', 'esta_final', 'total', 'perfi_abas', 'perfi_entrega', 'soli_aba_id', 'admi_abas_id');

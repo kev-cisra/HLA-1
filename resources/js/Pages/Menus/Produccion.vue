@@ -10,7 +10,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <!-- Modulo personal -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.personal.index'])">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.personal.index', 'Sistemas.index'])">
                         <Link href="Produccion/Personal" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-users"></i>
@@ -22,7 +22,7 @@
                         </Link>
                     </div>
                     <!-- modulo procesos -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.procesos.index'])">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.procesos.index', 'Sistemas.index'])">
                         <Link href="Produccion/Procesos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-cogs"></i>
@@ -34,7 +34,7 @@
                         </Link>
                     </div>
                     <!-- Modulo maquinas -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.maquinas.index'])">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.maquinas.index', 'Sistemas.index'])">
                         <Link href="Produccion/Maquinas" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-digital-tachograph"></i>
@@ -46,7 +46,7 @@
                         </Link>
                     </div>
                     <!-- Modulos turnos -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.turnos.index'])">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.turnos.index', 'Sistemas.index'])">
                         <Link href="Produccion/Turnos" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-user-clock"></i>
@@ -58,7 +58,7 @@
                         </Link>
                     </div>
                     <!-- Modulo materiales -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.materiales.index'])">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.materiales.index', 'Sistemas.index'])">
                         <Link href="Produccion/Materiales" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-boxes"></i>
@@ -70,7 +70,7 @@
                         </Link>
                     </div>
                     <!-- Modulo claves -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.clamat.index'])">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.clamat.index', 'Sistemas.index'])">
                         <Link href="Produccion/Clamat" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-barcode"></i>
@@ -82,7 +82,7 @@
                         </Link>
                     </div>
                     <!-- modulo cargas -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.carga.index'])">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.carga.index', 'Sistemas.index'])">
                         <Link href="Produccion/Carga" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-pallet"></i>
@@ -94,7 +94,7 @@
                         </Link>
                     </div>
                     <!-- modulo Paros -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.paros.index'])">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.paros.index', 'Sistemas.index'])">
                         <Link href="Produccion/Paros" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-business-time"></i>
@@ -106,7 +106,7 @@
                         </Link>
                     </div>
                     <!-- modulo Reportes Produccion -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index'])">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index', 'Sistemas.index'])">
                         <Link href="Produccion/ReportesPro" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-folder-open"></i>
@@ -119,7 +119,7 @@
                     </div>
 
                     <!-- modulo Objetivos -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index'])">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index', 'Sistemas.index'])">
                         <Link href="Produccion/ObjeCordi" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-clipboard"></i>
@@ -132,7 +132,7 @@
                     </div>
 
                     <!-- modulo Abastos y entregas -->
-                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index'])">
+                    <div class="col-sm-12 col-md-4 col-lg-2 tw-text-center tw-p-0 tw-mt-2 tw-mb-14 xl:tw-mx-0 xl:tw-mt-10 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-16" v-if="hasAnyPermission(['admin.index', 'Produccion.reporpro.index', 'Sistemas.index'])">
                         <Link href="Produccion/AbaEntre" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
                             <div class="tw-flex tw-justify-center tw-mb-4">
                                 <i class="fas fa-dolly"></i>

@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Produccion\AbaEntregas;
+use App\Models\Produccion\Abastos\admi_abas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carOpe;
 use App\Models\Produccion\catalogos\claves;
@@ -35,7 +36,7 @@ class CargasOpenImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 
         $tur = turnos::where('nomtur', 'like', '%'.$row['turno'].'%')->where('departamento_id', '=', $dp->departamento_id)->first(['id']);
 
-        $par = AbaEntregas::where('partida', '=', $row['partida'])->first();
+        $par = admi_abas::where('partida', '=', $row['partida'])->first();
 
         $cla = claves::where('CVE_ART', '=', $row['clave'])->first();
 
@@ -54,7 +55,7 @@ class CargasOpenImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'maq_pro_id' => $dp->maq_pro_id,
             'clave_id' => $cla->id,
             'turno_id' => $tur->id,
-            'departamento_id' => $par->depa_entrega,
+            'departamento_id' => $par->departamento_id,
             'per_carga' => $per->id,
             'VerInv' => 1,
         ]);
