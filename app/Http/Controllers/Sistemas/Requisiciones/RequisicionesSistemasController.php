@@ -9,26 +9,41 @@ use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\Sistemas\Hardware\HardwareSistemas;
 use App\Models\Sistemas\Requisiciones\ArticulosRequisicionesSistemas;
 use App\Models\Sistemas\Requisiciones\RequisicionesSistemas;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 class RequisicionesSistemasController extends Controller{
 
     public function index(){
         $Session = auth()->user();
+        $User = User::find($Session->id); //Accedo a los datos del usuario logueado
+        $Autorizado = $User->hasAnyRole(['ONEPIECE', 'ADMINISTRADOR', 'SUPPLY']); //Busco si el suaurio tiene alguno de los siguientes Roles
 
-        // $ReqSistemas = RequisicionesSistemas::with('Perfil', 'Departamento', 'Articulos', 'Articulos.Hardware')->get();
-
-        $ReqSistemas = RequisicionesSistemas::with([
-            'Perfil' => function($Perfil) { //Relacion 1 a 1 De puestos
-                $Perfil->select('id', 'Nombre', 'ApPat', 'ApMat');
-            },
-            'Departamento' => function($Departamento) { //Relacion 1 a 1 De puestos
-                $Departamento->select('id', 'Nombre');
-            },
-            'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
-                $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
-            }
-        ])->get();
+        if($Autorizado == true){
+            $ReqSistemas = RequisicionesSistemas::with([
+                'Perfil' => function($Perfil) { //Relacion 1 a 1 De puestos
+                    $Perfil->select('id', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'Departamento' => function($Departamento) { //Relacion 1 a 1 De puestos
+                    $Departamento->select('id', 'Nombre');
+                },
+                'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
+                    $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
+                }
+            ])->get();
+        }else{
+            $ReqSistemas = RequisicionesSistemas::with([
+                'Perfil' => function($Perfil) { //Relacion 1 a 1 De puestos
+                    $Perfil->select('id', 'Nombre', 'ApPat', 'ApMat');
+                },
+                'Departamento' => function($Departamento) { //Relacion 1 a 1 De puestos
+                    $Departamento->select('id', 'Nombre');
+                },
+                'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
+                    $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
+                }
+            ])->where('IdUser',$User->id)->get();
+        }
 
         $Departamentos = Departamentos::where('id', '=', $Session->Departamento)->get(['id', 'Nombre']);
         $Hardware = HardwareSistemas::get(['id', 'Nombre']);

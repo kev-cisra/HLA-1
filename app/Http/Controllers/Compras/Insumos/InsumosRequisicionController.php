@@ -25,7 +25,7 @@ class InsumosRequisicionController extends Controller{
 
         if($Autorizado == true){ //Usuario Admin
             //Catalogos
-            $Departamentos = Departamentos::whereIn('id', [8, 12, 13, 23, 25])->get(['id', 'Nombre']);
+            $Departamentos = Departamentos::whereIn('id',[ 7, 8, 9, 12, 13, 23, 25, 27, 29])->get(['id', 'Nombre']);
             $Insumos = Insumos::get();
 
             //Consulta Principal
@@ -45,7 +45,14 @@ class InsumosRequisicionController extends Controller{
             ])->get();
         }else{
             //Catalogos
-            $Departamentos = Departamentos::whereIn('id', [8, 12, 13, 23, 25])->get(['id', 'Nombre']);
+            if($User->hasRole('CoordinadorTejido') == true){
+            $Departamentos = Departamentos::where('id',13)->get(['id', 'Nombre']);
+            }elseif($User->hasRole('CoordinadorCalidad') == true){
+                $Departamentos = Departamentos::where('id',9)->get(['id', 'Nombre']);
+            }else {
+                $Departamentos = Departamentos::whereIn('id',[ 7, 8, 9, 12, 13, 23, 25, 27, 29])->get(['id', 'Nombre']);
+            }
+
             $Insumos = Insumos::get();
             //Obtengo el id del perfil
             $Perfil = PerfilesUsuarios::where('user_id', '=', $Session->id)->first('id');

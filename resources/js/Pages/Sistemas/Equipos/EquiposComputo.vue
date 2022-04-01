@@ -227,6 +227,7 @@ export default {
         },
 
         save(data){
+            data.Estatus = 1;
             data.Cantidad = 1;
             this.$inertia.post("/Sistemas/EquiposComputo", data, {
                 onSuccess: () => {
