@@ -9,7 +9,7 @@
         <section class="Contenedor">
             <div class="MenuModulos">
                 <!-- Modulo Requisiciones-->
-                <div class="Modulo" v-if="hasAnyPermission(['Compras.Requisiciones'])">
+                <div class="Modulo" v-if="hasAnyPermission(['Almacen.Requisiciones'])">
                     <Link href="/Almacen/Requisiciones" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fas fa-clipboard-list"></i>
@@ -35,7 +35,7 @@
                 </div>
 
                 <!-- Modulo ValesSalida-->
-                <div class="Modulo" v-if="hasAnyPermission(['Compras.ValesSalida'])">
+                <div class="Modulo" v-if="hasAnyPermission(['Almacen.ValesSalida'])">
                     <Link href="/Almacen/ValesSalida" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fa-solid fa-note-sticky"></i>
@@ -48,7 +48,7 @@
                 </div>
 
                 <!-- Modulo EntregaInsumos-->
-                <div class="Modulo" v-if="hasAnyPermission(['Compras.EntregaInsumos'])">
+                <div class="Modulo" v-if="hasAnyPermission(['Almacen.EntregaInsumos'])">
                     <Link href="/Almacen/EntregaInsumos" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fa-solid fa-clipboard-list"></i>

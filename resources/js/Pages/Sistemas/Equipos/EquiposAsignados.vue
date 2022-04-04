@@ -278,7 +278,7 @@ export default {
         BuscaDispositivo: function () {
             const Hardware = [];
             this.Hardware.forEach(element => {
-                Hardware.push({id: element.id, text: element.Nombre + '-'+ element.Marca+' '+element.Modelo+' '+element.NumeroSerie})
+                Hardware.push({id: element.id, text: element.Nombre + '-'+ element.Marca+' '+element.Modelo+' '+element.Comentarios})
             });
             return Hardware;
         }

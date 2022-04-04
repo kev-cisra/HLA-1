@@ -22551,6 +22551,9 @@ select {
 .tw-m-10 {
 	margin: 2.5rem;
 }
+.tw-m-6 {
+	margin: 1.5rem;
+}
 .tw-mx-auto {
 	margin-left: auto;
 	margin-right: auto;
@@ -22706,6 +22709,9 @@ select {
 .tw-mb-3 {
 	margin-bottom: 0.75rem;
 }
+.tw-ml-auto {
+	margin-left: auto;
+}
 .tw-block {
 	display: block;
 }
@@ -22741,6 +22747,9 @@ select {
 }
 .tw-h-12 {
 	height: 3rem;
+}
+.tw-h-screen {
+	height: 100vh;
 }
 .tw-h-16 {
 	height: 4rem;
@@ -22783,9 +22792,6 @@ select {
 }
 .tw-h-24 {
 	height: 6rem;
-}
-.tw-h-screen {
-	height: 100vh;
 }
 .tw-min-h-screen {
 	min-height: 100vh;

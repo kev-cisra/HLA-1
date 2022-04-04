@@ -8,9 +8,21 @@
 
         <section class="Contenedor">
             <div class="MenuModulos">
-                <!-- Modulo Asignación Equipos-->
+                <!-- Modulo Equipos-->
                 <div class="Modulo" v-if="hasAnyPermission(['Sistemas.EquiposComputo'])">
                     <Link href="Sistemas/EquiposComputo" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fa-solid fa-desktop"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">Equipos Cómputo</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
+                <!-- Modulo Asignación Equipos-->
+                <div class="Modulo" v-if="hasAnyPermission(['Sistemas.EquiposComputo'])">
+                    <Link href="Sistemas/EquiposAsignados" class="LinkModulo">
                         <div class="IconoModulo">
                             <i class="fa-solid fa-house-laptop"></i>
                         </div>

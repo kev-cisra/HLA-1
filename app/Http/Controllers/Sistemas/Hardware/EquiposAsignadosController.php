@@ -17,7 +17,7 @@ class EquiposAsignadosController extends Controller{
         $Session = auth()->user();
 
         //Catalogos
-        $Hardware = HardwareSistemas::get(['id', 'Nombre', 'Marca', 'Modelo', 'NumeroSerie']);
+        $Hardware = HardwareSistemas::get(['id', 'Nombre', 'Marca', 'Modelo', 'Comentarios']);
         $Perfiles = PerfilesUsuarios::get(['id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat']);
 
         //Consulta Principal
