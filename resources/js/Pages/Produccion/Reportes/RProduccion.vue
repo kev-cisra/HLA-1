@@ -1450,6 +1450,8 @@
                 if (this.calcu != '' & this.S_Area != '') {
                     this.limpPro = false;
                     this.vCal = false;
+                    //console.log(this.form)
+                    //console.log(moment(this.form.fecha).isDST())
 
                     await this.$inertia.post('/Produccion/Calcula', form, {
                         onSuccess: (v) => {
@@ -1457,6 +1459,7 @@
                             this.vCal = true,
                             //this.reset(),
                             this.arrProdu()
+                            //console.log(v)
                         },
                         onError: (e) => {
                             this.vCal = true
@@ -1478,9 +1481,20 @@
                     if (moment(this.form.fecha).isDST()) {
                         this.form.hoy = this.form.fecha+'T09:10';
                         this.form.mañana = moment(this.form.hoy).add(1, 'days').format("YYYY-MM-DD[T]HH:mm")
+                        //console.log(moment(this.form.mañana).isDST())
+                        if (moment(this.form.mañana).isDST() == false) {
+                            this.form.mañana = moment(this.form.mañana).subtract(1, 'hours').format("YYYY-MM-DD[T]HH:mm")
+                            //console.log(this.form.mañana)
+                        }
                     }else{
                         this.form.hoy = this.form.fecha+'T08:10';
                         this.form.mañana = moment(this.form.hoy).add(1, 'days').format("YYYY-MM-DD[T]HH:mm")
+                        //console.log(moment(this.form.mañana).isDST())
+                        if (moment(this.form.mañana).isDST() == true) {
+                            //console.log(this.form.mañana)
+                            this.form.mañana = moment(this.form.mañana).add(1, 'hours').format("YYYY-MM-DD[T]HH:mm")
+                            //console.log(this.form.mañana)
+                        }
                     }
                 }else{
                     this.form.hoy = this.form.fecha+'T07:00';
@@ -1753,9 +1767,19 @@
                         var fin = '';
                         if (this.S_Area == 7){
                             if (moment(this.FoFiltro.iniDia).isDST()) {
+                                //console.log('horario verano')
                                 ini = this.FoFiltro.iniDia+' 09:10:00';
+                                fin = moment(ini).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
+                                if (moment(fin).isDST() == false) {
+                                    fin = moment(fin).subtract(1, 'hours').format("YYYY-MM-DD[T]HH:mm")
+                                }
                             }else{
+                                //console.log('horario invierno')
                                 ini = this.FoFiltro.iniDia+' 08:10:00';
+                                fin = moment(ini).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
+                                if (moment(fin).isDST() == true) {
+                                    fin = moment(fin).add(1, 'hours').format("YYYY-MM-DD[T]HH:mm")
+                                }
                             }
                         }//consulta por rango
                         else{
@@ -1763,7 +1787,6 @@
                         }
 
                         //Asigna el dato para la fecha final
-                        fin = moment(ini).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
                         datos = {'departamento_id': this.S_Area, 'tipo': 'dia', 'iniDia': ini, 'finDia': fin, 'semana': null, 'mes': null }
                     }else{
                         if (this.FoFiltro.iniDia == null) {

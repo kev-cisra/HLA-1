@@ -70,27 +70,54 @@ class AbasteEntreController extends Controller
     }
 
     public function ConAbaEntre(Request $request){
-        $aba = admi_abas::where('departamento_id', '=', $request->departamento_id)
-        ->whereIn('estatus', [1,2,3])
-        ->orderBy('id', 'desc')
-        ->with([
-            'aba_entregas' => function($ae){
-                $ae->select('id', 'folio', 'banco', 'esta_inicio', 'esta_final', 'total', 'perfi_abas', 'perfi_entrega', 'soli_aba_id', 'admi_abas_id');
-            },
-            'proc_final_aba' => function($pfa){
-                $pfa->select('id', 'estatus', 'norma_id', 'clave_id', 'admi_abas_id');
-            },
-            'proc_final_aba.norma' => function($pfan){
-                $pfan->select('id', 'departamento_id', 'material_id');
-            },
-            'proc_final_aba.norma.materiales' => function($pfnm){
-                $pfnm->select('id', 'idmat', 'nommat');
-            },
-            'proc_final_aba.clave' => function($pfac){
-                $pfac->select('id', 'CVE_ART', 'DESCR', 'UNI_MED');
-            }
-        ])
-        ->get();
+        //return $request;
+        if (empty($request->busca)) {
+            # code...
+            $aba = admi_abas::where('departamento_id', '=', $request->departamento_id)
+            ->whereIn('estatus', [1,2,3])
+            ->orderBy('id', 'desc')
+            ->with([
+                'aba_entregas' => function($ae){
+                    $ae->select('id', 'folio', 'banco', 'esta_inicio', 'esta_final', 'total', 'perfi_abas', 'perfi_entrega', 'soli_aba_id', 'admi_abas_id');
+                },
+                'proc_final_aba' => function($pfa){
+                    $pfa->select('id', 'estatus', 'norma_id', 'clave_id', 'admi_abas_id');
+                },
+                'proc_final_aba.norma' => function($pfan){
+                    $pfan->select('id', 'departamento_id', 'material_id');
+                },
+                'proc_final_aba.norma.materiales' => function($pfnm){
+                    $pfnm->select('id', 'idmat', 'nommat');
+                },
+                'proc_final_aba.clave' => function($pfac){
+                    $pfac->select('id', 'CVE_ART', 'DESCR', 'UNI_MED');
+                }
+            ])
+            ->get();
+        }else{
+            $aba = admi_abas::where('departamento_id', '=', $request->departamento_id)
+            ->whereIn('estatus', [1,2,3])
+            ->orderBy('id', 'desc')
+            ->where('partida', 'like', '%'.$request->busca.'%')
+            ->with([
+                'aba_entregas' => function($ae){
+                    $ae->select('id', 'folio', 'banco', 'esta_inicio', 'esta_final', 'total', 'perfi_abas', 'perfi_entrega', 'soli_aba_id', 'admi_abas_id');
+                },
+                'proc_final_aba' => function($pfa){
+                    $pfa->select('id', 'estatus', 'norma_id', 'clave_id', 'admi_abas_id');
+                },
+                'proc_final_aba.norma' => function($pfan){
+                    $pfan->select('id', 'departamento_id', 'material_id');
+                },
+                'proc_final_aba.norma.materiales' => function($pfnm){
+                    $pfnm->select('id', 'idmat', 'nommat');
+                },
+                'proc_final_aba.clave' => function($pfac){
+                    $pfac->select('id', 'CVE_ART', 'DESCR', 'UNI_MED');
+                }
+            ])
+            ->get();
+        }
         return $aba;
     }
 
@@ -191,7 +218,7 @@ class AbasteEntreController extends Controller
         Validator::make($request->all(), [
             'folio' => ['required'],
             'partida' => ['required'],
-            'total' => ['required', 'numeric', 'min:1'],
+            'total' => ['required', 'numeric'],
             'departamento_id' => ['required']
         ])->validate();
 
@@ -202,22 +229,22 @@ class AbasteEntreController extends Controller
         //crea el folio 2
         if(empty($fol2->folio2)){
             $folio2 = date('M/y').'-1';
-            echo '1';
+            //echo '1';
         }else{
             $cam = explode("-", $fol2->folio2);
             $fec = explode("/", $cam[0]);
             //Verifica el año para reiniciar folio
             if ($fec[1] != date("y")) {
                 $folio2 = date('M/y').'-1';
-                echo '2-1';
+                //echo '2-1';
             }else{
                 $sum = $cam[1]+1;
                 $folio2 = date('M/y').'-'.$sum;
-                echo '2-2';
+                //echo '2-2';
             }
         }
 
-        //return $fol2;
+        //return $request;
 
         //Insert administrador abastos
         if(empty($request->abasExis)){
@@ -238,7 +265,7 @@ class AbasteEntreController extends Controller
                 Validator::make($request->all(), [
                     'partida' => ['unique:admi_abas,partida']
                 ])->validate();
-                //return 'listo';
+                //return $request;
             }
         }else{
             $ad_aba = admi_abas::find($request->partida);
@@ -344,5 +371,11 @@ class AbasteEntreController extends Controller
             'estatus' => $request->estatus
         ]);
         return 'ok';
+    }
+
+    public function UpdaPart(Request $request){
+        admi_abas::find($request->id)->update(['partida' => $request->partida]);
+
+        //return $request;
     }
 }

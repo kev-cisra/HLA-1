@@ -20,13 +20,18 @@
         </Accions>
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true" @click="ConAba(S_Area)">Abastos</button>
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true" @click="ConAba(S_Area, busAbas)">Abastos</button>
                 <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" @click="resetEntr()" aria-selected="false">Entregas</button>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
             <!-- Abastos -->
             <div class="tab-pane fade show active tw-p-5 overflow-auto" style="height: 70vh" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="tw-w-full tw-m-6">
+                    <div class="tw-w-full md:tw-w-2/4 lg:tw-w-1/4 tw-ml-auto tw-p-3">
+                        <input type="search" v-model="busAbas" class="InputSelect" @keyup="ConAba(S_Area, busAbas)" placeholder="Buscar partida">
+                    </div>
+                </div>
                 <div class="tw-grid tw-gap-x-2 tw-gap-y-4 md:tw-grid-cols-2 lg:tw-grid-cols-3">
                     <!-- cuerpo tarjeta -->
                     <div class="card tw-shadow-xl" v-for="ae in abaentre" :key="ae">
@@ -35,7 +40,13 @@
                             <table class="tw-w-full">
                                 <tr>
                                     <th colspan="2" class=" tw-text-center">
-                                        <label class=" tw-text-cyan-600 hover:tw-text-xl">{{ ae.partida }}</label>  /-\
+                                        <div class="tw-w-1/2 input-group input-group-sm" v-if="editPar == ae.id">
+                                            <input type="text" class="form-control" v-model="ae.partida" @keyup.enter="updatParti(ae)" @input="(val) => (ae.partida = ae.partida.toUpperCase())">
+                                            <button class="input-group-text btn btn-success" :id="'Guar'+ae.id" @click="updatParti(ae)"><i class="fas fa-save"></i></button>
+                                        </div>
+                                        <label class="tw-text-cyan-600 hover:tw-text-xl tw-cursor-pointer" @click="changePart(ae.id)" tooltip="Editar partida" flow="left" v-else>
+                                            <i class="fas fa-pen"></i> {{ ae.partida }}
+                                        </label> /-\
                                         <label class=" tw-text-teal-600 hover:tw-text-xl">{{ ae.folio2 }}</label>
                                     </th>
                                 </tr>
@@ -126,11 +137,26 @@
                                 <div :id="'flushTwo'+ae.id" class="accordion-collapse collapse" :aria-labelledby="'open2'+ae.id" :data-bs-parent="'#accordion'+ae.id">
                                     <!-- recorrido maquinas produccion -->
                                     <div class="tw-flex accordion-body justify-items-end overflow-auto" style="height: 12rem">
-                                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deserunt, quas! Modi sint fugit, rem facere possimus beatae assumenda dicta, natus eligendi, ab nihil veniam ad. Alias autem vel quam animi!
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta tempora ipsum cupiditate, veniam modi nesciunt eum officia molestiae ducimus ratione non culpa ut dicta porro magni perferendis eos consequuntur totam.
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit facilis neque numquam, explicabo autem amet enim rerum officiis doloremque animi distinctio itaque beatae praesentium maxime reprehenderit commodi temporibus dolorum officia.
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed necessitatibus mollitia rerum, vitae explicabo perspiciatis possimus, ea veritatis dolore debitis quod voluptates voluptatibus repellendus hic quaerat nobis! Enim, quibusdam veritatis?
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, repellendus ex saepe neque assumenda consequatur delectus? Blanditiis minima accusantium dolorum, hic vero quod mollitia nihil corporis cum, sapiente voluptates laborum.
+                                        <div class="tw-grid tw-gap-x-2 tw-gap-y-4 tw-grid-cols-2">
+                                            <div class="tw-rounded-md hover:tw-border hover:tw-border-4 hover:tw-border-teal-300" v-for="ap in abaPro" :key="ap">
+                                                <div class="tw-m-auto">
+                                                    <strong> {{ ap.proceso.nompro }} {{ ap.maq_pro ? ap.maq_pro.maquinas.Nombre : 'N/A' }}: </strong>
+                                                </div>
+                                                <div class="tw-m-auto">
+                                                    {{ ap.valor.toFixed(2) }} {{ ap.clave.UNI_MED }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- restante abasto -->
+                                    <div class="tw-z-10">
+                                        <div class="tw-m-auto tw-text-xl">
+                                            <strong>Abasto restante: </strong>
+                                            <label>
+                                                {{ resProdu(ae, abaPro) }}
+                                            </label>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -285,6 +311,8 @@
                 errors: [],
                 abafin: [],
                 optPart: [],
+                busAbas: "",
+                editPar: "",
                 showModal: false,
                 formAba: {
                     id: '',
@@ -317,7 +345,7 @@
         methods: {
             /************************************* Consultas ***********************************/
             async conProdu(dat){
-                /* this.abaPro = [];
+                this.abaPro = [];
                 this.abaentre.forEach(re => {
                     if(re.id != dat.id){
                         $('#bo'+re.id).addClass('collapsed');
@@ -327,14 +355,29 @@
                 })
                 //console.log(dat)
                 let ab = await axios.post('AbaEntre/ConAbaPro', dat);
-                console.log(ab.data)
-                this.abaPro = ab.data; */
+                //console.log(ab.data)
+                this.abaPro = ab.data;
+            },
+            resProdu(aba, res){
+                let sum = 0;
+                res.forEach(resu => {
+                    if(resu.proceso.tipo != 1){
+                        //console.log(resu)
+                        sum += resu.valor
+                    }
+                })
+                let resta = aba.total-sum;
+
+                return aba.total+'Kg - '+sum.toFixed(2)+'Kg = '+resta.toFixed(2)+'Kg';
             },
             //Consulta de abastos
-            async ConAba(depa){
-                var datos = {'departamento_id': depa, 'modulo': 'abaEntre'};
+            async ConAba(depa, bus){
+                this.editPar = "";
+                var datos = {'departamento_id': depa, 'modulo': 'abaEntre', 'busca': bus};
+                //console.log(datos)
                 //abasto entregas
                 let aba = await axios.post('AbaEntre/conabaent', datos);
+                //console.log(aba.data)
                 this.abaentre = aba.data;
             },
             /************************************* Globales ************************************/
@@ -363,11 +406,13 @@
                 this.errors = []
                 await axios.post('AbaEntre/entIns', data)
                 .then(dat => {this.resetEntr(), this.alertSucces()})
-                .catch(err => {this.errors = err.response.data.errors, this.alertWarning(), console.log(err.response.data.errors)})
+                .catch(err => {this.errors = err.response.data.errors, this.alertWarning()})
             },
             resetEntr(){
                 this.errors = [];
+                this.editPar = "";
                 this.optPart =  []
+                this.busAbas = "";
                 this.formAba.id = '';
                 this.formAba.partida = '';
                 this.formAba.folio = '';
@@ -389,21 +434,23 @@
 
                 //consulta partidas
                 this.formAba.partida = "";
-                this.ConAba(this.formAba.departamento_id);
+                this.ConAba(this.formAba.departamento_id, this.busAbas);
             },
             async busPart(event){
                 this.formAba.partida = "";
             },
+            /************************************** Finciones de abastos *****************/
             //Cambio de estatus a la partida o admin abasto
             async estaParti(dat){
                 await axios.post('AbaEntre/EstatusParti', dat)
-                .then(resp => {this.ConAba(this.S_Area)})
+                .then(resp => {this.ConAba(this.S_Area, this.busAbas, this.alertSucces())})
             },
             finEstaAbas(dat){
+                console.log(dat)
                 if (dat.estatus == "0") {
                     Swal.fire({
-                        title: 'Terminar Abasto?',
-                        text: "Estas seguro de terminar este abasto",
+                        title: 'Finalizar Abasto?',
+                        html: "Estas seguro de finalizar la partida <strong>"+dat.partida+"</strong>?",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -429,7 +476,16 @@
             //Cambio de estatus al producto final
             async estaProcFin(dat){
                 await axios.post('AbaEntre/EstatusProcFin', dat)
-                .then(resp => {})
+                .then(resp => {this.alertSucces()})
+            },
+            //Edicion de partida
+            changePart(data){
+                this.editPar = data;
+            },
+            async updatParti(da){
+                await axios.post('AbaEntre/UpdaPart', da)
+                .then(resp => {this.resetEntr(), this.alertSucces()})
+                //console.log(da)
             },
             /************************** agrega inputs a formulas  ************************/
             addForRow: function () {
