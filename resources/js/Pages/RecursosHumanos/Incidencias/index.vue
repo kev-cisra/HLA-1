@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+    <app-layout>
         <section class="tw-uppercase tw-mx-4">
             <Header :class="[color, style]">
                 <slot>
@@ -9,7 +9,7 @@
         </section>
 
         <!-- **************************************************** TABLAS ************************************************** -->
-        <section class="tw-mx-16 tw-my-4">
+        <section class="tw-mx-4 tw-my-4 md:tw-mx-16">
             <Table id="perfiles">
                 <template v-slot:TableHeader>
                     <th class="columna">Num Control</th>
@@ -106,7 +106,7 @@
             </div>
 
         </modal>
-        <!--  -->
+
         <!-- Modal Historico Incidencias -->
         <modal :show="showHistoricoIncidencias" @close="chageHistoricoIncidencias" maxWidth="3xl">
             <div class="ModalHeader">
@@ -121,6 +121,7 @@
                         <th class="columna">Fecha</th>
                         <th class="columna">Fin</th>
                         <th class="columna">Comentarios</th>
+                        <th class="columna">Acciones</th>
                     </template>
 
                     <template v-slot:TableFooter>
@@ -130,6 +131,15 @@
                             <td class="tw-p-2">{{ dato.Fecha }}</td>
                             <td class="tw-p-2">{{ dato.FechaFin }}</td>
                             <td class="tw-p-2">{{ dato.Comentarios }}</td>
+                            <div class="FlexCenter">
+                                <div class="iconoEdit" @click="edit(dato)">
+                                    <span tooltip="Editar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
                         </tr>
                     </template>
                 </Table>
@@ -300,13 +310,40 @@ export default {
             this.showModal = !this.showModal;
         },
 
-        //datatable
-        tabla() {
-        this.$nextTick(() => {
-            $("#perfiles").DataTable({
-            language: this.español,
+        tabla(){
+            this.$nextTick(() => {
+                $("#perfiles").DataTable({
+                    destroy: true,
+                    stateSave: true,
+                    language: this.español,
+                    paging: true,
+                    pageLength : 20,
+                    scrollX: true,
+                    scrollY:  '40vh',
+                    order: [0, 'desc'],
+                    columnDefs: [
+                        { "width": "3%", "targets": [0] },
+                    ],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'colvis'
+                    ]
+                }).draw();
             });
-        });
         },
 
         //consulta para generar datos de la tabla
@@ -352,6 +389,27 @@ export default {
                 onSuccess: () => {
                     this.chageHistoricoIncidencias();
                 }, preserveState: true
+            });
+        },
+
+        edit: function (data) {
+            this.form = Object.assign({}, data);
+            this.form.Tipo = data.TipoMotivo;
+            this.editMode = true;
+            this.chageHistoricoIncidencias();
+            this.chageClose();
+        },
+
+        update(data) {
+            data.metodo = 1;
+            data._method = "PUT";
+            this.$inertia.post("/RecursosHumanos/Incidencias/" + data.id, data, {
+                onSuccess: () => {
+                    this.editMode = false;
+                    this.reset(),
+                    this.chageClose(),
+                    this.alertSucces();
+                },
             });
         },
     },

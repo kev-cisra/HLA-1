@@ -93,4 +93,26 @@ class IncidenciasDptoController extends Controller{
         return redirect()->back()->with('message', 'Exito');
     }
 
+    public function update(Request $request, $id){
+
+        Validator::make($request->all(), [
+            'Tipo' => ['required'],
+            'Fecha' => ['required'],
+            'Comentarios' => ['required'],
+        ])->validate();
+
+        switch ($request->metodo) {
+            case 1: //Actualizacion de estatuz a Confirmado
+                Incidencias::find($request->id)->update([
+                    'IdEmp' => $request->IdEmp,
+                    'TipoMotivo' => $request->Tipo,
+                    'Fecha' => $request->Fecha,
+                    'FechaFin' => $request->FechaFin,
+                    'Comentarios' => $request->Comentarios,
+                ]);
+                return redirect()->back();
+                break;
+        }
+    }
+
 }
