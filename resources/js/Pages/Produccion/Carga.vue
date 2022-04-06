@@ -661,7 +661,7 @@
                 let ve = await axios.post('Carga/CarProdu', datos)//.then((eve) => {ve = eve.data});
                 //console.log(ve.data)
                 ve.data.forEach(ca => {
-                    if (ca.dep_perf != null & ca.proceso.tipo != 2){
+                    if (ca.dep_perf != null & ca.proceso.tipo != 2 & ca.departamento_id == this.S_Area){
                         if (this.usuario.dep_pers.length != 0) {
                             if (this.noCor != 'cor' & this.noCor != 'enc') {
                                 if (ca.proceso.tipo != 2) {

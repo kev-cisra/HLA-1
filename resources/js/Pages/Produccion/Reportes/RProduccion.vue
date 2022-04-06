@@ -1784,6 +1784,7 @@
                         }//consulta por rango
                         else{
                             ini = this.FoFiltro.iniDia+' 07:00:00'
+                            fin = moment(ini).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
                         }
 
                         //Asigna el dato para la fecha final

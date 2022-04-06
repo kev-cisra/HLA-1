@@ -43,6 +43,7 @@
                                         <div class="tw-w-1/2 input-group input-group-sm" v-if="editPar == ae.id">
                                             <input type="text" class="form-control" v-model="ae.partida" @keyup.enter="updatParti(ae)" @input="(val) => (ae.partida = ae.partida.toUpperCase())">
                                             <button class="input-group-text btn btn-success" :id="'Guar'+ae.id" @click="updatParti(ae)"><i class="fas fa-save"></i></button>
+                                            <button class="input-group-text btn btn-danger" :id="'close'+ae.id" @click="editPar = ''"><i class="fas fa-times"></i></button>
                                         </div>
                                         <label class="tw-text-cyan-600 hover:tw-text-xl tw-cursor-pointer" @click="changePart(ae.id)" tooltip="Editar partida" flow="left" v-else>
                                             <i class="fas fa-pen"></i> {{ ae.partida }}
@@ -446,7 +447,7 @@
                 .then(resp => {this.ConAba(this.S_Area, this.busAbas, this.alertSucces())})
             },
             finEstaAbas(dat){
-                console.log(dat)
+                //console.log(dat)
                 if (dat.estatus == "0") {
                     Swal.fire({
                         title: 'Finalizar Abasto?',
@@ -482,9 +483,29 @@
             changePart(data){
                 this.editPar = data;
             },
+            alertWarningPart() {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "center",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+
+                Toast.fire({
+                    icon: "warning",
+                    title: "Esta partida ya existe",
+                    // background: '#FDBA74',
+                });
+            },
             async updatParti(da){
                 await axios.post('AbaEntre/UpdaPart', da)
                 .then(resp => {this.resetEntr(), this.alertSucces()})
+                .catch(err => {this.alertWarningPart()})
                 //console.log(da)
             },
             /************************** agrega inputs a formulas  ************************/

@@ -112,9 +112,12 @@
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full tw-cursor-pointer" tooltip="Detener" flow="left" @click="detener(1, ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id != 13 & ca.paro_id != 14 & ca.paro_id != 16)">{{ca.estatus}}</div>
                             <!-- detener con plan de accion -->
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full tw-cursor-pointer" tooltip="Detener" flow="left" @click="plan(ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id == 13 | ca.paro_id == 14 | ca.paro_id == 16)">{{ca.estatus}}</div>
-                            <!-- Autorizar -->
+                            <!-- en revision -->
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full tw-cursor-pointer" tooltip="Autorizar" flow="left" @click="detener(2, ca)" v-if="(usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')) & ca.estatus == 'En revisión'">{{ca.estatus}}</div>
 
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" flow="left" v-if="(noCor == 'lid' | noCor == 'ope') & ca.estatus == 'En revisión'">{{ca.estatus}}</div>
+
+                            <!-- Autorizar -->
                             <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-green-600 tw-rounded-full" v-if="ca.estatus == 'Autorizado'">{{ca.estatus}}</div>
                         </td>
                         <td class="tw-text-center">{{ca.iniFecha}}</td>
@@ -374,7 +377,7 @@ export default {
                 }
             }
             await axios.post('/Produccion/Paros', data)
-            .then(resp => {this.reset(), this.alertSucces(), console.log(resp)})
+            .then(resp => {this.reset(), this.alertSucces()})
             .catch(e => {
                 Swal.fire({
                     position: 'top-end',

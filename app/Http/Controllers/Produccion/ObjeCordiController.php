@@ -10,6 +10,7 @@ use App\Models\Produccion\carga;
 use App\Models\Produccion\catalogos\materiales;
 use App\Models\Produccion\dep_mat;
 use App\Models\Produccion\ObjetivoPuntas;
+use App\Models\Produccion\ParoObje;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Http\Request;
@@ -106,6 +107,16 @@ class ObjeCordiController extends Controller
                     'VerInv' => $calcu
                 ]);
 
+                foreach ($value['paroObje'] as $po) {
+                    ParoObje::create([
+                        'horas' => $po['horas'],
+                        'paro_id' => $po['paro'],
+                        'carga_id' => $carga->id
+                    ]);
+                }
+                //return $value['paroObje'];
+
+
                 if($request->departamento_id == 7){
                     ObjetivoPuntas::create([
                         'horas' => $value["calcuPunta"],
@@ -145,10 +156,19 @@ class ObjeCordiController extends Controller
             'maq_pro_id' => ['required'],
             'norma' => ['required'],
             'departamento_id' => ['required'],
-            'pro_hora' => ['required']
+            'pro_hora' => ['required'],
+            'tip_maqui' => ['required']
         ])->validate();
 
         obje_cordi::create([
+            'tiempo' => '60',
+            'eficiencia' => "100",
+            'tipo_maqui' => $request->tip_maqui,
+            'husos' => $request->husos,
+            'velocidad' => $request->velocidad,
+            'titulo' => $request->titulo,
+            'constante' => $request->constante,
+            'cabos' => $request->cabos,
             'proceso_id' => $request->proceso_id,
             'maq_pro_id' => $request->maq_pro_id,
             'clave_id' => $request->clave_id,
@@ -182,6 +202,12 @@ class ObjeCordiController extends Controller
 
         obje_cordi::find($request->input('id'))
         ->update([
+            'tipo_maqui' => $request->tip_maqui,
+            'husos' => $request->husos,
+            'velocidad' => $request->velocidad,
+            'titulo' => $request->titulo,
+            'constante' => $request->constante,
+            'cabos' => $request->cabos,
             'proceso_id' => $request->proceso_id,
             'maq_pro_id' => $request->maq_pro_id,
             'clave_id' => $request->clave_id,

@@ -22,6 +22,10 @@ class paros extends Model
         return $this->hasMany(grafi_arr::class, 'paro_id');
     }
 
+    public function paroobjes(){
+        return $this->hasMany(ParoObje::class, 'paro_id');
+    }
+
     //relacion uno a muchos inversa
 
 }

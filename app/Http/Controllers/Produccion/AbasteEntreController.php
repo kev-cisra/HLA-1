@@ -374,8 +374,17 @@ class AbasteEntreController extends Controller
     }
 
     public function UpdaPart(Request $request){
-        admi_abas::find($request->id)->update(['partida' => $request->partida]);
+        $cuen = admi_abas::where('partida', '=', $request->partida)
+            ->where('departamento_id', '=', $request->departamento_id)
+            ->count();
 
-        //return $request;
+        if ($cuen == 0) {
+            admi_abas::find($request->id)->update(['partida' => $request->partida]);
+            return 'listo';
+        }
+        Validator::make($request->all(), [
+            'partida' => ['unique:admi_abas,partida']
+        ])->validate();
+
     }
 }

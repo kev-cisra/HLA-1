@@ -127,6 +127,12 @@ class CargaController extends Controller
             'notas' => function($not){
                 $not -> latest()
                 -> select('id', 'fecha', 'nota', 'carga_id');
+            },
+            'paro_obje' => function($po){
+                $po->select('id', 'horas', 'paro_id', 'carga_id');
+            },
+            'paro_obje.paro' => function($p){
+                $p->select('id', 'clave', 'descri');
             }
         ])
         ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id', 'departamento_id']);
@@ -241,7 +247,7 @@ class CargaController extends Controller
                 $cla -> select('id', 'CVE_ART', 'DESCR', 'UNI_MED', 'dep_mat_id');
             }
         ])
-        ->get(['id', 'estatus', 'pro_hora', 'proceso_id', 'maq_pro_id', 'norma', 'clave_id', 'departamento_id']);
+        ->get(['id', 'estatus', 'pro_hora', 'proceso_id', 'maq_pro_id', 'norma', 'tipo_maqui', 'husos', 'velocidad', 'constante', 'cabos', 'titulo', 'clave_id', 'departamento_id']);
         return $objetivos;
     }
 

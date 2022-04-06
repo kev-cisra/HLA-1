@@ -26,9 +26,6 @@
                     <div class="tw-m-3">
                         <button class="btn btn-success tw-w-full" type="button" @click="openModal()">Carga objetivos</button>
                     </div>
-                    <!-- <div class="tw-m-3" v-if="S_Area != 7">
-                        <button class="btn btn-success tw-w-full" type="button" @click="openModal2()">Carga objetivos</button>
-                    </div> -->
                 </div>
             </template>
         </Accions>
@@ -40,9 +37,6 @@
                     <th class="columna">Índice</th>
                     <th class="columna">Fecha</th>
                     <th class="columna">Nombre</th>
-                    <th class="columna">Departamento</th>
-                    <th class="columna">Proceso</th>
-                    <th class="columna">Estatus</th>
                     <th class="columna">Equipo</th>
                     <th class="columna">Turno</th>
                     <th class="columna">Partida</th>
@@ -50,6 +44,7 @@
                     <th class="columna">Clave</th>
                     <th class="columna">Descripción de clave</th>
                     <th class="columna">Maquina</th>
+                    <th class="columna">Paros</th>
                     <th class="columna">KG</th>
                     <th></th>
                 </template>
@@ -58,14 +53,6 @@
                         <td class="tw-text-center"> {{ ca.id }} </td>
                         <td>{{ca.fecha}}</td>
                         <td class="">{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.Nombre}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApPat}} {{ca.dep_perf == null ? 'N/A' : ca.dep_perf.perfiles.ApMat}}</td>
-                        <td class="">{{ca.departamento.Nombre}}</td>
-                        <td class="">{{ca.proceso.nompro}}</td>
-                        <td class=" tw-w-40">
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-emerald-600 tw-rounded-full" v-if="ca.notaPen == 2 & ca.proceso.tipo == 2">NOTA COORDINADOR</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-cyan-600 tw-rounded-full" v-else-if="ca.notaPen == 2 & (ca.dep_perf.ope_puesto == 'ope' | ca.dep_perf.ope_puesto == 'lid')">NOTA OPERADOR</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-coolGray-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length <= 1">SIN NOTA</div>
-                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-blue-600 tw-rounded-full" v-if="ca.notaPen == 1 & ca.notas.length > 1">ACTUALIZADO</div>
-                        </td>
                         <td class="">{{ca.equipo == null ? 'N/A' : ca.equipo.nombre}}</td>
                         <td class="">{{ca.turno == null ? 'N/A' : ca.turno.nomtur}}</td>
                         <td class="">{{ca.partida == null ? 'N/A' : ca.partida}}</td>
@@ -73,6 +60,11 @@
                         <td class="">{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
                         <td class="">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
                         <td class="">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
+                        <td>
+                            <div v-for="po in ca.paro_obje" :key="po" class="hover:tw-bg-blue-300">
+                                <strong>{{ po.paro.descri }}: </strong> {{ po.horas }}
+                            </div>
+                        </td>
                         <td class="">{{ca.valor.toFixed(2)}}</td>
                         <td class="">
                             <div class="columnaIconos">
@@ -92,9 +84,6 @@
                     <th class="columna">Índice</th>
                     <th class="columna">Fecha</th>
                     <th class="columna">Nombre</th>
-                    <th class="columna">Departamento</th>
-                    <th class="columna">Proceso</th>
-                    <th class="columna">Estatus</th>
                     <th class="columna">Equipo</th>
                     <th class="columna">Turno</th>
                     <th class="columna">Partida</th>
@@ -102,6 +91,7 @@
                     <th class="columna">Clave</th>
                     <th class="columna">Descripción de clave</th>
                     <th class="columna">Maquina</th>
+                    <th class="columna">Paros</th>
                     <th class="columna">KG</th>
                     <th></th>
                 </template>
@@ -169,6 +159,55 @@
                             <small v-if="errors.pro_hora" class="validation-alert">{{errors.pro_hora}}</small>
                         </div>
                     </div>
+                    <div class="tw-mb-6 lg:tw-flex">
+                        <!-- Select Tipo de maquina -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Tipo de maquina</jet-label>
+                            <select class="InputSelect" v-model="formObje.tip_maqui">
+                                <option value="" disabled>SELECCIONA</option>
+                                <option value="car" >Carda</option>
+                                <option value="esti" >Estirador</option>
+                                <option value="oe" >Open-End</option>
+                                <option value="torza" >Torzal</option>
+                                <option value="mech" >Mechera</option>
+                                <option value="trocil" >Trocil</option>
+                                <option value="dobla" >Dobladora</option>
+                                <option value="cort" >Cortadora</option>
+                                <option value="romp" >Rompedora</option>
+                            </select>
+                            <small v-if="errors.tip_maqui" class="validation-alert">{{errors.tip_maqui}}</small>
+                        </div>
+                        <!-- Input husos -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Husos</jet-label>
+                            <jet-input type="text" v-model="formObje.husos"></jet-input>
+                            <small v-if="errors.husos" class="validation-alert">{{errors.husos}}</small>
+                        </div>
+                        <!-- Input Velicidad -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Velocidad </jet-label>
+                            <jet-input type="text"  v-model="formObje.velocidad"></jet-input>
+                            <small v-if="errors.velocidad" class="validation-alert">{{errors.velocidad}}</small>
+                        </div>
+                        <!-- Input Titulo -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Titulo</jet-label>
+                            <jet-input type="text" v-model="formObje.titulo"></jet-input>
+                            <small v-if="errors.titulo" class="validation-alert">{{errors.titulo}}</small>
+                        </div>
+                        <!-- Input Constante -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Constante</jet-label>
+                            <jet-input type="text" v-model="formObje.constante"></jet-input>
+                            <small v-if="errors.constante" class="validation-alert">{{errors.constante}}</small>
+                        </div>
+                        <!-- input produccion -->
+                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
+                            <jet-label class="tw-text-white"><span class="required">*</span>Cabos</jet-label>
+                            <jet-input type="number" v-model="formObje.cabos"></jet-input>
+                            <small v-if="errors.cabos" class="validation-alert">{{errors.cabos}}</small>
+                        </div>
+                    </div>
                     <!-- Botones -->
                     <div class="w-100 tw-mx-auto tw-gap-4 tw-flex tw-justify-center">
                         <div v-if="btnOff & !editModeOB">
@@ -232,6 +271,10 @@
             </div>
         </div>
 
+        <!-- <pre>
+            {{ maquina }}
+        </pre> -->
+
         <!-- abrir modal de carga de objetivos Apertura -->
         <modal :show="showModal" @close="chageClose" maxWidth="6xl">
             <div class="tw-px-4 tw-py-4">
@@ -286,10 +329,19 @@
                                 <button type="button" class="btn btn-info tw-w-1/3 " @click="addRow()">Agregar Nuevo Objetivo</button>
                             </div>
                         </div>
+                        <!-- recorrdio horas maquina -->
+                        <div class="tw-flex tw-flex-nowrap tw-overflow-auto tw-bg-teal-200">
+                            <div class="tw-shadow-2xl tw-m-3 hover:tw-bg-green-900 tw-p-1" v-for="ma in maquina" :key="ma">
+                                <ul class="list-group list-group-flush">
+                                    <li :class="'list-group-item '+color2(ma)" style="width: 13vw"><strong> {{ ma.maquinas.Nombre }}: </strong> {{ ma.suma }} </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- recorridos abastos y objetivos -->
                         <div class="lg:tw-flex">
                             <!-- Muestra abastos -->
-                            <div class="tw-flex tw-flex-row flex-wrap tw-m-4 tw-overflow-auto tw-h-36 lg:tw-w-3/12 lg:tw-w-87 lg:tw-h-96">
-                                <div class="card tw-shadow-2xl tw-my-3 tw-w-full md:tw-m-3 hover:tw-bg-blue-900 tw-p-4" v-for="pa in partida" :key="pa">
+                            <div class="tw-flex tw-flex-row flex-wrap tw-m-4 tw-overflow-auto tw-h-36 lg:tw-w-3/12 lg:tw-w-87 lg:tw-h-96 tw-bg-sky-200">
+                                <div class="card tw-shadow-2xl tw-my-3 tw-w-full md:tw-m-3 hover:tw-bg-blue-900 tw-p-1" v-for="pa in partida" :key="pa">
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item"><strong> Partida: </strong> {{ pa.partida }} </li>
                                         <li class="list-group-item"><strong> Folio: </strong> {{ pa.folio2 }} </li>
@@ -308,6 +360,7 @@
                             <!-- recorrido para carga de objetivos -->
                             <div class="lg:tw-w-9/12 tw-overflow-auto" style="height: 30rem">
                                 <div v-for="(f, index) in form.paquet" :key="index" class="tw-m-5 tw-shadow-2xl tw-rounded-md tw-p-5" >
+                                    <!-- partida y horas laborales -->
                                     <div class="lg:tw-flex">
                                         <!-- Input partida -->
                                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
@@ -323,35 +376,47 @@
                                                     <input type="text" class="InputSelect" v-model="f.p_nom"  @input="(val) => (f.p_nom = f.p_nom.toUpperCase())">
                                                 </div>
                                             </div>
-
                                         </div>
-                                        <!-- tiempo -->
-                                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
-                                            <jet-label class=""><span class="required">*</span>Horas a trabajar</jet-label>
-                                            <jet-input v-model="f.calcuObje" @change="inputHoraObje(f)" type="number" min="0" max="12" step=".5"></jet-input>
-                                        </div>
-                                        <!-- tiempo punta -->
-                                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-show="S_Area == 7">
-                                            <jet-label class=""><span class="required">*</span>Horas a trabajar punta</jet-label>
-                                            <jet-input v-model="f.calcuPunta" @change="inputHoraPunta(f)" type="number" min="0" max="12" step=".5"></jet-input>
-                                        </div>
-                                    </div>
-                                    <div class="lg:tw-flex">
                                         <!-- paquete de objetivos -->
                                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/2 lg:tw-mb-0">
                                             <jet-label class=""><span class="required">*</span>Paquete Objetivos</jet-label>
                                             <Select2 v-model="f.paqObjetivo" class="InputSelect" @select="calObje(f)" :settings="{width: '100%'}" :options="opcPaOb(f)"/>
                                         </div>
+                                    </div>
+                                    <!-- Carga de paros por objetivo -->
+                                    <div class="lg:tw-flex tw-my-5">
+                                        <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/2 lg:tw-mb-0" v-for="(par, index) in f.paroObje" :key="index">
+                                            <div class="input-group">
+                                                <select class="form-select tw-rounded-md" v-model="par.paro" disabled>
+                                                    <option value="4">Paros Programados por Producción</option>
+                                                    <option value="12">Limpieza</option>
+                                                </select>
+                                                <input type="number" class="form-control tw-rounded-md" @change="inputHoraParos(f)" v-model="par.horas" placeholder="Horas programadas" min="0" max="12" step=".5">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- proceso y produccion -->
+                                    <div class="lg:tw-flex">
+                                        <!-- tiempo -->
+                                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0">
+                                            <jet-label class=""><span class="required">*</span>Horas a trabajar</jet-label>
+                                            <jet-input v-model="f.calcuObje" @change="inputHoraObje(f)" type="number" min="0" max="12" step=".5"></jet-input>
+                                        </div>
+                                        <!-- tiempo punta
+                                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-show="S_Area == 7">
+                                            <jet-label class=""><span class="required">*</span>Horas a trabajar punta</jet-label>
+                                            <jet-input v-model="f.calcuPunta" @change="inputHoraPunta(f)" type="number" min="0" max="12" step=".5"></jet-input>
+                                        </div> -->
                                         <!-- Input kilogramos -->
                                         <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/4 lg:tw-mb-0">
                                             <jet-label class=""><span class="required">*</span>Producción horas laborales</jet-label>
                                             <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="f.valor" disabled></jet-input>
                                         </div>
-                                        <!-- Input kilogramos punta -->
+                                        <!-- Input kilogramos punta
                                         <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/4 lg:tw-mb-0" v-show="S_Area == 7">
                                             <jet-label class=""><span class="required">*</span>Producción horario punta</jet-label>
                                             <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="f.valorP" disabled></jet-input>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="lg:tw-flex tw-mt-5">
                                         <div class="tw-m-auto">
@@ -456,26 +521,20 @@
                     per_carga: this.usuario.id,
                     dep_perf_id: '',
                     equipo_id: '',
-                    paquet: [{ paqObjetivo: "", calcuObje: 0, calcuPunta: 12, valor: 0, valorP: 0, partida: '', p_nom: '' }],
+                    paquet: [{
+                        paqObjetivo: "",
+                        calcuObje: 0,
+                        calcuPunta: 12,
+                        valor: 0,
+                        valorP: 0,
+                        partida: '',
+                        p_nom: '',
+                        paroObje: [{paro: "4", horas: 0}, {paro: "12", horas: 0}]
+                    }],
                     turno_id: '',
                     notaPen: 1,
                     nota: '',
                     agNot: 0,
-                },
-                form2: {
-                    id: null,
-                    fecha: null,
-                    semana: null,
-                    departamento_id: this.S_Area,
-                    usu: this.usuario.id,
-                    per_carga: this.usuario.id,
-                    dep_perf_id: '',
-                    equipo_id: '',
-                    turno_id: '',
-                    notaPen: 1,
-                    nota: '',
-                    agNot: 0,
-                    paquet: [{ paqObjetivo: "", calcuObje2: 0, clave_id: "", valor: 0, valorP: 0, partida: '', p_nom: '' }],
                 },
                 formObje:{
                     id: null,
@@ -484,7 +543,13 @@
                     maq_pro_id: '',
                     norma: '',
                     clave_id: '',
-                    pro_hora: null
+                    pro_hora: null,
+                    tip_maqui: "",
+                    husos: "",
+                    velocidad: "",
+                    titulo: "",
+                    constante: "",
+                    cabos: ""
                 },
                 formAba:{
                     id: '',
@@ -513,6 +578,8 @@
                         }
                     }
                 })
+
+                //console.log(this.cargas)
 
                 $('#t_carg').DataTable().destroy();
                 this.tabla()
@@ -546,6 +613,13 @@
                     this.S_Area = this.usuario.dep_pers[0].departamento_id;
                 }
             },
+            color2(pr){
+                if (pr.suma > 12) {
+                    return 'tw-bg-red-900 tw-text-white';
+                }else{
+                    return 'tw-bg-white tw-text-black'
+                }
+            },
             /****************************** datatables ********************************************************/
             //datatable de carga
             tabla() {
@@ -557,6 +631,10 @@
                     } );
                     $('#t_carg').DataTable({
                         "language": this.español,
+                        "columnDefs": [
+                            { "width": "7%", "targets": [0,1,2,3,4,5,6,7,9] },
+                            { "width": "15%", "targets": [8,10] }
+                        ],
                         "order": [[5, 'asc'], [1, 'desc']],
                         "scrollX": true,
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
@@ -633,20 +711,28 @@
                 .catch(err => {})
                 //console.log(data)
             },
-            /************************************* Opciones modal Apertura *******************************************/
+            /************************************* Opciones modal *******************************************/
             //calcula los objetivos select paquetes
             calObje(caO){
                 this.limp = 2;
+                this.hora_maquina('proceso')
                 const resu = this.objetivos.find(obje => obje.id == caO.paqObjetivo);
                 caO.valor = resu.pro_hora * caO.calcuObje;
                 caO.valorP = resu.pro_hora * (parseFloat(caO.calcuObje, 10) + parseFloat(caO.calcuPunta, 10));
             },
             //horarios apertura
             inputHoraObje(obje){
-                obje.calcuPunta = 12 - parseFloat(obje.calcuObje, 10);
-                if(obje.calcuObje <= 0 || obje.calcuObje > 12){
+                //Calcula el tiempo de los paros
+                let paro = 0;
+                this.hora_maquina('horas')
+                obje.paroObje.forEach(el => {
+                    paro += el.horas
+                });
+                //asigna el valor al horario punta
+                obje.calcuPunta = (12 - paro) - parseFloat(obje.calcuObje, 10);
+                if(obje.calcuObje <= 0 || obje.calcuObje > (12 - paro)){
                     obje.calcuObje = 0;
-                    obje.calcuPunta = 12
+                    obje.calcuPunta = 12 - paro;
                 }
                 if(obje.paqObjetivo){
                     const resu = this.objetivos.find(obj => obj.id == obje.paqObjetivo);
@@ -655,8 +741,15 @@
                 }
             },
             //horario externo punta
-            inputHoraPunta(pun){
-                let nu = 12 - pun.calcuObje;
+            /* inputHoraPunta(pun){
+                //console.log(pun)
+                let paro = 0;
+                pun.paroObje.forEach(el => {
+                    paro += el.horas
+                });
+                //console.log(parseInt(pun.calcuObje) + parseInt(paro))
+                //Calcula y asigna el horario restante
+                let nu = 12 - (parseInt(pun.calcuObje) + parseInt(paro));
                 if (pun.calcuPunta < 0 || pun.calcuPunta > nu) {
                     pun.calcuObje = 0;
                     pun.calcuPunta = nu;
@@ -667,7 +760,7 @@
                     pun.valor = resu.pro_hora * parseFloat(pun.calcuObje, 10);
                     pun.valorP = resu.pro_hora * (parseFloat(pun.calcuObje, 10) + parseFloat(pun.calcuPunta, 10));
                 }
-            },
+            }, */
             //Horarios generales
             inputHoraObjeGene(obje){
                 if (obje.calcuObje2 <= 0 || obje.calcuObje2 > 12) {
@@ -679,14 +772,33 @@
                     obje.valor = resu.pro_hora * parseFloat(obje.calcuObje2, 10)
                 }
             },
+            //Horarios Paros
+            inputHoraParos(par){
+                //Calcula el tiempo de los paros
+                let paro = 0;
+                this.hora_maquina('horas paro')
+                par.paroObje.forEach(el => {
+                    paro += el.horas
+                });
+
+                if (paro < 0 || paro > 12) {
+                    par.paroObje[0].horas = 0;
+                    par.paroObje[1].horas = 0;
+                }
+
+                par.calcuObje = 0;
+                par.calcuPunta = 12 - paro
+            },
             //abrir modal
             openModal(){
                 this.chageClose();
                 this.resetCO();
             },
+            //cambia estatus modal
             chageClose(){
                 this.showModal = !this.showModal;
             },
+            //reinicia el formulario para cargar objetivos
             resetCO(){
                 this.limp = 1;
                 this.calcuObje = 0;
@@ -702,8 +814,11 @@
                 this.form.nota = '';
                 this.form.usu = this.usuario.id;
                 this.form.departamento_id = this.S_Area;
-                this.form.paquet = [{ paqObjetivo: "", calcuObje: 0, calcuPunta: 12, valor: 0, valorP: 0, partida: null, p_nom: '' }]
+                this.form.paquet = [{ paqObjetivo: "", calcuObje: 0, calcuPunta: 12, valor: 0, valorP: 0, partida: null, p_nom: '', paroObje: [{paro: "4", horas: 0}, {paro: "12", horas: 0}] }]
                 this.errors = [];
+                this.maquina.forEach(element => {
+                    element.suma = 0
+                });
 
                 if (this.usuario.dep_pers.length != 0) {
                     this.usuario.dep_pers.forEach(v => {
@@ -719,25 +834,51 @@
                     this.form.equipo_id = '';
                 }
             },
+            //agrega nuevos paquetes para carga objetivos
             addRow(){
-                this.form.paquet.push({paqObjetivo: '', calcuObje: 0, calcuPunta: 12, valor: 0, valorP: 0, partida: null, p_nom: ''})
+                this.form.paquet.push({paqObjetivo: '', calcuObje: 0, calcuPunta: 12, valor: 0, valorP: 0, partida: null, p_nom: '', paroObje: [{paro: "4", horas: 0}, {paro: "12", horas: 0}]})
             },
+            //quita los paquetes para carga objetivos
             removeRow(row){
                 this.form.paquet.splice(row,1);
+            },
+            //revisa las horas que lleva cada maquina en larga de objetivos
+            hora_maquina(de){
+                //console.log(this.objetivos)
+                const obje = [];
+                //recorre los paquetes que se crean y los objetivos para asignar maquina y suma por paquete seleccionada
+                this.form.paquet.forEach(rep => {
+                    let ob = this.objetivos.find(ob => {return rep.paqObjetivo == ob.id})
+                    let suma = parseFloat(rep.calcuObje);
+                    rep.paroObje.forEach(sum => {
+                        suma += sum.horas;
+                    })
+                    obje.push({idMaq: ob.maq_pro_id, suma: suma})
+                    //console.log(suma)
+                })
+                //realiza la suma general
+                this.maquina.forEach(resp => {
+                    var finSum = 0;
+                    obje.forEach(fin => {
+                        if (resp.id == fin.idMaq) {
+                            finSum += fin.suma
+                        }
+                    })
+                    //console.log(finSum);
+                    resp.suma = finSum;
+                })
+                //console.log(this.maquina)
             },
             /************************************* Carga de objetivos **************************************/
             async saveOB(data){
                 //data.calcuObje = this.calcuObje;
                 //data.calcuPunta = this.calcuPunta;
                 data.semana = moment(data.fecha).format("GGGG-[W]WW");
-
-                /* const reco =  this.form.paquet.find(ele => {
-                    return ele.partida == null;
-                }) */
+                //console.log(data)
 
                 //console.log(data);
                 await axios.post('ObjeCordi/storeProObje', data)
-                .then(eve => {this.ConProduccion(), this.openModal(), console.log(eve.data)})
+                .then(eve => {this.ConProduccion(), this.openModal()})
                 .catch(error => {this.errors = error.response.data.errors});
 
 
@@ -761,8 +902,15 @@
                 this.formObje.norma = '';
                 this.formObje.clave_id = '';
                 this.formObje.pro_hora = null;
+                this.formObje.tip_maqui = "";
+                this.formObje.husos = "";
+                this.formObje.velocidad = "";
+                this.formObje.titulo = "";
+                this.formObje.constante = "";
+                this.formObje.cabos = "";
             },
             editOB(form){
+                //console.log(form)
                 this.limp = 2;
                 this.editModeOB = true;
                 this.formObje.id = form.id;
@@ -772,6 +920,12 @@
                 this.formObje.norma = form.norma;
                 this.formObje.clave_id = form.clave_id;
                 this.formObje.pro_hora = form.pro_hora;
+                this.formObje.tip_maqui = form.tipo_maqui;
+                this.formObje.husos = form.husos;
+                this.formObje.velocidad = form.velocidad;
+                this.formObje.titulo = form.titulo;
+                this.formObje.constante = form.constante;
+                this.formObje.cabos = form.cabos;
             },
             async updateOB(data){
                 //console.log(data)
@@ -787,77 +941,6 @@
                 this.$inertia.post('/Produccion/ObjeCordi/' + data.id, data, {
                     onSuccess: () => { this.ConObjeti(), this.alertDelete() }, onError: () => {this.ConObjeti()}, preserveState: true
                 });
-            },
-            /************************************* Opciones modal General *******************************************/
-            //calcula los objetivos
-            calObje2(caOG){
-                this.limp = 2;
-                const resu = this.objetivos.find(obje => obje.id == caOG.paqObjetivo);
-                caOG.valor = resu.pro_hora * caOG.calcuObje2;
-                /* this.form2.paquet.forEach(eve => {
-                    if(eve.paqObjetivo){
-
-                        //eve.valorP = resu.pro_hora * (parseFloat(this.calcuObje, 10) + parseFloat(this.calcuPunta, 10));
-                    }
-                }) */
-            },
-            //abrir modal
-            openModal2(){
-                this.chageClose2();
-                this.resetCO2();
-            },
-            chageClose2(){
-                this.showModal2 = !this.showModal2;
-            },
-            resetCO2(){
-                this.limp = 1;
-                //this.calcuObje2 = 0;
-                this.paqObjetivo = '';
-                this.paqOpera = '';
-                this.paqNorma = '';
-                this.proc_prin = '';
-                this.editMode = false;
-                this.form2.fecha = this.hoy;
-                this.form2.agNot = 0;
-                this.form2.notaPen = 1;
-                this.form2.nota = '';
-                this.form2.usu = this.usuario.id;
-                this.form2.departamento_id = this.S_Area;
-                this.form2.paquet = [{ paqObjetivo: "", calcuObje2: 0, clave_id: "", valor: 0, valorP: 0, partida: null }];
-                this.errors = [];
-                //asigna equipos y turnos
-                if (this.usuario.dep_pers.length != 0) {
-                    this.usuario.dep_pers.forEach(v => {
-                        if (v.departamento_id = this.S_Area) {
-                            this.form2.dep_perf_id = v.id != null ? v.id : null;
-                            this.form2.turno_id = v.equipo_id != null ? v.equipo.turno_id : '';
-                            this.form2.equipo_id = v.equipo_id != null ? v.equipo_id : '';
-                        }
-                    })
-                }else{
-                    this.form2.dep_perf_id = null;
-                    this.form2.turno_id = '';
-                    this.form2.equipo_id = '';
-                }
-            },
-            recoClave(paq){
-                const scl = [];
-                if(paq){
-                    let nuAr = this.objetivos.find(eve => {return eve.id == paq});
-                    const nuMat = this.materiales.find(mate => {return mate.id == nuAr.norma})
-                    nuMat.claves.forEach(c => {
-                        //console.log(cl)
-                        scl.push({id: c.id, text: c.CVE_ART+ ' - ' + c.DESCR})
-                    })
-                    //console.log(nuMat)
-                    return scl;
-                }
-            },
-            addRow2(){
-                this.form2.paquet.push({paqObjetivo: "", clave_id: "", valor: 0, valorP: 0, partida: null})
-            },
-            removeRow2(row){
-                this.form2.paquet.splice(row,1);
             },
             opcPaOb(dat){
                 const ob = [];
@@ -877,33 +960,6 @@
                     })
                 }
                 return ob;
-            },
-            /************************************* Carga de objetivos 2 **************************************/
-            async saveOB2(data){
-                /* console.log(data); */
-                //data.calcuObje2 = this.calcuObje2;
-                data.semana = moment(data.fecha).format("GGGG-[W]WW");
-
-                const reco =  this.form2.paquet.find(ele => {
-                    return ele.partida == null;
-                })
-
-                //console.log(data);
-
-                if (reco == undefined) {
-                    await axios.post('ObjeCordi/storeProObje', data)
-                    .then(eve => {this.ConProduccion(), this.openModal2(), this.alertSucces()})
-                    .catch(error => {this.errors = error.response.data.errors});
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Aun no se han llenado todas las partidas!!',
-                    })
-                }
-
-
-                //console.log(ve)
             },
         },
 
@@ -1037,6 +1093,19 @@
                     })
                 } */
                 return uni;
+            },
+            //maquina
+            maquina: function(){
+                let maq = [];
+                this.procesos.forEach(pro => {
+                    if (pro.tipo == "2") {
+                        pro.maq_pros.forEach(maqu => {
+                            maqu.suma = 0;
+                            maq.push(maqu)
+                        })
+                    }
+                });
+                return maq;
             }
         },
 
