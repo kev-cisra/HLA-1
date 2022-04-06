@@ -22,7 +22,7 @@
         @routes
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased">
+    <body class="tw-bg-gray-100">
         @inertia
         @include('sweetalert::alert')
 

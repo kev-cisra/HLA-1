@@ -35,9 +35,9 @@
 
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="data in Objeto" :key="data.id">
-                        <td class="tw-p-2">{{data.var}}</td>
+                        <td>{{data.var}}</td>
                         <td>
-                            <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
+                            <div class="FlexCenter">
                                 <div class="iconoEdit" @click="edit(data)">
                                     <span tooltip="Editar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor">

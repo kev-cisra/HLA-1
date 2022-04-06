@@ -10,9 +10,9 @@
         </section>
 
         <!-- ****************************************** Subtitulo ********************************************* -->
-        <section class="tw-m-4 tw-flex tw-justify-center tw-gap-4 tw-p-2">
-            <div><span class="tw-font-bold tw-text-lg"> {{PerfilSession.Nombre}} {{PerfilSession.ApPat}} {{PerfilSession.ApMat}}</span></div>
-            <div><span class="tw-font-bold tw-text-lg">Renovacion: {{ PerfilSession.FecIng.substr(5) }} - Dias Restantes: {{PerfilSession.DiasVac}}</span></div>
+        <section class="tw-m-4 tw-flex tw-flex-col md:tw-flex-row tw-justify-center tw-text-center tw-items-center tw-gap-4 tw-p-2">
+            <div><span class="tw-font-bold md:tw-text-lg"> {{PerfilSession.Nombre}} {{PerfilSession.ApPat}} {{PerfilSession.ApMat}}</span></div>
+            <div><span class="tw-font-bold md:tw-text-lg">Renovacion: {{ PerfilSession.FecIng.substr(5) }} - Dias Restantes: {{PerfilSession.DiasVac}}</span></div>
             <div class="IconAproved" @click="vacaciones(data, 1)" v-if="PerfilSession.DiasVac > 0">
                 <span tooltip="Solicita de Vacaciones" flow="right">
                     <i class="tw-text-xl fa-solid fa-plane"></i>
@@ -26,7 +26,7 @@
         </section>
 
         <!-- ****************************************** TABLAS ********************************************* -->
-        <section class="tw-mx-20 tw-my-4" v-if="JefeDepto == true">
+        <section class="tw-mx-4 tw-my-4 md:tw-mx-4" v-if="JefeDepto == true">
             <Table id="Perfiles">
                 <template v-slot:TableHeader>
                         <th class="columna">Empresa</th>
@@ -72,7 +72,7 @@
             </Table>
         </section>
         <!-- --------------------------- Tabla de vacaciones Individuales ------------------------------ -->
-        <section class="tw-mx-20 tw-my-4">
+        <section class="tw-mx-4 tw-my-4 md:tw-mx-28">
             <Table id="Vacaciones">
                 <template v-slot:TableHeader>
                     <th class="columna">Num Control</th>
@@ -390,7 +390,6 @@ export default {
     mounted() {
         this.tabla();
         this.tablaVacaciones();
-        this.tablaHistorico();
     },
 
     methods: {
@@ -434,12 +433,13 @@ export default {
                     language: this.español,
                     paging: true,
                     pageLength : 10,
-                    // scrollX: true,
-                    // scrollY:  '30vh',
+                    scrollX: true,
+                    scrollY:  '30vh',
                     order: [0, 'desc'],
-                    // columnDefs: [
-                    //     { "width": "5%", "targets": [0,8] },
-                    // ],
+                    columnDefs: [
+                        { "width": "5%", "targets": [1] },
+                        { "width": "10%", "targets": [8] },
+                    ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -452,15 +452,16 @@ export default {
         tablaVacaciones(){
             this.$nextTick(() => {
                 $("#Vacaciones").DataTable({
-                    destroy: true,
                     language: this.español,
+                    destroy: true,
                     paging: true,
                     pageLength : 5,
-                    // scrollX: true,
-                    // scrollY:  '30vh',
+                    scrollX: true,
+                    scrollY:  '30vh',
                     order: [0, 'desc'],
                     columnDefs: [
-                        { "width": "10%", "targets": [0,6] },
+                        { "width": "5%", "targets": [0,1,4,5] },
+                        { "width": "50%", "targets": [3] },
                     ],
                     "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
@@ -476,10 +477,22 @@ export default {
             this.$nextTick(() => {
                 $("#Historico").DataTable({
                     language: this.español,
+                    destroy: true,
                     paging: true,
+                    pageLength : 5,
                     scrollX: true,
-                    scrollY:  '40vh',
-                });
+                    scrollY:  '30vh',
+                    order: [0, 'desc'],
+                    columnDefs: [
+                        { "width": "5%", "targets": [0,1,4,5] },
+                        { "width": "50%", "targets": [3] },
+                    ],
+                    "dom": '<"row"<"col-sm-6 col-md-3"l><"col-sm-6 col-md-6"B><"col-sm-12 col-md-3"f>>'+
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    buttons: [
+                    ]
+                }).draw();
             });
         },
 
@@ -689,6 +702,7 @@ export default {
         Historico: function (data) {
             this.$inertia.get('/RecursosHumanos/Vacaciones',{ id: data.id }, {
                 onSuccess: () => {
+                    this.tablaHistorico();
                     this.chageHistoricoVacaciones();
                 }, preserveState: true
             });
