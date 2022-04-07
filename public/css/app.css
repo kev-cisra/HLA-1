@@ -22598,6 +22598,10 @@ select {
 	margin-top: 0.75rem;
 	margin-bottom: 0.75rem;
 }
+.tw-my-5 {
+	margin-top: 1.25rem;
+	margin-bottom: 1.25rem;
+}
 .tw-my-10 {
 	margin-top: 2.5rem;
 	margin-bottom: 2.5rem;
@@ -22617,10 +22621,6 @@ select {
 .tw-my-24 {
 	margin-top: 6rem;
 	margin-bottom: 6rem;
-}
-.tw-mx-20 {
-	margin-left: 5rem;
-	margin-right: 5rem;
 }
 .tw-ml-2 {
 	margin-left: 0.5rem;
@@ -22747,9 +22747,6 @@ select {
 }
 .tw-h-12 {
 	height: 3rem;
-}
-.tw-h-screen {
-	height: 100vh;
 }
 .tw-h-16 {
 	height: 4rem;
@@ -22999,6 +22996,9 @@ select {
 }
 .tw-flex-wrap {
 	flex-wrap: wrap;
+}
+.tw-flex-nowrap {
+	flex-wrap: nowrap;
 }
 .tw-content-center {
 	align-content: center;
@@ -23292,6 +23292,10 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(79, 70, 229, var(--tw-border-opacity));
 }
+.tw-bg-gray-100 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
+}
 .tw-bg-gray-200 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
@@ -23319,10 +23323,6 @@ select {
 .tw-bg-green-600 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(22, 163, 74, var(--tw-bg-opacity));
-}
-.tw-bg-gray-100 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
 }
 .tw-bg-indigo-600 {
 	--tw-bg-opacity: 1;
@@ -23446,6 +23446,18 @@ select {
 .tw-bg-blue-700 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(29, 78, 216, var(--tw-bg-opacity));
+}
+.tw-bg-teal-200 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(153, 246, 228, var(--tw-bg-opacity));
+}
+.tw-bg-sky-200 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(186, 230, 253, var(--tw-bg-opacity));
+}
+.tw-bg-red-900 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(127, 29, 29, var(--tw-bg-opacity));
 }
 .tw-bg-amber-600 {
 	--tw-bg-opacity: 1;
@@ -25759,6 +25771,14 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(14, 116, 144, var(--tw-bg-opacity));
 }
+.hover\:tw-bg-blue-300:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgba(147, 197, 253, var(--tw-bg-opacity));
+}
+.hover\:tw-bg-green-900:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgba(20, 83, 45, var(--tw-bg-opacity));
+}
 .hover\:tw-bg-blue-900:hover {
 	--tw-bg-opacity: 1;
 	background-color: rgba(30, 58, 138, var(--tw-bg-opacity));
@@ -26313,6 +26333,10 @@ select {
 	.md\:tw-text-8xl {
 		font-size: 6rem;
 		line-height: 1;
+	}
+
+	.md\:tw-text-lg {
+		font-size: 1.125rem;
 	}
 }
 @media (min-width: 1024px) {

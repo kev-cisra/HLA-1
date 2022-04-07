@@ -55,7 +55,7 @@
                                 <i class="tw-mr-2 fa-solid fa-laptop-code tw-text-gray-600"></i>Sistemas
                             </jet-nav-link>
                         </div>
-                        <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex"  v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index'])">
+                        <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex"  v-if="hasAnyPermission(['admin.index', 'Produccion.index'])">
                             <jet-nav-link :href="route('Produccion')" :active="route().current('Produccion')">
                                 <i class="tw-mr-2 fas fa-shipping-fast tw-text-gray-600"></i>Producción
                             </jet-nav-link>

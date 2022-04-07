@@ -13,6 +13,8 @@ use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
+use LaravelPassportHasApiTokens;
+
 class User extends Authenticatable
 {
     use HasApiTokens;
