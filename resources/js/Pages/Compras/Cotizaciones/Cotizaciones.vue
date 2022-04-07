@@ -688,28 +688,27 @@
             <div class="tw-mt-4">
                 <div class="ModalForm">
                     <div class="tw-mb-6 md:tw-flex">
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
                             <jet-label><span class="required">*</span>MARCA</jet-label>
                             <jet-input type="text" v-model="form.Marca" @input="(val) => (form.Marca = form.Marca.toUpperCase())"></jet-input>
                             <small v-if="errors.Marca" class="validation-alert">{{errors.Marca}}</small>
                         </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-2/4 md:tw-mb-0">
                             <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
-                            <select v-model="form.Proveedor"  class="InputSelect">
-                                <option v-for="select in Proveedores" :key="select.id" :value="select.id" >{{ select.Nombre }}</option>
-                            </select>
+                            <Select2 v-model="form.Proveedor" class="InputSelect" :settings="{width: '100%',allowClear: true}" element="background: '#e5e7eb'" :options="BuscaProveedor" />
                             <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
                         </div>
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0">
                             <jet-label><span class="required">*</span>TIPO MONEDA</jet-label>
                             <select v-model="form.Moneda"  class="InputSelect">
                                 <option value="MXN" >MXN</option>
                                 <option value="USD" >USD</option>
                                 <option value="EUR" >EUR</option>
                             </select>
+                            <small v-if="errors.Moneda" class="validation-alert" >{{ errors.Moneda }}</small>
                         </div>
 
-                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
+                        <div class="tw-px-3 tw-mb-6 md:tw-w-1/4 md:tw-mb-0" v-if="form.Moneda == 'USD' || form.Moneda == 'EUR'">
                             <jet-label>Tipo Cambio</jet-label>
                             <jet-input type="text" min="1" v-model="form.TipoCambio"></jet-input>
                             <small v-if="errors.TipoCambio" class="validation-alert">{{errors.TipoCambio}}</small>
@@ -788,9 +787,7 @@
                         </div>
                         <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                             <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
-                            <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
-                                <option v-for="select in Proveedores" :key="select.id" :value="select.id" >{{ select.Nombre }}</option>
-                            </select>
+                            <Select2 v-model="form.Proveedor" class="InputSelect" :settings="{width: '100%',allowClear: true}" element="background: '#e5e7eb'" :options="BuscaProveedor" />
                             <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
                         </div>
                         <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
@@ -1007,9 +1004,7 @@
                         </div>
                         <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
                             <jet-label><span class="required">*</span>PROVEEDOR</jet-label>
-                            <select id="Jefe" v-model="form.Proveedor"  class="InputSelect">
-                                <option v-for="select in Proveedores" :key="select.id" :value="select.id" >{{ select.Nombre }}</option>
-                            </select>
+                            <Select2 v-model="form.Proveedor" class="InputSelect" :settings="{width: '100%',allowClear: true}" element="background: '#e5e7eb'" :options="BuscaProveedor" />
                             <small v-if="errors.Proveedor" class="validation-alert" >{{ errors.Proveedor }}</small>
                         </div>
                         <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
@@ -1152,6 +1147,7 @@ import Pagination from "@/Components/pagination";
 import JetLabel from '@/Jetstream/Label';
 import JetInput from "@/Components/Input";
 import JetSelect from "@/Components/Select";
+import Select2 from 'vue3-select2-component';
 //imports de datatables
 import datatable from "datatables.net-bs5";
 import $ from "jquery";
@@ -1265,6 +1261,7 @@ export default {
         JetLabel,
         JetInput,
         JetSelect,
+        Select2,
     },
 
     props: {
@@ -1764,5 +1761,16 @@ export default {
         },
 
     },
+
+    computed:{
+        //Funcion de buscador
+        BuscaProveedor: function () {
+            const BusquedaSelect = [];
+            this.Proveedores.forEach(element => {
+                BusquedaSelect.push({id: element.id, text: element.Nombre})
+            });
+            return BusquedaSelect;
+        },
+    }
 };
 </script>

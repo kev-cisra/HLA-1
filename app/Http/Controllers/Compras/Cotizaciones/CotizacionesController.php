@@ -488,6 +488,14 @@ class CotizacionesController extends Controller{
 
     public function store(Request $request){
 
+        Validator::make($request->all(), [
+            'IdUser' => ['required'],
+            'Marca' => ['required'],
+            'Proveedor' => ['required'],
+            'Moneda' => ['required'],
+            'Partida.PrecioUnitario.*' => ['required'],
+        ])->validate();
+
         if(isset($request)){ //Verifico la existencia de datos
 
             if(isset($request->archivo)){ //Valido envio de Archivo
