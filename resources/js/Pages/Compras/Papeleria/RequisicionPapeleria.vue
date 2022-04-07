@@ -1,6 +1,6 @@
 <template>
     <app-layout>
-        <div class="uppercase tw-mx-4">
+        <div class="tw-mx-4">
             <Header :class="[color, style]">
                 <slot>
                     <h3 class="tw-p-2">
@@ -85,7 +85,7 @@
                                 <td>{{ dato.articulos_papeleria.Fecha }}</td>
                                 <td>{{ dato.articulos_papeleria.Folio }}</td>
                                 <td>{{ dato.articulos_papeleria.requisicion_departamento.Nombre }}</td>
-                                <td>{{ dato.articulos_papeleria.requisicion_perfil.Nombre }}</td>
+                                <td>{{ dato.articulos_papeleria.requisicion_perfil.Nombre }} {{ dato.articulos_papeleria.requisicion_perfil.ApPat }}</td>
                                 <td>{{ dato.Cantidad }}</td>
                                 <td>{{ dato.articulo_material.Unidad }}</td>
                                 <td>{{ dato.articulo_material.Nombre }}</td>
@@ -486,6 +486,6 @@ export default {
                 });
                 return Papeleria;
             }
-        }
+    }
 };
 </script>

@@ -4,8 +4,7 @@
             <Header :class="[color, style]">
                 <slot>
                     <h3 class="tw-p-2">
-                        <i class="fas fa-user tw-ml-3 tw-mr-3"></i>
-                            Solicitudes Papeleria
+                        <i class="fas fa-user tw-ml-3 tw-mr-3"></i>Solicitudes Papeleria
                     </h3>
                 </slot>
             </Header>
@@ -74,7 +73,7 @@
                                 <td>{{ dato.articulos_papeleria.Fecha }}</td>
                                 <td>{{ dato.articulos_papeleria.Folio }}</td>
                                 <td>{{ dato.articulos_papeleria.requisicion_departamento.Nombre }}</td>
-                                <td>{{ dato.articulos_papeleria.requisicion_perfil.Nombre }}</td>
+                                <td>{{ dato.articulos_papeleria.requisicion_perfil.Nombre }} {{ dato.articulos_papeleria.requisicion_perfil.ApPat }}</td>
                                 <td>{{ dato.Cantidad }}</td>
                                 <td>{{ dato.articulo_material.Unidad }}</td>
                                 <td>{{ dato.articulo_material.Nombre }}</td>

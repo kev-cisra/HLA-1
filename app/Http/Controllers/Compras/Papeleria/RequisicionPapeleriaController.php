@@ -41,7 +41,7 @@ class RequisicionPapeleriaController extends Controller{
                     $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
                 },
                 'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
-                    $Art->select('id', 'IdUser', 'Nombre');
+                    $Art->select('id', 'IdUser', 'Nombre', 'ApPat');
                 },
             ])->whereHas('ArticulosPapeleria', function($query) use($SessionId){
                 $query->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
@@ -61,7 +61,7 @@ class RequisicionPapeleriaController extends Controller{
                     $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
                 },
                 'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
-                    $Art->select('id', 'IdUser', 'Nombre');
+                    $Art->select('id', 'IdUser', 'Nombre', 'ApPat');
                 },
             ])->whereHas('ArticulosPapeleria', function($query) use($SessionId){
                 $query->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
@@ -79,7 +79,7 @@ class RequisicionPapeleriaController extends Controller{
                     $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
                 },
                 'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
-                    $Art->select('id', 'IdUser', 'Nombre');
+                    $Art->select('id', 'IdUser', 'Nombre', 'ApPat');
                 },
             ])->whereHas('ArticulosPapeleria', function($query) use($SessionId){
                 $query->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');
@@ -97,7 +97,7 @@ class RequisicionPapeleriaController extends Controller{
                     $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
                 },
                 'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
-                    $Art->select('id', 'IdUser', 'Nombre');
+                    $Art->select('id', 'IdUser', 'Nombre', 'ApPat');
                 },
             ])->whereHas('ArticulosPapeleria', function($query) use($SessionId){
                 $query->select('id', 'IdUser', 'IdEmp', 'Fecha', 'Folio', 'Perfil_id', 'Departamento_id',  'Comentarios');

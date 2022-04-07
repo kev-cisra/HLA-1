@@ -44,7 +44,7 @@ class SolicitudesPapeleriaController extends Controller{
                     $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
                 },
                 'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
-                    $Art->select('id', 'IdUser', 'Nombre');
+                    $Art->select('id', 'IdUser', 'Nombre', 'ApPat');
                 },
             ])
             ->whereYear('created_at', $anio)
@@ -74,7 +74,7 @@ class SolicitudesPapeleriaController extends Controller{
                     $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
                 },
                 'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
-                    $Art->select('id', 'IdUser', 'Nombre');
+                    $Art->select('id', 'IdUser', 'Nombre', 'ApPat');
                 },
             ])
             ->whereMonth('created_at', $mes)
@@ -102,7 +102,7 @@ class SolicitudesPapeleriaController extends Controller{
                     $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
                 },
                 'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
-                    $Art->select('id', 'IdUser', 'Nombre');
+                    $Art->select('id', 'IdUser', 'Nombre', 'ApPat');
                 },
             ])
             ->whereYear('created_at', $anio)
@@ -129,7 +129,7 @@ class SolicitudesPapeleriaController extends Controller{
                     $Art->select('id', 'IdUser', 'Nombre', 'departamento_id');
                 },
                 'ArticulosPapeleria.RequisicionPerfil' => function($Art) {
-                    $Art->select('id', 'IdUser', 'Nombre');
+                    $Art->select('id', 'IdUser', 'Nombre', 'ApPat');
                 },
             ])
             ->where('Estatus', '>', 0)
