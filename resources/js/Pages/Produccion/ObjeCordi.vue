@@ -31,7 +31,7 @@
         </Accions>
 
         <!------------------------------------ Data table de carga ------------------------------------------------------->
-        <div class="tw-m-auto" style="width: 98%">
+        <div class="tw-m-auto" style="width: 98vw">
             <Table id="t_carg">
                 <template v-slot:TableHeader>
                     <th class="columna">Índice</th>
@@ -44,7 +44,7 @@
                     <th class="columna">Clave</th>
                     <th class="columna">Descripción de clave</th>
                     <th class="columna">Maquina</th>
-                    <th class="columna">Paros</th>
+                    <th class="columna">Horas</th>
                     <th class="columna">KG</th>
                     <th></th>
                 </template>
@@ -61,6 +61,9 @@
                         <td class="">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
                         <td class="">{{ca.maq_pro == null ? 'N/A' : ca.maq_pro.maquinas.Nombre}}</td>
                         <td>
+                            <div class="hover:tw-bg-blue-300">
+                                <strong>Producción: </strong> {{ ca.VerInv }}
+                            </div>
                             <div v-for="po in ca.paro_obje" :key="po" class="hover:tw-bg-blue-300">
                                 <strong>{{ po.paro.descri }}: </strong> {{ po.horas }}
                             </div>
@@ -131,10 +134,11 @@
                         <!-- select Maquinas -->
                         <div class="tw-px-3 tw-mb-6 lg:tw-w-1/6 lg:tw-mb-0">
                             <jet-label class="tw-text-white"><span class="required">*</span>Maquinas</jet-label>
-                            <select class="InputSelect" v-model="formObje.maq_pro_id" :disabled="editMode">
+                            <Select2 v-model="formObje.maq_pro_id"  class="InputSelect" :options="opcMQO"  :settings="{width: '100%', multiple: true, allowClear: true}"/>
+                            <!-- <select class="InputSelect" v-model="formObje.maq_pro_id" :disabled="editMode">
                                 <option value="" disabled>SELECCIONA</option>
                                 <option v-for="mq in opcMQO" :key="mq.value" :value="mq.value">{{mq.text}}</option>
-                            </select>
+                            </select> -->
                             <small v-if="errors.maq_pro_id" class="validation-alert">{{errors.maq_pro_id}}</small>
                         </div>
                         <!-- Select Normas -->
@@ -271,14 +275,11 @@
             </div>
         </div>
 
-        <!-- <pre>
-            {{ maquina }}
-        </pre> -->
-
         <!-- abrir modal de carga de objetivos Apertura -->
         <modal :show="showModal" @close="chageClose" maxWidth="6xl">
             <div class="tw-px-4 tw-py-4">
                 <div class="tw-text-lg">
+                    <button @click="openModal()" class="btn btn-outline-danger tw-mr-auto">X</button>
                     <div class="ModalHeader">
                         <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Carga de Objetivos</h3>
                     </div>
@@ -331,9 +332,9 @@
                         </div>
                         <!-- recorrdio horas maquina -->
                         <div class="tw-flex tw-flex-nowrap tw-overflow-auto tw-bg-teal-200">
-                            <div class="tw-shadow-2xl tw-m-3 hover:tw-bg-green-900 tw-p-1" v-for="ma in maquina" :key="ma">
-                                <ul class="list-group list-group-flush">
-                                    <li :class="'list-group-item '+color2(ma)" style="width: 13vw"><strong> {{ ma.maquinas.Nombre }}: </strong> {{ ma.suma }} </li>
+                            <div class="tw-shadow-2xl" v-for="ma in maquina" :key="ma">
+                                <ul class="list-group list-group-flush tw-m-3 hover:tw-bg-green-900 tw-p-1" v-if="ma.suma != 0">
+                                    <li :class="'list-group-item '+color2(ma)" style="width: 15vw"><strong> {{ ma.maquinas.Nombre }}: </strong> {{ ma.suma }} Hrs </li>
                                 </ul>
                             </div>
                         </div>
@@ -358,8 +359,8 @@
                                 </div>
                             </div>
                             <!-- recorrido para carga de objetivos -->
-                            <div class="lg:tw-w-9/12 tw-overflow-auto" style="height: 30rem">
-                                <div v-for="(f, index) in form.paquet" :key="index" class="tw-m-5 tw-shadow-2xl tw-rounded-md tw-p-5" >
+                            <div class="lg:tw-w-9/12 tw-overflow-auto tw-bg-yellow-200 tw-mt-4 tw-mb-2" style="height: 30rem">
+                                <div v-for="(f, index) in form.paquet" :key="index" class="tw-m-5 tw-shadow-2xl tw-rounded-md tw-p-5 tw-bg-white" >
                                     <!-- partida y horas laborales -->
                                     <div class="lg:tw-flex">
                                         <!-- Input partida -->
@@ -428,7 +429,8 @@
 
                         </div>
                         <div class="m-auto">
-                            <button class="btn btn-success" @click="saveOB(form)">Guardar</button>
+                            <button class="btn btn-success tw-mr-4" @click="saveOB(form)">Guardar</button>
+                            <button @click="openModal()" class="btn btn-danger">Cerrar</button>
                         </div>
                     </div>
                 </div>
@@ -467,9 +469,6 @@
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     window.JSZip = jszip;
 
-    var Highcharts = require('highcharts');
-    // Load module after Highcharts is loaded
-    require('highcharts/modules/exporting')(Highcharts);
     export default {
         props: [
             'usuario',
@@ -578,8 +577,6 @@
                         }
                     }
                 })
-
-                //console.log(this.cargas)
 
                 $('#t_carg').DataTable().destroy();
                 this.tabla()
@@ -715,7 +712,7 @@
             //calcula los objetivos select paquetes
             calObje(caO){
                 this.limp = 2;
-                this.hora_maquina('proceso')
+                this.hora_maquina()
                 const resu = this.objetivos.find(obje => obje.id == caO.paqObjetivo);
                 caO.valor = resu.pro_hora * caO.calcuObje;
                 caO.valorP = resu.pro_hora * (parseFloat(caO.calcuObje, 10) + parseFloat(caO.calcuPunta, 10));
@@ -724,7 +721,7 @@
             inputHoraObje(obje){
                 //Calcula el tiempo de los paros
                 let paro = 0;
-                this.hora_maquina('horas')
+                this.hora_maquina()
                 obje.paroObje.forEach(el => {
                     paro += el.horas
                 });
@@ -740,27 +737,6 @@
                     obje.valorP = resu.pro_hora * (parseFloat(obje.calcuObje, 10) + parseFloat(obje.calcuPunta, 10));
                 }
             },
-            //horario externo punta
-            /* inputHoraPunta(pun){
-                //console.log(pun)
-                let paro = 0;
-                pun.paroObje.forEach(el => {
-                    paro += el.horas
-                });
-                //console.log(parseInt(pun.calcuObje) + parseInt(paro))
-                //Calcula y asigna el horario restante
-                let nu = 12 - (parseInt(pun.calcuObje) + parseInt(paro));
-                if (pun.calcuPunta < 0 || pun.calcuPunta > nu) {
-                    pun.calcuObje = 0;
-                    pun.calcuPunta = nu;
-                }
-                //console.log(pun)
-                if(pun.paqObjetivo){
-                    const resu = this.objetivos.find(obj => obj.id == pun.paqObjetivo);
-                    pun.valor = resu.pro_hora * parseFloat(pun.calcuObje, 10);
-                    pun.valorP = resu.pro_hora * (parseFloat(pun.calcuObje, 10) + parseFloat(pun.calcuPunta, 10));
-                }
-            }, */
             //Horarios generales
             inputHoraObjeGene(obje){
                 if (obje.calcuObje2 <= 0 || obje.calcuObje2 > 12) {
@@ -776,7 +752,7 @@
             inputHoraParos(par){
                 //Calcula el tiempo de los paros
                 let paro = 0;
-                this.hora_maquina('horas paro')
+                this.hora_maquina()
                 par.paroObje.forEach(el => {
                     paro += el.horas
                 });
@@ -843,18 +819,20 @@
                 this.form.paquet.splice(row,1);
             },
             //revisa las horas que lleva cada maquina en larga de objetivos
-            hora_maquina(de){
+            hora_maquina(){
                 //console.log(this.objetivos)
                 const obje = [];
                 //recorre los paquetes que se crean y los objetivos para asignar maquina y suma por paquete seleccionada
                 this.form.paquet.forEach(rep => {
-                    let ob = this.objetivos.find(ob => {return rep.paqObjetivo == ob.id})
-                    let suma = parseFloat(rep.calcuObje);
-                    rep.paroObje.forEach(sum => {
-                        suma += sum.horas;
-                    })
-                    obje.push({idMaq: ob.maq_pro_id, suma: suma})
-                    //console.log(suma)
+                    if (rep.paqObjetivo != "") {
+                        let ob = this.objetivos.find(ob => {return rep.paqObjetivo == ob.id})
+                        let suma = parseFloat(rep.calcuObje);
+                        rep.paroObje.forEach(sum => {
+                            suma += sum.horas;
+                        })
+                        obje.push({idMaq: ob.maq_pro_id, suma: suma})
+                        //console.log(suma)
+                    }
                 })
                 //realiza la suma general
                 this.maquina.forEach(resp => {
@@ -867,6 +845,7 @@
                     //console.log(finSum);
                     resp.suma = finSum;
                 })
+                this.maquina.sort((a, b) => a.suma - b.suma)
                 //console.log(this.maquina)
             },
             /************************************* Carga de objetivos **************************************/
@@ -1018,7 +997,7 @@
                             //console.log(pm.maq_pros.length)
                             pm.maq_pros.forEach(mp => {
                                 mar = mp.maquinas.marca == null ? 'N/A' :  mp.maquinas.marca.Nombre
-                                mq.push({value: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
+                                mq.push({id: mp.id, text: mp.id+' - '+mp.maquinas.Nombre + ' ' + mar});
                             })
                         }
                     })

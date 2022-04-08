@@ -16,6 +16,8 @@
                 </select>
             </template>
             <template v-slot:BtnNuevo>
+                <form ></form>
+                <button class="btn btn-danger" @click="logout">Cerrar sesión</button>
                 <jet-button class="BtnNuevo" data-bs-toggle="collapse" data-bs-target="#agPer" aria-expanded="false" aria-controls="agPer" @click="reset()">Ingresar Paro</jet-button>
             </template>
         </Accions>
@@ -97,10 +99,10 @@
                     <th class="columna tw-text-center">Inicio</th>
                     <th class="columna tw-text-center">Final</th>
                     <th class="columna tw-text-center">Tiempo cargado</th>
-                    <th class="columna tw-text-center">Plan de Acción</th>
+                    <th class="columna tw-text-center" v-if="(usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc'))">Plan de Acción</th>
                     <th></th>
                 </template>
-                <template v-slot:TableFooter >
+                <template v-slot:TableFooter v-if="(usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc'))">
                     <tr class="fila" v-for="ca in Pcarga" :key="ca.id">
                         <td class="tw-text-center">{{ca.orden}}</td>
                         <td class="tw-text-center">{{ca.maq_pro.maquinas.Nombre}}</td>
@@ -146,6 +148,65 @@
                                     <span  tooltip="Autorizar" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoDelete" @click="elimi(ca)" v-if="usuario.IdEmp == '9999'">
+                                    <span tooltip="Eliminar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+                <template v-slot:TableFooter v-else>
+                    <tr class="fila" v-for="ca in pcargaLO" :key="ca.id">
+                        <td class="tw-text-center">{{ca.orden}}</td>
+                        <td class="tw-text-center">{{ca.maq_pro.maquinas.Nombre}}</td>
+                        <td class="tw-text-center">{{ca.paros.clave}}</td>
+                        <td class="tw-text-center">{{ca.paros.descri}}</td>
+                        <td class="tw-text-center">{{ca.descri}}</td>
+                        <td class="tw-text-center">
+                            <!-- detener normal -->
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full tw-cursor-pointer" tooltip="Detener" flow="left" @click="detener(1, ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id != 13 & ca.paro_id != 14 & ca.paro_id != 16)">{{ca.estatus}}</div>
+                            <!-- detener con plan de accion -->
+                            <div class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-w-full tw-bg-amber-600 tw-rounded-full tw-cursor-pointer" tooltip="Detener" flow="left" @click="plan(ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id == 13 | ca.paro_id == 14 | ca.paro_id == 16)">{{ca.estatus}}</div>
+                        </td>
+                        <td class="tw-text-center">{{ca.iniFecha}}</td>
+                        <td class="tw-text-center">{{ca.finFecha == null ? '' : ca.finFecha}}</td>
+                        <td class="tw-text-center">{{tiempo(ca.iniFecha, ca.finFecha)}}</td>
+                        <td class="tw-text-center">
+                            <div class="columnaIconos">
+                                <div class="iconoDelete" @click="detener(1, ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id != 13 & ca.paro_id != 14 & ca.paro_id != 16)">
+                                    <span tooltip="Detener" flow="left">
+                                        <svg class="h-8 w-8 text-red-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoDelete" @click="plan(ca)" v-if="ca.estatus == 'Activo' & (ca.paro_id == 13 | ca.paro_id == 14 | ca.paro_id == 16)">
+                                    <span tooltip="Detener" flow="left">
+                                        <svg class="h-8 w-8 text-red-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoDetails" @click="detener(2, ca)" v-if="(usuario.dep_pers.length == 0 | (noCor == 'cor' | noCor == 'enc')) & ca.estatus == 'En revisión'">
+                                    <span  tooltip="Autorizar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoDelete" @click="elimi(ca)" v-if="usuario.IdEmp == '9999'">
+                                    <span tooltip="Eliminar" flow="left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
                                     </span>
                                 </div>
@@ -236,6 +297,7 @@ export default {
             procesos: [],
             materiales: [],
             Pcarga: [],
+            pcargaLO: [],
             proc_prin: '',
             showModal: false,
             editMode: false,
@@ -283,6 +345,8 @@ export default {
             //Consulta los paros cargados
             let promesa = await axios.post('Paros/ParCar', datos);
             this.Pcarga = promesa.data;
+            this.pcargaLO = this.Pcarga.filter(ele => {return ele.estatus == "Activo"})
+            //console.log(this.pcargaLO)
             $('#t_paros').DataTable().destroy();
             this.tabla()
 
@@ -294,14 +358,18 @@ export default {
                     "language": this.español,
                     "order": [[5, 'asc']],
                     "scrollX": true,
-                    "stateSave": true,
+                    //"stateSave": true,
                     "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    "scrollX": true,
                     "columnDefs": [
                         { "width": "15%", "targets": [3,4,9] },
                         { "width": "10%", "targets": [0,1,2,5,6,7] }
-                    ]
+                    ],
+                    scrollY:        '50vh',
+                    scrollCollapse: true,
+                    paging:         false,
                 })
             })
         },
@@ -456,7 +524,20 @@ export default {
             await this.$inertia.put('/Produccion/Paros/' + data.id, data, {
                 onSuccess: () => {this.ParosCarga(false), this.alertSucces(), this.resetPlan()}, onError: () => {this.tabla()}
             });
-        }
+        },
+        //elimina los paros
+        async elimi(dat){
+            //console.log(dat)
+            dat._method = 'DELETE';
+            this.$inertia.post('/Produccion/Paros/' + dat.id, dat, {
+                onSuccess: (eve) => { this.ParosCarga(false), this.alertSucces() },
+                onError: (err) => {  }
+            });
+
+        },
+        logout() {
+            this.$inertia.post(route('logout'));
+        },
     },
     computed: {
         noCor: function() {

@@ -160,22 +160,25 @@ class ObjeCordiController extends Controller
             'tip_maqui' => ['required']
         ])->validate();
 
-        obje_cordi::create([
-            'tiempo' => '60',
-            'eficiencia' => "100",
-            'tipo_maqui' => $request->tip_maqui,
-            'husos' => $request->husos,
-            'velocidad' => $request->velocidad,
-            'titulo' => $request->titulo,
-            'constante' => $request->constante,
-            'cabos' => $request->cabos,
-            'proceso_id' => $request->proceso_id,
-            'maq_pro_id' => $request->maq_pro_id,
-            'clave_id' => $request->clave_id,
-            'norma' => $request->norma,
-            'departamento_id' => $request->departamento_id,
-            'pro_hora' => $request->pro_hora
-        ]);
+        foreach ($request->maq_pro_id as $mq) {
+            obje_cordi::create([
+                'tiempo' => '60',
+                'eficiencia' => "100",
+                'tipo_maqui' => $request->tip_maqui,
+                'husos' => $request->husos,
+                'velocidad' => $request->velocidad,
+                'titulo' => $request->titulo,
+                'constante' => $request->constante,
+                'cabos' => $request->cabos,
+                'proceso_id' => $request->proceso_id,
+                'maq_pro_id' => $mq,
+                'clave_id' => $request->clave_id,
+                'norma' => $request->norma,
+                'departamento_id' => $request->departamento_id,
+                'pro_hora' => $request->pro_hora
+            ]);
+        }
+
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');

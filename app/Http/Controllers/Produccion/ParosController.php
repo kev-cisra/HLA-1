@@ -94,7 +94,7 @@ class ParosController extends Controller
                 $dep->select('id', 'Nombre');
             }
         ])
-        ->get(['id', 'fecha', 'iniFecha', 'orden', 'estatus', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'pla_acci', 'departamento_id']);
+        ->get(['id', 'fecha', 'iniFecha', 'orden', 'estatus', 'descri', 'finFecha', 'tiempo','paro_id', 'perfil_ini_id','perfil_fin_id', 'maq_pro_id', 'proceso_id', 'paros_carga_id', 'pla_acci', 'departamento_id']);
 
         return $paros;
     }
@@ -169,5 +169,18 @@ class ParosController extends Controller
 
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
+    }
+
+    public function destroy(Request $request)
+    {
+        if (isset($request->paros_carga_id)) {
+            //return 'si entro '.$request->paros_carga_id;
+            parosCarga::where('id', '=', $request->paros_carga_id)->delete();
+        }else {
+            parosCarga::find($request->input('id'))->delete();
+        }
+        return redirect()->back()
+                ->with('message', 'Post Updated Successfully.');
+
     }
 }

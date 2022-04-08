@@ -93,4 +93,8 @@ class Departamentos extends Model
     public function Puesto_Perfil() {
         return $this->belongsTo(User::class);
     }
+
+    public function SelectDepartamentos(){
+        return Departamentos::where('id', '>', 2)->get();
+    }
 }

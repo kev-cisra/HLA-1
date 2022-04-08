@@ -91,6 +91,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('Direccion')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/Direccion.php'));
+
+            Route::middleware('web','auth')
+                ->prefix('Calidad')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/Calidad.php'));
         });
     }
 

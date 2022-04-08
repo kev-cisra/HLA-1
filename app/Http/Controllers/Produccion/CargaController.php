@@ -135,7 +135,7 @@ class CargaController extends Controller
                 $p->select('id', 'clave', 'descri');
             }
         ])
-        ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','turno_id', 'departamento_id']);
+        ->get(['id','fecha','semana','valor','partida','notaPen','equipo_id','dep_perf_id','per_carga','maq_pro_id','proceso_id','norma','clave_id','VerInv','turno_id', 'departamento_id']);
         return $carga;
     }
 

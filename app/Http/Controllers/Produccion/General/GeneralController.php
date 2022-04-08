@@ -179,4 +179,33 @@ class GeneralController extends Controller
 
         return $par;
     }
+
+    //Consulta de abastos general
+    public function ConAbast(Request $request){
+        $aba = admi_abas::where('estatus', '=', 1)
+            ->orderBy('id', 'desc')
+            ->with([
+                'aba_entregas' => function($ae){
+                    $ae->select('id', 'folio', 'banco', 'esta_inicio', 'esta_final', 'total', 'perfi_abas', 'perfi_entrega', 'soli_aba_id', 'admi_abas_id');
+                },
+                'proc_final_aba' => function($pfa){
+                    $pfa->select('id', 'estatus', 'norma_id', 'clave_id', 'admi_abas_id');
+                },
+                'proc_final_aba.norma' => function($pfan){
+                    $pfan->select('id', 'departamento_id', 'material_id');
+                },
+                'proc_final_aba.norma.materiales' => function($pfnm){
+                    $pfnm->select('id', 'idmat', 'nommat');
+                },
+                'proc_final_aba.clave' => function($pfac){
+                    $pfac->select('id', 'CVE_ART', 'DESCR', 'UNI_MED');
+                },
+                'departamento' => function($dep){
+                    $dep->select('id', 'Nombre', 'departamento_id');
+                }
+            ])
+            ->get();
+
+        return $aba;
+    }
 }
