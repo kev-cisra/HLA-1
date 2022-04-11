@@ -11,6 +11,8 @@ use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\Supply\Requisiciones\TiemposRequisiciones;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -345,7 +347,7 @@ class RequisicionesController extends Controller{
                             $marca->select('id', 'Nombre');
                         },
                         'RequisicionArticulos' => function($Req) {
-                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                         },
                         ])
                         ->whereYear('Fecha', $anio)
@@ -371,7 +373,7 @@ class RequisicionesController extends Controller{
                             $marca->select('id', 'Nombre');
                         },
                         'RequisicionArticulos' => function($Req) {
-                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                         },
                         ])
                         ->whereMonth('Fecha', $request->Month)
@@ -400,7 +402,7 @@ class RequisicionesController extends Controller{
                                 $marca->select('id', 'Nombre');
                             },
                             'RequisicionArticulos' => function($Req) {
-                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                             },
                             ])
                             ->whereYear('Fecha', $anio)
@@ -426,7 +428,7 @@ class RequisicionesController extends Controller{
                                 $marca->select('id', 'Nombre');
                             },
                             'RequisicionArticulos' => function($Req) {
-                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                             },
                             ])
                             ->whereYear('Fecha', $anio)
@@ -442,10 +444,16 @@ class RequisicionesController extends Controller{
             //Consulta para obtener el id de Jefe de acuerdo al numero de empleado del trabajador
             $ObtenJefe = JefesArea::where('IdEmp', '=', $SessionIdEmp)->first('id','IdEmp');
 
+
             if(isset($ObtenJefe)){ //El usuario logueado es un Jefe registrado en la Tabla de Jefes
                 $IdJefe = $ObtenJefe->id; //Obtengo el id del Jefe
-                //Consulta para obtener los datos de los trabajadores pertenecientes al Jefe logueado
-                $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', $IdJefe)->get();
+
+                if($Session->id == 1360){
+                    $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', 25)->get();
+                }else{
+                    //Consulta para obtener los datos de los trabajadores pertenecientes al Jefe logueado
+                    $PerfilesUsuarios = PerfilesUsuarios::where('jefes_areas_id', '=', $IdJefe)->get();
+                }
             }else{
                 //En caso contrario es un trabajador Normal (Solo obtengo su registro)
                 $PerfilesUsuarios = PerfilesUsuarios::where('IdEmp', '=', $Session->IdEmp)->get();
@@ -683,7 +691,7 @@ class RequisicionesController extends Controller{
                         $marca->select('id', 'Nombre');
                     },
                     'RequisicionArticulos' => function($Req) {
-                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                     },
                     ])
                     ->where('IdEmp', '=', $Session->IdEmp)
@@ -709,7 +717,7 @@ class RequisicionesController extends Controller{
                             $marca->select('id', 'Nombre');
                         },
                         'RequisicionArticulos' => function($Req) {
-                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                         },
                         ])
                         ->where('IdEmp', '=', $Session->IdEmp)
@@ -736,7 +744,7 @@ class RequisicionesController extends Controller{
                             $marca->select('id', 'Nombre');
                         },
                         'RequisicionArticulos' => function($Req) {
-                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                         },
                         ])
                         ->where('IdEmp', '=', $Session->IdEmp)
@@ -766,7 +774,7 @@ class RequisicionesController extends Controller{
                                 $marca->select('id', 'Nombre');
                             },
                             'RequisicionArticulos' => function($Req) {
-                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                             },
                             ])
                             ->where('IdEmp', '=', $Session->IdEmp)
@@ -793,7 +801,7 @@ class RequisicionesController extends Controller{
                                 $marca->select('id', 'Nombre');
                             },
                             'RequisicionArticulos' => function($Req) {
-                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
                             },
                             ])
                             ->where('IdEmp', '=', $Session->IdEmp)
@@ -845,6 +853,13 @@ class RequisicionesController extends Controller{
         'Entregado' => $Entregado];
 
         return $Informacion;
+    }
+
+    public function show($id){
+        return "holis";
+        $pdf = PDF::loadView('Print/index');
+        // $pdf->download('Print/index.pdf');
+        $pdf->stream('Print/index',array('Attachment'=>false));
     }
 
     public function store(RequisicionesRequest $request){
@@ -1003,6 +1018,16 @@ class RequisicionesController extends Controller{
                 ]);
 
                 return redirect()->back();
+                break;
+
+            case 20:
+
+                $users = User::get();
+
+                view()->share('users', $users);
+
+                return PDF::download('Print/index.pdf');
+
                 break;
 
         }

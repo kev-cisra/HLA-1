@@ -12,6 +12,7 @@ use App\Http\Controllers\Compras\Proveedores\ProveedoresController;
 use App\Http\Controllers\Compras\Requisiciones\MaquinasController;
 use App\Http\Controllers\Compras\Requisiciones\RequisicionesController;
 use App\Http\Controllers\Menus\MenuComprasController;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,6 +27,7 @@ Route::resource('Requisiciones', RequisicionesController::class)
 Route::post('Requisiciones/RequisicionesMes', [RequisicionesController::class, 'RequisicionesMes'])
     ->middleware(['auth:sanctum', 'verified'])->name('RequisicionesMensual');
 
+    Route::get('/Requisiciones/PDF/');
 //RUTAS DE COTIZACIONES
 Route::resource('Cotizaciones', CotizacionesController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('Cotizaciones');

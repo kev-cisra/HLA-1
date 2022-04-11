@@ -165,7 +165,7 @@
                             <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                                 <td>{{ datos.id }}</td>
                                 <td>{{ datos.Fecha.substr(5) }}</td>
-                                <td>{{ datos.Folio }}</td>
+                                <td>R-{{ datos.Folio }}</td>
                                 <td>{{ datos.articulos_requisicion.NumReq }}</td>
                                 <td class="tw-text-center">{{ datos.articulos_requisicion.OrdenCompra }}</td>
                                 <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
@@ -265,6 +265,7 @@
                         <template v-slot:TableHeader>
                             <th class="columna">Id</th>
                             <th class="columna">FECHA</th>
+                            <th class="columna">FOLIO</th>
                             <th class="columna">NUM</th>
                             <th class="columna">O.C</th>
                             <th class="columna">DEPARTAMENTO</th>
@@ -282,6 +283,7 @@
                             <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                                 <td class="tw-text-center">{{ datos.id }}</td>
                                 <td>{{ datos.Fecha.substr(5) }}</td>
+                                <td>R-{{ datos.Folio }}</td>
                                 <td>{{ datos.NumReq }}</td>
                                 <td>{{ datos.OrdenCompra }}</td>
                                 <td>{{ datos.requisicion_departamento.Nombre }}</td>
@@ -1477,7 +1479,6 @@ export default {
             };
             var Total1 = currency(TotalRequisicion);
             var Total = Total1.substr(2,);
-            console.log(Total);
             ventana.document.write('<p>Total:<strong style="font-weight: bold;">'+Total+'</strong></<p>');
             ventana.document.write('<p style="font-size: 8px; font-weight: bold; text-aling:center;">'+ moment().format('DD/MM/YYYY HH:mm')+'</<p>');
             ventana.document.write('</div>');

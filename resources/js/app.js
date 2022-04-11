@@ -6,6 +6,23 @@ import { App as InertiaApp, plugin as InertiaPlugin } from '@inertiajs/inertia-v
 import { InertiaProgress } from '@inertiajs/progress';
 import 'bootstrap';
 
+import Vue from 'vue';
+
+import VueHtmlToPaper from 'vue-html-to-paper';
+
+const options = {
+    name: '_blank',
+    specs: [
+        'fullscreen=yes',
+        'titlebar=yes',
+        'scrollbars=yes'
+    ],
+    styles: [
+        'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+        'https://unpkg.com/kidlat-css/css/kidlat.css'
+    ]
+}
+
 const el = document.getElementById('app');
 
 createApp({
@@ -176,162 +193,161 @@ createApp({
         },
 
         methods: {
-        route,
-        hasAnyPermission: function (permissions) {
+            route,
+            hasAnyPermission: function (permissions) {
 
-            var allPermissions = this.$page.props.auth.can;
-            var hasPermission = false;
-            //console.log(allPermissions)
-            permissions.forEach(function(item){
-                if(allPermissions[item]) hasPermission = true;
-            });
+                var allPermissions = this.$page.props.auth.can;
+                var hasPermission = false;
+                //console.log(allPermissions)
+                permissions.forEach(function(item){
+                    if(allPermissions[item]) hasPermission = true;
+                });
 
-            return hasPermission;
-        },
+                return hasPermission;
+            },
 
-        openModal() {
-            this.chageClose();
-            this.reset();
-            this.editMode = false;
-        },
+            openModal() {
+                this.chageClose();
+                this.reset();
+                this.editMode = false;
+            },
 
-        chageClose() {
-            this.showModal = !this.showModal;
-        },
+            chageClose() {
+                this.showModal = !this.showModal;
+            },
 
-        alertSucces() {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 1000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-            });
-
-            Toast.fire({
-                icon: "success",
-                title: "Operación Exitosa!",
-                // background: '#99F6E4',
-            });
-        },
-
-        alertSuccess(message) {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-            });
-
-            Toast.fire({
-                icon: "success",
-                title: message,
-                // background: '#99F6E4',
-            });
-        },
-
-        alertInfo(message){
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-center",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
+            alertSucces() {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
                     toast.addEventListener("mouseenter", Swal.stopTimer);
                     toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-            });
+                    },
+                });
 
-            Toast.fire({
-                icon: "info",
-                title: message,
-            });
-        },
+                Toast.fire({
+                    icon: "success",
+                    title: "Operación Exitosa!",
+                    // background: '#99F6E4',
+                });
+            },
 
-        alertDelete() {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 1000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-            });
+            alertSuccess(message) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
 
-            Toast.fire({
-                icon: "success",
-                title: "Registro Eliminado Correctamente",
-                // background: '#99F6E4',
-            });
-        },
+                Toast.fire({
+                    icon: "success",
+                    title: message,
+                    // background: '#99F6E4',
+                });
+            },
 
-        alertWarning() {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "center",
-                showConfirmButton: false,
-                timer: 1500,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-            });
+            alertInfo(message){
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-center",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
 
-            Toast.fire({
-                icon: "warning",
-                title: "Formato Incorrecto",
-                // background: '#FDBA74',
-            });
-        },
+                Toast.fire({
+                    icon: "info",
+                    title: message,
+                });
+            },
 
-        alertError() {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "center",
-                showConfirmButton: false,
-                timer: 1500,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-            });
+            alertDelete() {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
 
-            Toast.fire({
-                icon: "warning",
-                title: "Ocurrio un problema",
-                // background: '#FDBA74',
-            });
-        },
+                Toast.fire({
+                    icon: "success",
+                    title: "Registro Eliminado Correctamente",
+                    // background: '#99F6E4',
+                });
+            },
 
-        clean(obj) {
-            for (var propName in obj) {
-                if (obj[propName] === null || obj[propName] === undefined) {
-                delete obj[propName];
+            alertWarning() {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "center",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+
+                Toast.fire({
+                    icon: "warning",
+                    title: "Formato Incorrecto",
+                    // background: '#FDBA74',
+                });
+            },
+
+            alertError() {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "center",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+
+                Toast.fire({
+                    icon: "warning",
+                    title: "Ocurrio un problema",
+                    // background: '#FDBA74',
+                });
+            },
+
+            clean(obj) {
+                for (var propName in obj) {
+                    if (obj[propName] === null || obj[propName] === undefined) {
+                    delete obj[propName];
+                    }
                 }
-            }
-        },
+            },
 
-        upper(e) {
-            e.target.value = e.target.value.toUpperCase()
-        },
-
+            upper(e) {
+                e.target.value = e.target.value.toUpperCase()
+            },
     } })
-    .use(InertiaPlugin)
+    .use(InertiaPlugin, VueHtmlToPaper, options)
     .mount(el);
 
 InertiaProgress.init({ color: '#22D3EE' });
