@@ -1317,7 +1317,7 @@ export default {
         },
 
         imprimir(data){
-                        //Asgino los valores de la requisicion a un nuevo arreglo
+            //Asgino los valores de la requisicion a un nuevo arreglo
             this.requisicion = data;
             //Envio el id de la requisicion para generar una nueva consulta
             this.params.Req = data.id;
@@ -1337,7 +1337,6 @@ export default {
                 onSuccess: () => {
                     console.log(this.PreciosRequisicion);
             }, preserveState: true })
-
 
             var canvas = window.open('', 'PRINT');
             canvas.document.write('<html><head><title>' + document.title + '</title>');
@@ -1369,8 +1368,9 @@ export default {
                         canvas.document.write('<div style="padding: 3px; width:20%;"><span> <strong>TIPO: &nbsp;</strong>'+data.TipCompra+'</span> </div>');
                     canvas.document.write('</div>');
 
-                    canvas.document.write('<div style="display:flex; flex-direction: row; justify-content: left; gap:5px;">');
-                        canvas.document.write('<div style="padding: 3px; width:20%;"><span> <strong>ESTATUS: &nbsp;</strong>APROVADA</span> </div>');
+                    canvas.document.write('<div style="display:flex; flex-direction: row; justify-content: center; gap:5px;">');
+                        canvas.document.write('<div style="padding: 3px; width:20%;"><span> <strong>ESTATUS: &nbsp;</strong>PROBADA</span> </div>');
+                        canvas.document.write('<div style="padding: 3px; width:20%;"><span> <strong>ORDEN COMPRA: &nbsp;</strong>'+data.OrdenCompra+'</span> </div>');
                     canvas.document.write('</div>');
                 canvas.document.write('</div>');
 
@@ -1413,7 +1413,7 @@ export default {
                         };
                         var Total1 = currency(TotalRequisicion);
                         var Total = Total1.substr(2,);
-                        console.log(Total);
+
                     canvas.document.write('</div>');
                 canvas.document.write('</div>');
 
