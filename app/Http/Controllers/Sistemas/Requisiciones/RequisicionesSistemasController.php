@@ -14,6 +14,14 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 class RequisicionesSistemasController extends Controller{
 
+    protected $Dpto, $Per;
+
+    public function __construct(Departamentos $Dpto, PerfilesUsuarios $Per){
+        $this->Dpto = $Dpto;
+        $this->Per = $Per;
+    }
+
+
     public function index(){
         $Session = auth()->user();
         $User = User::find($Session->id); //Accedo a los datos del usuario logueado
@@ -45,10 +53,12 @@ class RequisicionesSistemasController extends Controller{
             ])->where('IdUser',$User->id)->get();
         }
 
-        $Departamentos = Departamentos::where('id', '=', $Session->Departamento)->get(['id', 'Nombre']);
+        $Departamentos = $this->Dpto->SelectDepartamentos();
+        $Perfiles = $this->Per->SelectPerfiles();
+
         $Hardware = HardwareSistemas::get(['id', 'Nombre']);
 
-        return Inertia::render('Sistemas/Requisiciones/RequisicionesSistemas', compact('Session', 'Departamentos', 'Hardware', 'ReqSistemas'));
+        return Inertia::render('Sistemas/Requisiciones/RequisicionesSistemas', compact('Session', 'Departamentos', 'Perfiles', 'Hardware', 'ReqSistemas'));
     }
 
     public function store(Request $request){
@@ -123,7 +133,7 @@ class RequisicionesSistemasController extends Controller{
         switch ($request->Metodo) {
             case 1: //Actualizacion de estatuz a Confirmado
                 RequisicionesSistemas::find($request->id)->update([
-                    'Estatus' => 1,
+                    'Estatus' => 2, //Estatus Solicitado
                 ]);
                 return redirect()->back();
                 break;

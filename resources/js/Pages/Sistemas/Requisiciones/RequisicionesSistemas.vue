@@ -32,7 +32,7 @@
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="data in ReqSistemas" :key="data.id">
                         <td>{{data.Fecha}}</td>
-                        <td>RSIS-0{{data.Folio}}</td>
+                        <td>S-{{data.Folio}}</td>
                         <td>{{data.perfil.Nombre}} {{data.perfil.ApPat}} {{data.perfil.ApMat}} </td>
                         <td>{{data.departamento.Nombre}}</td>
                         <td>
@@ -44,45 +44,45 @@
                         <td>
                             <div class="FlexCenter">
                                 <div v-if="data.Estatus == 0">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-rose-500 tw-rounded-full">RECHAZADA</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 1">
                                     <span tooltip="Confirmar Solicitud" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">SOLICITADO</span>
                                     </span>
                                 </div>
-                                <div v-if="data.Estatus == 1">
+                                <div v-if="data.Estatus == 2">
                                     <span tooltip="Solicitado" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">COTIZAR</span>
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">SIN COTIZAR</span>
                                     </span>
                                 </div>
-                                <div v-if="data.Estatus == 2">
+                                <div v-if="data.Estatus == 3">
                                     <span tooltip="Cotizado" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-500 tw-rounded-full">COTIZADO</span>
                                     </span>
                                 </div>
-                                <div v-if="data.Estatus == 3">
+                                <div v-if="data.Estatus == 4">
                                     <span tooltip="En Autorización" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">AUTORIZACIÓN</span>
                                     </span>
                                 </div>
-                                <div v-if="data.Estatus == 4">
+                                <div v-if="data.Estatus == 5">
                                     <span tooltip="Autorizado" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-500 tw-rounded-full">APROBADO</span>
                                     </span>
                                 </div>
-                                <div v-if="data.Estatus == 5">
+                                <div v-if="data.Estatus == 6">
                                     <span tooltip="Material Adquirido" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blue-500 tw-rounded-full">STOCK</span>
-                                    </span>
-                                </div>
-                                <div v-if="data.Estatus == 10">
-                                    <span tooltip="Cotizacion Rechazada" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-rose-500 tw-rounded-full">RECHAZADA</span>
                                     </span>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="FlexCenter">
-                                <div class="iconoEdit" @click="Confirma(data)" v-if="data.Estatus == 0">
+                                <div class="iconoEdit" @click="Confirma(data)" v-if="data.Estatus == 1">
                                     <span tooltip="Enviar Solicitud a Compra" flow="left">
                                         <i class="fa-solid fa-check"></i>
                                     </span>
@@ -340,6 +340,7 @@ export default {
         Session: Object,
         errors: Object,
         Departamentos: Object,
+        Perfiles: Object,
         ReqSistemas: Object,
         Hardware: Object,
     },
@@ -414,8 +415,7 @@ export default {
         },
 
         save(data){ //Funcion de guardado de requisicion
-        console.log(data);
-            data.Estatus = 0;
+            data.Estatus = 1;
             this.$inertia.post("/Sistemas/RequisicionSistemas", data, {
                 onSuccess: () => {
                     if(this.$attrs.jetstream.flash.type == 'Warning'){
