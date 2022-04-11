@@ -25,7 +25,7 @@ class AutorizaRequisicionesSistemasController extends Controller{
             'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
                 $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
             }
-        ])->where('Estatus', '>=', 3)->get();
+        ])->where('Estatus', '!=', 1)->where('Estatus', '!=', 2)->where('Estatus', '!=', 3)->get();
 
         if($request->Req){
             $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
@@ -42,7 +42,7 @@ class AutorizaRequisicionesSistemasController extends Controller{
         switch ($request->Metodo) {
             case 1: //Caso de Autorizacion de cotizacion
                 //Actualiza el estauts de la requisicion
-                RequisicionesSistemas::where('id', $request->requisicion_sistemas_id)->update(['Estatus' => 4]);
+                RequisicionesSistemas::where('id', $request->requisicion_sistemas_id)->update(['Estatus' => 5]);
                 //Rechaza todas las cotizaciones
                 CotizacionesSistemas::where('requisicion_sistemas_id', $request->requisicion_sistemas_id)->update(['Aprobado' => 0]);
                 //Autorizar la cotizacion seleccionada
@@ -52,7 +52,7 @@ class AutorizaRequisicionesSistemasController extends Controller{
 
             case 2:
                     //Actualiza el estauts de la requisicion rechazada
-                    RequisicionesSistemas::where('id', $request->requisicion_sistemas_id)->update(['Estatus' => 10]);
+                    RequisicionesSistemas::where('id', $request->requisicion_sistemas_id)->update(['Estatus' => 0]);
                     //Rechaza la cotizacion seleccionada
                     CotizacionesSistemas::where('id', $request->id)->update(['Aprobado' => 0]);
                 return redirect()->back();

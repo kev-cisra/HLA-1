@@ -42,31 +42,31 @@
                         <td>{{data.Comentarios}}</td>
                         <td>
                             <div class="FlexCenter">
-                                <div v-if="data.Estatus == 3">
+                                <div v-if="data.Estatus == 0">
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-rose-500 tw-rounded-full">RECHAZADA</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 4">
                                     <span tooltip="Cotizado" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">AUTORIZA</span>
                                     </span>
                                 </div>
-                                <div v-if="data.Estatus == 4">
+                                <div v-if="data.Estatus == 5">
                                     <span tooltip="Autorizado" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-500 tw-rounded-full">APROBADA</span>
                                     </span>
                                 </div>
-                                <div v-if="data.Estatus == 5">
+                                <div v-if="data.Estatus == 6">
                                     <span tooltip="Material Adquirido" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blue-500 tw-rounded-full">STOCK</span>
-                                    </span>
-                                </div>
-                                <div v-if="data.Estatus == 10">
-                                    <span tooltip="Cotizacion Rechazada" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-rose-500 tw-rounded-full">RECHAZADA</span>
                                     </span>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="tw-flex tw-justify-center tw-items-center" >
-                                <div class="iconoCyan" @click="VisualizaCotizacion(data)" v-if="data.Estatus > 1">
+                                <div class="iconoCyan" @click="VisualizaCotizacion(data)" v-if="data.Estatus > 2 || data.Estatus == 0">
                                     <span tooltip="Realizar Cotizacion" flow="left">
                                         <i class="fa-solid fa-credit-card"></i>
                                     </span>
@@ -81,7 +81,7 @@
         <!-- ***************************************** MODALES ****************************************************** -->
         <modal :show="showCotizacion" @close="chageCotizacion" maxWidth="3xl">
             <div class="ModalHeader">
-                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Cotización SIS-0{{RequisicionSistemas.Folio}}</h3>
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Cotización SIS-{{RequisicionSistemas.Folio}}</h3>
             </div>
 
             <div class="ModalForm">
@@ -115,6 +115,7 @@
                                 <th class="columna">TIPO CAMBIO</th>
                                 <th class="columna">COMENTARIOS</th>
                                 <th class="columna">AUTORIZADA</th>
+                                <th class="columna">ARCHIVO</th>
                                 <th class="columna">ACCIONES</th>
                             </template>
 
@@ -139,6 +140,15 @@
                                                     <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
                                                 </svg>
                                                 </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="FlexCenter">
+                                            <div class="iconoEdit">
+                                                <a target="_blank" :href="path + data.Archivo" style="color:black;">
+                                                    <i class="far fa-file-image"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </td>
@@ -298,9 +308,11 @@ export default {
         },
 
         VisualizaCotizacion(data){
+                console.log(data);
                 this.$inertia.get('/Supply/AutorizaReqSistemas', { Req: data.id }, { //envio de variables por url
                 onSuccess: () => {
                     this.chageCotizacion();
+                    console.log(this.RequisicionSistemas.cotizacion);
                     this.Estatus = this.RequisicionSistemas.Estatus;
             }, preserveState: true })
         },

@@ -1369,7 +1369,7 @@ export default {
                     canvas.document.write('</div>');
 
                     canvas.document.write('<div style="display:flex; flex-direction: row; justify-content: center; gap:5px;">');
-                        canvas.document.write('<div style="padding: 3px; width:20%;"><span> <strong>ESTATUS: &nbsp;</strong>PROBADA</span> </div>');
+                        canvas.document.write('<div style="padding: 3px; width:20%;"><span> <strong>ESTATUS: &nbsp;</strong>APROBADA</span> </div>');
                         canvas.document.write('<div style="padding: 3px; width:20%;"><span> <strong>ORDEN COMPRA: &nbsp;</strong>'+data.OrdenCompra+'</span> </div>');
                     canvas.document.write('</div>');
                 canvas.document.write('</div>');
