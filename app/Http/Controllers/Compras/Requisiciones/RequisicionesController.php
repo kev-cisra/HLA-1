@@ -855,13 +855,6 @@ class RequisicionesController extends Controller{
         return $Informacion;
     }
 
-    public function show($id){
-        return "holis";
-        $pdf = PDF::loadView('Print/index');
-        // $pdf->download('Print/index.pdf');
-        $pdf->stream('Print/index',array('Attachment'=>false));
-    }
-
     public function store(RequisicionesRequest $request){
 
         $hoy = Carbon::now();

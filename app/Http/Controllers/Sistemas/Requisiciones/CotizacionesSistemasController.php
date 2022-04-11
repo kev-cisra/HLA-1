@@ -3,21 +3,35 @@
 namespace App\Http\Controllers\Sistemas\Requisiciones;
 
 use App\Http\Controllers\Controller;
+use App\Models\RecursosHumanos\Catalogos\Departamentos;
+use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
+use App\Models\Sistemas\Requisiciones\ArticulosRequisicionesSistemas;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Sistemas\Requisiciones\CotizacionesSistemas;
 use App\Models\Sistemas\Requisiciones\PreciosCotizacionesSistemas;
 use App\Models\Sistemas\Requisiciones\RequisicionesSistemas;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Carbon\Carbon;
 use stdClass;
 
 use function PHPUnit\Framework\isNull;
 
 class CotizacionesSistemasController extends Controller{
 
+    public function __construct(Departamentos $Dpto, PerfilesUsuarios $Per){
+        $this->Dpto = $Dpto;
+        $this->Per = $Per;
+    }
+
     public function index(Request $request){
         $Session = auth()->user();
 
+        //Catalogos
+        $Departamentos = $this->Dpto->SelectDepartamentos();
+        $Perfiles = $this->Per->SelectPerfiles();
+
+        //Consulta Principal
         $RequisicionesSistemas = RequisicionesSistemas::with([
             'Perfil' => function($Perfil) { //Relacion 1 a 1 De puestos
                 $Perfil->select('id', 'Nombre', 'ApPat', 'ApMat');
@@ -36,90 +50,166 @@ class CotizacionesSistemasController extends Controller{
             $RequisicionSistemas = new stdClass();
         }
 
-        return Inertia::render('Sistemas/Requisiciones/CotizacionesSistemas', compact('Session', 'RequisicionesSistemas', 'RequisicionSistemas'));
+        return Inertia::render('Sistemas/Requisiciones/CotizacionesSistemas', compact('Session','Departamentos','Perfiles', 'RequisicionesSistemas', 'RequisicionSistemas'));
     }
 
     public function store(Request $request){
 
-        Validator::make($request->all(), [
-            'IdUser' => ['required'],
-            'Moneda' => ['required'],
-            'TipoPago' => ['required'],
-            // 'archivo' => ['mimes:jpg,png,jpeg,svg,pdf'],
-        ])->validate();
+        switch ($request->metodo) {
+            case 1: //Caso para realizar Requisicion
+                // return $request;
+                Validator::make($request->all(), [
+                    'IdUser' => ['required'],
+                    'Fecha' => ['required','date'],
+                    'Estatus' => ['required'],
+                    'Departamento_id' => ['required'],
+                    'Partida.Cantidad.*' => ['required'],
+                    'Partida.Unidad.*' => ['required'],
+                    'Partida.Dispositivo.*' => ['required'],
+                ])->validate();
 
-        $CreaRequi = 0;
-        if(isset($request->archivo)){ //Valido envio de Archivo
-
-        $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
-
-        //Guardado de Imagen en la carpeta Public/Storage.. (Uso del disco Public pora la restriccion de los archivos)
-        $url = $request->archivo->storePubliclyAs('Archivos/Sistemas/Requisiciones/Cotizaciones',  $file, 'public');
-
-        }else{
-            $url = 'Archivos/FileNotFound404.jpg';
-        }
-
-        foreach ($request->DatosCotizacion as $value) { //Verifico que se envien datos en la partida
-            if( $value['Marca'] != '' && $value['PrecioUnitario'] != ''){
-                $CreaRequi = 1;
-            }else{
                 $CreaRequi = 0;
-            }
+                $Session = auth()->user();
+                $Perfil_id = PerfilesUsuarios::where('user_id','=',$request->IdUser)->first('id');
+                //Genracion de folio automatico
+                $Numfolio = RequisicionesSistemas::all(['Folio']);
+
+
+                $hoy = Carbon::now();
+                $anio = $hoy->format('y');
+
+                $Nfolio = $Numfolio->last(); //Obtengo el ultimo folio con el metodo last
+                if($Numfolio->count()){ //Verifico si hay folios
+                    $AnioBd = substr($Nfolio->Folio, 0, 2); //Obtengo el año del folio
+
+                    $serial = $Nfolio->Folio; //asigno el folio a la variable serial
+                    $serial = substr($serial, 2); //Obtengo el folio sin el año
+
+                    $AnioBd == $anio ?  $serial += 1 :  $serial = 1;
+                }else{//Genero el Primer folio
+                    $serial = 1;
+                }
+
+
+                foreach ($request->Partida as $value) { //Verifico que se envien datos en la partida
+                    if( $value['Cantidad'] != '' && $value['Unidad'] != '' && $value['Dispositivo'] != ''){
+                        $CreaRequi = 1;
+                    }else{
+                        $CreaRequi = 0;
+                    }
+                }
+
+                if($CreaRequi == 1){ //Si hay datos en la partida se guardan
+                    $Requisicion = RequisicionesSistemas::create([
+                        'IdUser' => $request->IdUser,
+                        'Fecha' => $request->Fecha,
+                        'Folio' => $anio.$serial,
+                        'Estatus' => 2,
+                        'Perfil_id' => $Perfil_id->id,
+                        'Departamento_id' => $request->Departamento_id,
+                        'Comentarios' => $request->Comentarios,
+                    ]);
+                    $requisicion_id = $Requisicion->id;
+
+                    foreach ($request->Partida as $value) {
+
+                        ArticulosRequisicionesSistemas::create([
+                            'IdUser' => $request->IdUser,
+                            'Cantidad' => $value['Cantidad'],
+                            'Unidad' => $value['Unidad'],
+                            'Dispositivo' => $value['Dispositivo'],
+                            'requisicion_sistemas_id' => $requisicion_id,
+                        ]);
+                    }
+
+                }else{ //Caso contrario de manda un mensaje de Session
+                    session()->flash('flash.type', 'Warning');
+                    session()->flash('flash.message', 'Por favor Verifique la información capturada');
+                }
+                return redirect()->back();
+                break;
+
+            case 2: //Caso para Realizar Cotizacion de requisicion
+                Validator::make($request->all(), [
+                    'IdUser' => ['required'],
+                    'Moneda' => ['required'],
+                    'TipoPago' => ['required'],
+                    // 'archivo' => ['mimes:jpg,png,jpeg,svg,pdf'],
+                ])->validate();
+
+                $CreaRequi = 0;
+                if(isset($request->archivo)){ //Valido envio de Archivo
+
+                $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
+
+                //Guardado de Imagen en la carpeta Public/Storage.. (Uso del disco Public pora la restriccion de los archivos)
+                $url = $request->archivo->storePubliclyAs('Archivos/Sistemas/Requisiciones/Cotizaciones',  $file, 'public');
+
+                }else{
+                    $url = 'Archivos/FileNotFound404.jpg';
+                }
+
+                foreach ($request->DatosCotizacion as $value) { //Verifico que se envien datos en la partida
+                    if( $value['Marca'] != '' && $value['PrecioUnitario'] != ''){
+                        $CreaRequi = 1;
+                    }else{
+                        $CreaRequi = 0;
+                    }
+                }
+
+                if($CreaRequi == 1){
+
+                    $Cotizacion = CotizacionesSistemas::create([
+                        'IdUser' => $request->IdUser,
+                        'TipoPago' => $request->TipoPago,
+                        'Moneda' => $request->Moneda,
+                        'TipoCambio' => $request->TipoCambio,
+                        'Aprobado' => 0,
+                        'Comentario' => $request->Comentario,
+                        'Archivo' => $url,
+                        'requisicion_sistemas_id' => $request->requisicion_sistemas_id,
+                    ]);
+
+                    $cotizacion_sistemas_id = $Cotizacion->id;
+
+                    foreach ($request->DatosCotizacion as $value) {
+                        $PrecioCotizacion = PreciosCotizacionesSistemas::create([
+                            'IdUser' => $request->IdUser,
+                            'Marca' => $value['Marca'],
+                            'Precio' => $value['PrecioUnitario'],
+                            'Total' => ($value['PrecioUnitario'] * $request->TipoCambio) * $value['Cantidad'],
+                            'cotizacion_sistemas_id' => $cotizacion_sistemas_id,
+                            'art_req_sistemas_id' => $value['id'],
+                        ]);
+                    }
+
+                    RequisicionesSistemas::where('id', $request->requisicion_sistemas_id)->update(['Estatus' => 3]);
+
+
+                }else{
+                    session()->flash('flash.type', 'Warning');
+                    session()->flash('flash.message', 'Por favor Verifique la información capturada');
+                }
+
+                return redirect()->back();
+                break;
         }
-
-        if($CreaRequi == 1){
-
-            $Cotizacion = CotizacionesSistemas::create([
-                'IdUser' => $request->IdUser,
-                'TipoPago' => $request->TipoPago,
-                'Moneda' => $request->Moneda,
-                'TipoCambio' => $request->TipoCambio,
-                'Aprobado' => 0,
-                'Comentario' => $request->Comentario,
-                'Archivo' => $url,
-                'requisicion_sistemas_id' => $request->requisicion_sistemas_id,
-            ]);
-
-            $cotizacion_sistemas_id = $Cotizacion->id;
-
-            foreach ($request->DatosCotizacion as $value) {
-                $PrecioCotizacion = PreciosCotizacionesSistemas::create([
-                    'IdUser' => $request->IdUser,
-                    'Marca' => $value['Marca'],
-                    'Precio' => $value['PrecioUnitario'],
-                    'Total' => ($value['PrecioUnitario'] * $request->TipoCambio) * $value['Cantidad'],
-                    'cotizacion_sistemas_id' => $cotizacion_sistemas_id,
-                    'art_req_sistemas_id' => $value['id'],
-                ]);
-            }
-
-            RequisicionesSistemas::where('id', $request->requisicion_sistemas_id)->update(['Estatus' => 2]);
-
-
-        }else{
-            session()->flash('flash.type', 'Warning');
-            session()->flash('flash.message', 'Por favor Verifique la información capturada');
-        }
-
-        return redirect()->back();
-
     }
 
     public function update(Request $request, $id){
 
         switch ($request->Metodo) {
-            case 1:
-                RequisicionesSistemas::where('id', $request->id)->update(['Estatus' => 3]);
+            case 1: //Confirma Cotizacion
+                RequisicionesSistemas::where('id', $request->id)->update(['Estatus' => 4]);
                 return redirect()->back();
                 break;
 
-            case 2:
-                RequisicionesSistemas::where('id', $request->id)->update(['Estatus' => 5]);
+            case 2: //Confirma Producto en existencia
+                RequisicionesSistemas::where('id', $request->id)->update(['Estatus' => 6]);
                 return redirect()->back();
                 break;
 
-            case 3: //Atualizacion de la cotizacion
+            case 3: //Acutalizacion de la cotizacion
                 if(isset($request->archivo)){ //Valido envio de Archivo
                     $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
 

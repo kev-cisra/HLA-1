@@ -12,6 +12,7 @@
             <div class="tw-flex tw-gap-4 tw-mx-2">
             </div>
             <div>
+                <jet-button @click="openModal" class="BtnNuevo">NUEVA REQUISICION</jet-button>
             </div>
         </section>
         <!-- ********************************* TABLAS ********************************************* -->
@@ -43,60 +44,55 @@
                         <td>
                             <div class="FlexCenter">
                                 <div v-if="data.Estatus == 0">
-                                    <span tooltip="Confirmar Solicitud" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">SOLICITADO</span>
+                                    <span tooltip="Cotizacion Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-rose-500 tw-rounded-full">RECHAZADA</span>
                                     </span>
                                 </div>
-                                <div v-if="data.Estatus == 1">
+                                <div v-if="data.Estatus == 2">
                                     <span tooltip="Solicitado" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">COTIZAR</span>
                                     </span>
                                 </div>
-                                <div v-if="data.Estatus == 2">
+                                <div v-if="data.Estatus == 3">
                                     <span tooltip="Cotizado" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-500 tw-rounded-full">COTIZADO</span>
                                     </span>
                                 </div>
-                                <div v-if="data.Estatus == 3">
+                                <div v-if="data.Estatus == 4">
                                     <span tooltip="En Autorización" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">AUTORIZACIÓN</span>
                                     </span>
                                 </div>
-                                <div v-if="data.Estatus == 4">
+                                <div v-if="data.Estatus == 5">
                                     <span tooltip="Autorizado" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-500 tw-rounded-full">APROBADO</span>
                                     </span>
                                 </div>
-                                <div v-if="data.Estatus == 5">
+                                <div v-if="data.Estatus == 6">
                                     <span tooltip="Material Adquirido" flow="left">
                                         <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blue-500 tw-rounded-full">STOCK</span>
-                                    </span>
-                                </div>
-                                <div v-if="data.Estatus == 10">
-                                    <span tooltip="Cotizacion Rechazada" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-rose-500 tw-rounded-full">RECHAZADA</span>
                                     </span>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="tw-flex tw-justify-center tw-items-center" >
-                                <div class="iconoPurple" @click="CotizarReq(data)" v-if="data.Estatus == 1">
+                                <div class="iconoPurple" @click="CotizarReq(data)" v-if="data.Estatus == 2">
                                     <span tooltip="Realizar Cotización" flow="left">
                                         <i class="fas fa-file-invoice-dollar"></i>
                                     </span>
                                 </div>
-                                <div class="iconoGreen" @click="ConfirmaMaterial(data)" v-if="data.Estatus == 1 || data.Estatus == 4">
+                                <div class="iconoGreen" @click="ConfirmaMaterial(data)" v-if="data.Estatus == 2 || data.Estatus == 5">
                                     <span tooltip="Confirma Material" flow="left">
                                         <i class="fa-solid fa-box-open"></i>
                                     </span>
                                 </div>
-                                <div class="iconoTeal" @click="ConfirmaCotizacion(data)" v-else-if="data.Estatus == 2 || data.Estatus == 10">
+                                <div class="iconoTeal" @click="ConfirmaCotizacion(data)" v-else-if="data.Estatus == 3 || data.Estatus == 0">
                                     <span tooltip="Confirma Cotización" flow="left">
                                         <i class="fa-solid fa-circle-check"></i>
                                     </span>
                                 </div>
-                                <div class="iconoCyan" @click="VisualizaCotizacion(data)" v-if="data.Estatus > 1">
+                                <div class="iconoCyan" @click="VisualizaCotizacion(data)" v-if="data.Estatus > 2">
                                     <span tooltip="Visualiza Cotización" flow="left">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -112,6 +108,75 @@
         </section>
 
         <!-- ***************************************** MODALES ****************************************************** -->
+        <!-- --------------------- Modal registrar Solicitud -------------------------- -->
+        <modal :show="showModal" @close="chageClose" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>NUEVA REQUISICIÓN</h3>
+            </div>
+
+            <div class="ModalForm">
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/3 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>FECHA</jet-label>
+                        <jet-input type="date" :min="Today" v-model="Sol.Fecha"></jet-input>
+                        <small v-if="errors.Fecha" class="validation-alert">{{errors.Fecha}}</small>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-2/3 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>DEPARTAMENTO</jet-label>
+                        <Select2 v-model="Sol.Departamento_id" class="InputSelect" :settings="{width: '100%',allowClear: true}" element="background: '#e5e7eb'" :options="BuscaDepartamento" />
+                        <small v-if="errors.Departamento_id" class="validation-alert" >{{ errors.Proveedor }}</small>
+                    </div>
+                </div>
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>SOLICITANTE</jet-label>
+                        <Select2 v-model="Sol.Perfil_id" class="InputSelect" :settings="{width: '100%',allowClear: true}" element="background: '#e5e7eb'" :options="BuscaPerfil" />
+                        <small v-if="errors.Perfil_id" class="validation-alert" >{{ errors.Perfil_id }}</small>
+                    </div>
+                </div>
+                <div class="FormSection">
+                    <div class="tw-px-3">
+                        <input type="button" @click="addRow()" value="Añadir Partida" class="BtnCancel">
+                    </div>
+                </div>
+                <div class="FormSection" v-for="(Sol) in Sol.Partida" :key="Sol.id">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-2/12 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>CANTIDAD</jet-label>
+                        <jet-input type="number" min="1" v-model="Sol.Cantidad"></jet-input>
+                        <small v-if="errors.Cantidad" class="validation-alert">{{errors.Cantidad}}</small>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-3/12 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>UNIDAD</jet-label>
+                        <select id="Unidad" v-model="Sol.Unidad" class="InputSelect">
+                            <option value="PZ">PIEZA</option>
+                            <option value="SERVICIO">SERVICIO</option>
+                            <option value="MT">METRO</option>
+                            <option value="CAJA">CAJA</option>
+                        </select>
+                        <small v-if="errors.Unidad" class="validation-alert">{{errors.Unidad}}</small>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-6/12 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>MATERIAL</jet-label>
+                        <jet-input type="text" v-model="Sol.Dispositivo" @input="(val) => (Sol.Dispositivo = Sol.Dispositivo.toUpperCase())"></jet-input>
+                        <small v-if="errors.Dispositivo" class="validation-alert">{{errors.Dispositivo}}</small>
+                    </div>
+                    <div class="tw-mt-6  md:tw-w-1/12 md:tw-mb-0">
+                        <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
+                    </div>
+                </div>
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>COMENTARIOS</jet-label>
+                        <textarea name="" id="" cols="2" v-model="Sol.Comentarios" @input="(val) => (Sol.Comentarios = Sol.Comentarios.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="save(Sol)">Guardar</jet-button>
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
         <!-- --------------------- Modal registrar Cotizacion -------------------------- -->
         <modal :show="showDetalle" @close="chageDetalle" maxWidth="3xl">
             <div class="ModalHeader">
@@ -323,6 +388,7 @@ import Pagination from "@/Components/pagination";
 import JetInput from "@/Components/Input";
 import JetLabel from '@/Jetstream/Label';
 import JetSelect from "@/Components/Select";
+import Select2 from 'vue3-select2-component';
 //imports de datatables
 import datatable from "datatables.net-bs5";
 import $ from "jquery";
@@ -357,6 +423,21 @@ export default {
                 archivo: '',
                 DatosCotizacion: [], //Arreglo vacio que contendra inputs dinamicos
             },
+            Sol: {
+                IdUser: this.Session.id,
+                Fecha: '',
+                Folio: '',
+                Perfil_id: '',
+                Departamento_id: '',
+                Estatus: '',
+                Partida: [{
+                    Cantidad: '',
+                    Unidad: '',
+                    Dispositivo: '',
+                }],
+                requisicion_sistemas_id: '',
+                Comentarios: '',
+            },
         };
     },
 
@@ -373,11 +454,14 @@ export default {
         JetInput,
         JetLabel,
         JetSelect,
+        Select2,
     },
 
     props: {
         Session: Object,
         errors: Object,
+        Departamentos: Object,
+        Perfiles: Object,
         RequisicionesSistemas: Object, //Consulta inicial
         RequisicionSistemas: Object, //Requisicion con Cotizacion
     },
@@ -440,10 +524,51 @@ export default {
                 archivo: '',
                 DatosCotizacion: [],
             };
+            this.Sol= {
+                IdUser: this.Session.id,
+                Fecha: '',
+                Folio: '',
+                Perfil_id: '',
+                Departamento_id: '',
+                Estatus: '',
+                Partida: [{
+                    Cantidad: '',
+                    Unidad: '',
+                    Dispositivo: '',
+                }],
+                requisicion_sistemas_id: '',
+                Comentarios: '',
+            };
         },
 
         chageDetalle(){
             this.showDetalle  = !this.showDetalle;
+        },
+
+        addRow: function () { //Agregar Campos dinamicamente
+            //Funcion para añadir inputs dinamicos
+            this.Sol.Partida.push({Part: ""});
+        },
+
+        removeRow: function (row) { //Quitar Campos dinamicamente
+            //Quitar del arreglo los inputs dinamicos
+            this.Sol.Partida.splice(row,1);
+        },
+
+        save(data){
+            data.metodo = 1;
+            data.Estatus = 0;
+            this.$inertia.post("/Sistemas/CotizacionSistemas", data, {
+                onSuccess: () => {
+                    if(this.$attrs.jetstream.flash.type == 'Warning'){
+                        this.alertInfo(this.$attrs.jetstream.flash.message);
+                    }else{
+                        this.alertSucces();
+                        this.reset();
+                        this.chageClose();
+                    }
+                },
+            });
         },
 
         CotizarReq(data){
@@ -470,6 +595,7 @@ export default {
         },
 
         RealizaCotizacion(data){
+            data.metodo = 2;
             this.$inertia.post("/Sistemas/CotizacionSistemas", data, {
                 onSuccess: () => {
                     if(this.$attrs.jetstream.flash.type == 'Warning'){
@@ -557,6 +683,23 @@ export default {
     },
 
     computed:{
+        //Funcion de buscador
+        BuscaPerfil: function () {
+            const PerfilesUsu = [];
+            this.Perfiles.forEach(element => {
+                PerfilesUsu.push({id: element.id, text: element.IdEmp + '-'+ element.Nombre+' '+element.ApPat+' '+element.ApMat})
+            });
+            return PerfilesUsu;
+        },
+
+        //Funcion de buscador
+        BuscaDepartamento: function () {
+            const BusquedaSelect = [];
+            this.Departamentos.forEach(element => {
+                BusquedaSelect.push({id: element.id, text: element.Nombre})
+            });
+            return BusquedaSelect;
+        },
     },
 
     watch: {
