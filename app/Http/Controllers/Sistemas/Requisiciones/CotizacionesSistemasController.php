@@ -57,7 +57,7 @@ class CotizacionesSistemasController extends Controller{
 
         switch ($request->metodo) {
             case 1: //Caso para realizar Requisicion
-                // return $request;
+                // return $request->Perfil_id;
                 Validator::make($request->all(), [
                     'IdUser' => ['required'],
                     'Fecha' => ['required','date'],
@@ -73,7 +73,6 @@ class CotizacionesSistemasController extends Controller{
                 $Perfil_id = PerfilesUsuarios::where('user_id','=',$request->IdUser)->first('id');
                 //Genracion de folio automatico
                 $Numfolio = RequisicionesSistemas::all(['Folio']);
-
 
                 $hoy = Carbon::now();
                 $anio = $hoy->format('y');
@@ -105,7 +104,7 @@ class CotizacionesSistemasController extends Controller{
                         'Fecha' => $request->Fecha,
                         'Folio' => $anio.$serial,
                         'Estatus' => 2,
-                        'Perfil_id' => $Perfil_id->id,
+                        'Perfil_id' => $request->Perfil_id,
                         'Departamento_id' => $request->Departamento_id,
                         'Comentarios' => $request->Comentarios,
                     ]);
