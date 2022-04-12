@@ -58,8 +58,8 @@
             <td bgcolor="#426899" align="center" style="padding: 0px 10px 0px 10px;">
                 <table border="0" cellpadding="0" cellspacing="0" width="480" >
                     <tr>
-                        <td bgcolor="#ffffff" align="left" valign="top" style="padding: 20px 20px 10px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; line-height: 48px;">
-                            <h1 style="font-size: 18px; font-weight: 600; margin: 0;">Hola!</h1>
+                        <td bgcolor="#ffffff" align="left" valign="top" style="padding: 20px 20px 10px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-size: 48px; font-weight: 400; line-height: 48px;">
+                            <h1 style="font-family: Arial Black; font-size: 18px; font-weight: 600; margin: 0;">Hola!</h1>
                         </td>
                     </tr>
                 </table>
@@ -72,32 +72,36 @@
                         <td bgcolor="#ffffff" align="left">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr align="center">
-                                    <td colspan="2" style="padding-left:30px;padding-right:15px;padding-bottom:10px; font-family: fantasy; font-size: 16px; font-weight: 400; line-height: 25px;">
+                                    <td colspan="2" style="padding-left:30px;padding-right:15px;padding-bottom:10px; font-size: 16px; font-weight: 400; line-height: 25px;">
                                         <p>Tienes una solicitud de aprovación de vacaciones</p>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th align="left" valign="top" style="padding-left:25px;padding-right:15px;padding-bottom:10px; font-family: fantasy; font-size: 14px; font-weight: 600; line-height: 25px;">Núm Nómina: </th>
-                                    <td align="left" valign="top" style="padding-left:1px;padding-right:30px;padding-bottom:10px;font-family: fantasy; font-size: 12px; font-weight: 500; line-height: 25px;"> {{ $Vac->IdEmp }} </td>
+                                    <th align="left" valign="top" style="padding-left:25px;padding-right:15px;padding-bottom:10px; font-size: 14px; font-weight: 600; line-height: 25px;">Núm Nómina: </th>
+                                    <td align="left" valign="top" style="padding-left:1px;padding-right:30px;padding-bottom:10px; font-size: 12px; font-weight: 500; line-height: 25px;"> {{ $Vac->IdEmp }} </td>
                                 </tr>
                                 <tr>
-                                    <th align="left" valign="top" style="padding-left:25px;padding-right:15px;padding-bottom:10px; font-family: fantasy; font-size: 14px; font-weight: 600; line-height: 25px;">Nombre: </th>
-                                    <td align="left" valign="top" style="padding-left:1px;padding-right:30px;padding-bottom:10px;font-family: fantasy; font-size: 12px; font-weight: 500; line-height: 25px;">{{ $Vac->Nombre }}</td>
+                                    <th align="left" valign="top" style="padding-left:25px;padding-right:15px;padding-bottom:10px; font-size: 14px; font-weight: 600; line-height: 25px;">Nombre: </th>
+                                    <td align="left" valign="top" style="padding-left:1px;padding-right:30px;padding-bottom:10px; font-size: 12px; font-weight: 500; line-height: 25px;">{{ $Vac->Nombre }}</td>
                                 </tr>
                                 <tr>
-                                    <th align="left" valign="top" style="padding-left:25px;padding-right:15px;padding-bottom:10px; font-family: fantasy; font-size: 14px; font-weight: 600; line-height: 25px;">Fecha Inicio: </th>
-                                    <td align="left" valign="top" style="padding-left:1px;padding-right:30px;padding-bottom:10px;font-family: fantasy; font-size: 12px; font-weight: 500; line-height: 25px;">{{ $Vac->FechaInicio }}</td>
+                                    <th align="left" valign="top" style="padding-left:25px;padding-right:15px;padding-bottom:10px; font-size: 14px; font-weight: 600; line-height: 25px;">Fecha Inicio: </th>
+                                    <td align="left" valign="top" style="padding-left:1px;padding-right:30px;padding-bottom:10px; font-size: 12px; font-weight: 500; line-height: 25px;">{{ $Vac->FechaInicio }}</td>
                                 </tr>
                                 <tr>
-                                    <th align="left" valign="top" style="padding-left:25px;padding-right:15px;padding-bottom:10px; font-family: fantasy; font-size: 14px; font-weight: 600; line-height: 25px;">Fecha Fin: </th>
-                                    <td align="left" valign="top" style="padding-left:1px;padding-right:30px;padding-bottom:10px;font-family: fantasy; font-size: 12px; font-weight: 500; line-height: 25px;">{{ $Vac->FechaFin }}</td>
+                                    <th align="left" valign="top" style="padding-left:25px;padding-right:15px;padding-bottom:10px; font-size: 14px; font-weight: 600; line-height: 25px;">Fecha Fin: </th>
+                                    <td align="left" valign="top" style="padding-left:1px;padding-right:30px;padding-bottom:10px; font-size: 12px; font-weight: 500; line-height: 25px;">{{ $Vac->FechaFin }}</td>
                                 </tr>
                                 <tr>
-                                    <th align="left" valign="top" style="padding-left:25px;padding-right:15px;padding-bottom:10px; font-family: fantasy; font-size: 14px; font-weight: 600; line-height: 25px;">Dias Solicitados: </th>
-                                    <td align="left" valign="top" style="padding-left:1px;padding-right:30px;padding-bottom:10px;font-family: fantasy; font-size: 12px; font-weight: 500; line-height: 25px;">{{ $Vac->DiasTomados }} Dias</td>
+                                    <th align="left" valign="top" style="padding-left:25px;padding-right:15px;padding-bottom:10px; font-size: 14px; font-weight: 600; line-height: 25px;">Días Solicitados: </th>
+                                    <td align="left" valign="top" style="padding-left:1px;padding-right:30px;padding-bottom:10px; font-size: 12px; font-weight: 500; line-height: 25px;">{{ $Vac->DiasTomados }} Días</td>
+                                </tr>
+                                <tr>
+                                    <th align="left" valign="top" style="padding-left:25px;padding-right:15px;padding-bottom:10px; font-size: 14px; font-weight: 600; line-height: 25px;">Días Restantes: </th>
+                                    <td align="left" valign="top" style="padding-left:1px;padding-right:30px;padding-bottom:10px; font-size: 12px; font-weight: 500; line-height: 25px;">{{ $Vac->DiasRestantes }} Días</td>
                                 </tr>
                                 <tr align="center">
-                                    <td colspan="2" style="padding-top:25px; padding-left:30px;padding-right:15px;padding-bottom:10px; font-family: fantasy; font-size: 16px; font-weight: 600; line-height: 30px;">
+                                    <td colspan="2" style="padding-top:25px; padding-left:30px;padding-right:15px;padding-bottom:10px; font-size: 16px; font-weight: 600; line-height: 30px;">
                                         <a style="text-decoration: none; cursor: pointer; color:#0284C7" href="https://intranethlangeles.com/RecursosHumanos/Vacaciones">Para autorizarlas visita la siguiente liga</a>
                                     </td>
                                 </tr>
