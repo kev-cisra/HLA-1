@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\RecursosHumanos\Vacaciones;
 
 use App\Http\Controllers\Controller;
+use App\Mail\RecursosHumanos\NotificacionVacacionesMailable;
 use App\Mail\RecursosHumanos\SolicitudDeVacacionesMailable;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Catalogos\JefesArea;
@@ -128,6 +129,7 @@ class VacacionesDptoController extends Controller{
 
         if($request->JefeDepto == false){
             $DatosCorreo = new stdClass();
+            // return $request;
             //Asigno los valores correspondientes al correo
             $DatosCorreo->id = $SolicitudVacaciones->id;
             $DatosCorreo->IdEmp = $request->IdEmp;
@@ -135,9 +137,12 @@ class VacacionesDptoController extends Controller{
             $DatosCorreo->FechaInicio = $request->FechaInicio;
             $DatosCorreo->FechaFin = $request->FechaFin;
             $DatosCorreo->DiasTomados = $request->DiasTomados;
+            $DatosCorreo->DiasRestantes = $request->DiasRestantes;
 
             if(isset($PerfilJefe->Correo)){
+
                 $correo = new SolicitudDeVacacionesMailable($DatosCorreo);
+
                 Mail::to($PerfilJefe->Correo)
                 ->send($correo);
 
@@ -165,9 +170,50 @@ class VacacionesDptoController extends Controller{
     public function update(Request $request, $id){
         switch ($request->Tipo) {
             case 1: //Autoriza Vacaciones
+                $Session = Auth::user();
+
                 Vacaciones::find($request->id)->update([
                     'Estatus' => 1, //Autorizada
                 ]);
+
+                $PerfilSolicitante = PerfilesUsuarios::where('id', '=', $request->Perfil_id)->first(['Nombre','ApPat','Correo']);
+
+                if($request->JefeDepto == false){
+                    $DatosCorreo = new stdClass(); //Creo un nuevo Objeto
+                    //Asigno los valores correspondientes al correo
+                    $DatosCorreo->id = $request->id;
+                    $DatosCorreo->IdEmp = $request->IdEmp;
+                    $DatosCorreo->Nombre = $request->Nombre;
+                    $DatosCorreo->FechaInicio = $request->FechaInicio;
+                    $DatosCorreo->FechaFin = $request->FechaFin;
+                    $DatosCorreo->DiasTomados = $request->DiasTomados;
+                    $DatosCorreo->DiasRestantes = $request->DiasRestantes;
+                    $DatosCorreo->AutorizadoPor = $Session->name;
+
+                    if(isset($PerfilSolicitante->Correo)){
+
+                        $correo = new NotificacionVacacionesMailable($DatosCorreo);
+
+                        Mail::to($PerfilSolicitante->Correo)
+                        ->cc('incidencias@hlangeles.com')
+                        ->send($correo);
+
+                        if (Mail::failures()) {
+
+                            session()->flash('flash.type', 'Warning');
+                            session()->flash('flash.message', 'Error al Enviar el correo');
+
+                        }else{
+                            session()->flash('flash.type', 'Success');
+                            session()->flash('flash.message', 'Se envio un correo de notificación a '.$PerfilSolicitante->Nombre.' '.$PerfilSolicitante->ApPat);
+                        }
+                    }else{
+                        session()->flash('flash.type', 'Warning');
+                        session()->flash('flash.message', 'No se envio Correo');
+                    }
+
+                }
+
                 return redirect()->back();
                 break;
 

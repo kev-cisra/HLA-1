@@ -22796,6 +22796,9 @@ select {
 .tw-h-24 {
 	height: 6rem;
 }
+.tw-h-72 {
+	height: 18rem;
+}
 .tw-min-h-screen {
 	min-height: 100vh;
 }
@@ -23101,6 +23104,12 @@ select {
 .tw-overflow-y-auto {
 	overflow-y: auto;
 }
+.tw-overflow-y-hidden {
+	overflow-y: hidden;
+}
+.tw-overflow-x-scroll {
+	overflow-x: scroll;
+}
 .tw-truncate {
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -23149,9 +23158,6 @@ select {
 }
 .tw-border-8 {
 	border-width: 8px;
-}
-.tw-border-0 {
-	border-width: 0px;
 }
 .tw-border-b-2 {
 	border-bottom-width: 2px;
@@ -23405,12 +23411,12 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(7, 89, 133, var(--tw-bg-opacity));
 }
-.tw-bg-transparent {
-	background-color: transparent;
-}
 .tw-bg-cyan-800 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(21, 94, 117, var(--tw-bg-opacity));
+}
+.tw-bg-transparent {
+	background-color: transparent;
 }
 .tw-bg-green-50 {
 	--tw-bg-opacity: 1;
@@ -23584,13 +23590,13 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(56, 189, 248, var(--tw-bg-opacity));
 }
-.tw-bg-blue-500 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(59, 130, 246, var(--tw-bg-opacity));
-}
 .tw-bg-rose-500 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(244, 63, 94, var(--tw-bg-opacity));
+}
+.tw-bg-blue-500 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(59, 130, 246, var(--tw-bg-opacity));
 }
 .tw-bg-emerald-400 {
 	--tw-bg-opacity: 1;

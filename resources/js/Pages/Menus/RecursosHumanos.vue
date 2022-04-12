@@ -85,6 +85,19 @@
                         </div>
                     </Link>
                 </div>
+
+                <!-- Modulo AsignacionJefes-->
+                <div class="Modulo">
+                    <Link href="/RecursosHumanos/JefeDpto" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fa-solid fa-user-group"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">JEFE DEPARTAMENTO</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
             </div>
         </section>
     </app-layout>
