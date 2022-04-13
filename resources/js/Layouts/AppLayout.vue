@@ -17,7 +17,7 @@
                         <!-- Navigation Links -->
                         <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex">
                             <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                                <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Inicio
+                                <i class="tw-mr-2 fas fa-home tw-text-gray-600"></i>Prueba
                             </jet-nav-link>
                         </div>
                         <div class="tw-hidden tw-space-x-8 lg:tw--my-px lg:tw-ml-10 lg:tw-flex" v-if="hasAnyPermission(['admin.index'])">
