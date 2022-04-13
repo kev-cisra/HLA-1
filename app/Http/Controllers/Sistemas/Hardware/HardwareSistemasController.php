@@ -46,8 +46,12 @@ class HardwareSistemasController extends Controller{
         return redirect()->back();
     }
 
-    public function destroy($id)
-    {
-        //
+    public function destroy(Request $request, $id){
+
+        if ($request->has('id')) {
+            HardwareSistemas::find($request->id)->update(['Estatus' => 0]);
+        }
+
+        return redirect()->back();
     }
 }

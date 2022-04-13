@@ -65,4 +65,13 @@ class EquiposAsignadosController extends Controller{
         return redirect()->back();
     }
 
+    public function destroy(Request $request, $id){
+
+        if ($request->has('id')) {
+            HardwareAsignado::find($request->id)->update(['Estatus' => 0]);
+        }
+
+        return redirect()->back();
+    }
+
 }
