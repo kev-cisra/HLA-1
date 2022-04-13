@@ -59,6 +59,19 @@
                     </Link>
                 </div>
 
+                <!-- Modulo Proveedores Sistemas-->
+                <div class="Modulo" v-if="hasAnyPermission(['Sistemas.CotizacionSistemas'])">
+                    <Link href="Sistemas/Proveedores" class="LinkModulo">
+                        <div class="IconoModulo">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div>
+                            <h4 class="TituloModulo">Proveedores</h4>
+                            <span class="linea"></span>
+                        </div>
+                    </Link>
+                </div>
+
                 <!-- Modulo Cotizaciones Sistemas-->
                 <div class="Modulo" v-if="hasAnyPermission(['Sistemas.CotizacionSistemas'])">
                     <Link href="Sistemas/CotizacionSistemas" class="LinkModulo">

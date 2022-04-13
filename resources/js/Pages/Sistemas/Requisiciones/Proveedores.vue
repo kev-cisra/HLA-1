@@ -4,29 +4,21 @@
             <Header :class="[color, style]">
                 <slot>
                     <h3 class="tw-p-2">
-                        <i class="fas fa-user tw-ml-3 tw-mr-3"></i>
-                            Lorem, ipsum dolor.
+                        <i class="fas fa-user tw-ml-3 tw-mr-3"></i>Proveedores Sistemas
                     </h3>
                 </slot>
             </Header>
         </section>
         <!-- ******************************* FILTROS ********************************************* -->
-        <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-my-8 tw-mx-2">
+        <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-my-8 tw-mx-2 md:tw-mx-20">
             <div class="tw-flex tw-gap-4 tw-mx-2">
-                <div>
-                    <jet-label class="tw-text-center">EMPRESA</jet-label>
-                    <select class="InputSelect" v-model="params.Empresa" @change="SelectEmpresa">
-                        <option value="SHIELDTEX">SHIELDTEX</option>
-                        <option value="SERGES">SERGES</option>
-                    </select>
-                </div>
             </div>
             <div>
                 <jet-button @click="openModal" class="BtnNuevo">NUEVA INFORMACIÓN</jet-button>
             </div>
         </section>
         <!-- ********************************* TABLAS ********************************************* -->
-        <section class="tw-mx-2">
+        <section class="md:tw-mx-20 tw-mx-8">
             <Table id="datos">
                 <template v-slot:TableHeader>
                     <th class="columna">NOMBRE</th>
@@ -34,8 +26,8 @@
                 </template>
 
                 <template v-slot:TableFooter>
-                    <tr class="fila" v-for="data in Objeto" :key="data.id">
-                        <td>{{data.var}}</td>
+                    <tr class="fila" v-for="data in Proveedores" :key="data.id">
+                        <td>{{data.Nombre}}</td>
                         <td>
                             <div class="FlexCenter">
                                 <div class="iconoEdit" @click="edit(data)">
@@ -52,14 +44,6 @@
                                         </svg>
                                     </span>
                                 </div>
-                                <div class="iconoDetails" @click="view(data)" data-bs-toggle="modal" data-bs-target="#exampleModal" >
-                                        <span tooltip="Detalle" >
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </span>
-                                    </div>
                             </div>
                         </td>
                     </tr>
@@ -68,49 +52,26 @@
         </section>
 
          <!-- **************************************************** MODALES ****************************************************** -->
-    <modal :show="showModal" @close="chageClose" :maxWidth="tam">
-        <div class="ModalHeader">
-            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Lorem ipsum dolor sit.</h3>
-        </div>
+        <modal :show="showModal" @close="chageClose" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Lorem ipsum dolor sit.</h3>
+            </div>
 
-        <div class="ModalForm">
-<!--             <div class="FormSection">
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                    <jet-label><span class="required">*</span>VARIABLE</jet-label>
-                    <select class="InputSelect">
-                        <option v-for="obj in Objeto" :key="obj.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
-                    </select>
-                    <small v-if="errors.obj" class="validation-alert">{{errors.obj}}</small>
-                </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                    <jet-label><span class="required">*</span>VARIABLE</jet-label>
-                    <jet-input type="text" ></jet-input>
-                </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                    <jet-label><span class="required">*</span>Código</jet-label>
-                    <select  class="InputSelect">
-                        <option value="OPCION">OPCION</option>
-                    </select>
-                </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                    <jet-label><span class="required">*</span>FECHA</jet-label>
-                    <jet-input type="date"></jet-input>
+            <div class="ModalForm">
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>NOMBRE PROVEEDOR</jet-label>
+                        <jet-input type="text" v-model="form.Nombre"></jet-input>
+                    </div>
                 </div>
             </div>
-            <div class="FormSection">
-                <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                    <jet-label><span class="required">*</span>TEXTO</jet-label>
-                    <textarea name="" id="" cols="2" @input="(val) => (form.variable = form.variable.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
-                </div>
-            </div> -->
-        </div>
 
-        <div class="ModalFooter">
-            <jet-button type="button" @click="save(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
-            <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button>
-            <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
-        </div>
-    </modal>
+            <div class="ModalFooter">
+                <jet-button type="button" @click="save(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
+                <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button>
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
     </app-layout>
 </template>
 
@@ -119,7 +80,7 @@ import AppLayout from "@/Layouts/AppLayout";
 import Welcome from "@/Jetstream/Welcome";
 import Header from "@/Components/Header";
 import Accions from "@/Components/Accions";
-import Table from "@/Components/TableDark";
+import Table from "@/Components/TableSky";
 import JetButton from "@/Components/Button";
 import JetCancelButton from "@/Components/CancelButton";
 import Modal from "@/Jetstream/Modal";
@@ -139,11 +100,12 @@ export default {
     data() {
         return {
             now: moment().format("YYYY-MM-DD"),
-            tam: "4xl",
-            color: "tw-bg-green-600",
+            tam: "xl",
+            color: "tw-bg-sky-600",
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             form: {
                 IdUser: this.Session.id,
+                Nombre: '',
             },
             params: {
             },
@@ -151,6 +113,7 @@ export default {
     },
 
     mounted() {
+        this.tabla();
     },
 
     components: {
@@ -170,15 +133,13 @@ export default {
 
     props: {
         Session: Object,
+        errors: Object,
+        Proveedores: Object,
     },
 
     methods: {
-        reset() {
-            this.form = {
-            };
-        },
 
-       //Generacion de Tabla con Datatables
+               //Generacion de Tabla con Datatables
         tabla(){
             this.$nextTick(() => {
                 $("#tabla").DataTable({
@@ -212,6 +173,53 @@ export default {
                         'colvis'
                     ]
                 }).draw();
+            });
+        },
+
+        reset() {
+            this.form = {
+                IdUser: this.Session.id,
+                Nombre: '',
+            };
+        },
+
+        save(data){
+            this.$inertia.post("/Sistemas/Proveedores", data, {
+                onSuccess: () => {
+                    this.reset(),
+                    this.chageClose(),
+                    this.alertSucces();
+                },
+            });
+        },
+
+        edit: function (data) {
+            this.form = Object.assign({}, data);
+            this.editMode = true;
+            this.chageClose();
+        },
+
+        update(data) {
+            data._method = "PUT";
+            this.$inertia.post("/Sistemas/Proveedores/" + data.id, data, {
+                onSuccess: () => {
+                    this.reset(),
+                    this.chageClose(),
+                    this.alertSucces();
+                },
+            });
+        },
+
+        deleteRow(data){
+            data._method = "DELETE";
+            this.$inertia.post("/Sistemas/Proveedores/" + data.id, data, {
+                onSuccess: () => {
+                    Swal.fire(
+                        'Eliminado!',
+                        'El registro fue eliminado con éxito',
+                        'success'
+                    )
+                },
             });
         },
     },

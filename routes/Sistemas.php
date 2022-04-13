@@ -6,6 +6,7 @@ use App\Http\Controllers\Sistemas\Hardware\HardwareSistemasController;
 use App\Http\Controllers\Sistemas\Mantenimientos\CalendarioController;
 use App\Http\Controllers\Sistemas\Mantenimientos\MantenimientosSistemasController;
 use App\Http\Controllers\Sistemas\Requisiciones\CotizacionesSistemasController;
+use App\Http\Controllers\Sistemas\Requisiciones\ProveedoresController;
 use App\Http\Controllers\Sistemas\Requisiciones\RequisicionesSistemasController;
 use App\Models\Sistemas\Hardware\HardwareSistemas;
 use Illuminate\Foundation\Application;
@@ -31,3 +32,6 @@ Route::resource('RequisicionSistemas', RequisicionesSistemasController::class)
 
 Route::resource('CotizacionSistemas', CotizacionesSistemasController::class)
     ->middleware(['auth:sanctum', 'verified'])->names('CotizacionSistemas');
+
+Route::resource('Proveedores', ProveedoresController::class)
+    ->middleware(['auth:sanctum', 'verified'])->names('Proveedores');
