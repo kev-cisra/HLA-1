@@ -99,22 +99,22 @@
                             <td>
                                 <div class="FlexCenter">
                                     <div v-if="event.Estatus == 0">
-                                        <span tooltip="Confirmar Solicitud" flow="left">
+                                        <span tooltip="Mantenimiento programado" flow="left">
                                             <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-red-400 tw-rounded-full">SOLICITADO</span>
                                         </span>
                                     </div>
                                     <div v-if="event.Estatus == 1">
-                                        <span tooltip="Confirmar Solicitud" flow="left">
+                                        <span tooltip="Mantenimiento sinr ealizar" flow="left">
                                             <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">EN ESPERA</span>
                                         </span>
                                     </div>
                                     <div v-if="event.Estatus == 2">
-                                        <span tooltip="Confirmar Solicitud" flow="left">
+                                        <span tooltip="Mantenimiento Realizado" flow="left">
                                             <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-sky-400 tw-rounded-full">REALIZADO</span>
                                         </span>
                                     </div>
                                     <div v-if="event.Estatus == 3">
-                                        <span tooltip="Confirmar Solicitud" flow="left">
+                                        <span tooltip="Mantenimiento cerrado" flow="left">
                                             <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-teal-400 tw-rounded-full">CONFORME</span>
                                         </span>
                                     </div>
@@ -122,7 +122,7 @@
                             </td>
                             <td>
                                 <div class="tw-flex tw-justify-center tw-items-center tw-gap-4">
-                                    <div class="iconoEdit" @click="edit(event)">
+                                    <div class="iconoEdit" @click="edit(event)" v-if="event.Estatus == 0 || event.Estatus == 1">
                                         <span tooltip="Editar" flow="left">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-4 tw-w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
@@ -370,10 +370,7 @@ export default {
 
         save(data){
             //Asigno un color aleatoriamente
-            this.form.Perfil_id = data.Equipo.perfil.id;
             data.backgroundColor = this.colours[Math.floor(Math.random() * this.colours.length)];
-            data.Hardware_id = data.Equipo.id; //Asigno el equipo
-            data.title =  data.Equipo.perfil.Nombre + ' ' +data.Equipo.perfil.ApPat + '-' + data.Equipo.hardware.Nombre;
             this.$inertia.post("/Sistemas/CalendarioMantenimientos", data, {
                 onSuccess: () => {
                     if(this.$attrs.jetstream.flash.type == 'Warning'){
@@ -515,7 +512,7 @@ export default {
         BuscaDispositivo: function () {
             const EquiposAsignados = [];
             this.EquiposAsignados.forEach(element => {
-                EquiposAsignados.push({id: element.id, text: element.perfil.Nombre +' '+element.perfil.ApPat+' '+element.perfil.ApMat +'-'+ element.hardware.Nombre + ' '+ element.hardware.Marca})
+                EquiposAsignados.push({id: element.id +'/'+element.perfil.Nombre +' '+element.perfil.ApPat+' '+element.perfil.ApMat +'-'+ element.hardware.Nombre, text: element.perfil.Nombre +' '+element.perfil.ApPat+' '+element.perfil.ApMat +'-'+ element.hardware.Nombre })
             });
             return EquiposAsignados;
         },

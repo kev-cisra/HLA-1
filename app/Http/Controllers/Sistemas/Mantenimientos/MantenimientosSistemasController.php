@@ -42,13 +42,22 @@ class MantenimientosSistemasController extends Controller{
             'start' => ['required','date'],
             'Tiempo' => ['required'],
             'Periodo' => ['required'],
-            'Equipo' => ['required'],
+            'Hardware_id' => ['required'],
         ])->validate();
 
+        // return $request;
+        //Convierto la fecha inicio a formato carbon
         $request->start = Carbon::parse($request->start)->format('Y-m-d H:i');
-        $Minutos = ($request->Tiempo * 60)+4;
+        $Minutos = ($request->Tiempo * 60)+4; //Calculo los minutos de acuerdo a la hora entrante
+        //Creo la fecha fin apartir de la fecha de inicio y la duracion de esta
         $request->end = Carbon::parse($request->start)->addMinutes($Minutos)->format('Y-m-d H:i');
+        //Obtiene id del equipo asignado
+        $Hardware_id = explode('/',$request->Hardware_id);
+        $title = $Hardware_id[1];
+        //Obtengo el equipo y el perfil
+        $Hardware = HardwareAsignado::where('id',$Hardware_id[0])->first(['id','Hardware_id', 'Perfil_id']);
 
+            //Obtiene fechas registradas para despues comprobar disponibilidad
         $Reservaciones = CalendarioMantenimientos::whereDate('start',Carbon::parse($request->start)->format('Y-m-d'))
         ->get(['id', 'start', 'end']);
 
@@ -72,7 +81,7 @@ class MantenimientosSistemasController extends Controller{
                 }else{ //Si esta disponible se registra
                     CalendarioMantenimientos::create([
                         'IdUser' => $request->IdUser,
-                        'title' => $request->title,
+                        'title' => $title,
                         'start' => $request->start,
                         'end' => $request->end,
                         'backgroundColor' => $request->backgroundColor,
@@ -80,8 +89,8 @@ class MantenimientosSistemasController extends Controller{
                         'Tiempo' => $request->Tiempo,
                         'Estatus' => 1,
                         'Comentarios' => $request->Comentarios,
-                        'Hardware_id' => $request->Hardware_id,
-                        'Perfil_id' => $request->Perfil_id,
+                        'Hardware_id' => $Hardware->id,
+                        'Perfil_id' => $Hardware->Perfil_id,
                     ]);
                     return redirect()->back();
                 }
@@ -90,7 +99,7 @@ class MantenimientosSistemasController extends Controller{
         }else{ //Dia sin fechas asignadas
             CalendarioMantenimientos::create([
                 'IdUser' => $request->IdUser,
-                'title' => $request->title,
+                'title' => $title,
                 'start' => $request->start,
                 'end' => $request->end,
                 'backgroundColor' => $request->backgroundColor,
@@ -98,8 +107,8 @@ class MantenimientosSistemasController extends Controller{
                 'Tiempo' => $request->Tiempo,
                 'Estatus' => 1,
                 'Comentarios' => $request->Comentarios,
-                'Hardware_id' => $request->Hardware_id,
-                'Perfil_id' => $request->Perfil_id,
+                'Hardware_id' => $Hardware->id,
+                'Perfil_id' => $Hardware->Perfil_id,
             ]);
             return redirect()->back();
         }
@@ -181,8 +190,7 @@ class MantenimientosSistemasController extends Controller{
 
     }
 
-    public function destroy($id)
-    {
-        //
+    public function destroy($id){
+
     }
 }
