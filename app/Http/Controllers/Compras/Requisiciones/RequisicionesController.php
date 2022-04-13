@@ -106,7 +106,7 @@ class RequisicionesController extends Controller{
                 ])
                 ->whereYear('Fecha', $anio)
                 ->orderBy('id', 'desc')
-                ->get(['id', 'Fecha', 'Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                ->get(['id', 'Fecha', 'Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id', 'created_at']);
 
                 if(isset($request->Year)){
                     if($request->Year == 0){
@@ -143,7 +143,7 @@ class RequisicionesController extends Controller{
                             },
                         ])
                         ->orderBy('id', 'desc')
-                        ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                        ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id', 'created_at']);
                     }else{
                         //CONSULTA FILTRADA POR AÑO
                         $Requisiciones = ArticulosRequisiciones::with([
@@ -180,7 +180,7 @@ class RequisicionesController extends Controller{
                         ])
                         ->whereYear('Fecha', $anio)
                         ->orderBy('id', 'desc')
-                        ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                        ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id', 'created_at']);
                         }
                 }
 
@@ -262,7 +262,7 @@ class RequisicionesController extends Controller{
                         ->whereMonth('Fecha', $request->Month)
                         ->where('EstatusArt', $request->Status)
                         ->orderBy('id', 'desc')
-                        ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                        ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id', 'created_at']);
                     }else{
                         //FILTRO UNICAMENTE POR ESTATUS
                         $Requisiciones = ArticulosRequisiciones::with([
@@ -299,7 +299,7 @@ class RequisicionesController extends Controller{
                         ->whereYear('Fecha', $anio)
                         ->where('EstatusArt', $request->Status)
                         ->orderBy('id', 'desc')
-                        ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                        ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id', 'created_at']);
                     }
                 }
 
@@ -322,7 +322,7 @@ class RequisicionesController extends Controller{
                         $marca->select('id', 'Nombre');
                     },
                     'RequisicionArticulos' => function($Req) {
-                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id', 'created_at');
                     },
                     ])
                     ->whereYear('Fecha', $anio)
@@ -347,7 +347,7 @@ class RequisicionesController extends Controller{
                             $marca->select('id', 'Nombre');
                         },
                         'RequisicionArticulos' => function($Req) {
-                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id', 'created_at');
                         },
                         ])
                         ->whereYear('Fecha', $anio)
@@ -373,7 +373,7 @@ class RequisicionesController extends Controller{
                             $marca->select('id', 'Nombre');
                         },
                         'RequisicionArticulos' => function($Req) {
-                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id', 'created_at');
                         },
                         ])
                         ->whereMonth('Fecha', $request->Month)
@@ -402,7 +402,7 @@ class RequisicionesController extends Controller{
                                 $marca->select('id', 'Nombre');
                             },
                             'RequisicionArticulos' => function($Req) {
-                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id', 'created_at');
                             },
                             ])
                             ->whereYear('Fecha', $anio)
@@ -428,7 +428,7 @@ class RequisicionesController extends Controller{
                                 $marca->select('id', 'Nombre');
                             },
                             'RequisicionArticulos' => function($Req) {
-                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id', 'created_at');
                             },
                             ])
                             ->whereYear('Fecha', $anio)
@@ -490,7 +490,7 @@ class RequisicionesController extends Controller{
                             'jefes_areas_id',
                             'Codigo', 'Maquina_id',
                             'Marca_id', 'TipCompra',
-                            'Observaciones', 'Perfil_id');
+                            'Observaciones', 'Perfil_id', 'created_at');
                     },
                     'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                         $perfil->select('id', 'name');
@@ -513,7 +513,7 @@ class RequisicionesController extends Controller{
                 ])
                 ->where('IdEmp', '=', $Session->IdEmp)
                 ->whereYear('Fecha', $anio)
-                ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id', 'created_at']);
 
                 if(isset($request->Year)){
                     //CONSULTA FILTRADA POR AÑO
@@ -527,7 +527,7 @@ class RequisicionesController extends Controller{
                                 'jefes_areas_id',
                                 'Codigo', 'Maquina_id',
                                 'Marca_id', 'TipCompra',
-                                'Observaciones', 'Perfil_id');
+                                'Observaciones', 'Perfil_id', 'created_at');
                         },
                         'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                             $perfil->select('id', 'name');
@@ -550,7 +550,7 @@ class RequisicionesController extends Controller{
                     ])
                     ->where('IdEmp', '=', $Session->IdEmp)
                     ->whereYear('Fecha', $anio)
-                    ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                    ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id', 'created_at']);
                 }
 
                 if ($request->Month != 0 && $request->Status == 0) {
@@ -589,7 +589,7 @@ class RequisicionesController extends Controller{
                     ->where('IdEmp', '=', $Session->IdEmp)
                     ->whereYear('Fecha', $anio)
                     ->whereMonth('Fecha', $request->Month)
-                    ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                    ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id', 'created_at']);
                 }
 
                 if($request->Status != 0){
@@ -606,7 +606,7 @@ class RequisicionesController extends Controller{
                                     'jefes_areas_id',
                                     'Codigo', 'Maquina_id',
                                     'Marca_id', 'TipCompra',
-                                    'Observaciones', 'Perfil_id');
+                                    'Observaciones', 'Perfil_id', 'created_at');
                             },
                             'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                                 $perfil->select('id', 'name');
@@ -631,7 +631,7 @@ class RequisicionesController extends Controller{
                         ->whereYear('Fecha', $anio)
                         ->whereMonth('Fecha', $request->Month)
                         ->where('EstatusArt', $request->Status)
-                        ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                        ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id', 'created_at']);
                     }else{
                         //FILTRO UNICAMENTE POR ESTATUS
                         $Requisiciones = ArticulosRequisiciones::with([
@@ -644,7 +644,7 @@ class RequisicionesController extends Controller{
                                     'jefes_areas_id',
                                     'Codigo', 'Maquina_id',
                                     'Marca_id', 'TipCompra',
-                                    'Observaciones', 'Perfil_id');
+                                    'Observaciones', 'Perfil_id', 'created_at');
                             },
                             'ArticuloUser' => function($perfil) { //Relacion 1 a 1 De puestos
                                 $perfil->select('id', 'name');
@@ -668,7 +668,7 @@ class RequisicionesController extends Controller{
                         ->where('IdEmp', '=', $Session->IdEmp)
                         ->whereYear('Fecha', $anio)
                         ->where('EstatusArt', $request->Status)
-                        ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id']);
+                        ->get(['id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'RecibidoPor', 'requisicion_id', 'created_at']);
                     }
                 }
 
@@ -691,7 +691,7 @@ class RequisicionesController extends Controller{
                         $marca->select('id', 'Nombre');
                     },
                     'RequisicionArticulos' => function($Req) {
-                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                        $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id', 'created_at');
                     },
                     ])
                     ->where('IdEmp', '=', $Session->IdEmp)
@@ -717,7 +717,7 @@ class RequisicionesController extends Controller{
                             $marca->select('id', 'Nombre');
                         },
                         'RequisicionArticulos' => function($Req) {
-                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id', 'created_at');
                         },
                         ])
                         ->where('IdEmp', '=', $Session->IdEmp)
@@ -744,7 +744,7 @@ class RequisicionesController extends Controller{
                             $marca->select('id', 'Nombre');
                         },
                         'RequisicionArticulos' => function($Req) {
-                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                            $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id', 'created_at');
                         },
                         ])
                         ->where('IdEmp', '=', $Session->IdEmp)
@@ -774,7 +774,7 @@ class RequisicionesController extends Controller{
                                 $marca->select('id', 'Nombre');
                             },
                             'RequisicionArticulos' => function($Req) {
-                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id', 'created_at');
                             },
                             ])
                             ->where('IdEmp', '=', $Session->IdEmp)
@@ -801,7 +801,7 @@ class RequisicionesController extends Controller{
                                 $marca->select('id', 'Nombre');
                             },
                             'RequisicionArticulos' => function($Req) {
-                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id');
+                                $Req->select('id', 'Fecha','Cantidad', 'Unidad', 'Descripcion', 'NumParte', 'OrdenCompra', 'EstatusArt', 'MotivoCancelacion', 'Resguardo', 'Fechallegada', 'Comentariollegada', 'requisicion_id', 'created_at');
                             },
                             ])
                             ->where('IdEmp', '=', $Session->IdEmp)

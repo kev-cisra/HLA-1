@@ -161,6 +161,7 @@
                     <template v-slot:TableHeader>
                         <th class="columna">ID</th>
                         <th class="columna">FECHA</th>
+                        <th class="columna">F_SIS</th>
                         <th class="columna">REQ</th>
                         <th class="columna">O.C</th>
                         <th class="columna">DEPARTAMENTO</th>
@@ -182,6 +183,7 @@
                         <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                             <td>{{ datos.id }}</td>
                             <td>{{ datos.Fecha.substr(5) }}</td>
+                            <td>{{ datos.created_at }}</td>
                             <td>{{ datos.articulos_requisicion.NumReq }}</td>
                             <td>{{ datos.articulos_requisicion.OrdenCompra }}</td>
                             <td>{{ datos.articulos_requisicion.requisicion_departamento.Nombre }}</td>
@@ -276,6 +278,7 @@
                 <Table id="Requisiciones">
                     <template v-slot:TableHeader>
                         <th class="columna">FECHA</th>
+                        <th class="columna">F SIS</th>
                         <th class="columna">FOLIO</th>
                         <th class="columna">REQ</th>
                         <th class="columna">O.C</th>
@@ -294,6 +297,7 @@
                     <template v-slot:TableFooter>
                         <tr class="fila" v-for="datos in Requisiciones" :key="datos.id">
                             <td>{{ datos.Fecha.substr(5) }}</td>
+                            <td>{{ datos.created_at  }}</td>
                             <td>R-{{ datos.Folio }}</td>
                             <td>{{ datos.NumReq }}</td>
                             <td>{{ datos.OrdenCompra }}</td>
@@ -365,7 +369,7 @@
                                     </div>
                                     <div class="iconoCyan" @click="imprimir(datos)" v-if="datos.Estatus >= 1">
                                         <span tooltip="Imprime Requisición" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                                             </svg>
                                         </span>
