@@ -1,0 +1,44 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AlterCarNormsAdmiAbaTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('car_norms', function (Blueprint $table) {
+            //
+            $table->dropForeign('car_norms_partida_id_foreign');
+            //$table->dropColumn("partida_id");
+
+            //$table->unsignedBigInteger('partida_id')->nullable()->after('clave_id');
+            $table->foreign('partida_id')->references("id")->on("admi_abas")
+            ->onUpdate("cascade");
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('car_norms', function (Blueprint $table) {
+            //
+            $table->dropForeign('car_norms_partida_id_foreign');
+            //$table->dropColumn("partida_id");
+
+            //$table->unsignedBigInteger('partida_id')->nullable()->after('clave_id');
+            $table->foreign('partida_id')->references("id")->on("aba_entregas")
+            ->onUpdate("cascade");
+        });
+    }
+}

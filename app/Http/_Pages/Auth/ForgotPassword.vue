@@ -1,0 +1,68 @@
+<template>
+    <jet-authentication-card>
+        <template #logo>
+            <jet-authentication-card-logo />
+        </template>
+
+        <div class="tw-mb-4 tw-text-sm tw-text-gray-600">
+            ¿Olvidaste tu contraseña? No hay problema. Simplemente díganos su dirección de correo electrónico y le enviaremos un enlace para restablecer la contraseña que le permitirá elegir una nueva.
+        </div>
+
+        <div v-if="status" class="tw-mb-4 tw-font-medium tw-text-sm tw-text-green-600">
+            {{ status }}
+        </div>
+
+        <jet-validation-errors class="tw-mb-4" />
+
+        <form @submit.prevent="submit">
+            <div>
+                <jet-label for="email" value="Email" />
+                <jet-input id="email" type="email" class="tw-mt-1 tw-block tw-w-full" v-model="form.email" required autofocus />
+            </div>
+
+            <div class="tw-flex tw-items-center tw-justify-end tw-mt-4">
+                <jet-button :class="{ 'tw-opacity-25': form.processing }" :disabled="form.processing">
+                    Correo electrónico Enlace de restablecimiento de contraseña
+                </jet-button>
+            </div>
+        </form>
+    </jet-authentication-card>
+</template>
+
+<script>
+    import JetAuthenticationCard from '@/Jetstream/AuthenticationCard'
+    import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo'
+    import JetButton from '@/Jetstream/Button'
+    import JetInput from '@/Jetstream/Input'
+    import JetLabel from '@/Jetstream/Label'
+    import JetValidationErrors from '@/Jetstream/ValidationErrors'
+
+    export default {
+        components: {
+            JetAuthenticationCard,
+            JetAuthenticationCardLogo,
+            JetButton,
+            JetInput,
+            JetLabel,
+            JetValidationErrors
+        },
+
+        props: {
+            status: String
+        },
+
+        data() {
+            return {
+                form: this.$inertia.form({
+                    email: ''
+                })
+            }
+        },
+
+        methods: {
+            submit() {
+                this.form.post(this.route('password.email'))
+            }
+        }
+    }
+</script>

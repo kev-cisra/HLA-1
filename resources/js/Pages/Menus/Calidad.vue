@@ -9,34 +9,33 @@
             <Table id="t_cali">
                 <template v-slot:TableHeader>
                     <th>Departamento</th>
+                    <th>Partida</th>
                     <th>Maquina</th>
                     <th>Proceso</th>
-                    <th>Partida</th>
-                    <th>Norma</th>
                     <th>Clave</th>
-                    <th>Descripción</th>
                     <th></th>
                 </template>
                 <template v-slot:TableFooter>
                     <tr v-for="ae in abaentre" :key="ae">
                         <td> {{ae.departamento.Nombre}} </td>
-                        <td>
-                            <select v-model="ae.maquina" class="InputSelect tw-w-full">
-                                <option value="1">Algo M1</option>
-                                <option value="2">Algo M2</option>
-                                <option value="3">Algo M3</option>
-                            </select>
-                        </td>
-                        <td> {{ ae.total }} </td>
                         <td> {{ ae.partida }} </td>
-                        <td> <label v-show="false"> {{ ae.norma = Norma(ae.proc_final_aba, ae.clave, 0) }} </label> {{ Norma(ae.proc_final_aba, ae.clave, 1) }} </td>
-                        <td>
-                            <select v-model="ae.clave" class=" tw-bg-transparent tw-border-0 tw-w-full">
-                                <option v-for="nc in opcNC(ae.proc_final_aba)" :key="nc" :value="nc.id">{{nc.text}}</option>
-                            </select>
+                        <td style="width: 25vw">
+                            <Select2 v-model="ae.maquinas"  class="InputSelect" :options="seleMaq(ae.departamento_id)"  :settings="{width: '100%', multiple: true, allowClear: true}"/>
                         </td>
-                        <td> {{ Norma(ae.proc_final_aba, ae.clave, 2) }} </td>
-                        <td></td>
+                        <td style="width: 25vw">
+                            <Select2 v-model="ae.procesos"  class="InputSelect" :options="selePro(ae.departamento_id)"  :settings="{width: '100%', multiple: true, allowClear: true}"/>
+                        </td>
+                        <td style="width: 25vw">
+                            <Select2 v-model="ae.clave"  class="InputSelect" :options="opcNC(ae.proc_final_aba)"  :settings="{width: '100%', multiple: true, allowClear: true}"/>
+                        </td>
+                        <td class="tw-flex">
+                            <div tooltip="Guardar" flow="left">
+                                <button class="btn btn-outline-success" @click="save(ae)"><i class="far fa-save"></i></button>
+                            </div>
+                            <div tooltip="Ver procesos guardados" flow="left">
+                                <button class="btn btn-outline-warning" @click="conProCali(ae)"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </td>
                     </tr>
                 </template>
                 <template v-slot:Foother>
@@ -44,16 +43,46 @@
                     <th>Maquina</th>
                     <th>Proceso</th>
                     <th>Partida</th>
-                    <th>Norma</th>
                     <th>Clave</th>
-                    <th>Descripción</th>
                     <th></th>
                 </template>
             </Table>
         </div>
-        <!-- <pre>
-            {{ abaentre }}
-        </pre> -->
+
+        <!------------------ Modal ------------------------->
+        <modal :show="showModal" @close="chageClose">
+            <div class="tw-px-4 tw-py-4">
+                <table class="table">
+                    <thead>
+                        <th>Proceso</th>
+                        <th>Maquina</th>
+                        <th>Partida</th>
+                        <th>Estatus</th>
+                        <th>Norma</th>
+                        <th>Clave</th>
+                        <th>Descripción</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for="cp in caliProce" :key="cp">
+                            <td> {{ cp.cat_proce_cali.nombre }} </td>
+                            <td> {{ cp.maquina.Nombre }} {{ cp.maquina.marca.Nombre }} </td>
+                            <td> {{ cp.partida }} </td>
+                            <td>
+                                <div v-if="cp.estatus == 1">Activo</div>
+                                <div v-else>Finalizado</div>
+                            </td>
+                            <td> {{ cp.dep_mat.materiales.idmat }} - {{ cp.dep_mat.materiales.nommat }} </td>
+                            <td> {{ cp.clave.CVE_ART }} </td>
+                            <td> {{ cp.clave.DESCR }} </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <pre>
+                    {{ caliProce }}
+                </pre>
+            </div>
+        </modal>
+
         <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
 
         </section>
@@ -64,6 +93,7 @@
     import AppLayout from '@/Layouts/AppLayout'
     import { Link } from '@inertiajs/inertia-vue3';
     import Table from '@/Components/Table';
+    import Select2 from 'vue3-select2-component';
     //datatable
     import datatable from 'datatables.net-bs5';
     require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
@@ -76,28 +106,36 @@
     import pdfFonts from 'pdfmake/build/vfs_fonts';
     import $ from 'jquery';
     import axios from 'axios';
+    import Modal from '@/Jetstream/Modal';
 
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     window.JSZip = jszip;
 
     export default {
         props: [
-            'usuario'
+            'usuario',
+            'abaentre',
+            'maquinas',
+            'catproce'
         ],
         components: {
             AppLayout,
             Link,
             Table,
+            Modal,
+            Select2
         },
 
         data() {
             return {
-                abaentre: []
+                showModal: false,
+                caliProce: [],
+                //abaentre: []
             }
         },
 
         mounted() {
-            this.conAbas();
+            this.tabla();
         },
 
         methods:{
@@ -105,17 +143,17 @@
             //datatable de carga
             tabla() {
                 this.$nextTick(() => {
-                    // Setup - add a text input to each footer cell
-                    $('#t_cali tfoot th').each( function () {
-                        var title = $(this).text();
-                        $(this).html( '<input type="text" class="InputSelect tw-text-gray-900" placeholder="'+title+'" />' );
-                    } );
                     $('#t_cali').DataTable({
                         "language": this.español,
                         "scrollX": true,
+                        "columnDefs": [
+                            { "width": "10%", "targets": [0,1,5] },
+                            { "width": "25%", "targets": [2,3,4] }
+                        ],
                         "dom": '<"row"<"col-sm-6 col-md-9"l><"col-sm-12 col-md-3"f>>'+
                                 "<'row'<'col-sm-12'tr>>" +
                                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                        "stateSave": true,
                         scrollY:        '30vh',
                         scrollCollapse: true,
                         paging:         false,
@@ -140,63 +178,137 @@
                             },
                             'colvis'
                         ],
-                        initComplete: function () {
-                            // Apply the search
-                            this.api().columns().every( function () {
-                                var that = this;
-
-                                $( 'input', this.footer() ).on( 'keyup change clear', function () {
-                                    if ( that.search() !== this.value ) {
-                                        that
-                                            .search( this.value )
-                                            .draw();
-                                    }
-                                } );
-                            } );
-                        },
                     })
                 })
             },
             /****************************** Consultas ****************************************************/
-            async conAbas(){
-                var datos = {'modulo': 'repoPro'};
-
-                //abasto entregas
-                let aba = await axios.post('Calidad/ConAbast', datos);
-                this.abaentre = aba.data;
-                this.tabla();
+            //Consultas de procesos
+            async conProCali(dat){
+                await axios.post('Calidad/ConProCali', dat)
+                .then(ele => {this.caliProce = ele.data, this.chageClose()})
+            },
+            async save(form){
+                await axios.post('Calidad/CaliPro', form)
+                .then(ele => {form.procesos = [], form.maquinas = [], form.clave = [], this.alertSucces()})
+                .catch(err => {this.alertWarning()})
             },
             /****************************** Recorridos Para tabla *******************************************/
-            //Normas
-            Norma(paqCL, cla, NorDes){
-                let resu = "";
-                if (cla) {
-                    console.log(paqCL.find(ele => {return ele.clave_id == cla}))
-                    resu = paqCL.find(ele => {return ele.clave_id == cla})
-                    if (NorDes == "1") {
-                        return resu.norma.materiales.nommat;
-                    } /* else if(NorDes == 0){
-                        return resu.norma_id;
-                    } */
-                    else {
-                        return resu.clave.DESCR;
-                    }
-                }else {
-                    return "";
+            //opciones de select de procesos
+            selePro(dep){
+                let pr = [];
+                let fin = [];
+                //console.log(this.catproce)
+                switch (dep) {
+                    case 4:
+                        pr = this.catproce.filter(eve => {return eve.aplicacion.includes("Hilaturas")})
+                        break;
+                    case 5:
+                        pr = this.catproce.filter(eve => {return eve.aplicacion.includes("Hilaturas")})
+                        break;
+                    case 6:
+                        pr = this.catproce.filter(eve => {return eve.aplicacion.includes("Hilaturas")})
+                        break;
+                    case 7:
+                        pr = this.catproce.filter(eve => {return eve.aplicacion.includes("Apertura")})
+                        //console.log(pr)
+                        break;
+                    case 8:
+                        pr = this.catproce.filter(eve => {return eve.aplicacion.includes("Hilaturas")})
+                        break;
+                    case 18:
+                        pr = this.catproce.filter(eve => {return eve.aplicacion.includes("preparación")})
+                        //console.log(pr)
+                        break;
+                    case 19:
+                        pr = this.catproce.filter(eve => {return eve.aplicacion.includes("preparación")})
+                        //console.log(pr)
+                        break;
                 }
 
+                pr.forEach(ele => {
+                    fin.push({id: ele.id, text: ele.nombre})
+                });
+                return fin;
+            },
+            //opciones del select de maquinas
+            seleMaq(dep){
+                let pr = [];
+                switch (dep) {
+                    case 4:
+                        pr = this.opcMH1;
+                        break;
+                    case 5:
+                        pr = this.opcMH2;
+                        break;
+                    case 6:
+                        pr = this.opcMH3;
+                        break;
+                    case 7:
+                        pr = this.opcMA;
+                        break;
+                    case 8:
+                        pr = this.opcMHA;
+                        break;
+                    case 18:
+                        pr = this.opcMPOE;
+                        break;
+                    case 19:
+                        pr = this.opcMPA;
+                        break;
+                }
+                return pr;
             },
             //opciones de claves
             opcNC(NoCl){
                 const nc = [];
                 NoCl.forEach(el => {
-                    nc.push({id: el.clave.id, text: el.clave.CVE_ART})
+                    nc.push({id: el.clave.id, text: el.norma.materiales.nommat+' - '+el.clave.CVE_ART+' - '+el.clave.DESCR})
                 });
                 return nc;
-            }
+            },
+            //abrir o cerrar modal procesos
+            chageClose(){
+                this.showModal = !this.showModal
+            },
         },
 
-        computed: {},
+        computed: {
+            //opciones Apertura
+            opcMA: function (){
+                let ma = []
+                return ma = this.maquinas.filter(ele => { return ele.departamento_id == 7})
+            },
+            //opciones H1
+            opcMH1: function (){
+                let m1 = []
+                return m1 = this.maquinas.filter(ele => { return ele.departamento_id == 4})
+            },
+            //opciones H2
+            opcMH2: function (){
+                let m1 = []
+                return m1 = this.maquinas.filter(ele => { return ele.departamento_id == 5})
+            },
+            //opciones H3
+            opcMH3: function (){
+                let m1 = []
+                return m1 = this.maquinas.filter(ele => { return ele.departamento_id == 6})
+            },
+            //opciones anillo
+            opcMHA: function (){
+                let m1 = []
+                return m1 = this.maquinas.filter(ele => { return ele.departamento_id == 8})
+            },
+            //opciones preparación open-end
+            opcMPOE: function (){
+                let m1 = []
+                return m1 = this.maquinas.filter(ele => { return ele.departamento_id == 18})
+            },
+            //opciones preparación anillo
+            opcMPA: function (){
+                let m1 = []
+                return m1 = this.maquinas.filter(ele => { return ele.departamento_id == 19})
+            }
+        },
 
         watch: {}
     }

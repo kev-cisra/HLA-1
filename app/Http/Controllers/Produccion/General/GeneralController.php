@@ -181,7 +181,7 @@ class GeneralController extends Controller
     }
 
     //Consulta de abastos general
-    public function ConAbast(Request $request){
+    public function ConAbast(){
         $aba = admi_abas::where('estatus', '=', 1)
             ->orderBy('id', 'desc')
             ->with([
@@ -189,7 +189,8 @@ class GeneralController extends Controller
                     $ae->select('id', 'folio', 'banco', 'esta_inicio', 'esta_final', 'total', 'perfi_abas', 'perfi_entrega', 'soli_aba_id', 'admi_abas_id');
                 },
                 'proc_final_aba' => function($pfa){
-                    $pfa->select('id', 'estatus', 'norma_id', 'clave_id', 'admi_abas_id');
+                    $pfa->where('estatus', '=', 1)
+                    ->select('id', 'estatus', 'norma_id', 'clave_id', 'admi_abas_id');
                 },
                 'proc_final_aba.norma' => function($pfan){
                     $pfan->select('id', 'departamento_id', 'material_id');
@@ -204,7 +205,7 @@ class GeneralController extends Controller
                     $dep->select('id', 'Nombre', 'departamento_id');
                 }
             ])
-            ->get();
+            ->get(['id', 'partida', 'folio2', 'total', 'estatus', 'perfil_id', 'departamento_id']);
 
         return $aba;
     }
