@@ -22,4 +22,9 @@ class CotizacionesSistemas extends Model{
     public function Requisicion() {
         return $this->belongsTo(RequisicionesSistemas::class, 'id');
     }
+
+    //relacion uno a uno con Proveedores Sistemas
+    public function Proveedor() {
+        return $this->belongsTo(ProveedoresSistemas::class, 'Proveedor_Sistemas_id');
+    }
 }

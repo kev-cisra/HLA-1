@@ -108,7 +108,6 @@ class PerfilesUsuarios extends Model
         return $this->hasMany(parosCarga::class, 'perfil_fin_id');
     }
 
-
     //Consulta General
     public function SelectPerfiles(){
         PerfilesUsuarios::get(['id','IdUser','IdEmp', 'Nombre', 'ApPat','ApMat']);

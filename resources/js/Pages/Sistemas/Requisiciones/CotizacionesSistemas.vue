@@ -94,7 +94,7 @@
                                 </div>
                                 <div class="iconoCyan" @click="VisualizaCotizacion(data)" v-if="data.Estatus > 2">
                                     <span tooltip="Visualiza Cotización" flow="left">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
@@ -106,7 +106,6 @@
                 </template>
             </Table>
         </section>
-
         <!-- ***************************************** MODALES ****************************************************** -->
         <!-- --------------------- Modal registrar Solicitud -------------------------- -->
         <modal :show="showModal" @close="chageClose" :maxWidth="tam">
@@ -160,7 +159,7 @@
                         <jet-input type="text" v-model="Sol.Dispositivo" @input="(val) => (Sol.Dispositivo = Sol.Dispositivo.toUpperCase())"></jet-input>
                         <small v-if="errors.Dispositivo" class="validation-alert">{{errors.Dispositivo}}</small>
                     </div>
-                    <div class="tw-mt-6  md:tw-w-1/12 md:tw-mb-0">
+                    <div class="tw-mt-6 md:tw-w-1/12 md:tw-mb-0">
                         <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
                     </div>
                 </div>
@@ -206,6 +205,13 @@
                         </select>
                         <small v-if="errors.TipoPago" class="validation-alert">{{errors.TipoPago}}</small>
                     </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>Proveedor</jet-label>
+                        <select class="InputSelect" v-model="form.Proveedor_Sistemas_id">
+                            <option v-for="prov in ProveedoresSistemas" :key="prov.id" :value="prov.id" > {{ prov.Nombre }}</option>
+                        </select>
+                        <small v-if="errors.Proveedor_Sistemas_id" class="validation-alert">{{errors.Proveedor_Sistemas_id}}</small>
+                    </div>
                 </div>
                 <Table id="Articulos">
                     <template v-slot:TableHeader>
@@ -246,7 +252,7 @@
                                     <p class='tw-lowercase tw-text-sm tw-text-gray-400 group-hover:tw-text-indigo-600 tw-mt-2 tw-tracking-wider' v-if="form.archivo == null">Seleccion un Archivo</p>
                                     <span class="tw-mt-2 tw-text-xxs tw-text-teal-500 tw-font-bold" v-if="form.archivo != null">{{  form.archivo.name }}</span>
                                 </div>
-                            <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
+                                <input type='file' class="tw-hidden" @input="form.archivo = $event.target.files[0]"/>
                             </label>
                         </div>
                         <div v-if="form.archivo != null">
@@ -312,14 +318,14 @@
                                         <div class="FlexCenter">
                                             <div class="IconAproved"  v-if="data.Aprobado == 1">
                                                 <span tooltip="APROBADO" flow="left">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
                                                         <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                                     </svg>
                                                 </span>
                                             </div>
                                             <div class="IconDenied" v-else>
                                                 <span tooltip="DENEGADO" flow="left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
                                                     <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
                                                 </svg>
                                                 </span>
@@ -415,6 +421,8 @@ export default {
                 Folio: '',
                 Fecha: '',
                 Departamento_id: '',
+                Proveedor_Sistemas_id: '',
+                CostoExtra: 0,
                 Estatus: '',
                 Moneda: '',
                 TipoCambio: 1,
@@ -461,6 +469,7 @@ export default {
         Session: Object,
         errors: Object,
         Departamentos: Object,
+        ProveedoresSistemas: Object,
         Perfiles: Object,
         RequisicionesSistemas: Object, //Consulta inicial
         RequisicionSistemas: Object, //Requisicion con Cotizacion
@@ -516,6 +525,8 @@ export default {
                 Folio: '',
                 Fecha: '',
                 Departamento_id: '',
+                Proveedor_Sistemas_id: '',
+                CostoExtra: 0,
                 Estatus: '',
                 Moneda: '',
                 TipoCambio: 1,

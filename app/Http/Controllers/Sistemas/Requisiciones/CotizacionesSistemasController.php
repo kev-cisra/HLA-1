@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Sistemas\Requisiciones;
 
 use App\Http\Controllers\Controller;
+use App\Models\Compras\Proveedores;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\Sistemas\Requisiciones\ArticulosRequisicionesSistemas;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Sistemas\Requisiciones\CotizacionesSistemas;
 use App\Models\Sistemas\Requisiciones\PreciosCotizacionesSistemas;
+use App\Models\Sistemas\Requisiciones\ProveedoresSistemas;
 use App\Models\Sistemas\Requisiciones\RequisicionesSistemas;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -29,7 +31,10 @@ class CotizacionesSistemasController extends Controller{
 
         //Catalogos
         $Departamentos = $this->Dpto->SelectDepartamentos();
-        $Perfiles = $this->Per->SelectPerfiles();
+        // $Perfiles = $this->Per->SelectPerfiles();
+        $Perfiles = PerfilesUsuarios::get(['id','IdUser','IdEmp', 'Nombre', 'ApPat','ApMat']);
+
+        $ProveedoresSistemas = ProveedoresSistemas::get(['id', 'Nombre']);
 
         //Consulta Principal
         $RequisicionesSistemas = RequisicionesSistemas::with([
@@ -41,16 +46,26 @@ class CotizacionesSistemasController extends Controller{
             },
             'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
                 $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
-            }
+            },
         ])->where('Estatus', '>', 0)->get();
 
         if($request->Req){
-            $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
+
+            $CotizacionSistemas = CotizacionesSistemas::with([
+                'Precios' => function($Precios) { //Relacion 1 a 1 De puestos
+                    $Precios->select('id', 'IdUser', 'Marca', 'Precio','Total', 'cotizacion_sistemas_id', 'art_req_sistemas_id');
+                },
+                'Precios.Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
+                    $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
+                },
+            ])->where('requisicion_sistemas_id', '=',  $request->Req)->get();
+
+            $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Proveedor','Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
         }else{
+            $CotizacionSistemas = new stdClass();
             $RequisicionSistemas = new stdClass();
         }
-
-        return Inertia::render('Sistemas/Requisiciones/CotizacionesSistemas', compact('Session','Departamentos','Perfiles', 'RequisicionesSistemas', 'RequisicionSistemas'));
+        return Inertia::render('Sistemas/Requisiciones/CotizacionesSistemas', compact('Session','Departamentos','Perfiles','ProveedoresSistemas','CotizacionSistemas','RequisicionesSistemas', 'RequisicionSistemas'));
     }
 
     public function store(Request $request){
@@ -133,6 +148,7 @@ class CotizacionesSistemasController extends Controller{
                     'IdUser' => ['required'],
                     'Moneda' => ['required'],
                     'TipoPago' => ['required'],
+                    'Proveedor_Sistemas_id' => ['required'],
                     // 'archivo' => ['mimes:jpg,png,jpeg,svg,pdf'],
                 ])->validate();
 
@@ -164,8 +180,10 @@ class CotizacionesSistemasController extends Controller{
                         'Moneda' => $request->Moneda,
                         'TipoCambio' => $request->TipoCambio,
                         'Aprobado' => 0,
+                        'CostoExtra' => $request->CostoExtra,
                         'Comentario' => $request->Comentario,
                         'Archivo' => $url,
+                        'Proveedor_Sistemas_id' => $request->Proveedor_Sistemas_id,
                         'requisicion_sistemas_id' => $request->requisicion_sistemas_id,
                     ]);
 
