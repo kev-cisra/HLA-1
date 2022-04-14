@@ -48,6 +48,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('Invierno:Equipos')
         ->timezone('America/Mexico_City')
         ->dailyAt('08:00');
+        //->everyMinute();
 
         //Invierno cierre de paros por turnos apertura
         $schedule->command('cierre:paroInvierno')
@@ -59,12 +60,13 @@ class Kernel extends ConsoleKernel
         $schedule->command('Verano:Equipos')
         ->timezone('America/Mexico_City')
         ->dailyAt('09:00');
+        //->everyMinute();
 
         //Verano cierre de paros por turnos apertura
         $schedule->command('cierre:paroVerano')
         ->timezone('America/Mexico_City')
-        //->dailyAt('20:00');
         ->twiceDaily(9, 21);
+        //->everyMinute();
 
         $schedule->command('task:paroGeneral')
         ->timezone('America/Mexico_City')

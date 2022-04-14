@@ -46,8 +46,8 @@ class CierreParoInvierno extends Command
         $txt = '';
         //$hoy->toDateTimeString();
 
-        if (!var_dump($hoy->isDST())) {
-            $txt = 'entro a paro '.$hoy.' -> ';
+        if (empty($hoy->isDST())) {
+            $txt = 'entro a paro invierno '.$hoy.' -> ';
             $paros = parosCarga::where('departamento_id', '=', 7)
             ->where('estatus', '=', 'Activo')
             ->get();
@@ -92,7 +92,7 @@ class CierreParoInvierno extends Command
             }
         }
 
-        //Storage::disk('local')->put('paroInvierno.txt', $txt);
+        Storage::disk('local')->put('paroInvierno.txt', $txt);
         return Command::SUCCESS;
     }
 }
