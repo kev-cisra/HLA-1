@@ -43,16 +43,16 @@ class CierreParoVerano extends Command
         //Pone la fecha de hoy
         $hoy = Carbon::now();
         //$hoy->toDateTimeString();
-        $txt = 'entro a paro Verano'.$hoy;
 
-        if (var_dump($hoy->isDST())) {
+        if (!empty($hoy->isDST())) {
+            $txt = 'entro a paro Verano '.$hoy;
             $paros = parosCarga::where('departamento_id', '=', 7)
             ->where('estatus', '=', 'Activo')
             ->get();
             foreach ($paros as $paro) {
                 $tiempo = $hoy->diffInMinutes($paro->fecha);
                 if (empty($paro->paros_carga_id)) {
-                    $txt.='entro normal '.$hoy.' || ';
+                    //$txt.='entro normal '.$hoy.' || ';
                     parosCarga::create([
                         'fecha' => $paro->fecha,
                         'iniFecha' => $hoy->toDateTimeString(),
@@ -69,7 +69,7 @@ class CierreParoVerano extends Command
                     ]);
                     parosCarga::find($paro->id)->update(['finFecha' => $hoy->toDateTimeString(), 'tiempo' => $tiempo, 'estatus' => 'Autorizado', 'nota' => 'se mantiene activo', 'perfil_fin_id' => 7]);
                 }else{
-                    $txt.='entro sub paro '.$hoy.' || ';
+                    //$txt.='entro sub paro '.$hoy.' || ';
                     $parUp = parosCarga::where('paros_carga_id', '=', $paro->paros_carga_id)->orderBy('id', 'desc')->first();
                     parosCarga::create([
                         'fecha' => $parUp->fecha,
@@ -91,7 +91,7 @@ class CierreParoVerano extends Command
 
         }
 
-        //Storage::disk('local')->put('paroVerano.txt', $txt);
+        Storage::disk('local')->put('paroVerano.txt', $txt);
         return Command::SUCCESS;
     }
 }

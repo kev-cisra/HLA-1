@@ -29,26 +29,13 @@ class AutorizaRequisicionesSistemasController extends Controller{
 
         if($request->Req){
 
-            $CotizacionSistemas = CotizacionesSistemas::with([
-                'Proveedor' => function($Precios) { //Relacion 1 a 1 De puestos
-                    $Precios->select('id', 'Nombre');
-                },
-                'Precios' => function($Precios) { //Relacion 1 a 1 De puestos
-                    $Precios->select('id', 'IdUser', 'Marca', 'Precio','Total', 'cotizacion_sistemas_id', 'art_req_sistemas_id');
-                },
-                'Precios.Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
-                    $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
-                },
-            ])->where('requisicion_sistemas_id', '=',  $request->Req)->get();
-
-            $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
+            $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento', 'Cotizacion.Proveedor', 'Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
 
         }else{
-            $CotizacionSistemas = new stdClass();
             $RequisicionSistemas = new stdClass();
         }
 
-        return Inertia::render('Supply/Sistemas/AutorizaCotizaciones', compact('Session', 'RequisicionesSistemas', 'RequisicionSistemas', 'CotizacionSistemas'));
+        return Inertia::render('Supply/Sistemas/AutorizaCotizaciones', compact('Session', 'RequisicionesSistemas', 'RequisicionSistemas'));
     }
 
     public function update(Request $request, $id){

@@ -32,7 +32,7 @@
                 <template v-slot:TableFooter>
                     <tr class="fila" v-for="data in RequisicionesSistemas" :key="data.id">
                         <td>{{data.Fecha}}</td>
-                        <td>{{data.Folio}}</td>
+                        <td>S-{{data.Folio}}</td>
                         <td>{{data.perfil.Nombre}} {{data.perfil.ApPat}} {{data.perfil.ApMat}} </td>
                         <td>{{data.departamento.Nombre}}</td>
                         <td>
@@ -279,7 +279,7 @@
 
         <modal :show="showCotizacion" @close="chageCotizacion" maxWidth="3xl">
             <div class="ModalHeader">
-                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Cotización SIS-0{{RequisicionSistemas.Folio}}</h3>
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Cotización S-{{RequisicionSistemas.Folio}}</h3>
             </div>
 
             <div class="ModalForm">
@@ -297,13 +297,13 @@
                         <tr class="fila" >
                             <td class="tw-text-center">{{RequisicionSistemas.Fecha}}</td>
                             <td class="tw-text-center">{{RequisicionSistemas.perfil.Nombre}} {{RequisicionSistemas.perfil.ApPat}} {{RequisicionSistemas.perfil.ApMat}}</td>
-                            <td class="tw-text-center">{{RequisicionSistemas.Folio}}</td>
+                            <td class="tw-text-center">S-{{RequisicionSistemas.Folio}}</td>
                             <td class="tw-text-center">{{RequisicionSistemas.departamento.Nombre}}</td>
                             <td class="tw-text-center">{{RequisicionSistemas.Comentarios}}</td>
                         </tr>
                     </template>
                 </Table>
-                <div v-for="data in CotizacionSistemas" :key="data.id">
+                <div v-for="data in RequisicionSistemas.cotizacion" :key="data.id">
                     <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Cotización --</p>
                     <div :class="{ 'tw-p-2 tw-border-4 tw-border-teal-700 tw-bg-teal-600': data.Aprobado == 1}">
                         <Table>
@@ -357,6 +357,9 @@
 
                         <Table>
                             <template v-slot:TableHeader>
+                                <th class="columna">CANTIDAD</th>
+                                <th class="columna">UNIDAD</th>
+                                <th class="columna">DISPOSITIVO</th>
                                 <th class="columna">MARCA</th>
                                 <th class="columna">PRECIO</th>
                                 <th class="columna">TOTAL</th>
@@ -364,10 +367,13 @@
                             </template>
 
                             <template v-slot:TableFooter>
-                                <tr class="fila" v-for="pre in CotizacionSistemas" :key="pre.id">
-                                    <td class="tw-text-center">{{pre}}</td>
-                                    <td class="tw-text-center">{{pre}}</td>
-                                    <td class="tw-text-center">{{pre}}</td>
+                                <tr class="fila" v-for="pre in data.precios" :key="pre.id">
+                                    <td class="tw-text-center">{{pre.articulos.Cantidad}}</td>
+                                    <td class="tw-text-center">{{pre.articulos.Unidad}}</td>
+                                    <td class="tw-text-center">{{pre.articulos.Dispositivo}}</td>
+                                    <td class="tw-text-center">{{pre.Marca}}</td>
+                                    <td class="tw-text-center">{{pre.Precio}}</td>
+                                    <td class="tw-text-center">{{pre.Total}}</td>
                                     <td>
                                         <div class="FlexCenter">
                                             <div class="iconoEdit" @click="edit(data)" v-if="Estatus == 2 || Estatus == 10">

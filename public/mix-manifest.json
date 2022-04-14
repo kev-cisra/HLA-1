@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
     "/js/app.js": "/js/app.js?id=a607f80b3dc87d74b513",
     "/css/app.css": "/css/app.css?id=074f59815b64b620fea6",
+=======
+    "/js/app.js": "/js/app.js?id=8b1b5aa2c51ad70f7435",
+    "/css/app.css": "/css/app.css?id=e7a32a81f849568ecb83",
+>>>>>>> b5c54f74f4f48d88a436b18534952d6b766c1117
     "/webfonts/fa-brands-400.ttf": "/webfonts/fa-brands-400.ttf?id=41dfd9a52e45c79dcf9d",
     "/webfonts/fa-brands-400.woff2": "/webfonts/fa-brands-400.woff2?id=3be2b051b5220dd6c8d4",
     "/webfonts/fa-regular-400.ttf": "/webfonts/fa-regular-400.ttf?id=d22c9aed113724cdc240",

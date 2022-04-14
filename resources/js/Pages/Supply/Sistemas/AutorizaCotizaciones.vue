@@ -81,7 +81,7 @@
         <!-- ***************************************** MODALES ****************************************************** -->
         <modal :show="showCotizacion" @close="chageCotizacion" maxWidth="3xl">
             <div class="ModalHeader">
-                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Cotización SIS-{{RequisicionSistemas.Folio}}</h3>
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>SOLICITUD S-{{RequisicionSistemas.Folio}}</h3>
             </div>
 
             <div class="ModalForm">
@@ -99,7 +99,7 @@
                         <tr class="fila" >
                             <td class="tw-text-center">{{RequisicionSistemas.Fecha}}</td>
                             <td class="tw-text-center">{{RequisicionSistemas.perfil.Nombre}} {{RequisicionSistemas.perfil.ApPat}} {{RequisicionSistemas.perfil.ApMat}}</td>
-                            <td class="tw-text-center">{{RequisicionSistemas.Folio}}</td>
+                            <td class="tw-text-center">S-{{RequisicionSistemas.Folio}}</td>
                             <td class="tw-text-center">{{RequisicionSistemas.departamento.Nombre}}</td>
                             <td class="tw-text-center">{{RequisicionSistemas.Comentarios}}</td>
                         </tr>
@@ -114,6 +114,8 @@
                                 <th class="columna">MONEDA</th>
                                 <th class="columna">TIPO CAMBIO</th>
                                 <th class="columna">COMENTARIOS</th>
+                                <th class="columna">COSTO EXTRA</th>
+                                <th class="columna">PROVEEDOR</th>
                                 <th class="columna">AUTORIZADA</th>
                                 <th class="columna">ARCHIVO</th>
                                 <th class="columna">ACCIONES</th>
@@ -125,18 +127,20 @@
                                     <td class="tw-text-center">{{data.Moneda}}</td>
                                     <td class="tw-text-center">{{data.TipoCambio}}</td>
                                     <td class="tw-text-center">{{data.Comentario}}</td>
+                                    <td class="tw-text-center">{{data.CostoExtra}}</td>
+                                    <td class="tw-text-center">{{data.proveedor.Nombre}}</td>
                                     <td>
                                         <div class="FlexCenter">
                                             <div class="IconAproved"  v-if="data.Aprobado == 1">
                                                 <span tooltip="APROBADO" flow="left">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
                                                         <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                                     </svg>
                                                 </span>
                                             </div>
                                             <div class="IconDenied" v-else>
                                                 <span tooltip="DENEGADO" flow="left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
                                                     <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
                                                 </svg>
                                                 </span>
@@ -172,16 +176,39 @@
 
                         <Table>
                             <template v-slot:TableHeader>
+                                <th class="columna">CANTIDAD</th>
+                                <th class="columna">UNIDAD</th>
+                                <th class="columna">DISPOSITIVO</th>
                                 <th class="columna">MARCA</th>
                                 <th class="columna">PRECIO</th>
                                 <th class="columna">TOTAL</th>
+                                <th class="columna">ACCIONES</th>
                             </template>
 
                             <template v-slot:TableFooter>
                                 <tr class="fila" v-for="pre in data.precios" :key="pre.id">
+                                    <td class="tw-text-center">{{pre.articulos.Cantidad}}</td>
+                                    <td class="tw-text-center">{{pre.articulos.Unidad}}</td>
+                                    <td class="tw-text-center">{{pre.articulos.Dispositivo}}</td>
                                     <td class="tw-text-center">{{pre.Marca}}</td>
                                     <td class="tw-text-center">{{pre.Precio}}</td>
                                     <td class="tw-text-center">{{pre.Total}}</td>
+                                    <td>
+                                        <div class="FlexCenter">
+                                            <div class="iconoEdit" @click="edit(data)" v-if="Estatus == 2 || Estatus == 10">
+                                                <span tooltip="Editar" flow="left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="IconProcess" v-if="Estatus >= 3 && Estatus < 10">
+                                                <span tooltip="En proceso ..." flow="left">
+                                                    <i class="fa-solid fa-spinner"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             </template>
                         </Table>
@@ -252,7 +279,7 @@ export default {
     props: {
         Session: Object,
         RequisicionesSistemas: Object, //Consulta inicial
-        RequisicionSistemas: Object, //Requisicion con Cotizacion
+        RequisicionSistemas: Object, //Consulta detalle
     },
 
     mounted() {
