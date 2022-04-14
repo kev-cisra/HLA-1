@@ -238,6 +238,12 @@
                 </Table>
                 <div class="FormSection">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label>costo extra</jet-label>
+                        <input type="number" min="1" class="InputDinamico" v-model="form.CostoExtra">
+                    </div>
+                </div>
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                         <jet-label>COMENTARIOS</jet-label>
                         <textarea name="" id="" cols="2" v-model="form.Comentario" @input="(val) => (form.Comentario = form.Comentario.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
                     </div>
@@ -297,7 +303,7 @@
                         </tr>
                     </template>
                 </Table>
-                <div v-for="data in RequisicionSistemas.cotizacion" :key="data.id">
+                <div v-for="data in CotizacionSistemas" :key="data.id">
                     <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Cotización --</p>
                     <div :class="{ 'tw-p-2 tw-border-4 tw-border-teal-700 tw-bg-teal-600': data.Aprobado == 1}">
                         <Table>
@@ -305,15 +311,27 @@
                                 <th class="columna">TIPO PAGO</th>
                                 <th class="columna">MONEDA</th>
                                 <th class="columna">TIPO CAMBIO</th>
+                                <th class="columna">COSTO EXTRA</th>
+                                <th class="columna">PROVEEDOR</th>
+                                <th class="columna">ARCHIVO</th>
                                 <th class="columna">APROVADO</th>
                                 <th class="columna">COMENTARIOS</th>
                             </template>
 
                             <template v-slot:TableFooter>
-                                <tr class="fila" >
+                                <tr class="fila">
                                     <td class="tw-text-center">{{data.TipoPago}}</td>
                                     <td class="tw-text-center">{{data.Moneda}}</td>
                                     <td class="tw-text-center">{{data.TipoCambio}}</td>
+                                    <td class="tw-text-center">{{data.CostoExtra}}</td>
+                                    <td class="tw-text-center">{{data.proveedor.Nombre}}</td>
+                                    <td class="tw-text-center">
+                                        <div class="FlexCenter">
+                                            <a target="_blank" :href="path + data.Archivo" style="color:black;">
+                                                <i class="far fa-file-image"></i>
+                                            </a>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div class="FlexCenter">
                                             <div class="IconAproved"  v-if="data.Aprobado == 1">
@@ -346,10 +364,10 @@
                             </template>
 
                             <template v-slot:TableFooter>
-                                <tr class="fila" v-for="pre in data.precios" :key="pre.id">
-                                    <td class="tw-text-center">{{pre.Marca}}</td>
-                                    <td class="tw-text-center">{{pre.Precio}}</td>
-                                    <td class="tw-text-center">{{pre.Total}}</td>
+                                <tr class="fila" v-for="pre in CotizacionSistemas" :key="pre.id">
+                                    <td class="tw-text-center">{{pre}}</td>
+                                    <td class="tw-text-center">{{pre}}</td>
+                                    <td class="tw-text-center">{{pre}}</td>
                                     <td>
                                         <div class="FlexCenter">
                                             <div class="iconoEdit" @click="edit(data)" v-if="Estatus == 2 || Estatus == 10">
@@ -473,6 +491,7 @@ export default {
         Perfiles: Object,
         RequisicionesSistemas: Object, //Consulta inicial
         RequisicionSistemas: Object, //Requisicion con Cotizacion
+        CotizacionSistemas: Object,
     },
 
     mounted() {

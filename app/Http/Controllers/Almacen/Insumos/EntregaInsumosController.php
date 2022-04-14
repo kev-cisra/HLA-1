@@ -67,13 +67,17 @@ class EntregaInsumosController extends Controller{
                 //Actualizo el estauts de la requisicion si todos los productos fueron entregados
                 if($Articulos == 0){
                     RequisicionesInsumos::where('id', $request->requisiciones_insumos_id)->update([
-                        'Estatus' => 3,
+                        'Estatus' => 4, //Requisicion Entregada completamente
+                    ]);
+                }else{
+                    RequisicionesInsumos::where('id', $request->requisiciones_insumos_id)->update([
+                        'Estatus' => 3, //Requisicion Parcial
                     ]);
                 }
                 return redirect()->back();
                 break;
 
-            case 2:
+            case 2: //Parcialidad de partida
 
                 $Session = auth()->user();
                 //Actualizo la cantidad de la partida

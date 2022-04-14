@@ -52,6 +52,9 @@ class CotizacionesSistemasController extends Controller{
         if($request->Req){
 
             $CotizacionSistemas = CotizacionesSistemas::with([
+                'Proveedor' => function($Precios) { //Relacion 1 a 1 De puestos
+                    $Precios->select('id', 'Nombre');
+                },
                 'Precios' => function($Precios) { //Relacion 1 a 1 De puestos
                     $Precios->select('id', 'IdUser', 'Marca', 'Precio','Total', 'cotizacion_sistemas_id', 'art_req_sistemas_id');
                 },

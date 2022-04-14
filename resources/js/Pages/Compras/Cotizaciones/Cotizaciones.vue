@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+<app-layout>
     <div class="uppercase tw-mx-4">
         <Header :class="[color, style]">
             <slot>

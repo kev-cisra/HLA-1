@@ -35,24 +35,34 @@
                         </td>
                         <td>
                             <div class="FlexCenter">
+                                <div v-if="data.Estatus == 0">
+                                    <span tooltip="Solicitud Rechazada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-rose-400 tw-rounded-full">RECHAZADO</span>
+                                    </span>
+                                </div>
+                                <div v-if="data.Estatus == 1">
+                                    <span tooltip="Pendiente por Confirmar" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-blueGray-400 tw-rounded-full">REGISTRADO</span>
+                                    </span>
+                                </div>
                                 <div v-if="data.Estatus == 2">
                                     <span tooltip="Material Solicitado" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">SOLICITADO</span>
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">SOLICITADA</span>
                                     </span>
                                 </div>
                                 <div v-if="data.Estatus == 3">
-                                    <span tooltip="Material Entregado" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-500 tw-rounded-full">ENTREGADO</span>
+                                    <span tooltip="Articulos pendientes por entregar" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-500 tw-rounded-full">PARCIAL</span>
                                     </span>
                                 </div>
                                 <div v-if="data.Estatus == 4">
-                                    <span tooltip="Autorizado" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">APROBADO</span>
+                                    <span tooltip="Solicitud entregada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">ENTREGADO</span>
                                     </span>
                                 </div>
                                 <div v-if="data.Estatus == 5">
                                     <span tooltip="Material Adquirido" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-500 tw-rounded-full">STOCK</span>
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-purple-500 tw-rounded-full">STOCK</span>
                                     </span>
                                 </div>
                             </div>
@@ -74,7 +84,7 @@
             </Table>
         </section>
         <!-- **************************************************** MODALES ****************************************************** -->
-        <!-- --------------- Modal para guardado de datos ------------ -->
+        <!-- --------------- Modal visualizacion partidas ------------ -->
         <modal :show="showArticulos" @close="chageArticulos" :maxWidth="tam">
             <div class="ModalHeader">
                 <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>LISTA DE INSUMOS RI-{{form.Folio}}</h3>

@@ -53,22 +53,22 @@
                                 </div>
                                 <div v-if="data.Estatus == 2">
                                     <span tooltip="Material Solicitado" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">CONFIRMADO</span>
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">SOLICITADA</span>
                                     </span>
                                 </div>
                                 <div v-if="data.Estatus == 3">
-                                    <span tooltip="En Autorización" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-500 tw-rounded-full">AUTORIZACIÓN</span>
+                                    <span tooltip="Articulos pendientes por entregar" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-orange-500 tw-rounded-full">PARCIAL</span>
                                     </span>
                                 </div>
                                 <div v-if="data.Estatus == 4">
-                                    <span tooltip="Autorizado" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">APROBADO</span>
+                                    <span tooltip="Solicitud entregada" flow="left">
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">ENTREGADO</span>
                                     </span>
                                 </div>
                                 <div v-if="data.Estatus == 5">
                                     <span tooltip="Material Adquirido" flow="left">
-                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-500 tw-rounded-full">STOCK</span>
+                                        <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-purple-500 tw-rounded-full">STOCK</span>
                                     </span>
                                 </div>
                             </div>
@@ -125,7 +125,7 @@
                         <jet-label><span class="required">*</span>INSUMOS</jet-label>
                         <Select2 v-model="form.insumo_id" class="InputSelect" :settings="{width: '100%',allowClear: true}" element="background: '#e5e7eb'" :options="BuscaInsumo" />
                     </div>
-                    <div class="tw-mt-6  md:tw-w-2/12 md:tw-mb-0">
+                    <div class="tw-mt-6 md:tw-w-2/12 md:tw-mb-0">
                         <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
                     </div>
                 </div>
@@ -135,6 +135,121 @@
                 <jet-button type="button" @click="save(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
                 <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button>
                 <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
+
+        <!-- --------------- Modal visualizacion partidas ------------ -->
+        <modal :show="showArticulos" @close="chageArticulos" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>LISTA DE INSUMOS RI-{{form.Folio}}</h3>
+            </div>
+
+            <div class="ModalForm">
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">Folio</th>
+                        <th class="columna">Fecha</th>
+                        <th class="columna">Solicitante</th>
+                        <th class="columna">Departamento</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr class="fila">
+                            <td class="tw-text-center tw-font-black">RI-{{form.Folio}}</td>
+                            <td class="tw-text-center">{{form.Fecha}}</td>
+                            <td class="tw-text-center">{{form.Perfil}}</td>
+                            <td class="tw-text-center">{{form.Departamento}}</td>
+                        </tr>
+                    </template>
+                </Table>
+
+                <Table>
+                    <template v-slot:TableHeader>
+                        <th class="columna">Cantidad</th>
+                        <th class="columna">Clave</th>
+                        <th class="columna">Insumo</th>
+                        <th class="columna">Estatus</th>
+                        <th class="columna">Acciones</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr class="fila" v-for="data in ArticulosReq" :key="data.id">
+                            <td class="tw-text-center">{{data.Cantidad}}</td>
+                            <td class="tw-text-center">{{data.insumo.Clave}}</td>
+                            <td class="tw-text-center">{{data.insumo.Nombre}}</td>
+                            <td>
+                                <div class="FlexCenter">
+                                    <div v-if="data.Estatus == 2">
+                                        <span tooltip="Material Solicitado" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-emerald-500 tw-rounded-full">SOLICITADO</span>
+                                        </span>
+                                    </div>
+                                    <div v-if="data.Estatus == 3">
+                                        <span tooltip="Material Entregado" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-cyan-500 tw-rounded-full">ENTREGADO</span>
+                                        </span>
+                                    </div>
+                                    <div v-if="data.Estatus == 4">
+                                        <span tooltip="Autorizado" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-violet-500 tw-rounded-full">APROBADO</span>
+                                        </span>
+                                    </div>
+                                    <div v-if="data.Estatus == 5">
+                                        <span tooltip="Material Adquirido" flow="left">
+                                            <span class="tw-inline-flex tw-items-center tw-justify-center tw-h-6 tw-px-3 tw-text-white tw-bg-fuchsia-500 tw-rounded-full">STOCK</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="FlexCenter">
+                                    <div class="iconoEdit" @click="Confirma(data)">
+                                        <span tooltip="Entrega Material" flow="left">
+                                            <i class="fa-solid fa-check"></i>
+                                        </span>
+                                    </div>
+                                    <div class="iconoPurple" @click="EntregaParcial(data)">
+                                        <span tooltip="Entrega Material Parcial" flow="left">
+                                            <i class="fa-solid fa-box-open"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </Table>
+
+                <Table v-if="Parcialidad == true">
+                    <template v-slot:TableHeader>
+                        <th class="columna">Cantidad Solicitada</th>
+                        <th class="columna">Insumo</th>
+                        <th class="columna">Cantidad Disponible</th>
+                        <th class="columna">Cantidad Faltante</th>
+                        <th class="columna">Acciones</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr class="fila">
+                            <td class="tw-text-center">{{ Parcial.Cantidad }}</td>
+                            <td class="tw-text-center">{{ Parcial.Insumo }}</td>
+                            <td class="tw-text-center"><jet-input type="text" v-model="Parcial.CantidadParcial"></jet-input></td>
+                            <td class="tw-text-center">{{ Calcula }}</td>
+                            <td>
+                                <div class="FlexCenter">
+                                    <div class="iconoGreen" @click="GeneraParcialidad(Parcial)">
+                                        <span tooltip="Guarda Parcialidad" flow="left">
+                                            <i class="fa-regular fa-floppy-disk"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </Table>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-CancelButton @click="chageArticulos">Cerrar</jet-CancelButton>
             </div>
         </modal>
     </app-layout>
