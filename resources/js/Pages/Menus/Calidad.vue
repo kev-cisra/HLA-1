@@ -49,9 +49,28 @@
             </Table>
         </div>
 
+        <ag-grid-vue
+            style="width: 100%; height: 200px"
+            class="ag-theme-alpine"
+            :columnDefs="columnDefs"
+            :rowData="rowData"
+        >
+        </ag-grid-vue>
+
+        <!-- <pre>
+            {{columnDefs}}
+        </pre> -->
+
         <!------------------ Modal ------------------------->
         <modal :show="showModal" @close="chageClose">
             <div class="tw-px-4 tw-py-4">
+                <ag-grid-vue
+                    style="width: 100%; height: 200px"
+                    class="ag-theme-alpine"
+                    :columnDefs="columnProcFin"
+                    :rowData="caliProce"
+                >
+                </ag-grid-vue>
                 <table class="table">
                     <thead>
                         <th>Proceso</th>
@@ -77,9 +96,9 @@
                         </tr>
                     </tbody>
                 </table>
-                <pre>
+                <!-- <pre>
                     {{ caliProce }}
-                </pre>
+                </pre> -->
             </div>
         </modal>
 
@@ -111,6 +130,11 @@
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
     window.JSZip = jszip;
 
+    import { AgGridVue } from "ag-grid-vue3";
+
+    import "ag-grid-community/dist/styles/ag-grid.css";
+    import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+
     export default {
         props: [
             'usuario',
@@ -123,7 +147,8 @@
             Link,
             Table,
             Modal,
-            Select2
+            Select2,
+            AgGridVue
         },
 
         data() {
@@ -135,7 +160,49 @@
         },
 
         mounted() {
-            this.tabla();
+            //this.tabla();
+        },
+
+        setup() {
+            return {
+                columnDefs: [
+                    { headerName: "Make", field: "make" },
+                    { headerName: "Model", field: "model" },
+                    { headerName: "Price", field: "price" },
+                ],
+                rowData: [
+                    { make: "Toyota", model: "Celica", price: 35000 },
+                    { make: "Ford", model: "Mondeo", price: 32000 },
+                    { make: "Porsche", model: "Boxter", price: 72000 },
+                ],
+                columnProcFin: [
+                    {
+                        headerName: "Proceso",
+                        field: "cat_proce_cali.nombre",
+                        editable: true,
+                        cellEditorSelector: function (params) {
+                            console.log(params.data)
+                        }
+                    },
+                    { headerName: "Maquina", field: "maquina.Nombre" },
+                    { headerName: "Partida", field: "partida" },
+                    {
+                        headerName: "Estatus",
+                        field: "estatus",
+                        editable: true,
+                        ver: function (params){
+                            if (params.data.estatus == 1) {
+                                console.log("Activo");
+                            }else{
+                                console.log("no")
+                            }
+                        }
+                    },
+                    { headerName: "Norma", field: "dep_mat.materiales.idmat" },
+                    { headerName: "Clave", field: "clave.CVE_ART" },
+                    { headerName: "Descripción", field: "clave.DESCR" },
+                ],
+            };
         },
 
         methods:{
