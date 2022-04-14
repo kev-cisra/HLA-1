@@ -65,13 +65,13 @@
         <modal :show="showModal" @close="chageClose">
             <div class="tw-px-4 tw-py-4">
                 <ag-grid-vue
-                    style="width: 100%; height: 200px"
+                    style="width: 100%; height: 50vh"
                     class="ag-theme-alpine"
                     :columnDefs="columnProcFin"
                     :rowData="caliProce"
                 >
                 </ag-grid-vue>
-                <table class="table">
+                <!-- <table class="table">
                     <thead>
                         <th>Proceso</th>
                         <th>Maquina</th>
@@ -95,10 +95,7 @@
                             <td> {{ cp.clave.DESCR }} </td>
                         </tr>
                     </tbody>
-                </table>
-                <!-- <pre>
-                    {{ caliProce }}
-                </pre> -->
+                </table> -->
             </div>
         </modal>
 
@@ -165,16 +162,6 @@
 
         setup() {
             return {
-                columnDefs: [
-                    { headerName: "Make", field: "make" },
-                    { headerName: "Model", field: "model" },
-                    { headerName: "Price", field: "price" },
-                ],
-                rowData: [
-                    { make: "Toyota", model: "Celica", price: 35000 },
-                    { make: "Ford", model: "Mondeo", price: 32000 },
-                    { make: "Porsche", model: "Boxter", price: 72000 },
-                ],
                 columnProcFin: [
                     {
                         headerName: "Proceso",

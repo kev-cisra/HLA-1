@@ -5,8 +5,8 @@
         <nav class="tw-sticky tw-top-0 tw-z-50 tw-bg-white tw-shadow tw-text-gray-400">
             <!-- Primary Navigation Menu -->
             <div class="tw-mx-4">
-                <div class="tw-flex tw-justify-between tw-h-16">
-                    <div class="tw-flex tw-text-gray-600">
+                <div class="tw-flex tw-justify-between tw-h-18">
+                    <div class="tw-flex tw-text-gray-600 tw-overflow-x-auto tw-overflow-y-hidden">
                         <!-- Logo -->
                         <div class="tw-flex tw-items-center tw-flex-shrink-0">
                             <a :href="route('dashboard')">
@@ -70,7 +70,7 @@
                                 <i class="tw-mr-2 fas fa-landmark tw-text-gray-600"></i> Dirección
                             </jet-nav-link>
                         </div>
-                    </div><!--- v-if="hasAnyPermission(['admin.index', 'Produccion.index', 'Sistemas.index',])" -->
+                    </div>
 
                     <div class="tw-hidden lg:tw-flex lg:tw-items-center lg:tw-ml-6">
                         <!-- Settings Dropdown -->
