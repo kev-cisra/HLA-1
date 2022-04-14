@@ -160,7 +160,7 @@
         },
 
         mounted() {
-            //this.tabla();
+            this.tabla();
         },
 
         setup() {
