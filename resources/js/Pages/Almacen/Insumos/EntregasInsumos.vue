@@ -30,7 +30,7 @@
                         <td class="tw-text-center">{{data.departamento.Nombre}}</td>
                         <td>
                             <p v-for="art in data.articulos" :key="art.id">
-                                -{{art.Cantidad }} {{art.insumo.Clave }} {{art.insumo.Insumo }} {{art.insumo.Unidad }}
+                                -{{art.Cantidad }} {{art.insumo.Clave }} {{art.insumo.Nombre }} {{art.insumo.Cantidad }} {{art.insumo.Unidad }}
                             </p>
                         </td>
                         <td>

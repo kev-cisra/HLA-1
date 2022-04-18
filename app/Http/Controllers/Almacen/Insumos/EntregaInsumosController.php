@@ -34,7 +34,7 @@ class EntregaInsumosController extends Controller{
                 $Articulos->select('id', 'IdUser', 'Cantidad', 'Estatus', 'insumo_id', 'requisiciones_insumos_id');
             },
             'Articulos.Insumo' => function($Articulos) { //Relacion 1 a 1 De puestos
-                $Articulos->select('id', 'IdUser', 'Clave', 'Nombre', 'Linea', 'Unidad');
+                $Articulos->select('id', 'IdUser', 'Clave', 'Nombre', 'Linea', 'Cantidad', 'Unidad');
             }
         ])->where('Estatus', '>', 1)
         ->get();
