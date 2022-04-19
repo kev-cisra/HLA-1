@@ -50,25 +50,11 @@ class CotizacionesSistemasController extends Controller{
         ])->where('Estatus', '>', 0)->get();
 
         if($request->Req){
-
-            $CotizacionSistemas = CotizacionesSistemas::with([
-                'Proveedor' => function($Precios) { //Relacion 1 a 1 De puestos
-                    $Precios->select('id', 'Nombre');
-                },
-                'Precios' => function($Precios) { //Relacion 1 a 1 De puestos
-                    $Precios->select('id', 'IdUser', 'Marca', 'Precio','Total', 'cotizacion_sistemas_id', 'art_req_sistemas_id');
-                },
-                'Precios.Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
-                    $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
-                },
-            ])->where('requisicion_sistemas_id', '=',  $request->Req)->get();
-
             $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Proveedor','Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
         }else{
-            $CotizacionSistemas = new stdClass();
             $RequisicionSistemas = new stdClass();
         }
-        return Inertia::render('Sistemas/Requisiciones/CotizacionesSistemas', compact('Session','Departamentos','Perfiles','ProveedoresSistemas','CotizacionSistemas','RequisicionesSistemas', 'RequisicionSistemas'));
+        return Inertia::render('Sistemas/Requisiciones/CotizacionesSistemas', compact('Session','Departamentos','Perfiles','ProveedoresSistemas','RequisicionesSistemas', 'RequisicionSistemas'));
     }
 
     public function store(Request $request){
@@ -107,7 +93,6 @@ class CotizacionesSistemasController extends Controller{
                     $serial = 1;
                 }
 
-
                 foreach ($request->Partida as $value) { //Verifico que se envien datos en la partida
                     if( $value['Cantidad'] != '' && $value['Unidad'] != '' && $value['Dispositivo'] != ''){
                         $CreaRequi = 1;
@@ -117,6 +102,7 @@ class CotizacionesSistemasController extends Controller{
                 }
 
                 if($CreaRequi == 1){ //Si hay datos en la partida se guardan
+
                     $Requisicion = RequisicionesSistemas::create([
                         'IdUser' => $request->IdUser,
                         'Fecha' => $request->Fecha,
@@ -126,6 +112,7 @@ class CotizacionesSistemasController extends Controller{
                         'Departamento_id' => $request->Departamento_id,
                         'Comentarios' => $request->Comentarios,
                     ]);
+
                     $requisicion_id = $Requisicion->id;
 
                     foreach ($request->Partida as $value) {
@@ -183,7 +170,7 @@ class CotizacionesSistemasController extends Controller{
                         'Moneda' => $request->Moneda,
                         'TipoCambio' => $request->TipoCambio,
                         'Aprobado' => 0,
-                        'CostoExtra' => $request->CostoExtra,
+                        'CostoExtra' => number_format($request->CostoExtra,2),
                         'Comentario' => $request->Comentario,
                         'Archivo' => $url,
                         'Proveedor_Sistemas_id' => $request->Proveedor_Sistemas_id,
@@ -196,15 +183,14 @@ class CotizacionesSistemasController extends Controller{
                         $PrecioCotizacion = PreciosCotizacionesSistemas::create([
                             'IdUser' => $request->IdUser,
                             'Marca' => $value['Marca'],
-                            'Precio' => $value['PrecioUnitario'],
-                            'Total' => ($value['PrecioUnitario'] * $request->TipoCambio) * $value['Cantidad'],
+                            'Precio' => number_format($value['PrecioUnitario'],2),
+                            'Total' => number_format(($value['PrecioUnitario'] * $request->TipoCambio) * $value['Cantidad'],2),
                             'cotizacion_sistemas_id' => $cotizacion_sistemas_id,
                             'art_req_sistemas_id' => $value['id'],
                         ]);
                     }
 
                     RequisicionesSistemas::where('id', $request->requisicion_sistemas_id)->update(['Estatus' => 3]);
-
 
                 }else{
                     session()->flash('flash.type', 'Warning');

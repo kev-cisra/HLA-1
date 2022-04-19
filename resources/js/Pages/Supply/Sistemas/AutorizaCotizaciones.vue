@@ -8,10 +8,27 @@
             </Header>
         </section>
         <!-- ******************************* FILTROS ********************************************* -->
-        <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-my-8 tw-mx-8">
+        <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-my-8 tw-mx-2">
             <div class="tw-flex tw-gap-4 tw-mx-2">
+                <div>
+                    <jet-label class="tw-text-center">DEPARTAMENTO</jet-label>
+                    <select class="InputSelect" v-model="params.Dpto" @change="SelectEmpresa">
+                        <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
+                    </select>
+                </div>
+                <div>
+                    <jet-label class="tw-text-center">ESTATUS</jet-label>
+                    <select class="InputSelect" v-model="params.Estatus" @change="SelectEmpresa">
+                        <option value="4">PENDIENTES</option>
+                        <option value="5">AUTORIZADOS</option>
+                    </select>
+                </div>
+                <div class="tw-mt-4">
+                    <jet-button @click="Filtros" class="BtnFiltros"><i class="fas fa-filter tw-mr-1"></i>Aplica Filtros</jet-button>
+                </div>
             </div>
             <div>
+                <jet-button @click="openModal" class="BtnNuevo">NUEVA INFORMACIÓN</jet-button>
             </div>
         </section>
         <!-- ********************************* TABLAS ********************************************* -->
@@ -214,12 +231,18 @@
                         </Table>
                     </div>
                 </div>
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Total de requisición --</p>
+                <span class="tw-text-center tw-font-bold"> {{ TotalRequisicion }} </span>
             </div>
 
             <div class="ModalFooter">
                 <jet-CancelButton @click="chageCotizacion">Cerrar</jet-CancelButton>
             </div>
         </modal>
+
+        <pre>
+            {{ RequisicionesSistemas }}
+        </pre>
     </app-layout>
 </template>
 
@@ -257,7 +280,13 @@ export default {
             Estatus: 0,
             form: {
                 IdUser: this.Session.id,
+                TotalRequisicion: 0,
             },
+            params: {
+                Dpto: '',
+                Estatus: '',
+                Req: '',
+            }
         };
     },
 
@@ -278,6 +307,7 @@ export default {
 
     props: {
         Session: Object,
+        Departamentos: Object,
         RequisicionesSistemas: Object, //Consulta inicial
         RequisicionSistemas: Object, //Consulta detalle
     },
@@ -327,7 +357,18 @@ export default {
         reset() {
             this.form = {
                 IdUser: this.Session.id,
+                TotalRequisicion: 0,
             };
+        },
+
+        Filtros(){
+            $('#Requisiciones').DataTable().clear();
+            $('#Requisiciones').DataTable().destroy();
+
+            this.$inertia.get('/Supply/AutorizaReqSistemas', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    this.tabla();
+                }, preserveState: true})
         },
 
         chageCotizacion(){
@@ -335,12 +376,37 @@ export default {
         },
 
         VisualizaCotizacion(data){
-                console.log(data);
-                this.$inertia.get('/Supply/AutorizaReqSistemas', { Req: data.id }, { //envio de variables por url
-                onSuccess: () => {
-                    this.chageCotizacion();
-                    console.log(this.RequisicionSistemas.cotizacion);
-                    this.Estatus = this.RequisicionSistemas.Estatus;
+            let PreciosArticulos = 0;
+            let CostoExtra = 0;
+            let TotalRequisicion = 0;
+
+            var query  = window.location.search.substring(1);
+            var vars = query.split("&");
+                for (var i=0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == 'Dpto') {
+                        this.params.Dpto = pair[1];
+                    }
+                    if(pair[0] == 'Estatus') {
+                        this.params.Estatus = pair[1];
+                    }
+            }
+
+            this.$inertia.get('/Supply/AutorizaReqSistemas', this.params, { //envio de variables por url
+            onSuccess: () => {
+                this.Estatus = this.RequisicionSistemas.Estatus;
+                this.RequisicionSistemas.cotizacion.forEach(e => {
+                    CostoExtra = parseFloat(e.CostoExtra);
+                    e.precios.forEach(pre => {
+                        pre.Total = pre.Total.replace(/,/g, "");
+                        var PreciosArt = parseFloat(pre.Total);
+                        PreciosArticulos = PreciosArticulos + PreciosArt;
+                    });
+                });
+                TotalRequisicion = PreciosArticulos + CostoExtra;
+                this.TotalRequisicion = new Intl.NumberFormat('es-MX', {style: 'currency',currency: 'MXN', minimumFractionDigits: 2}).format(TotalRequisicion);
+                this.chageCotizacion();
+
             }, preserveState: true })
         },
 
