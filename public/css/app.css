@@ -22541,6 +22541,9 @@ select {
 .tw-m-auto {
 	margin: auto;
 }
+.tw-m-5 {
+	margin: 1.25rem;
+}
 .tw-m-6 {
 	margin: 1.5rem;
 }
@@ -22549,9 +22552,6 @@ select {
 }
 .tw-m-4 {
 	margin: 1rem;
-}
-.tw-m-5 {
-	margin: 1.25rem;
 }
 .tw-m-10 {
 	margin: 2.5rem;
@@ -22596,13 +22596,13 @@ select {
 	margin-left: 2rem;
 	margin-right: 2rem;
 }
-.tw-my-3 {
-	margin-top: 0.75rem;
-	margin-bottom: 0.75rem;
-}
 .tw-my-5 {
 	margin-top: 1.25rem;
 	margin-bottom: 1.25rem;
+}
+.tw-my-3 {
+	margin-top: 0.75rem;
+	margin-bottom: 0.75rem;
 }
 .tw-my-10 {
 	margin-top: 2.5rem;
@@ -23399,13 +23399,13 @@ select {
 	--tw-bg-opacity: 1;
 	background-color: rgba(185, 28, 28, var(--tw-bg-opacity));
 }
-.tw-bg-blueGray-600 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(71, 85, 105, var(--tw-bg-opacity));
-}
 .tw-bg-sky-800 {
 	--tw-bg-opacity: 1;
 	background-color: rgba(7, 89, 133, var(--tw-bg-opacity));
+}
+.tw-bg-blueGray-600 {
+	--tw-bg-opacity: 1;
+	background-color: rgba(71, 85, 105, var(--tw-bg-opacity));
 }
 .tw-bg-cyan-800 {
 	--tw-bg-opacity: 1;
@@ -23640,11 +23640,11 @@ select {
 .tw-p-6 {
 	padding: 1.5rem;
 }
-.tw-p-5 {
-	padding: 1.25rem;
-}
 .tw-p-3 {
 	padding: 0.75rem;
+}
+.tw-p-5 {
+	padding: 1.25rem;
 }
 .tw-p-1 {
 	padding: 0.25rem;
@@ -26127,6 +26127,10 @@ select {
 		transform: var(--tw-transform);
 	}
 
+	.sm\:tw-grid-cols-1 {
+		grid-template-columns: repeat(1, minmax(0, 1fr));
+	}
+
 	.sm\:tw-flex-col {
 		flex-direction: column;
 	}
@@ -26485,6 +26489,10 @@ select {
 
 	.lg\:tw-w-full {
 		width: 100%;
+	}
+
+	.lg\:tw-grid-cols-6 {
+		grid-template-columns: repeat(6, minmax(0, 1fr));
 	}
 
 	.lg\:tw-grid-cols-3 {

@@ -68,7 +68,7 @@
                                 <strong>{{ po.paro.descri }}: </strong> {{ po.horas }}
                             </div>
                         </td>
-                        <td class="">{{ca.valor.toFixed(2)}}</td>
+                        <td class="">{{parseFloat(ca.valor).toFixed(2)}}</td>
                         <td class="">
                             <div class="columnaIconos">
                                 <!-- nota objetivos -->
@@ -249,7 +249,7 @@
                                 <td class="tw-text-center"> {{ obje.maq_pro.maquinas.Nombre }} {{ obje.maq_pro.maquinas.marca ? obje.maq_pro.maquinas.marca.Nombre : 'N/A' }} </td>
                                 <td class="tw-text-center"> {{ obje.dep_mat.materiales.idmat }} - {{ obje.dep_mat.materiales.nommat }} </td>
                                 <td class="tw-text-center"> {{ obje.clave_id == null ? '' : obje.clave.CVE_ART }} - {{ obje.clave_id == null ? '' : obje.clave.DESCR }} </td>
-                                <td class="tw-text-center"> {{ obje.pro_hora }} </td>
+                                <td class="tw-text-center"> {{ parseFloat(obje.pro_hora).toFixed(2) }} </td>
                                 <td class="tw-text-center">
                                     <div class="columnaIconos" v-if="this.usuario.dep_pers.length == 0">
                                         <a class="iconoEdit" @click="editOB(obje)" href="#Fobje">
