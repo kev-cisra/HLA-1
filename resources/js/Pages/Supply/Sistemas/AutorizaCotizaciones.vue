@@ -11,16 +11,39 @@
         <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-my-8 tw-mx-2">
             <div class="tw-flex tw-gap-4 tw-mx-2">
                 <div>
-                    <jet-label class="tw-text-center">DEPARTAMENTO</jet-label>
-                    <select class="InputSelect" v-model="params.Dpto" @change="SelectEmpresa">
-                        <option v-for="dpto in Departamentos" :key="dpto.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
+                    <jet-label class="tw-text-center">AÑO</jet-label>
+                    <select class="InputSelect" v-model="params.Year">
+                        <option value="0"> TODOS --</option>
+                        <option value="2021"> 2021 --</option>
+                        <option value="2022"> 2022 -- </option>
                     </select>
                 </div>
+
+                <div>
+                    <jet-label class="tw-text-center">MES</jet-label>
+                    <select class="InputSelect" v-model="params.Month">
+                        <option value="0">TODOS</option>
+                        <option value="1">ENERO</option>
+                        <option value="2">FEBRERO</option>
+                        <option value="3">MARZO</option>
+                        <option value="4">ABRIL</option>
+                        <option value="5">MAYO</option>
+                        <option value="6">JUNIO</option>
+                        <option value="7">JULIO</option>
+                        <option value="8">AGOSTO</option>
+                        <option value="9">SEPTIEMBRE</option>
+                        <option value="10">OCTUBRE</option>
+                        <option value="11">NOVIEMBRE</option>
+                        <option value="12">DICIEMBRE</option>
+                    </select>
+                </div>
+
                 <div>
                     <jet-label class="tw-text-center">ESTATUS</jet-label>
-                    <select class="InputSelect" v-model="params.Estatus" @change="SelectEmpresa">
+                    <select class="InputSelect" v-model="params.Status" @change="SelectEmpresa">
+                        <option value="0">TODOS</option>
                         <option value="4">PENDIENTES</option>
-                        <option value="5">AUTORIZADOS</option>
+                        <option value="5">APROBADAS</option>
                     </select>
                 </div>
                 <div class="tw-mt-4">
@@ -28,7 +51,7 @@
                 </div>
             </div>
             <div>
-                <jet-button @click="openModal" class="BtnNuevo">NUEVA INFORMACIÓN</jet-button>
+                <jet-button @click="openModal" class="BtnNuevo">COSTOS</jet-button>
             </div>
         </section>
         <!-- ********************************* TABLAS ********************************************* -->
@@ -96,6 +119,7 @@
         </section>
 
         <!-- ***************************************** MODALES ****************************************************** -->
+        <!-- ------- Modal para autorizar Cotizacion -------- -->
         <modal :show="showCotizacion" @close="chageCotizacion" maxWidth="3xl">
             <div class="ModalHeader">
                 <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>SOLICITUD S-{{RequisicionSistemas.Folio}}</h3>
@@ -239,10 +263,20 @@
                 <jet-CancelButton @click="chageCotizacion">Cerrar</jet-CancelButton>
             </div>
         </modal>
+        <!-- --- Modal de costos ---- -->
+        <modal :show="showModal" @close="chageClose" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>COSTOS REQUISICIONES SISTEMAS</h3>
+            </div>
 
-        <pre>
-            {{ RequisicionesSistemas }}
-        </pre>
+            <div class="ModalForm">
+
+            </div>
+
+            <div class="ModalFooter">
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
     </app-layout>
 </template>
 
@@ -283,8 +317,9 @@ export default {
                 TotalRequisicion: 0,
             },
             params: {
-                Dpto: '',
-                Estatus: '',
+                Year: '',
+                Month: '',
+                Status: '',
                 Req: '',
             }
         };
@@ -313,7 +348,25 @@ export default {
     },
 
     mounted() {
-        this.tabla();
+        this.$nextTick(() => {
+            this.tabla();
+        });
+
+        var query  = window.location.search.substring(1);
+        var vars = query.split("&");
+            for (var i=0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == 'Year') {
+                    this.params.Year = pair[1];
+                }
+                if(pair[0] == 'Month') {
+                    this.params.Month = pair[1];
+                }
+                if(pair[0] == 'Status') {
+                    this.params.Status = pair[1];
+                }
+        }
+
     },
 
     methods: {
@@ -384,13 +437,20 @@ export default {
             var vars = query.split("&");
                 for (var i=0; i < vars.length; i++) {
                     var pair = vars[i].split("=");
-                    if(pair[0] == 'Dpto') {
-                        this.params.Dpto = pair[1];
+                    if(pair[0] == 'Year') {
+                        this.params.Year = pair[1];
                     }
-                    if(pair[0] == 'Estatus') {
-                        this.params.Estatus = pair[1];
+                    if(pair[0] == 'Month') {
+                        this.params.Month = pair[1];
+                    }
+                    if(pair[0] == 'Status') {
+                        this.params.Status = pair[1];
+                    }
+                    if(pair[0] == 'Req') {
+                        this.params.Req = pair[1];
                     }
             }
+            this.params.Req = data.id;
 
             this.$inertia.get('/Supply/AutorizaReqSistemas', this.params, { //envio de variables por url
             onSuccess: () => {

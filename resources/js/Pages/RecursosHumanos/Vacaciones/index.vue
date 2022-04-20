@@ -708,6 +708,17 @@ export default {
             });
         },
 
+        PruebaCorreo(data){
+            console.log('entrte');
+            data.Tipo = 10;
+            data._method = "PUT";
+            this.$inertia.post("/RecursosHumanos/Vacaciones/" + data.id, data, {
+                onSuccess: () => {
+                    this.alertSucces();
+                },
+            });
+        },
+
         AutorizaVacaciones(data){
             data.Tipo = 1;
             data._method = "PUT";

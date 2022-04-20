@@ -7,6 +7,7 @@ use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\Sistemas\Requisiciones\CotizacionesSistemas;
 use App\Models\Sistemas\Requisiciones\PreciosCotizacionesSistemas;
 use App\Models\Sistemas\Requisiciones\RequisicionesSistemas;
+use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
@@ -26,25 +27,52 @@ class AutorizaRequisicionesSistemasController extends Controller{
         $hoy = Carbon::now();
 
         //Asigno el mes actual o uno recibido por request
+        $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
         $request->Year == '' ? $anio = $hoy->format('Y') : $anio = $request->Year;
 
         //Catalogos
         $Departamentos = $this->Dpto->SelectDepartamentos();
 
-        $RequisicionesSistemas = RequisicionesSistemas::with([
-            'Perfil' => function($Perfil) { //Relacion 1 a 1 De puestos
-                $Perfil->select('id', 'Nombre', 'ApPat', 'ApMat');
-            },
-            'Departamento' => function($Departamento) { //Relacion 1 a 1 De puestos
-                $Departamento->select('id', 'Nombre');
-            },
-            'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
-                $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
+        if($request){
+            if($request->Year == 0 && $request->Month == 0){
+                $RequisicionesSistemas = RequisicionesSistemas::ReqSistemas()->Estatus()
+                ->get();
+            }elseif ($request->Year != 0 && $request->Month == 0 && $request->Status == 0) {
+                $RequisicionesSistemas = RequisicionesSistemas::ReqSistemas()->Estatus()
+                ->whereYear('Fecha', $request->Year)
+                ->get();
+            }elseif ($request->Year != 0 && $request->Month != 0 && $request->Status == 0) {
+                $RequisicionesSistemas = RequisicionesSistemas::ReqSistemas()->Estatus()
+                ->whereYear('Fecha', $request->Year)
+                ->whereMonth('Fecha', $request->Month)
+                ->get();
+            }elseif ($request->Year != 0 && $request->Month != 0 && $request->Status != 0) {
+
+                $RequisicionesSistemas = RequisicionesSistemas::with([
+                    'Perfil' => function($Perfil) { //Relacion 1 a 1 De puestos
+                        $Perfil->select('id', 'Nombre', 'ApPat', 'ApMat');
+                    },
+                    'Departamento' => function($Departamento) { //Relacion 1 a 1 De puestos
+                        $Departamento->select('id', 'Nombre');
+                    },
+                    'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
+                        $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
+                    }
+                ])->where('Estatus', $request->Status)
+                ->whereYear('Fecha', $request->Year)
+                ->whereMonth('Fecha', $request->Month)
+                ->get();
             }
-        ])->where('Estatus', '!=', 1)->where('Estatus', '!=', 2)->where('Estatus', '!=', 3)
-        ->whereYear('Fecha', $anio)
-        ->where('Estatus', $request->Estatus)
-        ->get();
+
+        }else{
+            $RequisicionesSistemas = RequisicionesSistemas::ReqSistemas()->Estatus()
+            ->whereYear('Fecha', $anio)
+            ->get();
+        }
+
+        // $RequisicionesSistemas = RequisicionesSistemas::Estatus()->toSql();
+        // dd($RequisicionesSistemas);
+
 
         if($request->Req){
             $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento', 'Cotizacion.Proveedor', 'Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
