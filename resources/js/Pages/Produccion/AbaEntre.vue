@@ -144,7 +144,7 @@
                                                     <strong> {{ ap.proceso.nompro }} {{ ap.maq_pro ? ap.maq_pro.maquinas.Nombre : 'N/A' }}: </strong>
                                                 </div>
                                                 <div class="tw-m-auto">
-                                                    {{ ap.valor.toFixed(2) }} {{ ap.clave.UNI_MED }}
+                                                    {{ ap.valor }} {{ ap.clave.UNI_MED }}
                                                 </div>
                                             </div>
                                         </div>
@@ -298,7 +298,7 @@
             JetLabel,
             JetInput,
             Select2,
-            Modal
+            Modal,
         },
 
         data() {
@@ -369,7 +369,7 @@
                 })
                 let resta = aba.total-sum;
 
-                return aba.total+'Kg - '+sum.toFixed(2)+'Kg = '+resta.toFixed(2)+'Kg';
+                return aba.total+'Kg - '+sum+'Kg = '+resta+'Kg';
             },
             //Consulta de abastos
             async ConAba(depa, bus){
@@ -591,10 +591,6 @@
                 //Produccion
                 let car = await axios.post('AbaEntre/Carga', datos)
                 this.carga = car.data;
-
-                //Materiales
-                /* let mate = await axios.post('General/ConMateriales', datos)
-                this.materiales = mate.data */
 
                 //abasto entregas
                 let aba = await axios.post('AbaEntre/conabaent', datos);
