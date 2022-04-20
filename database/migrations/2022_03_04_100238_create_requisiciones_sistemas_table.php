@@ -18,6 +18,7 @@ class CreateRequisicionesSistemasTable extends Migration
             $table->unsignedBigInteger('IdUser'); //Id de Session
             $table->date('Fecha');
             $table->integer('Folio');
+            $table->string('CostoReq',12)->default(0);
             $table->tinyInteger('Estatus')->default(0);
 
             $table->unsignedBigInteger('Perfil_id')->nullable();

@@ -11,6 +11,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use stdClass;
 
 class AutorizaRequisicionesSistemasController extends Controller{
@@ -70,9 +71,23 @@ class AutorizaRequisicionesSistemasController extends Controller{
             ->get();
         }
 
-        // $RequisicionesSistemas = RequisicionesSistemas::Estatus()->toSql();
-        // dd($RequisicionesSistemas);
+        $CostosHLA = RequisicionesSistemas::where('Departamento_id', '!=', 23)
+            ->whereYear('Fecha', $request->Year)
+            ->whereMonth('Fecha', $request->Month)
+            ->get('CostoReq');
 
+        $CostosHilesa = RequisicionesSistemas::where('Departamento_id', '=', 23)
+            ->whereYear('Fecha', $request->Year)
+            ->whereMonth('Fecha', $request->Month)
+            ->get('CostoReq');
+
+        $CostoAñoHLA = RequisicionesSistemas::where('Departamento_id', '!=', 23)
+            ->whereYear('Fecha', $request->Year)
+            ->get('CostoReq');
+
+        $CostoAñoHilesa = RequisicionesSistemas::where('Departamento_id', '=', 23)
+            ->whereYear('Fecha', $request->Year)
+            ->get('CostoReq');
 
         if($request->Req){
             $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento', 'Cotizacion.Proveedor', 'Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
@@ -80,7 +95,7 @@ class AutorizaRequisicionesSistemasController extends Controller{
             $RequisicionSistemas = new stdClass();
         }
 
-        return Inertia::render('Supply/Sistemas/AutorizaCotizaciones', compact('Session', 'Departamentos', 'RequisicionesSistemas', 'RequisicionSistemas'));
+        return Inertia::render('Supply/Sistemas/AutorizaCotizaciones', compact('Session', 'Departamentos', 'RequisicionesSistemas', 'RequisicionSistemas', 'CostosHLA', 'CostosHilesa', 'CostoAñoHLA', 'CostoAñoHilesa'));
     }
 
     public function update(Request $request, $id){
