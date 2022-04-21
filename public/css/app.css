@@ -23684,6 +23684,10 @@ select {
 	margin-left: 1rem;
 	margin-right: 1rem;
 }
+.tw-my-5 {
+	margin-top: 1.25rem;
+	margin-bottom: 1.25rem;
+}
 .tw-mx-2 {
 	margin-left: 0.5rem;
 	margin-right: 0.5rem;
@@ -23699,10 +23703,6 @@ select {
 .tw-mx-8 {
 	margin-left: 2rem;
 	margin-right: 2rem;
-}
-.tw-my-5 {
-	margin-top: 1.25rem;
-	margin-bottom: 1.25rem;
 }
 .tw-my-3 {
 	margin-top: 0.75rem;
@@ -23791,9 +23791,6 @@ select {
 .tw--mr-2 {
 	margin-right: -0.5rem;
 }
-.tw-mb-14 {
-	margin-bottom: 3.5rem;
-}
 .tw-mb-4 {
 	margin-bottom: 1rem;
 }
@@ -23814,6 +23811,9 @@ select {
 }
 .tw-ml-auto {
 	margin-left: auto;
+}
+.tw-mb-14 {
+	margin-bottom: 3.5rem;
 }
 .tw-mr-auto {
 	margin-right: auto;
@@ -23866,14 +23866,14 @@ select {
 .tw-h-10 {
 	height: 2.5rem;
 }
+.tw-h-20 {
+	height: 5rem;
+}
 .tw-h-1\/6 {
 	height: 16.666667%;
 }
 .tw-h-16 {
 	height: 4rem;
-}
-.tw-h-20 {
-	height: 5rem;
 }
 .tw-h-3\/4 {
 	height: 75%;
@@ -24126,6 +24126,9 @@ select {
 }
 .tw-justify-between {
 	justify-content: space-between;
+}
+.tw-justify-around {
+	justify-content: space-around;
 }
 .tw-gap-4 {
 	gap: 1rem;
@@ -24922,6 +24925,9 @@ select {
 }
 .tw-leading-tight {
 	line-height: 1.25;
+}
+.tw-leading-loose {
+	line-height: 2;
 }
 .tw-tracking-widest {
 	letter-spacing: 0.1em;
