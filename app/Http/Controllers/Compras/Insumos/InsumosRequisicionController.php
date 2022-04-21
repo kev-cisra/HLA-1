@@ -170,16 +170,10 @@ class InsumosRequisicionController extends Controller{
     }
 
     public function update(Request $request, $id){
+        $Session = auth()->user();
+        $User = User::find($Session->id); //Accedo a los datos del usuario logueado
+        $Actualiza = 0;
 
-        // Validator::make($request->all(),[
-        //     'IdUser' => ['required'],
-        //     'Clave' => ['required'],
-        //     'Insumo' => ['required'],
-        //     'Linea' => ['required'],
-        //     'Unidad' => ['required'],
-        //     'Cantidad' => ['required'],
-        //     'Departamento_id' => ['required'],
-        // ])->validate();
         switch ($request->Metodo) {
             case 1:
                 RequisicionesInsumos::find($request->id)->update([
@@ -194,22 +188,47 @@ class InsumosRequisicionController extends Controller{
                 break;
 
             case 2:
-                // return $request;
-                $Cotizacion = RequisicionesInsumos::where('id', $request->Req_id)->update([
-                    'IdUser' => $request->IdUser,
-                    'Fecha' => $request->Fecha,
-                    'Departamento_id' => $request->Departamento_id,
-                ]);
-
+                // Verificacion de datos en partidas
                 foreach ($request->Partida as $value) {
-
-                    $PrecioCotizacion = ArticulosRequisicionesInsumos::where('id', $value['Art_id'])->update([
-                        'Cantidad' => $value['Cantidad'],
-                        'insumo_id' => $value['insumo_id'],
-                    ]);
+                    if($value['Cantidad'] != '' && $value['insumo_id'] != ''){
+                        $Actualiza = 1;
+                    }else{
+                        $Actualiza = 0;
+                    }
                 }
-                return redirect()->back();
-                break;
+
+                if($Actualiza == 1){
+
+                    $Requisicion = RequisicionesInsumos::where('id', $request->Req_id)->update([
+                        'IdUser' => $request->IdUser,
+                        'Fecha' => $request->Fecha,
+                        'Departamento_id' => $request->Departamento_id,
+                    ]);
+
+                    foreach ($request->Partida as $value) {
+                        //Verificacion de datos a actualizar
+                        if(isset($value['Art_id'])){
+                            $ArticuloInsumo = ArticulosRequisicionesInsumos::where('id', $value['Art_id'])->update([
+                                'Cantidad' => $value['Cantidad'],
+                                'insumo_id' => $value['insumo_id'],
+                            ]);
+                        }else{ //Nuevas partidas añadidas
+                            //Insersion de nuevas partidas a la requisicion
+                            ArticulosRequisicionesInsumos::create([
+                                'IdUser' => $Session->id,
+                                'Cantidad' => $value['Cantidad'],
+                                'Estatus' => 1,
+                                'requisiciones_insumos_id' => $Requisicion,
+                                'insumo_id' => $value['insumo_id'],
+                            ]);
+                        }
+
+                    }
+                    return redirect()->back();
+                    break;
+                }else{
+                    return "Revisa los datos introducidos";
+                }
         }
         // if ($request->has('id')) {
         //     Insumos::find($request->id)->update($request->all());

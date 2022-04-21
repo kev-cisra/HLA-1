@@ -239,7 +239,7 @@
                 <div class="FormSection">
                     <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
                         <jet-label>costo extra</jet-label>
-                        <input type="number" min="1" class="InputDinamico" v-model="form.CostoExtra">
+                        <input type="text"  class="InputDinamico" v-model="form.CostoExtra" @change="Moneda(form.CostoExtra)">
                     </div>
                 </div>
                 <div class="FormSection">
@@ -305,7 +305,7 @@
                 </Table>
                 <div v-for="data in RequisicionSistemas.cotizacion" :key="data.id">
                     <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Cotización --</p>
-                    <div :class="{ 'tw-p-2 tw-border-4 tw-border-teal-700 tw-bg-teal-600': data.Aprobado == 1}">
+                    <div :class="{'tw-p-2 tw-border-4 tw-border-teal-700 tw-bg-teal-600': data.Aprobado == 1}">
                         <Table>
                             <template v-slot:TableHeader>
                                 <th class="columna">TIPO PAGO</th>
@@ -322,8 +322,8 @@
                                 <tr class="fila">
                                     <td class="tw-text-center">{{data.TipoPago}}</td>
                                     <td class="tw-text-center">{{data.Moneda}}</td>
-                                    <td class="tw-text-center">{{data.TipoCambio}}</td>
-                                    <td class="tw-text-center">{{data.CostoExtra}}</td>
+                                    <td class="tw-text-center">${{data.TipoCambio}}</td>
+                                    <td class="tw-text-center">${{data.CostoExtra}}</td>
                                     <td class="tw-text-center">{{data.proveedor.Nombre}}</td>
                                     <td class="tw-text-center">
                                         <div class="FlexCenter">
@@ -343,9 +343,9 @@
                                             </div>
                                             <div class="IconDenied" v-else>
                                                 <span tooltip="DENEGADO" flow="left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
-                                                </svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
+                                                    </svg>
                                                 </span>
                                             </div>
                                         </div>
@@ -372,8 +372,8 @@
                                     <td class="tw-text-center">{{pre.articulos.Unidad}}</td>
                                     <td class="tw-text-center">{{pre.articulos.Dispositivo}}</td>
                                     <td class="tw-text-center">{{pre.Marca}}</td>
-                                    <td class="tw-text-center">{{pre.Precio}}</td>
-                                    <td class="tw-text-center">{{pre.Total}}</td>
+                                    <td class="tw-text-center">${{pre.Precio}}</td>
+                                    <td class="tw-text-center">${{pre.Total}}</td>
                                     <td>
                                         <div class="FlexCenter">
                                             <div class="iconoEdit" @click="edit(data)" v-if="Estatus == 2 || Estatus == 10">
@@ -395,6 +395,8 @@
                         </Table>
                     </div>
                 </div>
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Total de requisición --</p>
+                <span class="tw-text-center tw-font-bold"> {{ TotalRequisicion }} </span>
             </div>
 
             <div class="ModalFooter">
@@ -453,6 +455,7 @@ export default {
                 TipoPago: '',
                 Comentario: '',
                 archivo: '',
+                TotalRequisicion: 0,
                 DatosCotizacion: [], //Arreglo vacio que contendra inputs dinamicos
             },
             Sol: {
@@ -497,7 +500,6 @@ export default {
         Perfiles: Object,
         RequisicionesSistemas: Object, //Consulta inicial
         RequisicionSistemas: Object, //Requisicion con Cotizacion
-        CotizacionSistemas: Object,
     },
 
     mounted() {
@@ -505,6 +507,21 @@ export default {
     },
 
     methods: {
+
+        formatoMexico (number) {
+            const exp = /(\d)(?=(\d{3})+(?!\d))/g;
+            const rep = '$1,';
+            let arr = number.toString().split('.');
+            arr[0] = arr[0].replace(exp,rep);
+            return arr[1] ? arr.join('.'): arr[0];
+        },
+
+        Moneda(data){
+            // var moneda = new Intl.NumberFormat('es-MX', {style: 'currency',currency: 'MXN', minimumFractionDigits: 2}).format(data);
+            // console.log(moneda);
+            // console.log(this.form.CostoExtra);
+            this.form.CostoExtra = this.formatoMexico(data);
+        },
        //Generacion de Tabla con Datatables
         tabla(){
             this.$nextTick(() => {
@@ -555,6 +572,7 @@ export default {
                 Estatus: '',
                 Moneda: '',
                 TipoCambio: 1,
+                TotalRequisicion: 0,
                 TipoPago: '',
                 Comentario: '',
                 archivo: '',
@@ -672,8 +690,23 @@ export default {
         },
 
         VisualizaCotizacion(data){
+            let PreciosArticulos = 0;
+            let CostoExtra = 0;
+            let TotalRequisicion = 0;
+
             this.$inertia.get('/Sistemas/CotizacionSistemas', { Req: data.id }, { //envio de variables por url
             onSuccess: () => {
+                this.RequisicionSistemas.cotizacion.forEach(e => {
+                    CostoExtra = parseFloat(e.CostoExtra);
+                    e.precios.forEach(pre => {
+                        pre.Total = pre.Total.replace(/,/g, "");
+                        var PreciosArt = parseFloat(pre.Total);
+                        PreciosArticulos = PreciosArticulos + PreciosArt;
+                    });
+                });
+
+                TotalRequisicion = PreciosArticulos + CostoExtra;
+                this.TotalRequisicion = new Intl.NumberFormat('es-MX', {style: 'currency',currency: 'MXN', minimumFractionDigits: 2}).format(TotalRequisicion);
                 this.chageCotizacion();
                 this.Estatus = this.RequisicionSistemas.Estatus;
             }, preserveState: true })

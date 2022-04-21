@@ -8,10 +8,51 @@
             </Header>
         </section>
         <!-- ******************************* FILTROS ********************************************* -->
-        <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-my-8 tw-mx-8">
+        <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-my-8 tw-mx-2">
             <div class="tw-flex tw-gap-4 tw-mx-2">
+                <div>
+                    <jet-label class="tw-text-center">AÑO</jet-label>
+                    <select class="InputSelect" v-model="params.Year">
+                        <option value="0"> TODOS --</option>
+                        <option value="2021"> 2021 --</option>
+                        <option value="2022"> 2022 -- </option>
+                    </select>
+                </div>
+
+                <div>
+                    <jet-label class="tw-text-center">MES</jet-label>
+                    <select class="InputSelect" v-model="params.Month">
+                        <option value="0">TODOS</option>
+                        <option value="1">ENERO</option>
+                        <option value="2">FEBRERO</option>
+                        <option value="3">MARZO</option>
+                        <option value="4">ABRIL</option>
+                        <option value="5">MAYO</option>
+                        <option value="6">JUNIO</option>
+                        <option value="7">JULIO</option>
+                        <option value="8">AGOSTO</option>
+                        <option value="9">SEPTIEMBRE</option>
+                        <option value="10">OCTUBRE</option>
+                        <option value="11">NOVIEMBRE</option>
+                        <option value="12">DICIEMBRE</option>
+                    </select>
+                </div>
+
+                <div>
+                    <jet-label class="tw-text-center">ESTATUS</jet-label>
+                    <select class="InputSelect" v-model="params.Status" @change="SelectEmpresa">
+                        <option value="0">TODOS</option>
+                        <option value="4">PENDIENTES</option>
+                        <option value="5">APROBADAS</option>
+                    </select>
+                </div>
+
+                <div class="tw-mt-4">
+                    <jet-button @click="Filtros" class="BtnFiltros"><i class="fas fa-filter tw-mr-1"></i>Aplica Filtros</jet-button>
+                </div>
             </div>
             <div>
+                <jet-button @click="openReportes" class="BtnNuevo">COSTOS</jet-button>
             </div>
         </section>
         <!-- ********************************* TABLAS ********************************************* -->
@@ -24,6 +65,7 @@
                     <th class="columna">DEPARTAMENTO</th>
                     <th class="columna">ARTICULOS</th>
                     <th class="columna">COMENTARIOS</th>
+                    <th class="columna">COSTO</th>
                     <th class="columna">ESTATUS</th>
                     <th class="columna">ACCIONES</th>
                 </template>
@@ -40,6 +82,7 @@
                             </p>
                         </td>
                         <td>{{data.Comentarios}}</td>
+                        <td>${{data.CostoReq}}</td>
                         <td>
                             <div class="FlexCenter">
                                 <div v-if="data.Estatus == 0">
@@ -79,6 +122,7 @@
         </section>
 
         <!-- ***************************************** MODALES ****************************************************** -->
+        <!-- ------- Modal para autorizar Cotizacion -------- -->
         <modal :show="showCotizacion" @close="chageCotizacion" maxWidth="3xl">
             <div class="ModalHeader">
                 <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>SOLICITUD S-{{RequisicionSistemas.Folio}}</h3>
@@ -93,6 +137,7 @@
                         <th class="columna">FOLIO</th>
                         <th class="columna">DEPARTAMENTO</th>
                         <th class="columna">COMENTARIOS</th>
+                        <th class="columna">COSTO TOTAL</th>
                     </template>
 
                     <template v-slot:TableFooter>
@@ -102,6 +147,7 @@
                             <td class="tw-text-center">S-{{RequisicionSistemas.Folio}}</td>
                             <td class="tw-text-center">{{RequisicionSistemas.departamento.Nombre}}</td>
                             <td class="tw-text-center">{{RequisicionSistemas.Comentarios}}</td>
+                            <td class="tw-text-center">${{RequisicionSistemas.CostoReq}}</td>
                         </tr>
                     </template>
                 </Table>
@@ -127,7 +173,7 @@
                                     <td class="tw-text-center">{{data.Moneda}}</td>
                                     <td class="tw-text-center">{{data.TipoCambio}}</td>
                                     <td class="tw-text-center">{{data.Comentario}}</td>
-                                    <td class="tw-text-center">{{data.CostoExtra}}</td>
+                                    <td class="tw-text-center">${{data.CostoExtra}}</td>
                                     <td class="tw-text-center">{{data.proveedor.Nombre}}</td>
                                     <td>
                                         <div class="FlexCenter">
@@ -191,8 +237,8 @@
                                     <td class="tw-text-center">{{pre.articulos.Unidad}}</td>
                                     <td class="tw-text-center">{{pre.articulos.Dispositivo}}</td>
                                     <td class="tw-text-center">{{pre.Marca}}</td>
-                                    <td class="tw-text-center">{{pre.Precio}}</td>
-                                    <td class="tw-text-center">{{pre.Total}}</td>
+                                    <td class="tw-text-center">${{pre.Precio}}</td>
+                                    <td class="tw-text-center">${{pre.Total}}</td>
                                     <td>
                                         <div class="FlexCenter">
                                             <div class="iconoEdit" @click="edit(data)" v-if="Estatus == 2 || Estatus == 10">
@@ -214,12 +260,70 @@
                         </Table>
                     </div>
                 </div>
+                <p class="tw-text-center tw-p-2 tw-text-coolGray-400 tw-text-xs"> -- Total de requisición --</p>
+                <span class="tw-text-center tw-font-bold"> {{ TotalRequisicion }} </span>
             </div>
 
             <div class="ModalFooter">
                 <jet-CancelButton @click="chageCotizacion">Cerrar</jet-CancelButton>
             </div>
         </modal>
+        <!-- --- Modal de costos ---- -->
+        <modal :show="showReporte" @close="chageReporte" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>COSTOS REQUISICIONES SISTEMAS</h3>
+            </div>
+
+            <div class="ModalForm">
+                <Table id="datos">
+                    <template v-slot:TableHeader>
+                        <th class="columna">HILATURAS</th>
+                        <th class="columna">HILESA</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr>
+                            <td>
+                                <span class="tw-tracking-wider tw-text-white tw-bg-blue-500 tw-px-4 tw-py-1 tw-text-sm tw-rounded tw-leading-loose tw-mx-2 tw-font-semibold" title="">
+                                    <i class="fa-solid fa-money-bill"></i> Costo Anual Hilaturas ${{ Costos.CostoAnualHLA }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="tw-tracking-wider tw-text-white tw-bg-blue-500 tw-px-4 tw-py-1 tw-text-sm tw-rounded tw-leading-loose tw-mx-2 tw-font-semibold" title="">
+                                    <i class="fa-solid fa-money-bill"></i> Costo Anual Hilesa ${{ Costos.CostoAnualHilesa }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="tw-tracking-wider tw-text-white tw-bg-blue-500 tw-px-4 tw-py-1 tw-text-sm tw-rounded tw-leading-loose tw-mx-2 tw-font-semibold" title="">
+                                    <i class="fa-solid fa-money-bill"></i> Costo del Mes Hilaturas ${{ Costos.CostoMensualHLA }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="tw-tracking-wider tw-text-white tw-bg-blue-500 tw-px-4 tw-py-1 tw-text-sm tw-rounded tw-leading-loose tw-mx-2 tw-font-semibold" title="">
+                                    <i class="fa-solid fa-money-bill"></i> Costo del Mes Hilesa ${{ Costos.CostoMensualHilesa }}
+                                </span>
+                            </td>
+                        </tr>
+                    </template>
+                </Table>
+                <div id="chart" class="tw-m-10"></div>
+                <div class="tw-flex tw-flex-row tw-justify-around">
+                    <div>
+
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
+
     </app-layout>
 </template>
 
@@ -240,6 +344,10 @@ import JetSelect from "@/Components/Select";
 import datatable from "datatables.net-bs5";
 import $ from "jquery";
 
+// Highcharts
+var Highcharts = require('highcharts');
+require('highcharts/modules/exporting')(Highcharts);
+
 //Moment Js
 import moment from 'moment';
 import 'moment/locale/es';
@@ -253,11 +361,29 @@ export default {
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
             showDetalle: false,
             showCotizacion: false,
+            showReporte: false,
             showEdit: false,
             Estatus: 0,
+            Costos:{
+                CostoAnualHLA: 0,
+                CostoMensualHLA: 0,
+                CostoAnualHilesa: 0,
+                CostoMensualHilesa: 0,
+                HilesaAnual: 0,
+                HilesaMensual: 0,
+                HilaturaAnual: 0,
+                HilaturaMensual: 0,
+            },
             form: {
                 IdUser: this.Session.id,
+                TotalRequisicion: 0,
             },
+            params: {
+                Year: '',
+                Month: '',
+                Status: '',
+                Req: '',
+            }
         };
     },
 
@@ -278,12 +404,35 @@ export default {
 
     props: {
         Session: Object,
+        Departamentos: Object,
         RequisicionesSistemas: Object, //Consulta inicial
         RequisicionSistemas: Object, //Consulta detalle
+        CostosHLA: Object,
+        CostosHilesa: Object,
+        CostoAñoHLA: Object,
+        CostoAñoHilesa: Object,
     },
 
     mounted() {
-        this.tabla();
+        this.$nextTick(() => {
+            this.tabla();
+        });
+
+        var query  = window.location.search.substring(1);
+        var vars = query.split("&");
+            for (var i=0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == 'Year') {
+                    this.params.Year = pair[1];
+                }
+                if(pair[0] == 'Month') {
+                    this.params.Month = pair[1];
+                }
+                if(pair[0] == 'Status') {
+                    this.params.Status = pair[1];
+                }
+        }
+
     },
 
     methods: {
@@ -327,7 +476,18 @@ export default {
         reset() {
             this.form = {
                 IdUser: this.Session.id,
+                TotalRequisicion: 0,
             };
+        },
+
+        Filtros(){
+            $('#Requisiciones').DataTable().clear();
+            $('#Requisiciones').DataTable().destroy();
+
+            this.$inertia.get('/Supply/AutorizaReqSistemas', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    this.tabla();
+                }, preserveState: true})
         },
 
         chageCotizacion(){
@@ -335,12 +495,44 @@ export default {
         },
 
         VisualizaCotizacion(data){
-                console.log(data);
-                this.$inertia.get('/Supply/AutorizaReqSistemas', { Req: data.id }, { //envio de variables por url
-                onSuccess: () => {
-                    this.chageCotizacion();
-                    console.log(this.RequisicionSistemas.cotizacion);
-                    this.Estatus = this.RequisicionSistemas.Estatus;
+            let PreciosArticulos = 0;
+            let CostoExtra = 0;
+            let TotalRequisicion = 0;
+
+            var query  = window.location.search.substring(1);
+            var vars = query.split("&");
+                for (var i=0; i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == 'Year') {
+                        this.params.Year = pair[1];
+                    }
+                    if(pair[0] == 'Month') {
+                        this.params.Month = pair[1];
+                    }
+                    if(pair[0] == 'Status') {
+                        this.params.Status = pair[1];
+                    }
+                    if(pair[0] == 'Req') {
+                        this.params.Req = pair[1];
+                    }
+            }
+            this.params.Req = data.id;
+
+            this.$inertia.get('/Supply/AutorizaReqSistemas', this.params, { //envio de variables por url
+            onSuccess: () => {
+                this.Estatus = this.RequisicionSistemas.Estatus;
+                this.RequisicionSistemas.cotizacion.forEach(e => {
+                    CostoExtra = parseFloat(e.CostoExtra);
+                    e.precios.forEach(pre => {
+                        pre.Total = pre.Total.replace(/,/g, "");
+                        var PreciosArt = parseFloat(pre.Total);
+                        PreciosArticulos = PreciosArticulos + PreciosArt;
+                    });
+                });
+                TotalRequisicion = PreciosArticulos + CostoExtra;
+                this.TotalRequisicion = new Intl.NumberFormat('es-MX', {style: 'currency',currency: 'MXN', minimumFractionDigits: 2}).format(TotalRequisicion);
+                this.chageCotizacion();
+
             }, preserveState: true })
         },
 
@@ -365,9 +557,105 @@ export default {
                 },
             });
         },
+
+        chageReporte(){
+            this.showReporte  = !this.showReporte;
+        },
+
+        openReportes(){
+            $('#Requisiciones').DataTable().clear();
+            $('#Requisiciones').DataTable().destroy();
+
+            this.chageReporte();
+            this.$inertia.get('/Supply/AutorizaReqSistemas', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    this.tabla();
+                    this.Suma();
+                }, preserveState: true})
+        },
+
+        GraficaCostos(){
+            //variables internas
+            Highcharts.chart('chart', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Comparación de Costos'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name} {point.maq} {point.mate} {point.cat} {point.tr} {point.eq} {point.parti} {point.cl}</b>: {point.y} - {point.percentage:.1f}%'
+                    }
+                    }
+                },
+                series: [{
+                    name: 'prpa',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Hilaturas',
+                        y: this.Costos.HilaturaMensual,
+                        sliced: true,
+                        selected: true
+                    },{
+                        name: 'Hilesa',
+                        y: this.Costos.HilesaMensual
+                    }]
+                }]
+            });
+        },
+
+        Suma() {
+            var Costo1 = 0;
+            this.CostosHLA.forEach(e => {
+                Costo1 = e.CostoReq.replace(/,/g, "");
+                var CostosRequi = parseFloat(Costo1);
+                this.Costos.HilaturaMensual = this.Costos.HilaturaMensual + CostosRequi;
+            });
+            this.Costos.CostoMensualHLA = this.MonedaMexico(this.Costos.HilaturaMensual);
+
+            var Costo2 = 0;
+            this.CostosHilesa.forEach(e => {
+                Costo2 = e.CostoReq.replace(/,/g, "");
+                var CostosRequi = parseFloat(Costo2);
+                this.Costos.HilesaMensual = this.Costos.HilesaMensual + CostosRequi;
+            });
+            this.Costos.CostoMensualHilesa = this.MonedaMexico(this.Costos.HilesaMensual);
+
+            var CostoAnio1 = 0;
+            this.CostoAñoHLA.forEach(e => {
+                CostoAnio1 = e.CostoReq.replace(/,/g, "");
+                var CostosRequi = parseFloat(CostoAnio1);
+                this.Costos.HilaturaAnual = this.Costos.HilaturaAnual + CostosRequi;
+            });
+            this.Costos.CostoAnualHLA = this.MonedaMexico(this.Costos.HilaturaAnual);
+
+            var CostoAnio2 = 0;
+            this.CostoAñoHilesa.forEach(e => {
+                CostoAnio2 = e.CostoReq.replace(/,/g, "");
+                var CostosRequi = parseFloat(CostoAnio2);
+                this.Costos.HilesaAnual = this.Costos.HilesaAnual + CostosRequi;
+            });
+            this.Costos.CostoAnualHilesa = this.MonedaMexico(this.Costos.HilesaAnual);
+
+            if(this.Costos.Hilesa != '' && this.Costos.Hilatura != ''){
+                this.GraficaCostos();
+            }
+        },
     },
 
     computed:{
+
     },
 
     watch: {

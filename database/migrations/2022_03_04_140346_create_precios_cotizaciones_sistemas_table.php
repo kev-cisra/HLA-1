@@ -17,8 +17,8 @@ class CreatePreciosCotizacionesSistemasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('IdUser'); //Id de Session
             $table->string('Marca',35);
-            $table->float('Precio',10,2);
-            $table->float('Total',10,2);
+            $table->string('Precio',10,2);
+            $table->string('Total',10,2);
 
             $table->unsignedBigInteger('cotizacion_sistemas_id')->nullable();
             $table->foreign("cotizacion_sistemas_id")->references("id")->on("cotizaciones_sistemas")

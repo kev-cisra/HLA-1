@@ -15,6 +15,7 @@ use App\Models\Sistemas\Requisiciones\RequisicionesSistemas;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use stdClass;
 
 use function PHPUnit\Framework\isNull;
@@ -49,26 +50,14 @@ class CotizacionesSistemasController extends Controller{
             },
         ])->where('Estatus', '>', 0)->get();
 
+        $CostosRequisiciones = RequisicionesSistemas::get('CostoReq');
+
         if($request->Req){
-
-            $CotizacionSistemas = CotizacionesSistemas::with([
-                'Proveedor' => function($Precios) { //Relacion 1 a 1 De puestos
-                    $Precios->select('id', 'Nombre');
-                },
-                'Precios' => function($Precios) { //Relacion 1 a 1 De puestos
-                    $Precios->select('id', 'IdUser', 'Marca', 'Precio','Total', 'cotizacion_sistemas_id', 'art_req_sistemas_id');
-                },
-                'Precios.Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
-                    $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
-                },
-            ])->where('requisicion_sistemas_id', '=',  $request->Req)->get();
-
             $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Proveedor','Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
         }else{
-            $CotizacionSistemas = new stdClass();
             $RequisicionSistemas = new stdClass();
         }
-        return Inertia::render('Sistemas/Requisiciones/CotizacionesSistemas', compact('Session','Departamentos','Perfiles','ProveedoresSistemas','CotizacionSistemas','RequisicionesSistemas', 'RequisicionSistemas'));
+        return Inertia::render('Sistemas/Requisiciones/CotizacionesSistemas', compact('Session','Departamentos','Perfiles','ProveedoresSistemas','RequisicionesSistemas', 'RequisicionSistemas', 'CostosRequisiciones'));
     }
 
     public function store(Request $request){
@@ -107,7 +96,6 @@ class CotizacionesSistemasController extends Controller{
                     $serial = 1;
                 }
 
-
                 foreach ($request->Partida as $value) { //Verifico que se envien datos en la partida
                     if( $value['Cantidad'] != '' && $value['Unidad'] != '' && $value['Dispositivo'] != ''){
                         $CreaRequi = 1;
@@ -117,6 +105,7 @@ class CotizacionesSistemasController extends Controller{
                 }
 
                 if($CreaRequi == 1){ //Si hay datos en la partida se guardan
+
                     $Requisicion = RequisicionesSistemas::create([
                         'IdUser' => $request->IdUser,
                         'Fecha' => $request->Fecha,
@@ -126,6 +115,7 @@ class CotizacionesSistemasController extends Controller{
                         'Departamento_id' => $request->Departamento_id,
                         'Comentarios' => $request->Comentarios,
                     ]);
+
                     $requisicion_id = $Requisicion->id;
 
                     foreach ($request->Partida as $value) {
@@ -154,8 +144,9 @@ class CotizacionesSistemasController extends Controller{
                     'Proveedor_Sistemas_id' => ['required'],
                     // 'archivo' => ['mimes:jpg,png,jpeg,svg,pdf'],
                 ])->validate();
-
+                    // return $request;
                 $CreaRequi = 0;
+                $CostoTotal = 0;
                 if(isset($request->archivo)){ //Valido envio de Archivo
 
                 $file = $request->file("archivo")->getClientOriginalName(); //Obtengo el nombre del archivo y su extancion
@@ -183,28 +174,32 @@ class CotizacionesSistemasController extends Controller{
                         'Moneda' => $request->Moneda,
                         'TipoCambio' => $request->TipoCambio,
                         'Aprobado' => 0,
-                        'CostoExtra' => $request->CostoExtra,
+                        'CostoExtra' => number_format($request->CostoExtra,2),
                         'Comentario' => $request->Comentario,
                         'Archivo' => $url,
                         'Proveedor_Sistemas_id' => $request->Proveedor_Sistemas_id,
                         'requisicion_sistemas_id' => $request->requisicion_sistemas_id,
                     ]);
 
+                    $CostoTotal = number_format($request->CostoExtra,2); //Asigo el costoextra para sumarlo
                     $cotizacion_sistemas_id = $Cotizacion->id;
 
                     foreach ($request->DatosCotizacion as $value) {
                         $PrecioCotizacion = PreciosCotizacionesSistemas::create([
                             'IdUser' => $request->IdUser,
                             'Marca' => $value['Marca'],
-                            'Precio' => $value['PrecioUnitario'],
-                            'Total' => ($value['PrecioUnitario'] * $request->TipoCambio) * $value['Cantidad'],
+                            'Precio' => number_format($value['PrecioUnitario'],2),
+                            'Total' => number_format(($value['PrecioUnitario'] * $request->TipoCambio) * $value['Cantidad'],2),
                             'cotizacion_sistemas_id' => $cotizacion_sistemas_id,
                             'art_req_sistemas_id' => $value['id'],
                         ]);
+                        //Suma los totales al costoExtra
+                        $CostoTotal = $CostoTotal + ($value['PrecioUnitario'] * $request->TipoCambio) * $value['Cantidad'];
                     }
 
-                    RequisicionesSistemas::where('id', $request->requisicion_sistemas_id)->update(['Estatus' => 3]);
+                    $CostoTotal = number_format($CostoTotal);
 
+                    RequisicionesSistemas::where('id', $request->requisicion_sistemas_id)->update(['Estatus' => 3, 'CostoReq' => $CostoTotal]);
 
                 }else{
                     session()->flash('flash.type', 'Warning');

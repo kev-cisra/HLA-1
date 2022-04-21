@@ -1299,7 +1299,6 @@ export default {
         },
 
         imprimir(data){
-            console.log(data);
             var canvas = window.open('', 'PRINT');
             canvas.document.write('<html><head><title>' + document.title + '</title>');
             canvas.document.write('<link rel="stylesheet" href="style.css" media="print">'); //Aquí agregué la hoja de estilos

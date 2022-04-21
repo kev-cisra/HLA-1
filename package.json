@@ -43,8 +43,14 @@
         "ag-grid-community": "^27.2.1",
         "ag-grid-vue3": "^27.2.1",
         "bootstrap-datepicker": "^1.9.0",
+<<<<<<< HEAD
         "browser-sync": "^2.27.9",
         "datatables.net-bs5": "^1.11.5",
+=======
+        "browser-sync": "^2.27.7",
+        "chart.js": "^3.7.1",
+        "datatables.net-bs5": "^1.11.3",
+>>>>>>> 05ad13d800b14166b70fb951a6b1e3010d6140c1
         "datatables.net-buttons-bs5": "^1.7.1",
         "datatables.net-buttons-dt": "^1.7.1",
         "fullcalendar-year-view": "^0.0.3",
@@ -62,7 +68,12 @@
         "signature_pad": "^3.0.0-beta.4",
         "tooltip": "^1.6.1",
         "vue-canvas-nest": "^2.0.0",
+<<<<<<< HEAD
         "vue-easytable": "^2.16.2",
+=======
+        "vue-chartjs": "^4.0.5",
+        "vue-easytable": "^2.12.3",
+>>>>>>> 05ad13d800b14166b70fb951a6b1e3010d6140c1
         "vue-html-to-paper": "^1.4.4",
         "vue-qart": "^2.2.0",
         "vue-signature-canvas": "^1.0.1",
