@@ -55,4 +55,21 @@ class RequisicionesSistemas extends Model{
     public function scopeEstatus($query){
         return $query->where('Estatus', '!=', 1)->where('Estatus', '!=', 2)->where('Estatus', '!=', 3);
     }
+
+    //Scopes para mostrar los costos de la requisiciones de sistemas
+    public function scopeCostosHLA($query, $Year, $Month){
+        return $query->where('Departamento_id', '!=', 23)->whereYear('Fecha', $Year)->whereMonth('Fecha', $Month);
+    }
+
+    public function scopeCostosHilesa($query, $Year, $Month){
+        return $query->where('Departamento_id', '=', 23)->whereYear('Fecha', $Year)->whereMonth('Fecha', $Month);
+    }
+
+    public function scopeCostoAñoHLA($query, $Year){
+        return $query->where('Departamento_id', '!=', 23)->whereYear('Fecha', $Year);
+    }
+
+    public function scopeCostoAñoHilesa($query, $Year){
+        return $query->where('Departamento_id', '=', 23)->whereYear('Fecha', $Year);
+    }
 }

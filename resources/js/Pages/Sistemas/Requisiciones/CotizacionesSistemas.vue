@@ -10,6 +10,9 @@
         <!-- ******************************* FILTROS ********************************************* -->
         <section class="tw-flex tw-justify-between tw-content-center tw-border tw-p-2 tw-my-8 tw-mx-8">
             <div class="tw-flex tw-gap-4 tw-mx-2">
+                <div>
+                    <jet-button @click="openReportes" class="BtnNuevo">COSTOS</jet-button>
+                </div>
             </div>
             <div>
                 <jet-button @click="openModal" class="BtnNuevo">NUEVA REQUISICION</jet-button>
@@ -98,6 +101,11 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
+                                    </span>
+                                </div>
+                                <div class="iconoLime" @click="CambiarTipoPago(data)" v-if="data.Estatus > 2">
+                                    <span tooltip="Cambiar Tipo Pago" flow="left">
+                                        <i class="fa-solid fa-hand-holding-dollar"></i>
                                     </span>
                                 </div>
                             </div>
@@ -404,6 +412,54 @@
             </div>
         </modal>
 
+        <!-- --- Modal de costos ---- -->
+        <modal :show="showReporte" @close="chageReporte" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>COSTOS REQUISICIONES SISTEMAS</h3>
+            </div>
+
+            <div class="ModalForm">
+                <Table id="datos">
+                    <template v-slot:TableHeader>
+                        <th class="columna">HILATURAS</th>
+                        <th class="columna">HILESA</th>
+                    </template>
+
+                    <template v-slot:TableFooter>
+                        <tr>
+                            <td>
+                                <span class="tw-tracking-wider tw-text-white tw-bg-blue-500 tw-px-4 tw-py-1 tw-text-sm tw-rounded tw-leading-loose tw-mx-2 tw-font-semibold" title="">
+                                    <i class="fa-solid fa-money-bill"></i> Costo Anual Hilaturas ${{ Costos.CostoAnualHLA }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="tw-tracking-wider tw-text-white tw-bg-blue-500 tw-px-4 tw-py-1 tw-text-sm tw-rounded tw-leading-loose tw-mx-2 tw-font-semibold" title="">
+                                    <i class="fa-solid fa-money-bill"></i> Costo Anual Hilesa ${{ Costos.CostoAnualHilesa }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="tw-tracking-wider tw-text-white tw-bg-blue-500 tw-px-4 tw-py-1 tw-text-sm tw-rounded tw-leading-loose tw-mx-2 tw-font-semibold" title="">
+                                    <i class="fa-solid fa-money-bill"></i> Costo del Mes Hilaturas ${{ Costos.CostoMensualHLA }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="tw-tracking-wider tw-text-white tw-bg-blue-500 tw-px-4 tw-py-1 tw-text-sm tw-rounded tw-leading-loose tw-mx-2 tw-font-semibold" title="">
+                                    <i class="fa-solid fa-money-bill"></i> Costo del Mes Hilesa ${{ Costos.CostoMensualHilesa }}
+                                </span>
+                            </td>
+                        </tr>
+                    </template>
+                </Table>
+                <div id="chart" class="tw-m-10"></div>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
+
     </app-layout>
 </template>
 
@@ -424,7 +480,9 @@ import Select2 from 'vue3-select2-component';
 //imports de datatables
 import datatable from "datatables.net-bs5";
 import $ from "jquery";
-
+// Highcharts
+var Highcharts = require('highcharts');
+require('highcharts/modules/exporting')(Highcharts);
 //Moment Js
 import moment from 'moment';
 import 'moment/locale/es';
@@ -439,6 +497,7 @@ export default {
             showDetalle: false,
             showCotizacion: false,
             showEdit: false,
+            showReporte: false,
             Estatus: 0,
             form: {
                 IdUser: this.Session.id,
@@ -473,6 +532,16 @@ export default {
                 requisicion_sistemas_id: '',
                 Comentarios: '',
             },
+            Costos:{
+                CostoAnualHLA: 0,
+                CostoMensualHLA: 0,
+                CostoAnualHilesa: 0,
+                CostoMensualHilesa: 0,
+                HilesaAnual: 0,
+                HilesaMensual: 0,
+                HilaturaAnual: 0,
+                HilaturaMensual: 0,
+            },
         };
     },
 
@@ -500,6 +569,10 @@ export default {
         Perfiles: Object,
         RequisicionesSistemas: Object, //Consulta inicial
         RequisicionSistemas: Object, //Requisicion con Cotizacion
+        CostosHLA: Object,
+        CostosHilesa: Object,
+        CostoAñoHLA: Object,
+        CostoAñoHilesa: Object,
     },
 
     mounted() {
@@ -609,7 +682,7 @@ export default {
             this.Sol.Partida.splice(row,1);
         },
 
-        save(data){
+        save(data){ //Guardar Requisicion
             data.metodo = 1;
             data.Estatus = 0;
             this.$inertia.post("/Sistemas/CotizacionSistemas", data, {
@@ -625,7 +698,7 @@ export default {
             });
         },
 
-        CotizarReq(data){
+        CotizarReq(data){ //GAsigna datos para realizar cotizacion
             this.reset();
             this.chageDetalle();
             this.form.requisicion_sistemas_id = data.id;
@@ -648,7 +721,7 @@ export default {
             })
         },
 
-        RealizaCotizacion(data){
+        RealizaCotizacion(data){ //Guarda la cotizacion realizada
             data.metodo = 2;
             this.$inertia.post("/Sistemas/CotizacionSistemas", data, {
                 onSuccess: () => {
@@ -689,7 +762,7 @@ export default {
             this.showCotizacion  = !this.showCotizacion;
         },
 
-        VisualizaCotizacion(data){
+        VisualizaCotizacion(data){ //Visualiza los datos de la cotizacion
             let PreciosArticulos = 0;
             let CostoExtra = 0;
             let TotalRequisicion = 0;
@@ -736,7 +809,7 @@ export default {
             })
         },
 
-        EditaCotizacion(data){
+        EditaCotizacion(data){ //Actualiza los datos de la cotizacion
             data.Metodo = 3;
             data._method = "PUT";
             this.$inertia.post("/Sistemas/CotizacionSistemas/" + data.id, data, {
@@ -749,6 +822,107 @@ export default {
             });
         },
 
+        CambiarTipoPago(data){
+            data.Metodo = 4;
+            data._method = "PUT";
+            this.$inertia.post("/Sistemas/CotizacionSistemas/" + data.id, data, {
+                onSuccess: () => {
+                    this.reset();
+                    this.alertSucces();
+                },
+            });
+        },
+
+        chageReporte(){
+            this.showReporte  = !this.showReporte;
+        },
+
+        openReportes(){ //Aabre modal de Costos
+            this.chageReporte();
+            this.$inertia.get('/Sistemas/CotizacionSistemas', this.params , { //envio de variables por url
+                onSuccess: () => {
+                    this.Suma();
+                }, preserveState: true})
+        },
+
+        GraficaCostos(){ //Genera Grafica de highcharts
+            //variables internas
+            Highcharts.chart('chart', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Comparación de Costos'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name} {point.maq} {point.mate} {point.cat} {point.tr} {point.eq} {point.parti} {point.cl}</b>: {point.y} - {point.percentage:.1f}%'
+                    }
+                    }
+                },
+                series: [{
+                    name: 'prpa',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Hilaturas',
+                        y: this.Costos.HilaturaMensual,
+                        sliced: true,
+                        selected: true
+                    },{
+                        name: 'Hilesa',
+                        y: this.Costos.HilesaMensual
+                    }]
+                }]
+            });
+        },
+
+        Suma() { //Realiza el calculo de costos por requisicion
+            var Costo1 = 0;
+            this.CostosHLA.forEach(e => { //Recorre el arreglo consultado
+                Costo1 = e.CostoReq.replace(/,/g, ""); //Quita los caracteres no númericos de la cadena devuelta
+                var CostosRequi = parseFloat(Costo1); //Convierte a numero la cadena procesada
+                this.Costos.HilaturaMensual = this.Costos.HilaturaMensual + CostosRequi; //Calcula el total de las requisiciones
+            });
+            this.Costos.CostoMensualHLA = this.MonedaMexico(this.Costos.HilaturaMensual); //Convierte a formato moneda
+
+            var Costo2 = 0;
+            this.CostosHilesa.forEach(e => {
+                Costo2 = e.CostoReq.replace(/,/g, "");
+                var CostosRequi = parseFloat(Costo2);
+                this.Costos.HilesaMensual = this.Costos.HilesaMensual + CostosRequi;
+            });
+            this.Costos.CostoMensualHilesa = this.MonedaMexico(this.Costos.HilesaMensual);
+
+            var CostoAnio1 = 0;
+            this.CostoAñoHLA.forEach(e => {
+                CostoAnio1 = e.CostoReq.replace(/,/g, "");
+                var CostosRequi = parseFloat(CostoAnio1);
+                this.Costos.HilaturaAnual = this.Costos.HilaturaAnual + CostosRequi;
+            });
+            this.Costos.CostoAnualHLA = this.MonedaMexico(this.Costos.HilaturaAnual);
+
+            var CostoAnio2 = 0;
+            this.CostoAñoHilesa.forEach(e => {
+                CostoAnio2 = e.CostoReq.replace(/,/g, "");
+                var CostosRequi = parseFloat(CostoAnio2);
+                this.Costos.HilesaAnual = this.Costos.HilesaAnual + CostosRequi;
+            });
+            this.Costos.CostoAnualHilesa = this.MonedaMexico(this.Costos.HilesaAnual);
+
+            if(this.Costos.Hilesa != '' && this.Costos.Hilatura != ''){
+                this.GraficaCostos();
+            }
+        },
     },
 
     computed:{

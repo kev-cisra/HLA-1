@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Sistemas\Requisiciones;
 
 use App\Http\Controllers\Controller;
 use App\Models\Compras\Proveedores;
+use App\Models\Compras\Requisiciones\Requisiciones;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\Sistemas\Requisiciones\ArticulosRequisicionesSistemas;
@@ -30,12 +31,21 @@ class CotizacionesSistemasController extends Controller{
     public function index(Request $request){
         $Session = auth()->user();
 
+        //Asigna fecha dependiendo del request
+        $hoy = Carbon::now();
+        $request->Month == '' ? $mes = $hoy->format('n') : $mes = $request->Month;
+        $request->Year == '' ? $anio = $hoy->format('Y') : $anio = $request->Year;
+
         //Catalogos
         $Departamentos = $this->Dpto->SelectDepartamentos();
-        // $Perfiles = $this->Per->SelectPerfiles();
         $Perfiles = PerfilesUsuarios::get(['id','IdUser','IdEmp', 'Nombre', 'ApPat','ApMat']);
-
         $ProveedoresSistemas = ProveedoresSistemas::get(['id', 'Nombre']);
+
+        //Consultas para obtener costos de requisiciones Sistemas
+        $CostosHLA = RequisicionesSistemas::CostosHLA($anio, $mes)->get();
+        $CostosHilesa = RequisicionesSistemas::CostosHilesa($anio, $mes)->get();
+        $CostoAñoHLA = RequisicionesSistemas::CostoAñoHLA($anio)->get();
+        $CostoAñoHilesa = RequisicionesSistemas::CostoAñoHilesa($anio)->get();
 
         //Consulta Principal
         $RequisicionesSistemas = RequisicionesSistemas::with([
@@ -50,14 +60,13 @@ class CotizacionesSistemasController extends Controller{
             },
         ])->where('Estatus', '>', 0)->get();
 
-        $CostosRequisiciones = RequisicionesSistemas::get('CostoReq');
-
         if($request->Req){
             $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Proveedor','Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
         }else{
             $RequisicionSistemas = new stdClass();
         }
-        return Inertia::render('Sistemas/Requisiciones/CotizacionesSistemas', compact('Session','Departamentos','Perfiles','ProveedoresSistemas','RequisicionesSistemas', 'RequisicionSistemas', 'CostosRequisiciones'));
+
+        return Inertia::render('Sistemas/Requisiciones/CotizacionesSistemas', compact('Session','Departamentos','Perfiles','ProveedoresSistemas','RequisicionesSistemas', 'RequisicionSistemas', 'CostosHLA', 'CostosHilesa', 'CostoAñoHLA', 'CostoAñoHilesa'));
     }
 
     public function store(Request $request){
@@ -254,6 +263,16 @@ class CotizacionesSistemasController extends Controller{
                     }
 
                     return redirect()->back();
+                break;
+            case 4: //Cambia tipo de pago
+                $Pago = CotizacionesSistemas::where('requisicion_sistemas_id', $request->id)->first('TipoPago');
+
+                if($Pago->TipoPago == 'REM'){
+                    CotizacionesSistemas::where('requisicion_sistemas_id', $request->id)->update(['TipoPago' => 'FAC']);
+                }else{
+                    CotizacionesSistemas::where('requisicion_sistemas_id', $request->id)->update(['TipoPago' => 'REM']);
+                }
+                return redirect()->back();
                 break;
         }
     }

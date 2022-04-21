@@ -23819,6 +23819,9 @@ select {
 .tw-leading-tight {
 	line-height: 1.25;
 }
+.tw-leading-loose {
+	line-height: 2;
+}
 .tw-tracking-widest {
 	letter-spacing: 0.1em;
 }

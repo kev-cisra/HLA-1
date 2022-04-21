@@ -309,14 +309,6 @@
                     </template>
                 </Table>
                 <div id="chart" class="tw-m-10"></div>
-                <div class="tw-flex tw-flex-row tw-justify-around">
-                    <div>
-
-                    </div>
-                    <div>
-
-                    </div>
-                </div>
             </div>
 
             <div class="ModalFooter">
@@ -343,11 +335,9 @@ import JetSelect from "@/Components/Select";
 //imports de datatables
 import datatable from "datatables.net-bs5";
 import $ from "jquery";
-
 // Highcharts
 var Highcharts = require('highcharts');
 require('highcharts/modules/exporting')(Highcharts);
-
 //Moment Js
 import moment from 'moment';
 import 'moment/locale/es';
