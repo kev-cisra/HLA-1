@@ -149,7 +149,7 @@
                         <jet-input type="text" v-model="form.Dispositivo" @input="(val) => (form.Dispositivo = form.Dispositivo.toUpperCase())"></jet-input>
                         <small v-if="errors.Dispositivo" class="validation-alert">{{errors.Dispositivo}}</small>
                     </div>
-                    <div class="tw-mt-6  md:tw-w-1/12 md:tw-mb-0">
+                    <div class="tw-mt-6 md:tw-w-1/12 md:tw-mb-0">
                         <button type="button" class="btn btn-primary" @click="removeRow(index)">Quitar</button>
                     </div>
                 </div>
@@ -197,7 +197,7 @@
                                     </div>
                                     <div class="IconAproved" v-else-if="form.Estatus == 1">
                                         <span tooltip="Aprovado" flow="left">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </span>
@@ -477,7 +477,6 @@ export default {
     },
 
     watch: {
-
     }
 };
 </script>

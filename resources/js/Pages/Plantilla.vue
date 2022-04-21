@@ -68,49 +68,49 @@
         </section>
 
          <!-- **************************************************** MODALES ****************************************************** -->
-    <modal :show="showModal" @close="chageClose" :maxWidth="tam">
-        <div class="ModalHeader">
-            <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Lorem ipsum dolor sit.</h3>
-        </div>
-
-        <div class="ModalForm">
-<!--             <div class="FormSection">
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                    <jet-label><span class="required">*</span>VARIABLE</jet-label>
-                    <select class="InputSelect">
-                        <option v-for="obj in Objeto" :key="obj.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
-                    </select>
-                    <small v-if="errors.obj" class="validation-alert">{{errors.obj}}</small>
-                </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                    <jet-label><span class="required">*</span>VARIABLE</jet-label>
-                    <jet-input type="text" ></jet-input>
-                </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                    <jet-label><span class="required">*</span>Código</jet-label>
-                    <select  class="InputSelect">
-                        <option value="OPCION">OPCION</option>
-                    </select>
-                </div>
-                <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
-                    <jet-label><span class="required">*</span>FECHA</jet-label>
-                    <jet-input type="date"></jet-input>
-                </div>
+        <modal :show="showModal" @close="chageClose" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>Lorem ipsum dolor sit.</h3>
             </div>
-            <div class="FormSection">
-                <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
-                    <jet-label><span class="required">*</span>TEXTO</jet-label>
-                    <textarea name="" id="" cols="2" @input="(val) => (form.variable = form.variable.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
-                </div>
-            </div> -->
-        </div>
 
-        <div class="ModalFooter">
-            <jet-button type="button" @click="save(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
-            <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button>
-            <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
-        </div>
-    </modal>
+            <div class="ModalForm">
+    <!--             <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>VARIABLE</jet-label>
+                        <select class="InputSelect">
+                            <option v-for="obj in Objeto" :key="obj.id" :value="dpto.id" > {{ dpto.Nombre }}</option>
+                        </select>
+                        <small v-if="errors.obj" class="validation-alert">{{errors.obj}}</small>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>VARIABLE</jet-label>
+                        <jet-input type="text" ></jet-input>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>Código</jet-label>
+                        <select  class="InputSelect">
+                            <option value="OPCION">OPCION</option>
+                        </select>
+                    </div>
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-1/2 md:tw-mb-0">
+                        <jet-label><span class="required">*</span>FECHA</jet-label>
+                        <jet-input type="date"></jet-input>
+                    </div>
+                </div>
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 md:tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>TEXTO</jet-label>
+                        <textarea name="" id="" cols="2" @input="(val) => (form.variable = form.variable.toUpperCase())" class="tw-bg-gray-200 tw-text-gray-500 tw-font-semibold focus:tw-outline-none focus:tw-shadow-outline tw-border tw-border-gray-300 tw-rounded-lg tw-py-2 tw-px-4 tw-block tw-w-full tw-appearance-none tw-shadow-sm"></textarea>
+                    </div>
+                </div> -->
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="save(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
+                <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button>
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
     </app-layout>
 </template>
 
