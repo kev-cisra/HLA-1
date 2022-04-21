@@ -49,18 +49,6 @@
             </Table>
         </div>
 
-        <ag-grid-vue
-            style="width: 100%; height: 200px"
-            class="ag-theme-alpine"
-            :columnDefs="columnDefs"
-            :rowData="rowData"
-        >
-        </ag-grid-vue>
-
-        <!-- <pre>
-            {{columnDefs}}
-        </pre> -->
-
         <!------------------ Modal ------------------------->
         <modal :show="showModal" @close="chageClose">
             <div class="tw-px-4 tw-py-4">
@@ -71,36 +59,22 @@
                     :rowData="caliProce"
                 >
                 </ag-grid-vue>
-                <!-- <table class="table">
-                    <thead>
-                        <th>Proceso</th>
-                        <th>Maquina</th>
-                        <th>Partida</th>
-                        <th>Estatus</th>
-                        <th>Norma</th>
-                        <th>Clave</th>
-                        <th>Descripción</th>
-                    </thead>
-                    <tbody>
-                        <tr v-for="cp in caliProce" :key="cp">
-                            <td> {{ cp.cat_proce_cali.nombre }} </td>
-                            <td> {{ cp.maquina.Nombre }} {{ cp.maquina.marca.Nombre }} </td>
-                            <td> {{ cp.partida }} </td>
-                            <td>
-                                <div v-if="cp.estatus == 1">Activo</div>
-                                <div v-else>Finalizado</div>
-                            </td>
-                            <td> {{ cp.dep_mat.materiales.idmat }} - {{ cp.dep_mat.materiales.nommat }} </td>
-                            <td> {{ cp.clave.CVE_ART }} </td>
-                            <td> {{ cp.clave.DESCR }} </td>
-                        </tr>
-                    </tbody>
-                </table> -->
             </div>
         </modal>
 
-        <section id="menu" class="tw-flex tw-justify-center tw-min-h-screen tw-mt-8 tw-min-w-screen">
-
+        <section id="menu" class="tw-grid sm:tw-grid-cols-1 md:tw-grid-cols-3 lg:tw-grid-cols-6 tw-gap-4">
+            <!-- Modulo personal -->
+            <div class="tw-text-center tw-p-0 tw-transition tw-duration-700 tw-ease-in-out tw-transform tw-h-1/6 hover:tw--translate-y-1 hover:tw-scale-110 tw-h-full tw-my-5" v-if="hasAnyPermission(['admin.index', 'Produccion.personal.index'])">
+                <Link href="Calidad/CargaCali" class="tw-no-underline icono tw-text-9xl md:tw-text-8xl">
+                    <div class="tw-flex tw-justify-center tw-mb-4">
+                        <i class="fas fa-vial"></i>
+                    </div>
+                    <div>
+                        <h4 class="tw-text-base tw-font-semibold tw-text-gray-400 tw-uppercase">Carga de Procesos</h4>
+                        <span class="linea"></span>
+                    </div>
+                </Link>
+            </div>
         </section>
     </app-layout>
 </template>
@@ -177,11 +151,11 @@
                         headerName: "Estatus",
                         field: "estatus",
                         editable: true,
-                        ver: function (params){
+                        cellRenderer: function (params){
                             if (params.data.estatus == 1) {
-                                console.log("Activo");
+                                return "Activo";
                             }else{
-                                console.log("no")
+                                return "Finalizado";
                             }
                         }
                     },

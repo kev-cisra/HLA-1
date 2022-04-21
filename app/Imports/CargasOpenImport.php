@@ -7,6 +7,7 @@ use App\Models\Produccion\Abastos\admi_abas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carOpe;
 use App\Models\Produccion\catalogos\claves;
+use App\Models\Produccion\dep_per;
 use App\Models\Produccion\turnos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -42,6 +43,12 @@ class CargasOpenImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 
         $per = PerfilesUsuarios::where('user_id', '=', Auth::id())->first();
 
+        $nc = dep_per::join('perfiles_usuarios', 'perfiles_usuarios.id', '=', 'dep_pers.perfiles_usuarios_id')
+        ->where('dep_pers.departamento_id', '=', $par->departamento_id)
+        ->where('perfiles_usuarios.IdEmp', '=', $row['no_control'])
+        ->selectRaw('dep_pers.id')
+        ->first();
+
         return new carga([
             'fecha' => $this->transformDateTime($row['fecha']),
             'semana' => date("Y", strtotime($this->transformDateTime($row['fecha']))).'-W'.date("W", strtotime($this->transformDateTime($row['fecha']))),
@@ -49,7 +56,7 @@ class CargasOpenImport implements ToModel, WithHeadingRow, SkipsEmptyRows
             'partida' => $row['partida'].'.'.$row['com_part'],
             'partida_id' => $par->id,
             'equipo_id' => $dp->dep_per->equipo_id,
-            'dep_perf_id' => $dp->dep_perf_id,
+            'dep_perf_id' => $nc->id,
             'norma' => $cla->dep_mat_id,
             'proceso_id' => $dp->proceso_id,
             'maq_pro_id' => $dp->maq_pro_id,

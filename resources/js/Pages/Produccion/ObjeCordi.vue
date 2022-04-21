@@ -68,7 +68,7 @@
                                 <strong>{{ po.paro.descri }}: </strong> {{ po.horas }}
                             </div>
                         </td>
-                        <td class="">{{ca.valor.toFixed(2)}}</td>
+                        <td class="">{{parseFloat(ca.valor)}}</td>
                         <td class="">
                             <div class="columnaIconos">
                                 <!-- nota objetivos -->
@@ -249,7 +249,7 @@
                                 <td class="tw-text-center"> {{ obje.maq_pro.maquinas.Nombre }} {{ obje.maq_pro.maquinas.marca ? obje.maq_pro.maquinas.marca.Nombre : 'N/A' }} </td>
                                 <td class="tw-text-center"> {{ obje.dep_mat.materiales.idmat }} - {{ obje.dep_mat.materiales.nommat }} </td>
                                 <td class="tw-text-center"> {{ obje.clave_id == null ? '' : obje.clave.CVE_ART }} - {{ obje.clave_id == null ? '' : obje.clave.DESCR }} </td>
-                                <td class="tw-text-center"> {{ obje.pro_hora }} </td>
+                                <td class="tw-text-center"> {{ parseFloat(obje.pro_hora) }} </td>
                                 <td class="tw-text-center">
                                     <div class="columnaIconos" v-if="this.usuario.dep_pers.length == 0">
                                         <a class="iconoEdit" @click="editOB(obje)" href="#Fobje">
@@ -403,21 +403,11 @@
                                             <jet-label class=""><span class="required">*</span>Horas a trabajar</jet-label>
                                             <jet-input v-model="f.calcuObje" @change="inputHoraObje(f)" type="number" min="0" max="12" step=".5"></jet-input>
                                         </div>
-                                        <!-- tiempo punta
-                                        <div class="tw-px-3 tw-mb-6 lg:tw-w-1/4 lg:tw-mb-0" v-show="S_Area == 7">
-                                            <jet-label class=""><span class="required">*</span>Horas a trabajar punta</jet-label>
-                                            <jet-input v-model="f.calcuPunta" @change="inputHoraPunta(f)" type="number" min="0" max="12" step=".5"></jet-input>
-                                        </div> -->
                                         <!-- Input kilogramos -->
                                         <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/4 lg:tw-mb-0">
                                             <jet-label class=""><span class="required">*</span>Producción horas laborales</jet-label>
                                             <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="f.valor" disabled></jet-input>
                                         </div>
-                                        <!-- Input kilogramos punta
-                                        <div class="tw-px-3 tw-mb-6 tw-w-full lg:tw-w-1/4 lg:tw-mb-0" v-show="S_Area == 7">
-                                            <jet-label class=""><span class="required">*</span>Producción horario punta</jet-label>
-                                            <jet-input type="number" min="0" class="InputSelect tw-bg-lime-300" v-model="f.valorP" disabled></jet-input>
-                                        </div> -->
                                     </div>
                                     <div class="lg:tw-flex tw-mt-5">
                                         <div class="tw-m-auto">
@@ -428,8 +418,10 @@
                             </div>
 
                         </div>
+                        <!-- Botones -->
                         <div class="m-auto">
-                            <button class="btn btn-success tw-mr-4" @click="saveOB(form)">Guardar</button>
+                            <BotonCarga :verBot="CObje" :textoV="'Guardar'" :textoOC="'Guardando...'" :class="'btn btn-success tw-mr-4'" @click="saveOB(form)"></BotonCarga>
+                            <!-- <button class="btn btn-success tw-mr-4" @click="saveOB(form)">Guardar</button> -->
                             <button @click="openModal()" class="btn btn-danger">Cerrar</button>
                         </div>
                     </div>
@@ -453,6 +445,7 @@
     import moment from 'moment';
     import 'moment/locale/es';
     import ActionMessage from '@/Components/ActionMessage'
+    import BotonCarga from '@/Components/BotonCarga.vue';
     //datatable
     import datatable from 'datatables.net-bs5';
     require( 'datatables.net-buttons-bs5/js/buttons.bootstrap5' );
@@ -486,6 +479,7 @@
             Modal,
             Select2,
             JetLabel,
+            BotonCarga,
             ActionMessage,
             JetCancelButton
         },
@@ -502,6 +496,7 @@
                 errors: [],
                 partida: [],
                 proc_prin: '',
+                CObje: true,
                 editMode: false,
                 editModeOB: false,
                 showModal: false,
@@ -714,7 +709,7 @@
                 this.limp = 2;
                 this.hora_maquina()
                 const resu = this.objetivos.find(obje => obje.id == caO.paqObjetivo);
-                caO.valor = resu.pro_hora * caO.calcuObje;
+                caO.valor = parseFloat(resu.pro_hora, 10) * parseFloat(caO.calcuObje, 10);
                 caO.valorP = resu.pro_hora * (parseFloat(caO.calcuObje, 10) + parseFloat(caO.calcuPunta, 10));
             },
             //horarios apertura
@@ -752,9 +747,15 @@
             inputHoraParos(par){
                 //Calcula el tiempo de los paros
                 let paro = 0;
-                this.hora_maquina()
+                if (par.paroObje[0].horas == "") {
+                    par.paroObje[0].horas = 0
+                }
+                if (par.paroObje[1].horas == "") {
+                    par.paroObje[1].horas = 0
+                }
+
                 par.paroObje.forEach(el => {
-                    paro += el.horas
+                    paro += parseFloat(el.horas)
                 });
 
                 if (paro < 0 || paro > 12) {
@@ -764,6 +765,7 @@
 
                 par.calcuObje = 0;
                 par.calcuPunta = 12 - paro
+                this.hora_maquina()
             },
             //abrir modal
             openModal(){
@@ -828,7 +830,7 @@
                         let ob = this.objetivos.find(ob => {return rep.paqObjetivo == ob.id})
                         let suma = parseFloat(rep.calcuObje);
                         rep.paroObje.forEach(sum => {
-                            suma += sum.horas;
+                            suma += parseFloat(sum.horas);
                         })
                         obje.push({idMaq: ob.maq_pro_id, suma: suma})
                         //console.log(suma)
@@ -839,7 +841,7 @@
                     var finSum = 0;
                     obje.forEach(fin => {
                         if (resp.id == fin.idMaq) {
-                            finSum += fin.suma
+                            finSum += parseFloat(fin.suma)
                         }
                     })
                     //console.log(finSum);
@@ -852,12 +854,13 @@
             async saveOB(data){
                 //data.calcuObje = this.calcuObje;
                 //data.calcuPunta = this.calcuPunta;
+                this.CObje = false;
                 data.semana = moment(data.fecha).format("GGGG-[W]WW");
                 //console.log(data)
 
                 //console.log(data);
                 await axios.post('ObjeCordi/storeProObje', data)
-                .then(eve => {this.ConProduccion(), this.openModal()})
+                .then(eve => {this.ConProduccion(), this.openModal(), this.CObje = true})
                 .catch(error => {this.errors = error.response.data.errors});
 
 

@@ -744,7 +744,7 @@
                         <td >{{ca.dep_mat == null ? 'N/A' : ca.dep_mat.materiales.idmat+' - '+ca.dep_mat.materiales.nommat}}</td>
                         <td  v-show="FoFiltro.iniDia">{{ca.clave == null ? 'N/A' : ca.clave.CVE_ART}}</td>
                         <td  v-show="FoFiltro.iniDia">{{ca.clave == null ? 'N/A' : ca.clave.DESCR}}</td>
-                        <td >{{this.formatoMexico(ca.valor.toFixed(2))}}</td>
+                        <td >{{this.formatoMexico(ca.valor)}}</td>
                         <td  v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1"> {{ca.VerInv}} </td>
                         <td v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1" >{{ca.dep_perf == null ? 'N/A' : ca.dep_perf.departamentos.Nombre}}</td>
                         <td v-show="FoFiltro.iniDia != null & FoFiltro.rango == 1">
@@ -2080,7 +2080,7 @@
                         let cate = dat.categoria == null ? '' : dat.categoria + ' / ';
                         let proce = dat.proceso_id == null ? 'General' : dat.proceso.nompro + ' / ';
                         let maqui = dat.maq_pro_id == null ? '' :dat.maq_pro.maquinas.Nombre + ' / ';
-                        valor.push({name: proce, y: dat.valor, mate: mater, parti: part, cl: clave, eq: equ, tr: tur, cat: cate, maq: maqui});
+                        valor.push({name: proce, y: parseFloat(dat.valor), mate: mater, parti: part, cl: clave, eq: equ, tr: tur, cat: cate, maq: maqui});
                     })
                 }else{
                     let promesa = await axios.post('ReportesPro/PrPaiGrafi', datos);
@@ -2089,7 +2089,7 @@
                         let proce = dat.proceso_id == null ? 'General' : dat.proceso.nompro + ' / ';
                         let mater = dat.maq_pro_id == null ? '' : dat.maq_pro.maquinas.Nombre + ' / ';
                         let part = dat.paro_id == null ? '' : dat.paros.clave+' - '+dat.paros.descri + ' / ';
-                        valor.push({name: proce, y: dat.tiempo, mate: mater, parti: part});
+                        valor.push({name: proce, y: parseInt(dat.tiempo), mate: mater, parti: part});
                     })
                 }
 
@@ -2271,7 +2271,7 @@
                             let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
                             if (ver) {
                                 name = ver.proceso.nompro+': '+ver.maq_pro.maquinas.Nombre;
-                                dat.push(ver.valor)
+                                dat.push(parseFloat(ver.valor))
                             }else{
                                 dat.push(null)
                             }
@@ -2285,7 +2285,7 @@
                             let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
                             if (ver) {
                                 name = ver.proceso.nompro;
-                                dat.push(ver.valor)
+                                dat.push(parseFloat(ver.valor))
                             }else{
                                 dat.push(null)
                             }
@@ -2470,7 +2470,7 @@
                             let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
                             if (ver) {
                                 name = ver.proceso.nompro+': '+ver.maq_pro.maquinas.Nombre;
-                                dat.push(ver.valor)
+                                dat.push(parseFloat(ver.valor))
                             }else{
                                 dat.push(null)
                             }
@@ -2484,7 +2484,7 @@
                             let ver = promesa.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
                             if (ver) {
                                 name = ver.proceso.nompro;
-                                dat.push(ver.valor)
+                                dat.push(parseFloat(ver.valor))
                             }else{
                                 dat.push(null)
                             }
@@ -2623,7 +2623,7 @@
                             let ver = promesaBa.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
                             if (ver) {
                                 name = ver.proceso.nompro+': '+ver.maq_pro.maquinas.Nombre;
-                                dat.push(ver.valor)
+                                dat.push(parseFloat(ver.valor))
                             }else{
                                 dat.push(null)
                             }
@@ -2638,7 +2638,7 @@
                             let ver = promesaLin.data.find(tiem => tiem.fec == tiemp & tiem.maq_pro_id == proce )
                             if (ver) {
                                 name = ver.proceso.nompro+': '+ver.maq_pro.maquinas.Nombre;
-                                dat.push(ver.valor)
+                                dat.push(parseFloat(ver.valor))
                             }else{
                                 dat.push(null)
                             }
@@ -2654,7 +2654,7 @@
                             let ver = promesaBa.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
                             if (ver) {
                                 name = ver.proceso.nompro;
-                                dat.push(ver.valor)
+                                dat.push(parseFloat(ver.valor))
                             }else{
                                 dat.push(null)
                             }
@@ -2669,7 +2669,7 @@
                             let ver = promesaLin.data.find(tiem => tiem.fec == tiemp & tiem.proceso_id == proce )
                             if (ver) {
                                 name = ver.proceso.nompro;
-                                dat.push(ver.valor)
+                                dat.push(parseFloat(ver.valor))
                             }else{
                                 dat.push(null)
                             }
@@ -2691,7 +2691,7 @@
                     let proce = dat.proceso_id == null ? 'General' : dat.proceso.nompro + ' / ';
                     let maqui = dat.maq_pro_id == null ? '' :dat.maq_pro.maquinas.Nombre + ' / ';
                     let todo = proce+maqui+mater+part+clave+equ+tur+cate;
-                    dtPas.push({name: todo, y: dat.valor});
+                    dtPas.push({name: todo, y: parseFloat(dat.valor)});
                 })
                 serie.push({type: 'pie', name: 'Total', data: dtPas, center: [80, 20], size: 100, showInLegend: false, dataLabels: { enabled: false }})
 

@@ -17,19 +17,20 @@ class CreateCargProcMeFibrasTable extends Migration
             $table->id();
 
             $table->enum('estatus', [0,1,2,3,4])->defalt(1);
-            $table->enum('frecuencia', [0,1,2,3,4])->default(1);
-            $table->float('ml');
-            $table->float('sfc');
-            $table->float('ani_cal');
-            $table->float('algod_cal');
-            $table->float('composi');
+            $table->integer('frecuencia')->default(1);
+            $table->float('ml')->nullable();
+            $table->float('sfc')->nullable();
+            $table->float('ani_cal')->nullable();
+            $table->float('algod_cal')->nullable();
+            $table->string('composi')->nullable();
+            $table->string('observacion')->nullable();
 
-            $table->unsignedBigInteger('proce_calidad_id');
+            $table->unsignedBigInteger('proce_calidad_id')->nullable();
             $table->foreign("proce_calidad_id")->references("id")->on("proce_calidads")
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
-            $table->unsignedBigInteger('cata_medi_fibra_id');
+            $table->unsignedBigInteger('cata_medi_fibra_id')->nullable();
             $table->foreign("cata_medi_fibra_id")->references("id")->on("cata_medi_fibras")
             ->onDelete("cascade")
             ->onUpdate("cascade");
