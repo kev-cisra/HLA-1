@@ -159,10 +159,15 @@ Route::post('Carga/CarObje', [CargaController::class, 'CarObje'])->name('CarObje
 
 //Fin carga de produccion y objetivos
 
+/****************************** Imports *****************************/
+
 Route::resource('CargaExcel', CargarExcelController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
 Route::post('impoMatriz', [CargarExcelController::class, 'impoMatriz'])->name('importaMatriz')
+->middleware(['auth:sanctum', 'verified']);
+
+Route::post('cargaAnillo', [CargarExcelController::class, 'impoMatriz'])->name('cargaAnilloMasi')
 ->middleware(['auth:sanctum', 'verified']);
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Calidad\Catalogo\CataMediFibras;
 use App\Models\obje_cordi;
 use App\Models\Produccion\dep_mat;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -22,6 +23,18 @@ class MatrizObjeImport implements ToModel, WithHeadingRow, SkipsEmptyRows
         ->where('claves.CVE_ART', '=', $row['clave_id'])
         ->selectRaw('claves.id AS clave_id, dep_mats.id AS dep_mat_id, claves.torsion, dep_mats.material_id ')
         ->first();
+
+        /* return new CataMediFibras([
+            'min_ml' => $row['min_ml'],
+            'max_ml' => $row['max_ml'],
+            'min_sfc' => $row['min_sfc'],
+            'max_sfc' => $row['max_sfc'],
+            'min_anillo' => $row['min_anillo'],
+            'max_anillo' => $row['max_anillo'],
+            'min_algodon' => $row['min_algodon'],
+            'max_algodon' => $row['max_algodon'],
+            'clave_id' => $cal->clave_id,
+        ]); */
 
         return new obje_cordi([
             'estatus' => 1,

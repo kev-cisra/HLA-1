@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Produccion\ExcelImport;
 
 use App\Http\Controllers\Controller;
+use App\Imports\CargasAnilloImport;
 use App\Imports\CargasImport;
 use App\Imports\CargasOpenImport;
 use App\Imports\MatrizObjeImport;
@@ -33,6 +34,17 @@ class CargarExcelController extends Controller
 
         //Excel::import(new MatrizObjeImport, $request->file("file"));
         Excel::import(new CargasOpenImport, $request->file("file"));
+        return redirect()->back()
+            ->with('message', 'Post Created Successfully.');
+    }
+
+    public function cargaAnillo(Request $request)
+    {
+        Validator::make($request->all(), [
+            'file' => ['required']
+        ])->validate();
+
+        Excel::import(new CargasAnilloImport, $request->file("file"));
         return redirect()->back()
             ->with('message', 'Post Created Successfully.');
     }

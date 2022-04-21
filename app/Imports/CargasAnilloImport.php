@@ -2,7 +2,6 @@
 
 namespace App\Imports;
 
-use App\Models\Produccion\AbaEntregas;
 use App\Models\Produccion\Abastos\admi_abas;
 use App\Models\Produccion\carga;
 use App\Models\Produccion\carOpe;
@@ -10,14 +9,12 @@ use App\Models\Produccion\catalogos\claves;
 use App\Models\Produccion\dep_per;
 use App\Models\Produccion\turnos;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
-use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use \PhpOffice\PhpSpreadsheet\Shared\Date;
+use Illuminate\Support\Facades\Date;
+use Maatwebsite\Excel\Concerns\ToModel;
 
-class CargasOpenImport implements ToModel, WithHeadingRow, SkipsEmptyRows
+class CargasAnilloImport implements ToModel
 {
     /**
     * @param array $row
@@ -37,7 +34,7 @@ class CargasOpenImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 
         $tur = turnos::where('nomtur', 'like', '%'.$row['turno'].'%')->where('departamento_id', '=', $dp->departamento_id)->first(['id']);
 
-        $par = admi_abas::where('partida', '=', $row['partida'])->whereIn("departamento_id", [4,5,6])->first();
+        $par = admi_abas::where('partida', '=', $row['partida'])->where("departamento_id", '=', 8)->first();
 
         $cla = claves::where('CVE_ART', '=', $row['clave'])->first();
 
