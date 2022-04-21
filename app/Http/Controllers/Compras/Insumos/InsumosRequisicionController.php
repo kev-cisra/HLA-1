@@ -213,12 +213,13 @@ class InsumosRequisicionController extends Controller{
                                 'insumo_id' => $value['insumo_id'],
                             ]);
                         }else{ //Nuevas partidas añadidas
+                            // return $request;
                             //Insersion de nuevas partidas a la requisicion
                             ArticulosRequisicionesInsumos::create([
                                 'IdUser' => $Session->id,
                                 'Cantidad' => $value['Cantidad'],
                                 'Estatus' => 1,
-                                'requisiciones_insumos_id' => $Requisicion,
+                                'requisiciones_insumos_id' => $request->Req_id,
                                 'insumo_id' => $value['insumo_id'],
                             ]);
                         }
@@ -230,9 +231,5 @@ class InsumosRequisicionController extends Controller{
                     return "Revisa los datos introducidos";
                 }
         }
-        // if ($request->has('id')) {
-        //     Insumos::find($request->id)->update($request->all());
-        // }
-
     }
 }
