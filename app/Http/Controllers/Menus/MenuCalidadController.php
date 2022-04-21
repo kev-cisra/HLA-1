@@ -36,7 +36,7 @@ class MenuCalidadController extends Controller
 
         $calidad = $this->gene->ConAbast();
 
-        $catProce = CataProceCalidad::get();
+        $catProce = $this->gene->ConCaliProce();
 
         $maquinas = maq_pro::join('procesos', 'procesos.id', '=', 'maq_pros.proceso_id')
         ->join('maquinas', 'maquinas.id', '=', 'maq_pros.maquina_id')

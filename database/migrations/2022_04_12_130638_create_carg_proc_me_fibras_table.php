@@ -17,12 +17,13 @@ class CreateCargProcMeFibrasTable extends Migration
             $table->id();
 
             $table->enum('estatus', [0,1,2,3,4])->defalt(1);
-            $table->enum('frecuencia', [0,1,2,3,4])->default(1);
+            $table->integer('frecuencia')->default(1);
             $table->float('ml')->nullable();
             $table->float('sfc')->nullable();
             $table->float('ani_cal')->nullable();
             $table->float('algod_cal')->nullable();
-            $table->float('composi')->nullable();
+            $table->string('composi')->nullable();
+            $table->string('observacion')->nullable();
 
             $table->unsignedBigInteger('proce_calidad_id')->nullable();
             $table->foreign("proce_calidad_id")->references("id")->on("proce_calidads")

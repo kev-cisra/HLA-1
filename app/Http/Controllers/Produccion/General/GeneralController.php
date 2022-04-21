@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Produccion\General;
 
 use App\Http\Controllers\Controller;
+use App\Models\Calidad\Catalogo\CataProceCalidad;
 use App\Models\Catalogos\Maquinas;
 use App\Models\Produccion\AbaEntregas;
 use App\Models\Produccion\Abastos\admi_abas;
@@ -208,5 +209,10 @@ class GeneralController extends Controller
             ->get(['id', 'partida', 'folio2', 'total', 'estatus', 'perfil_id', 'departamento_id']);
 
         return $aba;
+    }
+
+    //Consolta Catalogo calidad procesos
+    public function ConCaliProce(){
+        return CataProceCalidad::get();
     }
 }
