@@ -21,7 +21,7 @@ class CreateCotizacionesSistemasTable extends Migration
             $table->string('TipoCambio',8,2)->default(1);
             $table->string('CostoExtra',10,2)->nullable();
             $table->tinyInteger('Aprobado')->default(0);
-            $table->string('Comentario')->default('S/C');
+            $table->string('Comentario')->default('S/C')->nullable();
             $table->string('Archivo')->nullable();
 
             $table->unsignedBigInteger('Proveedor_Sistemas_id')->nullable();

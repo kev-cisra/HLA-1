@@ -450,6 +450,7 @@
         </div>
     </div>
 
+
     <modal :show="showPartidas" @close="chagePartidas" :maxWidth="tam">
         <div class="tw-mt-4 tw-mx-4">
             <div class="tw-text-lg">
@@ -1131,7 +1132,7 @@
         </div>
     </modal>
 
-    </app-layout>
+</app-layout>
 </template>
 
 <script>

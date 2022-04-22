@@ -530,42 +530,42 @@ export default {
                 //Comprobar que la fecha solicitada para vacaciones no sea mayor a 30 dias naturales
                 if(FechaValida < 31 ){
 
-                    if(data.Empresa == 'SERGES' || data.Empresa == 'SHIELDTEX'){ //En caso de ser SERGES no contar los fines de semana
-                        // DiasSolicitados -=1;
-                        //Descuendo de fines de semana
-                        var from = moment(fecha1, 'DD/MM/YYY'),
-                            to = moment(fecha2, 'DD/MM/YYY');
+                    // if(data.Empresa == 'SERGES' || data.Empresa == 'SHIELDTEX'){ //En caso de ser SERGES no contar los fines de semana
+                    //     // DiasSolicitados -=1;
+                    //     //Descuendo de fines de semana
+                    //     var from = moment(fecha1, 'DD/MM/YYY'),
+                    //         to = moment(fecha2, 'DD/MM/YYY');
 
-                        while (!from.isAfter(to)) {
-                                // Si no es sabado ni domingo
-                                if (from.isoWeekday() !== 6 && from.isoWeekday() !== 7) {
-                                    dias++;
-                                }
-                                from.add(1, 'days');
-                            }
+                    //     while (!from.isAfter(to)) {
+                    //             // Si no es sabado ni domingo
+                    //             if (from.isoWeekday() !== 6 && from.isoWeekday() !== 7) {
+                    //                 dias++;
+                    //             }
+                    //             from.add(1, 'days');
+                    //         }
 
-                            if(dias <= this.PerfilSession.DiasVac){ //(Cambio Individual)
+                    //         if(dias <= this.PerfilSession.DiasVac){ //(Cambio Individual)
 
-                                //Verificacion de dias de vacaciones disponibles no sean mayores a los solicitados
-                                data.DiasTomados = dias;
-                                data.DiasRestantes = this.PerfilSession.DiasVac - data.DiasTomados;
-                                // Guardado de la informacion
-                                this.$inertia.post("/RecursosHumanos/Vacaciones", data, {
-                                    onSuccess: () => {
-                                        this.reset();
-                                        this.chageClose();
-                                        if(this.$attrs.jetstream.flash.type == 'Warning'){
-                                            this.alertInfo(this.$attrs.jetstream.flash.message);
-                                        }else if(this.$attrs.jetstream.flash.type == 'Success'){
-                                            this.alertSuccess(this.$attrs.jetstream.flash.message);
-                                        }
-                                    },
-                                });
-                            }else{
-                                this.alertWarningDias();
-                            }
+                    //             //Verificacion de dias de vacaciones disponibles no sean mayores a los solicitados
+                    //             data.DiasTomados = dias;
+                    //             data.DiasRestantes = this.PerfilSession.DiasVac - data.DiasTomados;
+                    //             // Guardado de la informacion
+                    //             this.$inertia.post("/RecursosHumanos/Vacaciones", data, {
+                    //                 onSuccess: () => {
+                    //                     this.reset();
+                    //                     this.chageClose();
+                    //                     if(this.$attrs.jetstream.flash.type == 'Warning'){
+                    //                         this.alertInfo(this.$attrs.jetstream.flash.message);
+                    //                     }else if(this.$attrs.jetstream.flash.type == 'Success'){
+                    //                         this.alertSuccess(this.$attrs.jetstream.flash.message);
+                    //                     }
+                    //                 },
+                    //             });
+                    //         }else{
+                    //             this.alertWarningDias();
+                    //         }
 
-                    }else{ //En caso de ser Hilaturas se cuentan los fines de semana
+                    // }else{ //En caso de ser Hilaturas se cuentan los fines de semana
                         var dias = fecha2.diff(fecha1, 'days');
                         data.DiasTomados = data.DiasTomados = dias+1;
                         console.log(data.DiasTomados );
@@ -588,7 +588,7 @@ export default {
                             this.alertWarningDias();
                         }
 
-                    }
+                    // }
 
                 }else{
                     Swal.fire(
@@ -630,35 +630,35 @@ export default {
                 //Comprobar que la fecha solicitada para vacaciones no sea mayor a 30 dias naturales
                 if(FechaValida < 30 ){
 
-                    if(data.Empresa == 'SERGES' || data.Empresa == 'SHIELDTEX'){ //En caso de ser SERGES no contar los fines de semana
-                        // DiasSolicitados -=1;
-                        //Descuendo de fines de semana
-                        var from = moment(fecha1, 'DD/MM/YYY'),
-                            to = moment(fecha2, 'DD/MM/YYY');
+                    // if(data.Empresa == 'SERGES' || data.Empresa == 'SHIELDTEX'){ //En caso de ser SERGES no contar los fines de semana
+                    //     // DiasSolicitados -=1;
+                    //     //Descuendo de fines de semana
+                    //     var from = moment(fecha1, 'DD/MM/YYY'),
+                    //         to = moment(fecha2, 'DD/MM/YYY');
 
-                        while (!from.isAfter(to)) {
-                                // Si no es sabado ni domingo
-                                if (from.isoWeekday() !== 6 && from.isoWeekday() !== 7) {
-                                    dias++;
-                                }
-                                from.add(1, 'days');
-                            }
+                    //     while (!from.isAfter(to)) {
+                    //             // Si no es sabado ni domingo
+                    //             if (from.isoWeekday() !== 6 && from.isoWeekday() !== 7) {
+                    //                 dias++;
+                    //             }
+                    //             from.add(1, 'days');
+                    //         }
 
-                            if(dias <= data.DiasVac){
-                                //Verificacion de dias de vacaciones disponibles no sean mayores a los solicitados
-                                data.DiasTomados = dias;
-                                data.DiasRestantes = data.DiasVac - data.DiasTomados;
-                                // Guardado de la informacion
-                                this.$inertia.post("/RecursosHumanos/Vacaciones", data, {
-                                    onSuccess: () => {
-                                        this.reset(), this.chageClose(), this.alertSucces();
-                                    },
-                                });
-                            }else{
-                                this.alertWarningDias();
-                            }
+                    //         if(dias <= data.DiasVac){
+                    //             //Verificacion de dias de vacaciones disponibles no sean mayores a los solicitados
+                    //             data.DiasTomados = dias;
+                    //             data.DiasRestantes = data.DiasVac - data.DiasTomados;
+                    //             // Guardado de la informacion
+                    //             this.$inertia.post("/RecursosHumanos/Vacaciones", data, {
+                    //                 onSuccess: () => {
+                    //                     this.reset(), this.chageClose(), this.alertSucces();
+                    //                 },
+                    //             });
+                    //         }else{
+                    //             this.alertWarningDias();
+                    //         }
 
-                    }else{ //En caso de ser Hilaturas se cuentan los fines de semana
+                    // }else{ //En caso de ser Hilaturas se cuentan los fines de semana
                         var dias = fecha2.diff(fecha1, 'days');
                         data.DiasTomados = data.DiasTomados = dias+1;
                         data.DiasRestantes = data.DiasVac - data.DiasTomados;
@@ -675,7 +675,7 @@ export default {
                             this.alertWarningDias();
                         }
 
-                    }
+                    // }
 
                 }else{
                     Swal.fire(
@@ -705,17 +705,6 @@ export default {
                     this.tablaHistorico();
                     this.chageHistoricoVacaciones();
                 }, preserveState: true
-            });
-        },
-
-        PruebaCorreo(data){
-            console.log('entrte');
-            data.Tipo = 10;
-            data._method = "PUT";
-            this.$inertia.post("/RecursosHumanos/Vacaciones/" + data.id, data, {
-                onSuccess: () => {
-                    this.alertSucces();
-                },
             });
         },
 

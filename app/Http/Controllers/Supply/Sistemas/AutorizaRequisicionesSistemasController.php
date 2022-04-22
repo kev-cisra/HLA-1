@@ -71,23 +71,11 @@ class AutorizaRequisicionesSistemasController extends Controller{
             ->get();
         }
 
-        $CostosHLA = RequisicionesSistemas::where('Departamento_id', '!=', 23)
-            ->whereYear('Fecha', $request->Year)
-            ->whereMonth('Fecha', $request->Month)
-            ->get('CostoReq');
-
-        $CostosHilesa = RequisicionesSistemas::where('Departamento_id', '=', 23)
-            ->whereYear('Fecha', $request->Year)
-            ->whereMonth('Fecha', $request->Month)
-            ->get('CostoReq');
-
-        $CostoAñoHLA = RequisicionesSistemas::where('Departamento_id', '!=', 23)
-            ->whereYear('Fecha', $request->Year)
-            ->get('CostoReq');
-
-        $CostoAñoHilesa = RequisicionesSistemas::where('Departamento_id', '=', 23)
-            ->whereYear('Fecha', $request->Year)
-            ->get('CostoReq');
+        //Consultas para obtener costos de requisiciones Sistemas
+        $CostosHLA = RequisicionesSistemas::CostosHLA($anio, $mes)->get();
+        $CostosHilesa = RequisicionesSistemas::CostosHilesa($anio, $mes)->get();
+        $CostoAñoHLA = RequisicionesSistemas::CostoAñoHLA($anio)->get();
+        $CostoAñoHilesa = RequisicionesSistemas::CostoAñoHilesa($anio)->get();
 
         if($request->Req){
             $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento', 'Cotizacion.Proveedor', 'Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();

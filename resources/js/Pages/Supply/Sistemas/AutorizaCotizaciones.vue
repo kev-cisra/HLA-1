@@ -110,7 +110,7 @@
                         <td>
                             <div class="tw-flex tw-justify-center tw-items-center" >
                                 <div class="iconoCyan" @click="VisualizaCotizacion(data)" v-if="data.Estatus > 2 || data.Estatus == 0">
-                                    <span tooltip="Realizar Cotizacion" flow="left">
+                                    <span tooltip="Revisar Cotizacion" flow="left">
                                         <i class="fa-solid fa-credit-card"></i>
                                     </span>
                                 </div>
@@ -309,14 +309,6 @@
                     </template>
                 </Table>
                 <div id="chart" class="tw-m-10"></div>
-                <div class="tw-flex tw-flex-row tw-justify-around">
-                    <div>
-
-                    </div>
-                    <div>
-
-                    </div>
-                </div>
             </div>
 
             <div class="ModalFooter">
@@ -343,11 +335,9 @@ import JetSelect from "@/Components/Select";
 //imports de datatables
 import datatable from "datatables.net-bs5";
 import $ from "jquery";
-
 // Highcharts
 var Highcharts = require('highcharts');
 require('highcharts/modules/exporting')(Highcharts);
-
 //Moment Js
 import moment from 'moment';
 import 'moment/locale/es';

@@ -66,6 +66,11 @@
                                         </svg>
                                     </span>
                                 </div>
+                                <div class="iconoDetails" @click="Resguardo(data)" >
+                                    <span tooltip="Visualiza Partidas" flow="left">
+                                        <i class="fa-solid fa-file-contract"></i>
+                                    </span>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -122,6 +127,33 @@
                 <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
             </div>
         </modal>
+
+        <modal :show="showResguardo" @close="chageResguardo" :maxWidth="tam">
+            <div class="ModalHeader">
+                <h3 class="tw-p-2"><i class="tw-ml-3 tw-mr-3 fas fa-scroll"></i>HOJA DE RESGUARDO</h3>
+            </div>
+
+            <div class="ModalForm">
+                <div class="FormSection">
+                    <div class="tw-px-3 tw-mb-6 tw-w-full md:tw-mb-0">
+                        <jet-label><span class="required">*</span>PRECIO RESGUARDO</jet-label>
+                        <jet-input type="text" v-model="resguardo.CostoResguardo"></jet-input>
+                    </div>
+                </div>
+                <pre>
+                    {{ Resguardo }}
+                </pre>
+                <pre>
+                    {{ EquipoAsignado }}
+                </pre>
+            </div>
+
+            <div class="ModalFooter">
+                <jet-button type="button" @click="save(form)" v-show="!editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</jet-button>
+                <jet-button type="button" @click="update(form)" v-show="editMode" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Actualizar</jet-button>
+                <jet-CancelButton @click="chageClose">Cerrar</jet-CancelButton>
+            </div>
+        </modal>
     </app-layout>
 </template>
 
@@ -144,6 +176,7 @@ import datatable from "datatables.net-bs5";
 import $ from "jquery";
 import moment from 'moment';
 import 'moment/locale/es';
+import { objectEach } from 'highcharts';
 
 
 export default {
@@ -152,7 +185,11 @@ export default {
         return {
             tam: "3xl",
             color: "tw-bg-sky-600",
+            showResguardo: false,
             style: "tw-mt-2 tw-text-center tw-text-white tw-shadow-xl tw-rounded-2xl",
+            resguardo: {
+                CostoResguardo: 0,
+            },
             form: {
                 IdUser: this.Session.id,
                 FechaAsignacion: '',
@@ -188,6 +225,8 @@ export default {
         Hardware: Object,
         Perfiles: Object,
         EquiposAsignados: Object,
+        EquipoAsignado: Object,
+        Resguardo: Object,
     },
 
     mounted(){
@@ -281,6 +320,17 @@ export default {
                     )
                 },
             });
+        },
+
+        chageResguardo(){
+            this.showResguardo = !this.showResguardo;
+        },
+
+        Resguardo(data){
+            this.$inertia.get('/Sistemas/EquiposAsignados', { busca: data.perfil.id }, { //envio de variables por url
+                onSuccess: () => {
+                    this.chageResguardo();
+                }, preserveState: true})
         }
     },
 
