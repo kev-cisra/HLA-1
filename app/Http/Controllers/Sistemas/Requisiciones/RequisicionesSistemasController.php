@@ -21,7 +21,6 @@ class RequisicionesSistemasController extends Controller{
         $this->Per = $Per;
     }
 
-
     public function index(){
         $Session = auth()->user();
         $User = User::find($Session->id); //Accedo a los datos del usuario logueado

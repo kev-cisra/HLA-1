@@ -7,12 +7,14 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use App\Models\Sistemas\Hardware\HardwareAsignado;
 use App\Models\Sistemas\Hardware\HardwareSistemas;
+use App\Models\Sistemas\Hardware\ResguardoSistemas;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use stdClass;
 
 class EquiposAsignadosController extends Controller{
 
-    public function index(){
+    public function index(Request $request){
 
         $Session = auth()->user();
 
@@ -30,7 +32,21 @@ class EquiposAsignadosController extends Controller{
             }
         ])->get(['id', 'IdUser', 'FechaAsignacion', 'SubArea', 'Ubicacion', 'Comentarios', 'Estatus', 'Hardware_id', 'Perfil_id']);
 
-        return Inertia::render('Sistemas/Equipos/EquiposAsignados', compact('Session', 'Hardware', 'Perfiles', 'EquiposAsignados'));
+
+        if (!empty($request->busca)){
+            $EquipoAsignado = HardwareAsignado::with([
+                'Hardware' => function($articulo) { //Relacion 1 a 1 De puestos
+                    $articulo->select('id', 'Nombre', 'Marca', 'Modelo', 'NumeroSerie', 'Comentarios');
+                }
+            ])->where('Perfil_id', $request->busca)
+            ->get(['id', 'IdUser', 'FechaAsignacion', 'SubArea', 'Ubicacion', 'Comentarios', 'Estatus', 'Hardware_id', 'Perfil_id']);
+            $Resguardo = ResguardoSistemas::where('Perfil_id', $request->busca)->first();
+        }else{
+            $EquipoAsignado = new stdClass();
+            $Resguardo = new stdClass();
+        }
+
+        return Inertia::render('Sistemas/Equipos/EquiposAsignados', compact('Session', 'Hardware', 'Perfiles', 'EquiposAsignados', 'EquipoAsignado', 'Resguardo'));
     }
 
     public function store(Request $request){

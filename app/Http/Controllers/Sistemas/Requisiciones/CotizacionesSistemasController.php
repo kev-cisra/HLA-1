@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Sistemas\Requisiciones;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Sistemas\CotizacionSistemasMailable;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Compras\Proveedores;
 use App\Models\Compras\Requisiciones\Requisiciones;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
@@ -58,15 +60,21 @@ class CotizacionesSistemasController extends Controller{
             'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
                 $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
             },
+            'Cotizacion' => function($Cotizacion) { //Relacion 1 a 1 De puestos
+                $Cotizacion->select('id', 'IdUser', 'TipoPago', 'Moneda', 'TipoCambio', 'CostoExtra', 'Aprobado', 'Comentario', 'Archivo', 'requisicion_sistemas_id');
+            },
         ])->where('Estatus', '>', 0)->get();
 
         if($request->Req){
+            //Visualizacion de la cotizacion
             $RequisicionSistemas = RequisicionesSistemas::with(['Perfil','Departamento','Cotizacion.Proveedor','Cotizacion.Precios.Articulos'])->where('id', '=', $request->Req)->first();
+            $Cotizacion = CotizacionesSistemas::with('Precios.Articulos')->where('requisicion_sistemas_id', '=', $request->Req)->first();
         }else{
             $RequisicionSistemas = new stdClass();
+            $Cotizacion = new stdClass();
         }
 
-        return Inertia::render('Sistemas/Requisiciones/CotizacionesSistemas', compact('Session','Departamentos','Perfiles','ProveedoresSistemas','RequisicionesSistemas', 'RequisicionSistemas', 'CostosHLA', 'CostosHilesa', 'CostoAñoHLA', 'CostoAñoHilesa'));
+        return Inertia::render('Sistemas/Requisiciones/CotizacionesSistemas', compact('Session','Departamentos','Perfiles','ProveedoresSistemas','RequisicionesSistemas', 'RequisicionSistemas', 'Cotizacion', 'CostosHLA', 'CostosHilesa', 'CostoAñoHLA', 'CostoAñoHilesa'));
     }
 
     public function store(Request $request){
@@ -224,7 +232,28 @@ class CotizacionesSistemasController extends Controller{
 
         switch ($request->Metodo) {
             case 1: //Confirma Cotizacion
-                RequisicionesSistemas::where('id', $request->id)->update(['Estatus' => 4]);
+
+                $RequisicionSistemas = RequisicionesSistemas::with('Articulos')->where('id', $request->id)->first();
+
+                $DatosCorreo = new stdClass(); //Creo un nuevo Objeto
+                //Asigno los valores correspondientes al correo
+                $DatosCorreo->Folio = $RequisicionSistemas->Folio;
+
+                $correo = new CotizacionSistemasMailable($DatosCorreo);
+
+                Mail::to('jpquintana@hlangeles.com')
+                ->cc('sistemas@hlangeles.com')
+                ->send($correo);
+
+                if (Mail::failures()) {
+                    session()->flash('flash.type', 'Warning');
+                    session()->flash('flash.message', 'Error al Enviar el correo');
+                }else{
+                    RequisicionesSistemas::where('id', $request->id)->update(['Estatus' => 4]);
+                    session()->flash('flash.type', 'Success');
+                    session()->flash('flash.message', 'Se envio un correo de notificación');
+                }
+
                 return redirect()->back();
                 break;
 
@@ -240,10 +269,6 @@ class CotizacionesSistemasController extends Controller{
                     //Guardado de Imagen en la carpeta Public/Storage.. (Uso del disco Public pora la restriccion de los archivos)
                     $url = $request->archivo->storePubliclyAs('Archivos/Sistemas/Requisiciones/Cotizaciones',  $file, 'public');
 
-                    }else{
-                        $url = 'Archivos/FileNotFound404.jpg';
-                    }
-
                     $Cotizacion = CotizacionesSistemas::where('id', $request->Cotizacion_id)->update([
                         'IdUser' => $request->IdUser,
                         'TipoPago' => $request->TipoPago,
@@ -253,8 +278,17 @@ class CotizacionesSistemasController extends Controller{
                         'Archivo' => $url,
                     ]);
 
-                    foreach ($request->DatosCotizacion as $value) {
+                    }else{ //No se actualiza la ruta del archivo
+                        $Cotizacion = CotizacionesSistemas::where('id', $request->Cotizacion_id)->update([
+                            'IdUser' => $request->IdUser,
+                            'TipoPago' => $request->TipoPago,
+                            'Moneda' => $request->Moneda,
+                            'TipoCambio' => $request->TipoCambio,
+                            'Comentario' => $request->Comentario,
+                        ]);
+                    }
 
+                    foreach ($request->DatosCotizacion as $value) {
                         $PrecioCotizacion = PreciosCotizacionesSistemas::where('id', $value['Cot_id'])->update([
                             'Marca' => $value['Marca'],
                             'Precio' => $value['PrecioUnitario'],

@@ -110,7 +110,7 @@
                         <td>
                             <div class="tw-flex tw-justify-center tw-items-center" >
                                 <div class="iconoCyan" @click="VisualizaCotizacion(data)" v-if="data.Estatus > 2 || data.Estatus == 0">
-                                    <span tooltip="Realizar Cotizacion" flow="left">
+                                    <span tooltip="Revisar Cotizacion" flow="left">
                                         <i class="fa-solid fa-credit-card"></i>
                                     </span>
                                 </div>
