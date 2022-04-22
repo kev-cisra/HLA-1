@@ -2,6 +2,8 @@
 
 namespace App\Models\RecursosHumanos\Perfiles;
 
+use App\Models\Calidad\Carga\CargProcMeFibra;
+use App\Models\Calidad\ProceCalidad;
 use App\Models\Compras\Requisiciones\Requisiciones;
 use App\Models\Produccion\Abastos\AbaEntregas;
 use App\Models\Produccion\Abastos\admi_abas;
@@ -52,6 +54,14 @@ class PerfilesUsuarios extends Model
 
     public function abaEntre_entre(){
         return $this->hasMany(AbaEntregas::class, 'perfi_entrega');
+    }
+
+    public function proce_calidad(){
+        return $this->hasMany(ProceCalidad::class, 'perfil_id');
+    }
+
+    public function car_me_fibra(){
+        return $this->hasMany(CargProcMeFibra::class, 'perfil_id');
     }
 
     //relacion uno a muchos con Incidencias

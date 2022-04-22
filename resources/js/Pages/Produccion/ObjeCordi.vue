@@ -861,7 +861,7 @@
                 //console.log(data);
                 await axios.post('ObjeCordi/storeProObje', data)
                 .then(eve => {this.ConProduccion(), this.openModal(), this.CObje = true})
-                .catch(error => {this.errors = error.response.data.errors});
+                .catch(error => {this.errors = error.response.data.errors, this.CObje = true});
 
 
                 //console.log(ve)

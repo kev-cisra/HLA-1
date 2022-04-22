@@ -71,6 +71,8 @@ class RepoProController extends Controller
 
     //Consulta para la produccion
     public function ConProdu(Request $request){
+        return $request;
+
         if ($request->tipo == 'dia') {
             //$addDia = date("Y-m-d H:m:s" , strtotime($request->iniDia."+ 1 days"));
             $carga = carga::where('departamento_id', '=', $request->departamento_id)
