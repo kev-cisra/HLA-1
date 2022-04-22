@@ -54,15 +54,19 @@ class CotizacionesSistemasController extends Controller{
             'Perfil' => function($Perfil) { //Relacion 1 a 1 De puestos
                 $Perfil->select('id', 'Nombre', 'ApPat', 'ApMat');
             },
-            'Departamento' => function($Departamento) { //Relacion 1 a 1 De puestos
+            'Departamento' => function($Departamento) {
                 $Departamento->select('id', 'Nombre');
             },
-            'Articulos' => function($Articulos) { //Relacion 1 a 1 De puestos
+            'Articulos' => function($Articulos) {
                 $Articulos->select('id', 'IdUser', 'Cantidad', 'Unidad', 'Dispositivo', 'requisicion_sistemas_id');
             },
-            'Cotizacion' => function($Cotizacion) { //Relacion 1 a 1 De puestos
-                $Cotizacion->select('id', 'IdUser', 'TipoPago', 'Moneda', 'TipoCambio', 'CostoExtra', 'Aprobado', 'Comentario', 'Archivo', 'requisicion_sistemas_id');
+            'Cotizacion' => function($Cotizacion) {
+                $Cotizacion->select('id', 'IdUser', 'TipoPago', 'Moneda', 'TipoCambio', 'CostoExtra', 'Aprobado', 'Comentario', 'Archivo', 'requisicion_sistemas_id', 'Proveedor_Sistemas_id');
             },
+            'Cotizacion.Proveedor'=> function($Proveedor) {
+                $Proveedor->select('id', 'Nombre');
+            },
+            'Cotizacion.Precios.Articulos',
         ])->where('Estatus', '>', 0)->get();
 
         if($request->Req){
@@ -198,7 +202,7 @@ class CotizacionesSistemasController extends Controller{
                         'requisicion_sistemas_id' => $request->requisicion_sistemas_id,
                     ]);
 
-                    $CostoTotal = number_format($request->CostoExtra,2); //Asigo el costoextra para sumarlo
+                    $CostoExtra = number_format($request->CostoExtra,2); //Asigo el costoextra para sumarlo
                     $cotizacion_sistemas_id = $Cotizacion->id;
 
                     foreach ($request->DatosCotizacion as $value) {
@@ -210,10 +214,14 @@ class CotizacionesSistemasController extends Controller{
                             'cotizacion_sistemas_id' => $cotizacion_sistemas_id,
                             'art_req_sistemas_id' => $value['id'],
                         ]);
-                        //Suma los totales al costoExtra
-                        $CostoTotal = $CostoTotal + ($value['PrecioUnitario'] * $request->TipoCambio) * $value['Cantidad'];
+                        //Suma los totales
+                        $PrecioArt = (($value['PrecioUnitario'] * $request->TipoCambio) * $value['Cantidad']);
+                        //Suma los totales de cada partida
+                        $CostoTotal = $CostoTotal + $PrecioArt;
                     }
-
+                    //Suma los articulos al costos extra
+                    $CostoTotal = $CostoTotal + $CostoExtra;
+                    //Formato moneda
                     $CostoTotal = number_format($CostoTotal);
 
                     RequisicionesSistemas::where('id', $request->requisicion_sistemas_id)->update(['Estatus' => 3, 'CostoReq' => $CostoTotal]);
