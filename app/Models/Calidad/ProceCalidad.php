@@ -9,6 +9,7 @@ use App\Models\Produccion\Abastos\admi_abas;
 use App\Models\Produccion\catalogos\claves;
 use App\Models\Produccion\dep_mat;
 use App\Models\RecursosHumanos\Catalogos\Departamentos;
+use App\Models\RecursosHumanos\Perfiles\PerfilesUsuarios;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -48,5 +49,9 @@ class ProceCalidad extends Model
 
     public function cat_proce_cali(){
         return $this->belongsTo(CataProceCalidad::class, 'proceso_id');
+    }
+
+    public function perfil_proc(){
+        return $this->belongsTo(PerfilesUsuarios::class, 'proc_perfil_id');
     }
 }

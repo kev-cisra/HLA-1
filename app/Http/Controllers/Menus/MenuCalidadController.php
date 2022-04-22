@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Menus;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Produccion\General\GeneralController;
+use App\Models\Calidad\Catalogo\CataMediFibras;
 use App\Models\Calidad\Catalogo\CataProceCalidad;
 use App\Models\Calidad\ProceCalidad;
 use App\Models\Produccion\catalogos\claves;
@@ -25,14 +26,6 @@ class MenuCalidadController extends Controller
     //
     public function index(){
         $User = Auth::user();
-        //muestra la información del usuario que inicio sesion
-        $perf = PerfilesUsuarios::where('user_id','=',$User)
-            ->with([
-                'dep_pers' => function($dp){
-                    $dp -> select('id', 'perfiles_usuarios_id', 'ope_puesto', 'equipo_id', 'departamento_id');
-                }
-            ])
-            ->first(['id', 'IdEmp', 'Nombre', 'ApPat', 'ApMat', 'jefe_id', 'user_id', 'Puesto_id', 'Departamento_id', 'jefes_areas_id']);
 
         $calidad = $this->gene->ConAbast();
 
@@ -45,7 +38,7 @@ class MenuCalidadController extends Controller
         ->selectRaw('maq_pros.id AS mp_id, maquinas.id, CONCAT( maquinas.Nombre, " ", marcas_maquinas.Nombre) AS text, maquinas.departamento_id')
         ->get();
 
-        return Inertia::render('Menus/Calidad', ['usuario' => $perf, 'abaentre' => $calidad, 'maquinas' => $maquinas, 'catproce' => $catProce]);
+        return Inertia::render('Menus/Calidad', ['usuario' => $User, 'abaentre' => $calidad, 'maquinas' => $maquinas, 'catproce' => $catProce]);
     }
 
     public function store(Request $request){
@@ -68,7 +61,8 @@ class MenuCalidadController extends Controller
                             'maquina_id' => $mq,
                             'clave_id' => $cl,
                             'dep_mat_id' => $cla->dep_mat_id,
-                            'departamento_id' => $request->departamento_id
+                            'departamento_id' => $request->departamento_id,
+                            'proc_perfil_id' => $request->user
                         ]);
                     }
                 }

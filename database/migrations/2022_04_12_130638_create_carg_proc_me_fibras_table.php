@@ -30,6 +30,10 @@ class CreateCargProcMeFibrasTable extends Migration
             ->onDelete("cascade")
             ->onUpdate("cascade");
 
+            $table->unsignedBigInteger('car_me_fi_perfil_id')->nullable();
+            $table->foreign('car_me_fi_perfil_id')->references("id")->on("perfiles_usuarios")
+            ->onUpdate("cascade");
+
             $table->unsignedBigInteger('cata_medi_fibra_id')->nullable();
             $table->foreign("cata_medi_fibra_id")->references("id")->on("cata_medi_fibras")
             ->onDelete("cascade")

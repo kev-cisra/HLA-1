@@ -16,7 +16,7 @@
         <div class="overflow-auto" style="height: 70vh">
             <!-- Acordion -->
             <div class="accordion tw-m-auto" id="accordionExample">
-                <input type="search" v-model="buscaProc" v-show="cat_pro" @keyup="conLisTable()" class="InputSelect lg:tw-w-1/4 tw-ml-auto tw-m-5">
+                <input type="search" v-model="buscaProc" v-show="cat_pro" placeholder="Buscar" @input="(val) => (buscaProc = buscaProc.toUpperCase())" @keyup="conLisTable()" class="InputSelect lg:tw-w-1/4 tw-ml-auto tw-m-5">
                 <div class="accordion-item" v-for="lc in lisa_carga" :key="lc">
                     <h2 class="accordion-header" :id="'heading'+lc.id">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse'+lc.id" aria-expanded="false" :aria-controls="'collapse'+lc.id" @click="limMeFibra(lc)">
@@ -84,10 +84,11 @@
                                         <small v-if="errors.observaciones" class="validation-alert">{{errors.observaciones}}</small>
                                     </div>
                                     <div class="tw-p-3 lg:tw-w-4/12 lg:tw-mb-0">
-                                        <button class="btn btn-success" @click="saveMeFibra(formMeFibra)">
+                                        <BotonCarga :verBot="buMeFi" :textoV="'Guardar'" :textoOC="'Guardando...'" :class="'btn btn-success tw-mr-4'" @click="saveMeFibra(formMeFibra)"></BotonCarga>
+                                        <!-- <button class="btn btn-success" @click="saveMeFibra(formMeFibra)">
                                             <i class="fas fa-save"></i>
                                             Guardar
-                                        </button>
+                                        </button> -->
                                     </div>
                                 </div>
                             </div>
@@ -95,6 +96,7 @@
                             <ag-grid-vue
                                 style="width: 100%; height: 30vh"
                                 class="ag-theme-balham"
+                                :localeText="ag_español"
                                 :columnDefs="encaTabla"
                                 :rowData="datTabla"
                             >
@@ -114,6 +116,8 @@
     import Select2 from 'vue3-select2-component';
     import Accions from '@/Components/Accions';
     import axios from 'axios';
+    import JetLabel from '@/Jetstream/Label';
+    import BotonCarga from '@/Components/BotonCarga.vue';
 
     import { AgGridVue } from "ag-grid-vue3";
 
@@ -132,6 +136,8 @@ import moment from 'moment';
             Link,
             AgGridVue,
             Table,
+            JetLabel,
+            BotonCarga,
             Select2
         },
         data() {
@@ -141,6 +147,7 @@ import moment from 'moment';
                 lisa_carga: [],
                 encaTabla: [],
                 datTabla: [],
+                buMeFi: true,
                 errors: [],
                 formMeFibra:{
                     ml: "",
@@ -149,6 +156,7 @@ import moment from 'moment';
                     calculo_algodon: "",
                     composicion: "",
                     proce_calidad_id: "",
+                    clave_id: "",
                     frecuencia: 1,
                     observaciones: ""
                 }
@@ -166,48 +174,114 @@ import moment from 'moment';
             },
             /***************************** Opciones Medicion Fibra ***************************/
             limMeFibra(proc) {
+                //console.log(proc)
                 this.formMeFibra.ml = "";
                 this.formMeFibra.sfc = "";
                 this.formMeFibra.calculo_anillo = "";
                 this.formMeFibra.calculo_algodon = "";
                 this.formMeFibra.composicion = "";
                 this.formMeFibra.proce_calidad_id = proc.id;
+                this.formMeFibra.clave_id = proc.clave_id;
                 this.formMeFibra.frecuencia = 1;
                 this.formMeFibra.observaciones = "";
                 this.tabla(proc);
             },
             async saveMeFibra(datos){
+                datos.user = this.usuario.id;
+                this.buMeFi = false;
                 await axios.post('CargaCali/saveMeFib', datos)
-                .then(resp => {console.log(resp), this.alertSucces(), this.conLisTable()})
-                .catch(err => {this.errors = err.response.data.errors ,this.alertWarning()})
+                .then(resp => {this.errors = [], this.alertSucces(), this.conLisTable(), this.buMeFi = true})
+                .catch(err => {this.errors = err.response.data.errors ,this.alertWarning(), this.buMeFi = true})
             },
             tabla(proc){
                 //medicion de fibras
                 if (proc.proceso_id == 5) {
                     //opciones de frecuencia
                     const fre = function(params){
-                        if (params.value == 1) {
+                        if (params.data.frecuencia == 1) {
                             return "Arranque";
-                        }else if (params.value == 2) {
+                        }else if (params.data.frecuencia == 2) {
                             return "Seguimiento";
-                        }else if(params.value == 3){
+                        }else if(params.data.frecuencia == 3){
                             return "Prueba Extraordinaria";
                         }
                     }
 
+                    //Fecha
                     let fec = function(params) {
                         return moment(params.value).format("DD/MM/YYYY hh:mm:ss")
                     }
+
+                    //comparador ml
+                    const fml = function(params) {
+                        //console.log(params)
+                        if (params.data.cata_medi_fibra_id != null) {
+                            if (parseFloat(params.value) >= parseFloat(params.data.cata_medi_fibra.min_ml) &&  parseFloat(params.value) <= parseFloat(params.data.cata_medi_fibra.max_ml)) {
+                                return '<label class="tw-text-lime-600">'+parseFloat(params.value)+'</label>';
+                            } else {
+                                return '<label class="tw-text-red-600">'+parseFloat(params.value)+'</label>';
+                            }
+                        } else {
+                            return '<label class="tw-text-lime-600">'+parseFloat(params.value)+'</label>';
+                        }
+                    }
+
+                    //comparador sfc
+                    const fsfc = function(params) {
+                        if (params.data.cata_medi_fibra_id != null) {
+                            if (parseFloat(params.value) >= parseFloat(params.data.cata_medi_fibra.min_sfc) &&  parseFloat(params.value) <= parseFloat(params.data.cata_medi_fibra.max_sfc)) {
+                                return '<label class="tw-text-lime-600">'+parseFloat(params.value)+'</label>';
+                            } else {
+                                return '<label class="tw-text-red-600">'+parseFloat(params.value)+'</label>';
+                            }
+                        } else {
+                            return '<label class="tw-text-lime-600">'+parseFloat(params.value)+'</label>';
+                        }
+                    }
+
+                    //comparador anillo
+                    const fanill = function(params) {
+                        if (params.data.cata_medi_fibra_id != null) {
+                            if (parseFloat(params.value) >= parseFloat(params.data.cata_medi_fibra.min_anillo) &&  parseFloat(params.value) <= parseFloat(params.data.cata_medi_fibra.max_anillo)) {
+                                return '<label class="tw-text-lime-600">'+parseFloat(params.value)+'</label>';
+                            } else {
+                                return '<label class="tw-text-red-600">'+parseFloat(params.value)+'</label>';
+                            }
+                        } else {
+                            return '<label class="tw-text-lime-600">'+parseFloat(params.value)+'</label>';
+                        }
+                    }
+
+                    //comparador anillo
+                    const falgo = function(params) {
+                        if (params.data.cata_medi_fibra_id != null) {
+                            if (parseFloat(params.value) >= parseFloat(params.data.cata_medi_fibra.min_algodon) &&  parseFloat(params.value) <= parseFloat(params.data.cata_medi_fibra.max_algodon)) {
+                                return '<label class="tw-text-lime-600">'+parseFloat(params.value)+'</label>';
+                            } else {
+                                return '<label class="tw-text-red-600">'+parseFloat(params.value)+'</label>';
+                            }
+                        } else {
+                            return '<label class="tw-text-lime-600">'+parseFloat(params.value)+'</label>';
+                        }
+                    }
+
+                    //personal
+                    const fper = function(params) {
+                        //console.log(params)
+                        return params.data.perfil_me_fi.Nombre+' '+params.data.perfil_me_fi.ApPat+' '+params.data.perfil_me_fi.ApMat
+                    }
+
                     //opciones para tabla
                     this.encaTabla = [
-                        { headerName: "Fecha", field: "created_at",  cellRenderer: fec },
-                        { headerName: "Frecuencia", field: "frecuencia", cellRenderer: fre },
-                        { headerName: "ML", field: "ml" },
-                        { headerName: "SFC", field: "sfc" },
-                        { headerName: "% Anillo Calculo", field: "ani_cal" },
-                        { headerName: "% Calculo Algodón", field: "algod_cal" },
+                        { headerName: "Fecha",  valueGetter: fec },
+                        { headerName: "Frecuencia", valueGetter: fre, filter: 'agTextColumnFilter' },
+                        { headerName: "ML", field: "ml", cellRenderer: fml, filter: 'agNumberColumnFilter' },
+                        { headerName: "SFC", field: "sfc", cellRenderer: fsfc },
+                        { headerName: "% Anillo Calculo", field: "ani_cal", cellRenderer: fanill },
+                        { headerName: "% Calculo Algodón", field: "algod_cal", cellRenderer: falgo },
                         { headerName: "Composición", field: "composi" },
-                        { headerName: "Observaciones", field: "observacion" }
+                        { headerName: "Observaciones", field: "observacion" },
+                        { headerName: "Operador", field: "perfil_me_fi.Nombre", cellRenderer: fper }
                     ]
                     //retorno de datos
                     this.datTabla = proc.carg_mefibra;

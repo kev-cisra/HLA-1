@@ -216,6 +216,7 @@
                 .then(ele => {this.caliProce = ele.data, this.chageClose()})
             },
             async save(form){
+                form.user = this.usuario.id
                 await axios.post('Calidad/CaliPro', form)
                 .then(ele => {form.procesos = [], form.maquinas = [], form.clave = [], this.alertSucces()})
                 .catch(err => {this.alertWarning()})
