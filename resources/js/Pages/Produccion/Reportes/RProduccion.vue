@@ -433,7 +433,7 @@
                                 fin = moment(fin).add(1, 'hours').format("YYYY-MM-DD[T]HH:mm")
                             }
                         }
-                    }
+                    } 
                     else{
                         ini = uni+' 07:00:00'
                         fin = moment(ini).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss');
