@@ -261,7 +261,7 @@
                 GrafGua: [],
                 hoy: moment().format('YYYY-MM-DD'),
                 recoTabla: [],
-                recoTablaParo: [],
+                recoTablaParo: [], 
                 graTipo: [],
                 proc_prin: '',
                 deli:{
